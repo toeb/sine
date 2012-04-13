@@ -24,31 +24,33 @@
 #include "math.h"
 #include "VectorND.h"
 #include "MatrixNxM.h"
-
+#include <iostream>
+using namespace std;
 using namespace IBDS;
 
 /** Konstruktor: Erzeugt einen Vektor mit der Dimension 0. 
   */
 VectorND::VectorND()
 {
-	n = 0;
+  n = 0;
+  v = new Real[0];
 }
 
 /** Konstruktor: Erzeugt einen Vektor mit der übergebenen Dimension. 
   */
 VectorND::VectorND(const int dim)
 {
-	n = dim;
-  v =new  Real[dim];
+  n = dim;
+  v = new Real[dim];
 }
-
 
 /** Destruktor
   */
 VectorND::~VectorND()
 {
-	delete v;
   n = 0;
+  delete v;
+  v =0;
 }
 
 /** Zuweisung: v1 = v2\n
@@ -56,20 +58,22 @@ VectorND::~VectorND()
   */
 VectorND& VectorND::operator = (const VectorND& vn)
 { 
-	n = vn.n;
-	for (int i=0; i < n; i++)
-		v[i] = vn.v[i]; 
-	return *this; 
+  n = vn.n;
+  for (int i=0; i < n; i++)
+    v[i] = vn.v[i]; 
+  return *this; 
 }
+
+
 
 /** Vektor-Subtraktion: v1 -= v2\n
   * Subtrahiert Vektor v2 von v1
   */
 VectorND& VectorND::operator -= (const VectorND& vn)
 { 
-	for (int i=0; i < n; i++)
-		v[i] -= vn.v[i]; 
-	return *this; 
+  for (int i=0; i < n; i++)
+    v[i] -= vn.v[i]; 
+  return *this; 
 }
 
 /** Vektor-Addition: v1 += v2\n
@@ -77,9 +81,9 @@ VectorND& VectorND::operator -= (const VectorND& vn)
   */
 VectorND& VectorND::operator += (const VectorND& vn)
 { 
-	for (int i=0; i < n; i++)
-		v[i] += vn.v[i]; 
-	return *this; 
+  for (int i=0; i < n; i++)
+    v[i] += vn.v[i]; 
+  return *this; 
 }
 
 /** Multiplikation mit Konstanter d: v1 *= d\n
@@ -87,9 +91,9 @@ VectorND& VectorND::operator += (const VectorND& vn)
   */ 
 VectorND& VectorND::operator *= ( const Real d )
 { 
-	for (int i=0; i < n; i++)
-		v[i] *= d; 
-	return *this; 
+  for (int i=0; i < n; i++)
+    v[i] *= d; 
+  return *this; 
 }
 
 /** Division mit Konstanter d: v1 /= d\n
@@ -98,10 +102,10 @@ VectorND& VectorND::operator *= ( const Real d )
   */
 VectorND& VectorND::operator /= ( const Real d )
 { 
-	Real d_inv = 1/d;
-	for (int i=0; i < n; i++)
-		v[i] *= d_inv; 
-	return *this; 
+  Real d_inv = 1/d;
+  for (int i=0; i < n; i++)
+    v[i] *= d_inv; 
+  return *this; 
 }
 
 
@@ -112,10 +116,10 @@ VectorND& VectorND::operator /= ( const Real d )
   */
 bool IBDS::operator == (const VectorND &a, const VectorND &b)
 {
-	bool bl = true;
-	for (int i=0; i < a.n; i++)
-		bl = bl && (a.v[i] == b.v[i]);
-	return bl;
+  bool bl = true;
+  for (int i=0; i < a.n; i++)
+    bl = bl && (a.v[i] == b.v[i]);
+  return bl;
 }
 
 /** Ungleichheit: v1 != v2 \n
@@ -123,10 +127,10 @@ bool IBDS::operator == (const VectorND &a, const VectorND &b)
   */
 bool IBDS::operator != (const VectorND &a, const VectorND &b)
 {
-	bool bl = false;
-	for (int i=0; i < a.n; i++)
-		bl = bl || (a.v[i] != b.v[i]);
-	return bl;
+  bool bl = false;
+  for (int i=0; i < a.n; i++)
+    bl = bl || (a.v[i] != b.v[i]);
+  return bl;
 }
 
 
@@ -136,10 +140,10 @@ bool IBDS::operator != (const VectorND &a, const VectorND &b)
   */
 VectorND IBDS::operator - (const VectorND& a)
 {  
-	VectorND vn = VectorND (a.n);
-	for (int i=0; i < a.n; i++)
-		vn[i] = -a.v[i];
-	return vn; 
+  VectorND & vn = *(new VectorND (a.n));
+  for (int i=0; i < a.n; i++)
+    vn[i] = -a.v[i];
+  return vn; 
 }
 
 /** Addition: v1 + v2\n
@@ -147,10 +151,10 @@ VectorND IBDS::operator - (const VectorND& a)
   */
 VectorND IBDS::operator + (const VectorND& a, const VectorND& b)
 { 
-	VectorND vn = VectorND (a.n);
-	for (int i=0; i < a.n; i++)
-		vn[i] = a.v[i] + b.v[i];
-	return vn; 
+  VectorND & vn = *(new VectorND (a.n));
+  for (int i=0; i < a.n; i++)
+    vn[i] = a.v[i] + b.v[i];
+  return vn; 
 }
 
 /** Subtraktion: v1 - v2\n
@@ -158,21 +162,21 @@ VectorND IBDS::operator + (const VectorND& a, const VectorND& b)
   */
 VectorND IBDS::operator - (const VectorND& a, const VectorND& b)
 { 
-	VectorND vn = VectorND (a.n);
-	for (int i=0; i < a.n; i++)
-		vn[i] = a.v[i] - b.v[i];
-	return vn; 
+  VectorND & vn = *(new VectorND (a.n));
+  for (int i=0; i < a.n; i++)
+    vn[i] = a.v[i] - b.v[i];
+  return vn; 
 }
 
 /** Multiplikation mit Konstanter: v1*d\n
   * Multipliziert alle Komponenten von v1 mit d
   */
-VectorND IBDS::operator * (const VectorND& a, const Real d)
+VectorND  IBDS::operator * (const VectorND& a, const Real d)
 { 
-	VectorND vn = VectorND (a.n);
-	for (int i=0; i < a.n; i++)
-		vn[i] = d*a.v[i];
-	return vn; 
+  VectorND & vn = *(new VectorND (a.n));
+  for (int i=0; i < a.n; i++)
+    vn[i] = d*a.v[i];
+  return vn; 
 }
 
 /** Multiplikation mit Konstanter: d*v1\n
@@ -180,7 +184,7 @@ VectorND IBDS::operator * (const VectorND& a, const Real d)
   */
 VectorND IBDS::operator * (const Real d, const VectorND& a)
 { 
-	return a*d; 
+  return a*d; 
 }
 
     
@@ -190,10 +194,10 @@ VectorND IBDS::operator * (const Real d, const VectorND& a)
   */
 Real IBDS::operator * (const VectorND& a, const VectorND& b)
 { 
-	Real s = 0.0;
-	for (int i=0; i < a.n; i++)
-		s += a.v[i]*b.v[i];
-	return s; 
+  Real s = 0.0;
+  for (int i=0; i < a.n; i++)
+    s += a.v[i]*b.v[i];
+  return s; 
 }
 
 
@@ -202,15 +206,15 @@ Real IBDS::operator * (const VectorND& a, const VectorND& b)
   */
 VectorND IBDS::operator * (const VectorND& v, const MatrixNxM& m) 
 {
-	int dim = m.cols;
-	VectorND vn = VectorND (dim);
-	for (int i=0; i < vn.n; i++)
-	{
-		vn[i] = 0.0;
-		for (int j=0; j < v.n; j++)
-			vn[i] += v.v[j]*m.v[j].v[i];
-	}
-	return vn;
+  int dim = m.cols;
+  VectorND vn = VectorND (dim);
+  for (int i=0; i < vn.n; i++)
+  {
+    vn[i] = 0.0;
+    for (int j=0; j < v.n; j++)
+      vn[i] += v.v[j]*m.v[j].v[i];
+  }
+  return vn;
 }
 
 /** Multiplikation von Spaltenvektor v mit 2x2 Matrix m\n
@@ -218,15 +222,26 @@ VectorND IBDS::operator * (const VectorND& v, const MatrixNxM& m)
   */
 VectorND IBDS::operator * (const MatrixNxM& m, const VectorND& v) 
 {
-	int dim = m.rows;
-	VectorND vn = VectorND (dim);
-	for (int i=0; i < m.rows; i++)
-	{
-		vn.v[i] = 0.0;
-		for (int j=0; j < m.cols; j++)
-			vn.v[i] += m.v[i].v[j]*v.v[j];
-	}
-	return vn;
+  int dim = m.rows;
+  VectorND vn = VectorND (dim);
+  for (int i=0; i < m.rows; i++)
+  {
+    vn.v[i] = 0.0;
+    for (int j=0; j < m.cols; j++)
+      vn.v[i] += m.v[i].v[j]*v.v[j];
+  }
+  return vn;
+}
+
+/** Stream-Ausgabe des Vektors 
+  */
+std::ostream& IBDS::operator << (std::ostream& s, const VectorND& v)
+{ 
+  s << "( ";
+  for (int i=0; i < v.n-1; i++)
+    s << v.v[i] << ", ";
+  s << v.v[v.n-1] << " )"; 
+  return s; 
 }
 
 
@@ -234,14 +249,14 @@ VectorND IBDS::operator * (const MatrixNxM& m, const VectorND& v)
   */
 Real& VectorND::operator [] ( int i)
 {
-	return v[i];
+  return v[i];
 }
 
 /** Zugriff per Index auf die einzelnen Komponenten des Vektors.
   */
 const Real& VectorND::operator [] ( int i) const
 {
-	return v[i];
+  return v[i];
 }
 
 
@@ -249,60 +264,49 @@ const Real& VectorND::operator [] ( int i) const
   */
 Real VectorND::length () const
 {  
-	return (Real) sqrt (*this * *this); 
+  return (Real) sqrt (*this * *this); 
 }
 
 /** Berechnet die Länge des Vektors im Quadrat. 
   */ 
 Real VectorND::length2() const
 {  
-	return *this * *this; 
+  return *this * *this; 
 }
 
 /** Normiert den Vektor (Division durch 0 bei Länge 0 des Vektors wird nicht abgefangen!!!)
   */
 void VectorND::normalize() 
 { 
-	*this /= length(); 
+  *this /= length(); 
 }
 
 /** Berechnet die Länge des Vektors vom aktuellen Punkt zu Punkt a.
   */
 Real VectorND::distance (VectorND a) const
 {
-	return (*this - a).length ();
+  return (*this - a).length ();
 }
 
 /** Berechnet die quadratische Länge des Vektors vom aktuellen Punkt zu Punkt a.
   */
 Real VectorND::distance2 (VectorND a) const
 {
-	return (*this - a).length2 ();
+  return (*this - a).length2 ();
 }
 
-/** Stream-Ausgabe des Vektors 
-  */
-std::ostream& IBDS::operator << (std::ostream& s, const VectorND& v)
-{ 
-	s << "( ";
-	for (int i=0; i < v.n-1; i++)
-		s << v.v[i] << ", ";
-	s << v.v[v.n-1] << " )"; 
-	return s; 
-}
-   
 /** Gibt die Anzahl der Spalten zurück.
 */
 int VectorND::getCols() const
 {
-	return 1;
+  return 1;
 }
 
 /** Gibt die Anzahl der Zeilen zurück.
 */
 int VectorND::getRows() const
 {
-	return n;
+  return n;
 }
 
 /** Zugriff per Index auf die einzelnen Komponenten des Vektors.
@@ -310,7 +314,7 @@ int VectorND::getRows() const
   */
 Real& VectorND::operator () (int i, int j) 
 {
-	return v[i];
+  return v[i];
 }
 
 /** Zugriff per Index auf die einzelnen Komponenten des Vektors.
@@ -318,5 +322,5 @@ Real& VectorND::operator () (int i, int j)
   */
 const Real& VectorND::operator () (int i, int j) const
 {
-	return v[i];
+  return v[i];
 }

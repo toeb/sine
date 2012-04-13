@@ -30,6 +30,11 @@
 #include "Common/StringTools.h"
 #include "Common/timing.h"
 #include "Math/VectorND.h"
+#include "RigidBody.h"
+#include "Integrators/Integrator.h"
+#include "Integrators/Implementations/ExplicitEuler.h"
+#include "Integrators/Implementations/RungeKutta4.h"
+#include "Integrators/CompositeIntegratable.h"
 // Enable memory leak detection
 #ifdef _DEBUG
   #define new DEBUG_NEW 
@@ -73,6 +78,11 @@ void cleanup()
 {
 }
 
+CompositeIntegratable * integratable = new CompositeIntegratable();
+RigidBody * r = RigidBody::createBox(1,1,1,1);
+RigidBody* b = RigidBody::createSphere(1,1);
+Particle* p = new Particle();
+Integrator * integrator;
 void timeStep ()
 {
   START_TIMING("timeStep");
@@ -81,17 +91,27 @@ void timeStep ()
   const Real h = tm->getTimeStepSize();
 
   // Simulation code
-
+  const Real a = tm->getTime();
+  const Real b = a+h;
+  
+  integrator->integrate(a,b);
+ // cout << integrator->getState()<<endl;
   tm->setTime(tm->getTime() + h);
 
   STOP_TIMING_AVG;
 }
-
 void buildModel ()
 {
   TimeManager::getCurrent ()->setTimeStepSize (0.01);
-  VectorND v(10);
   
+  for(int i=0 ;i <10000; i++){
+   // integratable->addIntegratable(RigidBody::createSphere(1,1));
+    integratable->addIntegratable(new Particle());
+  }
+
+  integrator = new RungeKutta4(0.01);
+  integrator->setIntegratable(integratable);
+  r->setAcceleration(Vector3D(1,0,0));
 
   // Create simulation model
 }

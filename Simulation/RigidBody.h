@@ -32,7 +32,7 @@ public:
 
   
    virtual void evaluate(const Real * state, Real * derivedState);
-  void virtual setState(const Real * state);
+   void virtual setState(const Real * state);
    virtual void getState(Real * state)const;
    virtual int getStateDimension()const;
   

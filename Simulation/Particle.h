@@ -26,10 +26,10 @@
 
 #include "Common/Config.h"
 #include "Math/Vector3D.h"
-#include "Simulation/Integrators/IIntegratable.h"
+#include "Simulation/Integrators/IIntegrable.h"
 namespace IBDS
 {
-  class Particle : public IIntegratable
+  class Particle : public IIntegrable
   {
   private:
     Real m_mass;

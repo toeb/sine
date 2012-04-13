@@ -27,9 +27,9 @@ using namespace IBDS;
 
 
  void Particle::evaluate(const Real * state, Real * derivedState){
- derivedState[0] = state[4];
- derivedState[1] = state[5];
- derivedState[2] = state[6];
+ derivedState[0] = state[3];
+ derivedState[1] = state[4];
+ derivedState[2] = state[5];
  derivedState[3] = m_acceleration[0];
  derivedState[4] = m_acceleration[1];
  derivedState[5] = m_acceleration[2];
