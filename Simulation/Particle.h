@@ -26,30 +26,36 @@
 
 #include "Common/Config.h"
 #include "Math/Vector3D.h"
-
+#include "Simulation/Integrators/IIntegratable.h"
 namespace IBDS
 {
-	class Particle
-	{
-	private:
-		Real m_mass;
-		Vector3D m_position;
-		Vector3D m_velocity;
-		Vector3D m_acceleration;
+  class Particle : public IIntegratable
+  {
+  private:
+    Real m_mass;
+    Vector3D m_position;
+    Vector3D m_velocity;
+    Vector3D m_acceleration;
 
-	public:
-		Particle ();
-		~Particle ();
+  public:
+    Particle ();
+    ~Particle ();
 
-		Real getMass() const;
-		void setMass(Real val);
-		IBDS::Vector3D getPosition() const;
-		void setPosition(IBDS::Vector3D val);
-		IBDS::Vector3D getVelocity() const;
-		void setVelocity(IBDS::Vector3D val);
-		IBDS::Vector3D getAcceleration() const;
-		void setAcceleration(IBDS::Vector3D val);
-	};
+    
+   virtual void evaluate(const Real * state, Real * derivedState);
+  void virtual setState(const Real * state);
+   virtual void getState(Real * state)const;
+   virtual int getStateDimension()const;
+
+    Real getMass() const;
+    void setMass(Real val);
+    IBDS::Vector3D getPosition() const;
+    void setPosition(IBDS::Vector3D val);
+    IBDS::Vector3D getVelocity() const;
+    void setVelocity(IBDS::Vector3D val);
+    IBDS::Vector3D getAcceleration() const;
+    void setAcceleration(IBDS::Vector3D val);
+  };
 }
 
 #endif

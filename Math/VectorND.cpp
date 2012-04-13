@@ -39,6 +39,7 @@ VectorND::VectorND()
 VectorND::VectorND(const int dim)
 {
 	n = dim;
+  v =new  Real[dim];
 }
 
 
@@ -46,7 +47,8 @@ VectorND::VectorND(const int dim)
   */
 VectorND::~VectorND()
 {
-	n = 0;
+	delete v;
+  n = 0;
 }
 
 /** Zuweisung: v1 = v2\n

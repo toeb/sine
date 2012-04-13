@@ -29,10 +29,10 @@
 #include "Math/SimMath.h"
 #include "Common/StringTools.h"
 #include "Common/timing.h"
-
+#include "Math/VectorND.h"
 // Enable memory leak detection
 #ifdef _DEBUG
-	#define new DEBUG_NEW 
+  #define new DEBUG_NEW 
 #endif
 
 using namespace IBDS;
@@ -47,26 +47,26 @@ void cleanup();
 // main 
 int main( int argc, char **argv )
 {
-	REPORT_MEMORY_LEAKS
-	USE_TIMESTEP_TIMING(Timing::m_dontPrintTimes = true;);
+  REPORT_MEMORY_LEAKS
+  USE_TIMESTEP_TIMING(Timing::m_dontPrintTimes = true;);
 
-	// OpenGL
-	MiniGL::init (argc, argv, 800, 600, 0, 0, "MiniGL");
-	MiniGL::initLights ();
-	MiniGL::setClientIdleFunc (50, timeStep);				
+  // OpenGL
+  MiniGL::init (argc, argv, 800, 600, 0, 0, "MiniGL");
+  MiniGL::initLights ();
+  MiniGL::setClientIdleFunc (50, timeStep);				
 
-	buildModel ();
+  buildModel ();
 
-	MiniGL::setClientSceneFunc(render);			
-	MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (3.0, 1.0, 10.0), Vector3D (3.0, -0.3, 0.0));
+  MiniGL::setClientSceneFunc(render);			
+  MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (3.0, 1.0, 10.0), Vector3D (3.0, -0.3, 0.0));
 
-	glutMainLoop ();	
+  glutMainLoop ();	
 
-	cleanup ();
+  cleanup ();
 
-	USE_TIMESTEP_TIMING(printAverageTimes());
-	
-	return 0;
+  USE_TIMESTEP_TIMING(printAverageTimes());
+  
+  return 0;
 }
 
 void cleanup()
@@ -75,33 +75,35 @@ void cleanup()
 
 void timeStep ()
 {
-	START_TIMING("timeStep");
+  START_TIMING("timeStep");
 
-	TimeManager *tm = TimeManager::getCurrent ();
-	const Real h = tm->getTimeStepSize();
+  TimeManager *tm = TimeManager::getCurrent ();
+  const Real h = tm->getTimeStepSize();
 
-	// Simulation code
+  // Simulation code
 
-	tm->setTime(tm->getTime() + h);
+  tm->setTime(tm->getTime() + h);
 
-	STOP_TIMING_AVG;
+  STOP_TIMING_AVG;
 }
 
 void buildModel ()
 {
-	TimeManager::getCurrent ()->setTimeStepSize (0.01);
+  TimeManager::getCurrent ()->setTimeStepSize (0.01);
+  VectorND v(10);
+  
 
-	// Create simulation model
+  // Create simulation model
 }
 
 
 void render ()
 {
-	MiniGL::coordinateSystem();
-	
-	// Draw simulation model
+  MiniGL::coordinateSystem();
+  
+  // Draw simulation model
   
 
-	MiniGL::drawTime( TimeManager::getCurrent ()->getTime ());
+  MiniGL::drawTime( TimeManager::getCurrent ()->getTime ());
 }
 

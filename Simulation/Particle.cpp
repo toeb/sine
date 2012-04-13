@@ -25,12 +25,45 @@
 
 using namespace IBDS;
 
+
+ void Particle::evaluate(const Real * state, Real * derivedState){
+ derivedState[0] = state[4];
+ derivedState[1] = state[5];
+ derivedState[2] = state[6];
+ derivedState[3] = m_acceleration[0];
+ derivedState[4] = m_acceleration[1];
+ derivedState[5] = m_acceleration[2];
+}
+void Particle::setState(const Real * state){
+  // m_position.v = state;
+  // m_velocity.v = state + 3;
+  m_position[0]=state[0]; 
+  m_position[1]=state[1];
+  m_position[2]=state[2];
+  m_velocity[0]=state[3];
+  m_velocity[1]=state[4];
+  m_velocity[2]=state[5];
+}
+ void Particle::getState(Real * state)const{
+  state[0] = m_position[0];
+  state[1] = m_position[1];
+  state[2] = m_position[2];
+  state[3] = m_velocity[0];
+  state[4] = m_velocity[1];
+  state[5] = m_velocity[2];
+}
+ int Particle::getStateDimension()const{
+  static int dim = 6;
+  return dim;
+}
+
+
 Particle::Particle () 
 {
-	m_mass = 1.0;
-	m_position = Vector3D(0,0,0);
-	m_velocity = Vector3D(0,0,0);
-	m_acceleration = Vector3D(0,0,0);
+  m_mass = 1.0;
+  m_position = Vector3D(0,0,0);
+  m_velocity = Vector3D(0,0,0);
+  m_acceleration = Vector3D(0,0,0);
 }
 
 Particle::~Particle () 
@@ -39,40 +72,40 @@ Particle::~Particle ()
 
 Real IBDS::Particle::getMass() const
 {
-	return m_mass;
+  return m_mass;
 }
 
 void IBDS::Particle::setMass( Real val )
 {
-	m_mass = val;
+  m_mass = val;
 }
 
 IBDS::Vector3D IBDS::Particle::getPosition() const
 {
-	return m_position;
+  return m_position;
 }
 
 void IBDS::Particle::setPosition( IBDS::Vector3D val )
 {
-	m_position = val;
+  m_position = val;
 }
 
 IBDS::Vector3D IBDS::Particle::getVelocity() const
 {
-	return m_velocity;
+  return m_velocity;
 }
 
 void IBDS::Particle::setVelocity( IBDS::Vector3D val )
 {
-	m_velocity = val;
+  m_velocity = val;
 }
 
 IBDS::Vector3D IBDS::Particle::getAcceleration() const
 {
-	return m_acceleration;
+  return m_acceleration;
 }
 
 void IBDS::Particle::setAcceleration( IBDS::Vector3D val )
 {
-	m_acceleration = val;
+  m_acceleration = val;
 }

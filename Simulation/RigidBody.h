@@ -29,6 +29,12 @@ private:
   ///< The torque accumulator
   IBDS::Vector3D _torqueAccumulator;
 public:
+
+  
+   virtual void evaluate(const Real * state, Real * derivedState);
+  void virtual setState(const Real * state);
+   virtual void getState(Real * state)const;
+   virtual int getStateDimension()const;
   
   /**
    * \brief Creates a rigid body representing a sphere.

@@ -40,7 +40,7 @@ namespace IBDS
 	{
 	public:
 		/** Komponenten des Vektors */
-		Real v[6];
+		Real * v;
 		/* Größe des Vektors */
 		int n;
 
