@@ -46,6 +46,7 @@
 	#define glLoadMatrix glLoadMatrixf
 #endif
 
+enum IntegrationMethodType {EXPL_EULER, RK4};
 
 namespace IBDS
 {
@@ -151,7 +152,7 @@ namespace IBDS
 		static int mouse_pos_y_old;
 		/** Gibt an, wie die Szene gezeichnet werden soll. (Wireframe) */
 		static int drawMode;
-
+		
 		static void processMenuEvents(int option);
 		static void reshape (int w, int h);
 		static void idle ();
@@ -196,6 +197,7 @@ namespace IBDS
 
 		static TwBar *m_tweakBar;
 		static float m_time;
+		static IntegrationMethodType m_integrationMethod;
 		static float m_quat[4];
 		static void initTweakBar();
 		static void cleanupTweakBar();

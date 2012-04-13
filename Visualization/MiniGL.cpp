@@ -67,8 +67,10 @@ int MiniGL::numberOfKeyFunc = 0;
 int MiniGL::winID = 0;
 int MiniGL::menuID = 0;
 int MiniGL::drawMode = GL_FILL;
+
 TwBar *MiniGL::m_tweakBar = NULL;
 float MiniGL::m_time = 0.0f;
+IntegrationMethodType MiniGL::m_integrationMethod = EXPL_EULER;
 float MiniGL::m_quat[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 
@@ -479,7 +481,7 @@ void MiniGL::initTweakBar()
 	// Create a tweak bar
 	m_tweakBar = TwNewBar("TweakBar");
 	TwDefine(" GLOBAL help='MiniGL TweakBar.' "); // Message added to the help bar.
-	TwDefine(" TweakBar size='200 150' position='5 5' color='96 200 224' text=dark "); // change default tweak bar size and color
+	TwDefine(" TweakBar size='250 250' position='5 5' color='96 200 224' text=dark "); // change default tweak bar size and color
 
 	TwAddVarRO(m_tweakBar, "Time", TW_TYPE_FLOAT, &m_time, " label='Time' precision=5");
 
@@ -489,6 +491,10 @@ void MiniGL::initTweakBar()
 	// Add callback to toggle auto-rotate mode (callback functions are defined above).
 	TwAddVarCB(m_tweakBar, "Wireframe", TW_TYPE_BOOL32, setWireframeCB, getWireframeCB, NULL, 
 		" label='Wireframe' key=w help='Toggle wireframe mode.' ");
+
+	TwEnumVal enumValues[] = {{EXPL_EULER, "Explicit Euler"}, {RK4, "Runge-Kutta 4th order"}};
+	TwType integrationMethodType = TwDefineEnum("IntegrationMethodType", enumValues, 2);
+	TwAddVarRW(m_tweakBar, "Integration Method", integrationMethodType, &m_integrationMethod, NULL);
 
 }
 
