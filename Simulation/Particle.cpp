@@ -27,29 +27,49 @@ using namespace IBDS;
 
 
  void Particle::evaluate(const Real * state, Real * derivedState){
- derivedState[0] = state[3];
- derivedState[1] = state[4];
- derivedState[2] = state[5];
- derivedState[3] = m_acceleration[0];
- derivedState[4] = m_acceleration[1];
- derivedState[5] = m_acceleration[2];
+  //this code can easily be optimised if the state passed to evaluate is always equal to the state of the
+  //object.   This is not always the case however.
+  Real temp[6];
+  //store the current state temporarily
+  getState(temp);
+  //set state to the requested state
+  setState(state);
+  if(m_mass==0){
+    //if the mass is zero the particle is static.
+    //this should be removed if zero mass detection is done pre integration
+    derivedState[0]=0;
+    derivedState[1]=0;
+    derivedState[2]=0;
+    derivedState[3]=0;
+    derivedState[4]=0;
+    derivedState[5]=0;
+  }else{
+    // if the mass is non zero the derived state is velocity and acceleration
+    derivedState[0] = m_velocity[0];    
+    derivedState[1] = m_acceleration[0];
+    derivedState[2] = m_velocity[1];
+    derivedState[3] = m_acceleration[1];
+    derivedState[4] = m_velocity[2];
+    derivedState[5] = m_acceleration[2];
+  }
+  //restore previous state
+  setState(temp);
 }
 void Particle::setState(const Real * state){
-  // m_position.v = state;
-  // m_velocity.v = state + 3;
   m_position[0]=state[0]; 
-  m_position[1]=state[1];
-  m_position[2]=state[2];
-  m_velocity[0]=state[3];
-  m_velocity[1]=state[4];
+  m_velocity[0]=state[1];
+  m_position[1]=state[2];
+  m_velocity[1]=state[3];
+  m_position[2]=state[4];
   m_velocity[2]=state[5];
 }
  void Particle::getState(Real * state)const{
+  //store the state in alternating fashion (always x_i \dot{x_i} which is needed for some integration algorithms
   state[0] = m_position[0];
-  state[1] = m_position[1];
-  state[2] = m_position[2];
-  state[3] = m_velocity[0];
-  state[4] = m_velocity[1];
+  state[1] = m_velocity[0];
+  state[2] = m_position[1];
+  state[3] = m_velocity[1];
+  state[4] = m_position[2];
   state[5] = m_velocity[2];
 }
  int Particle::getStateDimension()const{

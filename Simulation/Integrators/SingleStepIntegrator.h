@@ -10,7 +10,6 @@ private:
   Real _h;
 
 public:
-
   /**
    * <summary> Integrates.</summary>
    *

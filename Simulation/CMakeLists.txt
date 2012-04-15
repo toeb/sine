@@ -12,9 +12,12 @@ ADD_EXECUTABLE(Simulation
 	  TimeManager.h
 	  RigidBody.h
 	  RigidBody.cpp
+	  ./ISimulationObject.h
+	  ./Simulation.h
+	  ./Simulation.cpp
 	  ./Integrators/IIntegrable.h
 	  ./Integrators/Integrator.h
-	  ./Integrators/Integrator.cpp
+	  ./Integrators/Integrator.cpp 
 	  ./Integrators/SingleStepIntegrator.h
 	  ./Integrators/SingleStepIntegrator.cpp
 	  ./Integrators/CompositeIntegratable.h

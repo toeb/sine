@@ -1,6 +1,7 @@
 #ifndef __Integrator_h__
 #define __Integrator_h__
 #include "IIntegrable.h"
+#include <string>
 namespace IBDS{
 
 /**
@@ -16,8 +17,28 @@ private:
   VectorND * _x;
   VectorND * _xNext;
   VectorND * _xDot;
+  std::string & _name;
 public:
 
+  /**
+   * \brief Gets the name of this integrator.
+   *
+   * \author Tobias Becker
+   * \date 15.04.2012
+   *
+   * \return The name.
+   */
+  const virtual std::string & getName()const;
+
+  /**
+   * \brief Gets the name of this integrator.
+   *
+   * \author Tobias Becker
+   * \date 15.04.2012
+   *
+   * \return The name.
+   */
+  void setName(const std::string& name);
   /**
    * <summary> Default constructor.</summary>
    *
