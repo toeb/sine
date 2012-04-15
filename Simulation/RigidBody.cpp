@@ -3,7 +3,9 @@
 using namespace IBDS;
 
 
-
+/**
+ * derivedState = (qDot, omegaDot, xDot, vDot)^T (dimension: 4+3+3+3 = 13)
+ */
  void RigidBody::evaluate(const Real * state, Real * derivedState)
 {
   Quaternion q;
@@ -12,10 +14,10 @@ using namespace IBDS;
   q[2] = state[2];
   q[3] = state[3];
   
-  derivedState[0] = state[4];
+  /*derivedState[0] = state[4];
   derivedState[1] = state[5];
   derivedState[2] = state[6];
-  derivedState[3] = state[7];
+  derivedState[3] = state[7];*/
 
   //really, really unoptimized code.
   Matrix3x3 R, RT;
@@ -29,18 +31,40 @@ using namespace IBDS;
   Matrix3x3 J_wcs = R*J*RT;
   Matrix3x3 J_inverted_wcs = R*J_inverted*RT;
   Vector3D omegaDot = J_inverted_wcs *(_torqueAccumulator - _angularVelocity ^ (J_wcs*_angularVelocity));
-  Quaternion omegaDotTilde;
+  
+  /*Quaternion omegaDotTilde;
   omegaDotTilde.w=0;
   omegaDotTilde.x=omegaDot[0];
   omegaDotTilde.y=omegaDot[1];
   omegaDotTilde.z=omegaDot[2];
-  Quaternion qDot = 0.5*omegaDotTilde*_orientation;
-  derivedState[4] = qDot[0];
+  Quaternion qDot = 0.5*omegaDotTilde*_orientation;*/
+
+  Quaternion omegaTilde;
+  omegaTilde.w=0;
+  omegaTilde.x=_angularVelocity[0];
+  omegaTilde.y=_angularVelocity[1];
+  omegaTilde.z=_angularVelocity[2];
+  Quaternion qDot = 0.5*omegaTilde*_orientation;
+
+  derivedState[0] = qDot[0];
+  derivedState[1] = qDot[1];
+  derivedState[2] = qDot[2];
+  derivedState[3] = qDot[3];
+
+  /*derivedState[4] = qDot[0];
   derivedState[5] = qDot[1];
   derivedState[6] = qDot[2];
-  derivedState[7] = qDot[3];
-  Particle::evaluate(state+8,derivedState+8);
+  derivedState[7] = qDot[3];*/
+  
+  derivedState[4] = omegaDot[0];
+  derivedState[5] = omegaDot[1];
+  derivedState[6] = omegaDot[2];
+
+  Particle::evaluate(state+7/*8*/,derivedState+7/*8*/);
 }
+/**
+ * state = (q, omega, x, v)^T (dimension: 4+3+3+3 = 13)
+ */
 void RigidBody::setState(const Real * state)
 {
   _orientation[0] = state[0];
@@ -48,24 +72,34 @@ void RigidBody::setState(const Real * state)
   _orientation[2] = state[2];
   _orientation[3] = state[3];
 
-  Particle::setState(state+8);
+  _angularVelocity[0] = state[4];
+  _angularVelocity[1] = state[5];
+  _angularVelocity[2] = state[6];
+
+  Particle::setState(state+7/*8*/);
 }
+/**
+ * state = (q, omega, x, v)^T (dimension: 4+3+3+3 = 13)
+ */
  void RigidBody::getState(Real * state)const
 {
   state[0] = _orientation[0];
   state[1] = _orientation[1];
   state[2] = _orientation[2];
   state[3] = _orientation[3];
-  state[4] = _orientation[0];
+  /*state[4] = _orientation[0];
   state[5] = _orientation[1];
   state[6] = _orientation[2];
-  state[7] = _orientation[3];
+  state[7] = _orientation[3];*/
+  state[4] = _angularVelocity[0];
+  state[5] = _angularVelocity[1];
+  state[6] = _angularVelocity[2];
   
-  Particle::getState(state+8);
+  Particle::getState(state+7/*8*/);
 }
 
  int RigidBody::getStateDimension()const{
-  return Particle::getStateDimension()+8;
+  return Particle::getStateDimension()+7/*8*/;
 }
 
 const Vector3D & RigidBody::getAngularAcceleration()const {return _angularAcceleration;}
