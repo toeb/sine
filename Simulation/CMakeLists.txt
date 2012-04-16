@@ -1,34 +1,40 @@
 SET(SIMULATION_LINK_LIBRARIES Math freeglut opengl32.lib glu32.lib ${ANTTWEAKBAR_LIBS})
 SET (SIMULATION_DEPENDENCIES Math freeglut)
 
-
+SET (integrators_SRC
+  ./Integrators/IIntegrable.h
+  ./Integrators/Integrator.h
+  ./Integrators/Integrator.cpp 
+  ./Integrators/SingleStepIntegrator.h
+  ./Integrators/SingleStepIntegrator.cpp
+  ./Integrators/CompositeIntegratable.h
+  ./Integrators/CompositeIntegratable.cpp
+  ./Integrators/Implementations/ExplicitEuler.h
+  ./Integrators/Implementations/ExplicitEuler.cpp
+  ./Integrators/Implementations/RungeKutta4.h
+  ./Integrators/Implementations/RungeKutta4.cpp
+  ./Integrators/Implementations/RungeKuttaFehlberg45.h
+  ./Integrators/Implementations/RungeKuttaFehlberg45.cpp
+)
+SET(simulation_SRC
+	./Simulation.h
+	./Simulation.cpp
+	./ISimulationObject.h
+	Particle.cpp
+	Particle.h   
+	RigidBody.h
+	RigidBody.cpp
+	TimeManager.cpp
+	  TimeManager.h
+)
+source_group("integration" FILES ${integrators_SRC})
+source_group("simulation" FILES ${simulation_SRC})
 
 # PROJECT(Simulation)
 ADD_EXECUTABLE(Simulation
-	  main.cpp
-	  Particle.cpp
-	  Particle.h  
-	  TimeManager.cpp
-	  TimeManager.h
-	  RigidBody.h
-	  RigidBody.cpp
-	  ./ISimulationObject.h
-	  ./Simulation.h
-	  ./Simulation.cpp
-	  ./Integrators/IIntegrable.h
-	  ./Integrators/Integrator.h
-	  ./Integrators/Integrator.cpp 
-	  ./Integrators/SingleStepIntegrator.h
-	  ./Integrators/SingleStepIntegrator.cpp
-	  ./Integrators/CompositeIntegratable.h
-	  ./Integrators/CompositeIntegratable.cpp
-	  ./Integrators/Implementations/ExplicitEuler.h
-	  ./Integrators/Implementations/ExplicitEuler.cpp
-	  ./Integrators/Implementations/RungeKutta4.h
-	  ./Integrators/Implementations/RungeKutta4.cpp
-	  
-	  
-	  
+	  main.cpp	  	  
+	  ${integrators_SRC}
+	  ${simulation_SRC}
 	  ${VIS_FILES}                    
 	  ${PROJECT_PATH}/Common/Config.h			  
 	  ${PROJECT_PATH}/Common/StringTools.h			  

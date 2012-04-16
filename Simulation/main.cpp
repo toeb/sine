@@ -34,6 +34,7 @@
 #include "Integrators/Integrator.h"
 #include "Integrators/Implementations/ExplicitEuler.h"
 #include "Integrators/Implementations/RungeKutta4.h"
+#include "Integrators/Implementations/RungeKuttaFehlberg45.h"
 #include "Integrators/CompositeIntegratable.h"
 #include "Particle.h"
 #include "Simulation.h"
@@ -107,20 +108,21 @@ void buildModel ()
   TimeManager::getCurrent ()->setTimeStepSize (0.01);
   cube = RigidBody::createBox(1,1,1,1);
   fixedCube = RigidBody::createBox(0,1,1,1);
-  simulation.addSimulationObject(fixedCube);
-  simulation.addSimulationObject(cube);
+  //simulation.addSimulationObject(fixedCube);
+  //simulation.addSimulationObject(cube);
   //cube->addExternalTorqueWCS(Vector3D(0,0,1));
   cube->addExternalForceWCS(Vector3D(0,1,0),Vector3D(1,0,0));
 
-  for(int i=0 ;i <100; i++){
+  for(int i=0 ;i <100000; i++){
    
     Particle* p = new Particle();
     p->addForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
     particles.push_back(p);
     simulation.addSimulationObject(p);
   }
-  simulation.setIntegrator(new RungeKutta4(0.01));
-
+  simulation.setIntegrator(new ExplicitEuler());
+  //simulation.setIntegrator(new RungeKutta4(0.01));
+  //simulation.setIntegrator(new RungeKuttaFehlberg45());
   // Create simulation model
 }
 
