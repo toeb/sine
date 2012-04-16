@@ -95,6 +95,10 @@ void RigidBody::setState(const Real * state)
   _q[1] = state[7];
   _q[2] = state[8];
   _q[3] = state[9];
+  
+  // normalise orientation .
+  _q.normalize();
+
 
   _omega[0] = state[10];
   _omega[1] = state[11];
