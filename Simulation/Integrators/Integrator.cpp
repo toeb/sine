@@ -25,7 +25,9 @@ IIntegrable *  Integrator::getIntegratable(){
   return _integratable;
 }
 const VectorND & Integrator::f(const VectorND& x){
-  _integratable->evaluate(x.v,_xDot->v);
+  _integratable->setState(x.v);
+  _integratable->evaluate();
+  _integratable->getDerivedState(_xDot->v);
   return *_xDot;
 }
 

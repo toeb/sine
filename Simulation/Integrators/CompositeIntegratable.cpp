@@ -11,13 +11,19 @@ CompositeIntegratable::CompositeIntegratable(){
 void CompositeIntegratable::addIntegratable(IIntegrable  * integratable){
   _children->push_back(integratable);
 }
-
-void CompositeIntegratable::evaluate(const Real * x, Real * xDot){
+void CompositeIntegratable::getDerivedState(Real * xDot)const{
   int currentOffset = 0;
   for(vector<IIntegrable*>::const_iterator it = _children->begin(); it != _children->end(); it++){
     IIntegrable & integratable = **it;
-    integratable.evaluate(x+currentOffset, xDot+currentOffset);
+    integratable.getDerivedState(xDot+currentOffset);
     currentOffset += integratable.getStateDimension();
+  }
+}
+void CompositeIntegratable::evaluate(){
+  int currentOffset = 0;
+  for(vector<IIntegrable*>::const_iterator it = _children->begin(); it != _children->end(); it++){
+    IIntegrable & integratable = **it;
+    integratable.evaluate();
   }
 }
 

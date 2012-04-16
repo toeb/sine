@@ -36,16 +36,22 @@ namespace IBDS
     Vector3D m_position;
     Vector3D m_velocity;
     Vector3D m_acceleration;
-
+    Vector3D _f;
   public:
     Particle ();
     ~Particle ();
 
     
-   virtual void evaluate(const Real * state, Real * derivedState);
-  void virtual setState(const Real * state);
-   virtual void getState(Real * state)const;
-   virtual int getStateDimension()const;
+    void getDerivedState(Real * xDot)const;
+    void evaluate();
+    void  setState(const Real * state);
+    void getState(Real * state)const;
+    int getStateDimension()const;
+
+    void resetForce();
+    void addForce(const Vector3D & f);
+    void setForce(const Vector3D & f);
+    const Vector3D & getForce()const;
 
     Real getMass() const;
     void setMass(Real val);

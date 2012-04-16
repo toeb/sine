@@ -41,7 +41,9 @@ public:
    * <param name="x">    The state.</param>
    * <param name="xDot"> [out] the derived state.</param>
    */
-  virtual void evaluate(const Real * x, Real * xDot);
+  virtual void evaluate();
+
+  virtual void getDerivedState(Real * xDot)const;
 
   /**
    * <summary> Sets the state of all children</summary>

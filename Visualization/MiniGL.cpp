@@ -142,7 +142,7 @@ void MiniGL::coordinateSystem()
 
 /** Zeichnet eine Linie von a nach b mit der Dicke w und der Farbe farbe.
   */
-void MiniGL::drawVector (const Vector3D &a, const Vector3D &b, const float w, float *color)
+void MiniGL::drawVector (const Vector3D &a, const Vector3D &b, const float w,const float *color)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);
@@ -222,7 +222,7 @@ void MiniGL::drawPoint (const Vector3D &translation, const float pointSize, cons
 /** Zeichnet einen Quader an der Stelle translation 
   * in der übergebenen Farbe.
   */
-void MiniGL::drawCube (Vector3D *translation, Matrix3x3 *rotation, float width, float height, float depth, float *color)
+void MiniGL::drawCube (const Vector3D *translation, const Matrix3x3 *rotation, float width, float height, float depth, const float *color)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);

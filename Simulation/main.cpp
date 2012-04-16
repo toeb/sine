@@ -35,6 +35,7 @@
 #include "Integrators/Implementations/ExplicitEuler.h"
 #include "Integrators/Implementations/RungeKutta4.h"
 #include "Integrators/CompositeIntegratable.h"
+#include "Particle.h"
 #include "Simulation.h"
 // Enable memory leak detection
 #ifdef _DEBUG
@@ -99,14 +100,22 @@ void timeStep ()
 
   STOP_TIMING_AVG;
 }
+RigidBody * cube;
+RigidBody * fixedCube;
 void buildModel ()
 {
   TimeManager::getCurrent ()->setTimeStepSize (0.01);
-  
+  cube = RigidBody::createBox(1,1,1,1);
+  fixedCube = RigidBody::createBox(0,1,1,1);
+  simulation.addSimulationObject(fixedCube);
+  simulation.addSimulationObject(cube);
+  //cube->addExternalTorqueWCS(Vector3D(0,0,1));
+  cube->addExternalForceWCS(Vector3D(0,1,0),Vector3D(1,0,0));
+
   for(int i=0 ;i <100; i++){
    
     Particle* p = new Particle();
-    p->setAcceleration(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
+    p->addForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
     particles.push_back(p);
     simulation.addSimulationObject(p);
   }
@@ -124,7 +133,18 @@ void render ()
   for(vector<Particle*>::iterator it = particles.begin(); it != particles.end(); it++){
     MiniGL::drawPoint((*it)->getPosition(),5,MiniGL::darkblue);
   }
+  Matrix3x3 R;
+  Quaternion q = cube->getOrientation();
+  MiniGL::drawVector(cube->getPosition(), cube->getPosition()+cube->getForce(),1.0,MiniGL::darkYellow);
+  q.getMatrix3x3(R);
+ 
 
+  MiniGL::drawCube(&(cube->getPosition()), &R,1,1,1,MiniGL::darkGray);
+ 
+  q = fixedCube->getOrientation();
+  q.getMatrix3x3(R);
+  
+  MiniGL::drawCube(&(fixedCube->getPosition()), &R,1,1,1,MiniGL::darkGreen);
   MiniGL::drawTime( TimeManager::getCurrent ()->getTime ());
 }
 

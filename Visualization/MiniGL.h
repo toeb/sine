@@ -167,7 +167,7 @@ namespace IBDS
 		
 	public:
 		static void coordinateSystem ();
-		static void drawVector (const Vector3D &a, const Vector3D &b, const float w, float *color);
+		static void drawVector (const Vector3D &a, const Vector3D &b, const float w, const float *color);
 		static void drawVector (const Real x1, const Real y1, const Real z1, const Real x2, const Real y2, const Real z2, const float w, float *color);
 		static void drawSphere (Vector3D *translation, float radius, float *color, const unsigned int subDivision =  16);
 		static void drawQuad (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d, const Vector3D &norm, float *color);
@@ -176,7 +176,7 @@ namespace IBDS
 		static void drawBitmapText (float x, float y, const char *str, int strLength, float *color);
 		static void drawStrokeText (const Real x, const Real y, const Real z, float scale, const char *str, int strLength, float *color);
 		static void drawStrokeText (const Vector3D &pos, float scale, const char *str, int strLength, float *color);
-		static void drawCube (Vector3D *translation, Matrix3x3 *rotation, float width, float height, float depth, float *color);		
+		static void drawCube (const Vector3D *translation, const Matrix3x3 *rotation, float width, float height, float depth,const float *color);		
 		static void drawPoint (const Vector3D &translation, const float pointSize, const float * const color);
 		static void setViewport (float pfovy, float pznear, float pzfar, const Vector3D &peyepoint, const Vector3D &plookat);
 		static void setViewport (float pfovy, float pznear, float pzfar);

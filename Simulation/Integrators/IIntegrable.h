@@ -24,10 +24,8 @@ public:
    *
    * <remarks> Tobi, 12.04.2012.</remarks>
    *
-   * <param name="x">    The state.</param>
-   * <param name="xDot"> [out] The derived state.</param>
    */
-  virtual void evaluate(const Real * x, Real * xDot) = 0;
+  virtual void evaluate() = 0;
 
   /**
    * <summary> Sets the state this integratable.</summary>
@@ -47,6 +45,16 @@ public:
    *
    */
   virtual void getState(Real * state)const=0;
+
+  /**
+   * \brief Gets the last derived state.
+   *
+   * \author Tobias Becker
+   * \date 16.04.2012
+   *
+   * \param [in,out] xDot If non-null, the x coordinate dot.
+   */
+  virtual void getDerivedState(Real * xDot)const=0;
 
   /**
    * <summary> Gets the dimension of the state of this IIntegrable

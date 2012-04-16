@@ -2,7 +2,7 @@
 #define __RigidBody_h__
 #include <Math/Matrix3x3.h>
 #include <Math/Quaternion.h>
-#include "Particle.h"
+#include <Simulation/Integrators/IIntegrable.h>
 #include <Math/Vector3D.h>
 namespace IBDS{
 
@@ -14,27 +14,41 @@ namespace IBDS{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-class RigidBody : public Particle{
+class RigidBody : public IIntegrable{
 private:
-  ///< The inertia tensor
-  IBDS::Matrix3x3 _inertiaTensor;
-  ///< The orientation
-  IBDS::Quaternion _orientation;
-  ///< The angular velocity
-  IBDS::Vector3D _angularVelocity;
-  ///< The angular acceleration
-  IBDS::Vector3D _angularAcceleration;
-  ///< The force accumulator
-  IBDS::Vector3D _forceAccumulator;
-  ///< The torque accumulator
-  IBDS::Vector3D _torqueAccumulator;
-public:
-
   
-   virtual void evaluate(const Real * state, Real * derivedState);
-   void virtual setState(const Real * state);
-   virtual void getState(Real * state)const;
-   virtual int getStateDimension()const;
+  ///< The inertia tensor
+  Matrix3x3 _J;
+  ///< The mass
+  Real _m;
+  ///< The orientation
+  Quaternion _R;
+  ///< The position in World Coordinates
+  Vector3D _r;
+  ///< The velocity in World Coordinatees
+  Vector3D _rDot;
+  ///< The acceleration in WorldCoordinates
+  Vector3D _rDotDot;
+  ///< The angular velocity
+  Vector3D _omega;
+  ///< The angular acceleration
+  Vector3D _omegaDot;
+  ///< The force accumulator
+  Vector3D _f;
+  ///< The torque accumulator
+  Vector3D _tau;
+
+public:
+  RigidBody();
+  ~RigidBody();
+  
+  /** Members of IIntegrable
+  */
+  void getDerivedState(Real * xDot)const;
+  void evaluate();
+  void setState(const Real * state);
+  void getState(Real * state)const;
+  int getStateDimension()const;
   
   /**
    * \brief Creates a rigid body representing a sphere.
@@ -108,6 +122,36 @@ public:
   void resetForce();
 
   /**
+   * \brief Gets the force acting on this body.
+   *
+   * \author Tobias Becker
+   * \date 16.04.2012
+   *
+   * \return The force.
+   */
+  const Vector3D & getForce()const;
+
+  /**
+   * \brief Gets the mass.
+   *
+   * \author Tobias Becker
+   * \date 16.04.2012
+   *
+   * \return The mass.
+   */
+  Real getMass()const ;
+
+  /**
+   * \brief Sets the mass.
+   *
+   * \author Tobias Becker
+   * \date 16.04.2012
+   *
+   * \param mass The mass.
+   */
+  void setMass(Real mass);
+
+  /**
    * \brief Gets the inertia tensor in object coordinates
    *
    * \author Tobias Becker
@@ -156,6 +200,13 @@ public:
    * \return The angular velocity.
    */
   const IBDS::Vector3D & getAngularVelocity()const;
+
+  const IBDS::Vector3D & getPosition()const;
+  void setPosition(const Vector3D & position);
+  const IBDS::Vector3D & getVelocity()const;
+  void setVelocity(const Vector3D & velocity);
+  const IBDS::Vector3D & getAcceleration()const;
+  void setAcceleration(const Vector3D & acceleration);
 
   /**
    * \brief Sets the angular velocity.
