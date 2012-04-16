@@ -1,6 +1,7 @@
 #ifndef __Integrator_h__
 #define __Integrator_h__
 #include "IIntegrable.h"
+#include <math.h>
 #include <string>
 namespace IBDS{
 

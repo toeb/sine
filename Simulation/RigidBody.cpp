@@ -3,19 +3,17 @@
 using namespace IBDS;
 
 RigidBody::RigidBody(){
-  _R.x=0;
-  _R.y=0;
-  _R.z=0;
-  _R.w=1;
-
-
+  _q.w=1;
+  _q.x=0;
+  _q.y=0;
+  _q.z=0;
 }
 
 void RigidBody::addExternalForceWCS(const IBDS::Vector3D & position, const IBDS::Vector3D & f){
   //_forceAccumulator
   Vector3D r = position - getPosition();
   // calculate torque
-  Vector3D torque = f ^ r;
+  Vector3D torque = r ^ f; //f ^ r;
   // add force and torque to their accumulators
   _f+= f;
   _tau += torque;
@@ -26,9 +24,6 @@ void RigidBody::addExternalTorqueWCS(const IBDS::Vector3D & torque){
   _tau += torque;
 }
 
-/**
- * derivedState = (qDot, omegaDot, xDot, vDot)^T (dimension: 4+3+3+3 = 13)
- */
  void RigidBody::evaluate()
 {
   if(_m==0){
@@ -41,8 +36,8 @@ void RigidBody::addExternalTorqueWCS(const IBDS::Vector3D & torque){
   }
   //really, really unoptimized code.
   Matrix3x3 R, RT;
-  _R.getMatrix3x3(R);
-  _R.getMatrix3x3T(RT);
+  _q.getMatrix3x3(R);
+  _q.getMatrix3x3T(RT);
 
   Matrix3x3 J_inverted;
   J_inverted(0,0) = 1.0/_J(0,0);
@@ -51,27 +46,31 @@ void RigidBody::addExternalTorqueWCS(const IBDS::Vector3D & torque){
   Matrix3x3 J_wcs = R*_J*RT;
   Matrix3x3 J_inverted_wcs = R*J_inverted*RT;
   _omegaDot = J_inverted_wcs *(_tau - (_omega ^ (J_wcs*_omega)));
-  _rDotDot = _f * (1/_m);
+  _xDotDot = _f * (1/_m);
   
 }
 
  const Vector3D & RigidBody::getForce()const{
    return _f;
  }
+
+/**
+ * derivedState = (v1,a1, v2,a2, v3,a3, qDot1,qDot3,qDot2,qDot4, omegaDot1,omegaDot2,omegaDot3) (dimension: 2*3+4+3=13)
+ */
 void RigidBody::getDerivedState(Real * xDot)const{
   Quaternion omegaTilde;
   omegaTilde.w=0;
   omegaTilde.x=_omega[0];
   omegaTilde.y=_omega[1];
   omegaTilde.z=_omega[2];
-  Quaternion qDot = 0.5*omegaTilde*_R;
+  Quaternion qDot = 0.5*omegaTilde*_q;
   
-  xDot[0] = _rDot[0];
-  xDot[1] = _rDot[1];
-  xDot[2] = _rDot[2];
-  xDot[3] = _rDotDot[0];
-  xDot[4] = _rDotDot[1];
-  xDot[5] = _rDotDot[2];
+  xDot[0] = _xDot[0];
+  xDot[1] = _xDot[1];
+  xDot[2] = _xDot[2];
+  xDot[3] = _xDotDot[0];
+  xDot[4] = _xDotDot[1];
+  xDot[5] = _xDotDot[2];
   xDot[6] = qDot[0];
   xDot[7] = qDot[1];
   xDot[8] = qDot[2];
@@ -81,42 +80,42 @@ void RigidBody::getDerivedState(Real * xDot)const{
   xDot[12]= _omegaDot[2]; 
 }
 /**
- * state = (q, omega, x, v)^T (dimension: 4+3+3+3 = 13)
+ * state = (x1,v1, x2,v2, x3,v3, q1,q2,q3,q4, omega1,omega2,omega3). dimension: 2*3+4+3=13
  */
 void RigidBody::setState(const Real * state)
 {
-  _r[0]     = state[0];
-  _rDot[0]  = state[1];
-  _r[1]     = state[2];
-  _rDot[1]  = state[3];
-  _r[2]     = state[4];
-  _rDot[2]  = state[5];
+  _x[0]     = state[0];
+  _xDot[0]  = state[1];
+  _x[1]     = state[2];
+  _xDot[1]  = state[3];
+  _x[2]     = state[4];
+  _xDot[2]  = state[5];
 
-  _R[0] = state[6];
-  _R[1] = state[7];
-  _R[2] = state[8];
-  _R[3] = state[9];
+  _q[0] = state[6];
+  _q[1] = state[7];
+  _q[2] = state[8];
+  _q[3] = state[9];
 
   _omega[0] = state[10];
   _omega[1] = state[11];
   _omega[2] = state[12];
 }
 /**
- * state = (q, omega, x, v)^T (dimension: 4+3+3+3 = 13)
+ * state = (x1,v1, x2,v2, x3,v3, q1,q2,q3,q4, omega1,omega2,omega3). dimension: 2*3+4+3=13
  */
  void RigidBody::getState(Real * state)const
 {
-  state[0]= _r[0]     ;
-  state[1]= _rDot[0]  ;
-  state[2]= _r[1]     ;
-  state[3]= _rDot[1]  ;
-  state[4]= _r[2]     ;
-  state[5]= _rDot[2]  ;
+  state[0]= _x[0]     ;
+  state[1]= _xDot[0]  ;
+  state[2]= _x[1]     ;
+  state[3]= _xDot[1]  ;
+  state[4]= _x[2]     ;
+  state[5]= _xDot[2]  ;
 
-  state[6]=_R[0];
-  state[7]=_R[1];
-  state[8]=_R[2];
-  state[9]=_R[3];
+  state[6]=_q[0];
+  state[7]=_q[1];
+  state[8]=_q[2];
+  state[9]=_q[3];
 
   state[10]=_omega[0] ;
   state[11]=_omega[1] ;
@@ -127,14 +126,14 @@ void RigidBody::setState(const Real * state)
   return 13;
 }
 
-const Vector3D & RigidBody::getPosition()const {return _r;}
-void RigidBody::setPosition(const Vector3D & r){_r = r;}
+const Vector3D & RigidBody::getPosition()const {return _x;}
+void RigidBody::setPosition(const Vector3D & r){_x = r;}
 
-const Vector3D & RigidBody::getVelocity()const {return _rDot;}
-void RigidBody::setVelocity(const Vector3D & rDot){_rDot = rDot;}
+const Vector3D & RigidBody::getVelocity()const {return _xDot;}
+void RigidBody::setVelocity(const Vector3D & rDot){_xDot = rDot;}
 
-const Vector3D & RigidBody::getAcceleration()const {return _rDotDot;}
-void RigidBody::setAcceleration(const Vector3D & rDotDot){_rDotDot = rDotDot;}
+const Vector3D & RigidBody::getAcceleration()const {return _xDotDot;}
+void RigidBody::setAcceleration(const Vector3D & rDotDot){_xDotDot = rDotDot;}
 
 const Vector3D & RigidBody::getAngularAcceleration()const {return _omegaDot;}
 void RigidBody::setAngularAcceleration(const Vector3D & omegaDot){_omegaDot = omegaDot;}
@@ -142,8 +141,8 @@ void RigidBody::setAngularAcceleration(const Vector3D & omegaDot){_omegaDot = om
 const Vector3D & RigidBody::getAngularVelocity()const{return _omega;}
 void RigidBody::setAngularVelocity(const Vector3D & omega){_omega = omega;}
 
-const IBDS::Quaternion & RigidBody::getOrientation()const{return _R;}
-void RigidBody::setOrientation(const IBDS::Quaternion & R){_R = R;}
+const IBDS::Quaternion & RigidBody::getOrientation()const{return _q;}
+void RigidBody::setOrientation(const IBDS::Quaternion & R){_q = R;}
 
 Real RigidBody::getMass()const{return _m;}
 void RigidBody::setMass(Real mass){ _m = mass;}

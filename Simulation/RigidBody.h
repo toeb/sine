@@ -22,13 +22,13 @@ private:
   ///< The mass
   Real _m;
   ///< The orientation
-  Quaternion _R;
+  Quaternion _q;
   ///< The position in World Coordinates
-  Vector3D _r;
+  Vector3D _x;
   ///< The velocity in World Coordinatees
-  Vector3D _rDot;
+  Vector3D _xDot;
   ///< The acceleration in WorldCoordinates
-  Vector3D _rDotDot;
+  Vector3D _xDotDot;
   ///< The angular velocity
   Vector3D _omega;
   ///< The angular acceleration
