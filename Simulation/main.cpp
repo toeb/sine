@@ -109,11 +109,11 @@ void buildModel ()
   cube = RigidBody::createBox(1,1,1,1);
   fixedCube = RigidBody::createBox(0,1,1,1);
   //simulation.addSimulationObject(fixedCube);
-  //simulation.addSimulationObject(cube);
+  simulation.addSimulationObject(cube);
   //cube->addExternalTorqueWCS(Vector3D(0,0,1));
   cube->addExternalForceWCS(Vector3D(0,1,0),Vector3D(1,0,0));
 
-  for(int i=0 ;i <100000; i++){
+  for(int i=0 ;i <5; i++){
    
     Particle* p = new Particle();
     p->addForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
@@ -146,7 +146,7 @@ void render ()
   q = fixedCube->getOrientation();
   q.getMatrix3x3(R);
   
-  MiniGL::drawCube(&(fixedCube->getPosition()), &R,1,1,1,MiniGL::darkGreen);
+ // MiniGL::drawCube(&(fixedCube->getPosition()), &R,1,1,1,MiniGL::darkGreen);
   MiniGL::drawTime( TimeManager::getCurrent ()->getTime ());
 }
 
