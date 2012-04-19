@@ -101,22 +101,29 @@ void timeStep ()
 
   STOP_TIMING_AVG;
 }
-RigidBody * cube;
+RigidBody * cube, *cube2;
 RigidBody * fixedCube;
+
 void buildModel ()
 {
   TimeManager::getCurrent ()->setTimeStepSize (0.01);
   cube = RigidBody::createBox(1,1,1,1);
+  cube2 = RigidBody::createBox(1,1,1,1);
+  cube2->setPosition(Vector3D(0,1,0));
   fixedCube = RigidBody::createBox(0,1,1,1);
   //simulation.addSimulationObject(fixedCube);
   simulation.addSimulationObject(cube);
+  simulation.addSimulationObject(cube2);
   //cube->addExternalTorqueWCS(Vector3D(0,0,1));
-  cube->addExternalForceWCS(Vector3D(0,1,0),Vector3D(1,0,0));
+  cube->addExternalForce(Vector3D(0,1,0),Vector3D(1,0,0));
+  cube2->addExternalForce(Vector3D(0,2,-0.5),Vector3D(0,0,-0.1));
+ // cube->addExternalTorqueWCS(Vector3D(0,0.5,0.5));
+  //cube->addExternalForceWCS(Vector3D(0.5,0.5,-0.5),Vector3D(0.1,-0.1,0));
 
   for(int i=0 ;i <5; i++){
    
     Particle* p = new Particle();
-    p->addForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
+    p->addExternalForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
     particles.push_back(p);
     simulation.addSimulationObject(p);
   }
@@ -132,21 +139,26 @@ void render ()
   MiniGL::coordinateSystem();
   
   // Draw simulation model
-  for(vector<Particle*>::iterator it = particles.begin(); it != particles.end(); it++){
+  simulation.render();
+  /*for(vector<Particle*>::iterator it = particles.begin(); it != particles.end(); it++){
     MiniGL::drawPoint((*it)->getPosition(),5,MiniGL::darkblue);
   }
   Matrix3x3 R;
   Quaternion q = cube->getOrientation();
-  MiniGL::drawVector(cube->getPosition(), cube->getPosition()+cube->getForce(),1.0,MiniGL::darkYellow);
   q.getMatrix3x3(R);
  
+  Matrix3x3 R2;
+  Quaternion q2 = cube2->getOrientation();
+  q2.getMatrix3x3(R2);
 
   MiniGL::drawCube(&(cube->getPosition()), &R,1,1,1,MiniGL::darkGray);
- 
-  q = fixedCube->getOrientation();
-  q.getMatrix3x3(R);
-  
- // MiniGL::drawCube(&(fixedCube->getPosition()), &R,1,1,1,MiniGL::darkGreen);
+  MiniGL::drawCube(&(cube2->getPosition()), &R2,1,1,1,MiniGL::darkGray);*/
+
+  // MiniGL::drawCube(&(fixedCube->getPosition()), &R,1,1,1,MiniGL::darkGreen);
   MiniGL::drawTime( TimeManager::getCurrent ()->getTime ());
+	/*	q = fixedCube->getOrientation();
+  q.getMatrix3x3(R);
+   MiniGL::drawCube(new Vector3D(1.0,1.0,0.0),new Matrix3x3(),1,1,1,MiniGL::blue);*/
+
 }
 

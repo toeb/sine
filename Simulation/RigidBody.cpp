@@ -1,5 +1,6 @@
 #include "RigidBody.h"
 #include <Math/Quaternion.h>
+#include <Simulation/Box.h>
 using namespace IBDS;
 
 RigidBody::RigidBody(){
@@ -9,22 +10,44 @@ RigidBody::RigidBody(){
   _q.z=0;
 }
 
-void RigidBody::addExternalForceWCS(const IBDS::Vector3D & position, const IBDS::Vector3D & f){
-  //_forceAccumulator
-  Vector3D r = position - getPosition();
-  // calculate torque
-  Vector3D torque = r ^ f; //f ^ r;
-  // add force and torque to their accumulators
-  _f+= f;
-  _tau += torque;
+RigidBody::~RigidBody() {
+	}
+
+ /**
+ * derivedState = (v1,a1, v2,a2, v3,a3, qDot1,qDot3,qDot2,qDot4, omegaDot1,omegaDot2,omegaDot3) (dimension: 2*3+4+3=13)
+ */
+void RigidBody::getDerivedState(Real * xDot)const{
+  Quaternion omegaTilde;
+  omegaTilde.w=0;
+  omegaTilde.x=_omega[0];
+  omegaTilde.y=_omega[1];
+  omegaTilde.z=_omega[2];
+  Quaternion qDot = 0.5*omegaTilde*_q;
+  
+ /* xDot[0] = _xDot[0];
+  xDot[1] = _xDot[1];
+  xDot[2] = _xDot[2];
+  xDot[3] = _xDotDot[0];
+  xDot[4] = _xDotDot[1];
+  xDot[5] = _xDotDot[2];*/
+
+  xDot[0] = _xDot[0];
+  xDot[1] = _xDotDot[0];
+  xDot[2] = _xDot[1];
+  xDot[3] = _xDotDot[1];
+  xDot[4] = _xDot[2];
+  xDot[5] = _xDotDot[2];
+
+  xDot[6] = qDot[0];
+  xDot[7] = qDot[1];
+  xDot[8] = qDot[2];
+  xDot[9] = qDot[3];
+  xDot[10]= _omegaDot[0];
+  xDot[11]= _omegaDot[1];
+  xDot[12]= _omegaDot[2]; 
 }
 
-
-void RigidBody::addExternalTorqueWCS(const IBDS::Vector3D & torque){
-  _tau += torque;
-}
-
- void RigidBody::evaluate()
+void RigidBody::evaluate()
 {
   if(_m==0){
     Vector3D nullVector(0,0,0);
@@ -46,40 +69,11 @@ void RigidBody::addExternalTorqueWCS(const IBDS::Vector3D & torque){
   Matrix3x3 J_wcs = R*_J*RT;
   Matrix3x3 J_inverted_wcs = R*J_inverted*RT;
   _omegaDot = J_inverted_wcs *(_tau - (_omega ^ (J_wcs*_omega)));
+
   _xDotDot = _f * (1/_m);
   
 }
-
- const Vector3D & RigidBody::getForce()const{
-   return _f;
- }
-
-/**
- * derivedState = (v1,a1, v2,a2, v3,a3, qDot1,qDot3,qDot2,qDot4, omegaDot1,omegaDot2,omegaDot3) (dimension: 2*3+4+3=13)
- */
-void RigidBody::getDerivedState(Real * xDot)const{
-  Quaternion omegaTilde;
-  omegaTilde.w=0;
-  omegaTilde.x=_omega[0];
-  omegaTilde.y=_omega[1];
-  omegaTilde.z=_omega[2];
-  Quaternion qDot = 0.5*omegaTilde*_q;
-  
-  xDot[0] = _xDot[0];
-  xDot[1] = _xDot[1];
-  xDot[2] = _xDot[2];
-  xDot[3] = _xDotDot[0];
-  xDot[4] = _xDotDot[1];
-  xDot[5] = _xDotDot[2];
-  xDot[6] = qDot[0];
-  xDot[7] = qDot[1];
-  xDot[8] = qDot[2];
-  xDot[9] = qDot[3];
-  xDot[10]= _omegaDot[0];
-  xDot[11]= _omegaDot[1];
-  xDot[12]= _omegaDot[2]; 
-}
-/**
+ /**
  * state = (x1,v1, x2,v2, x3,v3, q1,q2,q3,q4, omega1,omega2,omega3). dimension: 2*3+4+3=13
  */
 void RigidBody::setState(const Real * state)
@@ -99,12 +93,12 @@ void RigidBody::setState(const Real * state)
   // normalise orientation .
   _q.normalize();
 
-
   _omega[0] = state[10];
   _omega[1] = state[11];
   _omega[2] = state[12];
 }
-/**
+
+ /**
  * state = (x1,v1, x2,v2, x3,v3, q1,q2,q3,q4, omega1,omega2,omega3). dimension: 2*3+4+3=13
  */
  void RigidBody::getState(Real * state)const
@@ -115,7 +109,7 @@ void RigidBody::setState(const Real * state)
   state[3]= _xDot[1]  ;
   state[4]= _x[2]     ;
   state[5]= _xDot[2]  ;
-
+ 
   state[6]=_q[0];
   state[7]=_q[1];
   state[8]=_q[2];
@@ -129,6 +123,32 @@ void RigidBody::setState(const Real * state)
  int RigidBody::getStateDimension()const{
   return 13;
 }
+
+void RigidBody::addExternalForce(const IBDS::Vector3D & position, const IBDS::Vector3D & f){
+  //_forceAccumulator
+  Vector3D r = position - getPosition();
+  // calculate torque
+  Vector3D torque = f ^ r; // equals -(r ^ f). the minus sign is due to the object rotating in the opposite direction for some reason
+  // add force and torque to their accumulators
+  _f+= f;
+  _tau += torque;
+}
+
+void RigidBody::resetForce() {
+	_f = Vector3D();
+	_tau = Vector3D();
+}
+
+
+void RigidBody::addExternalTorque(const IBDS::Vector3D & torque){
+  _tau += torque;
+}
+
+ 
+
+ const Vector3D & RigidBody::getForce()const{
+   return _f;
+ }
 
 const Vector3D & RigidBody::getPosition()const {return _x;}
 void RigidBody::setPosition(const Vector3D & r){_x = r;}
@@ -165,7 +185,7 @@ RigidBody* RigidBody::createSphere(Real m, Real r){
 }
 
 RigidBody* RigidBody::createBox(Real m, Real a, Real b, Real c){
-  RigidBody* box = new RigidBody();
+  /*RigidBody* box = new RigidBody();
   box->setMass(m);
   Matrix3x3 inertia;
   inertia(0,0) = b*b+c*c;
@@ -173,7 +193,8 @@ RigidBody* RigidBody::createBox(Real m, Real a, Real b, Real c){
   inertia(2,2)  = a*a+b*b;
   inertia = (1.0/12.0)*m* inertia;
   box->setInertiaTensor(inertia);
-  return box;
+  return box;*/
+	return new Box(m,a,b,c);
 }
 
 RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
@@ -187,3 +208,7 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   cylinder->setInertiaTensor(inertia);
   return cylinder;
 }
+
+void RigidBody::render() const {
+	// empty for now, since all the used rigid bodies are primitives with render() defined in their own subclass
+	}

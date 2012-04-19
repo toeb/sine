@@ -26,6 +26,9 @@ SET(simulation_SRC
 	RigidBody.cpp
 	TimeManager.cpp
 	  TimeManager.h
+	Force.h
+	Box.h
+	Box.cpp
 )
 source_group("integration" FILES ${integrators_SRC})
 source_group("simulation" FILES ${simulation_SRC})

@@ -3,7 +3,9 @@
 #include <Math/Matrix3x3.h>
 #include <Math/Quaternion.h>
 #include <Simulation/Integrators/IIntegrable.h>
+#include <Simulation/ISimulationObject.h>
 #include <Math/Vector3D.h>
+
 namespace IBDS{
 
 /**
@@ -14,7 +16,7 @@ namespace IBDS{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-class RigidBody : public IIntegrable{
+	class RigidBody : public ISimulationObject{
 private:
   
   ///< The inertia tensor
@@ -101,7 +103,7 @@ public:
    * \param position The position.
    * \param f        The f.
    */
-  void addExternalForceWCS(const IBDS::Vector3D & position, const IBDS::Vector3D & f);
+  void addExternalForce(const IBDS::Vector3D & position, const IBDS::Vector3D & f);
 
   /**
    * \brief Adds an external torque in world coordinates. 
@@ -111,7 +113,7 @@ public:
    *
    * \param torque The torque.
    */
-  void addExternalTorqueWCS(const IBDS::Vector3D & torque);
+  void addExternalTorque(const IBDS::Vector3D & torque);
 
   /**
    * \brief Resets the force and torque accumulator.
@@ -191,7 +193,16 @@ public:
    */
   void setOrientation(const IBDS::Quaternion & R);
 
-  /**
+ 
+
+  const IBDS::Vector3D & getPosition()const;
+  void setPosition(const Vector3D & position);
+  const IBDS::Vector3D & getVelocity()const;
+  void setVelocity(const Vector3D & velocity);
+  const IBDS::Vector3D & getAcceleration()const;
+  void setAcceleration(const Vector3D & acceleration);
+
+   /**
    * \brief Gets the angular velocity.
    *
    * \author Tobias Becker
@@ -200,13 +211,6 @@ public:
    * \return The angular velocity.
    */
   const IBDS::Vector3D & getAngularVelocity()const;
-
-  const IBDS::Vector3D & getPosition()const;
-  void setPosition(const Vector3D & position);
-  const IBDS::Vector3D & getVelocity()const;
-  void setVelocity(const Vector3D & velocity);
-  const IBDS::Vector3D & getAcceleration()const;
-  void setAcceleration(const Vector3D & acceleration);
 
   /**
    * \brief Sets the angular velocity.
@@ -238,6 +242,7 @@ public:
    */
   void setAngularAcceleration(const IBDS::Vector3D & omegaDot);
 
+  virtual void render() const;
 };// RigidBody
 }// namespace IBDS
 

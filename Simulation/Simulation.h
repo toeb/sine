@@ -1,10 +1,12 @@
 #ifndef __Simulation_h__
 #define __Simulation_h__
 #include <vector>
+#include "Force.h"
 #include "Integrators/Integrator.h"
 #include "ISimulationObject.h"
 #include "Integrators/CompositeIntegratable.h"
 #include "Integrators/IIntegrable.h"
+
 namespace IBDS{
 class Simulation{
 private:
@@ -12,6 +14,7 @@ private:
   Integrator* _integrator;
   std::vector<ISimulationObject*> & _simulationObjects;
   CompositeIntegratable & _integables;
+  std::vector<Force*> _forces;
 public:
 
   Simulation();
@@ -21,6 +24,8 @@ public:
   Integrator * getIntegrator();
 
   void addSimulationObject(ISimulationObject * object);
+
+  void addForce(Force *force);
   
   void simulate(Real targetTime);
   void render();

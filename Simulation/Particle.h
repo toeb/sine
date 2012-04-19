@@ -27,9 +27,12 @@
 #include "Common/Config.h"
 #include "Math/Vector3D.h"
 #include "Simulation/Integrators/IIntegrable.h"
+#include "SImulation/ISimulationObject.h"
+#include "Visualization/MiniGL.h"
+
 namespace IBDS
 {
-  class Particle : public IIntegrable
+class Particle : public ISimulationObject
   {
   private:
     Real m_mass;
@@ -49,7 +52,7 @@ namespace IBDS
     int getStateDimension()const;
 
     void resetForce();
-    void addForce(const Vector3D & f);
+    void addExternalForce(const Vector3D & f);
     void setForce(const Vector3D & f);
     const Vector3D & getForce()const;
 
@@ -61,6 +64,8 @@ namespace IBDS
     void setVelocity(IBDS::Vector3D val);
     IBDS::Vector3D getAcceleration() const;
     void setAcceleration(IBDS::Vector3D val);
+
+	virtual void render() const;
   };
 }
 

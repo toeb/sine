@@ -28,7 +28,7 @@ using namespace IBDS;
 void Particle::setForce(const Vector3D & f){
   _f = f;
 }
-void Particle::addForce(const Vector3D & f){
+void Particle::addExternalForce(const Vector3D & f){
   _f += f;
 }
 void Particle::resetForce(){
@@ -130,4 +130,8 @@ IBDS::Vector3D IBDS::Particle::getAcceleration() const
 void IBDS::Particle::setAcceleration( IBDS::Vector3D val )
 {
   m_acceleration = val;
+}
+
+void Particle::render() const {
+	MiniGL::drawPoint(getPosition(),5,MiniGL::darkblue);
 }
