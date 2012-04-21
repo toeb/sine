@@ -478,6 +478,8 @@ void MiniGL::init (int argc, char **argv, int width, int height, int posx, int p
 
 void MiniGL::initTweakBar()
 {
+int val = 1;
+setWireframeCB(&val,NULL);
 	// Create a tweak bar
 	m_tweakBar = TwNewBar("TweakBar");
 	TwDefine(" GLOBAL help='MiniGL TweakBar.' "); // Message added to the help bar.

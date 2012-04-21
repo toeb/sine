@@ -5,6 +5,7 @@
 #include <Simulation/Integrators/IIntegrable.h>
 #include <Simulation/ISimulationObject.h>
 #include <Math/Vector3D.h>
+#include "Body.h"
 
 namespace IBDS{
 
@@ -16,7 +17,7 @@ namespace IBDS{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-	class RigidBody : public ISimulationObject{
+	class RigidBody : public Body {
 private:
   
   ///< The inertia tensor
@@ -104,6 +105,8 @@ public:
    * \param f        The f.
    */
   void addExternalForce(const IBDS::Vector3D & position, const IBDS::Vector3D & f);
+
+  void addExternalForce(const IBDS::Vector3D & f);
 
   /**
    * \brief Adds an external torque in world coordinates. 

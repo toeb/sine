@@ -52,8 +52,8 @@ void RigidBody::evaluate()
   if(_m==0){
     Vector3D nullVector(0,0,0);
     setAcceleration(nullVector);
-    setVelocity(nullVector);
-    setAngularAcceleration(nullVector);
+    /*setVelocity(nullVector);
+    setAngularAcceleration(nullVector);*/
     setAngularVelocity(nullVector);
     return;
   }
@@ -128,10 +128,14 @@ void RigidBody::addExternalForce(const IBDS::Vector3D & position, const IBDS::Ve
   //_forceAccumulator
   Vector3D r = position - getPosition();
   // calculate torque
-  Vector3D torque = f ^ r; // equals -(r ^ f). the minus sign is due to the object rotating in the opposite direction for some reason
+  Vector3D torque = r ^ f; 
   // add force and torque to their accumulators
   _f+= f;
   _tau += torque;
+}
+
+void RigidBody::addExternalForce(const IBDS::Vector3D & f){
+  _f+= f;
 }
 
 void RigidBody::resetForce() {
@@ -143,8 +147,6 @@ void RigidBody::resetForce() {
 void RigidBody::addExternalTorque(const IBDS::Vector3D & torque){
   _tau += torque;
 }
-
- 
 
  const Vector3D & RigidBody::getForce()const{
    return _f;
@@ -165,7 +167,7 @@ void RigidBody::setAngularAcceleration(const Vector3D & omegaDot){_omegaDot = om
 const Vector3D & RigidBody::getAngularVelocity()const{return _omega;}
 void RigidBody::setAngularVelocity(const Vector3D & omega){_omega = omega;}
 
-const IBDS::Quaternion & RigidBody::getOrientation()const{return _q;}
+const IBDS::Quaternion & RigidBody::getOrientation()const {return _q;}
 void RigidBody::setOrientation(const IBDS::Quaternion & R){_q = R;}
 
 Real RigidBody::getMass()const{return _m;}

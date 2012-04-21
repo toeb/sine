@@ -1,16 +1,20 @@
 #ifndef __Force_h__
 #define __Force_h__
 
-#include "ISimulationObject.h"
+#include "Body.h"
 #include "Common/Config.h"
+#include <Vector>
 
 namespace IBDS {
-class Force
+	class Force: public ISimulationObject
 	{
 	public:
-		Force(void);
-		~Force(void);
-		virtual void apply(std::vector<ISimulationObject*> & target, Real time) const = 0;
+		/**
+		 * Apply this force.
+		 * \param target reference to the simulation objects that can be applied a force to.
+		 * \param time simulation time
+		 */
+		virtual void act(std::vector<Body*> & target, Real time) = 0;
 	};
 	}
 #endif

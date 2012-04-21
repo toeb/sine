@@ -9,11 +9,21 @@ namespace IBDS{
 	class Box: public RigidBody
 		{
 		private:
+			// size of the box
 			Real _x, _y, _z;
-		public:
 			Box();
+		public:
+			
 			~Box();
+			/**
+			 *  Creates a box with given extents.
+			 * \param m mass
+			 * \param x width
+			 * \param y height
+			 * \param z depth
+			 */
 			Box(Real m, Real x, Real y, Real z);
+
 			void render() const;
 		};
 	}

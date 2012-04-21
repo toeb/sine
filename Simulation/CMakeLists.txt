@@ -29,6 +29,17 @@ SET(simulation_SRC
 	Force.h
 	Box.h
 	Box.cpp
+	DampedSpring.h
+	DampedSpring.cpp
+	Connector.h
+	ParticleConnector.h
+	ParticleConnector.cpp
+	RigidBodyConnector.h
+	RigidBodyConnector.cpp
+	Body.h
+	Body.cpp
+	Gravity.h
+	Gravity.cpp
 )
 source_group("integration" FILES ${integrators_SRC})
 source_group("simulation" FILES ${simulation_SRC})

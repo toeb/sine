@@ -5,7 +5,7 @@
 #include <Math/Vector3D.h>
 
 namespace IBDS{
-class ISimulationObject : public IIntegrable {
+class ISimulationObject {
 protected:
   virtual int getId(){return 0;}
 

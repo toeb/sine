@@ -28,11 +28,12 @@
 #include "Math/Vector3D.h"
 #include "Simulation/Integrators/IIntegrable.h"
 #include "SImulation/ISimulationObject.h"
+#include "SImulation/Body.h"
 #include "Visualization/MiniGL.h"
 
 namespace IBDS
 {
-class Particle : public ISimulationObject
+class Particle : public Body
   {
   private:
     Real m_mass;
