@@ -33,7 +33,7 @@ void Simulation::addForce(Force *force) {
 }
 
 void Simulation::setIntegrator(Integrator* integrator){
-  if(_integrator)_integrator->setIntegratable(0);
+  //if(_integrator)_integrator->setIntegratable(0);
   _integrator = integrator;
   _integrator->setIntegratable(&_integables);
 }

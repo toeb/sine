@@ -16,7 +16,7 @@ namespace IBDS{
 			
 			~Box();
 			/**
-			 *  Creates a box with given extents.
+			 *  Creates a box with given mass and extents.
 			 * \param m mass
 			 * \param x width
 			 * \param y height

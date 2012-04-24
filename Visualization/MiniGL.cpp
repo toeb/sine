@@ -70,9 +70,7 @@ int MiniGL::drawMode = GL_FILL;
 
 TwBar *MiniGL::m_tweakBar = NULL;
 float MiniGL::m_time = 0.0f;
-IntegrationMethodType MiniGL::m_integrationMethod = EXPL_EULER;
 float MiniGL::m_quat[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-
 
 const float IBDS::MiniGL::red[4] = {1.0f, 0.0f, 0.0f, 1.0f};
 const float IBDS::MiniGL::green[4] = {0.0f, 1.0f, 0.0f, 1.0f};
@@ -90,6 +88,9 @@ const float IBDS::MiniGL::darkMagenta[4] = {0.5f, 0.0f, 0.5f, 1.0f};
 const float IBDS::MiniGL::darkYellow[4] = {0.5f, 0.5f, 0.0f, 1.0f};
 const float IBDS::MiniGL::darkGray[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
+IntegratorsManager *MiniGL::_integratorsManager;
+std::string const *MiniGL:: _integratorNames;
+int MiniGL::_integratorsCount;
 
 void IBDS::MiniGL::drawTime( const Real time )
 {
@@ -182,7 +183,7 @@ void MiniGL::drawVector (const Real x1, const Real y1, const Real z1, const Real
 /** Zeichnet eine Kugel an der Stelle translation mit dem übergebenen Radius
 * und in der übergebenen Farbe.
 */
-void MiniGL::drawSphere (Vector3D *translation, float radius, float *color, const unsigned int subDivision)
+void MiniGL::drawSphere (const Vector3D *translation, float radius, const float *color, const unsigned int subDivision)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);
@@ -476,10 +477,13 @@ void MiniGL::init (int argc, char **argv, int width, int height, int posx, int p
 }
 
 
+
 void MiniGL::initTweakBar()
 {
-int val = 1;
-setWireframeCB(&val,NULL);
+	// turn wireframe mode on
+	//int val = 1;
+	//setWireframeCB(&val,NULL);
+
 	// Create a tweak bar
 	m_tweakBar = TwNewBar("TweakBar");
 	TwDefine(" GLOBAL help='MiniGL TweakBar.' "); // Message added to the help bar.
@@ -494,10 +498,34 @@ setWireframeCB(&val,NULL);
 	TwAddVarCB(m_tweakBar, "Wireframe", TW_TYPE_BOOL32, setWireframeCB, getWireframeCB, NULL, 
 		" label='Wireframe' key=w help='Toggle wireframe mode.' ");
 
-	TwEnumVal enumValues[] = {{EXPL_EULER, "Explicit Euler"}, {RK4, "Runge-Kutta 4th order"}};
-	TwType integrationMethodType = TwDefineEnum("IntegrationMethodType", enumValues, 2);
-	TwAddVarRW(m_tweakBar, "Integration Method", integrationMethodType, &m_integrationMethod, NULL);
+	// Add the integration method selection
+	TwEnumVal *enumValues=new TwEnumVal[_integratorsCount];
+	for (int i = 0; i < _integratorsCount; i++) {
+		TwEnumVal entry = {i, _integratorNames[i].c_str()};
+		enumValues[i] = entry;
+	}
+	TwType integrationMethodType = TwDefineEnum("int", enumValues, _integratorsCount);
+	TwAddVarCB(m_tweakBar, "Integration Method", integrationMethodType, setIntegratorCB, getIntegratorCB, NULL, NULL);
+}
 
+void TW_CALL MiniGL::setIntegratorCB(const void *value, void *clientData)
+{
+	// propagate to the manager
+	int index = *(const int *)(value);
+	std::string integratorName = _integratorNames[index];
+	_integratorsManager->setIntegrator(integratorName);
+}
+
+void TW_CALL MiniGL::getIntegratorCB(void *value, void *clientData)
+{
+	// propagate to the manager
+	std::string integratorName = _integratorsManager->getIntegrator();
+	for (int i=0; i<_integratorsCount; i++) {
+		if (_integratorNames[i].compare(integratorName) == 0) {
+			*(int*)value = i;
+			return;
+		}
+	}
 }
 
 void TW_CALL MiniGL::setWireframeCB(const void *value, void *clientData)
@@ -891,4 +919,8 @@ void MiniGL::rotate( float x, float y, float z )
 	m_rotation = m_rotation*quatX*quatY*quatZ;
 }
 
-
+void MiniGL::setIntegratorsManager(IntegratorsManager *integratorsManager) {
+	_integratorsManager = integratorsManager;
+	_integratorsCount = integratorsManager->getIntegratorsCount();
+	_integratorNames = integratorsManager->getIntegratorNames();
+}

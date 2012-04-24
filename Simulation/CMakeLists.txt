@@ -15,6 +15,8 @@ SET (integrators_SRC
   ./Integrators/Implementations/RungeKutta4.cpp
   ./Integrators/Implementations/RungeKuttaFehlberg45.h
   ./Integrators/Implementations/RungeKuttaFehlberg45.cpp
+  ./Integrators/Implementations/IntegratorsManager.h
+  ./Integrators/Implementations/IntegratorsManager.cpp
 )
 SET(simulation_SRC
 	./Simulation.h
@@ -29,6 +31,8 @@ SET(simulation_SRC
 	Force.h
 	Box.h
 	Box.cpp
+	Sphere.h
+	Sphere.cpp
 	DampedSpring.h
 	DampedSpring.cpp
 	Connector.h
@@ -40,6 +44,7 @@ SET(simulation_SRC
 	Body.cpp
 	Gravity.h
 	Gravity.cpp
+
 )
 source_group("integration" FILES ${integrators_SRC})
 source_group("simulation" FILES ${simulation_SRC})
