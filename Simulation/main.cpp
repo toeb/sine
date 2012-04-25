@@ -58,7 +58,6 @@ void render ();
 void cleanup();
 
 Simulation simulation;
-vector<Particle*> particles;
 Integrator *explEuler,*rungeKutta, *rungeKuttaFehlberg45;
 IntegratorsManager* integratorsManager;
 
@@ -90,7 +89,7 @@ int main( int argc, char **argv )
 	buildModel ();
 
 	MiniGL::setClientSceneFunc(render);			
-	MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (3.0, 1.0, 10.0), Vector3D (3.0, -0.3, 0.0));
+	MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (15.0, 1.0, 20.0), Vector3D (5.0, -4, 0.0));
 
 	glutMainLoop ();	
 
@@ -106,8 +105,10 @@ void cleanup()
 }
 
 
-RigidBody *cube, *cube2, *cube3, *sphere;
-Particle* p1,*p2;
+// the simulated bodies (the declaration is here because they are used across several methods)
+RigidBody *cube, *cube2, *cube3, *sphere, *plank;
+//vector<Particle*> particles;
+//Particle* p1,*p2;
 
 void timeStep ()
 {
@@ -119,9 +120,15 @@ void timeStep ()
   // Simulation code
   simulation.resetForces();
 
-  if (tm->getTime() < 0.00001)
-	    sphere->addExternalForce(sphere->getPosition(),Vector3D(300*3,150*2,0));
-  
+  // add forces acting at the first moment
+  if (tm->getTime() < h) {
+	  plank->addExternalForce(plank->getPosition()+Vector3D(1,0,0),Vector3D(0,200,0));
+	  sphere->addExternalForce(sphere->getPosition(),Vector3D(300*3,150*2,0));
+	  }
+
+  /*for (vector<Particle*>::iterator it = particles.begin(); it!=particles.end(); it++)
+	  (*it)->addExternalForce(Vector3D((rand()%100-50)*1.01,(rand()%100-50)*1.01,(rand()%100-50)*1.01));*/
+
   simulation.simulate(tm->getTime()+h);
 
   tm->setTime(tm->getTime() + h);
@@ -138,36 +145,26 @@ void buildModel ()
   cube2 = new Box(1,1,1,1);
   cube3 = new Box(1,1,1,1);
   sphere = new Sphere(1,0.5);
+  plank = new Box(0.5,3,0.5,1);
   
-  p1 = new Particle();
-  p1->setMass(0);
-  p2 = new Particle();
-
   cube->setPosition(Vector3D(0,2,0));
   cube2->setPosition(Vector3D(0,0,0));
-  sphere->setPosition(Vector3D(1,1,0));
   cube3->setPosition(cube2->getPosition() + Vector3D(0,-2,0));
+  sphere->setPosition(Vector3D(1,1,0));
+  plank->setPosition(Vector3D(3,-2,0));
 
-  p1->setPosition(Vector3D(-1,1.5,0));
-  p2->setPosition(Vector3D(-1.2,0.5,0));
-
-
- // cube->addExternalForce(Vector3D(0,1,0),Vector3D(1,0,0));
- // cube2->addExternalForce(Vector3D(0,2,-0.5),Vector3D(0,0,-0.1));
-
-  for(int i=0 ;i <5; i++){
-    Particle* p = new Particle();
-    p->addExternalForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
-    particles.push_back(p);
-    simulation.addBody(p);
-  }
+  //for(int i=0 ;i <5; i++){
+  //  Particle* p = new Particle();
+  //  p->addExternalForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
+  //  particles.push_back(p);
+  //  simulation.addBody(p);
+  //}
 
   simulation.addBody(cube);
   simulation.addBody(cube2);
   simulation.addBody(cube3);
   simulation.addBody(sphere);
-  simulation.addBody(p1);
-  simulation.addBody(p2);
+  simulation.addBody(plank);
 
   // Create damped springs
   // spring parameters
@@ -179,15 +176,13 @@ void buildModel ()
   Real ks2 = 40;
   Real kd2 = 1;
 
-  DampedSpring *spring, *spring2, *spring3;
+  DampedSpring *spring1, *spring2;
 
-  spring = new DampedSpring(new ParticleConnector(p1),new ParticleConnector(p2),ks,kd,restLength);
-  spring2 = new DampedSpring(new RigidBodyConnector(cube,new Vector3D(0,-0.5,0)),new RigidBodyConnector(cube2,new Vector3D(0,0.5,0)),ks,kd,restLength);
-  spring3 = new DampedSpring(new RigidBodyConnector(cube2,new Vector3D(0,-0.5,0)),new RigidBodyConnector(cube3,new Vector3D(0,0.5,0)),ks2,kd2,restLength2);
+  spring1 = new DampedSpring(new RigidBodyConnector(cube,new Vector3D(0,-0.5,0)),new RigidBodyConnector(cube2,new Vector3D(0,0.5,0)),ks,kd,restLength);
+  spring2 = new DampedSpring(new RigidBodyConnector(cube2,new Vector3D(0,-0.5,0)),new RigidBodyConnector(cube3,new Vector3D(0,0.5,0)),ks2,kd2,restLength2);
 
-  simulation.addForce(spring);
+  simulation.addForce(spring1);
   simulation.addForce(spring2);
-  simulation.addForce(spring3);
   simulation.addForce(new Gravity());
 
   simulation.setIntegrator(explEuler);
