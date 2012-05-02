@@ -166,6 +166,8 @@ public:
    */
   const IBDS::Matrix3x3 & getInertiaTensor() const;
 
+  Matrix3x3 const * const getInvertedInertiaTensor() const;
+
   /**
    * \brief Sets the inertia tensor.
    *

@@ -25,8 +25,26 @@ namespace IBDS {
 
 		const Vector3D * getPosition()const;
 
-		const Vector3D * getVelocity()const;
+		const Vector3D * getVelocity();
 		
 		void addExternalForce(const Vector3D &f);
+
+		
+		const Vector3D * getNextPosition(Real h) const;
+
+		void applyImpulse(Vector3D const * const p);
+
+		Matrix3x3 const * const getKMatrix() const;
+
+		void evaluate();
+
+		void setState(const Real * state);
+
+		void getState(Real * state)const;
+
+		void getDerivedState(Real * xDot)const;
+
+		int getStateDimension()const;
+
 	};
 	}

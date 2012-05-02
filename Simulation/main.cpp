@@ -44,6 +44,7 @@
 #include "RigidBodyConnector.h"
 #include "ParticleConnector.h"
 #include "Gravity.h"
+#include "BallJoint.h"
 // Enable memory leak detection
 #ifdef _DEBUG
   #define new DEBUG_NEW 
@@ -71,7 +72,7 @@ int main( int argc, char **argv )
 	
 	// initialize the integrators
 	explEuler = new ExplicitEuler();
-	rungeKutta = new RungeKutta4(0.01);
+	rungeKutta = new RungeKutta4(0.001);
 	rungeKuttaFehlberg45 = new RungeKuttaFehlberg45();
 	const int integratorsCount = 3;
 
@@ -146,6 +147,15 @@ void buildModel ()
   cube3 = new Box(1,1,1,1);
   sphere = new Sphere(1,0.5);
   plank = new Box(0.5,3,0.5,1);
+
+  double swingThickness = 0.03;
+  double swingHeight = 4.5;
+  double swingWidth = 1.5;
+  RigidBody* swingSegment1 = new Box(1,swingThickness,swingHeight,swingThickness);	//left
+  RigidBody* swingSegment2 = new Box(1,swingThickness,swingHeight,swingThickness);	// right
+  RigidBody* swingSegment3 = new Box(0.5,swingWidth,swingThickness,swingThickness);	// seat
+  Particle* swingHolder1 = new Particle();
+  Particle* swingHolder2 = new Particle();
   
   cube->setPosition(Vector3D(0,2,0));
   cube2->setPosition(Vector3D(0,0,0));
@@ -153,6 +163,20 @@ void buildModel ()
   sphere->setPosition(Vector3D(1,1,0));
   plank->setPosition(Vector3D(3,-2,0));
 
+  Vector3D swingOrigin(4,1,0);
+  Quaternion q;
+  double swingAngle = 8.0 * 3.14159265358979323846 / 180;
+  q.setFromAxisAngle(Vector3D(1,0,0),-swingAngle);
+  swingSegment1->setOrientation(q);
+  swingSegment2->setOrientation(q);
+  swingSegment1->setPosition(swingOrigin + Vector3D(-swingWidth/2,0,0));
+  swingSegment2->setPosition(swingOrigin + Vector3D( swingWidth/2,0,0));
+  swingSegment3->setPosition(swingOrigin + Vector3D(0,-cos(swingAngle) * swingHeight / 2,sin(swingAngle) * swingHeight / 2));
+  swingHolder1->setPosition(swingOrigin + Vector3D(-swingWidth/2,cos(swingAngle)*swingHeight/2,-sin(swingAngle)*swingHeight / 2));
+  swingHolder2->setPosition(swingOrigin + Vector3D( swingWidth/2,cos(swingAngle)*swingHeight/2,-sin(swingAngle)*swingHeight / 2));
+
+swingHolder1->setMass(0);
+swingHolder2->setMass(0);
   //for(int i=0 ;i <5; i++){
   //  Particle* p = new Particle();
   //  p->addExternalForce(Vector3D((rand()%100-50)*0.01,(rand()%100-50)*0.01,(rand()%100-50)*0.01));
@@ -166,6 +190,12 @@ void buildModel ()
   simulation.addBody(sphere);
   simulation.addBody(plank);
 
+  simulation.addBody(swingSegment1);
+  simulation.addBody(swingSegment2);
+  simulation.addBody(swingSegment3);
+  simulation.addBody(swingHolder1);
+  simulation.addBody(swingHolder2);
+
   // Create damped springs
   // spring parameters
   Real restLength = 1.5;
@@ -177,15 +207,47 @@ void buildModel ()
   Real kd2 = 1;
 
   DampedSpring *spring1, *spring2;
+  
+  Connector *c1 = new RigidBodyConnector(cube,new Vector3D(0,-0.5,0));
+Connector *c2 = new RigidBodyConnector(cube2,new Vector3D(0.5,0.5,0));
+Connector *c3 = new RigidBodyConnector(cube2,new Vector3D(0,-0.5,0));
+Connector *c4 = new RigidBodyConnector(cube3,new Vector3D(0,0.5,0));
+Connector *c5 = new ParticleConnector(swingHolder1);
+Connector *c6 = new ParticleConnector(swingHolder2);
+Connector *c7 = new RigidBodyConnector(swingSegment1,new Vector3D(swingHolder1->getPosition() - swingSegment1->getPosition()));
+Connector *c8 = new RigidBodyConnector(swingSegment2,new Vector3D(swingHolder2->getPosition() - swingSegment2->getPosition()));
+Vector3D swingBottomLeft(swingSegment3->getPosition()[0]-swingWidth/2,swingSegment3->getPosition()[1],swingSegment3->getPosition()[2]);
+Vector3D swingBottomRight(swingSegment3->getPosition()[0]+swingWidth/2,swingSegment3->getPosition()[1],swingSegment3->getPosition()[2]);
+Connector *c9 = new RigidBodyConnector(swingSegment1,new Vector3D(swingBottomLeft - swingSegment1->getPosition()));
+Connector *c10 = new RigidBodyConnector(swingSegment3,new Vector3D(swingBottomLeft - swingSegment3->getPosition()));
+Connector *c11 = new RigidBodyConnector(swingSegment3,new Vector3D(swingBottomRight - swingSegment3->getPosition()));
+Connector *c12 = new RigidBodyConnector(swingSegment2,new Vector3D(swingBottomRight - swingSegment2->getPosition()));
+simulation.addConnector(c1);
+  simulation.addConnector(c2);
+  simulation.addConnector(c3);
+  simulation.addConnector(c4);
+  simulation.addConnector(c5);
+  simulation.addConnector(c6);
+  simulation.addConnector(c7);
+  simulation.addConnector(c8);
+  /*simulation.addConnector(c9);
+  simulation.addConnector(c10);
+  simulation.addConnector(c11);
+  simulation.addConnector(c12);*/
 
-  spring1 = new DampedSpring(new RigidBodyConnector(cube,new Vector3D(0,-0.5,0)),new RigidBodyConnector(cube2,new Vector3D(0,0.5,0)),ks,kd,restLength);
-  spring2 = new DampedSpring(new RigidBodyConnector(cube2,new Vector3D(0,-0.5,0)),new RigidBodyConnector(cube3,new Vector3D(0,0.5,0)),ks2,kd2,restLength2);
+  spring1 = new DampedSpring(c1,c2,ks,kd,restLength);
+  spring2 = new DampedSpring(c3,c4,ks2,kd2,restLength2);
 
   simulation.addForce(spring1);
   simulation.addForce(spring2);
   simulation.addForce(new Gravity());
 
-  simulation.setIntegrator(explEuler);
+  simulation.addJoint(new BallJoint(c5,c7));
+  simulation.addJoint(new BallJoint(c6,c8));
+  //simulation.addJoint(new BallJoint(c9,c10));
+  //simulation.addJoint(new BallJoint(c11,c12));
+
+  simulation.setIntegrator(rungeKutta);//explEuler);
 }
 
 

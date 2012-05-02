@@ -62,10 +62,12 @@ void RigidBody::evaluate()
   _q.getMatrix3x3(R);
   _q.getMatrix3x3T(RT);
 
-  Matrix3x3 J_inverted;
+ /* Matrix3x3 J_inverted;
   J_inverted(0,0) = 1.0/_J(0,0);
   J_inverted(1,1) = 1.0/_J(1,1);
-  J_inverted(2,2) = 1.0/_J(2,2);
+  J_inverted(2,2) = 1.0/_J(2,2);*/
+  Matrix3x3 J_inverted = *getInvertedInertiaTensor();
+
   Matrix3x3 J_wcs = R*_J*RT;
   Matrix3x3 J_inverted_wcs = R*J_inverted*RT;
   _omegaDot = J_inverted_wcs *(_tau - (_omega ^ (J_wcs*_omega)));
@@ -175,6 +177,14 @@ void RigidBody::setMass(Real mass){ _m = mass;}
 
 void RigidBody::setInertiaTensor(const Matrix3x3 & inertia){_J=inertia;}
 const Matrix3x3 &  RigidBody::getInertiaTensor()const{return _J;}
+
+Matrix3x3 const * const RigidBody::getInvertedInertiaTensor() const {
+	Matrix3x3 *J_inverted = new Matrix3x3();
+	(*J_inverted)(0,0) = 1.0/_J(0,0);
+	(*J_inverted)(1,1) = 1.0/_J(1,1);
+	(*J_inverted)(2,2) = 1.0/_J(2,2);
+	return J_inverted;
+}
 
 RigidBody* RigidBody::createSphere(Real m, Real r){
   RigidBody* sphere = new RigidBody();

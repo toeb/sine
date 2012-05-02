@@ -44,7 +44,9 @@ SET(simulation_SRC
 	Body.cpp
 	Gravity.h
 	Gravity.cpp
-
+	Joint.h
+	BallJoint.h
+	BallJoint.cpp
 )
 source_group("integration" FILES ${integrators_SRC})
 source_group("simulation" FILES ${simulation_SRC})
