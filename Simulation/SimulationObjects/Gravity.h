@@ -1,7 +1,7 @@
 #pragma once
-#include "Simulation/Body.h"
+#include "Body.h"
 #include "Math/Vector3D.h"
-#include "Simulation/Force.h"
+#include "Force.h"
 #include <Vector>
 
 namespace IBDS{

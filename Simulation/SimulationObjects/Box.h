@@ -1,7 +1,7 @@
 #ifndef _BOX_H
 #define _BOX_H
 
-#include "Simulation/RigidBody.h"
+#include "RigidBody.h"
 #include <Math/Matrix3x3.h>
 #include "Visualization/MiniGL.h"
 

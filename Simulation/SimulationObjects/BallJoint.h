@@ -1,7 +1,7 @@
 #pragma once
 #include <Math/Vector3D.h>
 #include <Math/Matrix3x3.h>
-#include "Simulation/Connector.h"
+#include "Connector.h"
 #include "Joint.h"
 namespace IBDS {
 	/**

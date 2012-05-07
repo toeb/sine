@@ -1,5 +1,4 @@
 #include "RigidBodyConnector.h"
-#include "Integrators/Implementations/ExplicitEuler.h"
 using namespace IBDS;
 
 Vector3D _rOld;

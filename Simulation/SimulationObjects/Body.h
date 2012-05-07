@@ -1,5 +1,6 @@
 #pragma once
 #include "Simulation/ISimulationObject.h"
+#include <Simulation/Integrators/IIntegrable.h>
 namespace IBDS {
 	class Body : public ISimulationObject, public IIntegrable
 	{

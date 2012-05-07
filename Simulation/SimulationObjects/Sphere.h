@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Simulation/RigidBody.h"
+#include <Simulation/SimulationObjects/RigidBody.h>
 #include <Math/Matrix3x3.h>
 #include "Visualization/MiniGL.h"
 

@@ -194,7 +194,7 @@ namespace IBDS
 		static void display ();
 		static void setClientIdleFunc (int hz, void (*func) (void));
 		static void setKeyFunc (int nr, unsigned char k, void (*func) (void));
-		static void init (int argc, char **argv, int width, int height, int posx, int posy, char *name);
+		static void init (int argc, char **argv, int width, int height, int posx, int posy, const char *name);
 		static void destroy ();
 		static void viewport ();
 		static void initLights ();

@@ -1,7 +1,7 @@
 #pragma once
 #include <Math/Vector3D.h>
-#include "Simulation/RigidBody.h"
-#include "Simulation/Connector.h"
+#include "RigidBody.h"
+#include "Connector.h"
 #include "Math/SimMath.h"
 namespace IBDS {
 	/**

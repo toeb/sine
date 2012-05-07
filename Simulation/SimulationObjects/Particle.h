@@ -28,7 +28,7 @@
 #include "Math/Vector3D.h"
 #include "Simulation/Integrators/IIntegrable.h"
 #include "SImulation/ISimulationObject.h"
-#include "SImulation/Body.h"
+#include "Body.h"
 #include "Visualization/MiniGL.h"
 
 namespace IBDS

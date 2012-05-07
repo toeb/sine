@@ -1,6 +1,6 @@
 #pragma once
 #include <Math/Vector3D.h>
-#include "Integrators/IIntegrable.h"
+#include <Simulation/Integrators/IIntegrable.h>
 namespace IBDS {
 	/**
 	 * A connector is a point on a body. It is used to model the points where a spring is attached.

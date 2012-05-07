@@ -413,7 +413,7 @@ void MiniGL::display ()
 /** Initialisiert die OpenGL-Darstellung und meldet die Callback-
   * Funktionen an.
   */
-void MiniGL::init (int argc, char **argv, int width, int height, int posx, int posy, char *name)
+void MiniGL::init (int argc, char **argv, int width, int height, int posx, int posy,const char *name)
 {
 	fovy = 60;
 	znear = 0.5f;

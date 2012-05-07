@@ -32,5 +32,6 @@ void IntegratorsManager::setIntegrator (std::string const & integratorName){
 }
 
 std::string const & IntegratorsManager::getIntegrator(){
+  if(!_simulation->getIntegrator())return *(new std::string("No Integrator Set"));
 	return (_simulation->getIntegrator())->getName();
 }

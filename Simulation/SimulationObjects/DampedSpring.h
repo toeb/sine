@@ -1,11 +1,11 @@
 #pragma once
-#include "Simulation/ISimulationObject.h"
-#include "Simulation/Body.h"
-#include "Simulation/RigidBody.h"
-#include "Simulation/Particle.h"
+#include <Simulation/ISimulationObject.h>
+#include "Body.h"
+#include "RigidBody.h"
+#include "Particle.h"
 #include "Visualization/MiniGL.h"
-#include "Simulation/Connector.h"
-#include "Simulation/Force.h"
+#include "Connector.h"
+#include "Force.h"
 #include <Vector>
 
 namespace IBDS{
@@ -29,7 +29,7 @@ namespace IBDS{
 			DampedSpring(void);
 		public:
 			~DampedSpring(void);
-
+      
 			/**
 			 * Creates a string with the specified stiffness, damping and rest length, which is attached to the specified connectors.
 			 */
