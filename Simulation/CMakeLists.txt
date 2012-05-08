@@ -91,7 +91,7 @@ SET(renderers_SRC
 source_group("integration" FILES ${integrators_SRC})
 source_group("integration\\implementations" FILES ${integratorImplementations_SRC})
 source_group("simulation" FILES ${simulation_SRC})
-source_group("simulation objects" FILES ${simulationObjects_SRC})
+source_group("simulation\\objects" FILES ${simulationObjects_SRC})
 source_group("visualization" FILES ${visualisation_SRC})
 source_group("visualization\\renderers" FILES ${renderers_SRC})
 
