@@ -40,7 +40,7 @@ void DampedSpring::act (std::vector<Body*> & target, Real time) {
 	_c2->addExternalForce(-totalForce);
 }
 
-void DampedSpring::render() const {
+void DampedSpring::render()  {
 	// just draw a line between the 2 connectors
 	MiniGL::drawVector(a,b,2,MiniGL::black);
 }

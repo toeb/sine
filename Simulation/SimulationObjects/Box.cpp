@@ -16,7 +16,7 @@ Box::Box(Real m, Real x, Real y, Real z) : _x(x), _y(y), _z(z) {
 	RigidBody::setInertiaTensor(inertia);
 	}
 
-void Box::render() const{
+void Box::render() {
 	Matrix3x3 R;
 	Quaternion q = RigidBody::getOrientation();
 	q.getMatrix3x3T(R);

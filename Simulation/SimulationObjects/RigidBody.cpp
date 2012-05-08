@@ -1,6 +1,6 @@
 #include "RigidBody.h"
 #include <Math/Quaternion.h>
-#include <Simulation/Box.h>
+#include <Simulation/SimulationObjects/Box.h>
 using namespace IBDS;
 
 RigidBody::RigidBody(){

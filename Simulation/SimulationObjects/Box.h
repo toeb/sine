@@ -4,9 +4,10 @@
 #include "RigidBody.h"
 #include <Math/Matrix3x3.h>
 #include "Visualization/MiniGL.h"
+#include <Visualization/IRenderer.h>
 
 namespace IBDS{
-	class Box: public RigidBody
+	class Box: public RigidBody, public IRenderer
 		{
 		private:
 			// size of the box
@@ -23,8 +24,8 @@ namespace IBDS{
 			 * \param z depth
 			 */
 			Box(Real m, Real x, Real y, Real z);
-
-			void render() const;
+    
+			void render();
 		};
 	}
 

@@ -11,23 +11,39 @@ Simulation::Simulation():
   _integrableConnectors(*(new CompositeIntegratable())),
   _joints(*(new vector<Joint*>())),
   _connectors(*(new vector<Connector*>())),
-  _renderObjects(*(new vector<ISimulationObject*>)),
-  _integrator(0)
+  _integrator(0),
+  _simulationName(0),
+  _time(0),
+  _targetTime(0)
 {
-
+  setSimulationName("Unnamed Simulation");
 }
-
+  void Simulation::reset(){
+    cleanup(); buildModel();
+  }
 Simulation::~Simulation(){}
 
+void Simulation::addConnector(Connector *c) {
+  _connectors.push_back(c);
+  _integrableConnectors.addIntegratable(c);
+  onSimulationObjectAdded(c);
+}
+
+void Simulation::addJoint(Joint *joint) {
+  _joints.push_back(joint);
+  onSimulationObjectAdded(joint);
+  }
 
 void Simulation::addBody(Body * body){
   _bodies.push_back(body);
   //IIntegrable* integrable = dynamic_cast<IIntegrable*>(body);
   _integables.addIntegratable(body);
+  onSimulationObjectAdded(body);
 }
 
 void Simulation::addForce(Force *force) {
   _forces.push_back(force);
+  onSimulationObjectAdded(force);
 }
 void Simulation::setIntegrator(Integrator* integrator){
   //if(_integrator)_integrator->setIntegratable(0);
@@ -115,60 +131,18 @@ void Simulation::integrate(){
   _time=targetTime;
 }
 
-void Simulation::render(){
-  updateRenderList(_renderObjects);
-  for(auto it = _renderObjects.begin(); it!= _renderObjects.end(); it++){
-    (**it).render();
-}
 
-  //for (vector<ISimulationObject*>::iterator it = _simulationObjects.begin(); it != _simulationObjects.end(); it++)
-  //	(*it)->render();
-  /*for (vector<Body*>::iterator it = _bodies.begin(); it != _bodies.end(); it++)
-    (*it)->render();
-
-  for (vector<Force*>::iterator it = _forces.begin(); it != _forces.end(); it++)
-    (*it)->render();*/
-}
-void Simulation::initializeRenderList(vector<ISimulationObject*> & renderObjects){
-  for (auto it = _bodies.begin(); it != _bodies.end(); it++)
-    renderObjects.push_back(*it);
-
-  for (auto it = _forces.begin(); it != _forces.end(); it++)
-    renderObjects.push_back(*it);
-}
 
 void Simulation::resetForces() {
     for(vector<Body*>::iterator it = _bodies.begin(); it != _bodies.end(); it++)
     (*it)->resetForce();
 }
 
-void Simulation::addConnector(Connector *c) {
-  _connectors.push_back(c);
-  _integrableConnectors.addIntegratable(c);
-}
 
-void Simulation::addJoint(Joint *joint) {
-  _joints.push_back(joint);
-  }
 
-void Simulation::initializeRenderer(){
- 
-
- /* MiniGL::init (argc, argv, 800, 600, 0, 0, getSimulationName());
-
-  MiniGL::initLights ();
-  MiniGL::setClientIdleFunc (50, timeStep);				
-
-  buildModel ();
-
-  MiniGL::setClientSceneFunc(render);			
-  MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (15.0, 1.0, 20.0), Vector3D (5.0, -4, 0.0));*/
-}
-
-void Simulation::initialize(){
-  initializeSimulation();
+bool Simulation::initialize(){
   buildModel();
-  initializeRenderer();
+  return isSimulationValid();
 }
 
 const char* Simulation::getSimulationName()const{
@@ -178,12 +152,3 @@ void Simulation::setSimulationName(const char* name){
   _simulationName = name;
 }
 
-
-void Simulation::setCommandLineArguments(int argc, char** argv){
-  _commandlineArgumentArray  = argv;
-  _commandlineArgumentCount = argc;
-}
-void Simulation::getCommandLineArguments(int & argc, char** argv)const{
-  argc = _commandlineArgumentCount;
-  argv = _commandlineArgumentArray;
-}

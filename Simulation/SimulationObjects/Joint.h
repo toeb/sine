@@ -1,8 +1,8 @@
 #pragma once
-
+#include <Simulation/ISimulationObject.h>
 namespace IBDS {
 
-	class Joint
+	class Joint : public ISimulationObject
 	{
 	private:
 		

@@ -10,8 +10,28 @@ private:
   Real _desiredTimeStepSize;
   ///< The simulation
   Simulation* _simulation;
+  ///< true if paused
+  bool _paused;
 public:
 
+  /**
+   * \brief Query if this simulation is paused.
+   *
+   * \return  true if paused, false if not.
+   */
+  bool isPaused()const;
+
+  /**
+   * \brief Sets paused flag.
+   *
+   * \param pause true to pause.
+   */
+  void setPaused(bool pause);
+
+  /**
+   * \brief Toggles pause.
+   */
+  void togglePause();
   /**
    * \brief Default constructor.
    *
@@ -76,7 +96,19 @@ public:
    */
   virtual void run()=0;
 
+  /**
+   * \brief Resets the simulation. bringing it back to its initial state
+   */
+  void resetSimulation();
 
+  
+  /**
+   * \brief Initializes this object.
+   *
+   * \author Tobi
+   * \date 07.05.2012
+   */
+  virtual bool initialize();
 protected:
 
   /**
@@ -97,13 +129,10 @@ protected:
    */
   virtual void onDesiredTimeStepChanged(){}
 
-  /**
-   * \brief Initializes this object.
-   *
-   * \author Tobi
-   * \date 07.05.2012
-   */
-  virtual void initialize(){};
+  virtual void onSimulationSet(){}
+
+  virtual void onPausedChanged(){}
+
 
   /**
    * \brief Cleans up this object.

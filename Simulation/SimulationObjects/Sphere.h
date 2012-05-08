@@ -3,9 +3,10 @@
 #include <Simulation/SimulationObjects/RigidBody.h>
 #include <Math/Matrix3x3.h>
 #include "Visualization/MiniGL.h"
+#include <Visualization/IRenderer.h>
 
 namespace IBDS{
-	class Sphere: public RigidBody
+	class Sphere: public RigidBody, public IRenderer
 		{
 		private:
 			
@@ -27,6 +28,6 @@ namespace IBDS{
 			 */
 			Sphere(Real m, Real r);
 
-			void render() const;
+			void render();
 		};
 	}

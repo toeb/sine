@@ -1,12 +1,17 @@
 #pragma once
-#include <Visualization/Renderer.h>
+#include <Visualization/RenderEngine.h>
 #include <Simulation/SimulationRunner.h>
 namespace IBDS{
-class GlutSimulationRunner : public SimulationRunner, public Renderer {
+class GlutSimulationRunner : public SimulationRunner, public RenderEngine {
 private:
   //fields
+  
+  int _commandlineArgumentCount;
+  char** _commandlineArgumentArray;
+  
 public:
-
+  char ** getCommandLineArguments(int & argc);
+  void setCommandLineArguments(int argc, char ** argv);
   /**
    * \brief Gets the instance of the Singleton GlutSimulationRunner.
    *
@@ -16,10 +21,11 @@ public:
    * \return null if it fails, else.
    */
   static GlutSimulationRunner* instance();
+ 
+  bool initialize();
 
-  void initializeRenderer();
-  void cleanupRenderer();
-  void render();
+  void cleanup();
+
   /**
    * \brief Runs the Simulation.
    *
@@ -27,6 +33,10 @@ public:
    * \date 07.05.2012
    */
   void run();
+
+  void simulateCallback();
+  void renderCallback();
+  
 protected:
 
   /**
@@ -36,6 +46,9 @@ protected:
    * \date 07.05.2012
    */
   void onDesiredTimeStepChanged();
+  void onSimulationSet();
+
+  void onDesiredFramerateChanged();
 private:
 
   /**

@@ -8,9 +8,36 @@
 #include <Simulation/SimulationObjects/BallJoint.h>
 #include <Simulation/SimulationObjects/Gravity.h>
 #include <Simulation/SimulationObjects/ParticleConnector.h>
+#include <Visualization/IRenderer.h>
+
+#include <Simulation/Integrators/Implementations/ExplicitEuler.h>
+#include <Simulation/Integrators/Implementations/RungeKutta4.h>
+#include <Simulation/Integrators/Implementations/RungeKuttaFehlberg45.h>
+
+#include <Visualization/Renderers/LightRenderer.h>
+#include <Visualization/Renderers/CoordinateSystemRenderer.h>
+#include <Visualization/Renderers/CameraRenderer.h>
+#include <Visualization/Renderers/SimulationRunnerRenderer.h>
+#include <Visualization/Renderers/TweakBarRenderer.h>
 using namespace IBDS;
 
+
 void CustomSimulation::buildModel(){
+  setSimulationName("Custom Simulation");
+
+  
+    //initialize Integrators.
+    Integrator* integrators[3] = {new ExplicitEuler(), new RungeKutta4(0.001), new RungeKuttaFehlberg45()};    
+  //  _integratorManager = new IntegratorsManager(this,integrators,3);
+//    MiniGL::setIntegratorsManager(_integratorManager);
+
+    setIntegrator(integrators[0]);
+
+  addRenderer(new LightRenderer());
+  addRenderer(new CoordinateSystemRenderer());
+  addRenderer(new CameraRenderer());
+  addRenderer(new TweakBarRenderer());
+
   Box * cube = new Box(0,1,1,1);
   Box * cube2 = new Box(1,1,1,1);
   Box * cube3 = new Box(1,1,1,1);
@@ -109,4 +136,6 @@ void CustomSimulation::buildModel(){
 
   addJoint(new BallJoint(c5,c7));
   addJoint(new BallJoint(c6,c8));
-}
+
+
+  }/**/

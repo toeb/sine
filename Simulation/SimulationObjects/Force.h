@@ -4,6 +4,8 @@
 #include "Body.h"
 #include "Common/Config.h"
 #include <Vector>
+#include <Visualization/IRenderer.h>
+#include <Visualization/MiniGL.h>
 
 namespace IBDS {
 	class Force: public ISimulationObject
@@ -15,6 +17,7 @@ namespace IBDS {
 		 * \param time simulation time
 		 */
 		virtual void act(std::vector<Body*> & target, Real time) = 0;
-	};
+   
+  };
 	}
 #endif

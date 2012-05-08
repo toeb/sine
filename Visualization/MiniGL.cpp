@@ -88,9 +88,7 @@ const float IBDS::MiniGL::darkMagenta[4] = {0.5f, 0.0f, 0.5f, 1.0f};
 const float IBDS::MiniGL::darkYellow[4] = {0.5f, 0.5f, 0.0f, 1.0f};
 const float IBDS::MiniGL::darkGray[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
-IntegratorsManager *MiniGL::_integratorsManager;
-std::string const *MiniGL:: _integratorNames;
-int MiniGL::_integratorsCount;
+
 
 void IBDS::MiniGL::drawTime( const Real time )
 {
@@ -498,7 +496,7 @@ void MiniGL::initTweakBar()
 	TwAddVarCB(m_tweakBar, "Wireframe", TW_TYPE_BOOL32, setWireframeCB, getWireframeCB, NULL, 
 		" label='Wireframe' key=w help='Toggle wireframe mode.' ");
 
-	// Add the integration method selection
+	/*/ Add the integration method selection
 	TwEnumVal *enumValues=new TwEnumVal[_integratorsCount];
 	for (int i = 0; i < _integratorsCount; i++) {
 		TwEnumVal entry = {i, _integratorNames[i].c_str()};
@@ -506,8 +504,8 @@ void MiniGL::initTweakBar()
 	}
 	TwType integrationMethodType = TwDefineEnum("int", enumValues, _integratorsCount);
 	TwAddVarCB(m_tweakBar, "Integration Method", integrationMethodType, setIntegratorCB, getIntegratorCB, NULL, NULL);
-}
-
+*/}
+/*
 void TW_CALL MiniGL::setIntegratorCB(const void *value, void *clientData)
 {
 	// propagate to the manager
@@ -527,7 +525,7 @@ void TW_CALL MiniGL::getIntegratorCB(void *value, void *clientData)
 		}
 	}
 }
-
+*/
 void TW_CALL MiniGL::setWireframeCB(const void *value, void *clientData)
 {
 	const int val = *(const int *)(value);
@@ -918,9 +916,9 @@ void MiniGL::rotate( float x, float y, float z )
 	
 	m_rotation = m_rotation*quatX*quatY*quatZ;
 }
-
+/*
 void MiniGL::setIntegratorsManager(IntegratorsManager *integratorsManager) {
 	_integratorsManager = integratorsManager;
 	_integratorsCount = integratorsManager->getIntegratorsCount();
 	_integratorNames = integratorsManager->getIntegratorNames();
-}
+}*/

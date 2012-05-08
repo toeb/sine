@@ -3,7 +3,11 @@
 
 using namespace std;
 using namespace IBDS;
-SimulationRunner::SimulationRunner():_simulation(0),_desiredTimeStepSize(0){
+
+bool SimulationRunner::initialize(){
+  return true;
+}
+SimulationRunner::SimulationRunner():_simulation(0),_desiredTimeStepSize(0.02),_paused(false){
 
 }
 SimulationRunner::~SimulationRunner(){
@@ -18,6 +22,7 @@ void SimulationRunner::setDesiredTimeStepSize(Real h){
 }
 
 void SimulationRunner::doTimestep(Real dt){
+  
   if(!_simulation){
    cerr<<"SimulationRunner: No Simulation set"<<endl;
    return;
@@ -26,7 +31,7 @@ void SimulationRunner::doTimestep(Real dt){
     cerr<<"SimulationRunner: Simulation is Invalid"<<endl;
     return;
   }
-  
+  if(isPaused())return;
   Real targetTime = _simulation->getTime();
   targetTime+= dt;
   _simulation->simulate(targetTime);
@@ -35,3 +40,28 @@ void SimulationRunner::cleanup(){
   if(!_simulation)return;
   _simulation->cleanup();
 }
+
+Simulation * SimulationRunner::getSimulation(){
+  return _simulation;
+}
+
+void SimulationRunner::setSimulation(Simulation * simulation){
+  _simulation = simulation;
+  onSimulationSet();
+}
+bool SimulationRunner::isPaused()const{
+  return _paused;
+}
+void SimulationRunner::setPaused(bool pause){
+  _paused = pause;
+  onPausedChanged();
+}
+void SimulationRunner::togglePause(){
+  setPaused(!isPaused());
+}
+
+void SimulationRunner::resetSimulation(){
+  if(!getSimulation())return;
+  getSimulation()->reset();
+}
+

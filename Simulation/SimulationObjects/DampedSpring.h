@@ -7,9 +7,10 @@
 #include "Connector.h"
 #include "Force.h"
 #include <Vector>
+#include <Visualization/IRenderer.h>
 
 namespace IBDS{
-	class DampedSpring : public Force
+	class DampedSpring : public Force, public IRenderer
 		{
 		private:
 			// the points the spring is attached to
@@ -38,7 +39,7 @@ namespace IBDS{
 			// Side effect: fields a, b are set.
 			void act (std::vector<Body*> & target, Real time);
 
-			virtual void render() const;
+			virtual void render();
 
 		};
 	}

@@ -14,6 +14,6 @@ Sphere::Sphere(Real m, Real r) : _r(r) {
 	RigidBody::setInertiaTensor(inertia);
 }
 
-void Sphere::render() const{
+void Sphere::render() {
 	MiniGL::drawSphere(&getPosition(),(float)_r,MiniGL::darkGray);
 }

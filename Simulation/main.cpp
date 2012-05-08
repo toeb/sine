@@ -21,31 +21,12 @@
  * Jan Bender - Jan.Bender@impulse-based.de
  */
 
-
-#include "Common/Config.h"
-#include "Visualization/MiniGL.h"
-#include "GL/glut.h"
-#include "TimeManager.h"
-#include "Math/SimMath.h"
 #include "Common/StringTools.h"
 #include "Common/timing.h"
-#include "Math/VectorND.h"
-#include "SimulationObjects/RigidBody.h"
-#include "SimulationObjects/Sphere.h"
-#include "SimulationObjects/Box.h"
-#include "Integrators/Integrator.h"
-#include "Integrators/Implementations/ExplicitEuler.h"
-#include "Integrators/Implementations/RungeKutta4.h"
-#include "Integrators/Implementations/RungeKuttaFehlberg45.h"
-#include "Integrators/CompositeIntegratable.h"
-#include "SimulationObjects/Particle.h"
-#include "Simulation.h"
-#include "SimulationObjects/DampedSpring.h"
-#include "SimulationObjects/RigidBodyConnector.h"
-#include "SimulationObjects/ParticleConnector.h"
-#include "SimulationObjects/Gravity.h"
-#include "SimulationObjects/BallJoint.h"
 #include "Simulation/CustomSimulation.h"
+#include "Simulation/GlutSimulationRunner.h"
+#include <Visualization/Renderers/SimulationRunnerRenderer.h>
+
 // Enable memory leak detection
 #ifdef _DEBUG
   #define new DEBUG_NEW 
@@ -54,108 +35,26 @@
 using namespace IBDS;
 using namespace std;
 
-void timeStep ();
-void buildModel ();
-void render ();
-void cleanup();
-
-
-Simulation * simulation;
-Integrator *explEuler,*rungeKutta, *rungeKuttaFehlberg45;
-IntegratorsManager* integratorsManager;
-
 // main 
 int main( int argc, char **argv )
 	{
 	REPORT_MEMORY_LEAKS
 	USE_TIMESTEP_TIMING(Timing::m_dontPrintTimes = true;);
 
-	// OpenGL
-	/*
-	// initialize the integrators
-	explEuler = new ExplicitEuler();
-	rungeKutta = new RungeKutta4(0.001);
-	rungeKuttaFehlberg45 = new RungeKuttaFehlberg45();
-	const int integratorsCount = 3;
+  RenderingSimulation * simulation = new CustomSimulation();
   
-	// initialize the manager
-	Integrator* integrators[integratorsCount] = {explEuler, rungeKutta, rungeKuttaFehlberg45};
-	integratorsManager = new IntegratorsManager(&simulation,integrators,integratorsCount);
-	// connect the view to the integratorsManager, this must happen before MiniGL::init
-	
-  MiniGL::setIntegratorsManager(integratorsManager);
-  */
-  simulation = new CustomSimulation();
 
-  simulation->setCommandLineArguments(argc,argv);
+  GlutSimulationRunner * runner = GlutSimulationRunner::instance();
+  runner->setCommandLineArguments(argc,argv);
 
-  simulation->initialize();
-
-	MiniGL::init (argc, argv, 800, 600, 0, 0, "MiniGL");
-
-	MiniGL::initLights ();		
-
-//	buildModel ();
-
-	MiniGL::setClientSceneFunc(render);			
-	MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (15.0, 1.0, 20.0), Vector3D (5.0, -4, 0.0));
+  runner->setSimulation(simulation);
+  //add a renderer that shows info for the simulation runner
+  runner->getRenderManager()->addRenderer(new SimulationRunnerRenderer(*runner));
   
-	MiniGL::setClientIdleFunc (50, timeStep);		
-	glutMainLoop ();	
+  runner->run();
 
-
-
-	cleanup ();
 
 	USE_TIMESTEP_TIMING(printAverageTimes());
 
 	return 0;
 	}
-
-void cleanup()
-{
-}
-
-
-// the simulated bodies (the declaration is here because they are used across several methods)
-RigidBody *cube, *cube2, *cube3, *sphere, *plank;
-//vector<Particle*> particles;
-//Particle* p1,*p2;
-
-void timeStep ()
-{
-  START_TIMING("timeStep");
-
-  TimeManager *tm = TimeManager::getCurrent ();
-  const Real h = tm->getTimeStepSize();
-
-  // Simulation code  
-  simulation->simulate(tm->getTime()+h);
-
-  // add forces acting at the first moment
-  /*
-  if (tm->getTime() < h) {
-	  plank->addExternalForce(plank->getPosition()+Vector3D(1,0,0),Vector3D(0,200,0));
-	  sphere->addExternalForce(sphere->getPosition(),Vector3D(300*3,150*2,0));
-	  }
-    */
-  /*for (vector<Particle*>::iterator it = particles.begin(); it!=particles.end(); it++)
-	  (*it)->addExternalForce(Vector3D((rand()%100-50)*1.01,(rand()%100-50)*1.01,(rand()%100-50)*1.01));*/
-
-
-  tm->setTime(tm->getTime() + h);
-
-  STOP_TIMING_AVG;
-}
-
-
-void render ()
-{
-  MiniGL::coordinateSystem();
-  
-  // Draw simulation model
-  simulation->render();
-
-  MiniGL::drawTime( TimeManager::getCurrent ()->getTime ());
-}
-

@@ -29,7 +29,7 @@
 #include "Math/Matrix3x3.h"
 #include "AntTweakBar.h"
 #include "Math/Quaternion.h"
-#include "Simulation/Integrators/Implementations/IntegratorsManager.h"
+//#include "Simulation/Integrators/Implementations/IntegratorsManager.h"
 
 #ifdef USE_DOUBLES
 	#define glNormal3v glNormal3dv
@@ -155,7 +155,7 @@ namespace IBDS
 		static int drawMode;
 		
 		// pointer to the integrators manager
-		static IntegratorsManager *_integratorsManager;
+	//	static IntegratorsManager *_integratorsManager;
 
 		// pointer to an array of integrator names
 		static std::string const * _integratorNames;
@@ -221,7 +221,7 @@ namespace IBDS
 		/**
 		 * \param integratorsManager an instance of the class IntegratorsManager, which is queried for available integrators and which propagates the selection to the simulation.
 		 */
-		static void setIntegratorsManager(IntegratorsManager *integratorsManager);
+	//	static void setIntegratorsManager(IntegratorsManager *integratorsManager);
 	};
 }
 

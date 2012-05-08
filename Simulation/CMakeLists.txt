@@ -8,16 +8,16 @@ SET (integrators_SRC
   ./Integrators/SingleStepIntegrator.h
   ./Integrators/SingleStepIntegrator.cpp
   ./Integrators/CompositeIntegratable.h
-  ./Integrators/CompositeIntegratable.cpp
+  ./Integrators/CompositeIntegratable.cpp)
+  
+SET (integratorImplementations_SRC
   ./Integrators/Implementations/ExplicitEuler.h
   ./Integrators/Implementations/ExplicitEuler.cpp
   ./Integrators/Implementations/RungeKutta4.h
   ./Integrators/Implementations/RungeKutta4.cpp
   ./Integrators/Implementations/RungeKuttaFehlberg45.h
-  ./Integrators/Implementations/RungeKuttaFehlberg45.cpp
-  ./Integrators/Implementations/IntegratorsManager.h
-  ./Integrators/Implementations/IntegratorsManager.cpp
-)
+  ./Integrators/Implementations/RungeKuttaFehlberg45.cpp)
+  
 SET (simulationObjects_SRC
 	./SimulationObjects/Particle.cpp
 	./SimulationObjects/Particle.h   
@@ -41,8 +41,7 @@ SET (simulationObjects_SRC
 	./SimulationObjects/Gravity.cpp
 	./SimulationObjects/Joint.h
 	./SimulationObjects/BallJoint.h
-	./SimulationObjects/BallJoint.cpp
-)
+	./SimulationObjects/BallJoint.cpp)
 SET(simulation_SRC
 	./SimulationRunner.h
 	./SimulationRunner.cpp
@@ -55,30 +54,56 @@ SET(simulation_SRC
 	./TimeManager.h	
 	./GlutSimulationRunner.h
 	./GlutSimulationRunner.cpp
+	./RenderingSimulation.h
+	./RenderingSimulation.cpp
 )
 
 SET(visualisation_SRC
 	  ${PROJECT_PATH}/Visualization/MiniGL.h
 	  ${PROJECT_PATH}/Visualization/MiniGL.cpp
 	  ${PROJECT_PATH}/Visualization/IRenderer.h
-	${PROJECT_PATH}/Visualization/Renderer.h
-	${PROJECT_PATH}/Visualization/Renderer.cpp
+	${PROJECT_PATH}/Visualization/RenderEngine.h
+	${PROJECT_PATH}/Visualization/RenderEngine.cpp
 	${PROJECT_PATH}/Visualization/CompositeRenderer.h
 	${PROJECT_PATH}/Visualization/CompositeRenderer.cpp
+	${PROJECT_PATH}/Visualization/RenderManager.h
+	${PROJECT_PATH}/Visualization/RenderManager.cpp
 )	
-
+SET(renderers_SRC
+	${PROJECT_PATH}/Visualization/Renderers/SimulationRunnerRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/SimulationRunnerRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/ForceRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/ForceRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/AccelerationRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/AccelerationRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/VelocityRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/VelocityRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/LightRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/LightRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/CameraRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/CameraRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/CoordinateSystemRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/CoordinateSystemRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/TweakBarRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/TweakBarRenderer.h
+	)
+	
 source_group("integration" FILES ${integrators_SRC})
+source_group("integration\\implementations" FILES ${integratorImplementations_SRC})
 source_group("simulation" FILES ${simulation_SRC})
 source_group("simulation objects" FILES ${simulationObjects_SRC})
 source_group("visualization" FILES ${visualisation_SRC})
+source_group("visualization\\renderers" FILES ${renderers_SRC})
 
 # PROJECT(Simulation)
 ADD_EXECUTABLE(Simulation
 	  main.cpp	  	  
 	  ${integrators_SRC}
+	  ${integratorImplementations_SRC}
 	  ${simulation_SRC}
 	  ${simulationObjects_SRC}
-	  ${visualisation_SRC}                    
+	  ${visualisation_SRC}         
+	   ${renderers_SRC}
 	  ${PROJECT_PATH}/Common/Config.h			  
 	  ${PROJECT_PATH}/Common/StringTools.h			  
 	  ${PROJECT_PATH}/Common/StringTools.cpp
