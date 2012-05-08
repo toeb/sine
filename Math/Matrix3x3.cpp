@@ -23,8 +23,9 @@
 
 #include "Matrix3x3.h"
 #include "math.h"
-
+#include "Vector3D.h"
 using namespace IBDS;
+#include <iostream>
 
 /** Standard-Konstruktor: erstellt die Einheitsmatrix
   */
@@ -34,16 +35,43 @@ Matrix3x3::Matrix3x3()
 	v[1] = Vector3D (0,1,0);
 	v[2] = Vector3D (0,0,1);
 }
-
 /** Konstruktor: Erstellt die Matrix mit den Zeilenvektoren v0, v1, v2
   */
 Matrix3x3::Matrix3x3 (const Vector3D& v0, const Vector3D& v1, const Vector3D& v2)
-{ 
+{
 	v[0] = v0; 
 	v[1] = v1; 
 	v[2] = v2; 
 }
+Matrix3x3::~Matrix3x3(){
+ // delete v;
+}
+Matrix3x3 * zero = new Matrix3x3(Vector3D(),Vector3D(),Vector3D());
+Matrix3x3 * identity= new Matrix3x3();
 
+const Matrix3x3 & Matrix3x3::Zero(){
+  
+  return *zero;
+}
+
+const Matrix3x3 & Matrix3x3::Identity(){
+  return *identity;
+}
+
+bool Matrix3x3::isZero(){
+  return Zero()==*this;
+}
+
+
+
+bool IBDS::operator== (const Matrix3x3& a,const Matrix3x3& b){
+  return a(0,0) == b(0,0) && a(0,1) == b(0,1) && a(0,2) == b(0,0) 
+      && a(1,0) == b(1,0) && a(1,1) == b(1,1) && a(1,2) == b(1,2) 
+      && a(2,0) == b(2,0) && a(2,1) == b(2,1) && a(2,2) == b(2,2);
+}
+bool IBDS::operator!= (const Matrix3x3& a,const Matrix3x3& b){
+  return !(a==b);
+}
 /** Negation: -m\n
   * Negiert alle Elemente der Matrix
   */

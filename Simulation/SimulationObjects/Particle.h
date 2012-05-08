@@ -48,7 +48,7 @@ class Particle : public Body
     
     void getDerivedState(Real * xDot)const;
     void evaluate();
-    void  setState(const Real * state);
+    void setState(const Real * state);
     void getState(Real * state)const;
     int getStateDimension()const;
 
@@ -58,15 +58,19 @@ class Particle : public Body
     const Vector3D & getForce()const;
 
     Real getMass() const;
-    void setMass(Real val);
-    IBDS::Vector3D getPosition() const;
-    void setPosition(IBDS::Vector3D val);
-    IBDS::Vector3D getVelocity() const;
-    void setVelocity(IBDS::Vector3D val);
-    IBDS::Vector3D getAcceleration() const;
-    void setAcceleration(IBDS::Vector3D val);
+    void setMass(const Real & val);
+    const  Vector3D  & getPosition() const;
+    void setPosition(const Vector3D & val);
+    const  Vector3D  &   getVelocity() const;
+    void setVelocity(const Vector3D & val);
+    const  Vector3D  &   getAcceleration() const;
+    void setAcceleration(const Vector3D & val);
 
-	virtual void render() const;
+    
+     const Matrix3x3 & calculateK(const Vector3D & a, const Vector3D & b)const;
+
+
+	  virtual void render() const;
   };
 }
 

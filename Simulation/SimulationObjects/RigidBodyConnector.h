@@ -18,13 +18,13 @@ namespace IBDS {
 		Vector3D _r;
 		Vector3D _rDot;
 
+    Vector3D _rOld;
 		/**
 		 * Returns the current position of the connector with respect to the center of mass.
 		 */
 		//const Vector3D * get_r_new() const;
 
 	public:
-		RigidBodyConnector(void);
 		~RigidBodyConnector(void);
 
 		/**
@@ -34,16 +34,32 @@ namespace IBDS {
 		 */
 		RigidBodyConnector(RigidBody *b, Vector3D *r);
 
-		const Vector3D * getPosition()const;
-		const Vector3D * getVelocity();
+    /**
+     * \brief Gets the position of the connector in object coordinates
+     *
+     * \return  The position.
+     */
+		 const Vector3D &   getPosition()const;
+
+    /**
+     * \brief Gets the velocity of the vector in object coordinates.
+     *
+     * \return  The velocity.
+     */
+     const Vector3D &   getVelocity()const;
+
+
+    const Vector3D & calculateWorldPosition()const;
+    const Vector3D & calculateWorldVelocity()const;
+
 		void addExternalForce(const Vector3D &f);
 
 
-		const Vector3D * getNextPosition(Real h) const;
+		const Vector3D &  getNextPosition(Real h) const;
 
-		void applyImpulse(Vector3D const * const p);
+		void applyImpulse(const Vector3D & p);
 
-		Matrix3x3 const * const getKMatrix() const;
+		const Matrix3x3 & getKMatrix() const;
 
 		void evaluate();
 

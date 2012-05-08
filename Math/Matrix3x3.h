@@ -42,6 +42,15 @@ namespace IBDS
 	public:
 		Matrix3x3();
 		Matrix3x3(const Vector3D &v0, const Vector3D &v1, const Vector3D &v2);
+    ~Matrix3x3();
+
+    static const Matrix3x3 & Zero();
+    static const Matrix3x3 & Identity();
+    
+    bool isZero();
+
+    friend bool operator ==(const Matrix3x3& a, const Matrix3x3& b); 
+    friend bool operator !=(const Matrix3x3& a, const Matrix3x3& b); 
 
 		friend Matrix3x3 operator - (const Matrix3x3& a);						// -m1
 		friend Matrix3x3 operator + (const Matrix3x3& a, const Matrix3x3& b);	// m1 + m2

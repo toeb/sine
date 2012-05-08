@@ -113,7 +113,10 @@ Vector3D& Vector3D::operator /= ( const Real d )
 	return *this; 
 }
 
-
+Vector3D zeroVector;
+const Vector3D & Vector3D::Zero(){
+  return zeroVector;
+}
 // FRIENDS
 
 /** Gleichheit: v1 == v2 \n

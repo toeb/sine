@@ -108,6 +108,8 @@ public:
 
   void addExternalForce(const IBDS::Vector3D & f);
 
+  const Vector3D & toWorldCoordinates(const Vector3D & objectCoordinateVector);
+
   /**
    * \brief Adds an external torque in world coordinates. 
    *
@@ -164,9 +166,14 @@ public:
    *
    * \return The inertia tensor.
    */
-  const IBDS::Matrix3x3 & getInertiaTensor() const;
+  const Matrix3x3 & getInertiaTensor() const;
 
-  Matrix3x3 const * const getInvertedInertiaTensor() const;
+  /**
+   * \brief Gets the inverted inertia tensor in object coordinates.
+   *
+   * \return  The inverted inertia tensor.
+   */
+  const Matrix3x3 & getInvertedInertiaTensor() const;
 
   /**
    * \brief Sets the inertia tensor.
@@ -186,7 +193,7 @@ public:
    *
    * \return The orientation.
    */
-  const IBDS::Quaternion& getOrientation() const;
+ const  Quaternion  &  getOrientation() const;
 
   /**
    * \brief Sets the orientation.
@@ -200,11 +207,11 @@ public:
 
  
 
-  const IBDS::Vector3D & getPosition()const;
+  const  Vector3D  &  getPosition()const;
   void setPosition(const Vector3D & position);
-  const IBDS::Vector3D & getVelocity()const;
+  const  Vector3D  &  getVelocity()const;
   void setVelocity(const Vector3D & velocity);
-  const IBDS::Vector3D & getAcceleration()const;
+  const  Vector3D  &  getAcceleration()const;
   void setAcceleration(const Vector3D & acceleration);
 
    /**
@@ -215,7 +222,7 @@ public:
    *
    * \return The angular velocity.
    */
-  const IBDS::Vector3D & getAngularVelocity()const;
+  const Vector3D & getAngularVelocity()const;
 
   /**
    * \brief Sets the angular velocity.
@@ -235,7 +242,7 @@ public:
    *
    * \return The angular acceleration.
    */
-  const IBDS::Vector3D & getAngularAcceleration()const;
+  const Vector3D & getAngularAcceleration()const;
 
   /**
    * \brief Sets the angular acceleration.
@@ -247,7 +254,9 @@ public:
    */
   void setAngularAcceleration(const IBDS::Vector3D & omegaDot);
 
-  virtual void render() const;
+   const Matrix3x3 & calculateK(const Vector3D & a, const Vector3D & b)const;
+  
+
 };// RigidBody
 }// namespace IBDS
 

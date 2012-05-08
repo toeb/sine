@@ -18,22 +18,22 @@ DampedSpring::DampedSpring(Connector *c1, Connector *c2, Real k_s, Real k_d, Rea
 }
 
 void DampedSpring::act (std::vector<Body*> & target, Real time) {
-	a = *(_c1->getPosition());
-	b = *(_c2->getPosition());
+  a = _c1->getWorldPosition();
+  b = _c2->getWorldPosition();
 
-	Vector3D v_a, v_b;
-	v_a = *(_c1->getVelocity());
-	v_b = *(_c2->getVelocity());
+  const Vector3D & v_a = _c1->getWorldVelocity();
+  const Vector3D & v_b = _c2->getWorldVelocity();
 
-	Vector3D distVector;
+	Vector3D normal;
 	Vector3D springForce, dampForce, totalForce;
 	Real dist;
 
-	distVector = b - a;
-	dist = distVector.length();
+	normal = b - a;
+	dist = normal.length();
+  normal = (1/dist)*normal;
 
-	springForce = _k_s * (dist - _restLength) * distVector * (1/dist);
-	dampForce = (_k_d * (v_b - v_a) * distVector) * distVector * (1 / (dist * dist));
+	springForce = _k_s * (dist - _restLength) *normal;
+	dampForce = (_k_d * (v_b - v_a) * normal) * normal ;
 	totalForce = springForce + dampForce;
 
 	_c1->addExternalForce(totalForce);

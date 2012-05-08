@@ -23,18 +23,18 @@ namespace IBDS {
 		 */
 		ParticleConnector(Particle *p);
 
-		const Vector3D * getPosition()const;
-
-		const Vector3D * getVelocity();
+		const Vector3D &  getPosition()const;
+    
+		const Vector3D &  getVelocity()const;
 		
 		void addExternalForce(const Vector3D &f);
 
 		
-		const Vector3D * getNextPosition(Real h) const;
+		const Vector3D &  getNextPosition(Real h) const;
 
-		void applyImpulse(Vector3D const * const p);
+		void applyImpulse(const Vector3D & p);
 
-		Matrix3x3 const * const getKMatrix() const;
+		const Matrix3x3 & getKMatrix() const;
 
 		void evaluate();
 
@@ -46,5 +46,19 @@ namespace IBDS {
 
 		int getStateDimension()const;
 
+    
+    /**
+     * \brief calculates the world position.
+     *
+     * \return  The world position.
+     */
+    const Vector3D &  calculateWorldPosition()const;
+
+    /**
+     * \brief Calculates the world velocity.
+     *
+     * \return  The calculated world velocity.
+     */
+    const Vector3D & calculateWorldVelocity()const;
 	};
-	}
+}

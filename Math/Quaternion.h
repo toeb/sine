@@ -51,9 +51,9 @@ namespace IBDS
 		void setFromAxisAngle (const Vector3D &axis, const Real angle);
 		void getAxisAngle (Vector3D &axis, Real &angle);
 		void setFromMatrix3x3 (Matrix3x3 *m);
-		void getMatrix3x3 (Matrix3x3 &m);
+		void getMatrix3x3 (Matrix3x3 &m)const;
 		void setFromMatrix3x3T (Matrix3x3 *m);
-		void getMatrix3x3T (Matrix3x3 &m);
+		void getMatrix3x3T (Matrix3x3 &m)const;
 		void normalize ();
 		Real length ();
 		Real length2 ();

@@ -204,7 +204,7 @@ void Quaternion::setFromMatrix3x3T (Matrix3x3 *m)
 
 /** Gibt das Quaternion als 3x3 Rotationsmatrix zurück. 
   */
-void Quaternion::getMatrix3x3 (Matrix3x3 &m)
+void Quaternion::getMatrix3x3 (Matrix3x3 &m)const
 {
 	Real xx = x*x;
 	Real yy = y*y;
@@ -238,7 +238,7 @@ void Quaternion::getMatrix3x3 (Matrix3x3 &m)
 
 /** Gibt das Quaternion als transponierte 3x3 Rotationsmatrix zurück. 
   */
-void Quaternion::getMatrix3x3T (Matrix3x3 &m)
+void Quaternion::getMatrix3x3T (Matrix3x3 &m)const
 {
 	Real xx = x*x;
 	Real yy = y*y;

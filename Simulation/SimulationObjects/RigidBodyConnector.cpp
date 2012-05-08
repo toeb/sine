@@ -1,67 +1,44 @@
 #include "RigidBodyConnector.h"
 using namespace IBDS;
 
-Vector3D _rOld;
-
-RigidBodyConnector::RigidBodyConnector(void)
-	{
-	}
-
 RigidBodyConnector::RigidBodyConnector(RigidBody* b, Vector3D *r)
-	{
+{
 	_rigidBody = b;
 	
-	/*Quaternion q;
-	Matrix3x3 R;
-	q = b->getOrientation();
-	q.conjugate().getMatrix3x3(R);
-	_r = new Vector3D(R * (*r));*/
-
 	_r = *r;
-	_rDot = _rigidBody->getAngularVelocity() ^ _r;
+
 }
 
 RigidBodyConnector::~RigidBodyConnector(void)
 	{
 	}
 
-const Vector3D * RigidBodyConnector::getPosition() const {
+const Vector3D &  RigidBodyConnector::getPosition() const {
 	/*return new Vector3D(_rigidBody->getPosition() + *get_r_new());*/
-	return new Vector3D(_rigidBody->getPosition() + _r);
+	return _r;
 }
 
-const Vector3D * RigidBodyConnector::getVelocity() {
-	/*return new Vector3D(_rigidBody->getVelocity() + (_rigidBody->getAngularVelocity() ^ *get_r_new()));*/
-	/*_rDot = _rigidBody->getVelocity() + (_rigidBody->getAngularVelocity() ^ _r);
-	return &_rDot;*/
-	return new Vector3D(_rigidBody->getVelocity() + _rDot);
+const Vector3D &  RigidBodyConnector::getVelocity()const {
+  Vector3D v = _rigidBody->getVelocity() + _rDot;
+	return *(new Vector3D( v));
 }	
 
-//const Vector3D * RigidBodyConnector::get_r_new() const {
-//	Quaternion q;
-//	Matrix3x3 R;
-//	q = _rigidBody->getOrientation();
-//	q.getMatrix3x3(R);
-//
-//	return new Vector3D(R*(*_r));;
-//}
-
 void RigidBodyConnector::addExternalForce(const Vector3D &f) {
-	_rigidBody->addExternalForce(*getPosition(),f);//*get_r_new(),f);
+  _rigidBody->addExternalForce(getWorldPosition(),f);//*get_r_new(),f);
 	}
 
-const Vector3D * RigidBodyConnector::getNextPosition(Real h) const {
+const Vector3D & RigidBodyConnector::getNextPosition(Real h) const {
 	Vector3D nextMassCenterPosition = _rigidBody->getPosition() + h * _rigidBody->getVelocity() + (h * h / 2) * _rigidBody->getAcceleration();
-	return new Vector3D(nextMassCenterPosition + _r);	// by now, _r has been updated via integration 
-	}
+	return *(new Vector3D(nextMassCenterPosition + _r));	// by now, _r has been updated via integration 
+}
 
-void RigidBodyConnector::applyImpulse(Vector3D const * const p){
+void RigidBodyConnector::applyImpulse(const Vector3D & p){
 	if (_rigidBody->getMass() == 0) return;
 
-	Vector3D *newVelocity = new Vector3D(_rigidBody->getVelocity() + ((1 / _rigidBody->getMass()) * *p));
+	Vector3D *newVelocity = new Vector3D(_rigidBody->getVelocity() + ((1 / _rigidBody->getMass()) * p));
 	_rigidBody->setVelocity(*newVelocity);
 
-	Matrix3x3 invertedIntertiaTensor = *(_rigidBody->getInvertedInertiaTensor());
+	const Matrix3x3 & invertedIntertiaTensor = _rigidBody->getInvertedInertiaTensor();
 
 	Matrix3x3 R, RT;
 	Quaternion q = _rigidBody->getOrientation();
@@ -70,25 +47,30 @@ void RigidBodyConnector::applyImpulse(Vector3D const * const p){
 	Matrix3x3 J_inverted_wcs = R*invertedIntertiaTensor*RT;
 
 	//_rigidBody->setAngularVelocity(_rigidBody->getAngularVelocity() + invertedIntertiaTensor * (*get_r_new() ^ *p));
-	_rigidBody->setAngularVelocity(*(new Vector3D(_rigidBody->getAngularVelocity() + invertedIntertiaTensor * (/*_r*/_rOld ^ *p))));
+	_rigidBody->setAngularVelocity(*(new Vector3D(_rigidBody->getAngularVelocity() + invertedIntertiaTensor * (/*_r*/_rOld ^ p))));
 }
 
-Matrix3x3 const * const RigidBodyConnector::getKMatrix() const {
-	if (_rigidBody->getMass() == 0) return new Matrix3x3(Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0));
+const Matrix3x3 & RigidBodyConnector::getKMatrix() const {
+  return _rigidBody->calculateK(_rOld,_rOld);
+ /* Real m = _rigidBody->getMass();
+  if (m == 0) return Matrix3x3::Zero();
 
-	Matrix3x3 idMatrix;
-	//Matrix3x3 crossProductMatrix = SimMath::crossProductMatrix(*get_r_new());
-	Matrix3x3 crossProductMatrix = SimMath::crossProductMatrix(_rOld);
+  const Matrix3x3 & E_3 = Matrix3x3::Identity();
 
+	Matrix3x3 r_star = SimMath::crossProductMatrix(_rOld);
+  
 	Matrix3x3 R, RT;
+
 	Quaternion q = _rigidBody->getOrientation();
 	q.getMatrix3x3(R);
 	q.getMatrix3x3T(RT);
-	Matrix3x3 invertedIntertiaTensor = *(_rigidBody->getInvertedInertiaTensor());
-	Matrix3x3 J_inverted_wcs = R*invertedIntertiaTensor*RT;
+	
+ const Matrix3x3 & J_inv = _rigidBody->getInvertedInertiaTensor();
+	Matrix3x3 J_inv_wcs = R*J_inv*RT;
+  
+  Matrix3x3 K = (1/m)*E_3 - r_star * J_inv_wcs * r_star;
 
-	Matrix3x3 *K=new Matrix3x3(((1 / _rigidBody->getMass()) * idMatrix) - crossProductMatrix * invertedIntertiaTensor * crossProductMatrix);	
-	return K;
+	return *(new Matrix3x3(K));*/
 }
 
 void RigidBodyConnector::evaluate() {
@@ -120,3 +102,15 @@ void RigidBodyConnector::getDerivedState(Real * xDot)const{
 int RigidBodyConnector::getStateDimension()const{
 	return 3;
 	}
+
+
+const Vector3D &  RigidBodyConnector::calculateWorldPosition()const{
+   return _rigidBody->toWorldCoordinates(_r);
+
+}
+const Vector3D & RigidBodyConnector::calculateWorldVelocity()const{
+  const Vector3D & v_s = _rigidBody->getVelocity();
+   Vector3D v = v_s + getVelocity();
+  
+  return *(new Vector3D(v));
+}

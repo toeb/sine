@@ -1,6 +1,7 @@
 #include "RigidBody.h"
 #include <Math/Quaternion.h>
 #include <Simulation/SimulationObjects/Box.h>
+#include <Math/SimMath.h>
 using namespace IBDS;
 
 RigidBody::RigidBody(){
@@ -66,7 +67,7 @@ void RigidBody::evaluate()
   J_inverted(0,0) = 1.0/_J(0,0);
   J_inverted(1,1) = 1.0/_J(1,1);
   J_inverted(2,2) = 1.0/_J(2,2);*/
-  Matrix3x3 J_inverted = *getInvertedInertiaTensor();
+  Matrix3x3 J_inverted = getInvertedInertiaTensor();
 
   Matrix3x3 J_wcs = R*_J*RT;
   Matrix3x3 J_inverted_wcs = R*J_inverted*RT;
@@ -178,12 +179,12 @@ void RigidBody::setMass(Real mass){ _m = mass;}
 void RigidBody::setInertiaTensor(const Matrix3x3 & inertia){_J=inertia;}
 const Matrix3x3 &  RigidBody::getInertiaTensor()const{return _J;}
 
-Matrix3x3 const * const RigidBody::getInvertedInertiaTensor() const {
-	Matrix3x3 *J_inverted = new Matrix3x3();
-	(*J_inverted)(0,0) = 1.0/_J(0,0);
-	(*J_inverted)(1,1) = 1.0/_J(1,1);
-	(*J_inverted)(2,2) = 1.0/_J(2,2);
-	return J_inverted;
+const Matrix3x3 & RigidBody::getInvertedInertiaTensor() const {
+	Matrix3x3 J_inverted;
+	J_inverted(0,0) = 1.0/_J(0,0);
+	J_inverted(1,1) = 1.0/_J(1,1);
+	J_inverted(2,2) = 1.0/_J(2,2);
+	return *(new Matrix3x3(J_inverted));
 }
 
 RigidBody* RigidBody::createSphere(Real m, Real r){
@@ -221,6 +222,33 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   return cylinder;
 }
 
-void RigidBody::render() const {
-	// empty for now, since all the used rigid bodies are primitives with render() defined in their own subclass
-	}
+const Vector3D & RigidBody::toWorldCoordinates(const Vector3D & r_ocs){
+  Matrix3x3 RT;
+  _q.getMatrix3x3(RT);
+  Vector3D r_wcs= _x + RT* r_ocs;
+  return *(new Vector3D(r_wcs));
+}
+const Matrix3x3 &  RigidBody::calculateK(const Vector3D & a, const Vector3D & b)const{
+  Real m = getMass();
+  if (m == 0) return Matrix3x3::Zero();
+
+  const Matrix3x3 & E_3 = Matrix3x3::Identity();
+
+	Matrix3x3 r_a_star = SimMath::crossProductMatrix(a);
+  Matrix3x3 r_b_star = SimMath::crossProductMatrix(b);
+  
+	Matrix3x3 R, RT;
+
+	Quaternion q = getOrientation();
+	q.getMatrix3x3(R);
+	q.getMatrix3x3T(RT);
+	
+  const Matrix3x3 & J_inv = getInvertedInertiaTensor();
+	Matrix3x3 J_inv_wcs = R*J_inv*RT;
+  
+  Matrix3x3 K = (1/m)*E_3 - r_a_star * J_inv_wcs * r_b_star;
+
+	return *(new Matrix3x3(K));
+};
+  
+

@@ -48,7 +48,7 @@ namespace IBDS
 		Vector3D(const Real x, const Real y, const Real z);
 		Vector3D();
 		Vector3D(const Vector3D &vector);
-
+    static const Vector3D & Zero();
 		friend Vector3D operator - (const Vector3D& v);						  // -v1
 		friend Vector3D operator + (const Vector3D& a, const Vector3D& b);	  // v1 + v2
 		friend Vector3D operator - (const Vector3D& a, const Vector3D& b);	  // v1 - v2

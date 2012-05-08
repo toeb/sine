@@ -104,15 +104,22 @@ void Simulation::simulate(Real targetTime){
     cerr << "INVALID SIMULATION"<<endl;
     return;
   }
-
+  
   // simulation is only allow forwards so this method fails quietly when targetTime < time
   if(targetTime < _time)return;
+
+  for(auto it = _connectors.begin(); it != _connectors.end(); it++){
+    (*it)->calculate();
+  }
 
   _targetTime = targetTime;
   // (1) reset all forces
   resetForces();
   // (2) apply external forces
   applyExternalForces();
+
+
+
   // (3) call beforeintegration
   beforeIntegration();
 
@@ -120,7 +127,7 @@ void Simulation::simulate(Real targetTime){
   _time = targetTime;
   afterIntegration();
 
-
+  
 }
 
 void Simulation::integrate(){

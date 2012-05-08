@@ -10,9 +10,6 @@ namespace IBDS {
 	class BallJoint : public Joint
 	{
 	private:
-		BallJoint(void);
-
-
 		Connector *_c1;
 		Connector *_c2;
 
@@ -30,6 +27,8 @@ namespace IBDS {
 		bool correctPosition(Real h);
 		void correctVelocity();
 		
+
+
 		void evaluateKInverse();
 	};
 	}

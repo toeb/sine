@@ -31,7 +31,7 @@ void CustomSimulation::buildModel(){
   //  _integratorManager = new IntegratorsManager(this,integrators,3);
 //    MiniGL::setIntegratorsManager(_integratorManager);
 
-    setIntegrator(integrators[0]);
+    setIntegrator(integrators[1]);
 
   addRenderer(new LightRenderer());
   addRenderer(new CoordinateSystemRenderer());
@@ -53,7 +53,7 @@ void CustomSimulation::buildModel(){
   Particle* swingHolder1 = new Particle();
   Particle* swingHolder2 = new Particle();
   
-  cube->setPosition(Vector3D(0,2,0));
+  cube->setPosition(Vector3D(2,2,2));
   cube2->setPosition(Vector3D(0,0,0));
   cube3->setPosition(cube2->getPosition() + Vector3D(0,-2,0));
   sphere->setPosition(Vector3D(1,1,0));
@@ -96,7 +96,7 @@ void CustomSimulation::buildModel(){
   // spring parameters
   Real restLength = 1.5;
   Real ks = 60;
-  Real kd = 9;
+  Real kd = 0;
 
   Real restLength2 = 1.5;
   Real ks2 = 40;
@@ -104,8 +104,8 @@ void CustomSimulation::buildModel(){
 
   DampedSpring *spring1, *spring2;
   
-  Connector *c1 = new RigidBodyConnector(cube,new Vector3D(0,-0.5,0));
-  Connector *c2 = new RigidBodyConnector(cube2,new Vector3D(0.5,0.5,0));
+  Connector *c1 = new RigidBodyConnector(cube,new Vector3D(0,0,0));
+  Connector *c2 = new RigidBodyConnector(cube2,new Vector3D(0,0,0));
   Connector *c3 = new RigidBodyConnector(cube2,new Vector3D(0,-0.5,0));
   Connector *c4 = new RigidBodyConnector(cube3,new Vector3D(0,0.5,0));
   Connector *c5 = new ParticleConnector(swingHolder1);
@@ -131,7 +131,7 @@ void CustomSimulation::buildModel(){
   spring2 = new DampedSpring(c3,c4,ks2,kd2,restLength2);
 
   addForce(spring1);
-  addForce(spring2);
+ addForce(spring2);
   addForce(new Gravity());
 
   addJoint(new BallJoint(c5,c7));

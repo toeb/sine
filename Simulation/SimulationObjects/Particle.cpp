@@ -97,41 +97,51 @@ Real IBDS::Particle::getMass() const
   return m_mass;
 }
 
-void IBDS::Particle::setMass( Real val )
+void Particle::setMass( const Real & val )
 {
   m_mass = val;
 }
 
-IBDS::Vector3D IBDS::Particle::getPosition() const
+const Vector3D & Particle::getPosition() const
 {
   return m_position;
 }
 
-void IBDS::Particle::setPosition( IBDS::Vector3D val )
+void IBDS::Particle::setPosition( const Vector3D & val )
 {
   m_position = val;
 }
 
-IBDS::Vector3D IBDS::Particle::getVelocity() const
+const Vector3D & Particle::getVelocity() const
 {
   return m_velocity;
 }
 
-void IBDS::Particle::setVelocity( IBDS::Vector3D val )
+void IBDS::Particle::setVelocity(const Vector3D & val )
 {
   m_velocity = val;
 }
 
-IBDS::Vector3D IBDS::Particle::getAcceleration() const
+const Vector3D & Particle::getAcceleration() const
 {
   return m_acceleration;
 }
 
-void IBDS::Particle::setAcceleration( IBDS::Vector3D val )
+void IBDS::Particle::setAcceleration(const Vector3D & val )
 {
   m_acceleration = val;
 }
 
 void Particle::render() const {
 	MiniGL::drawPoint(getPosition(),5,MiniGL::darkblue);
+}
+
+
+
+const Matrix3x3 & Particle::calculateK(const Vector3D & a, const Vector3D & b)const{
+  Real m = getMass();
+  if (m == 0) return Matrix3x3::Zero();
+  const Matrix3x3 & E_3 = Matrix3x3::Identity();
+  Matrix3x3 K = (1 / m) * E_3;
+	return *(new Matrix3x3(K));
 }
