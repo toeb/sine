@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "SimulationObjects/Force.h"
 #include "Integrators/Integrator.h"
 #include "ISimulationObject.h"
@@ -12,21 +11,25 @@
 
 #include <vector>
 
-
 namespace IBDS{
 
 class Simulation:public ISimulationObject{
 private:
   Real _time;
   Real _targetTime;
+
   Integrator* _integrator;
+  Integrator* _connectorIntegrator;
+
+  CompositeIntegratable & _integrables;
+  CompositeIntegratable _integrableConnectors;
+
+
   std::vector<Body*> & _bodies;
-  CompositeIntegratable & _integables;
   std::vector<Force*> _forces;
   std::vector<Connector*> _connectors;
-  CompositeIntegratable _integrableConnectors;
   std::vector<Joint*> _joints;
-  const char * _simulationName;
+
 protected:
   virtual void onSimulationObjectAdded(ISimulationObject * object){};
   /**
@@ -52,8 +55,6 @@ public:
 
   bool initialize();
 
-  void setSimulationName(const char * name);
-  const char* getSimulationName()const;
   /**
    * \brief Default constructor.
    *
@@ -73,20 +74,19 @@ public:
   void setIntegrator(Integrator * integrator);
   Integrator * getIntegrator();
 
-  void addBody(Body * object);
-  void addForce(Force *force);
   
   void simulate(Real targetTime);
   
-  void render();
-
   void resetForces();
 
+  void addBody(Body * object);
+  void addForce(Force *force);
   void addConnector(Connector *c);
   void addJoint(Joint *joint);
 
+
 private:
-  
+  void calculateConnectorWorldCoordinateValues();
   void applyExternalForces();
   void integrate();
 };

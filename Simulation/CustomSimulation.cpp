@@ -19,19 +19,51 @@
 #include <Visualization/Renderers/CameraRenderer.h>
 #include <Visualization/Renderers/SimulationRunnerRenderer.h>
 #include <Visualization/Renderers/TweakBarRenderer.h>
-using namespace IBDS;
 
+#include <map>
+
+using namespace IBDS;
+using namespace std;
+
+class SimulationBuilder{
+private:
+  Simulation & _simulation;
+  map<const char *  ,ISimulationObject *> _simulationObjects; 
+public:
+  SimulationBuilder(Simulation & simulation):_simulation(simulation){}
+  Box * createBox(const char * name, const Vector3D & position=Vector3D::Zero(), Real mass=1, Real width=1, Real height=1, Real depth=1){
+    if(nameExists(name))return 0;
+    Box * box = new Box(1,width,height,depth);
+    box->setName(name);
+    box->setPosition(position);
+  }
+  Sphere * createSphere(string name, const Vector3D & position=Vector3D::Zero(), Real mass=1,Real radius = 1){}
+  Particle * createParticle(string name, const Vector3D & position=Vector3D::Zero(), Real mass=1){}
+  BallJoint * createJoint(string name){}
+
+protected:
+  bool nameExists(const  char *name){
+     if(_simulationObjects.find(name) != _simulationObjects.end()){
+      return false;
+    }
+     return true;
+  }
+  bool addSimulationObject(ISimulationObject * obj){
+    if(nameExists(obj->getName()))return false;
+    _simulationObjects[obj->getName()] = obj;
+  }
+  
+};
 
 void CustomSimulation::buildModel(){
-  setSimulationName("Custom Simulation");
+ 
+  setName("Custom Simulation");
+  //initialize Integrators.
+  Integrator* integrators[3] = {new ExplicitEuler(), new RungeKutta4(0.001), new RungeKuttaFehlberg45()};    
+  //_integratorManager = new IntegratorsManager(this,integrators,3);
+  //MiniGL::setIntegratorsManager(_integratorManager);
 
-  
-    //initialize Integrators.
-    Integrator* integrators[3] = {new ExplicitEuler(), new RungeKutta4(0.001), new RungeKuttaFehlberg45()};    
-  //  _integratorManager = new IntegratorsManager(this,integrators,3);
-//    MiniGL::setIntegratorsManager(_integratorManager);
-
-    setIntegrator(integrators[1]);
+  setIntegrator(integrators[1]);
 
   addRenderer(new LightRenderer());
   addRenderer(new CoordinateSystemRenderer());
@@ -104,20 +136,20 @@ void CustomSimulation::buildModel(){
 
   DampedSpring *spring1, *spring2;
   
-  Connector *c1 = new RigidBodyConnector(cube,new Vector3D(0,0,0));
-  Connector *c2 = new RigidBodyConnector(cube2,new Vector3D(0,0,0));
-  Connector *c3 = new RigidBodyConnector(cube2,new Vector3D(0,-0.5,0));
-  Connector *c4 = new RigidBodyConnector(cube3,new Vector3D(0,0.5,0));
+  Connector *c1 = new RigidBodyConnector(*cube, Vector3D(0,0,0));
+  Connector *c2 = new RigidBodyConnector(*cube2, Vector3D(0,0,0));
+  Connector *c3 = new RigidBodyConnector(*cube2, Vector3D(0,-0.5,0));
+  Connector *c4 = new RigidBodyConnector(*cube3, Vector3D(0,0.5,0));
   Connector *c5 = new ParticleConnector(swingHolder1);
   Connector *c6 = new ParticleConnector(swingHolder2);
-  Connector *c7 = new RigidBodyConnector(swingSegment1,new Vector3D(swingHolder1->getPosition() - swingSegment1->getPosition()));
-  Connector *c8 = new RigidBodyConnector(swingSegment2,new Vector3D(swingHolder2->getPosition() - swingSegment2->getPosition()));
+  Connector *c7 = new RigidBodyConnector(*swingSegment1, Vector3D(swingHolder1->getPosition() - swingSegment1->getPosition()));
+  Connector *c8 = new RigidBodyConnector(*swingSegment2, Vector3D(swingHolder2->getPosition() - swingSegment2->getPosition()));
   Vector3D swingBottomLeft(swingSegment3->getPosition()[0]-swingWidth/2,swingSegment3->getPosition()[1],swingSegment3->getPosition()[2]);
   Vector3D swingBottomRight(swingSegment3->getPosition()[0]+swingWidth/2,swingSegment3->getPosition()[1],swingSegment3->getPosition()[2]);
-  Connector *c9 = new RigidBodyConnector(swingSegment1,new Vector3D(swingBottomLeft - swingSegment1->getPosition()));
-  Connector *c10 = new RigidBodyConnector(swingSegment3,new Vector3D(swingBottomLeft - swingSegment3->getPosition()));
-  Connector *c11 = new RigidBodyConnector(swingSegment3,new Vector3D(swingBottomRight - swingSegment3->getPosition()));
-  Connector *c12 = new RigidBodyConnector(swingSegment2,new Vector3D(swingBottomRight - swingSegment2->getPosition()));
+  Connector *c9 = new RigidBodyConnector(*swingSegment1, Vector3D(swingBottomLeft - swingSegment1->getPosition()));
+  Connector *c10 = new RigidBodyConnector(*swingSegment3, Vector3D(swingBottomLeft - swingSegment3->getPosition()));
+  Connector *c11 = new RigidBodyConnector(*swingSegment3, Vector3D(swingBottomRight - swingSegment3->getPosition()));
+  Connector *c12 = new RigidBodyConnector(*swingSegment2, Vector3D(swingBottomRight - swingSegment2->getPosition()));
   addConnector(c1);
   addConnector(c2);
   addConnector(c3);
@@ -131,11 +163,11 @@ void CustomSimulation::buildModel(){
   spring2 = new DampedSpring(c3,c4,ks2,kd2,restLength2);
 
   addForce(spring1);
- addForce(spring2);
+  addForce(spring2);
   addForce(new Gravity());
 
   addJoint(new BallJoint(c5,c7));
   addJoint(new BallJoint(c6,c8));
-
+  addJoint(new BallJoint(c9,c10));
 
   }/**/

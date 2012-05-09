@@ -69,29 +69,33 @@ void GlutSimulationRunner::cleanup(){
 }
 bool GlutSimulationRunner::initialize(){
   
-  MiniGL::init (_commandlineArgumentCount, _commandlineArgumentArray, 800, 600, 0, 0, getSimulation()->getSimulationName());
-  MiniGL::setClientSceneFunc(renderGlutCallback);
-  onDesiredTimeStepChanged(); //sets the simulationcallback
-
-  if(!getSimulation()){
+  Simulation * simulation = getSimulation();
+  if(!simulation){
     cerr << "GlutSimulationRunner::initialize:  Simulation is not set" << endl;
     return false;
   }
-  Simulation * simulation = getSimulation();
-  
   simulation->initialize();
   if(!simulation->isSimulationValid()){
         cerr << "GlutSimulationRunner::initialize:  Simulation is not valid" << endl;
     return false;
   }
-  if(!SimulationRunner::initialize())return false;
+
   
+  const char * simulationName = getSimulationName(simulation);
+  
+
+  MiniGL::init (_commandlineArgumentCount, _commandlineArgumentArray, 800, 600, 0, 0, simulationName);
+  MiniGL::setClientSceneFunc(renderGlutCallback);
+  onDesiredTimeStepChanged(); //sets the simulationcallback
+
+  
+  
+  
+
+ if(!SimulationRunner::initialize())return false;
  if(! RenderEngine::initialize())return false;
 
  return true;
-
-
- 
 }
 
 void GlutSimulationRunner::onSimulationSet(){

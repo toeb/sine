@@ -11,6 +11,8 @@ private:
 protected:
   void buildModel();
   void applyExternalForces();
+public:
+
 };
 }
 #endif

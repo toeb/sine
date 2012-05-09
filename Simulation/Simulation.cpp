@@ -6,17 +6,15 @@ using namespace std;
 Simulation::Simulation():
   //_simulationObjects(*(new vector<ISimulationObject*>())),
   _bodies(*(new vector<Body*>())),
-  _integables(*(new CompositeIntegratable())),
+  _integrables(*(new CompositeIntegratable())),
   _forces(*(new vector<Force*>())),
   _integrableConnectors(*(new CompositeIntegratable())),
   _joints(*(new vector<Joint*>())),
   _connectors(*(new vector<Connector*>())),
   _integrator(0),
-  _simulationName(0),
   _time(0),
   _targetTime(0)
 {
-  setSimulationName("Unnamed Simulation");
 }
   void Simulation::reset(){
     cleanup(); buildModel();
@@ -37,7 +35,7 @@ void Simulation::addJoint(Joint *joint) {
 void Simulation::addBody(Body * body){
   _bodies.push_back(body);
   //IIntegrable* integrable = dynamic_cast<IIntegrable*>(body);
-  _integables.addIntegratable(body);
+  _integrables.addIntegratable(body);
   onSimulationObjectAdded(body);
 }
 
@@ -48,7 +46,8 @@ void Simulation::addForce(Force *force) {
 void Simulation::setIntegrator(Integrator* integrator){
   //if(_integrator)_integrator->setIntegratable(0);
   _integrator = integrator;
-  _integrator->setIntegratable(&_integables);
+  _integrator->setIntegratable(&_integrables);
+  
 }
 Integrator * Simulation::getIntegrator(){
   return _integrator;
@@ -71,7 +70,7 @@ void Simulation::beforeIntegration(){
       }
     iterations++;
     } while (!toleranceSatisfied && iterations < 10);	// the loop is repeated until correctPosition returns true for all joints
-
+  _integrator->setIntegratable(&_integrables);
 }
 void Simulation::afterIntegration(){  
   // joint velocity correction
@@ -99,6 +98,13 @@ bool Simulation::isSimulationValid(){
   return true;
 }
 
+void Simulation::calculateConnectorWorldCoordinateValues(){
+  for(auto it = _connectors.begin(); it != _connectors.end(); it++){
+    (*it)->calculate();
+  }
+
+}
+
 void Simulation::simulate(Real targetTime){
   if(!isSimulationValid()){
     cerr << "INVALID SIMULATION"<<endl;
@@ -107,12 +113,11 @@ void Simulation::simulate(Real targetTime){
   
   // simulation is only allow forwards so this method fails quietly when targetTime < time
   if(targetTime < _time)return;
-
-  for(auto it = _connectors.begin(); it != _connectors.end(); it++){
-    (*it)->calculate();
-  }
-
   _targetTime = targetTime;
+
+  // pre step.  world coordinate values of connectors are calculated only once in every step
+  calculateConnectorWorldCoordinateValues();
+
   // (1) reset all forces
   resetForces();
   // (2) apply external forces
@@ -133,7 +138,7 @@ void Simulation::simulate(Real targetTime){
 void Simulation::integrate(){
   Real targetTime = getTargetTime();
   // main simulation step
-  _integrator->setIntegratable(&_integables);	
+  //_integrator->setIntegratable(&_integrables);	
   _integrator->integrate(getTime(),targetTime);
   _time=targetTime;
 }
@@ -151,11 +156,3 @@ bool Simulation::initialize(){
   buildModel();
   return isSimulationValid();
 }
-
-const char* Simulation::getSimulationName()const{
-  return _simulationName;
-}
-void Simulation::setSimulationName(const char* name){
-  _simulationName = name;
-}
-

@@ -9,12 +9,14 @@
 namespace IBDS{
 	class Box: public RigidBody, public IRenderer
 		{
+     
 		private:
 			// size of the box
 			Real _x, _y, _z;
 			Box();
 		public:
-			
+			 using RigidBody::getName;
+      using RigidBody::setName;
 			~Box();
 			/**
 			 *  Creates a box with given mass and extents.

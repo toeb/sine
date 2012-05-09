@@ -10,20 +10,13 @@ namespace IBDS {
 	class RigidBodyConnector: public Connector
 	{
 	private:
-		// pointer to the associated rigid body
-		RigidBody *_rigidBody;
-
-		// pointer to the position of the connector with respect to the center of mass assuming zero rotation
-		/*Vector3D *_r;*/
-		Vector3D _r;
-		Vector3D _rDot;
-
+		// reference to the associated rigid body
+		RigidBody & _rigidBody;
+		///< The connection vector in object coordinates of the associated body
+		Vector3D  _r;
+		
+    Vector3D _rDot;
     Vector3D _rOld;
-		/**
-		 * Returns the current position of the connector with respect to the center of mass.
-		 */
-		//const Vector3D * get_r_new() const;
-
 	public:
 		~RigidBodyConnector(void);
 
@@ -32,7 +25,7 @@ namespace IBDS {
 		 * \param b pointer to the rigid body to associate this object with.
 		 * \param r pointer to the position of the connector with respect to the center of mass
 		 */
-		RigidBodyConnector(RigidBody *b, Vector3D *r);
+		RigidBodyConnector(RigidBody & b, const Vector3D & r);
 
     /**
      * \brief Gets the position of the connector in object coordinates
@@ -54,11 +47,15 @@ namespace IBDS {
 
 		void addExternalForce(const Vector3D &f);
 
-
 		const Vector3D &  getNextPosition(Real h) const;
 
 		void applyImpulse(const Vector3D & p);
 
+    /**
+     * \brief Gets the K(r,r) matrix. 
+     *
+     * \return  The k matrix.
+     */
 		const Matrix3x3 & getKMatrix() const;
 
 		void evaluate();

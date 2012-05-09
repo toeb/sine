@@ -14,6 +14,9 @@ private:
   bool _paused;
 public:
 
+  
+  const char * getSimulationName(const Simulation * simulation) const;
+
   /**
    * \brief Query if this simulation is paused.
    *

@@ -48,6 +48,7 @@ int main( int argc, char **argv )
   runner->setCommandLineArguments(argc,argv);
 
   runner->setSimulation(simulation);
+
   //add a renderer that shows info for the simulation runner
   runner->getRenderManager()->addRenderer(new SimulationRunnerRenderer(*runner));
   

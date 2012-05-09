@@ -3,6 +3,7 @@
 #include "IIntegrable.h"
 #include <math.h>
 #include <string>
+#include <Simulation/ISimulationObject.h>
 namespace IBDS{
 
 /**
@@ -10,7 +11,7 @@ namespace IBDS{
  *
  * <remarks> Tobias Becker, 13.04.2012.</remarks>
  */
-class Integrator{
+class Integrator : public ISimulationObject{
 private:
   /// <summary> The integratable </summary>
   IIntegrable * _integratable;
@@ -18,28 +19,8 @@ private:
   VectorND * _x;
   VectorND * _xNext;
   VectorND * _xDot;
-  std::string & _name;
 public:
 
-  /**
-   * \brief Gets the name of this integrator.
-   *
-   * \author Tobias Becker
-   * \date 15.04.2012
-   *
-   * \return The name.
-   */
-  const virtual std::string & getName()const;
-
-  /**
-   * \brief Gets the name of this integrator.
-   *
-   * \author Tobias Becker
-   * \date 15.04.2012
-   *
-   * \return The name.
-   */
-  void setName(const std::string& name);
   /**
    * <summary> Default constructor.</summary>
    *
