@@ -20,5 +20,16 @@ void Box::render() {
 	Matrix3x3 R;
 	Quaternion q = RigidBody::getOrientation();
 	q.getMatrix3x3T(R);
-	MiniGL::drawCube(&getPosition(),&R,(float)_x,(float)_y,(float)_z,MiniGL::darkGray);
-	}
+  MiniGL::drawCube(&getPosition(),&R,(float)_x,(float)_y,(float)_z,MiniGL::gray);
+
+
+  Vector3D position(_x/2+0.1,0,0);
+  const char * name = "";
+  int length =0;
+  if(getName()){
+    name = getName()->c_str();
+    length = getName()->length();
+  }
+
+  MiniGL::drawStrokeText(position+getPosition(),0.003f,name,length,MiniGL::darkblue);
+}

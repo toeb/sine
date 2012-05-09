@@ -1,10 +1,11 @@
 #include "ExplicitEuler.h"
 
+using namespace std;
 using namespace IBDS;
 
 ExplicitEuler::ExplicitEuler(Real h){
   setStepSize(h);
-  setName("Explicit Euler");
+  setName(new string("Explicit Euler"));
 }
 
 void ExplicitEuler::doStep(const Real & h, VectorND & x_i){

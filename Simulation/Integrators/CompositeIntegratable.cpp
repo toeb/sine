@@ -7,7 +7,9 @@ using namespace std;
 CompositeIntegratable::CompositeIntegratable(){
   _children = new vector<IIntegrable*>();
 }
-
+void CompositeIntegratable::clear(){
+  _children->clear();
+}
 void CompositeIntegratable::addIntegratable(IIntegrable  * integratable){
   _children->push_back(integratable);
 }

@@ -68,7 +68,7 @@ namespace IBDS
 		friend bool operator == (const Vector3D &a, const Vector3D &b);		  // a == b ?
 		friend bool operator != (const Vector3D &a, const Vector3D &b);		  // a == b ?
 		friend bool operator < (const Vector3D &a, const Vector3D &b);		  // a < b: hat geringeren Abstand zum Nullpunkt
-
+    Vector3D & copy();
 
 		Vector3D& operator = ( const Vector3D& v );					// Zuweisung
 		Vector3D& operator -= (const Vector3D& v);					// Subtraktion

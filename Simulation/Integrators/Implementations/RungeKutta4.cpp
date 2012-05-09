@@ -1,10 +1,10 @@
 #include "RungeKutta4.h"
 
 using namespace IBDS;
-
+using namespace std;
 RungeKutta4::RungeKutta4(Real h){
   setStepSize(h);
-  setName("Runge Kutta 4");
+  setName(new string("Runge Kutta 4"));
 }
 
 void RungeKutta4::doStep(const Real & h, VectorND & x_i){

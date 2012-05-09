@@ -30,10 +30,10 @@
 #include "SImulation/ISimulationObject.h"
 #include "Body.h"
 #include "Visualization/MiniGL.h"
-
+#include <Visualization/IRenderer.h>
 namespace IBDS
 {
-class Particle : public Body
+class Particle : public Body, public IRenderer
   {
   private:
     Real m_mass;
@@ -70,7 +70,7 @@ class Particle : public Body
      const Matrix3x3 & calculateK(const Vector3D & a, const Vector3D & b)const;
 
 
-	  virtual void render() const;
+	   void render();
   };
 }
 

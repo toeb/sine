@@ -21,11 +21,11 @@ void SimulationRunner::setDesiredTimeStepSize(Real h){
   onDesiredTimeStepChanged();
 }
 const char * SimulationRunner::getSimulationName(const Simulation * simulation)const{
-  const char * simulationName = simulation->getName();
+  const string * simulationName = simulation->getName();
   if(!simulationName){
-    simulationName ="Unnamed Simulation";
+    simulationName =new string("Unnamed Simulation");
   }
-  return simulationName;
+  return simulationName->c_str();
 
 }
 void SimulationRunner::doTimestep(Real dt){

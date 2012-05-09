@@ -8,7 +8,7 @@ namespace IBDS{
 	class Gravity : public Force
 		{
 		private:
-			Real _g;
+      Vector3D _g;
 		public:
 			~Gravity(void);
 
@@ -22,9 +22,11 @@ namespace IBDS{
 			 * \param g gravity coefficient
 			 */
 			Gravity(Real g);
+			Gravity(const Vector3D & g);
 			
+      void setGravity(const Vector3D & g);
+
 			void act (std::vector<Body*> & target, Real time);
 
-			virtual void render() const;
 		};
 	}

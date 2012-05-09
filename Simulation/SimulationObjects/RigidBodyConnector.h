@@ -17,15 +17,19 @@ namespace IBDS {
 		
     Vector3D _rDot;
     Vector3D _rOld;
+    	/**
+		 * Create an instance of this class associated with the rigid body b
+		 * \param b pointer to the rigid body to associate this object with.
+		 * \param r pointer to the position of the connector in object coordinates
+		 */
+		RigidBodyConnector(RigidBody & b, const Vector3D & r);
+
 	public:
 		~RigidBodyConnector(void);
 
-		/**
-		 * Create an instance of this class associated with the rigid body b
-		 * \param b pointer to the rigid body to associate this object with.
-		 * \param r pointer to the position of the connector with respect to the center of mass
-		 */
-		RigidBodyConnector(RigidBody & b, const Vector3D & r);
+
+    static RigidBodyConnector * createWithLocalConnectionPoint(RigidBody & body, const Vector3D & r_ocs);
+    static RigidBodyConnector * createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs);
 
     /**
      * \brief Gets the position of the connector in object coordinates

@@ -3,7 +3,7 @@
 namespace IBDS{
 class ISimulationObject {
 private:
-  const char * _name;
+  const std::string * _name;
 public:
   ISimulationObject():_name(0){}
   /**
@@ -11,14 +11,20 @@ public:
    *
    * \param name  The name.
    */
-  void setName(const char * name){_name = name;}
+  void setName(const std::string * name ){
+    if(!name){
+      _name=0;
+      return;
+    }
+    _name = new std::string(*name);
+  }
   
   /**
    * \brief Gets the name.
    *
    * \return  null if it fails, else the name.
    */
-  const char * getName()const{return _name;}
+  const std::string* getName()const{return _name;}
 
   /**
    * \brief Initializes this object.

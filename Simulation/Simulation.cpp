@@ -16,9 +16,19 @@ Simulation::Simulation():
   _targetTime(0)
 {
 }
-  void Simulation::reset(){
-    cleanup(); buildModel();
-  }
+
+void Simulation::reset(){
+  _bodies.clear();
+  _integrables.clear();
+  _integrableConnectors.clear();
+  _forces.clear();
+  _joints.clear();
+  _connectors.clear();
+  _integrator=0;  
+  buildModel();
+}
+
+
 Simulation::~Simulation(){}
 
 void Simulation::addConnector(Connector *c) {
@@ -138,7 +148,6 @@ void Simulation::simulate(Real targetTime){
 void Simulation::integrate(){
   Real targetTime = getTargetTime();
   // main simulation step
-  //_integrator->setIntegratable(&_integrables);	
   _integrator->integrate(getTime(),targetTime);
   _time=targetTime;
 }

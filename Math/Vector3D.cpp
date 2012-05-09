@@ -30,6 +30,10 @@
 
 using namespace IBDS;
 
+Vector3D & Vector3D::copy(){
+   return *(new Vector3D(*this));
+}
+
 /** Konstruktor: Erzeugt einen Vektor mit den übergebenen Koordinaten. 
   */
 Vector3D::Vector3D(const Real vx, const Real vy, const Real vz)

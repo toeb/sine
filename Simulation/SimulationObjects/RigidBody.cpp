@@ -4,6 +4,19 @@
 #include <Math/SimMath.h>
 using namespace IBDS;
 
+Vector3D & RigidBody::worldToObjectCoordinates(const Vector3D & r_wcs)const{
+    Vector3D r_ocs = r_wcs - getPosition();
+    Matrix3x3 & RT = getOrientation().createTransposedRotationMatrix();
+    r_ocs=RT*r_ocs;
+    return r_ocs.copy();
+}
+
+Vector3D & RigidBody::objectToWorldCoordinates(const Vector3D & r_ocs)const{
+  Matrix3x3 & R = getOrientation().createRotationMatrix();
+  Vector3D r_wcs= getPosition() + R* r_ocs;
+  return r_wcs.copy();
+}
+
 RigidBody::RigidBody(){
   _q.w=1;
   _q.x=0;
@@ -222,12 +235,6 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   return cylinder;
 }
 
-const Vector3D & RigidBody::toWorldCoordinates(const Vector3D & r_ocs){
-  Matrix3x3 RT;
-  _q.getMatrix3x3(RT);
-  Vector3D r_wcs= _x + RT* r_ocs;
-  return *(new Vector3D(r_wcs));
-}
 const Matrix3x3 &  RigidBody::calculateK(const Vector3D & a, const Vector3D & b)const{
   Real m = getMass();
   if (m == 0) return Matrix3x3::Zero();

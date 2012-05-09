@@ -27,6 +27,18 @@
 
 using namespace IBDS;
 
+Matrix3x3 & Quaternion::createRotationMatrix()const{
+  Matrix3x3 & R = *(new Matrix3x3());
+  getMatrix3x3(R);
+  return R;
+}
+
+Matrix3x3 & Quaternion::createTransposedRotationMatrix()const{
+  Matrix3x3 & RT = *(new Matrix3x3());
+  getMatrix3x3T(RT);
+  return RT;
+}
+
 /** Standard-Konstruktor: erstellt ein Quaternion und setzt alle Werte auf 0.
   */
 Quaternion::Quaternion()

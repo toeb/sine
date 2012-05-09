@@ -17,6 +17,8 @@ namespace IBDS{
 		public:
 			 using RigidBody::getName;
       using RigidBody::setName;
+      using RigidBody::initialize;
+      using RigidBody::cleanup;
 			~Box();
 			/**
 			 *  Creates a box with given mass and extents.

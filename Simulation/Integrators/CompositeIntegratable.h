@@ -32,6 +32,8 @@ public:
    */
   void addIntegratable(IIntegrable * IIntegrable);
 
+  void clear();
+
   /**
    * <summary> Evaluates this composite Integratable object by 
    * 					 evaluating each of its children</summary>

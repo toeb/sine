@@ -5,7 +5,13 @@ RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
   :_rigidBody(b), _r(r)
 {
 }
-
+RigidBodyConnector* RigidBodyConnector::createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs){
+  Vector3D & r_ocs = body.worldToObjectCoordinates(r_wcs);
+  return RigidBodyConnector::createWithLocalConnectionPoint(body,r_ocs);
+}
+RigidBodyConnector* RigidBodyConnector::createWithLocalConnectionPoint(RigidBody & body, const Vector3D & r_ocs){
+  return new RigidBodyConnector(body,r_ocs);
+}
 RigidBodyConnector::~RigidBodyConnector(void)
 {
 }
@@ -80,7 +86,7 @@ int RigidBodyConnector::getStateDimension()const{
 
 
 const Vector3D &  RigidBodyConnector::calculateWorldPosition()const{
-   return _rigidBody.toWorldCoordinates(_r);
+   return _rigidBody.objectToWorldCoordinates(_r);
 
 }
 const Vector3D & RigidBodyConnector::calculateWorldVelocity()const{

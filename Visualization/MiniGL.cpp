@@ -272,7 +272,7 @@ void MiniGL::drawBitmapText (float x, float y, const char *str, int strLength, f
 /** Zeichnet einen Stroketext auf den Bildschirm an die Position x,y
   * (0,0 ist die Mitte des Bildschirms.
   */
-void MiniGL::drawStrokeText (const Real x, const Real y, const Real z, float scale, const char *str, int strLength, float *color)
+void MiniGL::drawStrokeText (const Real x, const Real y, const Real z, float scale, const char *str, int strLength,const float *color)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);
@@ -291,7 +291,7 @@ void MiniGL::drawStrokeText (const Real x, const Real y, const Real z, float sca
 
 /** Zeichnet einen Stroketext auf den Bildschirm an die Position x,y,z.
   */
-void MiniGL::drawStrokeText (const Vector3D &pos, float scale, const char *str, int strLength, float *color)
+void MiniGL::drawStrokeText (const Vector3D &pos, float scale, const char *str, int strLength, const float *color)
 {
 	drawStrokeText(pos[0], pos[1], pos[2], scale, str, strLength, color);
 }
@@ -300,7 +300,7 @@ void MiniGL::drawStrokeText (const Vector3D &pos, float scale, const char *str, 
 /** Zeichnet ein Rechteck mit den vier Punkten a,b,c,d, der Normalen norm und
   * der übergebenen Farbe color.
   */
-void MiniGL::drawQuad (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d, const Vector3D &norm, float *color)
+void MiniGL::drawQuad (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d, const Vector3D &norm, const float *color)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);

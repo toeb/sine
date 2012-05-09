@@ -132,7 +132,7 @@ void IBDS::Particle::setAcceleration(const Vector3D & val )
   m_acceleration = val;
 }
 
-void Particle::render() const {
+void Particle::render(){
 	MiniGL::drawPoint(getPosition(),5,MiniGL::darkblue);
 }
 

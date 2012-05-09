@@ -96,6 +96,19 @@ public:
   static RigidBody* createBox(Real mass, Real a, Real b, Real c);  
 
   /**
+   * \brief Converts r (in world coordinates) to object coordinates.
+   *
+   * \author Tobi
+   * \date 09.05.2012
+   *
+   * \param r_wcs The wcs.
+   *
+   * \return .
+   */
+  Vector3D & worldToObjectCoordinates(const Vector3D & r_wcs)const;
+  Vector3D & objectToWorldCoordinates(const Vector3D & r_ocs)const;
+
+  /**
    * \brief Adds an external force f to this rigid body in world coordinates.
    *
    * \author Tobias Becker
@@ -108,7 +121,6 @@ public:
 
   void addExternalForce(const IBDS::Vector3D & f);
 
-  const Vector3D & toWorldCoordinates(const Vector3D & objectCoordinateVector);
 
   /**
    * \brief Adds an external torque in world coordinates. 
