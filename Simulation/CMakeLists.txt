@@ -56,6 +56,8 @@ SET(simulation_SRC
 	./GlutSimulationRunner.cpp
 	./RenderingSimulation.h
 	./RenderingSimulation.cpp
+	./SimulationBuilder.h
+	./SimulationBuilder.cpp
 )
 
 SET(visualisation_SRC

@@ -6,13 +6,9 @@
 
 namespace IBDS{
 class CustomSimulation : public RenderingSimulation{
-private:
-//  IntegratorsManager* _integratorManager;
 protected:
   void buildModel();
-  void applyExternalForces();
 public:
-
 };
 }
 #endif

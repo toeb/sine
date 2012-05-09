@@ -5,8 +5,7 @@
 namespace IBDS{
   
 class RenderingSimulation : public Simulation, public RenderManager{
-
-  private:
+private:
   std::vector<IRenderer *> _renderersToAdd;
 public:
   void updateRendererList(CompositeRenderer & renderers);
@@ -14,6 +13,7 @@ public:
   void addRenderer(IRenderer * renderer);
   using Simulation::getName;
   using Simulation::setName;
+  
 protected:
   void onSimulationObjectAdded(ISimulationObject* obj);
 };

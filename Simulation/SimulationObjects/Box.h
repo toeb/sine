@@ -11,6 +11,8 @@ namespace IBDS{
 		{
      
 		private:
+      const char* _name;
+      int _length;
 			// size of the box
 			Real _x, _y, _z;
 			Box();
@@ -28,7 +30,7 @@ namespace IBDS{
 			 * \param z depth
 			 */
 			Box(Real m, Real x, Real y, Real z);
-    
+     bool initialize();
 			void render();
 		};
 	}
