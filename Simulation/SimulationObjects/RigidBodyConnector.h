@@ -33,14 +33,16 @@ namespace IBDS {
      *
      * \return  The position.
      */
-		const Vector3D &   getObjectCoordinatePosition()const;
-     
-    const Vector3D & calculateWorldPosition()const;
-    const Vector3D & calculateWorldVelocity()const;
+		const Vector3D & getObjectCoordinatePosition()const;
+      
+
+    void calculateWorldPosition    (Vector3D & p_wcs)const;
+    void calculateWorldVelocity    (Vector3D & v_wcs)const;
+    void calculateWorldAcceleration(Vector3D & a_wcs)const;
 
 
 		void addExternalForce(const Vector3D &f);
-		const Vector3D &  previewPosition(Real h) const;
+		void previewPosition(Real h, Vector3D & p_next_wcs) const;
 		void applyImpulse(const Vector3D & p);
 
 

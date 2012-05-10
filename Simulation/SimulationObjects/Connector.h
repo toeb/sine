@@ -15,6 +15,9 @@ class Connector : public ISimulationObject
     Vector3D _worldPosition;
     ///< The world velocity (cached)
     Vector3D _worldVelocity;
+
+    ///< The world acceleration
+    Vector3D _worldAcceleration;
     Body & _body;
   public:
     Connector(Body & body);
@@ -35,7 +38,7 @@ class Connector : public ISimulationObject
 		 * This method is called before the integration step t -> t+h of the bodies
 		 * but after the integration step t -> t+h of the connectors
 		 */
-		virtual const Vector3D & previewPosition(Real h) const = 0;
+		virtual void previewPosition(Real h, Vector3D & p_next_wcs) const = 0;
 
 		virtual void applyImpulse(const Vector3D & p) = 0;
     /**
@@ -44,13 +47,15 @@ class Connector : public ISimulationObject
      * \return  The world position.
      */
   
-    virtual const Vector3D & calculateWorldPosition()const=0;
     /**
      * \brief Calculates the world velocity.
      *
      * \return  The calculated world velocity.
      */
-    virtual const Vector3D & calculateWorldVelocity()const=0;
+    
+    virtual void calculateWorldPosition(Vector3D & worldPosition)const=0;
+    virtual void calculateWorldVelocity(Vector3D & worldVelocity)const=0;
+    virtual void calculateWorldAcceleration(Vector3D & worldPosition)const=0;
     
     void calculateCachedValues();
     /**
@@ -59,11 +64,9 @@ class Connector : public ISimulationObject
      *
      * \return  The k matrix.
      */
-		const Matrix3x3 & getKMatrix() const;
+		void getKMatrix(Matrix3x3 & K) const;
 
     virtual const Vector3D & getWorldPosition()const;
-    virtual const Vector3D & getWorldVelocity()const;
-
 
     
     /**

@@ -24,16 +24,32 @@
 #include "Matrix3x3.h"
 #include "math.h"
 #include "Vector3D.h"
-using namespace IBDS;
 #include <iostream>
 
+using namespace std;
+using namespace IBDS;
+#define INC //inc();
+#define DEC //dec();
+int counter = 0;
+long totalchanges = 0;
+void inc(){
+  counter++;
+  totalchanges++;
+  if(totalchanges % 1000==0)cout << "Matrix3x3 Count "<<counter<<endl;
+}
+void dec(){
+  counter--;
+  totalchanges++;
+  if(totalchanges % 1000==0)cout << "Matrix3x3 Count "<<counter<<endl;
+}
 /** Standard-Konstruktor: erstellt die Einheitsmatrix
   */
 Matrix3x3::Matrix3x3()
 {
 	v[0] = Vector3D (1,0,0);
 	v[1] = Vector3D (0,1,0);
-	v[2] = Vector3D (0,0,1);
+	v[2] = Vector3D (0,0,1);  
+  INC
 }
 /** Konstruktor: Erstellt die Matrix mit den Zeilenvektoren v0, v1, v2
   */
@@ -42,20 +58,32 @@ Matrix3x3::Matrix3x3 (const Vector3D& v0, const Vector3D& v1, const Vector3D& v2
 	v[0] = v0; 
 	v[1] = v1; 
 	v[2] = v2; 
+  INC
 }
+Matrix3x3::Matrix3x3(const Matrix3x3 & rhs){
+  assign(rhs);
+  INC
+}
+
+void Matrix3x3::assign(const Matrix3x3 & value){
+  v[0].v[0] = value.v[0].v[0]; v[0].v[1] = value.v[0].v[1]; v[0].v[2] = value.v[0].v[2];
+  v[1].v[0] = value.v[1].v[0]; v[1].v[1] = value.v[1].v[1]; v[1].v[2] = value.v[1].v[2];
+  v[2].v[0] = value.v[2].v[0]; v[2].v[1] = value.v[2].v[1]; v[2].v[2] = value.v[2].v[2];
+}
+
 Matrix3x3::~Matrix3x3(){
  // delete v;
+  DEC
 }
 Matrix3x3 * zero = new Matrix3x3(Vector3D(),Vector3D(),Vector3D());
-Matrix3x3 * identity= new Matrix3x3();
+Matrix3x3 * identityMatrix= new Matrix3x3();
 
-const Matrix3x3 & Matrix3x3::Zero(){
-  
+const Matrix3x3 & Matrix3x3::Zero(){  
   return *zero;
 }
 
 const Matrix3x3 & Matrix3x3::Identity(){
-  return *identity;
+  return *identityMatrix;
 }
 
 bool Matrix3x3::isZero(){

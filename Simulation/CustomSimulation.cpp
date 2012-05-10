@@ -35,7 +35,7 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   box2->addExternalForce(offset+Vector3D(0,0,0),Vector3D(1,0,0));
   
   b.createSpring("spring1","box1","box2",40,10, box1->getPosition(), box2->getPosition());
-  b.createSpring("spring2","box2","box3",20.0,1, box2->getPosition(), box3->getPosition());
+  b.createSpring("spring2","box2","box3",20.0,1, box2->getPosition(), box3->getPosition()+Vector3D(0.5,0.5,0.5));
   b.createSpring("spring3","box3","box4",30.0,1, box3->getPosition(), box4->getPosition());
   
 }

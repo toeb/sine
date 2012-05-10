@@ -16,8 +16,8 @@ void ParticleConnector::addExternalForce(const Vector3D &f) {
 	_particle.addExternalForce(f);
 }
 
-const Vector3D & ParticleConnector::previewPosition(Real h) const {
-  return _particle.previewPosition(h);
+void ParticleConnector::previewPosition(Real h, Vector3D & p_next_wcs) const {
+  _particle.previewPosition(h,p_next_wcs);
 }
 
 void ParticleConnector::applyImpulse(const Vector3D & p_wcs) {
@@ -31,8 +31,8 @@ void ParticleConnector::applyImpulse(const Vector3D & p_wcs) {
   *
   * \return  The world position.
   */
-const Vector3D &  ParticleConnector::calculateWorldPosition()const{
-  return _particle.getPosition();
+void  ParticleConnector::calculateWorldPosition(Vector3D & p_wcs)const{
+  p_wcs .assign( _particle.getPosition());
 }
 
 /**
@@ -40,6 +40,10 @@ const Vector3D &  ParticleConnector::calculateWorldPosition()const{
   *
   * \return  The calculated world velocity.
   */
-const Vector3D &  ParticleConnector::calculateWorldVelocity()const{
-  return _particle.getVelocity();
+void  ParticleConnector::calculateWorldVelocity(Vector3D & v_wcs)const{
+  v_wcs.assign( _particle.getVelocity());
+}
+
+void ParticleConnector::calculateWorldAcceleration(Vector3D & a_wcs)const{
+  a_wcs.assign( _particle.getAcceleration());
 }

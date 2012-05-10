@@ -30,7 +30,7 @@ public:
   void correctPosition(Real h);
 	void correctVelocity();
 		
-  Vector3D calculateDistancePreview(Real h)const;
+  void calculateDistancePreview(Real h, Vector3D & d)const;
 private:
 	void  evaluateKInverse();
 };

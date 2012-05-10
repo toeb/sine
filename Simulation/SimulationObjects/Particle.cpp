@@ -133,10 +133,12 @@ void Particle::render(){
    m_velocity += vDelta;
  }
 
- const Matrix3x3 & Particle::calculateK(const Vector3D& s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const{
+void Particle::calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const{
   Real m = getMass();
-  if (m == 0) return Matrix3x3::Zero();
+  if (m == 0){
+    K.assign(Matrix3x3::Zero());
+    return;
+  }
   const Matrix3x3 & E_3 = Matrix3x3::Identity();
-  Matrix3x3 K = (1 / m) * E_3;
-	return *(new Matrix3x3(K));
+  K.assign((1 / m) * E_3);
 }

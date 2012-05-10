@@ -22,7 +22,7 @@ namespace IBDS {
 
 		const Vector3D &  getObjectCoordinatePosition()const;
 		void addExternalForce(const Vector3D &f);		
-		const Vector3D &  previewPosition(Real h) const;
+		void previewPosition(Real h, Vector3D & p_next_wcs) const;
 		void applyImpulse(const Vector3D & p);
 
 
@@ -32,13 +32,14 @@ namespace IBDS {
      *
      * \return  The world position.
      */
-    const Vector3D &  calculateWorldPosition()const;
+   void calculateWorldPosition(Vector3D & p_wcs)const;
 
     /**
      * \brief Calculates the world velocity.
      *
      * \return  The calculated world velocity.
      */
-    const Vector3D & calculateWorldVelocity()const;
+    void calculateWorldVelocity(Vector3D & b_wcs)const;
+    void calculateWorldAcceleration(Vector3D & a_wcs)const;
 	};
 }

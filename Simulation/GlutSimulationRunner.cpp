@@ -26,13 +26,14 @@ void timeStepGlutCallback ()
     cerr<<"runner instance is not set. programmer error "<<endl;
     return;
   }
+  
+  runnerInstance->simulateCallback();
 }
 void renderGlutCallback(){
   if(runnerInstance==0){
     cerr<<"runner instance is not set. programmer error "<<endl;
     return;
   }
-  runnerInstance->simulateCallback();
   runnerInstance->renderCallback();
 }
 void GlutSimulationRunner::run(){
@@ -67,8 +68,7 @@ void GlutSimulationRunner::cleanup(){
   getSimulation()->cleanup();
   getRenderers().cleanup();
 }
-bool GlutSimulationRunner::initialize(){
-  
+bool GlutSimulationRunner::initialize(){  
   Simulation * simulation = getSimulation();
   if(!simulation){
     cerr << "GlutSimulationRunner::initialize:  Simulation is not set" << endl;
@@ -86,6 +86,7 @@ bool GlutSimulationRunner::initialize(){
 
   MiniGL::init (_commandlineArgumentCount, _commandlineArgumentArray, 800, 600, 0, 0, simulationName);
   MiniGL::setClientSceneFunc(renderGlutCallback);
+  
   onDesiredTimeStepChanged(); //sets the simulationcallback
 
   

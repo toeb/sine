@@ -54,8 +54,6 @@ namespace IBDS
 		void getMatrix3x3 (Matrix3x3 &m)const;
 		void setFromMatrix3x3T (Matrix3x3 *m);
 		void getMatrix3x3T (Matrix3x3 &m)const;
-    Matrix3x3 & createRotationMatrix()const;
-    Matrix3x3 & createTransposedRotationMatrix()const;
 		void normalize ();
 		Real length ();
 		Real length2 ();

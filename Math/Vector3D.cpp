@@ -27,11 +27,31 @@
 #include "Matrix3x2.h"
 #include "Vector2D.h"
 #include "Vector1D.h"
-
+#include <iostream>
+using namespace std;
 using namespace IBDS;
 
-Vector3D & Vector3D::copy(){
-   return *(new Vector3D(*this));
+#define VEC_INC //incVec();
+#define VEC_DEC //decVec();
+
+int vecCount=0;
+long vecChanges=0;
+
+void incVec(){
+  vecCount++;
+  vecChanges++;
+  if(vecChanges % 1000 ==0)cout << "Vector3D Count:"<<vecCount<<endl;
+}
+void decVec(){
+  vecCount--;
+  vecChanges++;
+  if(vecChanges % 1000 ==0)cout << "Vector3D Count:"<<vecCount<<endl; 
+}
+
+void Vector3D::assign(const Vector3D & vector){  
+	v[0] = vector.v[0];
+	v[1] = vector.v[1];
+	v[2] = vector.v[2];
 }
 
 /** Konstruktor: Erzeugt einen Vektor mit den übergebenen Koordinaten. 
@@ -41,6 +61,7 @@ Vector3D::Vector3D(const Real vx, const Real vy, const Real vz)
 	v[0] = vx;
 	v[1] = vy;
 	v[2] = vz;
+  VEC_INC
 }
 
 
@@ -51,15 +72,19 @@ Vector3D::Vector3D()
 	v[0] = 0;
 	v[1] = 0;
 	v[2] = 0;
+  VEC_INC
 }
 
 /** Copy constructor
   */
 Vector3D::Vector3D(const Vector3D &vector)
 {
-	v[0] = vector.v[0];
-	v[1] = vector.v[1];
-	v[2] = vector.v[2];
+  assign(vector);
+  VEC_INC
+}
+
+Vector3D::~Vector3D(){
+  VEC_DEC
 }
 
 /** Zuweisung: v1 = v2\n

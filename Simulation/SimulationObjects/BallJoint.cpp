@@ -9,15 +9,16 @@ BallJoint::BallJoint(Connector &c1, Connector &c2, Real pTol, Real vTol):
  _cA(c1),_cB(c2),_positionTolerance(pTol), _velocityTolerance(vTol)
 {}
 
-Vector3D BallJoint::calculateDistancePreview(Real h)const{
-  const Vector3D & a = _cA.previewPosition(h);
-  const Vector3D & b = _cB.previewPosition(h);
-  Vector3D d = b-a;
-  return d;
+void BallJoint::calculateDistancePreview(Real h, Vector3D & d)const{
+  Vector3D a,b;
+  _cA.previewPosition(h,a);
+  _cB.previewPosition(h,b);
+  d.assign( b-a);
 }
 void BallJoint::correctPosition(Real h) {
   // get approximation of next distance
-  Vector3D d = calculateDistancePreview(h);  
+  Vector3D d;
+  calculateDistancePreview(h,d);  
   // store length of distance vector
   _positionError = d.length();
   //abort if positions are within tolerance
@@ -36,8 +37,9 @@ bool BallJoint::arePositionsCorrect(){
 }
 
 void BallJoint::correctVelocity() {
-  Vector3D  v_a =_cA.getWorldVelocity();
-  Vector3D  v_b=_cB.getWorldVelocity();
+  Vector3D  v_a,v_b;
+  _cA.calculateWorldVelocity(v_a);
+  _cA.calculateWorldVelocity(v_b);
 
   Vector3D v_rel;
   v_rel = v_b - v_a;
@@ -50,8 +52,11 @@ void BallJoint::correctVelocity() {
 }
 
 void BallJoint::evaluateKInverse() {
-  const Matrix3x3 & K_a = _cA.getKMatrix();
-  const Matrix3x3 & K_b = _cB.getKMatrix();
+  Matrix3x3  K_a;
+  Matrix3x3  K_b;
+
+  _cA.getKMatrix(K_a);
+  _cA.getKMatrix(K_b);
 
   Matrix3x3 K = K_a + K_b;
   // if the sum of the matrices is 0, do not invert it: use 0 for the inverse matrix, too, instead

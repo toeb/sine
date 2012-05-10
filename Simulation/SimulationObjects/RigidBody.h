@@ -1,5 +1,5 @@
-#ifndef __RigidBody_h__
-#define __RigidBody_h__
+#pragma once
+
 #include <Math/Matrix3x3.h>
 #include <Math/Quaternion.h>
 #include <Simulation/Integrators/IIntegrable.h>
@@ -8,7 +8,6 @@
 #include "Body.h"
 
 namespace IBDS{
-
 /**
  * \brief Rigid body class.  
  * 				Describes a Rigid Body.  Is an extension of Particle
@@ -17,11 +16,20 @@ namespace IBDS{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-	class RigidBody : public Body {
+class RigidBody : public Body {
 private:
   
   ///< The inertia tensor
   Matrix3x3 _J;
+  ///< The inverse inertia tensor in object coordinates
+  Matrix3x3 _J_inv_ocs;
+  ///< The inverse inertia tensor in world coordinates
+  Matrix3x3 _J_inv_wcs;
+
+
+  Matrix3x3 _R;
+  Matrix3x3 _RT;
+  
   ///< The mass
   Real _m;
   ///< The orientation
@@ -30,8 +38,6 @@ private:
   Vector3D _x;
   ///< The velocity in World Coordinatees
   Vector3D _xDot;
-  ///< The acceleration in WorldCoordinates
-  Vector3D _xDotDot;
   ///< The angular velocity
   Vector3D _omega;
   ///< The angular acceleration
@@ -105,8 +111,19 @@ public:
    *
    * \return .
    */
-  Vector3D & worldToObjectCoordinates(const Vector3D & r_wcs)const;
-  Vector3D & objectToWorldCoordinates(const Vector3D & r_ocs)const;
+  void worldToObjectCoordinates(const Vector3D & r_wcs, Vector3D & r_ocs)const;
+
+  /**
+   * \brief Converts r (in object coordinates) to world coordinates.
+   *
+   * \author Tobi
+   * \date 10.05.2012
+   *
+   * \param r_ocs The ocs.
+   *
+   * \return .
+   */
+  void objectToWorldCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs)const;
 
   /**
    * \brief Adds an external force f to this rigid body in world coordinates.
@@ -119,8 +136,15 @@ public:
    */
   void addExternalForce(const IBDS::Vector3D & position, const IBDS::Vector3D & f);
 
+  /**
+   * \brief Adds an external force to the center of gravity. 
+   *
+   * \author Tobi
+   * \date 10.05.2012
+   *
+   * \param f The f.
+   */
   void addExternalForce(const IBDS::Vector3D & f);
-
 
   /**
    * \brief Adds an external torque in world coordinates. 
@@ -140,6 +164,10 @@ public:
    */
   void resetForce();
 
+
+  const Matrix3x3 & getRotationMatrix()const;
+  const Matrix3x3 & getTransposedRotationMatrix()const;
+  void calculateRotationMatrices();
   /**
    * \brief Gets the force acting on this body.
    *
@@ -150,9 +178,15 @@ public:
    */
   const Vector3D & getForce()const;
 
+  /**
+   * \brief Gets the torque currently acting on the body.
+   *
+   * \author Tobi
+   * \date 10.05.2012
+   *
+   * \return The torque.
+   */
   const Vector3D & getTorque()const;
-
-
 
   /**
    * \brief Gets the mass.
@@ -163,7 +197,18 @@ public:
    * \return The mass.
    */
   Real getMass()const ;
+  
 
+  /**
+   * \brief Sets the inertia tensor.
+   * calulates the inverted inertia tensor
+   * 
+   * \author Tobias Becker
+   * \date 10.04.2012
+   *
+   * \param inertia The inertia.
+   */
+  void setInertiaTensor(const IBDS::Matrix3x3 & inertia);
   /**
    * \brief Sets the mass.
    *
@@ -190,18 +235,17 @@ public:
    * \return  The inverted inertia tensor.
    */
   const Matrix3x3 & getInvertedInertiaTensor() const;
-
-  const Matrix3x3 & getInvertedInertiaTensorInWorldCoordinates()const;
-
+  void calculateInvertedInertiaTensor();
   /**
-   * \brief Sets the inertia tensor.
+   * \brief Gets the inverted inertia tensor in world coordinates.
    *
-   * \author Tobias Becker
-   * \date 10.04.2012
+   * \author Tobi
+   * \date 10.05.2012
    *
-   * \param inertia The inertia.
+   * \return The inverted inertia tensor in world coordinates.
    */
-  void setInertiaTensor(const IBDS::Matrix3x3 & inertia);
+  const Matrix3x3 & getInvertedInertiaTensorInWorldCoordinates()const;
+  void calculateInvertedInertiaTensorInWorldCoordinates();
 
   /**
    * \brief Gets the orientation as a Quarternion.
@@ -261,7 +305,7 @@ public:
   void setAngularVelocity(const IBDS::Vector3D & omega);
 
   /**
-   * \brief Gets the angular acceleration.
+   * \brief Gets the angular acceleration. (evaluates the equations)
    *
    * \author Tobias Becker
    * \date 10.04.2012
@@ -270,21 +314,21 @@ public:
    */
   const Vector3D & getAngularAcceleration()const;
 
-  /**
-   * \brief Sets the angular acceleration.
-   *
-   * \author Tobias Becker
-   * \date 10.04.2012
-   *
-   * \param omegaDot The angular acceleration.
-   */
-  void setAngularAcceleration(const IBDS::Vector3D & omegaDot);
+  void calculateAngularAcceleration();
 
-   const Matrix3x3 & calculateK(const Vector3D& s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
-  
+  /**
+  * \brief Calculates the K matrix.
+  *
+  * \author Tobi
+  * \date 10.05.2012
+  *
+  * \param s_wcs The center of gravity of the body.
+  * \param a_wcs The point a.
+  * \param b_wcs The point b.
+  *
+  * \return The calculated k.
+  */
+  void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const; 
 
 };// RigidBody
 }// namespace IBDS
-
-
-#endif

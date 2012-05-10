@@ -40,6 +40,7 @@ namespace IBDS
 		Vector3D v[3];
 
 	public:
+    Matrix3x3(const Matrix3x3 & rhs);
 		Matrix3x3();
 		Matrix3x3(const Vector3D &v0, const Vector3D &v1, const Vector3D &v2);
     ~Matrix3x3();
@@ -69,6 +70,16 @@ namespace IBDS
 
 		virtual int getRows () const;
 		virtual int getCols () const;
+
+    /**
+     * \brief Assigns this matrix the values of m
+     *
+     * \author Tobi
+     * \date 10.05.2012
+     *
+     * \param m The m.
+     */
+    void assign(const Matrix3x3 & m);
 
 		Matrix3x3 transpose() const;								// Transponiert die 3x3-Matrix
 		Matrix3x3 inverse () const;								// Invertiert die Matrix

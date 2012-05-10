@@ -64,7 +64,7 @@ class Particle : public Body, public IRenderer
     const  Vector3D  &   getVelocity() const;
     void setVelocity(const Vector3D & val);
 
-     const Matrix3x3 & calculateK(const Vector3D& s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
+     void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
 
 
 	   void render();

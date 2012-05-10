@@ -21,8 +21,10 @@ void DampedSpring::act (std::vector<Body*> & target, Real time) {
   a = _c1->getWorldPosition();
   b = _c2->getWorldPosition();
 
-  const Vector3D & v_a = _c1->getWorldVelocity();
-  const Vector3D & v_b = _c2->getWorldVelocity();
+  Vector3D v_a,v_b;
+  
+  _c1->calculateWorldVelocity(v_a);
+  _c2->calculateWorldVelocity(v_b);
 
 	Vector3D normal;
 	Vector3D springForce, dampForce, totalForce;

@@ -4,6 +4,8 @@
 #include <Math/Vector3D.h>
 namespace IBDS {
 	class Body : public IIntegrable{
+  private:
+    Vector3D _acceleration;
 	public:
 	  virtual void resetForce() = 0;
 		virtual void addExternalForce(const IBDS::Vector3D & f) = 0;
@@ -21,6 +23,9 @@ namespace IBDS {
      * \return The acceleration.
      */
     const Vector3D & getAcceleration()const;
+
+    void calculateAcceleration();
+
 
     /**
      * \brief Gets the mass of this body.
@@ -44,7 +49,7 @@ namespace IBDS {
      *
      * \return The calculated k.
      */
-    virtual const Matrix3x3 & calculateK(const Vector3D & s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const=0;
+    virtual void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const=0;
 
     /**
      * \brief Previews position of the center of gravity in h seconds.
@@ -56,6 +61,6 @@ namespace IBDS {
      *
      * \return the approximated position .
      */
-    const Vector3D & previewPosition(Real h)const;
+    void previewPosition(Real h, Vector3D& s_next_wcs)const;
   };
 }
