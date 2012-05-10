@@ -19,7 +19,11 @@ class SimulationBuilder{
     Simulation & _simulation;
     std::map<std::string,ISimulationObject *> _simulationObjects; 
   public:
+
+
     SimulationBuilder(Simulation & simulation);
+
+  std::map<std::string,ISimulationObject *> & getSimulationObjects();
 
     /**
      * \brief Creates a box.

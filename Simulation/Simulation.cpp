@@ -8,7 +8,6 @@ Simulation::Simulation():
   _bodies(*(new vector<Body*>())),
   _integrables(*(new CompositeIntegratable())),
   _forces(*(new vector<Force*>())),
-  _integrableConnectors(*(new CompositeIntegratable())),
   _joints(*(new vector<Joint*>())),
   _connectors(*(new vector<Connector*>())),
   _integrator(0),
@@ -20,7 +19,6 @@ Simulation::Simulation():
 void Simulation::reset(){
   _bodies.clear();
   _integrables.clear();
-  _integrableConnectors.clear();
   _forces.clear();
   _joints.clear();
   _connectors.clear();
@@ -33,7 +31,6 @@ Simulation::~Simulation(){}
 
 void Simulation::addConnector(Connector *c) {
   _connectors.push_back(c);
-  _integrableConnectors.addIntegratable(c);
   onSimulationObjectAdded(c);
 }
 
@@ -66,21 +63,29 @@ void Simulation::beforeIntegration(){
   Real targetTime = getTargetTime();
   Real time = getTime();
   // integrate the connectors to be able to approximate their future positions
-  _integrator->setIntegratable(&_integrableConnectors);		// temporarily replace the integratable
-  _integrator->integrate(time,targetTime);
+  ///_integrator->setIntegratable(&_integrableConnectors);		// temporarily replace the integratable
+  //_integrator->integrate(time,targetTime);
   // joint position correction
-  bool toleranceSatisfied;
+  bool toleranceSatisfied;  
   int iterations = 0;
+  
+  // do steps before correction
+  for (auto it = _joints.begin(); it != _joints.end(); it++) {
+    Joint* joint = *it;
+    joint->beforeCorrection();
+  }
+
   do {
     toleranceSatisfied = true;
-    for (vector<Joint*>::iterator it = _joints.begin(); it != _joints.end(); it++) {
-      bool currentJointSatisfied = (*it)->correctPosition(targetTime - time);
+    for (auto it = _joints.begin(); it != _joints.end(); it++) {
+      Joint* joint = *it;
+      joint->correctPosition(targetTime - time);
       // if correctPosition returns false for some joint, toleranceSatisfied remains false for the rest of the loop 
-      if (toleranceSatisfied) toleranceSatisfied = currentJointSatisfied;
-      }
+      if(!joint->arePositionsCorrect())toleranceSatisfied=false;
+    }
     iterations++;
-    } while (!toleranceSatisfied && iterations < 10);	// the loop is repeated until correctPosition returns true for all joints
-  _integrator->setIntegratable(&_integrables);
+  } while (!toleranceSatisfied && iterations < 10);	// the loop is repeated until correctPosition returns true for all joints
+  //_integrator->setIntegratable(&_integrables);
 }
 void Simulation::afterIntegration(){  
   // joint velocity correction
@@ -110,7 +115,7 @@ bool Simulation::isSimulationValid(){
 
 void Simulation::calculateConnectorWorldCoordinateValues(){
   for(auto it = _connectors.begin(); it != _connectors.end(); it++){
-    (*it)->calculate();
+    (*it)->calculateCachedValues();
   }
 
 }

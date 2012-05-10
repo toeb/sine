@@ -7,28 +7,31 @@ namespace IBDS {
 	/**
 	 * 
 	 */
-	class BallJoint : public Joint
-	{
-	private:
-		Connector *_c1;
-		Connector *_c2;
+class BallJoint : public Joint
+{
+private:
+	Connector & _cA;
+	Connector & _cB;
+  // the inverse of the matrix K, cached for reusage across methods
+	Matrix3x3 _KInverse;
+  //tolerances
+  Real _positionTolerance;
+  Real _velocityTolerance;
+  Real _positionError;
+public:
+	void beforeCorrection();
+  ~BallJoint();
 
-		Real _distanceTolerance;
-		Real _velocityTolerance;
+	BallJoint(Connector & a, Connector &b,Real positionTolerance=3e-10, Real velocityTolerance=3e-10);
+	  
 
-		// the inverse of the matrix K, stored globally for reusage across methods
-		Matrix3x3 _KInverse;
-
-	public:
-		~BallJoint(void);
-
-		BallJoint(Connector *c1, Connector *c2, Real distanceTolerance = 1e-3, Real velocityTolerance = 1e-2);
-	
-		bool correctPosition(Real h);
-		void correctVelocity();
+	bool arePositionsCorrect();
+    
+  void correctPosition(Real h);
+	void correctVelocity();
 		
-
-
-		void evaluateKInverse();
-	};
+  Vector3D calculateDistancePreview(Real h)const;
+private:
+	void  evaluateKInverse();
+};
 	}

@@ -10,41 +10,21 @@ namespace IBDS {
 	{
 	private:
 		// pointer to the associated particle
-		Particle *_particle;
-		
-		ParticleConnector(void);
-
-	public:
+		Particle & _particle;
+  public:
 		~ParticleConnector(void);
 
 		/**
 		 * Create an instance of this class associated with p
 		 * \param p pointer to the particle to associate this object with.
 		 */
-		ParticleConnector(Particle *p);
+		ParticleConnector(Particle &p);
 
-		const Vector3D &  getPosition()const;
-    
-		const Vector3D &  getVelocity()const;
-		
-		void addExternalForce(const Vector3D &f);
-
-		
-		const Vector3D &  getNextPosition(Real h) const;
-
+		const Vector3D &  getObjectCoordinatePosition()const;
+		void addExternalForce(const Vector3D &f);		
+		const Vector3D &  previewPosition(Real h) const;
 		void applyImpulse(const Vector3D & p);
 
-		const Matrix3x3 & getKMatrix() const;
-
-		void evaluate();
-
-		void setState(const Real * state);
-
-		void getState(Real * state)const;
-
-		void getDerivedState(Real * xDot)const;
-
-		int getStateDimension()const;
 
     
     /**

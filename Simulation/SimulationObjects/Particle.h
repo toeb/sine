@@ -44,7 +44,7 @@ class Particle : public Body, public IRenderer
   public:
     Particle ();
     ~Particle ();
-
+    void applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs);
     
     void getDerivedState(Real * xDot)const;
     void evaluate();
@@ -63,11 +63,8 @@ class Particle : public Body, public IRenderer
     void setPosition(const Vector3D & val);
     const  Vector3D  &   getVelocity() const;
     void setVelocity(const Vector3D & val);
-    const  Vector3D  &   getAcceleration() const;
-    void setAcceleration(const Vector3D & val);
 
-    
-     const Matrix3x3 & calculateK(const Vector3D & a, const Vector3D & b)const;
+     const Matrix3x3 & calculateK(const Vector3D& s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
 
 
 	   void render();

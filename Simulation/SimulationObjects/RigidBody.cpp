@@ -64,11 +64,8 @@ void RigidBody::getDerivedState(Real * xDot)const{
 void RigidBody::evaluate()
 {
   if(_m==0){
-    Vector3D nullVector(0,0,0);
-    setAcceleration(nullVector);
-    /*setVelocity(nullVector);
-    setAngularAcceleration(nullVector);*/
-    setAngularVelocity(nullVector);
+    _xDotDot = Vector3D::Zero();
+    _xDot = Vector3D::Zero();
     return;
   }
   //really, really unoptimized code.
@@ -76,18 +73,13 @@ void RigidBody::evaluate()
   _q.getMatrix3x3(R);
   _q.getMatrix3x3T(RT);
 
- /* Matrix3x3 J_inverted;
-  J_inverted(0,0) = 1.0/_J(0,0);
-  J_inverted(1,1) = 1.0/_J(1,1);
-  J_inverted(2,2) = 1.0/_J(2,2);*/
   Matrix3x3 J_inverted = getInvertedInertiaTensor();
 
   Matrix3x3 J_wcs = R*_J*RT;
   Matrix3x3 J_inverted_wcs = R*J_inverted*RT;
   _omegaDot = J_inverted_wcs *(_tau - (_omega ^ (J_wcs*_omega)));
 
-  _xDotDot = _f * (1/_m);
-  
+  _xDotDot = _f * (1/_m);  
 }
  /**
  * state = (x1,v1, x2,v2, x3,v3, q1,q2,q3,q4, omega1,omega2,omega3). dimension: 2*3+4+3=13
@@ -167,15 +159,14 @@ void RigidBody::addExternalTorque(const IBDS::Vector3D & torque){
  const Vector3D & RigidBody::getForce()const{
    return _f;
  }
-
+ const Vector3D & RigidBody::getTorque()const{
+   return _tau;
+ }
 const Vector3D & RigidBody::getPosition()const {return _x;}
 void RigidBody::setPosition(const Vector3D & r){_x = r;}
 
 const Vector3D & RigidBody::getVelocity()const {return _xDot;}
 void RigidBody::setVelocity(const Vector3D & rDot){_xDot = rDot;}
-
-const Vector3D & RigidBody::getAcceleration()const {return _xDotDot;}
-void RigidBody::setAcceleration(const Vector3D & rDotDot){_xDotDot = rDotDot;}
 
 const Vector3D & RigidBody::getAngularAcceleration()const {return _omegaDot;}
 void RigidBody::setAngularAcceleration(const Vector3D & omegaDot){_omegaDot = omegaDot;}
@@ -198,6 +189,28 @@ const Matrix3x3 & RigidBody::getInvertedInertiaTensor() const {
 	J_inverted(1,1) = 1.0/_J(1,1);
 	J_inverted(2,2) = 1.0/_J(2,2);
 	return *(new Matrix3x3(J_inverted));
+}
+
+void RigidBody::applyImpulse(const Vector3D& a_wcs, const Vector3D & p_wcs){
+  Real m = getMass();
+  if(m==0)return;
+  Vector3D vDelta = (1/m) * p_wcs;
+  const Matrix3x3 & J_inv_wcs = getInvertedInertiaTensorInWorldCoordinates();  
+  const Vector3D & s_wcs = getPosition();
+  Vector3D r_a_wcs = a_wcs-s_wcs;
+  Vector3D omegaDelta= J_inv_wcs * ( r_a_wcs ^ p_wcs);
+
+  _xDot += vDelta;
+  _omega += omegaDelta;
+}
+
+const Matrix3x3 & RigidBody::getInvertedInertiaTensorInWorldCoordinates()const{
+  const Matrix3x3 & J_inv_ocs = getInvertedInertiaTensor();
+  Matrix3x3 R,RT;
+  _q.getMatrix3x3(R);
+  _q.getMatrix3x3T(R);
+  Matrix3x3 J_inv_wcs = R*J_inv_ocs*RT;
+  return *(new Matrix3x3(J_inv_wcs));
 }
 
 RigidBody* RigidBody::createSphere(Real m, Real r){
@@ -235,14 +248,18 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   return cylinder;
 }
 
-const Matrix3x3 &  RigidBody::calculateK(const Vector3D & a, const Vector3D & b)const{
+ const Matrix3x3 & RigidBody::calculateK(const Vector3D& s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const{
   Real m = getMass();
   if (m == 0) return Matrix3x3::Zero();
 
+  Vector3D r_a_wcs = a_wcs - s_wcs;
+  Vector3D r_b_wcs = b_wcs - s_wcs;
+
+
   const Matrix3x3 & E_3 = Matrix3x3::Identity();
 
-	Matrix3x3 r_a_star = SimMath::crossProductMatrix(a);
-  Matrix3x3 r_b_star = SimMath::crossProductMatrix(b);
+	Matrix3x3 r_a_star = SimMath::crossProductMatrix(r_a_wcs);
+  Matrix3x3 r_b_star = SimMath::crossProductMatrix(r_b_wcs);
   
 	Matrix3x3 R, RT;
 

@@ -150,6 +150,10 @@ public:
    */
   const Vector3D & getForce()const;
 
+  const Vector3D & getTorque()const;
+
+
+
   /**
    * \brief Gets the mass.
    *
@@ -187,6 +191,8 @@ public:
    */
   const Matrix3x3 & getInvertedInertiaTensor() const;
 
+  const Matrix3x3 & getInvertedInertiaTensorInWorldCoordinates()const;
+
   /**
    * \brief Sets the inertia tensor.
    *
@@ -217,14 +223,22 @@ public:
    */
   void setOrientation(const IBDS::Quaternion & R);
 
+  /**
+   * \brief Applies an impulse p at point a.
+   *
+   * \author Tobi
+   * \date 10.05.2012
+   *
+   * \param a_wcs the point a in world coordinates.
+   * \param p_wcs the impulse p in world coordinates
+   */
+  void applyImpulse(const Vector3D & a_wcs, const Vector3D& p_wcs);
  
 
   const  Vector3D  &  getPosition()const;
   void setPosition(const Vector3D & position);
   const  Vector3D  &  getVelocity()const;
   void setVelocity(const Vector3D & velocity);
-  const  Vector3D  &  getAcceleration()const;
-  void setAcceleration(const Vector3D & acceleration);
 
    /**
    * \brief Gets the angular velocity.
@@ -266,7 +280,7 @@ public:
    */
   void setAngularAcceleration(const IBDS::Vector3D & omegaDot);
 
-   const Matrix3x3 & calculateK(const Vector3D & a, const Vector3D & b)const;
+   const Matrix3x3 & calculateK(const Vector3D& s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
   
 
 };// RigidBody

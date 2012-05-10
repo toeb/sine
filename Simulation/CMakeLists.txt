@@ -31,6 +31,7 @@ SET (simulationObjects_SRC
 	./SimulationObjects/DampedSpring.h
 	./SimulationObjects/DampedSpring.cpp
 	./SimulationObjects/Connector.h
+	./SimulationObjects/Connector.cpp
 	./SimulationObjects/ParticleConnector.h
 	./SimulationObjects/ParticleConnector.cpp
 	./SimulationObjects/RigidBodyConnector.h
@@ -88,6 +89,13 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/CoordinateSystemRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/TweakBarRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/TweakBarRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/TextRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/TextRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/ConnectorRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/ConnectorRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/ConnectorVelocityRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/ConnectorVelocityRenderer.cpp
+	
 	)
 	
 source_group("integration" FILES ${integrators_SRC})

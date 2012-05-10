@@ -80,7 +80,7 @@ BallJoint * SimulationBuilder::createBallJoint(string jointName, string bodyA, s
   //return if a connector was not correctly created
   if(!(a&&b))return 0;
   //create ball joint
-  BallJoint * ballJoint = new BallJoint(a,b);
+  BallJoint * ballJoint = new BallJoint(*a,*b);
   ballJoint->setName(&jointName);
   
   //add simulation objects
@@ -114,8 +114,11 @@ ParticleConnector * SimulationBuilder::createParticleConnector(Body* body, const
   if(!particle)return 0;
   if(position!=particle->getPosition())return 0; //particle connectors may only be connected at the position of the particle
   
-  ParticleConnector* connector = new ParticleConnector(particle);
+  ParticleConnector* connector = new ParticleConnector(*particle);
   return connector;
+}
+std::map<std::string,ISimulationObject *> & SimulationBuilder::getSimulationObjects(){
+  return _simulationObjects;
 }
 
 RigidBodyConnector * SimulationBuilder::createRigidBodyConnector(Body* body, const Vector3D &position){

@@ -40,13 +40,12 @@ const Vector3D & Particle::getForce()const{
 void Particle::evaluate(){
   Real m  = getMass();
   if(m==0){
-    Vector3D nullVector(0,0,0);
-    setAcceleration(nullVector);
-    setVelocity(nullVector);
+    m_acceleration = Vector3D::Zero();
+    setVelocity(Vector3D::Zero());
     return;
   }
   // acceleration is force / mass
-  setAcceleration(_f*(1/m));
+  m_acceleration = _f*(1/m);
 }
 
 void Particle::getDerivedState(Real * xDot)const{
@@ -122,23 +121,19 @@ void IBDS::Particle::setVelocity(const Vector3D & val )
   m_velocity = val;
 }
 
-const Vector3D & Particle::getAcceleration() const
-{
-  return m_acceleration;
-}
-
-void IBDS::Particle::setAcceleration(const Vector3D & val )
-{
-  m_acceleration = val;
-}
 
 void Particle::render(){
 	MiniGL::drawPoint(getPosition(),5,MiniGL::darkblue);
 }
 
+ void Particle::applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs){
+   Real m = getMass();
+   if(m==0)return;
+   Vector3D vDelta = 1/m*p_wcs;
+   m_velocity += vDelta;
+ }
 
-
-const Matrix3x3 & Particle::calculateK(const Vector3D & a, const Vector3D & b)const{
+ const Matrix3x3 & Particle::calculateK(const Vector3D& s_wcs, const Vector3D & a_wcs, const Vector3D & b_wcs)const{
   Real m = getMass();
   if (m == 0) return Matrix3x3::Zero();
   const Matrix3x3 & E_3 = Matrix3x3::Identity();

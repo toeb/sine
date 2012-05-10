@@ -2,7 +2,7 @@
 using namespace IBDS;
 
 RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
-  :_rigidBody(b), _r(r)
+  :Connector(b),_rigidBody(b), _r(r)
 {
 }
 RigidBodyConnector* RigidBodyConnector::createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs){
@@ -16,82 +16,39 @@ RigidBodyConnector::~RigidBodyConnector(void)
 {
 }
 
-const Vector3D &  RigidBodyConnector::getPosition() const {
+const Vector3D &  RigidBodyConnector::getObjectCoordinatePosition() const {
 	return _r;
 }
 
-const Vector3D &  RigidBodyConnector::getVelocity()const {
-  Vector3D v = _rigidBody.getVelocity() + _rDot;
-	return *(new Vector3D( v));
-}	
+
 
 void RigidBodyConnector::addExternalForce(const Vector3D &f) {
-  _rigidBody.addExternalForce(getWorldPosition(),f);//*get_r_new(),f);
+  _rigidBody.addExternalForce(getWorldPosition(),f);
 }
 
-const Vector3D & RigidBodyConnector::getNextPosition(Real h) const {
-	Vector3D nextMassCenterPosition = _rigidBody.getPosition() + h * _rigidBody.getVelocity() + (h * h / 2) * _rigidBody.getAcceleration();
-	return *(new Vector3D(nextMassCenterPosition + _r));	// by now, _r has been updated via integration 
+const Vector3D & RigidBodyConnector::previewPosition(Real h) const {
+  const Vector3D & r_wcs = getWorldPosition();
+  const Vector3D & v_wcs = getWorldVelocity();  
+  
+  Vector3D r_next_wcs = r_wcs + h*v_wcs;
+  return r_next_wcs.copy();
 }
 
-void RigidBodyConnector::applyImpulse(const Vector3D & p){
-	if (_rigidBody.getMass() == 0) return;
-
-	Vector3D *newVelocity = new Vector3D(_rigidBody.getVelocity() + ((1 / _rigidBody.getMass()) * p));
-	_rigidBody.setVelocity(*newVelocity);
-
-	const Matrix3x3 & invertedIntertiaTensor = _rigidBody.getInvertedInertiaTensor();
-
-	Matrix3x3 R, RT;
-	Quaternion q = _rigidBody.getOrientation();
-	q.getMatrix3x3(R);
-	q.getMatrix3x3T(RT);
-	Matrix3x3 J_inverted_wcs = R*invertedIntertiaTensor*RT;
-	_rigidBody.setAngularVelocity(*(new Vector3D(_rigidBody.getAngularVelocity() + invertedIntertiaTensor * (/*_r*/_rOld ^ p))));
-}
-
-const Matrix3x3 & RigidBodyConnector::getKMatrix() const {
-  return _rigidBody.calculateK(_rOld,_rOld);
-}
-
-void RigidBodyConnector::evaluate() {
-	_rigidBody.evaluate();
-	/*_rDot = _rigidBody.getVelocity() + (_rigidBody.getAngularVelocity() ^ _r);*/
-	_rDot = _rigidBody.getAngularVelocity() ^ _r;
-}
-
-void RigidBodyConnector::setState(const Real * state){
-	_rOld = _r;
-
-	_r[0] = state[0];
-	_r[1] = state[1];
-	_r[2] = state[2];
-	}
-
-void RigidBodyConnector::getState(Real * state)const{
-	state[0] = _r[0];
-	state[1] = _r[1];
-	state[2] = _r[2];
-	}
-
-void RigidBodyConnector::getDerivedState(Real * xDot)const{
-	xDot[0] = _rDot[0];
-	xDot[1] = _rDot[1];
-	xDot[2] = _rDot[2];
-	}
-
-int RigidBodyConnector::getStateDimension()const{
-	return 3;
+void RigidBodyConnector::applyImpulse(const Vector3D & p_wcs){
+  _rigidBody.applyImpulse(getWorldPosition(),p_wcs);
 }
 
 
 const Vector3D &  RigidBodyConnector::calculateWorldPosition()const{
    return _rigidBody.objectToWorldCoordinates(_r);
-
 }
+
 const Vector3D & RigidBodyConnector::calculateWorldVelocity()const{
-  const Vector3D & v_s = _rigidBody.getVelocity();
-   Vector3D v = v_s + getVelocity();
-  
-  return *(new Vector3D(v));
+  const Vector3D & v_s_wcs = _rigidBody.getVelocity();
+  const Vector3D & omega_wcs = _rigidBody.getAngularVelocity();
+  const Vector3D & r_wcs = calculateWorldPosition();  
+  const Vector3D & r_s_wcs = _rigidBody.getPosition();
+  Vector3D r = r_wcs - r_s_wcs;
+  Vector3D v = v_s_wcs +( omega_wcs ^ r);
+  return v.copy();
 }

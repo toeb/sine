@@ -22,7 +22,6 @@ private:
   Integrator* _connectorIntegrator;
 
   CompositeIntegratable & _integrables;
-  CompositeIntegratable _integrableConnectors;
 
 
   std::vector<Body*> & _bodies;
