@@ -26,7 +26,6 @@
 #ifdef WIN32
 #include "windows.h"
 #endif
-
 #include "GL/gl.h"
 #include "GL/glu.h"
 #include "GL/glut.h"
@@ -566,6 +565,35 @@ void TW_CALL MiniGL::getRotationCB(void *value, void *clientData)
 void MiniGL::cleanupTweakBar()
 {
 
+}
+
+
+void MiniGL::valueToColor(Real value, float * color, Real min, Real max){
+  if(max < min)return;
+  if(value > max)value = max;
+  if(value < min)value = min;
+  value = value -min;
+  Real d = max - min;
+  value = value / d * 2; //value element of [0,2]
+  float r=0;
+  float g=0;
+  float b=0;
+
+  b = hat(value+1);
+  g = hat(value);
+  r = hat(value-1);
+  
+  color[0] = r;
+  color[1]=  g;
+  color[2] = b;
+  color[3] = 1;//alpha
+
+}
+float MiniGL::hat(Real x){
+  if(x < 0)return 0;
+  if(x > 2)return 0;
+  if(x < 1)return x;
+  if(x >= 1)return 2-x;
 }
 
 /** Wird aufgerufen, wenn das Programm beendet wird und das Glut-Fenster geschlossen werden soll.

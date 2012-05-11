@@ -76,7 +76,37 @@ namespace IBDS
 		static const float darkYellow[4];
 		static const float darkGray[4];
 
+ /**
+  * \brief Value to color.
+  *
+  * \author Tobi
+  * \date 11.05.2012
+  *
+  * \param value          The value.
+  * \param [in,out] color If non-null, the color.
+  * \param min            (optional) the minimum.
+  * \param max            (optional) the maximum.
+  */
+ static void valueToColor(Real value, float * color, Real min=0, Real max=10);
+
 	private:
+
+  /**
+   * \brief Hat function.  is defined as 
+   * 				
+   * 				0 if x < 0;
+   * 				0 if x > 2;
+   * 			  x if x < 1 and x > 0; 
+   * 			  2-x if x >=1 and x < 2;
+   *
+   * \author Tobi
+   * \date 11.05.2012
+   *
+   * \param value The value.
+   *
+   * \return .
+   */
+  static float hat(Real x);
 		enum
 		{
 			MENU_WIREFRAME = 1,
