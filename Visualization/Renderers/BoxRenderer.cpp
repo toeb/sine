@@ -20,7 +20,7 @@ void BoxRenderer::render(){
     (float)boxExtent[1],
     (float)boxExtent[2],
     MiniGL::gray);
-  if(_textRenderer) _textRenderer->render();
+  //if(_textRenderer) _textRenderer->render();
 }
 
 

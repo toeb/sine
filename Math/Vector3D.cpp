@@ -47,7 +47,11 @@ void decVec(){
   vecChanges++;
   if(vecChanges % 1000 ==0)cout << "Vector3D Count:"<<vecCount<<endl; 
 }
-
+void Vector3D::setZero(){
+  v[0] = 0;
+  v[1] = 0;
+  v[2] = 0;
+}
 void Vector3D::assign(const Vector3D & vector){  
 	v[0] = vector.v[0];
 	v[1] = vector.v[1];

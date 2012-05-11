@@ -26,6 +26,7 @@ void BallJoint::correctPosition(Real h) {
   //approximate velocity
   Vector3D v = (1/h) * d;
   // calculate impulse correction
+  evaluateKInverse();
   Vector3D p_a = _KInverse * v;
   Vector3D p_b = -p_a;
   //apply correction impulse
@@ -44,21 +45,24 @@ void BallJoint::correctVelocity() {
   Vector3D v_rel;
   v_rel = v_b - v_a;
   
-  //evaluateKInverse();
+  evaluateKInverse();
   Vector3D p_a = _KInverse * v_rel;
   Vector3D p_b = -p_a;
-//  _cA.applyImpulse(p_a);
- // _cB.applyImpulse(p_b);
+  _cA.applyImpulse(p_a);
+  _cB.applyImpulse(p_b);
 }
 
 void BallJoint::evaluateKInverse() {
-  Matrix3x3  K_a;
-  Matrix3x3  K_b;
+  Matrix3x3  K_aa;
+  Matrix3x3  K_bb;
 
-  _cA.getKMatrix(K_a);
-  _cA.getKMatrix(K_b);
+  const Vector3D & a_wcs = _cA.getWorldPosition();
+  const Vector3D & b_wcs = _cB.getWorldPosition();
 
-  Matrix3x3 K = K_a + K_b;
+  _cA.getKMatrix(K_aa,a_wcs,a_wcs);
+  _cB.getKMatrix(K_bb,b_wcs,b_wcs);
+
+  Matrix3x3 K = K_aa + K_bb;
   // if the sum of the matrices is 0, do not invert it: use 0 for the inverse matrix, too, instead
   if (K.isZero())
     _KInverse = Matrix3x3::Zero();

@@ -59,6 +59,7 @@ VectorND::~VectorND()
 VectorND& VectorND::operator = (const VectorND& vn)
 { 
   n = vn.n;
+  #pragma omp parallel for
   for (int i=0; i < n; i++)
     v[i] = vn.v[i]; 
   return *this; 
@@ -71,6 +72,7 @@ VectorND& VectorND::operator = (const VectorND& vn)
   */
 VectorND& VectorND::operator -= (const VectorND& vn)
 { 
+  #pragma omp parallel for
   for (int i=0; i < n; i++)
     v[i] -= vn.v[i]; 
   return *this; 
@@ -81,6 +83,7 @@ VectorND& VectorND::operator -= (const VectorND& vn)
   */
 VectorND& VectorND::operator += (const VectorND& vn)
 { 
+  #pragma omp parallel for
   for (int i=0; i < n; i++)
     v[i] += vn.v[i]; 
   return *this; 
@@ -91,6 +94,7 @@ VectorND& VectorND::operator += (const VectorND& vn)
   */ 
 VectorND& VectorND::operator *= ( const Real d )
 { 
+#pragma omp parallel for
   for (int i=0; i < n; i++)
     v[i] *= d; 
   return *this; 
@@ -103,6 +107,7 @@ VectorND& VectorND::operator *= ( const Real d )
 VectorND& VectorND::operator /= ( const Real d )
 { 
   Real d_inv = 1/d;
+  #pragma omp parallel for
   for (int i=0; i < n; i++)
     v[i] *= d_inv; 
   return *this; 
@@ -117,6 +122,7 @@ VectorND& VectorND::operator /= ( const Real d )
 bool IBDS::operator == (const VectorND &a, const VectorND &b)
 {
   bool bl = true;
+  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     bl = bl && (a.v[i] == b.v[i]);
   return bl;
@@ -128,6 +134,7 @@ bool IBDS::operator == (const VectorND &a, const VectorND &b)
 bool IBDS::operator != (const VectorND &a, const VectorND &b)
 {
   bool bl = false;
+  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     bl = bl || (a.v[i] != b.v[i]);
   return bl;
@@ -141,6 +148,7 @@ bool IBDS::operator != (const VectorND &a, const VectorND &b)
 VectorND IBDS::operator - (const VectorND& a)
 {  
   VectorND & vn = *(new VectorND (a.n));
+  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     vn[i] = -a.v[i];
   return vn; 
@@ -152,6 +160,7 @@ VectorND IBDS::operator - (const VectorND& a)
 VectorND IBDS::operator + (const VectorND& a, const VectorND& b)
 { 
   VectorND & vn = *(new VectorND (a.n));
+  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     vn[i] = a.v[i] + b.v[i];
   return vn; 
@@ -163,6 +172,7 @@ VectorND IBDS::operator + (const VectorND& a, const VectorND& b)
 VectorND IBDS::operator - (const VectorND& a, const VectorND& b)
 { 
   VectorND & vn = *(new VectorND (a.n));
+  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     vn[i] = a.v[i] - b.v[i];
   return vn; 
@@ -173,6 +183,7 @@ VectorND IBDS::operator - (const VectorND& a, const VectorND& b)
   */
 VectorND  IBDS::operator * (const VectorND& a, const Real d)
 { 
+#pragma omp parallel for
   VectorND & vn = *(new VectorND (a.n));
   for (int i=0; i < a.n; i++)
     vn[i] = d*a.v[i];
@@ -195,6 +206,7 @@ VectorND IBDS::operator * (const Real d, const VectorND& a)
 Real IBDS::operator * (const VectorND& a, const VectorND& b)
 { 
   Real s = 0.0;
+  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     s += a.v[i]*b.v[i];
   return s; 
@@ -208,6 +220,7 @@ VectorND IBDS::operator * (const VectorND& v, const MatrixNxM& m)
 {
   int dim = m.cols;
   VectorND vn = VectorND (dim);
+ 
   for (int i=0; i < vn.n; i++)
   {
     vn[i] = 0.0;

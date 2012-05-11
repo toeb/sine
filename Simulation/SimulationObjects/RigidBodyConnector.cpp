@@ -28,7 +28,7 @@ void RigidBodyConnector::addExternalForceToBody(const Vector3D &f) {
 }
 
 void RigidBodyConnector::previewPosition(Real h,Vector3D & p_next_wcs) const {
-  const Vector3D & p_wcs = getWorldPosition();  
+  const Vector3D & p_wcs = getCachedWorldPosition();  
   Vector3D v_wcs,a_wcs ;
   calculateWorldVelocity(v_wcs);
   calculateWorldAcceleration(a_wcs);
@@ -48,7 +48,8 @@ void  RigidBodyConnector::calculateWorldPosition(Vector3D& p_wcs)const{
 
 void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{  
   const Vector3D & s_wcs = _rigidBody.getPosition();
-  const Vector3D & p_wcs = getWorldPosition();
+  Vector3D p_wcs;
+  calculateWorldPosition(p_wcs);
   const Vector3D & v_s_wcs = _rigidBody.getVelocity();
   const Vector3D & omega_wcs = _rigidBody.getAngularVelocity();  
   Vector3D r_wcs = p_wcs - s_wcs;
@@ -59,7 +60,8 @@ void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{
 
 void RigidBodyConnector::calculateWorldAcceleration(Vector3D & a_wcs)const{  
   const Vector3D & s_wcs = _rigidBody.getPosition();
-  const Vector3D & p_wcs = getWorldPosition();
+  Vector3D  p_wcs;
+  calculateWorldPosition(p_wcs);
   const Vector3D & a_s_wcs = _rigidBody.getAcceleration();
   const Vector3D & omega_wcs = _rigidBody.getAngularVelocity();
   const Vector3D & omega_dot_wcs = _rigidBody.getAngularAcceleration();

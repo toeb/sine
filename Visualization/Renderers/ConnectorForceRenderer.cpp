@@ -7,7 +7,7 @@ ConnectorForceRenderer::ConnectorForceRenderer(const Connector & connector):_con
   _offset=Vector3D(-1,0,0);
 }
 void ConnectorForceRenderer::render(){
-  const Vector3D & p = _connector.getWorldPosition();
+  const Vector3D & p = _connector.getCachedWorldPosition();
   const Vector3D & f = _connector.getLastForce();
   Real forceLength = f.length();
   Vector3D p2 = f;

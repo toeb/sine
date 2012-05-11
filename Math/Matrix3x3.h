@@ -40,13 +40,35 @@ namespace IBDS
 		Vector3D v[3];
 
 	public:
+   
+    Matrix3x3(Real a11, Real a22, Real a33);
     Matrix3x3(const Matrix3x3 & rhs);
 		Matrix3x3();
 		Matrix3x3(const Vector3D &v0, const Vector3D &v1, const Vector3D &v2);
     ~Matrix3x3();
 
+    //my methods
+    void setZero();
+    static inline void multiply(const Matrix3x3 & a, const Matrix3x3 & b, Matrix3x3  &c);
+    static inline void transpose(const Matrix3x3 & a, Matrix3x3 & aT){
+  aT.v[0].v[0] = a.v[0].v[0]; aT.v[0].v[1] = a.v[1].v[0]; aT.v[0].v[2] = a.v[2].v[0];  
+  aT.v[1].v[0] = a.v[0].v[1]; aT.v[1].v[1] = a.v[1].v[1]; aT.v[1].v[2] = a.v[2].v[1];  
+  aT.v[2].v[0] = a.v[0].v[2]; aT.v[2].v[1] = a.v[1].v[2]; aT.v[2].v[2] = a.v[2].v[2];
+}
+    static inline void subtract(const Matrix3x3 & a, const Matrix3x3 & b, Matrix3x3 &c){
+      c.v[0].v[0] = a.v[0].v[0]-b.v[0].v[0];
+      c.v[0].v[1] = a.v[0].v[1]-b.v[0].v[1];
+      c.v[0].v[2] = a.v[0].v[2]-b.v[0].v[2];
+      c.v[1].v[0] = a.v[1].v[0]-b.v[1].v[0];
+      c.v[1].v[1] = a.v[1].v[1]-b.v[1].v[1];
+      c.v[1].v[2] = a.v[1].v[2]-b.v[1].v[2];
+      c.v[2].v[0] = a.v[2].v[0]-b.v[2].v[0];
+      c.v[2].v[1] = a.v[2].v[1]-b.v[2].v[1];
+      c.v[2].v[2] = a.v[2].v[2]-b.v[2].v[2];
+    }
     static const Matrix3x3 & Zero();
     static const Matrix3x3 & Identity();
+    
     
     bool isZero();
 
@@ -57,6 +79,8 @@ namespace IBDS
 		friend Matrix3x3 operator + (const Matrix3x3& a, const Matrix3x3& b);	// m1 + m2
 		friend Matrix3x3 operator - (const Matrix3x3& a, const Matrix3x3& b);	// m1 - m2
 		friend Matrix3x3 operator * (const Matrix3x3& a, const Matrix3x3& b);	// a * b
+    
+
 		friend Matrix3x3 operator * (const Real d, const Matrix3x3& a);			// d * a
 
 		friend Vector3D operator * (const Vector3D& v, const Matrix3x3& m);

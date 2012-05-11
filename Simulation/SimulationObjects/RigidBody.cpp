@@ -184,7 +184,7 @@ const Matrix3x3 & RigidBody::getTransposedRotationMatrix()const{
 void RigidBody::calculateRotationMatrices(){
   const Quaternion & q = getOrientation();
   q.getMatrix3x3(_R);
-  _RT = _R.transpose();
+  Matrix3x3::transpose(_R,_RT);
 }
 
 
@@ -212,11 +212,13 @@ void RigidBody::calculateInvertedInertiaTensor(){
 const Matrix3x3 & RigidBody::getInvertedInertiaTensorInWorldCoordinates()const{   
   return *&_J_inv_wcs;
 }
+Matrix3x3 tmp;
 void RigidBody::calculateInvertedInertiaTensorInWorldCoordinates(){
   const Matrix3x3 & J_inv_ocs = getInvertedInertiaTensor();
   const Matrix3x3 & R = getRotationMatrix();
   const Matrix3x3 & RT = getTransposedRotationMatrix();
-  _J_inv_wcs = R*J_inv_ocs*RT;
+  Matrix3x3::multiply(tmp,RT,_J_inv_wcs);
+  Matrix3x3::multiply(R,tmp,_J_inv_wcs);
 }
 
 void RigidBody::applyImpulse(const Vector3D& a_wcs, const Vector3D & p_wcs){
@@ -282,8 +284,12 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   Matrix3x3 r_b_star = SimMath::crossProductMatrix(r_b_wcs);
   
   const Matrix3x3 & J_inv_wcs = getInvertedInertiaTensorInWorldCoordinates();
-  
-  K.assign((1/m)*E_3 - r_a_star * J_inv_wcs * r_b_star);
+  Matrix3x3 tmp;
+  //optimized code. uses inline functions
+   Matrix3x3::multiply(J_inv_wcs,r_b_star,tmp);
+  Matrix3x3::multiply(r_a_star,tmp,K);
+  Matrix3x3::subtract(Matrix3x3(1/m,1/m,1/m),K,K);
+//original:   K.assign((1/m)*E_3 - r_a_star * J_inv_wcs * r_b_star);
 };
   
 

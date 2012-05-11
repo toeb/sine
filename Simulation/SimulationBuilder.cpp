@@ -6,7 +6,8 @@ using namespace IBDS;
 SimulationBuilder::SimulationBuilder(Simulation & simulation):_simulation(simulation),_connectorNumber(1){}
 
 Box * SimulationBuilder::createBox(string name, const Vector3D & position, Real mass, Real width, Real height, Real depth){
-  if(nameExists(name))return 0;
+  if(name.compare("")==0)name = createUnknownName();
+  if(nameExists(name))return 0;    
   Box * box = new Box(mass,width,height,depth);
   box->setName(&name);
   box->setPosition(position);
@@ -31,10 +32,14 @@ Gravity* SimulationBuilder::setGravity(const Vector3D & gravityVector){
 Gravity* SimulationBuilder::setGravity(Real g){
   return setGravity(Vector3D(0,-g,0));
 }
-
-DampedSpring * SimulationBuilder::createSpring(
+string SimulationBuilder::createUnknownName(){
+  stringstream ss;
+  ss <<"UnknownObject"<<_unknownCounter++;
+  return ss.str();
+}
+DampedSpring * SimulationBuilder::createSpring( 
   string name, 
-  string bodyA, 
+  string bodyA,  
   string bodyB, 
   Real k_s,
   Real k_d,
@@ -42,6 +47,7 @@ DampedSpring * SimulationBuilder::createSpring(
   const Vector3D & r_b_wcs,
   Real neutralLength)
 {
+  if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;    
   //create connectors
   Connector * a = createConnector(bodyA,r_a_wcs,name);
@@ -63,7 +69,8 @@ DampedSpring * SimulationBuilder::createSpring(
 
 //Sphere * SimulationBuilder::createSphere(string name, const Vector3D & position, Real mass,Real radius){}
 
-Particle * SimulationBuilder::createParticle(string name, const Vector3D & position, Real mass){
+Particle * SimulationBuilder::createParticle(string name, const Vector3D & position, Real mass){  
+  if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;
   Particle * particle = new Particle();
   particle->setName(new string(name));
@@ -73,6 +80,8 @@ Particle * SimulationBuilder::createParticle(string name, const Vector3D & posit
 }
 
 BallJoint * SimulationBuilder::createBallJoint(string jointName, string bodyA, string bodyB, const Vector3D & position){
+  
+  if(jointName.compare("")==0)jointName = createUnknownName();
   if(nameExists(jointName))return 0;
   //create connectors
   Connector * a = createConnector(bodyA,position);

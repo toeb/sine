@@ -28,14 +28,14 @@ using namespace std;
 
 void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){  
   Box* box1 =b.createBox("box1",offset+Vector3D::Zero(),0);
-  Box* box2= b.createBox("box2",offset+Vector3D(0,-1,0),100);
+  Box* box2= b.createBox("box2",offset+Vector3D(0,-1,0));
   Box* box3 = b.createBox("box3",offset+Vector3D(0,-2,0.2));
   Box* box4 = b.createBox("box4",offset+Vector3D(0,-3,0));
 
   box2->addExternalForce(offset+Vector3D(0,0,0),Vector3D(1,0,0));
   b.createSpring("spring1","box1","box2",40,10, box1->getPosition(), box2->getPosition()+Vector3D(0.5,0.5,0.5));
- // b.createSpring("spring2","box2","box3",40,10, box2->getPosition()-Vector3D(0.5,0.5,0.5), box3->getPosition()+Vector3D(0.5,0.5,0.5));
- // b.createSpring("spring3","box3","box4",40,10, box3->getPosition()-Vector3D(0.5,0.5,0.5), box4->getPosition()+Vector3D(0.5,0.5,0.5));
+  b.createSpring("spring2","box2","box3",40,10, box2->getPosition()-Vector3D(0.5,0.5,0.5), box3->getPosition()+Vector3D(0.5,0.5,0.5));
+  b.createSpring("spring3","box3","box4",40,10, box3->getPosition()-Vector3D(0.5,0.5,0.5), box4->getPosition()+Vector3D(0.5,0.5,0.5));
   
 }
 void createSimplePendulum(SimulationBuilder & b, const Vector3D & offset){
@@ -45,6 +45,36 @@ void createSimplePendulum(SimulationBuilder & b, const Vector3D & offset){
   b.createBallJoint("ball joint 1","fixed point", "pendulum",offset);//create a joint at the particles location
 
 }
+void createDoublePendulum(SimulationBuilder & b, const Vector3D & offset){
+  Real l =4;
+  b.createParticle("fixed point",offset,0);// fixed particle
+ 
+  b.createBox("leg1",offset+Vector3D(l/2+0.1,0,0),1,l,0.2,0.2);//pendulum in x direction (with a small offset so a space is shown between the particle and the bar)
+  b.createBox("leg2",offset+Vector3D(l+l/2+0.2,0,0),1,l,0.2,0.2);
+  b.createBallJoint("ball joint 1","fixed point", "leg1",offset);//create a joint at the particles location
+  b.createBallJoint("ball joint 2","leg1", "leg2",Vector3D(l+0.1,0,0));//create a joint at the particles location
+
+}
+
+void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
+  Real l=0.1;
+  Box * lastBox=0;
+  Box* currentBox=0;
+  Vector3D direction(0,-1,0);
+  direction.normalize();
+  for(int i=0; i < n; i++){
+    lastBox = currentBox;
+    currentBox = b.createBox();
+    if(i==0){
+      currentBox->setMass(0);
+      continue;
+    }
+    currentBox->setPosition((l*i)*direction);
+    b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),(l*i-l/2)*direction);
+    if(i==n-1)currentBox->setMass(100); 
+  }
+}
+
 void CustomSimulation::buildModel(){ 
   setName(new string("Custom Simulation"));
   
@@ -55,19 +85,17 @@ void CustomSimulation::buildModel(){
   
   SimulationBuilder b(*this);  
 
-  b.setGravity(0.3);
+  b.setGravity(9);
 
-  Box* box = b.createBox("test");
+ // createDoublePendulum(b,Vector3D::Zero());
+
+  //addRenderer(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
+
+ // create4BoxesWithSpring(b, Vector3D(6,0,0));
+
+ // createSimplePendulum(b,Vector3D(8,0,0));
+  createNPendulum(b,Vector3D(13,0,0), 30);
   
-  box->setAngularVelocity(Vector3D(1,1,1));
-  addRenderer(new CoordinateSystemRenderer(box->getPosition(),box->getOrientation()));
-
-  addRenderer(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
-
-  create4BoxesWithSpring(b, Vector3D(6,0,0));
-
-  createSimplePendulum(b,Vector3D(8,0,0));
-
   
   // loop for adding custom renderers.
   for(auto it = b.getSimulationObjects().begin(); it != b.getSimulationObjects().end(); it++){

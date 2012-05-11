@@ -69,10 +69,10 @@ class Connector : public ISimulationObject
      *
      * \return  The k matrix.
      */
-		void getKMatrix(Matrix3x3 & K) const;
+		void getKMatrix(Matrix3x3 & K, const Vector3D & a_wcs, const Vector3D& b_wcs) const;
 
-    const Vector3D & getWorldPosition()const;
-
+    const Vector3D & getCachedWorldPosition()const;
+    const Vector3D & getWorldPosition();
     
     /**
      * \brief Gets the body.

@@ -60,10 +60,30 @@ Matrix3x3::Matrix3x3 (const Vector3D& v0, const Vector3D& v1, const Vector3D& v2
 	v[2] = v2; 
   INC
 }
+void Matrix3x3::setZero(){
+  v[0].v[0]=0;
+  v[0].v[1]=0;
+  v[0].v[2]=0;
+  v[1].v[0]=0;
+  v[1].v[1]=0;
+  v[1].v[2]=0;
+  v[2].v[0]=0;
+  v[2].v[1]=0;
+  v[2].v[2]=0;
+}
+Matrix3x3::Matrix3x3 (Real a11, Real a22, Real a33)
+{
+  setZero();
+  v[0].v[0] =a11;
+  v[1].v[1] =a22;
+  v[2].v[2] =a33;
+  INC
+}
 Matrix3x3::Matrix3x3(const Matrix3x3 & rhs){
   assign(rhs);
   INC
 }
+
 
 void Matrix3x3::assign(const Matrix3x3 & value){
   v[0].v[0] = value.v[0].v[0]; v[0].v[1] = value.v[0].v[1]; v[0].v[2] = value.v[0].v[2];
@@ -90,7 +110,20 @@ bool Matrix3x3::isZero(){
   return Zero()==*this;
 }
 
+inline void Matrix3x3::multiply(const Matrix3x3 & a, const Matrix3x3 & b, Matrix3x3  &c){
+  
+	c.v[0].v[0] = a.v[0].v[0]*b.v[0].v[0] + a.v[0].v[1]*b.v[1].v[0] + a.v[0].v[2]*b.v[2].v[0];
+	c.v[0].v[1] = a.v[0].v[0]*b.v[0].v[1] + a.v[0].v[1]*b.v[1].v[1] + a.v[0].v[2]*b.v[2].v[1];
+	c.v[0].v[2] = a.v[0].v[0]*b.v[0].v[2] + a.v[0].v[1]*b.v[1].v[2] + a.v[0].v[2]*b.v[2].v[2];
 
+	c.v[1].v[0] = a.v[1].v[0]*b.v[0].v[0] + a.v[1].v[1]*b.v[1].v[0] + a.v[1].v[2]*b.v[2].v[0];
+	c.v[1].v[1] = a.v[1].v[0]*b.v[0].v[1] + a.v[1].v[1]*b.v[1].v[1] + a.v[1].v[2]*b.v[2].v[1];
+	c.v[1].v[2] = a.v[1].v[0]*b.v[0].v[2] + a.v[1].v[1]*b.v[1].v[2] + a.v[1].v[2]*b.v[2].v[2];
+
+	c.v[2].v[0] = a.v[2].v[0]*b.v[0].v[0] + a.v[2].v[1]*b.v[1].v[0] + a.v[2].v[2]*b.v[2].v[0];
+	c.v[2].v[1] = a.v[2].v[0]*b.v[0].v[1] + a.v[2].v[1]*b.v[1].v[1] + a.v[2].v[2]*b.v[2].v[1];
+	c.v[2].v[2] = a.v[2].v[0]*b.v[0].v[2] + a.v[2].v[1]*b.v[1].v[2] + a.v[2].v[2]*b.v[2].v[2];
+}
 
 bool IBDS::operator== (const Matrix3x3& a,const Matrix3x3& b){
   return a(0,0) == b(0,0) && a(0,1) == b(0,1) && a(0,2) == b(0,0) 
@@ -130,19 +163,7 @@ Matrix3x3 IBDS::operator - (const Matrix3x3& a, const Matrix3x3& b)
 Matrix3x3 IBDS::operator * (const Matrix3x3& a, const Matrix3x3& b) 
 {
 	Matrix3x3 c;
-
-	c.v[0].v[0] = a.v[0].v[0]*b.v[0].v[0] + a.v[0].v[1]*b.v[1].v[0] + a.v[0].v[2]*b.v[2].v[0];
-	c.v[0].v[1] = a.v[0].v[0]*b.v[0].v[1] + a.v[0].v[1]*b.v[1].v[1] + a.v[0].v[2]*b.v[2].v[1];
-	c.v[0].v[2] = a.v[0].v[0]*b.v[0].v[2] + a.v[0].v[1]*b.v[1].v[2] + a.v[0].v[2]*b.v[2].v[2];
-
-	c.v[1].v[0] = a.v[1].v[0]*b.v[0].v[0] + a.v[1].v[1]*b.v[1].v[0] + a.v[1].v[2]*b.v[2].v[0];
-	c.v[1].v[1] = a.v[1].v[0]*b.v[0].v[1] + a.v[1].v[1]*b.v[1].v[1] + a.v[1].v[2]*b.v[2].v[1];
-	c.v[1].v[2] = a.v[1].v[0]*b.v[0].v[2] + a.v[1].v[1]*b.v[1].v[2] + a.v[1].v[2]*b.v[2].v[2];
-
-	c.v[2].v[0] = a.v[2].v[0]*b.v[0].v[0] + a.v[2].v[1]*b.v[1].v[0] + a.v[2].v[2]*b.v[2].v[0];
-	c.v[2].v[1] = a.v[2].v[0]*b.v[0].v[1] + a.v[2].v[1]*b.v[1].v[1] + a.v[2].v[2]*b.v[2].v[1];
-	c.v[2].v[2] = a.v[2].v[0]*b.v[0].v[2] + a.v[2].v[1]*b.v[1].v[2] + a.v[2].v[2]*b.v[2].v[2];
-
+Matrix3x3::multiply(a,b,c);
 	return c;
 }
 

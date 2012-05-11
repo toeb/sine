@@ -114,9 +114,13 @@ void GlutSimulationRunner::simulateCallback(){
   Real timePassed = STOP_TIMING(glutTimerName);
   timePassed /= 1000;
   START_TIMING(glutTimerName);
-
   Simulation & simulation = *(getSimulation());
   Real time = simulation.getTime();
-  time += timePassed;
+  if(timePassed > getDesiredTimeStepSize()){
+    //cout << "failed realtime by " <<(timePassed -getDesiredTimeStepSize())<<" [s]"<<endl;
+    timePassed = getDesiredTimeStepSize();
+  }
+  time += getDesiredTimeStepSize();
+
   simulation.simulate(time);
 }

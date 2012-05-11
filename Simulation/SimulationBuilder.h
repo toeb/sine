@@ -15,6 +15,7 @@
 namespace IBDS{
 class SimulationBuilder{
   private:
+    int _unknownCounter;
     int _connectorNumber;
     Simulation & _simulation;
     std::map<std::string,ISimulationObject *> _simulationObjects; 
@@ -40,8 +41,8 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    Box * createBox(std::string name,const Vector3D & position=Vector3D::Zero(),Real mass=1,Real width=1,Real height=1, Real depth=1);
-
+    Box * createBox(std::string name="",const Vector3D & position=Vector3D::Zero(),Real mass=1,Real width=1,Real height=1, Real depth=1);
+    
     /**
      * \brief Sets a gravity.
      *
@@ -83,7 +84,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    DampedSpring * createSpring(    std::string name,     std::string bodyA,     std::string bodyB,     Real k_s,    Real k_d,    const Vector3D & r_a_wcs,     const Vector3D & r_b_wcs,    Real neutralLength = -1);
+    DampedSpring * createSpring(     std::string name,     std::string bodyA,     std::string bodyB,   Real k_s,    Real k_d,    const Vector3D & r_a_wcs,     const Vector3D & r_b_wcs,    Real neutralLength = -1);
 
     /**
      * \brief Creates a sphere.
@@ -98,7 +99,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    Sphere * createSphere(std::string name, const Vector3D & position=Vector3D::Zero(), Real mass=1,Real radius = 1){};
+    Sphere * createSphere(std::string name="", const Vector3D & position=Vector3D::Zero(), Real mass=1,Real radius = 1){};
 
     /**
      * \brief Creates a particle.
@@ -154,6 +155,7 @@ class SimulationBuilder{
     bool nameExists(std::string name);
   private:
 
+    std::string createUnknownName();
     /**
      * \brief Queries if a given name exists.
      *
