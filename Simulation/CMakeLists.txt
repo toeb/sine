@@ -95,7 +95,20 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/ConnectorRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/ConnectorVelocityRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/ConnectorVelocityRenderer.cpp
-	
+	${PROJECT_PATH}/Visualization/Renderers/ConnectorForceRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/ConnectorForceRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/ParticleRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/ParticleRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/RigidBodyRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/RigidBodyRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/BoxRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/BoxRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/PointRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/PointRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/SphereRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/SphereRenderer.cpp	
+	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.cpp	
 	)
 	
 source_group("integration" FILES ${integrators_SRC})

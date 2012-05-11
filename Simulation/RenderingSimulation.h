@@ -13,8 +13,7 @@ public:
   void addRenderer(IRenderer * renderer);
   using Simulation::getName;
   using Simulation::setName;
-protected:
-  void onSimulationObjectAdded(ISimulationObject* obj);
+
 };
 
 }

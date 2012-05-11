@@ -36,10 +36,10 @@ namespace IBDS
 class Particle : public Body, public IRenderer
   {
   private:
-    Real m_mass;
-    Vector3D m_position;
-    Vector3D m_velocity;
-    Vector3D m_acceleration;
+    Real _mass;
+    Vector3D _position;
+    Vector3D _velocity;
+    Vector3D _acceleration;
     Vector3D _f;
   public:
     Particle ();
@@ -64,10 +64,8 @@ class Particle : public Body, public IRenderer
     const  Vector3D  &   getVelocity() const;
     void setVelocity(const Vector3D & val);
 
-     void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
+    void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
 
-
-	   void render();
   };
 }
 

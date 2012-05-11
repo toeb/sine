@@ -59,6 +59,8 @@ namespace IBDS
 		Real length2 ();
 		Quaternion conjugate ();
 
+    static const Quaternion & zeroRotation();
+
 		friend Quaternion operator - (const Quaternion& a);							// -m1
 		friend Quaternion operator + (const Quaternion& a, const Quaternion& b);	// m1 + m2
 		friend Quaternion operator - (const Quaternion& a, const Quaternion& b);	// m1 - m2

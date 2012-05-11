@@ -21,7 +21,7 @@ namespace IBDS {
 		ParticleConnector(Particle &p);
 
 		const Vector3D &  getObjectCoordinatePosition()const;
-		void addExternalForce(const Vector3D &f);		
+		void addExternalForceToBody(const Vector3D &f);		
 		void previewPosition(Real h, Vector3D & p_next_wcs) const;
 		void applyImpulse(const Vector3D & p);
 

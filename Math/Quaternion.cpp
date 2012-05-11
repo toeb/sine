@@ -201,8 +201,10 @@ void Quaternion::setFromMatrix3x3T (Matrix3x3 *m)
 		}
     }
 }
-
-
+Quaternion zeroRot(1,0,0,0);
+const Quaternion & Quaternion::zeroRotation(){
+  return *&zeroRot;
+}
 /** Gibt das Quaternion als 3x3 Rotationsmatrix zurück. 
   */
 void Quaternion::getMatrix3x3 (Matrix3x3 &m)const

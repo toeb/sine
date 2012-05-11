@@ -2,6 +2,7 @@
 #include <Math/Quaternion.h>
 #include <Simulation/SimulationObjects/Box.h>
 #include <Math/SimMath.h>
+
 using namespace IBDS;
 
 void RigidBody::worldToObjectCoordinates(const Vector3D & r_wcs, Vector3D & r_ocs)const{

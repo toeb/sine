@@ -24,12 +24,10 @@ private:
   ///< The inverse inertia tensor in object coordinates
   Matrix3x3 _J_inv_ocs;
   ///< The inverse inertia tensor in world coordinates
-  Matrix3x3 _J_inv_wcs;
-
-
+  Matrix3x3 _J_inv_wcs;  
   Matrix3x3 _R;
-  Matrix3x3 _RT;
-  
+  Matrix3x3 _RT;  
+
   ///< The mass
   Real _m;
   ///< The orientation

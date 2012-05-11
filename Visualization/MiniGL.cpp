@@ -156,8 +156,12 @@ void MiniGL::drawVector (const Vector3D &a, const Vector3D &b, const float w,con
 		glVertex3v(&a[0]);
 		glVertex3v(&b[0]);
 	glEnd ();
-	
+
+  
 	glLineWidth (1);
+  
+  MiniGL::drawSphere(&b,0.01,color);
+	
 }
 
 /** Zeichnet eine Linie von (x1,y1,z1) nach (x2,y2,z2) mit der Dicke w und der Farbe farbe.

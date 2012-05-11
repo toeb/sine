@@ -10,12 +10,16 @@ namespace IBDS {
 	  virtual void resetForce() = 0;
 		virtual void addExternalForce(const IBDS::Vector3D & f) = 0;
     virtual void applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs)=0;
-    virtual const Vector3D & getForce()const=0;
+
+    virtual const Vector3D & getForce()   const=0;
     virtual const Vector3D & getPosition()const=0;
     virtual const Vector3D & getVelocity()const=0;
 
+    
+
     /**
-     * \brief Gets the acceleration (probably evaluates the acceleration equation).
+     * \brief Gets the acceleration
+     * 				
      *
      * \author Tobi
      * \date 09.05.2012

@@ -40,38 +40,38 @@ const Vector3D & Particle::getForce()const{
 void Particle::evaluate(){
   Real m  = getMass();
   if(m==0){
-    m_acceleration = Vector3D::Zero();
+    _acceleration = Vector3D::Zero();
     setVelocity(Vector3D::Zero());
     return;
   }
   // acceleration is force / mass
-  m_acceleration = _f*(1/m);
+  _acceleration = _f*(1/m);
 }
 
 void Particle::getDerivedState(Real * xDot)const{
-  xDot[0]= m_velocity[0];
-  xDot[1]= m_acceleration[0];
-  xDot[2]= m_velocity[1];
-  xDot[3]= m_acceleration[1];
-  xDot[4]= m_velocity[2];
-  xDot[5]= m_acceleration[2];
+  xDot[0]= _velocity[0];
+  xDot[1]= _acceleration[0];
+  xDot[2]= _velocity[1];
+  xDot[3]= _acceleration[1];
+  xDot[4]= _velocity[2];
+  xDot[5]= _acceleration[2];
 }
 void Particle::setState(const Real * state){
-  m_position[0]=state[0]; 
-  m_velocity[0]=state[1];
-  m_position[1]=state[2];
-  m_velocity[1]=state[3];
-  m_position[2]=state[4];
-  m_velocity[2]=state[5];
+  _position[0]=state[0]; 
+  _velocity[0]=state[1];
+  _position[1]=state[2];
+  _velocity[1]=state[3];
+  _position[2]=state[4];
+  _velocity[2]=state[5];
 }
  void Particle::getState(Real * state)const{
   //store the state in alternating fashion (always x_i \dot{x_i} which is needed for some integration algorithms
-  state[0] = m_position[0];
-  state[1] = m_velocity[0];
-  state[2] = m_position[1];
-  state[3] = m_velocity[1];
-  state[4] = m_position[2];
-  state[5] = m_velocity[2];
+  state[0] =_position[0];
+  state[1] =_velocity[0];
+  state[2] =_position[1];
+  state[3] =_velocity[1];
+  state[4] =_position[2];
+  state[5] =_velocity[2];
 }
  int Particle::getStateDimension()const{
   static int dim = 6;
@@ -81,10 +81,10 @@ void Particle::setState(const Real * state){
 
 Particle::Particle () 
 {
-  m_mass = 1.0;
-  m_position = Vector3D(0,0,0);
-  m_velocity = Vector3D(0,0,0);
-  m_acceleration = Vector3D(0,0,0);
+ _mass = 1.0;
+ _position = Vector3D(0,0,0);
+ _velocity = Vector3D(0,0,0);
+ _acceleration = Vector3D(0,0,0);
 }
 
 Particle::~Particle () 
@@ -93,44 +93,41 @@ Particle::~Particle ()
 
 Real IBDS::Particle::getMass() const
 {
-  return m_mass;
+  return _mass;
 }
 
 void Particle::setMass( const Real & val )
 {
-  m_mass = val;
+  _mass = val;
 }
 
 const Vector3D & Particle::getPosition() const
 {
-  return m_position;
+  return _position;
 }
 
 void IBDS::Particle::setPosition( const Vector3D & val )
 {
-  m_position = val;
+  _position = val;
 }
 
 const Vector3D & Particle::getVelocity() const
 {
-  return m_velocity;
+  return _velocity;
 }
 
 void IBDS::Particle::setVelocity(const Vector3D & val )
 {
-  m_velocity = val;
+  _velocity = val;
 }
 
 
-void Particle::render(){
-	MiniGL::drawPoint(getPosition(),5,MiniGL::darkblue);
-}
 
  void Particle::applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs){
    Real m = getMass();
    if(m==0)return;
    Vector3D vDelta = 1/m*p_wcs;
-   m_velocity += vDelta;
+   _velocity += vDelta;
  }
 
 void Particle::calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const{

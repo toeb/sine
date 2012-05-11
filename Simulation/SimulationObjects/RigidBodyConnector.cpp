@@ -23,7 +23,7 @@ const Vector3D &  RigidBodyConnector::getObjectCoordinatePosition() const {
 
 
 
-void RigidBodyConnector::addExternalForce(const Vector3D &f) {
+void RigidBodyConnector::addExternalForceToBody(const Vector3D &f) {
   _rigidBody.addExternalForce(getWorldPosition(),f);
 }
 

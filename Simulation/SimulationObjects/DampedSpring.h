@@ -10,36 +10,33 @@
 #include <Visualization/IRenderer.h>
 
 namespace IBDS{
-	class DampedSpring : public Force, public IRenderer
+	class DampedSpring : public Force
 		{
 		private:
-			// the points the spring is attached to
-			Connector* _c1, *_c2;
-
-			// the world coordinates of the connectors
-			Vector3D a, b;
-
-			// stiffness constant
-			Real _k_s;
-			
+			// the connectors this spring is attached to
+			Connector & _cA;
+      Connector & _cB;
+      // stiffness constant
+			Real _k_s;			
 			// damping constant
 			Real _k_d;
-			
-			Real _restLength;
-
-			DampedSpring(void);
+      // initial length
+			Real _l0;
 		public:
-			~DampedSpring(void);
-      
+			~DampedSpring();
+      inline void calculateSpringAndDampeningForce(Vector3D & f_s,Vector3D & f_d)const;
+      inline void calculateSpringForce(Vector3D & f)const;
+      Real getStiffnessConstant()const;
+      Real getDampeningConstant()const;
+      const Connector & getConnectorA()const;
+      const Connector& getConnectorB()const;
+
 			/**
 			 * Creates a string with the specified stiffness, damping and rest length, which is attached to the specified connectors.
 			 */
-			DampedSpring(Connector *c1, Connector *c2, Real k_s, Real k_d, Real restLength);
+			DampedSpring(Connector & c1, Connector &c2, Real k_s, Real k_d, Real restLength);
 			
 			// Side effect: fields a, b are set.
-			void act (std::vector<Body*> & target, Real time);
-
-			virtual void render();
-
+			void act (std::vector<Body*> & target, Real time);      
 		};
 	}

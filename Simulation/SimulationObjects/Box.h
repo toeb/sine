@@ -7,20 +7,18 @@
 #include <Visualization/IRenderer.h>
 
 namespace IBDS{
-	class Box: public RigidBody, public IRenderer
+	class Box: public RigidBody
 		{
      
 		private:
-      const char* _name;
-      int _length;
 			// size of the box
 			Real _x, _y, _z;
 			Box();
 		public:
-			 using RigidBody::getName;
-      using RigidBody::setName;
-      using RigidBody::initialize;
-      using RigidBody::cleanup;
+      Real getXExtent()const;
+      Real getYExtent()const;
+      Real getZExtent()const;
+
 			~Box();
 			/**
 			 *  Creates a box with given mass and extents.
@@ -30,8 +28,6 @@ namespace IBDS{
 			 * \param z depth
 			 */
 			Box(Real m, Real x, Real y, Real z);
-     bool initialize();
-			void render();
 		};
 	}
 

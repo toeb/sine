@@ -15,7 +15,8 @@ class Connector : public ISimulationObject
     Vector3D _worldPosition;
     ///< The world velocity (cached)
     Vector3D _worldVelocity;
-
+    ///< The force acting on this connector
+    Vector3D _f;
     ///< The world acceleration
     Vector3D _worldAcceleration;
     Body & _body;
@@ -29,11 +30,15 @@ class Connector : public ISimulationObject
 
 		
 		/**
-		 * Apply a force to the connection point.
+		 * Apply a force to the connection point. (stores the last force added to be displayable)
 		 * \param the force vector in world coordinates
 		 */
-		virtual void addExternalForce(const Vector3D &f) = 0;
+		virtual void addExternalForce(const Vector3D &f);
+    virtual void addExternalForceToBody(const Vector3D & f)=0;
 
+    const Vector3D & getLastForce()const{
+      return _f;
+    }
 		/**
 		 * This method is called before the integration step t -> t+h of the bodies
 		 * but after the integration step t -> t+h of the connectors
@@ -66,7 +71,7 @@ class Connector : public ISimulationObject
      */
 		void getKMatrix(Matrix3x3 & K) const;
 
-    virtual const Vector3D & getWorldPosition()const;
+    const Vector3D & getWorldPosition()const;
 
     
     /**

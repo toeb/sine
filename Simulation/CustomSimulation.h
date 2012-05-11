@@ -8,6 +8,7 @@ namespace IBDS{
 class CustomSimulation : public RenderingSimulation{
 protected:
   void buildModel();
+  void onSimulationObjectAdded(ISimulationObject * simObj);
 public:
 };
 }

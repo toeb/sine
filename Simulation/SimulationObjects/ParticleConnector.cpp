@@ -12,7 +12,7 @@ const Vector3D &  ParticleConnector::getObjectCoordinatePosition() const
 {
   return Vector3D::Zero();
 }
-void ParticleConnector::addExternalForce(const Vector3D &f) {
+void ParticleConnector::addExternalForceToBody(const Vector3D &f) {
 	_particle.addExternalForce(f);
 }
 

@@ -51,7 +51,7 @@ DampedSpring * SimulationBuilder::createSpring(
   //calculate current distance between connectors
   if(neutralLength<0)neutralLength = (r_a_wcs - r_b_wcs).length();
   //create spring
-  DampedSpring * spring = new DampedSpring(a,b,k_s,k_d,neutralLength);
+  DampedSpring * spring = new DampedSpring(*a,*b,k_s,k_d,neutralLength);
   spring->setName(&name);
   //add objects
   addSimulationObject(a);
