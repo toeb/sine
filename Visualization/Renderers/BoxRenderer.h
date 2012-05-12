@@ -11,6 +11,7 @@ private:
   const Box & _box;
   const Matrix3x3  & _RT;
   const Vector3D & _p;
+  Vector3D _textPosition;
   Vector3D boxExtent;
 public:
   bool initialize();

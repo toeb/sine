@@ -8,9 +8,9 @@ namespace IBDS{
 class CustomSimulation : public RenderingSimulation{
 protected:
   void buildModel();
+  void buildAlgorithms();
   void onSimulationObjectAdded(ISimulationObject * simObj);
 public:
-  CustomSimulation();
   using Simulation::setName;
 };
 }

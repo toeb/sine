@@ -72,6 +72,8 @@ SET(simulation_SRC
 SET(textile_SRC
 ./Textiles/TextileModel.h
 ./Textiles/TextileModel.cpp
+./Textiles/TextileAlgorithm.h
+./Textiles/TextileAlgorithm.cpp
 )
 
 

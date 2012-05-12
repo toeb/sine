@@ -20,13 +20,14 @@ void BoxRenderer::render(){
     (float)boxExtent[1],
     (float)boxExtent[2],
     MiniGL::gray);
-  //if(_textRenderer) _textRenderer->render();
+  _textPosition = _p + Vector3D(boxExtent[0]+0.1,0.1,0.1);
+  if(_textRenderer) _textRenderer->render();
 }
 
 
 bool BoxRenderer::initialize(){
    const string * name =_box.getName();
    if(!name)return true;
-  _textRenderer = new TextRenderer(*name,_p);
+  _textRenderer = new TextRenderer(*name,_textPosition);
   return _textRenderer->initialize();
 }

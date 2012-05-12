@@ -11,6 +11,8 @@
 
 #include <Simulation/ImpulseBasedDynamicsAlgorithm.h>
 
+#include <Simulation/Textiles/TextileAlgorithm.h>
+
 #include <Visualization/Renderers/LightRenderer.h>
 #include <Visualization/Renderers/CoordinateSystemRenderer.h>
 #include <Visualization/Renderers/CameraRenderer.h>
@@ -64,7 +66,7 @@ void createDoublePendulum(SimulationBuilder & b, const Vector3D & offset){
 }
 
 void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
-  Real l=0.1;
+  Real l=0.75;
   Box * lastBox=0;
   Box* currentBox=0;
   Vector3D direction(1,-1,0);
@@ -72,22 +74,23 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
   for(int i=0; i < n; i++){
     lastBox = currentBox;
     currentBox = b.createBox();
+    currentBox->setPosition(offset+(l*i)*direction);
     if(i==0){
       currentBox->setMass(0);
       continue;
     }
-    currentBox->setPosition((l*i)*direction);
-    b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),(l*i-l/2)*direction);
+    b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),offset+(l*i-l/2)*direction);
     if(i==n-1)currentBox->setMass(1); 
   }
 }
 
-CustomSimulation::CustomSimulation(){
+void CustomSimulation::buildAlgorithms(){
+  
   addSimulationAlgorithm(new ForceAlgorithm());
+  addSimulationAlgorithm(new TextileAlgorithm());
   addSimulationAlgorithm(new ImpulseBasedDynamicsAlgorithm());
   addSimulationAlgorithm(new IntegrationAlgorithm(*(new RungeKutta4())));
 }
-
 void CustomSimulation::buildModel(){ 
   setName("Custom Simulation");
 
@@ -99,14 +102,15 @@ void CustomSimulation::buildModel(){
 
   b.setGravity(9);
 
- // createDoublePendulum(b,Vector3D::Zero());
+  createDoublePendulum(b,Vector3D::Zero());
 
-  //addRenderer(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
+  addRenderer(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
- // create4BoxesWithSpring(b, Vector3D(6,0,0));
+  create4BoxesWithSpring(b, Vector3D(6,0,0));
 
- // createSimplePendulum(b,Vector3D(8,0,0));
-  createNPendulum(b,Vector3D(13,0,0), 30);
+  createSimplePendulum(b,Vector3D(8,0,0));
+
+  createNPendulum(b,Vector3D(13,0,0), 10);
 }
 
 

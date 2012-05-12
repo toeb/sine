@@ -3,7 +3,7 @@
 using namespace std;
 using namespace IBDS;
 
-SimulationBuilder::SimulationBuilder(Simulation & simulation):_simulation(simulation),_connectorNumber(1){}
+SimulationBuilder::SimulationBuilder(Simulation & simulation):_simulation(simulation),_connectorNumber(1),_unknownCounter(1){}
 
 Box * SimulationBuilder::createBox(string name, const Vector3D & position, Real mass, Real width, Real height, Real depth){
   if(name.compare("")==0)name = createUnknownName();
