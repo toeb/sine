@@ -69,6 +69,12 @@ SET(simulation_SRC
 	
 )
 
+SET(textile_SRC
+./Textiles/TextileModel.h
+./Textiles/TextileModel.cpp
+)
+
+
 SET(visualisation_SRC
 	  ${PROJECT_PATH}/Visualization/MiniGL.h
 	  ${PROJECT_PATH}/Visualization/MiniGL.cpp
@@ -125,7 +131,7 @@ source_group("simulation" FILES ${simulation_SRC})
 source_group("simulation\\objects" FILES ${simulationObjects_SRC})
 source_group("visualization" FILES ${visualisation_SRC})
 source_group("visualization\\renderers" FILES ${renderers_SRC})
-
+source_group("simulation\\textiles" FILES ${textile_SRC})
 # PROJECT(Simulation)
 ADD_EXECUTABLE(Simulation
 	  main.cpp	  	  
@@ -135,6 +141,7 @@ ADD_EXECUTABLE(Simulation
 	  ${simulationObjects_SRC}
 	  ${visualisation_SRC}         
 	   ${renderers_SRC}
+	   ${textile_SRC}
 	  ${PROJECT_PATH}/Common/Config.h			  
 	  ${PROJECT_PATH}/Common/StringTools.h			  
 	  ${PROJECT_PATH}/Common/StringTools.cpp

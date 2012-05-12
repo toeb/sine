@@ -16,9 +16,13 @@ namespace IBDS{
 
 class Simulation : public ISimulationObject{
 private:  
+  ///< The simulation objects
   std::vector<ISimulationObject*> _simulationObjects;
+  ///< The simulation algorithms
   std::vector<ISimulationAlgorithm*> _simulationAlgorithms;  
+  ///< The time
   Real _time;
+  ///< The target time 
   Real _targetTime;
 public:
 
@@ -33,7 +37,7 @@ public:
   void simulate(Real targetTime);
 
   /**
-   * \brief Resets the simulation.  (deletes model and calls buildModel)
+   * \brief(deletes model (also in all algorithm) and calls buildModel)
    *
    * \author Tobi
    * \date 12.05.2012
