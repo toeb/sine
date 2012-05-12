@@ -44,6 +44,15 @@ VectorND::VectorND(const int dim)
   v = new Real[dim];
 }
 
+void VectorND::resize(int dim){
+  if(dim==n)return;
+  delete v;
+  n=dim;
+  v=0;
+  v = new Real[dim];
+
+}
+
 /** Destruktor
   */
 VectorND::~VectorND()

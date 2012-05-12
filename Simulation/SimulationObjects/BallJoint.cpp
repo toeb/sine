@@ -26,7 +26,7 @@ void BallJoint::correctPosition(Real h) {
   //approximate velocity
   Vector3D v = (1/h) * d;
   // calculate impulse correction
-  evaluateKInverse();
+  //evaluateKInverse();
   Vector3D p_a = _KInverse * v;
   Vector3D p_b = -p_a;
   //apply correction impulse
@@ -38,16 +38,15 @@ bool BallJoint::arePositionsCorrect(){
 }
 
 void BallJoint::correctVelocity() {
-  Vector3D  v_a,v_b;
-  _cA.calculateWorldVelocity(v_a);
-  _cA.calculateWorldVelocity(v_b);
+  const Vector3D & v_a_wcs = _cA.getCachedWorldVelocity();
+  const Vector3D & v_b_wcs = _cB.getCachedWorldVelocity();
 
   Vector3D v_rel;
-  v_rel = v_b - v_a;
+  v_rel = v_a_wcs - v_b_wcs;
   
-  evaluateKInverse();
   Vector3D p_a = _KInverse * v_rel;
   Vector3D p_b = -p_a;
+  //apply velocity correction impulse
   _cA.applyImpulse(p_a);
   _cB.applyImpulse(p_b);
 }
@@ -56,8 +55,8 @@ void BallJoint::evaluateKInverse() {
   Matrix3x3  K_aa;
   Matrix3x3  K_bb;
 
-  const Vector3D & a_wcs = _cA.getWorldPosition();
-  const Vector3D & b_wcs = _cB.getWorldPosition();
+  const Vector3D & a_wcs = _cA.getCachedWorldPosition();
+  const Vector3D & b_wcs = _cB.getCachedWorldPosition();
 
   _cA.getKMatrix(K_aa,a_wcs,a_wcs);
   _cB.getKMatrix(K_bb,b_wcs,b_wcs);
@@ -70,6 +69,6 @@ void BallJoint::evaluateKInverse() {
     _KInverse = K.symmInverse();
 }
 
-void BallJoint::beforeCorrection(){
+void BallJoint::precompute(){
   evaluateKInverse();
 }

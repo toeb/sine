@@ -21,7 +21,7 @@ void BoxRenderer::render(){
     (float)boxExtent[2],
     MiniGL::gray);
   _textPosition = _p + Vector3D(boxExtent[0]+0.1,0.1,0.1);
-  if(_textRenderer) _textRenderer->render();
+  //if(_textRenderer) _textRenderer->render();
 }
 
 

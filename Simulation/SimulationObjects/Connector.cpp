@@ -33,9 +33,27 @@ const Vector3D & Connector::getCachedWorldPosition()const{
   return _worldPosition;
 }
 
+const Vector3D & Connector::getCachedWorldVelocity()const{
+  return _worldVelocity;
+}
+
+const Vector3D & Connector::getWorldVelocity(){
+  calculateWorldVelocity(_worldVelocity);
+  return _worldVelocity;
+}
+
+const Vector3D & Connector::getCachedWorldAcceleration()const{
+  return _worldAcceleration;
+}
+const Vector3D & Connector::getWorldAcceleration(){
+  calculateWorldAcceleration(_worldAcceleration);
+  return _worldAcceleration;
+}
 
 void Connector::calculateCachedValues(){
    calculateWorldPosition(_worldPosition);
+   calculateWorldVelocity(_worldVelocity);
+   calculateWorldAcceleration(_worldAcceleration);
 }
 
 void Connector::addExternalForce(const Vector3D & force){

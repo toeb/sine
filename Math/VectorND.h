@@ -49,6 +49,8 @@ namespace IBDS
 		VectorND(const int dim);
 		~VectorND();
 
+    void resize(int dim);
+
 		friend VectorND operator - (const VectorND& v);						  // -v1
 		friend VectorND operator + (const VectorND& a, const VectorND& b);	  // v1 + v2
 		friend VectorND operator - (const VectorND& a, const VectorND& b);	  // v1 - v2

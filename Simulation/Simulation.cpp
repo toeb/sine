@@ -28,7 +28,8 @@ bool Simulation::addSimulationAlgorithm(ISimulationAlgorithm * algorithm){
   for(auto it = _simulationObjects.begin(); it!=_simulationObjects.end(); it++){
     algorithm->addSimulationObject(*it);
   }
-
+  // since an algorithm is also a simulation object it is added as well.
+  addSimulationObject(algorithm);
   return true;
 }
 

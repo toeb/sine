@@ -16,7 +16,7 @@ void ParticleConnector::addExternalForceToBody(const Vector3D &f) {
 	_particle.addExternalForce(f);
 }
 
-void ParticleConnector::previewPosition(Real h, Vector3D & p_next_wcs) const {
+void ParticleConnector::previewPosition(Real h, Vector3D & p_next_wcs)  {
   _particle.previewPosition(h,p_next_wcs);
 }
 

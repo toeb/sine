@@ -42,9 +42,9 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   Box* box4 = b.createBox("box4",offset+Vector3D(0,-3,0));
 
   box2->addExternalForce(offset+Vector3D(0,0,0),Vector3D(1,0,0));
-  b.createSpring("spring1","box1","box2",40,10, box1->getPosition(), box2->getPosition()+Vector3D(0.5,0.5,0.5));
-  b.createSpring("spring2","box2","box3",40,10, box2->getPosition()-Vector3D(0.5,0.5,0.5), box3->getPosition()+Vector3D(0.5,0.5,0.5));
-  b.createSpring("spring3","box3","box4",40,10, box3->getPosition()-Vector3D(0.5,0.5,0.5), box4->getPosition()+Vector3D(0.5,0.5,0.5));
+  b.createSpring("spring1","box1","box2",40,10, box1->getPosition(), box2->getPosition());
+  b.createSpring("spring2","box2","box3",40,10, box2->getPosition(), box3->getPosition());
+  b.createSpring("spring3","box3","box4",40,10, box3->getPosition(), box4->getPosition());
   
 }
 void createSimplePendulum(SimulationBuilder & b, const Vector3D & offset){
@@ -88,7 +88,7 @@ void CustomSimulation::buildAlgorithms(){
   
   addSimulationAlgorithm(new ForceAlgorithm());
   addSimulationAlgorithm(new TextileAlgorithm());
-  addSimulationAlgorithm(new ImpulseBasedDynamicsAlgorithm());
+  addSimulationAlgorithm(new ImpulseBasedDynamicsAlgorithm(5));
   addSimulationAlgorithm(new IntegrationAlgorithm(*(new RungeKutta4())));
 }
 void CustomSimulation::buildModel(){ 
@@ -110,7 +110,7 @@ void CustomSimulation::buildModel(){
 
   createSimplePendulum(b,Vector3D(8,0,0));
 
-  createNPendulum(b,Vector3D(13,0,0), 10);
+  createNPendulum(b,Vector3D(13,0,0), 500);
 }
 
 

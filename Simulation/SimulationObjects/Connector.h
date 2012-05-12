@@ -15,10 +15,10 @@ class Connector : public ISimulationObject
     Vector3D _worldPosition;
     ///< The world velocity (cached)
     Vector3D _worldVelocity;
-    ///< The force acting on this connector
-    Vector3D _f;
     ///< The world acceleration
     Vector3D _worldAcceleration;
+    ///< The force acting on this connector
+    Vector3D _f;
     Body & _body;
   public:
     Connector(Body & body);
@@ -43,7 +43,7 @@ class Connector : public ISimulationObject
 		 * This method is called before the integration step t -> t+h of the bodies
 		 * but after the integration step t -> t+h of the connectors
 		 */
-		virtual void previewPosition(Real h, Vector3D & p_next_wcs) const = 0;
+		virtual void previewPosition(Real h, Vector3D & p_next_wcs)  = 0;
 
 		virtual void applyImpulse(const Vector3D & p) = 0;
     /**
@@ -73,6 +73,14 @@ class Connector : public ISimulationObject
 
     const Vector3D & getCachedWorldPosition()const;
     const Vector3D & getWorldPosition();
+
+    const Vector3D & getCachedWorldVelocity()const;
+    const Vector3D & getWorldVelocity();
+
+    const Vector3D & getCachedWorldAcceleration()const;
+    const Vector3D & getWorldAcceleration();
+
+
     
     /**
      * \brief Gets the body.

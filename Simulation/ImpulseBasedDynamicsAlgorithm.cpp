@@ -24,11 +24,11 @@ void ImpulseBasedDynamicsAlgorithm::reset(){
 
 void ImpulseBasedDynamicsAlgorithm::preIntegrationStep(Real time, Real h){
   bool toleranceSatisfied;  
-  int iterations = 0;  
+  _iterations  = 0;
   // do steps before correction
   for (auto it = _joints.begin(); it != _joints.end(); it++) {
     Joint* joint = *it;
-    joint->beforeCorrection();
+    joint->precompute();
   }
 
   do {
@@ -39,10 +39,15 @@ void ImpulseBasedDynamicsAlgorithm::preIntegrationStep(Real time, Real h){
       // if correctPosition returns false for some joint, toleranceSatisfied remains false for the rest of the loop 
       if(!joint->arePositionsCorrect())toleranceSatisfied=false;
     }
-    iterations++;
-  } while (!toleranceSatisfied && iterations < _maxIterations);	// the loop is repeated until correctPosition returns true for all joints
+    _iterations++;
+  } while (!toleranceSatisfied && _iterations < _maxIterations);	// the loop is repeated until correctPosition returns true for all joints
 
 }
+
+int ImpulseBasedDynamicsAlgorithm::getLastNumberOfIterations()const{
+  return _iterations;
+}
+
 void ImpulseBasedDynamicsAlgorithm::postIntegrationStep(Real time, Real h){    
   for (vector<Joint*>::iterator it = _joints.begin(); it != _joints.end(); it++){
     (*it)->correctVelocity();

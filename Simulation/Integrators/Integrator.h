@@ -14,9 +14,9 @@ private:
   /// <summary> The integratable </summary>
   IIntegrable * _integratable;
   int _dimension;
-  VectorND * _x;
-  VectorND * _xNext;
-  VectorND * _xDot;
+  VectorND _x;
+  VectorND _xNext;
+  VectorND _xDot;
 public:
 
   /**

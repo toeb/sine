@@ -19,15 +19,15 @@ private:
   Real _velocityTolerance;
   Real _positionError;
 public:
-	void beforeCorrection();
+	void precompute();
   ~BallJoint();
 
 	BallJoint(Connector & a, Connector &b,Real positionTolerance=3e-10, Real velocityTolerance=3e-10);
 	  
 
-	bool arePositionsCorrect();
+	inline bool arePositionsCorrect();
     
-  void correctPosition(Real h);
+  inline void correctPosition(Real h);
 	void correctVelocity();
 		
   void calculateDistancePreview(Real h, Vector3D & d)const;
