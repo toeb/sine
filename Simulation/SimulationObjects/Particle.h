@@ -33,7 +33,7 @@
 #include <Visualization/IRenderer.h>
 namespace IBDS
 {
-class Particle : public Body, public IRenderer
+class Particle : public Body
   {
   private:
     Real _mass;

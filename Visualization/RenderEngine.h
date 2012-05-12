@@ -2,39 +2,36 @@
 #include "IRenderer.h"
 #include "CompositeRenderer.h"
 #include <Simulation/ISimulationObject.h>
-#include "RenderManager.h"
+
+#include <Simulation/ISimulationAlgorithm.h>
 namespace IBDS{
 
 /**
  * \brief Render engine.
  *
  */
-class RenderEngine:public ISimulationObject{
+class RenderEngine:public ISimulationAlgorithm{
 private:
-  CompositeRenderer * _renderers;
-  RenderManager * _renderManager;
+  CompositeRenderer _renderers;
   int _desiredFramerate;
 public:
-  void setRenderManager(RenderManager* renderMan);
-  RenderManager * getRenderManager();
+  bool addSimulationObject(ISimulationObject * object);
+  void reset();
+    
   void setDesiredFramerate(int hz);
   int getDesiredFramerate()const;
-
-  /**
-   * \brief Runs this object.
-   * 				
-   * 				must call render
-   * 				must call initialize 
-   * 				must call cleanup
-   */
-  virtual void run()=0;
+    
   void render();
   bool initialize();
   void cleanup();
+  
   RenderEngine();
   ~RenderEngine();
+  
   CompositeRenderer & getRenderers();
 protected:
+  void resizeScene(int newWidth, int newHeight);
+  virtual void onSceneResized(int newWidth,int newHeight){};
   virtual void onDesiredFramerateChanged(){};
   virtual void onBeforeRender(){};
   virtual void onAfterRender(){};

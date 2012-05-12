@@ -27,7 +27,6 @@
 #include "Common/Config.h"
 #include "Math/Vector3D.h"
 #include "Math/Matrix3x3.h"
-#include "AntTweakBar.h"
 #include "Math/Quaternion.h"
 //#include "Simulation/Integrators/Implementations/IntegratorsManager.h"
 
@@ -47,10 +46,12 @@
 	#define glLoadMatrix glLoadMatrixf
 #endif
 
-enum IntegrationMethodType {EXPL_EULER, RK4};
 
 namespace IBDS
 {
+  
+
+  
 	/** Klasse mit ein paar Befehlen für die Darstellung mit
 	  * OpenGL.
 	  \author Jan Bender
@@ -90,7 +91,6 @@ namespace IBDS
  static void valueToColor(Real value, float * color, Real min=0, Real max=10);
 
 	private:
-
   /**
    * \brief Hat function.  is defined as 
    * 				
@@ -184,17 +184,7 @@ namespace IBDS
 		/** Gibt an, wie die Szene gezeichnet werden soll. (Wireframe) */
 		static int drawMode;
 		
-		// pointer to the integrators manager
-	//	static IntegratorsManager *_integratorsManager;
-
-		// pointer to an array of integrator names
-		static std::string const * _integratorNames;
-
-		// number of integrators available
-		static int _integratorsCount;
-
 		static void processMenuEvents(int option);
-		static void reshape (int w, int h);
 		static void idle ();
 		static void keyboard (unsigned char k, int x, int y);
 		static void special (int k, int x, int y);
@@ -206,6 +196,7 @@ namespace IBDS
 		static void breakPointMainLoop();
 		
 	public:
+		static void reshape (int w, int h);
 		static void coordinateSystem ();
 		static void drawVector (const Vector3D &a, const Vector3D &b, const float w, const float *color);
 		static void drawVector (const Real x1, const Real y1, const Real z1, const Real x2, const Real y2, const Real z2, const float w, float *color);
@@ -233,25 +224,10 @@ namespace IBDS
 		static void rotateY (float y);
 		static void rotate(float x, float y, float z);
 		static void setProjectionMatrix (int width, int height);
-		static void drawTime(const Real time);
 
-		static TwBar *m_tweakBar;
 		static float m_time;
 		static float m_quat[4];
 
-		static void initTweakBar();
-		static void cleanupTweakBar();
-		static void TW_CALL setWireframeCB(const void *value, void *clientData);
-		static void TW_CALL getWireframeCB(void *value, void *clientData);		
-		static void TW_CALL setRotationCB(const void *value, void *clientData);
-		static void TW_CALL getRotationCB(void *value, void *clientData);		
-		static void TW_CALL setIntegratorCB(const void *value, void *clientData);
-		static void TW_CALL getIntegratorCB(void *value, void *clientData);	
-
-		/**
-		 * \param integratorsManager an instance of the class IntegratorsManager, which is queried for available integrators and which propagates the selection to the simulation.
-		 */
-	//	static void setIntegratorsManager(IntegratorsManager *integratorsManager);
 	};
 }
 

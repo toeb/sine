@@ -16,12 +16,17 @@ void CompositeRenderer::cleanup(){
 }
 
 bool CompositeRenderer::initialize(){
+  bool result = true;
   for(auto renderer = _renderers->begin(); renderer != _renderers->end(); renderer++){
-    if(!(*renderer)->initialize())return false;
+    if(!(*renderer)->initialize())result= false;
   }
-  return true;
+  return result;
 }
-
+void CompositeRenderer::sceneResized(int newWIdth, int newHeight){
+   for(auto renderer = _renderers->begin(); renderer != _renderers->end(); renderer++){
+     (*renderer)->sceneResized(newWIdth,newHeight);
+  }
+}
 const vector<IRenderer*> & CompositeRenderer::getRenderers()const{
   return *_renderers;
 }

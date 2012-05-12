@@ -55,7 +55,11 @@ namespace IBDS
 		static int n_over_k (const int n, const int k);
 		static Vector3D *localCoordinates (Matrix3x3 *rotationMatrix, Vector3D *centerOfMass, Vector3D *point);
 		static Matrix3x3 crossProductMatrix (const Vector3D &r);
-
+    static inline void crossProductMatrix(const Vector3D & r, Matrix3x3 & r_star){
+      r_star(0,0)=0; r_star(0,1)=-r[2]; r_star(0,2)=r[1];
+      r_star(1,0)=r[2]; r_star(1,1)=0; r_star(1,2)=-r[0];
+      r_star(2,0)=-r[1]; r_star(2,1)=r[0]; r_star(2,2)= 0;
+    }
 		static Vector3D getEulerAngles (Matrix3x3 *m);
 		static Vector3D rungeKutta (rungeKuttaFct f, const Real h, const Real xn, const Vector3D &yn, void *obj, bool &result);
 		static Vector3D rungeKutta (rungeKuttaFct f, const Real h, const Vector3D &yn, void *obj, bool &result);

@@ -1,7 +1,7 @@
 #pragma once
 #include <Simulation/ISimulationObject.h>
 namespace IBDS{
-class IRenderer{//:public ISimulationObject{
+class IRenderer:public ISimulationObject{
 public:
   virtual void render(){};
 
@@ -16,5 +16,7 @@ public:
    * \brief Cleans up this object.
    */
   virtual void cleanup(){};
+
+  virtual void sceneResized(int newWidth, int newHeight){}
 };
 }

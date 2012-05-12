@@ -130,6 +130,7 @@ Matrix3x3 SimMath::crossProductMatrix (const Vector3D &r)
 			 Vector3D (-r[1],r[0], 0));
 }
 
+
 /** Bringt kleine Abweichungen von der Orthonormalitaet
   * von M in Ordnung, ein Durchlauf genuegt, super Algorithmus!
   * Wenn bei Nutation "orthonormalize" nicht angewandt wird, so Desaster.

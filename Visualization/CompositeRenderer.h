@@ -15,5 +15,6 @@ public:
   void render();
   bool initialize();
   void cleanup();
+  void sceneResized(int newWIdth, int newHeight);
 };
 }

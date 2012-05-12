@@ -84,5 +84,9 @@ void Simulation::simulate(Real targetTime){
 bool Simulation::initialize(){
   buildAlgorithms();
   buildModel();
-  return true;
+  bool success=true;
+  for(auto it = _simulationObjects.begin(); it != _simulationObjects.end(); it++){
+    if(!(*it)->initialize())success = false;
+  }
+  return success;
 }

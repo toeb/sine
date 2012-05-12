@@ -280,15 +280,30 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   Vector3D r_a_wcs = a_wcs - s_wcs;
   Vector3D r_b_wcs = b_wcs - s_wcs;
 
-	Matrix3x3 r_a_star = SimMath::crossProductMatrix(r_a_wcs);
-  Matrix3x3 r_b_star = SimMath::crossProductMatrix(r_b_wcs);
+	//Matrix3x3 r_a_star,r_b_star;
+  //SimMath::crossProductMatrix(r_a_wcs,r_a_star);
+  //SimMath::crossProductMatrix(r_b_wcs,r_b_star);
   
   const Matrix3x3 & J_inv_wcs = getInvertedInertiaTensorInWorldCoordinates();
-  Matrix3x3 tmp;
+  Matrix3x3 tmpA(0);
+  Matrix3x3 tmpB(0);
+  
   //optimized code. uses inline functions
-   Matrix3x3::multiply(J_inv_wcs,r_b_star,tmp);
-  Matrix3x3::multiply(r_a_star,tmp,K);
-  Matrix3x3::subtract(Matrix3x3(1/m,1/m,1/m),K,K);
+  SimMath::crossProductMatrix(r_b_wcs,tmpA);
+  //tmpA = r_b_star
+  Matrix3x3::multiply(J_inv_wcs,tmpA,tmpB);
+  //tmpB = J_inv_wcs * r_b_star
+  SimMath::crossProductMatrix(r_a_wcs,tmpA);
+  //tmpA = r_a_star
+  Matrix3x3::multiply(tmpA,tmpB,K);
+  // K = r_a_star * J_inv_wcs * r_b_star
+  tmpA.setZero();
+  Real m_inv=1/m;
+  tmpA(0,0)=m_inv;
+  tmpA(1,1)=m_inv;
+  tmpA(2,2)=m_inv;
+  //tmpA = 1/m * E_3
+  Matrix3x3::subtract(tmpA,K,K);
 //original:   K.assign((1/m)*E_3 - r_a_star * J_inv_wcs * r_b_star);
 };
   

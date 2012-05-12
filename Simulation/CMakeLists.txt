@@ -55,8 +55,6 @@ SET(simulation_SRC
 	./ISimulationObject.h
 	./TimeManager.cpp
 	./TimeManager.h	
-	./GlutSimulationRunner.h
-	./GlutSimulationRunner.cpp
 	./RenderingSimulation.h
 	./RenderingSimulation.cpp
 	./SimulationBuilder.h
@@ -66,6 +64,8 @@ SET(simulation_SRC
 	./ISimulationAlgorithm.h
 	./Force/ForceAlgorithm.h	
 	./Force/ForceAlgorithm.cpp
+	./InputHandler.h
+	./InputHandler.cpp
 	
 )
 
@@ -75,12 +75,20 @@ SET(textile_SRC
 ./Textiles/TextileAlgorithm.h
 ./Textiles/TextileAlgorithm.cpp
 )
+SET(glutrunner_SRC
+ ${PROJECT_PATH}/GlutRunner/GlutSimulationRunner.h
+ ${PROJECT_PATH}/GlutRunner/GlutSimulationRunner.cpp
+ ${PROJECT_PATH}/GlutRunner/GlutInputHandler.h
+ ${PROJECT_PATH}/GlutRunner/GlutInputHandler.cpp
+ ${PROJECT_PATH}/GlutRunner/GlutRendererManager.h
+ ${PROJECT_PATH}/GlutRunner/GlutRendererManager.cpp 
+)
 
 
 SET(visualisation_SRC
-	  ${PROJECT_PATH}/Visualization/MiniGL.h
-	  ${PROJECT_PATH}/Visualization/MiniGL.cpp
-	  ${PROJECT_PATH}/Visualization/IRenderer.h
+	${PROJECT_PATH}/Visualization/MiniGL.h
+	${PROJECT_PATH}/Visualization/MiniGL.cpp
+	${PROJECT_PATH}/Visualization/IRenderer.h
 	${PROJECT_PATH}/Visualization/RenderEngine.h
 	${PROJECT_PATH}/Visualization/RenderEngine.cpp
 	${PROJECT_PATH}/Visualization/CompositeRenderer.h
@@ -134,6 +142,8 @@ source_group("simulation\\objects" FILES ${simulationObjects_SRC})
 source_group("visualization" FILES ${visualisation_SRC})
 source_group("visualization\\renderers" FILES ${renderers_SRC})
 source_group("simulation\\textiles" FILES ${textile_SRC})
+source_group("runner\\glut" FILES ${glutrunner_SRC})
+
 # PROJECT(Simulation)
 ADD_EXECUTABLE(Simulation
 	  main.cpp	  	  
@@ -144,6 +154,7 @@ ADD_EXECUTABLE(Simulation
 	  ${visualisation_SRC}         
 	   ${renderers_SRC}
 	   ${textile_SRC}
+	   ${glutrunner_SRC}
 	  ${PROJECT_PATH}/Common/Config.h			  
 	  ${PROJECT_PATH}/Common/StringTools.h			  
 	  ${PROJECT_PATH}/Common/StringTools.cpp

@@ -51,6 +51,10 @@ Matrix3x3::Matrix3x3()
 	v[2] = Vector3D (0,0,1);  
   INC
 }
+Matrix3x3::Matrix3x3(Real fillValue){
+  setTo(fillValue);
+  INC
+}
 /** Konstruktor: Erstellt die Matrix mit den Zeilenvektoren v0, v1, v2
   */
 Matrix3x3::Matrix3x3 (const Vector3D& v0, const Vector3D& v1, const Vector3D& v2)
@@ -60,16 +64,19 @@ Matrix3x3::Matrix3x3 (const Vector3D& v0, const Vector3D& v1, const Vector3D& v2
 	v[2] = v2; 
   INC
 }
-void Matrix3x3::setZero(){
-  v[0].v[0]=0;
-  v[0].v[1]=0;
-  v[0].v[2]=0;
-  v[1].v[0]=0;
-  v[1].v[1]=0;
-  v[1].v[2]=0;
-  v[2].v[0]=0;
-  v[2].v[1]=0;
-  v[2].v[2]=0;
+inline void Matrix3x3::setTo(Real value){
+  v[0].v[0]=value;
+  v[0].v[1]=value;
+  v[0].v[2]=value;
+  v[1].v[0]=value;
+  v[1].v[1]=value;
+  v[1].v[2]=value;
+  v[2].v[0]=value;
+  v[2].v[1]=value;
+  v[2].v[2]=value;
+}
+inline void Matrix3x3::setZero(){
+  setTo(0);
 }
 Matrix3x3::Matrix3x3 (Real a11, Real a22, Real a33)
 {
@@ -269,7 +276,6 @@ Matrix3x3 Matrix3x3::symmInverse () const
 				Vector3D(b,d,e),
 				Vector3D(c,e,f));
 }
-
 
 
 /** Stream-Ausgabe der Matrix

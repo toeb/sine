@@ -12,7 +12,7 @@ SimulationRunnerRenderer::~SimulationRunnerRenderer(){
 void SimulationRunnerRenderer::render(){
   Simulation* simulation = _simulationRunner.getSimulation();
   if(!simulation)return;
-  MiniGL::drawTime(simulation->getTime());
+
   
 }
 bool SimulationRunnerRenderer::initialize(){

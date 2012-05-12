@@ -10,41 +10,37 @@ int RenderEngine::getDesiredFramerate()const{
   return _desiredFramerate;
 }
 
-RenderEngine::RenderEngine():_desiredFramerate(60), _renderers(0),_renderManager(0){
-  _renderers = new CompositeRenderer();
+RenderEngine::RenderEngine():_desiredFramerate(60){
 }
 RenderEngine::~RenderEngine(){
-  delete _renderers;
+}
+
+bool RenderEngine::addSimulationObject(ISimulationObject * object){
+  IRenderer * renderer = dynamic_cast<IRenderer*>(object);
+  if(!renderer)return false;
+  _renderers.addRenderer(renderer);
+}
+void RenderEngine::reset(){
+  _renderers.clearRenderers();
 }
 
 CompositeRenderer & RenderEngine::getRenderers(){
-  return *_renderers;
+  return _renderers;
 }
 void RenderEngine::render(){
-  if(_renderManager){
-    _renderManager->updateRendererList(getRenderers());
-  }
-  
   onBeforeRender();
   getRenderers().render();
   onAfterRender();
 }
-void RenderEngine::setRenderManager(RenderManager * renderMan){
-  if(_renderManager==renderMan)return;
-  _renderManager=renderMan;
-  getRenderers().clearRenderers();
- 
+
+void RenderEngine::resizeScene(int newWidth, int newHeight){ 
+  _renderers.sceneResized(newWidth,newHeight);  
+   onSceneResized(newWidth,newHeight);
 }
 
 bool RenderEngine::initialize(){
-   if(_renderManager)_renderManager->initializeRendererList(getRenderers());  
-  return _renderers->initialize();
+  return _renderers.initialize();
 }
 void RenderEngine::cleanup(){
-  _renderers->cleanup();
-}
-
-
-RenderManager * RenderEngine::getRenderManager(){
-  return _renderManager;
+  _renderers.cleanup();
 }

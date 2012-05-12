@@ -5,7 +5,8 @@ using namespace std;
 using namespace IBDS;
 
 bool SimulationRunner::initialize(){
-  return true;
+  if(!getSimulation())return false;
+  return getSimulation()->initialize();
 }
 SimulationRunner::SimulationRunner():_simulation(0),_desiredTimeStepSize(0.02),_paused(false){
 

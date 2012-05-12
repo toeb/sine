@@ -23,8 +23,8 @@
 
 #include "Common/StringTools.h"
 #include "Common/timing.h"
-#include "Simulation/CustomSimulation.h"
-#include "Simulation/GlutSimulationRunner.h"
+#include <Simulation/CustomSimulation.h>
+#include <GlutRunner/GlutSimulationRunner.h>
 #include <Visualization/Renderers/SimulationRunnerRenderer.h>
 
 // Enable memory leak detection
@@ -41,18 +41,18 @@ int main( int argc, char **argv )
 	REPORT_MEMORY_LEAKS
 	USE_TIMESTEP_TIMING(Timing::m_dontPrintTimes = true;);
 
-  RenderingSimulation * simulation = new CustomSimulation();
+  Simulation * simulation = new CustomSimulation();
   
 
-  GlutSimulationRunner * runner = GlutSimulationRunner::instance();
-  runner->setCommandLineArguments(argc,argv);
+  GlutSimulationRunner & runner = GlutSimulationRunner::instance();
+  runner.setCommandLineArguments(argc,argv);
 
-  runner->setSimulation(simulation);
+  runner.setSimulation(simulation);
 
   //add a renderer that shows info for the simulation runner
-  runner->getRenderManager()->addRenderer(new SimulationRunnerRenderer(*runner));
+  simulation->addSimulationObject(new SimulationRunnerRenderer(runner));
   
-  runner->run();
+  runner.run();
 
 
 	USE_TIMESTEP_TIMING(printAverageTimes());

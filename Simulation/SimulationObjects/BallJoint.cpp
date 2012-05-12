@@ -52,8 +52,8 @@ void BallJoint::correctVelocity() {
 }
 
 void BallJoint::evaluateKInverse() {
-  Matrix3x3  K_aa;
-  Matrix3x3  K_bb;
+  Matrix3x3  K_aa(0);
+  Matrix3x3  K_bb(0);
 
   const Vector3D & a_wcs = _cA.getCachedWorldPosition();
   const Vector3D & b_wcs = _cB.getCachedWorldPosition();
@@ -66,7 +66,7 @@ void BallJoint::evaluateKInverse() {
   if (K.isZero())
     _KInverse = Matrix3x3::Zero();
   else 
-    _KInverse = K.symmInverse();
+    Matrix3x3::symmInverse(K,_KInverse);//_KInverse = K.symmInverse();
 }
 
 void BallJoint::precompute(){
