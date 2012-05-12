@@ -1,9 +1,7 @@
 #ifndef __Integrator_h__
 #define __Integrator_h__
 #include "IIntegrable.h"
-#include <math.h>
-#include <string>
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/ISimulationAlgorithm.h>
 namespace IBDS{
 
 /**
@@ -34,8 +32,7 @@ public:
    * <remarks> Tobias Becker, 13.04.2012.</remarks>
    */
   ~Integrator();
-
-
+  
   /**
    * <summary> Integrates the integratable object over the intervall [a,b]. the initial value is
    *           managed by the integratable.</summary>
@@ -87,4 +84,6 @@ protected:
   virtual void doIntegration(const VectorND& x_0, VectorND& x_i, const Real& a, const Real& b)=0;
 };
 }
+
+
 #endif

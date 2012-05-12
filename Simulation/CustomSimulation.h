@@ -10,6 +10,7 @@ protected:
   void buildModel();
   void onSimulationObjectAdded(ISimulationObject * simObj);
 public:
+  CustomSimulation();
   using Simulation::setName;
 };
 }

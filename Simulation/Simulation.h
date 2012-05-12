@@ -8,50 +8,66 @@
 #include "SimulationObjects/Body.h"
 #include "SimulationObjects/Connector.h"
 #include "SimulationObjects/Joint.h"
+#include <Simulation/ISimulationAlgorithm.h>
 
 #include <vector>
 
 namespace IBDS{
 
-class Simulation:public ISimulationObject{
-private:
+class Simulation : public ISimulationObject{
+private:  
+  std::vector<ISimulationObject*> _simulationObjects;
+  std::vector<ISimulationAlgorithm*> _simulationAlgorithms;  
   Real _time;
   Real _targetTime;
+public:
 
-  Integrator* _integrator;
-  Integrator* _connectorIntegrator;
-
-  CompositeIntegratable & _integrables;
-
-
-  std::vector<Body*> & _bodies;
-  std::vector<Force*> _forces;
-  std::vector<Connector*> _connectors;
-  std::vector<Joint*> _joints;
-
-protected:
-  virtual void onSimulationObjectAdded(ISimulationObject * object){};
   /**
-   * \brief Applies the external forces.
-   * 				
-   * 				calls applyCustomForces then applies the forces that were added to this simulation
-   * 				@see addForce 
+   * \brief Simulates until target time is reached.
    *
    * \author Tobi
-   * \date 07.05.2012
+   * \date 12.05.2012
+   *
+   * \param targetTime Time of the target.
    */
-  virtual void applyCustomForces(){};
-  virtual void beforeIntegration();
-  virtual void afterIntegration();
-  virtual void buildModel(){};
-  
-public:
-  virtual void reset();
-  virtual bool isSimulationValid();
+  void simulate(Real targetTime);
 
+  /**
+   * \brief Resets the simulation.  (deletes model and calls buildModel)
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   */
+  virtual void reset();
+
+  /**
+   * \brief Gets the target time.
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   *
+   * \return The target time.
+   */
   const Real & getTargetTime();
+
+  /**
+   * \brief Gets the time.
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   *
+   * \return The time.
+   */
   const Real & getTime();
 
+  /**
+   * \brief Initializes this object.
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   *
+   * \return true if it succeeds, false if it fails.
+   */
   bool initialize();
 
   /**
@@ -70,23 +86,65 @@ public:
    */
   ~Simulation();
 
-  void setIntegrator(Integrator * integrator);
-  Integrator * getIntegrator();
-
   
-  void simulate(Real targetTime);
   
-  void resetForces();
 
-  void addBody(Body * object);
-  void addForce(Force *force);
-  void addConnector(Connector *c);
-  void addJoint(Joint *joint);
+  /**
+   * \brief Adds a simulation object.  tries to add the object to every Algorithm
+   * 				returns false if no algorithm was interested.
+   * 				
+   * 				the object is stored no matter what. 
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   *
+   * \param [in,out] simulationObject If non-null, the simulation object.
+   *
+   * \return true if it succeeds, false if it fails.
+   */
+  bool addSimulationObject(ISimulationObject * simulationObject);
 
+  /**
+   * \brief Adds a simulation algorithm. checks to see if it is compatible with the current set of algorithms
+   * 				if not it returns false.
+   * 				if it is compatible every currently existing simulationobject is added to the algorithm
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   *
+   * \param [in,out] algorithm If non-null, the algorithm.
+   *
+   * \return true if it succeeds, false if it fails.
+   */
+  bool addSimulationAlgorithm(ISimulationAlgorithm * algorithm);
+protected:
 
-private:
-  void calculateConnectorWorldCoordinateValues();
-  void applyExternalForces();
-  void integrate();
+  /**
+   * \brief may be overridden.  gets called when a simulation object was added
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   *
+   * \param [in,out] object If non-null, the object.
+   */
+  virtual void onSimulationObjectAdded(ISimulationObject * object){};
+
+  /**
+   * \brief Builds the model.
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   */
+  virtual void buildModel(){};
+
+  /**
+   * \brief Builds the algorithms.
+   *
+   * \author Tobi
+   * \date 12.05.2012
+   */
+  virtual void buildAlgorithms(){};
+  
+  
 };
 };

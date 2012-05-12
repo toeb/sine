@@ -180,7 +180,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    std::string * createConnectorName(std::string a, std::string b);
+    std::string createConnectorName(std::string a, std::string b);
 
     /**
      * \brief Creates a connector.

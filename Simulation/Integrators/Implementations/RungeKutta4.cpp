@@ -4,7 +4,7 @@ using namespace IBDS;
 using namespace std;
 RungeKutta4::RungeKutta4(Real h){
   setStepSize(h);
-  setName(new string("Runge Kutta 4"));
+  setName("Runge Kutta 4");
 }
 
 void RungeKutta4::doStep(const Real & h, VectorND & x_i){

@@ -74,9 +74,9 @@ bool GlutSimulationRunner::initialize(){
     cerr << "GlutSimulationRunner::initialize:  Simulation is not set" << endl;
     return false;
   }
-  simulation->initialize();
-  if(!simulation->isSimulationValid()){
-        cerr << "GlutSimulationRunner::initialize:  Simulation is not valid" << endl;
+ 
+  if(! simulation->initialize()){
+        cerr << "GlutSimulationRunner::initialize:  Simulation could not be initialised" << endl;
     return false;
   }
 

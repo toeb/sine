@@ -8,7 +8,9 @@ SET (integrators_SRC
   ./Integrators/SingleStepIntegrator.h
   ./Integrators/SingleStepIntegrator.cpp
   ./Integrators/CompositeIntegratable.h
-  ./Integrators/CompositeIntegratable.cpp)
+  ./Integrators/CompositeIntegratable.cpp
+  ./Integrators/IntegrationAlgorithm.h
+  ./Integrators/IntegrationAlgorithm.cpp)
   
 SET (integratorImplementations_SRC
   ./Integrators/Implementations/ExplicitEuler.h
@@ -59,6 +61,12 @@ SET(simulation_SRC
 	./RenderingSimulation.cpp
 	./SimulationBuilder.h
 	./SimulationBuilder.cpp
+	./ImpulseBasedDynamicsAlgorithm.h
+	./ImpulseBasedDynamicsAlgorithm.cpp
+	./ISimulationAlgorithm.h
+	./Force/ForceAlgorithm.h	
+	./Force/ForceAlgorithm.cpp
+	
 )
 
 SET(visualisation_SRC

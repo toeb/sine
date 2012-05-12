@@ -9,7 +9,7 @@ Box * SimulationBuilder::createBox(string name, const Vector3D & position, Real 
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;    
   Box * box = new Box(mass,width,height,depth);
-  box->setName(&name);
+  box->setName(name);
   box->setPosition(position);
   addSimulationObject(box);
   return box;
@@ -23,7 +23,7 @@ Gravity* SimulationBuilder::setGravity(const Vector3D & gravityVector){
     return gravity;
   }
   gravity= new Gravity(gravityVector);
-  gravity->setName(new string("gravity"));
+  gravity->setName("gravity");
 
   addSimulationObject(gravity);
   return gravity;
@@ -58,7 +58,7 @@ DampedSpring * SimulationBuilder::createSpring(
   if(neutralLength<0)neutralLength = (r_a_wcs - r_b_wcs).length();
   //create spring
   DampedSpring * spring = new DampedSpring(*a,*b,k_s,k_d,neutralLength);
-  spring->setName(&name);
+  spring->setName(name);
   //add objects
   addSimulationObject(a);
   addSimulationObject(b);
@@ -73,7 +73,7 @@ Particle * SimulationBuilder::createParticle(string name, const Vector3D & posit
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;
   Particle * particle = new Particle();
-  particle->setName(new string(name));
+  particle->setName(name);
   particle->setPosition(position);
   particle->setMass(mass);
   addSimulationObject(particle);
@@ -90,7 +90,7 @@ BallJoint * SimulationBuilder::createBallJoint(string jointName, string bodyA, s
   if(!(a&&b))return 0;
   //create ball joint
   BallJoint * ballJoint = new BallJoint(*a,*b);
-  ballJoint->setName(&jointName);
+  ballJoint->setName(jointName);
   
   //add simulation objects
   addSimulationObject(a);
@@ -100,10 +100,10 @@ BallJoint * SimulationBuilder::createBallJoint(string jointName, string bodyA, s
   return ballJoint;
 }
 
-string * SimulationBuilder::createConnectorName(string a, string b){
+string  SimulationBuilder::createConnectorName(string a, string b){
   stringstream ss;
   ss << "connector"<<(_connectorNumber++)<<": "<<a<< " <-> " <<b;
-  return new string(ss.str());
+  return ss.str();
 }
 
 Connector* SimulationBuilder::createConnector(string bodyName, const Vector3D & position, string connectsTo){
@@ -158,19 +158,7 @@ bool SimulationBuilder::addSimulationObject(ISimulationObject * obj){
   if(!obj->getName())return false;
   if(nameExists(*(obj->getName())))return false;
   _simulationObjects[*(obj->getName())] = obj;
-
-  if(dynamic_cast<Body*>(obj)){
-    _simulation.addBody(dynamic_cast<Body*>(obj));
-  }
-  if(dynamic_cast<Force*>(obj)){
-    _simulation.addForce(dynamic_cast<Force*>(obj));
-  }
-  if(dynamic_cast<Connector*>(obj)){
-    _simulation.addConnector(dynamic_cast<Connector*>(obj));
-  }
-  if(dynamic_cast<Joint*>(obj)){
-    _simulation.addJoint(dynamic_cast<Joint*>(obj));
-  }
+_simulation.addSimulationObject(obj);
 
   return true;
 }

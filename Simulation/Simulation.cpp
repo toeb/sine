@@ -3,170 +3,85 @@
 using namespace IBDS;
 using namespace std;
 
+
 Simulation::Simulation():
-  //_simulationObjects(*(new vector<ISimulationObject*>())),
-  _bodies(*(new vector<Body*>())),
-  _integrables(*(new CompositeIntegratable())),
-  _forces(*(new vector<Force*>())),
-  _joints(*(new vector<Joint*>())),
-  _connectors(*(new vector<Connector*>())),
-  _integrator(0),
   _time(0),
   _targetTime(0)
 {
 }
 
 void Simulation::reset(){
-  _bodies.clear();
-  _integrables.clear();
-  _forces.clear();
-  _joints.clear();
-  _connectors.clear();
-  _integrator=0;  
+  for(auto it = _simulationAlgorithms.begin(); it != _simulationAlgorithms.end(); it++){
+    (*it)->reset();
+  }
   buildModel();
 }
 
-
 Simulation::~Simulation(){}
 
-void Simulation::addConnector(Connector *c) {
-  _connectors.push_back(c);
-  onSimulationObjectAdded(c);
-}
-
-void Simulation::addJoint(Joint *joint) {
-  _joints.push_back(joint);
-  onSimulationObjectAdded(joint);
+bool Simulation::addSimulationAlgorithm(ISimulationAlgorithm * algorithm){
+  for(auto it = _simulationAlgorithms.begin(); it != _simulationAlgorithms.end(); it++){
+    if(!(*it)->isCompatibleWith(algorithm))return false;
+  }
+  _simulationAlgorithms.push_back(algorithm);
+  // add all existing sim objects to new algorithm
+  for(auto it = _simulationObjects.begin(); it!=_simulationObjects.end(); it++){
+    algorithm->addSimulationObject(*it);
   }
 
-void Simulation::addBody(Body * body){
-  _bodies.push_back(body);
-  //IIntegrable* integrable = dynamic_cast<IIntegrable*>(body);
-  _integrables.addIntegratable(body);
-  onSimulationObjectAdded(body);
+  return true;
 }
 
-void Simulation::addForce(Force *force) {
-  _forces.push_back(force);
-  onSimulationObjectAdded(force);
-}
-void Simulation::setIntegrator(Integrator* integrator){
-  //if(_integrator)_integrator->setIntegratable(0);
-  _integrator = integrator;
-  _integrator->setIntegratable(&_integrables);
+bool Simulation::addSimulationObject(ISimulationObject * object){
+  bool objectWasAdded = false;
   
-}
-Integrator * Simulation::getIntegrator(){
-  return _integrator;
-}
-void Simulation::beforeIntegration(){
-  Real targetTime = getTargetTime();
-  Real time = getTime();
-  // integrate the connectors to be able to approximate their future positions
-  ///_integrator->setIntegratable(&_integrableConnectors);		// temporarily replace the integratable
-  //_integrator->integrate(time,targetTime);
-  // joint position correction
-  bool toleranceSatisfied;  
-  int iterations = 0;
-  
-  // do steps before correction
-  for (auto it = _joints.begin(); it != _joints.end(); it++) {
-    Joint* joint = *it;
-    joint->beforeCorrection();
-  }
-
-  do {
-    toleranceSatisfied = true;
-    for (auto it = _joints.begin(); it != _joints.end(); it++) {
-      Joint* joint = *it;
-      joint->correctPosition(targetTime - time);
-      // if correctPosition returns false for some joint, toleranceSatisfied remains false for the rest of the loop 
-      if(!joint->arePositionsCorrect())toleranceSatisfied=false;
+  _simulationObjects.push_back(object);
+  //tries to add the new object to every algorithm.
+  for(auto it = _simulationAlgorithms.begin(); it != _simulationAlgorithms.end(); it++){
+    if( (*it)->addSimulationObject(object)){
+      objectWasAdded=true;
     }
-    iterations++;
-  } while (!toleranceSatisfied && iterations < 10);	// the loop is repeated until correctPosition returns true for all joints
-  //_integrator->setIntegratable(&_integrables);
-}
-void Simulation::afterIntegration(){  
-  // joint velocity correction
-  for (vector<Joint*>::iterator it = _joints.begin(); it != _joints.end(); it++)
-    (*it)->correctVelocity();
+  }  
+  onSimulationObjectAdded(object);
+  return objectWasAdded;
 }
 
-void Simulation::applyExternalForces(){
-  // (1) apply custom forces to simulation (subclass controls these)
-  applyCustomForces();
-  // (2) apply forces added to simulation
-  for(vector<Force*>::iterator it = _forces.begin(); it != _forces.end(); it++)
-    (*it)->act(_bodies, _time);
-
-}
 
 const Real & Simulation::getTargetTime(){return _targetTime;}
 const Real & Simulation::getTime(){return _time;}
 
-bool Simulation::isSimulationValid(){
-  if(!getIntegrator()){
-    cerr << "No Integrator set"<<endl;
-    return false;
-  }
-  return true;
-}
-
-void Simulation::calculateConnectorWorldCoordinateValues(){
-  for(auto it = _connectors.begin(); it != _connectors.end(); it++){
-    (*it)->calculateCachedValues();
-  }
-
-}
 
 void Simulation::simulate(Real targetTime){
-  if(!isSimulationValid()){
-    cerr << "INVALID SIMULATION"<<endl;
-    return;
-  }
-  
   // simulation is only allow forwards so this method fails quietly when targetTime < time
   if(targetTime < _time)return;
   _targetTime = targetTime;
-
-  // pre step.  world coordinate values of connectors are calculated only once in every step
-  calculateConnectorWorldCoordinateValues();
-
-  // (1) reset all forces
-  resetForces();
-  // (2) apply external forces
-  applyExternalForces();
-
-
-
-  // (3) call beforeintegration
-  beforeIntegration();
-
-  integrate();
-  _time = targetTime;
-  afterIntegration();
+  Real h = _targetTime - _time;
 
   
-}
+  for(auto it = _simulationAlgorithms.begin(); it!=_simulationAlgorithms.end(); it++){
+    (*it)->precomputeStep();
+  }
 
-void Simulation::integrate(){
-  Real targetTime = getTargetTime();
-  // main simulation step
-  _integrator->integrate(getTime(),targetTime);
-  _time=targetTime;
-}
+  for(auto it = _simulationAlgorithms.begin(); it!=_simulationAlgorithms.end(); it++){
+    (*it)->preIntegrationStep(_time,h);
+  }
+  
+  for(auto it = _simulationAlgorithms.begin(); it!=_simulationAlgorithms.end(); it++){
+    (*it)->integrationStep(_time,h);
+  }  
+  _time = targetTime;
+  
+  for(auto it = _simulationAlgorithms.begin(); it!=_simulationAlgorithms.end(); it++){
+    (*it)->postIntegrationStep(_time,h);
+  }
 
-
-
-void Simulation::resetForces() {
-    for(vector<Body*>::iterator it = _bodies.begin(); it != _bodies.end(); it++)
-    (*it)->resetForce();
+  
 }
 
 
 
 bool Simulation::initialize(){
+  buildAlgorithms();
   buildModel();
-  return isSimulationValid();
+  return true;
 }

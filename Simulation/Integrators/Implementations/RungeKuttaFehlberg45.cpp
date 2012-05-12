@@ -73,5 +73,5 @@ RungeKuttaFehlberg45::RungeKuttaFehlberg45(
   , y4(    -1.0/5.0)
   {
     setStepSize(initialStepSize);
-	setName(new string("Runge-Kutta-Fehlberg 4-5"));
+	setName("Runge-Kutta-Fehlberg 4-5");
 }

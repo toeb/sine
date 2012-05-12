@@ -5,6 +5,11 @@
 #include <Simulation/Integrators/Implementations/ExplicitEuler.h>
 #include <Simulation/Integrators/Implementations/RungeKutta4.h>
 #include <Simulation/Integrators/Implementations/RungeKuttaFehlberg45.h>
+#include <Simulation/Integrators/IntegrationAlgorithm.h>
+
+#include <Simulation/Force/ForceAlgorithm.h>
+
+#include <Simulation/ImpulseBasedDynamicsAlgorithm.h>
 
 #include <Visualization/Renderers/LightRenderer.h>
 #include <Visualization/Renderers/CoordinateSystemRenderer.h>
@@ -18,6 +23,7 @@
 #include <Visualization/Renderers/BoxRenderer.h>
 #include <Visualization/Renderers/SpringRenderer.h>
 
+
 #include <Simulation/SimulationBuilder.h>
 
 #include <map>
@@ -25,6 +31,7 @@
 
 using namespace IBDS;
 using namespace std;
+
 
 void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){  
   Box* box1 =b.createBox("box1",offset+Vector3D::Zero(),0);
@@ -60,7 +67,7 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
   Real l=0.1;
   Box * lastBox=0;
   Box* currentBox=0;
-  Vector3D direction(0,-1,0);
+  Vector3D direction(1,-1,0);
   direction.normalize();
   for(int i=0; i < n; i++){
     lastBox = currentBox;
@@ -71,18 +78,23 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
     }
     currentBox->setPosition((l*i)*direction);
     b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),(l*i-l/2)*direction);
-    if(i==n-1)currentBox->setMass(100); 
+    if(i==n-1)currentBox->setMass(1); 
   }
 }
 
+CustomSimulation::CustomSimulation(){
+  addSimulationAlgorithm(new ForceAlgorithm());
+  addSimulationAlgorithm(new ImpulseBasedDynamicsAlgorithm());
+  addSimulationAlgorithm(new IntegrationAlgorithm(*(new RungeKutta4())));
+}
+
 void CustomSimulation::buildModel(){ 
-  setName(new string("Custom Simulation"));
-  
+  setName("Custom Simulation");
 
   addRenderer(new LightRenderer());
   addRenderer(new CoordinateSystemRenderer());// renders coordinate system at world origin
   addRenderer(new CameraRenderer());
-  
+
   SimulationBuilder b(*this);  
 
   b.setGravity(9);
@@ -95,18 +107,6 @@ void CustomSimulation::buildModel(){
 
  // createSimplePendulum(b,Vector3D(8,0,0));
   createNPendulum(b,Vector3D(13,0,0), 30);
-  
-  
-  // loop for adding custom renderers.
-  for(auto it = b.getSimulationObjects().begin(); it != b.getSimulationObjects().end(); it++){
-    ISimulationObject* obj = (*it).second;
-    
-  }
-
-  //initialize Integrators.
-  Integrator* integrators[3] = {new ExplicitEuler(), new RungeKutta4(0.001), new RungeKuttaFehlberg45()};   
-  setIntegrator(integrators[1]);
-      
 }
 
 
@@ -136,5 +136,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
   if(spring){
     addRenderer(new SpringRenderer(*spring));
   }
+
+  
 
 }

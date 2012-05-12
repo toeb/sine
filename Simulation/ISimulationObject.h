@@ -6,17 +6,18 @@ private:
   const std::string * _name;
 public:
   ISimulationObject():_name(0){}
+  ~ISimulationObject(){delete _name;}
   /**
    * \brief Sets a name.
    *
    * \param name  The name.
    */
-  void setName(const std::string * name ){
-    if(!name){
+  void setName(std::string name ){
+    if(!name.compare("")){
       _name=0;
       return;
     }
-    _name = new std::string(*name);
+    _name = new std::string(name);
   }
   
   /**
@@ -32,6 +33,7 @@ public:
    * \return  true if it succeeds, false if it fails.
    */
   virtual bool initialize(){return true;};
+
 
   /**
    * \brief Cleans up this object.

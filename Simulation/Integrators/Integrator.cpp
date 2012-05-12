@@ -32,7 +32,7 @@ const VectorND & Integrator::getState()const{
 }
 
 Integrator::Integrator(): _integratable(0), _x(0), _xDot(0), _xNext(0){
-  setName(new string("Integrator"));
+  setName("Integrator");
 }
 Integrator::~Integrator(){
 }

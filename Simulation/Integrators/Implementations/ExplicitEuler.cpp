@@ -5,7 +5,7 @@ using namespace IBDS;
 
 ExplicitEuler::ExplicitEuler(Real h){
   setStepSize(h);
-  setName(new string("Explicit Euler"));
+  setName("Explicit Euler");
 }
 
 void ExplicitEuler::doStep(const Real & h, VectorND & x_i){

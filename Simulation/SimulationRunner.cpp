@@ -34,10 +34,6 @@ void SimulationRunner::doTimestep(Real dt){
    cerr<<"SimulationRunner: No Simulation set"<<endl;
    return;
   }
-  if(!_simulation->isSimulationValid()){
-    cerr<<"SimulationRunner: Simulation is Invalid"<<endl;
-    return;
-  }
   if(isPaused())return;
   Real targetTime = _simulation->getTime();
   targetTime+= dt;
