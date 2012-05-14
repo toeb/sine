@@ -12,6 +12,7 @@ GlutInputHandler & GlutInputHandler::instance(){
   if(!_glutInputHandlerInstance)_glutInputHandlerInstance=new GlutInputHandler();
   return *_glutInputHandlerInstance;
 }
+
 GlutInputHandler::GlutInputHandler(){}
 GlutInputHandler::~GlutInputHandler(){}
 Keys charToKeyCode(char c){
@@ -172,5 +173,6 @@ bool GlutInputHandler::initialize(){
 	glutMotionFunc (mouseMove);
 	glutSpecialFunc (specialDown);
   glutSpecialUpFunc(specialUp);
+  glutPassiveMotionFunc(mouseMove);
   return true;
 }

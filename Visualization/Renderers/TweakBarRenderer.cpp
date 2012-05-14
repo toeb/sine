@@ -5,20 +5,45 @@
 #include <iostream>
 using namespace IBDS;
 
-bool TweakBarRenderer::initialize(){
-  // Initialize AntTweakBar
-  // (note that AntTweakBar could also be initialized after GLUT, no matter)
-/*	if( !TwInit(TW_OPENGL, NULL) )
-  {
-    // A fatal error occured    
-    fprintf(stderr, "AntTweakBar initialization failed: %s\n", TwGetLastError());
-    return false;
+void TweakBarRenderer::onKeyDown(Keys key){
+  switch(key){
+    case KEY_A:TwKeyPressed('a',0);break;
   }
-  //TwWindowSize(width, height);
-  //after GLUT initialization
-  // directly redirect GLUT events to AntTweakBar
-  glutPassiveMotionFunc((GLUTmousemotionfun)TwEventMouseMotionGLUT); // same as MouseMotion
-  */
+    //;//, TwMouseButton, TwMouseMotion, TwMouseWheel and TwWindowSiz
+}
+void TweakBarRenderer::onMouseMove(int x,int y, int dx, int dy){
+  TwMouseMotion(x,y);
+}
+void TweakBarRenderer::onMouseDown(MouseButtons buttons){
+  TwMouseButtonID b;
+  switch(buttons){
+    case BUTTON_LEFT:   b=TwMouseButtonID::TW_MOUSE_LEFT; break;
+    case BUTTON_RIGHT:  b=TwMouseButtonID::TW_MOUSE_RIGHT; break;
+    case BUTTON_MIDDLE: b=TwMouseButtonID::TW_MOUSE_MIDDLE; break;
+    default: return;
+  }
+  TwMouseButton(TwMouseAction::TW_MOUSE_PRESSED,b);
+}
+void TweakBarRenderer::onMouseUp(MouseButtons buttons){
+  TwMouseButtonID b;
+  switch(buttons){
+    case BUTTON_LEFT:   b=TwMouseButtonID::TW_MOUSE_LEFT; break;
+    case BUTTON_RIGHT:  b=TwMouseButtonID::TW_MOUSE_RIGHT; break;
+    case BUTTON_MIDDLE: b=TwMouseButtonID::TW_MOUSE_MIDDLE; break;
+    default: return;
+  }
+  TwMouseButton(TwMouseAction::TW_MOUSE_RELEASED,b);
+}
+void TweakBarRenderer::sceneResized(int newWidth, int newHeight){
+  TwWindowSize(newWidth,newHeight);
+}
+
+bool TweakBarRenderer::initialize(){
+  if(!TwInit(TW_OPENGL,NULL))return false;
+  
+  if(!getName())setName("TweakBar");
+  _tweakBar = TwNewBar(getName()->c_str());
+
   // send the ''glutGetModifers'' function pointer to AntTweakBar
   //TwGLUTModifiersFunc(glutGetModifiers);
   //_tweakBar = TwNewBar("TweakBar");
@@ -47,7 +72,6 @@ void TweakBarRenderer::cleanup(){
 }
 
 void TweakBarRenderer::render(){
- // TwRefreshBar(_tweakBar);
-
-  TwDraw();  // draw the tweak bar(s)
+  TwRefreshBar(_tweakBar);
+  TwDraw(); 
 }

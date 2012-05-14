@@ -75,6 +75,12 @@ SET(textile_SRC
 ./Textiles/TextileAlgorithm.h
 ./Textiles/TextileAlgorithm.cpp
 )
+
+SET(kinematics_SRC
+./Kinematics/KinematicBody.h
+./Kinematics/KinematicBody.cpp
+)
+
 SET(glutrunner_SRC
  ${PROJECT_PATH}/GlutRunner/GlutSimulationRunner.h
  ${PROJECT_PATH}/GlutRunner/GlutSimulationRunner.cpp
@@ -143,7 +149,7 @@ source_group("visualization" FILES ${visualisation_SRC})
 source_group("visualization\\renderers" FILES ${renderers_SRC})
 source_group("simulation\\textiles" FILES ${textile_SRC})
 source_group("runner\\glut" FILES ${glutrunner_SRC})
-
+source_group("simulation\\kinematics" FILES ${kinematics_SRC})
 # PROJECT(Simulation)
 ADD_EXECUTABLE(Simulation
 	  main.cpp	  	  
@@ -155,6 +161,7 @@ ADD_EXECUTABLE(Simulation
 	   ${renderers_SRC}
 	   ${textile_SRC}
 	   ${glutrunner_SRC}
+	   ${kinematics_SRC}
 	  ${PROJECT_PATH}/Common/Config.h			  
 	  ${PROJECT_PATH}/Common/StringTools.h			  
 	  ${PROJECT_PATH}/Common/StringTools.cpp

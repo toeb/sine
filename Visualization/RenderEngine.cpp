@@ -16,9 +16,14 @@ RenderEngine::~RenderEngine(){
 }
 
 bool RenderEngine::addSimulationObject(ISimulationObject * object){
+  bool added = false;
+  
   IRenderer * renderer = dynamic_cast<IRenderer*>(object);
-  if(!renderer)return false;
-  _renderers.addRenderer(renderer);
+  if(renderer){
+    _renderers.addRenderer(renderer);
+    added =true;
+  }
+  return added;
 }
 void RenderEngine::reset(){
   _renderers.clearRenderers();

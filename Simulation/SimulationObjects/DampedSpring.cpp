@@ -19,8 +19,8 @@ void DampedSpring::act (std::vector<Body*> & target, Real time) {
 	_cB.addExternalForce(-f);
 }
 inline void DampedSpring::calculateSpringAndDampeningForce(Vector3D & f_s_wcs,Vector3D & f_d_wcs)const{  
-  const Vector3D & a_wcs = _cA.getWorldPosition();
-  const Vector3D & b_wcs = _cB.getWorldPosition();
+  const Vector3D & a_wcs = _cA.getCachedWorldPosition();
+  const Vector3D & b_wcs = _cB.getCachedWorldPosition();
 
   Vector3D v_a_wcs,v_b_wcs;  
   _cA.calculateWorldVelocity(v_a_wcs);
@@ -43,9 +43,8 @@ inline void DampedSpring::calculateSpringAndDampeningForce(Vector3D & f_s_wcs,Ve
     // 
      f_d_wcs.assign( (_k_d * (v_b_wcs - v_a_wcs) * n_wcs) * n_wcs );
   }
- 
-
 }
+
 inline void DampedSpring::calculateSpringForce(Vector3D & f_wcs)const{
   Vector3D  f_s_wcs,f_d_wcs;
   calculateSpringAndDampeningForce(f_s_wcs,f_d_wcs);

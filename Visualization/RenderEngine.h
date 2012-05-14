@@ -5,13 +5,17 @@
 
 #include <Simulation/ISimulationAlgorithm.h>
 namespace IBDS{
+  class Camera : virtual public ISimulationObject{
+    virtual void camera()=0;
 
+  };
 /**
  * \brief Render engine.
  *
  */
 class RenderEngine:public ISimulationAlgorithm{
 private:
+  Camera * camera;
   CompositeRenderer _renderers;
   int _desiredFramerate;
 public:
@@ -20,6 +24,8 @@ public:
     
   void setDesiredFramerate(int hz);
   int getDesiredFramerate()const;
+  int getSceneWidth(){return 800;}
+  int getSceneHeight(){return 600;}
     
   void render();
   bool initialize();

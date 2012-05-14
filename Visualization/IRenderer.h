@@ -1,10 +1,10 @@
 #pragma once
 #include <Simulation/ISimulationObject.h>
 namespace IBDS{
-class IRenderer:public ISimulationObject{
+class IRenderer:public virtual ISimulationObject{
 public:
+  
   virtual void render(){};
-
     /**
    * \brief Initializes this object.
    *

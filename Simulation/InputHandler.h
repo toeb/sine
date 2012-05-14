@@ -78,9 +78,10 @@ namespace IBDS{
     BUTTON_RIGHT=1,
     BUTTON_MIDDLE=2
   };
-
+  class InputHandler;
   class IInputListener{
   public:
+    virtual void setInputHandler(InputHandler * handler){};
     virtual void onKeyDown(Keys key){};
     virtual void onKeyUp(Keys key){};
     
@@ -94,7 +95,7 @@ namespace IBDS{
 
 #define MAX_KEYS 256
 #define MAX_MOUSE_BUTTONS 3
-class InputHandler:public IInputListener, public ISimulationAlgorithm{
+class InputHandler:public ISimulationAlgorithm{
   private:
     std::vector<IInputListener*> _listeners;
     bool _keysDown[MAX_KEYS];
@@ -129,7 +130,11 @@ class InputHandler:public IInputListener, public ISimulationAlgorithm{
         _mouseButtonsDown[i]=false;
       }
     }
-
+    void onMouseMove(int x, int y, int dx, int dy){
+      for(auto l = _listeners.begin(); l != _listeners.end(); l++){
+        (*l)->onMouseMove(x,y,dx,dy);
+      }
+    }
 
 
     virtual bool initialize(){return true;}

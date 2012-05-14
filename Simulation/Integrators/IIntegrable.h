@@ -14,7 +14,7 @@ namespace IBDS{
  *
  * <remarks> Tobias Becker, 13.04.2012.</remarks>
  */
-class IIntegrable : public ISimulationObject{
+class IIntegrable : public virtual ISimulationObject{
 public:
 
   /**

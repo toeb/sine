@@ -8,7 +8,7 @@
 #include <Visualization/MiniGL.h>
 
 namespace IBDS {
-	class Force: public ISimulationObject
+	class Force: public virtual ISimulationObject
 	{
 	public:
 		/**

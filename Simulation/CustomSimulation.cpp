@@ -24,6 +24,7 @@
 #include <Visualization/Renderers/ParticleRenderer.h>
 #include <Visualization/Renderers/BoxRenderer.h>
 #include <Visualization/Renderers/SpringRenderer.h>
+#include <Visualization/Renderers/TweakBarRenderer.h>
 
 #include <Simulation/InputHandler.h>
 
@@ -35,7 +36,7 @@
 using namespace IBDS;
 using namespace std;
 
-class ControllableBox : public Box,  public IInputListener,  public Force{
+class ControllableBox : public  Box,  public IInputListener,  public Force{
 public:
   bool l,r,u,d;
   ControllableBox():Box(1,1,1,1){
@@ -129,8 +130,9 @@ void CustomSimulation::buildModel(){
   addSimulationObject(new LightRenderer());
   addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
   addSimulationObject(new CameraRenderer());
+  
 
-  addSimulationObject(reinterpret_cast<ISimulationObject*>(new ControllableBox()));
+  addSimulationObject(new ControllableBox());
 
   SimulationBuilder b(*this);  
 
@@ -144,7 +146,10 @@ void CustomSimulation::buildModel(){
 
   createSimplePendulum(b,Vector3D(8,0,0));
 
-  createNPendulum(b,Vector3D(13,0,0), 500);
+  createNPendulum(b,Vector3D(13,0,0), 5);
+  auto tw = new TweakBarRenderer();
+  tw->setName("A Custom TweakBar");
+  addSimulationObject(tw);
 }
 
 
