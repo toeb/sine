@@ -136,7 +136,7 @@ void CustomSimulation::buildModel(){
 
   SimulationBuilder b(*this);  
 
-  b.setGravity();
+  b.setGravity(0.1);
 
   createDoublePendulum(b,Vector3D::Zero());
 
