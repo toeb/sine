@@ -2,8 +2,13 @@
 using namespace IBDS;
 
 RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
-  :Connector(b),_rigidBody(b), _r(r)
+  :Connector(b),_rigidBody(b)
 {
+	Quaternion q;
+	Matrix3x3 R;
+	q = b.getOrientation();
+	q.conjugate().getMatrix3x3(R);
+	_r = R * (r);
 }
 RigidBodyConnector* RigidBodyConnector::createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs){
   Vector3D r_ocs;
@@ -41,7 +46,17 @@ void RigidBodyConnector::applyImpulse(const Vector3D & p_wcs){
 
 
 void  RigidBodyConnector::calculateWorldPosition(Vector3D& p_wcs)const{  
+//	_rigidBody.evaluate();
   _rigidBody.objectToWorldCoordinates(_r, p_wcs);
+
+  /*Quaternion q;
+	Matrix3x3 R;
+	q = _rigidBody.getOrientation();
+	q.getMatrix3x3(R);
+
+	Vector3D rnew = (R*_r);
+
+  p_wcs.assign(_rigidBody.getPosition() + rnew);*/
 }
 
 void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{  

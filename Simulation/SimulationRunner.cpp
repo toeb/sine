@@ -5,10 +5,11 @@ using namespace std;
 using namespace IBDS;
 
 bool SimulationRunner::initialize(){
-  if(!getSimulation())return false;
-  return getSimulation()->initialize();
+  /*if(!getSimulation())return false;
+  return getSimulation()->initialize();*/
+	return true;
 }
-SimulationRunner::SimulationRunner():_simulation(0),_desiredTimeStepSize(0.02),_paused(false){
+SimulationRunner::SimulationRunner():_simulation(0),_desiredTimeStepSize(0.01),_paused(false){
 
 }
 SimulationRunner::~SimulationRunner(){
