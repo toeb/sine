@@ -5,12 +5,12 @@ SET (integrators_SRC
   ./Integrators/IIntegrable.h
   ./Integrators/Integrator.h
   ./Integrators/Integrator.cpp 
+  ./Integrators/ISystemFunction.h
+  ./Integrators/ISystemFunction.cpp
   ./Integrators/SingleStepIntegrator.h
   ./Integrators/SingleStepIntegrator.cpp
   ./Integrators/CompositeIntegratable.h
-  ./Integrators/CompositeIntegratable.cpp
-  ./Integrators/IntegrationAlgorithm.h
-  ./Integrators/IntegrationAlgorithm.cpp)
+  ./Integrators/CompositeIntegratable.cpp)
   
 SET (integratorImplementations_SRC
   ./Integrators/Implementations/ExplicitEuler.h
@@ -19,54 +19,65 @@ SET (integratorImplementations_SRC
   ./Integrators/Implementations/RungeKutta4.cpp
   ./Integrators/Implementations/RungeKuttaFehlberg45.h
   ./Integrators/Implementations/RungeKuttaFehlberg45.cpp)
-  
-SET (simulationObjects_SRC
-	./SimulationObjects/Particle.cpp
-	./SimulationObjects/Particle.h   
-	./SimulationObjects/RigidBody.h
-	./SimulationObjects/RigidBody.cpp
-	./SimulationObjects/Force.h
-	./SimulationObjects/Box.h
-	./SimulationObjects/Box.cpp
-	./SimulationObjects/Sphere.h
-	./SimulationObjects/Sphere.cpp
-	./SimulationObjects/DampedSpring.h
-	./SimulationObjects/DampedSpring.cpp
-	./SimulationObjects/Connector.h
-	./SimulationObjects/Connector.cpp
-	./SimulationObjects/ParticleConnector.h
-	./SimulationObjects/ParticleConnector.cpp
-	./SimulationObjects/RigidBodyConnector.h
-	./SimulationObjects/RigidBodyConnector.cpp
-	./SimulationObjects/Body.h
-	./SimulationObjects/Body.cpp
-	./SimulationObjects/Gravity.h
-	./SimulationObjects/Gravity.cpp
-	./SimulationObjects/Joint.h
-	./SimulationObjects/BallJoint.h
-	./SimulationObjects/BallJoint.cpp)
+ 
+ set(force_SRC
+	./Force/Gravity.h
+	./Force/Gravity.cpp
+	./Force/DampedSpring.h
+	./Force/DampedSpring.cpp 
+	./Force/Force.h
+	./Force/ForceAlgorithm.h	
+	./Force/ForceAlgorithm.cpp
+ )
+ set(multibodydynamics_SRC
+	./MultiBodyDynamics/Joint.h
+	./MultiBodyDynamics/BallJoint.h
+	./MultiBodyDynamics/BallJoint.cpp 
+	./MultiBodyDynamics/ImpulseBasedDynamicsAlgorithm.h
+	./MultiBodyDynamics/ImpulseBasedDynamicsAlgorithm.cpp
+ )
+
+SET (dynamics_SRC
+	./Dynamics/DynamicBodyModule.h
+	./Dynamics/DynamicBodyModule.cpp
+	./Dynamics/ConnectorModule.h
+	./Dynamics/ConnectorModule.cpp
+	./Dynamics/Particle.cpp
+	./Dynamics/Particle.h   
+	./Dynamics/RigidBody.h
+	./Dynamics/RigidBody.cpp
+	./Dynamics/Connector.h
+	./Dynamics/Connector.cpp
+	./Dynamics/ParticleConnector.h
+	./Dynamics/ParticleConnector.cpp
+	./Dynamics/RigidBodyConnector.h
+	./Dynamics/RigidBodyConnector.cpp
+	./Dynamics/DynamicBody.h
+	./Dynamics/DynamicBody.cpp
+)
+set (bodyprimitives_SRC
+	./Dynamics/BodyPrimitives/Box.h
+	./Dynamics/BodyPrimitives/Box.cpp
+	./Dynamics/BodyPrimitives/Sphere.h
+	./Dynamics/BodyPrimitives/Sphere.cpp
+)
+set(runner_SRC
+	./runner/SimulationRunner.h
+	./runner/SimulationRunner.cpp
+)
 SET(simulation_SRC
-	./SimulationRunner.h
-	./SimulationRunner.cpp
-	./CustomSimulation.h
-	./CustomSimulation.cpp
 	./Simulation.h
 	./Simulation.cpp
 	./ISimulationObject.h
-	./TimeManager.cpp
-	./TimeManager.h	
-	./RenderingSimulation.h
-	./RenderingSimulation.cpp
 	./SimulationBuilder.h
 	./SimulationBuilder.cpp
-	./ImpulseBasedDynamicsAlgorithm.h
-	./ImpulseBasedDynamicsAlgorithm.cpp
-	./ISimulationAlgorithm.h
-	./Force/ForceAlgorithm.h	
-	./Force/ForceAlgorithm.cpp
-	./InputHandler.h
-	./InputHandler.cpp
-	
+	./ISimulationModule.h
+	./SimulationModuleBase.h
+	./SimulationModuleBase.cpp
+	./DynamicsAlgorithm.h
+	./DynamicsAlgorithm.cpp
+	./CompositeSimulationModule.h
+	./CompositeSimulationModule.cpp	
 )
 
 SET(textile_SRC
@@ -101,6 +112,8 @@ SET(visualisation_SRC
 	${PROJECT_PATH}/Visualization/CompositeRenderer.cpp
 	${PROJECT_PATH}/Visualization/RenderManager.h
 	${PROJECT_PATH}/Visualization/RenderManager.cpp
+	${PROJECT_PATH}/Visualization/InputHandler.h
+	${PROJECT_PATH}/Visualization/InputHandler.cpp
 )	
 SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/SimulationRunnerRenderer.h
@@ -148,11 +161,20 @@ source_group("simulation\\objects" FILES ${simulationObjects_SRC})
 source_group("visualization" FILES ${visualisation_SRC})
 source_group("visualization\\renderers" FILES ${renderers_SRC})
 source_group("simulation\\textiles" FILES ${textile_SRC})
-source_group("runner\\glut" FILES ${glutrunner_SRC})
+source_group("simulation\\runner\\glut" FILES ${glutrunner_SRC})
 source_group("simulation\\kinematics" FILES ${kinematics_SRC})
+source_group("simulation\\runner" FILES ${runner_SRC})
+source_group("simulation\\force" FILES ${force_SRC})
+source_group("simulation\\dynamics" FILES ${dynamics_SRC})
+source_group("simulation\\dynamics\\bodyprimitives" FILES ${bodyprimitives_SRC})
+source_group("simulation\\multibodydynamics" FILES ${multibodydynamics_SRC})
+
 # PROJECT(Simulation)
-ADD_EXECUTABLE(Simulation
-	  main.cpp	  	  
+add_library(Simulation 
+${multibodydynamics_SRC}
+${dynamics_SRC}
+${force_SRC}
+${runner_SRC}
 	  ${integrators_SRC}
 	  ${integratorImplementations_SRC}
 	  ${simulation_SRC}
@@ -162,6 +184,7 @@ ADD_EXECUTABLE(Simulation
 	   ${textile_SRC}
 	   ${glutrunner_SRC}
 	   ${kinematics_SRC}
+	   ${bodyprimitives_SRC}
 	  ${PROJECT_PATH}/Common/Config.h			  
 	  ${PROJECT_PATH}/Common/StringTools.h			  
 	  ${PROJECT_PATH}/Common/StringTools.cpp
@@ -169,7 +192,7 @@ ADD_EXECUTABLE(Simulation
 	  ${PROJECT_PATH}/Common/timing.cpp
 	  CMakeLists.txt
 )
-ADD_DEPENDENCIES(Simulation ${SIMULATION_DEPENDENCIES})
-TARGET_LINK_LIBRARIES(Simulation ${SIMULATION_LINK_LIBRARIES})
+#ADD_DEPENDENCIES(Simulation ${SIMULATION_DEPENDENCIES})
+#TARGET_LINK_LIBRARIES(Simulation ${SIMULATION_LINK_LIBRARIES})
 
-COPY_ANTTWEAKBAR_DLL(Simulation)
+#COPY_ANTTWEAKBAR_DLL(Simulation)

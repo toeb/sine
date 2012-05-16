@@ -107,7 +107,7 @@ string  SimulationBuilder::createConnectorName(string a, string b){
 }
 
 Connector* SimulationBuilder::createConnector(string bodyName, const Vector3D & position, string connectsTo){
-  Body * body = dynamic_cast<Body*>(getObject(bodyName));
+  DynamicBody * body = dynamic_cast<DynamicBody*>(getObject(bodyName));
   if(!body)return 0;
   Connector * connector = createRigidBodyConnector(body,position);
   if(!connector){
@@ -118,7 +118,7 @@ Connector* SimulationBuilder::createConnector(string bodyName, const Vector3D & 
   return connector;
 }
 
-ParticleConnector * SimulationBuilder::createParticleConnector(Body* body, const Vector3D & position){
+ParticleConnector * SimulationBuilder::createParticleConnector(DynamicBody* body, const Vector3D & position){
   Particle * particle = dynamic_cast<Particle*>(body);
   if(!particle)return 0;
   if(position!=particle->getPosition())return 0; //particle connectors may only be connected at the position of the particle
@@ -130,7 +130,7 @@ std::map<std::string,ISimulationObject *> & SimulationBuilder::getSimulationObje
   return _simulationObjects;
 }
 
-RigidBodyConnector * SimulationBuilder::createRigidBodyConnector(Body* body, const Vector3D &position){
+RigidBodyConnector * SimulationBuilder::createRigidBodyConnector(DynamicBody* body, const Vector3D &position){
   RigidBody* rigidBody = dynamic_cast<RigidBody*>(body);
   if(!rigidBody)return 0;    
   RigidBodyConnector * result = RigidBodyConnector::createWithWorldConnectionPoint(*rigidBody,position);

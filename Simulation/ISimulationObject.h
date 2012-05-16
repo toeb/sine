@@ -4,15 +4,16 @@ namespace IBDS{
 class ISimulationObject {
 private:
   const std::string * _name;
+  bool _initialized;
 public:
-  ISimulationObject():_name(0){}
+  ISimulationObject():_name(0), _initialized(false){}
   ~ISimulationObject(){delete _name;}
   /**
    * \brief Sets a name.
    *
    * \param name  The name.
    */
-  void setName(std::string name ){
+  void setName(const std::string & name ){
     if(!name.compare("")){
       _name=0;
       return;
@@ -32,12 +33,27 @@ public:
    *
    * \return  true if it succeeds, false if it fails.
    */
-  virtual bool initialize(){return true;};
+  bool initialize(){
+    if(_initialized)return true;
+    _initialized = initializeObject();
+    return _initialized;
+  };
+
+  bool isInitialized(){
+    return _initialized;
+  }
 
 
   /**
    * \brief Cleans up this object.
    */
-  virtual void cleanup(){};
+  void cleanup(){
+    cleanupObject();
+    _initialized = false;
+  };
+
+protected:
+  virtual void cleanupObject(){};
+  virtual bool initializeObject(){return true;}
 };
 }

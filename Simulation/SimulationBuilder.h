@@ -1,13 +1,13 @@
 #pragma once
 
 #include <Simulation/Simulation.h>
-#include <Simulation/SimulationObjects/Box.h>
-#include <Simulation/SimulationObjects/Gravity.h>
-#include <Simulation/SimulationObjects/DampedSpring.h>
-#include <Simulation/SimulationObjects/BallJoint.h>
-#include <Simulation/SimulationObjects/Sphere.h>
-#include <Simulation/SimulationObjects/ParticleConnector.h>
-#include <Simulation/SimulationObjects/RigidBodyConnector.h>
+#include <Simulation/Dynamics/BodyPrimitives/Box.h>
+#include <Simulation/Force/Gravity.h>
+#include <Simulation/Force/DampedSpring.h>
+#include <Simulation/MultiBodyDynamics/BallJoint.h>
+#include <Simulation/Dynamics/BodyPrimitives/Sphere.h>
+#include <Simulation/Dynamics/ParticleConnector.h>
+#include <Simulation/Dynamics/RigidBodyConnector.h>
 
 #include <string>
 #include <map>
@@ -207,7 +207,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    ParticleConnector * createParticleConnector(Body* body, const Vector3D & position);
+    ParticleConnector * createParticleConnector(DynamicBody* body, const Vector3D & position);
 
     /**
      * \brief Creates a rigid body connector.
@@ -220,7 +220,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    RigidBodyConnector * createRigidBodyConnector(Body* body, const Vector3D &position);  
+    RigidBodyConnector * createRigidBodyConnector(DynamicBody* body, const Vector3D &position);  
 
     /**
      * \brief Adds a simulation object. 
