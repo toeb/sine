@@ -25,7 +25,7 @@ void BoxRenderer::render(){
 }
 
 
-bool BoxRenderer::initialize(){
+bool BoxRenderer::initializeObject(){
    const string * name =_box.getName();
    if(!name)return true;
   _textRenderer = new TextRenderer(*name,_textPosition);

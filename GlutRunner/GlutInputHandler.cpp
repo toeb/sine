@@ -164,7 +164,7 @@ void mouseMove(int x, int y){
   lastY = y;
 }
 
-bool GlutInputHandler::initialize(){
+bool GlutInputHandler::initializeObject(){
   glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
   glutKeyboardFunc(keyDown);
   glutKeyboardUpFunc(keyUp);  

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation/SimulationObjects/DampedSpring.h>
+#include <Simulation/Force/DampedSpring.h>
 #include <Visualization/IRenderer.h>
 
 namespace IBDS{

@@ -1,10 +1,79 @@
 #include "TweakBarRenderer.h"
 #include <AntTweakBar/AntTweakBar.h>
 #include <GL\glut.h>
-
+#include <sstream>
 #include <iostream>
 using namespace IBDS;
+using namespace std;
+template<class T>
+class TweakBarEntryAdder{
+private:
+  TweakBarRenderer  & _renderer;
+public:
+  TweakBarEntryAdder(TweakBarRenderer & renderer):_renderer(renderer){
+    
+  }
 
+  bool add(ISimulationObject * entry){
+    auto typedEntry = dynamic_cast<T*>(entry);
+    if(!typedEntry)return false;
+    return true;
+  }
+protected:
+  virtual void addEntryToTweakBar(T * entry)=0;
+
+};
+
+
+void TW_CALL actionCallback(void * clientdata){
+  IAction * action = reinterpret_cast<IAction*>(clientdata);
+  action->execute();
+}
+void TweakBarRenderer::addAction(IAction * action){
+  //assert(action->getName());
+  string name = *(action->getName());
+  _actions[*(action->getName())]=action;
+  stringstream ss;
+  ss << " label='"<<name<<"' ";
+  TwAddButton(_tweakBar,name.c_str(),actionCallback,action,ss.str().c_str());
+}
+
+void TweakBarRenderer::addValue(RealValue * value){
+  int r = TwAddVarRW(_tweakBar,value->getName()->c_str(), TW_TYPE_DOUBLE,&(value->getValue()), "");
+  _values.push_back(value);
+  if(!r){
+    cout<< TwGetLastError() <<endl;
+  }
+}
+
+
+bool TweakBarRenderer::addSimulationObject(ISimulationObject * object){
+  processTweakBarEntries(object);
+  return true;
+}
+void TweakBarRenderer::addEntry(ISimulationObject * o){
+   auto action = dynamic_cast<IAction*>(o);
+  if(action){
+    addAction(action);
+  }
+  auto value = dynamic_cast<RealValue *>(o);
+  if(value){
+    addValue(value);
+  }
+}
+bool TweakBarRenderer::removeSimulationObject(ISimulationObject * object){
+  return false;
+}
+void TweakBarRenderer::processTweakBarEntries(ISimulationObject * object){
+  _unprocessedObjects.push_back(object);
+  if(!_initialized)return;
+
+  for_each(_unprocessedObjects.begin(), _unprocessedObjects.end(), [this](ISimulationObject * o){
+    this->addEntry(o);
+  });
+  _unprocessedObjects.clear();
+
+}
 void TweakBarRenderer::onKeyDown(Keys key){
   switch(key){
     case KEY_A:TwKeyPressed('a',0);break;
@@ -37,37 +106,27 @@ void TweakBarRenderer::onMouseUp(MouseButtons buttons){
 void TweakBarRenderer::sceneResized(int newWidth, int newHeight){
   TwWindowSize(newWidth,newHeight);
 }
+TweakBarRenderer::TweakBarRenderer():_initialized(false){
 
-bool TweakBarRenderer::initialize(){
+}
+bool TweakBarRenderer::initializeObject(){
   if(!TwInit(TW_OPENGL,NULL))return false;
   
   if(!getName())setName("TweakBar");
   _tweakBar = TwNewBar(getName()->c_str());
 
-  // send the ''glutGetModifers'' function pointer to AntTweakBar
-  //TwGLUTModifiersFunc(glutGetModifiers);
-  //_tweakBar = TwNewBar("TweakBar");
-  // 	// turn wireframe mode on
-  //int val = 1;
-  //setWireframeCB(&val,NULL);
 
-  // Create a tweak bar
-/*	_tweakBar = TwNewBar("TweakBar");
-  TwDefine(" GLOBAL help='TweakBarRenderer TweakBar.' "); // Message added to the help bar.
-  TwDefine(" TweakBar size='250 250' position='5 5' color='96 200 224' text=dark "); // change default tweak bar size and color
-  /*
-  TwAddVarRO(m_tweakBar, "Time", TW_TYPE_FLOAT, &m_time, " label='Time' precision=5");
+  for(auto it = _actions.begin(); it != _actions.end(); it++){
+    auto action = (*it).second;
+    string name = *(action->getName());
+    TwAddButton(_tweakBar,name.c_str(),actionCallback,action,0);
+  }
 
-  TwAddVarCB(m_tweakBar, "Rotation", TW_TYPE_QUAT4F, setRotationCB, getRotationCB, &m_quat, 
-    " label='Rotation' open help='Change the rotation.' ");
-
-  // Add callback to toggle auto-rotate mode (callback functions are defined above).
-  TwAddVarCB(m_tweakBar, "Wireframe", TW_TYPE_BOOL32, setWireframeCB, getWireframeCB, NULL, 
-    " label='Wireframe' key=w help='Toggle wireframe mode.' ");
-    */
+  for_each(_values.begin(), _values.end(), [this](RealValue * v){addValue(v);});
+  _initialized =true;
   return true;
 }
-void TweakBarRenderer::cleanup(){
+void TweakBarRenderer::cleanupObject(){
   TwTerminate();
 }
 

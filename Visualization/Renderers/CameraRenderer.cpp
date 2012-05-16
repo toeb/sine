@@ -14,7 +14,7 @@ using namespace IBDS;
 void CameraRenderer::setInputHandler(InputHandler * handler){
   _input = handler;
 }
-bool CameraRenderer::initialize(){
+bool CameraRenderer::initializeObject(){
       MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (15.0, 1.0, 20.0), Vector3D (5.0, -4, 0.0));
       return true;
 }

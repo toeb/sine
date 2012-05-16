@@ -14,3 +14,4 @@ void TextRenderer::render(){
   _length = _text.length();
   MiniGL::drawStrokeText(_position,_scale,_c_text,_length,_color);
 }
+

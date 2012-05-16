@@ -15,9 +15,9 @@ void SimulationRunnerRenderer::render(){
 
   
 }
-bool SimulationRunnerRenderer::initialize(){
+bool SimulationRunnerRenderer::initializeObject(){
   return true;
 }
-void SimulationRunnerRenderer::cleanup(){
+void SimulationRunnerRenderer::cleanupObject(){
 
 }

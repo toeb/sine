@@ -1,7 +1,7 @@
 #pragma once
 #include <Visualization/RenderEngine.h>
-#include <Simulation/SimulationRunner.h>
-#include <Simulation/InputHandler.h>
+#include <Simulation/runner/SimulationRunner.h>
+#include <Visualization/InputHandler.h>
 namespace IBDS{
 class GlutInputHandler : public InputHandler  {
 public:
@@ -14,8 +14,9 @@ public:
    * \return null if it fails, else.
    */
   static GlutInputHandler& instance();
- 
-  bool initialize();
+protected:
+  
+  bool initializeObject();
 
 private:
   

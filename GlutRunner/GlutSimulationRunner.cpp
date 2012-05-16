@@ -53,38 +53,30 @@ void GlutSimulationRunner::setCommandLineArguments(int argc, char ** argv){
   _commandlineArgumentArray= argv;
 }
 
-void GlutSimulationRunner::cleanup(){
+void GlutSimulationRunner::cleanupObject(){
   getSimulation()->cleanup();
   GlutInputHandler::instance().cleanup();
   GlutRenderer::instance().cleanup();
 }
 
 
-bool GlutSimulationRunner::initialize(){  
-  Simulation * simulation = getSimulation();
-  if(!simulation){
-    cerr << "GlutSimulationRunner::initialize:  Simulation is not set" << endl;
-    return false;
-  } 
-  if(! simulation->initialize()){
-        cerr << "GlutSimulationRunner::initialize:  Simulation could not be initialised" << endl;
-    return false;
-  }
+bool GlutSimulationRunner::initializeRunner(){  
   
-  const char * simulationName = getSimulationName(simulation); 
+  Simulation * simulation = getSimulation(); 
+  const char * simulationName = getSimulationName(simulation);
+
+
   MiniGL::init (_commandlineArgumentCount, _commandlineArgumentArray, 800, 600, 0, 0, simulationName);
 
   onDesiredTimeStepChanged(); //sets the simulationcallback
   
-  simulation->addSimulationAlgorithm(&(GlutInputHandler::instance()));
-  simulation->addSimulationAlgorithm(&(GlutRenderer::instance()));
+  simulation->addSimulationObject(&(GlutInputHandler::instance()));
+  simulation->addSimulationObject(&(GlutRenderer::instance()));
 
   
   if(!GlutInputHandler::instance().initialize())return false;
   if(!GlutRenderer::instance().initialize())return false;
 
-
- if(!SimulationRunner::initialize())return false;
  
  return true;
 }
@@ -93,16 +85,7 @@ void GlutSimulationRunner::onSimulationSet(){
 
 }
 void GlutSimulationRunner::simulateCallback(){
-  Real timePassed = STOP_TIMING(glutTimerName);
-  timePassed /= 1000;
-  START_TIMING(glutTimerName);
-  Simulation & simulation = *(getSimulation());
-  Real time = simulation.getTime();
-  if(timePassed > getDesiredTimeStepSize()){
-    //cout << "failed realtime by " <<(timePassed -getDesiredTimeStepSize())<<" [s]"<<endl;
-    timePassed = getDesiredTimeStepSize();
-  }
-  time += getDesiredTimeStepSize();
+ 
+  doTimestep(getDesiredTimeStepSize());
 
-  simulation.simulate(time);
 }

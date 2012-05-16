@@ -43,9 +43,14 @@ void RenderEngine::resizeScene(int newWidth, int newHeight){
    onSceneResized(newWidth,newHeight);
 }
 
-bool RenderEngine::initialize(){
-  return _renderers.initialize();
+bool RenderEngine::initializeObject(){
+  if(!initializeRenderEngine())return false;
+  _renderers.initialize();
+
 }
-void RenderEngine::cleanup(){
+
+
+void RenderEngine::cleanupObject(){
   _renderers.cleanup();
+  cleanupRenderEngine();
 }

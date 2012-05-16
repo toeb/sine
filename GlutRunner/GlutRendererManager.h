@@ -4,8 +4,9 @@ namespace IBDS{
 class GlutRenderer : public RenderEngine{
 public:
   static GlutRenderer & instance();
-  bool initialize();
 protected:
+  bool initializeRenderEngine();
+  void cleanupRenderEngine();
   void onSceneResized(int w, int h);
   GlutRenderer();
   ~GlutRenderer();

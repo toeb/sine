@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/SimulationRunner.h>
+#include <Simulation/runner/SimulationRunner.h>
 #include <Visualization/IRenderer.h>
 namespace IBDS{
   class SimulationRunnerRenderer:public IRenderer{
@@ -9,7 +9,9 @@ namespace IBDS{
     SimulationRunnerRenderer(SimulationRunner& runner);
     ~SimulationRunnerRenderer();
     void render();
-    bool initialize();
-    void cleanup();
+  protected:
+    
+  bool initializeObject();
+  void cleanupObject();
   };
 }

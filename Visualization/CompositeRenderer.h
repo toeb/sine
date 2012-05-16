@@ -13,8 +13,11 @@ public:
   void addRenderer(IRenderer * renderer);
   void clearRenderers();
   void render();
-  bool initialize();
-  void cleanup();
+
   void sceneResized(int newWIdth, int newHeight);
+protected:
+  
+  bool initializeObject();
+  void cleanupObject();
 };
 }

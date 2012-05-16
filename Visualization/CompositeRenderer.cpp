@@ -9,13 +9,13 @@ void CompositeRenderer::render(){
   }
 }
 
-void CompositeRenderer::cleanup(){
+void CompositeRenderer::cleanupObject(){
    for(auto renderer = _renderers->begin(); renderer != _renderers->end(); renderer++){
     (*renderer)->cleanup();
   }
 }
 
-bool CompositeRenderer::initialize(){
+bool CompositeRenderer::initializeObject(){
   bool result = true;
   for(auto renderer = _renderers->begin(); renderer != _renderers->end(); renderer++){
     if(!(*renderer)->initialize())result= false;

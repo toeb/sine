@@ -1,7 +1,7 @@
 #pragma once
 #include <Visualization/RenderEngine.h>
-#include <Simulation/SimulationRunner.h>
-#include <Simulation/InputHandler.h>
+#include <Simulation/runner/SimulationRunner.h>
+#include <Visualization/InputHandler.h>
 #include <GlutRunner/GlutInputHandler.h>
 namespace IBDS{
   class GlutSimulationRunner : public SimulationRunner {
@@ -22,8 +22,7 @@ public:
    * \return null if it fails, else.
    */
   static GlutSimulationRunner& instance(); 
-  bool initialize();
-  void cleanup();
+
 
   /**
    * \brief Runs the Simulation.
@@ -37,7 +36,8 @@ public:
   void renderCallback();
   
 protected:
-
+  void cleanupObject();
+  bool initializeRunner();
   /**
    * \brief handles a change in desired timestep
    *

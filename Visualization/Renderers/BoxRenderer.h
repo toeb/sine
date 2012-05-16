@@ -1,6 +1,6 @@
 #pragma once
 #include <Visualization/IRenderer.h>
-#include <Simulation/SimulationObjects/Box.h>
+#include <Simulation/Dynamics/BodyPrimitives/Box.h>
 #include <Visualization/Renderers/TextRenderer.h>
 
 namespace IBDS{
@@ -14,7 +14,7 @@ private:
   Vector3D _textPosition;
   Vector3D boxExtent;
 public:
-  bool initialize();
+  bool initializeObject();
   BoxRenderer(const Box & box);
   void render();
 };

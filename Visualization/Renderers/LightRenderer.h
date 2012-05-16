@@ -4,7 +4,8 @@
 namespace IBDS{
 class LightRenderer : public IRenderer{
 public:
+protected:
   
-  bool initialize();
+  bool initializeObject();
 };
 };

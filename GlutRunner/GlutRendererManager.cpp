@@ -30,11 +30,13 @@ void renderGlutCallback(){
   _glutRendererInstance->doRender();
 }
 
-bool GlutRenderer::initialize(){
-  
+bool GlutRenderer::initializeRenderEngine(){
   glutReshapeFunc(resizeCallback);
   MiniGL::setClientSceneFunc(renderGlutCallback);
-  return RenderEngine::initialize();
+  return true;
+}
+void GlutRenderer::cleanupRenderEngine(){
+
 }
 
 void GlutRenderer::onSceneResized(int w, int h){

@@ -3,7 +3,7 @@
 #include "CompositeRenderer.h"
 #include <Simulation/ISimulationObject.h>
 
-#include <Simulation/ISimulationAlgorithm.h>
+#include <Simulation/ISimulationModule.h>
 namespace IBDS{
   class Camera : virtual public ISimulationObject{
     virtual void camera()=0;
@@ -13,7 +13,7 @@ namespace IBDS{
  * \brief Render engine.
  *
  */
-class RenderEngine:public ISimulationAlgorithm{
+class RenderEngine:public ISimulationModule{
 private:
   Camera * camera;
   CompositeRenderer _renderers;
@@ -28,14 +28,17 @@ public:
   int getSceneHeight(){return 600;}
     
   void render();
-  bool initialize();
-  void cleanup();
+
   
   RenderEngine();
   ~RenderEngine();
   
   CompositeRenderer & getRenderers();
 protected:
+  virtual bool initializeRenderEngine()=0;
+  bool initializeObject();
+  void cleanupObject();
+  virtual void cleanupRenderEngine()=0;
   void resizeScene(int newWidth, int newHeight);
   virtual void onSceneResized(int newWidth,int newHeight){};
   virtual void onDesiredFramerateChanged(){};

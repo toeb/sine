@@ -1,6 +1,6 @@
 #pragma once
 #include <Visualization/Renderers/PointRenderer.h>
-#include <Simulation/SimulationObjects/Particle.h>
+#include <Simulation/Dynamics/Particle.h>
 namespace IBDS{
   class ParticleRenderer : public IRenderer{
   private:

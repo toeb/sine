@@ -1,6 +1,6 @@
 #pragma once
 #include <Visualization/IRenderer.h>
-#include <Simulation/InputHandler.h>
+#include <Visualization/InputHandler.h>
 #include <Simulation/Integrators/IIntegrable.h>
 #include <Simulation/Kinematics/KinematicBody.h>
 namespace IBDS{
@@ -10,7 +10,7 @@ namespace IBDS{
     InputHandler * _input;
   public:    
     void setInputHandler(InputHandler * handler);
-    bool initialize();
+  bool initializeObject();
     void render();
   };
 
