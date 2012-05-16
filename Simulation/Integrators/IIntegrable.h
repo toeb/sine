@@ -16,18 +16,6 @@ namespace IBDS{
  */
 class IIntegrable : public virtual ISimulationObject{
 public:
-
-  /**
-   * <summary> Evaluates this integratable at state x.  returns stores the derived state in xDot.
-   *           the state is autonomous - if time is needed subclasses can store 1 in xDot to get the
-   *           current time. this might cause redundancies because multiple bodies might need time.
-   *           but for now this is not important.</summary>
-   *
-   * <remarks> Tobi, 12.04.2012.</remarks>
-   *
-   */
-  virtual void evaluate() = 0;
-
   /**
    * <summary> Sets the state this integratable.</summary>
    *

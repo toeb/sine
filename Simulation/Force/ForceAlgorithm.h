@@ -1,18 +1,20 @@
 #pragma once
-#include <Simulation/ISimulationAlgorithm.h>
-#include <Simulation/SimulationObjects/Force.h>
+#include <Simulation/ISimulationModule.h>
+#include <Simulation/Force/Force.h>
 
 namespace IBDS{
 
-class ForceAlgorithm: public ISimulationAlgorithm{
+class ForceAlgorithm: public ISimulationModule{
   std::vector<Force *> _forces;
-  std::vector<Body*> _forceAccumulators;
+  std::vector<DynamicBody*> _forceAccumulators;
 public:
   ForceAlgorithm();
   bool addSimulationObject(ISimulationObject * object);
-  void precomputeStep();
-  void preIntegrationStep(Real time, Real h);
-  void reset();
+  bool removeSimulationObject(ISimulationObject * object);
+
+  void applyForces(Real time);
+  void resetForces();
+  void setForces(Real time);
 
 };
 }

@@ -4,10 +4,12 @@
 using namespace std;
 using namespace IBDS;
 
-void Integrator::integrate(const Real & a, const Real & b){
+Real Integrator::integrate(Real a, Real b){
   _integratable->getState(_x.v);
-   doIntegration(_x,_xNext,a,b);
+   Real result = doIntegration(_x,_xNext,a,b);
   _integratable->setState(_xNext.v);
+  if(_systemFunction)_systemFunction->correct(b);
+  return result;
 }
 void Integrator::setIntegratable(IIntegrable * integratable){
   _integratable = integratable;
@@ -16,12 +18,14 @@ void Integrator::setIntegratable(IIntegrable * integratable){
   _xDot.resize(_dimension);
   _xNext.resize(_dimension);
 }
+
+
 IIntegrable *  Integrator::getIntegratable(){
   return _integratable;
 }
-const VectorND & Integrator::f(const VectorND& x){
+const VectorND & Integrator::f(Real t, const VectorND& x, Real h){
   _integratable->setState(x.v);
-  _integratable->evaluate();
+  if(_systemFunction)_systemFunction->evaluate(t,h);
   _integratable->getDerivedState(_xDot.v);
   return _xDot;
 }
@@ -33,5 +37,15 @@ const VectorND & Integrator::getState()const{
 Integrator::Integrator(): _integratable(0){
   setName("Integrator");
 }
+
 Integrator::~Integrator(){
+}
+
+void Integrator::setSystemFunction(ISystemFunction  & function){
+  setIntegratable(&(function.getIntegrable()));
+  _systemFunction = &function;
+
+}
+ISystemFunction * Integrator::getSystemFunction(){
+  return _systemFunction;
 }

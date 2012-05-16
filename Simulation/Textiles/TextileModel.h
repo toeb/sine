@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Simulation/ISimulationObject.h>
-#include <Simulation/SimulationObjects/DampedSpring.h>
+#include <Simulation/Force/DampedSpring.h>
 #include <vector>
 namespace IBDS{
 class TextileModel : public ISimulationObject{

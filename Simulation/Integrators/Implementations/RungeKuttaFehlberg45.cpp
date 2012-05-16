@@ -4,32 +4,8 @@
 using namespace IBDS;
 using namespace std;
 
-void RungeKuttaFehlberg45::doStep(const Real & h, VectorND & x_i){
-  // calculate k values
-    VectorND k1 = h * f(x_i);
-    VectorND k2 = h * f(x_i + c21*k1 );
-    VectorND k3 = h * f(x_i + c31*k1 + c32*k2);
-    VectorND k4 = h * f(x_i + c41*k1 + c42*k2 + c43*k3);
-    VectorND k5 = h * f(x_i + c51*k1 + c52*k2 + c53*k3 + c54*k4);
-    VectorND k6 = h * f(x_i + c61*k1 + c62*k2 + c63*k3 + c64*k4 + c65*k5);
-    //calculate the 4th order approximation
-    VectorND y =	x_i + y1*k1 + y2*k3 + y3*k4 +y4*k5;
-    //calculate the 5th order approximation (which is the result of this step)
-    x_i =			x_i + z1*k1 + z2*k3 + z3*k4 +z4*k5 + z5*k6;
-    // calculate the next timestep 
-    Real err =  (y-x_i).length();//calculate error estimate
-    Real s =  pow(_tolerance*h/err,1.0/4.0); // calculate step size scaling factor
-    Real h_star = s * h; // calculate potential next step size
-    Real h_next = h_star *_alpha; // h star * alpha reduces the step size causing overhead but since f is changing the overall efficiency is increased
-    // stepsize increase is bounded by h*beta
-    if(h_next<_beta*h)h_next =  _beta  * h;
-    //stepsize decrease is bounded by h*gamma
-    if(h_next>_gamma*h)h_next = _gamma * h;
-    //constrain step size to [_minimumStepSize, _maximumStepSize]
-    if(_minimumStepSize > h_next)h_next = _minimumStepSize;
-    if(_maximumStepSize < h_next)h_next = _maximumStepSize;
-    // set the step size to h_next
-    setStepSize(h_next);
+void RungeKuttaFehlberg45::doStep(Real t_i,VectorND & x_i, Real h){
+  
 }
 
 RungeKuttaFehlberg45::RungeKuttaFehlberg45(

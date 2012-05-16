@@ -7,7 +7,7 @@ private:
 public:
   ExplicitEuler(Real stepLength=0.01);
 protected:
-  void doStep(const Real & h, VectorND & x_i);
+  void doStep(Real t_i, VectorND & x_i, Real h);
 };
 }
 #endif

@@ -21,7 +21,7 @@ public:
    *
    * <returns> .</returns>
    */
-  void doIntegration(const VectorND& x_0, VectorND& x_i, const Real & a, const Real& b);
+  Real doIntegration(const VectorND& x_0, VectorND& x_i, Real a, Real b);
 
   /**
    * <summary> Sets a step size.</summary>
@@ -47,7 +47,8 @@ protected:
    *
    * <remarks> Tobias Becker, 13.04.2012.</remarks>
    */
-  virtual void  doStep(const Real & h, VectorND & x_i)=0;
+  virtual void  doStep(Real t_i, VectorND & x_i, Real h)=0;
+
 
 };
 }

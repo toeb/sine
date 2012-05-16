@@ -60,7 +60,7 @@ namespace IBDS{
    *
    * <remarks> Tobias Becker, 13.04.2012.</remarks>
    */
-  void doStep(const Real & h, VectorND & x_i);
+  void doStep(Real t_i,VectorND & x_i, Real h);
   
   private:
 

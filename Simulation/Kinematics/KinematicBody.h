@@ -6,7 +6,6 @@
 #include <Simulation/ISimulationObject.h>
 #include <Math/Vector3D.h>
 
-#include <Simulation/SimulationObjects/Body.h>
 
 namespace IBDS{
 /**

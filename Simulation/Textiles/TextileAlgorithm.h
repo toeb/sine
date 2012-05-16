@@ -1,8 +1,8 @@
 #pragma once
-#include <Simulation/ISimulationAlgorithm.h>
+#include <Simulation/ISimulationModule.h>
 
 namespace IBDS{
-class TextileAlgorithm: public ISimulationAlgorithm{
+class TextileAlgorithm: public ISimulationModule{
 private:
 public:
 };
