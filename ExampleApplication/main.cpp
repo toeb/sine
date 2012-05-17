@@ -53,19 +53,12 @@ int main( int argc, char **argv )
 
   runner.setCommandLineArguments(argc,argv);
 
-  runner.setSimulation(simulation);
-
-  //add a renderer that shows info for the simulation runner
-  simulation->addSimulationObject(new SimulationRunnerRenderer(runner));
-
+  runner.setSimulation(simulation); 
 
   // this order has to be maintaned.  i'll need to fix this.
   simulation->buildModel();
   simulation->buildAlgorithms();
-
-  
-  Real b=9;
-  simulation->addSimulationObject(new RealValue("test",b));
+    
 
   auto integrable = simulation->getIntegrator()->getIntegratable();
   Real* initialState = new Real[integrable->getStateDimension()];
