@@ -45,7 +45,8 @@ void RenderEngine::resizeScene(int newWidth, int newHeight){
 
 bool RenderEngine::initializeObject(){
   if(!initializeRenderEngine())return false;
-  _renderers.initialize();
+
+  _renderers.onBeforeRenderering();
 
 }
 

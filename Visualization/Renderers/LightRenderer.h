@@ -6,6 +6,6 @@ class LightRenderer : public IRenderer{
 public:
 protected:
   
-  bool initializeObject();
+  void onBeforeRenderering();
 };
 };

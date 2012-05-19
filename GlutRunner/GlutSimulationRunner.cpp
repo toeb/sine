@@ -74,7 +74,7 @@ bool GlutSimulationRunner::initializeRunner(){
   simulation->addSimulationObject(&(GlutRenderer::instance()));
 
   
-  if(!GlutInputHandler::instance().initialize())return false;
+  //if(!GlutInputHandler::instance().initialize())return false;
   if(!GlutRenderer::instance().initialize())return false;
 
  

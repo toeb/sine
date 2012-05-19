@@ -151,11 +151,11 @@ void CustomSimulation::buildModel(){
 
   //addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  create4BoxesWithSpring(b, Vector3D(6,0,0));
+  //create4BoxesWithSpring(b, Vector3D(6,0,0));
 
   createSimplePendulum(b,Vector3D(8,0,0));
 
-  createNPendulum(b,Vector3D(13,0,0), 50);
+  //createNPendulum(b,Vector3D(13,0,0), 50);
 
   
 }

@@ -2,7 +2,6 @@
 #include <Visualization/MiniGL.h>
 using namespace IBDS;
 
- bool LightRenderer::initializeObject(){  
+ void LightRenderer::onBeforeRenderering(){  
   MiniGL::initLights();	
-  return true;
 }

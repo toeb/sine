@@ -1,5 +1,6 @@
 #include "CompositeRenderer.h"
-
+#include <algorithm>
+#include <functional>
 using namespace IBDS;
 using namespace std;
 
@@ -14,7 +15,11 @@ void CompositeRenderer::cleanupObject(){
     (*renderer)->cleanup();
   }
 }
-
+void CompositeRenderer::onBeforeRenderering(){
+  for_each(_renderers->begin(), _renderers->end(), [](IRenderer * r){
+    r->onBeforeRenderering();
+  });
+}
 bool CompositeRenderer::initializeObject(){
   bool result = true;
   for(auto renderer = _renderers->begin(); renderer != _renderers->end(); renderer++){

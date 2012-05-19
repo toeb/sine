@@ -13,7 +13,7 @@ public:
   void addRenderer(IRenderer * renderer);
   void clearRenderers();
   void render();
-
+  void onBeforeRenderering();
   void sceneResized(int newWIdth, int newHeight);
 protected:
   

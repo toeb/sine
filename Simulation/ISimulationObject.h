@@ -34,7 +34,9 @@ public:
    * \return  true if it succeeds, false if it fails.
    */
   bool initialize(){
-    if(_initialized)return true;
+    if(_initialized){
+      return true;
+    }
     _initialized = initializeObject();
     return _initialized;
   };
