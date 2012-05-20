@@ -69,3 +69,9 @@ const Connector & DampedSpring::getConnectorA()const{
 const Connector& DampedSpring::getConnectorB()const{
   return _cB;
 }
+Connector & DampedSpring::getConnectorA(){
+  return _cA;
+}
+Connector& DampedSpring::getConnectorB(){
+  return _cB;
+}

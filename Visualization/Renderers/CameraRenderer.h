@@ -5,7 +5,7 @@
 #include <Simulation/Kinematics/KinematicBody.h>
 namespace IBDS{
 
-class CameraRenderer : public IRenderer,public IInputListener,public KinematicBody{
+class CameraRenderer : public IRenderer,public IInputListener/*,public KinematicBody*/{
   private:
     InputHandler * _input;
   public:    

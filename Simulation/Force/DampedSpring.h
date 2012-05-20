@@ -17,6 +17,8 @@ namespace IBDS{
       // initial length
 			Real _l0;
 		public:
+      //static DampedSpring * createSpring(
+
 			~DampedSpring();
       inline void calculateSpringAndDampeningForce(Vector3D & f_s,Vector3D & f_d)const;
       inline void calculateSpringForce(Vector3D & f)const;
@@ -26,9 +28,12 @@ namespace IBDS{
 
       Real getDampeningConstant()const;
       void setDampeningConstant(Real k_d);
-
+      
       const Connector & getConnectorA()const;
       const Connector& getConnectorB()const;
+      
+      Connector & getConnectorA();
+      Connector& getConnectorB();
 
 			/**
 			 * Creates a string with the specified stiffness, damping and rest length, which is attached to the specified connectors.

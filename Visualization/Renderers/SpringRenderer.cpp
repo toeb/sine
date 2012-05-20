@@ -21,7 +21,7 @@ void SpringRenderer::render(){
   Real amount = f.length();
   if(amount > _maxForceAmount)_maxForceAmount = amount;
   MiniGL::valueToColor(amount,color,0,_maxForceAmount);  
-  MiniGL::drawVector(a_wcs,b_wcs,4,color);
+  MiniGL::drawVector(a_wcs,b_wcs,1,color);
   
   //cout << amount << " " << color[0] << " " <<color[1] << " " << color[2] << endl;
 

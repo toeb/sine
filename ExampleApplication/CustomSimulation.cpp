@@ -25,6 +25,7 @@
 
 #include <Simulation/SimulationBuilder.h>
 
+#include <Simulation/Textiles/TextileModel.h>
 
 #include <Simulation/DynamicsAlgorithm.h>
 
@@ -84,11 +85,23 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   
 }
 
-
-void createSpringChain(SimulationBuilder & b, const Vector3D & offset,int n){  
+void createCloth(Simulation & s){
+  int rows = 20;
+  int cols = 20;
+  TextileModel * m = TextileModel::createTextileModel(Vector3D(10,0,0),
+    Matrix3x3::Identity(),5,5,rows,cols);
+  
+  
+  m->getNode(0,cols-1)->particle->setMass(0);
+  m->getNode(rows-1,cols-1)->particle->setMass(0);
  
-}
+  for_each(m->_simulationObjects.begin(), m->_simulationObjects.end(), [&s](ISimulationObject * obj){
+    s.addSimulationObject(obj);
+  });
 
+  s.addSimulationObject(m);
+
+}
 void createSimplePendulum(SimulationBuilder & b, const Vector3D & offset){
   Real l =4;
   b.createParticle("fixed point",offset,0);// fixed particle
@@ -158,7 +171,9 @@ void CustomSimulation::buildModel(){
 
   //addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  create4BoxesWithSpring(b, Vector3D(6,0,0));
+  createCloth(*this);
+
+  //create4BoxesWithSpring(b, Vector3D(6,0,0));
 
   //createSimplePendulum(b,Vector3D(8,0,0));
 
