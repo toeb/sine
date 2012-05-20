@@ -78,11 +78,17 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   Box* box4 = b.createBox("box4",offset+Vector3D(0,-3,0));
 
   //box2->addExternalForce(offset+Vector3D(0,0,0),Vector3D(1,0,0));
-  b.createSpring("spring1","box1","box2",10,1, box1->getPosition(), box2->getPosition());
-  b.createSpring("spring2","box2","box3",10,1, box2->getPosition()+Vector3D(0.5,0.5,0.5), box3->getPosition());
-  b.createSpring("spring3","box3","box4",10,1, box3->getPosition(), box4->getPosition());
+  b.createSpring("spring1","box1","box2",0.5,0, box1->getPosition(), box2->getPosition());
+  b.createSpring("spring2","box2","box3",0.1,0, box2->getPosition(), box3->getPosition());
+  b.createSpring("spring3","box3","box4",0.11,0, box3->getPosition(), box4->getPosition());
   
 }
+
+
+void createSpringChain(SimulationBuilder & b, const Vector3D & offset,int n){  
+ 
+}
+
 void createSimplePendulum(SimulationBuilder & b, const Vector3D & offset){
   Real l =4;
   b.createParticle("fixed point",offset,0);// fixed particle
@@ -102,27 +108,28 @@ void createDoublePendulum(SimulationBuilder & b, const Vector3D & offset){
 }
 
 void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
+  Real s = 10.0/n;
   Real l=0.75;
   Box * lastBox=0;
   Box* currentBox=0;
-  Vector3D direction(1,-1,0);
+  Vector3D direction(1,1,0);
   direction.normalize();
   for(int i=0; i < n; i++){
     lastBox = currentBox;
-    currentBox = b.createBox();
-    currentBox->setPosition(offset+(l*i)*direction);
+    currentBox = b.createBox("",Vector3D::Zero(),1,s,s,s);
+    currentBox->setPosition(s*(offset+(l*i)*direction));
     if(i==0){
       currentBox->setMass(0);
       continue;
     }
-    b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),offset+(l*i-l/2)*direction);
+    b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),s*(offset+(l*i-l/2)*direction));
     if(i==n-1)currentBox->setMass(1); 
   }
-  //currentBox->addExternalForce(Vector3D(0.01,0,0));
 }
 
 void CustomSimulation::buildAlgorithms(){
-  integrator = new RungeKutta4();
+  integrator = new RungeKutta4(0.01);
+  //integrator = new ExplicitEuler();
 
   addSimulationObject(&dynamicsAlgorithm);
 
@@ -151,11 +158,11 @@ void CustomSimulation::buildModel(){
 
   //addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  //create4BoxesWithSpring(b, Vector3D(6,0,0));
+  create4BoxesWithSpring(b, Vector3D(6,0,0));
 
-  createSimplePendulum(b,Vector3D(8,0,0));
+  //createSimplePendulum(b,Vector3D(8,0,0));
 
-  //createNPendulum(b,Vector3D(13,0,0), 50);
+  //createNPendulum(b,Vector3D(13,0,0), 100);
 
   
 }

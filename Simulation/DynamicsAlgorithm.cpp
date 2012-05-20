@@ -27,12 +27,12 @@ void DynamicsAlgorithm::evaluate(Real t, Real h){
   //calculates the accelerations of the dynamic bodies (evaluates the mass equations)
   dynamicBodyModule.calculateDynamics();
     
-  multiBodyDynamics.correctPositions(h);
+  //multiBodyDynamics.correctPositions(h);
 }
 void DynamicsAlgorithm::preIntegration(Real t, Real h){
-  //evaluate(t,h);
+  evaluate(t,h);
   multiBodyDynamics.correctPositions(h);
 }
 void DynamicsAlgorithm::postIntegration(Real t,Real h){
-  //multiBodyDynamics.correctVelocities();
+  multiBodyDynamics.correctVelocities();
 }
