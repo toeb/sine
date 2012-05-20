@@ -23,6 +23,7 @@ public:
   IIntegrable & getIntegrable();
 
   void evaluate(Real t, Real h);
-  void correct(Real t);
+  void postIntegration(Real t, Real h);
+  void preIntegration(Real t, Real h);
 };
 }

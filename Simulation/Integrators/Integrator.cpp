@@ -5,10 +5,11 @@ using namespace std;
 using namespace IBDS;
 
 Real Integrator::integrate(Real a, Real b){
+  if(_systemFunction)_systemFunction->preIntegration(a,b-a);
   _integratable->getState(_x.v);
    Real result = doIntegration(_x,_xNext,a,b);
   _integratable->setState(_xNext.v);
-  if(_systemFunction)_systemFunction->correct(b);
+  if(_systemFunction)_systemFunction->postIntegration(b,b-a);
   return result;
 }
 void Integrator::setIntegratable(IIntegrable * integratable){

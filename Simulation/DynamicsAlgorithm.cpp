@@ -29,6 +29,10 @@ void DynamicsAlgorithm::evaluate(Real t, Real h){
     
   multiBodyDynamics.correctPositions(h);
 }
-void DynamicsAlgorithm::correct(Real t){
-  multiBodyDynamics.correctVelocities();
+void DynamicsAlgorithm::preIntegration(Real t, Real h){
+  //evaluate(t,h);
+  multiBodyDynamics.correctPositions(h);
+}
+void DynamicsAlgorithm::postIntegration(Real t,Real h){
+  //multiBodyDynamics.correctVelocities();
 }

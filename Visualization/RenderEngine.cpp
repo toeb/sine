@@ -52,6 +52,6 @@ bool RenderEngine::initializeObject(){
 
 
 void RenderEngine::cleanupObject(){
-  _renderers.cleanup();
+  
   cleanupRenderEngine();
 }
