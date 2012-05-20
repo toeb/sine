@@ -6,6 +6,7 @@
 #include <Simulation/Integrators/CompositeIntegratable.h>
 #include <Simulation/Integrators/ISystemFunction.h>
 #include <Simulation/CompositeSimulationModule.h>
+#include <Simulation/Textiles/TextileAlgorithm.h>
 
 namespace IBDS{
 
@@ -32,6 +33,7 @@ public:
   DynamicBodyModule dynamicBodyModule;
   CompositeIntegratable integrables;
   ConnectorModule connectorModule;
+  TextileAlgorithm textilesModule;
   DynamicsAlgorithm();
 
   IIntegrable & getIntegrable();

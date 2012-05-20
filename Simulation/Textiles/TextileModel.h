@@ -52,6 +52,10 @@ private:
   int _rows;
   int _columns;
   Real _mass;
+  
+  
+  std::vector<ISimulationObject *> _simulationObjects;
+  std::vector<TextileNode*> _nodes;
 
   Real _k_d_elongation;
   Real _k_d_shear;
@@ -62,11 +66,16 @@ private:
 
 
   TextileModel();
-  void forAll(std::function<void(int, int)> f);
-  void forAllNodes(std::function<void(int, int, TextileNode *)> f);
+
   DampedSpring *  createSpring(TextileNode * a, TextileNode * b, Real k_s, Real k_d);
   Particle * createParticle(TextileNode * node, Real mass, const Vector3D & position);
+  DampedSpring * createFlexor(TextileNode * nodeA, TextileNode* nodeB);
+  DampedSpring * createShearer(TextileNode * nodeA, TextileNode* nodeB);
+  DampedSpring * createElongator(TextileNode * nodeA, TextileNode* nodeB);
 
+  void createFlexors(TextileNode *node);
+  void createShearers(TextileNode *node);
+  void createElongators(TextileNode *node);
 
   void addSimulationObject(ISimulationObject *  object);
 
@@ -75,11 +84,15 @@ private:
     const Matrix3x3 & orientation,
     Real width, Real height,
     int rows, int cols);
-public:
-  std::vector<ISimulationObject *> _simulationObjects;
-  
-  std::vector<TextileNode*> _nodes;
 
+
+public:
+  Real getSuggestedStepSize()const;
+  void setMaximumElongation(Real valueInPercent);
+  Real getMaximumElongation()const;
+  
+  std::vector<ISimulationObject*> & getSimulationObjects();
+  
   TextileNode* getNode(int i, int j);
 
 

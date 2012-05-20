@@ -85,17 +85,16 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   
 }
 
-void createCloth(Simulation & s){
-  int rows = 20;
-  int cols = 20;
+void createCloth(Simulation & s, Real width = 5, Real height = 5, int rows=30, int cols=30){
+
   TextileModel * m = TextileModel::createTextileModel(Vector3D(10,0,0),
-    Matrix3x3::Identity(),5,5,rows,cols);
+    Matrix3x3::Identity(),width,height,rows,cols);
   
   
   m->getNode(0,cols-1)->particle->setMass(0);
   m->getNode(rows-1,cols-1)->particle->setMass(0);
  
-  for_each(m->_simulationObjects.begin(), m->_simulationObjects.end(), [&s](ISimulationObject * obj){
+  for_each(m->getSimulationObjects().begin(), m->getSimulationObjects().end(), [&s](ISimulationObject * obj){
     s.addSimulationObject(obj);
   });
 
@@ -171,7 +170,7 @@ void CustomSimulation::buildModel(){
 
   //addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  createCloth(*this);
+  createCloth(*this,5,5,30,30);
 
   //create4BoxesWithSpring(b, Vector3D(6,0,0));
 
@@ -185,14 +184,14 @@ void CustomSimulation::buildModel(){
 
 void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObject){
   
-
+  //*
   Connector * connector = dynamic_cast<Connector*>(simulationObject);
   if(connector){
-    addSimulationObject(new ConnectorRenderer(*connector));
+    //addSimulationObject(new ConnectorRenderer(*connector));
     //addRenderer(new ConnectorVelocityRenderer(*connector));
     //addRenderer(new ConnectorForceRenderer(*connector));
   }
-
+  
   Particle * particle = dynamic_cast<Particle*>(simulationObject);
   if(particle){
     addSimulationObject(new ParticleRenderer(*particle));
@@ -206,8 +205,8 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
   DampedSpring * spring = dynamic_cast<DampedSpring*>(simulationObject);
 
   if(spring){
-    addSimulationObject(new SpringRenderer(*spring));
-  }
+    //addSimulationObject(new SpringRenderer(*spring));
+  }//*/
 
   
 

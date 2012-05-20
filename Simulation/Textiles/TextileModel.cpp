@@ -7,17 +7,10 @@ using namespace std;
 using namespace IBDS;
 
 
-void TextileModel::forAllNodes(function<void(int, int, TextileNode *)> f){
-  forAll([&f,this](int i, int j){f(i,j,getNode(i,j));});
+void TextileModel::normalize(){
+
 }
 
-void TextileModel::forAll(function<void(int, int)> f){
-  for(int i=0; i < _rows; i++){
-    for(int j=0; j < _columns; j++){
-      f(i,j);
-    }
-  }
-}
 void TextileModel::addSimulationObject(ISimulationObject  * obj){
   _simulationObjects.push_back(obj);
 }
@@ -51,20 +44,86 @@ DampedSpring * TextileModel::createSpring(TextileNode * nodeA, TextileNode * nod
 
 
 }
+
+vector<ISimulationObject*> & TextileModel::getSimulationObjects(){
+  return _simulationObjects;
+}
+
+DampedSpring*  TextileModel::createFlexor(TextileNode * nodeA, TextileNode* nodeB){
+  return createSpring(nodeA,nodeB,_k_s_flexion,_k_d_flexion);
+}
+DampedSpring*  TextileModel::createShearer(TextileNode * nodeA, TextileNode* nodeB){
+  return createSpring(nodeA,nodeB,_k_s_shear,_k_d_shear);
+}
+DampedSpring* TextileModel::createElongator(TextileNode * nodeA, TextileNode* nodeB){
+  return createSpring(nodeA,nodeB,_k_s_elongation,_k_d_elongation);
+}
+
+void TextileModel::createElongators(TextileNode * node){
+  if(node->east){
+    if(!node->eastElongator){
+      DampedSpring * spring = createElongator(node,node->east);
+      node->eastElongator = spring;
+      node->east->westElongator = spring;
+    }
+  }
+
+  if(node->north){
+    if(!node->northElongator){
+      DampedSpring * spring = createElongator(node,node->north);
+      node->northElongator = spring;
+      node->north->southElongator = spring;
+    }
+  }
+}
+void TextileModel::createShearers(TextileNode * node){
+  if(node->east && node->east->north){
+    if(!node->northEastShearer){
+      DampedSpring * spring = createShearer(node,node->east->north);
+      node->northEastShearer = spring;
+      node->east->north->southWestShearer=spring;
+    }
+  }
+  if(node->west && node->west->north){
+    if(!node->northWestShearer){
+      DampedSpring * spring = createShearer(node,node->west->north);
+      node->northWestShearer = spring;
+      node->west->north->southEastShearer = spring;
+    }
+  }
+}
+void TextileModel::createFlexors(TextileNode * node){
+  if(node->east && node->east->east){
+    if(!node->eastFlexor){
+      DampedSpring * spring = createFlexor(node,node->east->east);
+      node->eastFlexor = spring;
+      node->east->east->westFlexor = spring;
+    }
+  }
+
+  if(node->north && node->north->north){
+    if(!node->northFlexor){
+      DampedSpring * spring = createFlexor(node,node->north->north);
+      node->northFlexor = spring;
+      node->north->north->southFlexor= spring;
+    }
+  }
+}
+
 void TextileModel::buildModel(
   const Vector3D & p, 
-    const Matrix3x3 & orientation,
-    Real width, Real height,
-    int rows, int cols){
+  const Matrix3x3 & orientation,
+  Real width, Real height,
+  int rows, int cols){
 
-    _k_d_elongation=1;
-    _k_s_elongation=20;
-    _k_d_flexion=1;
-    _k_s_flexion=20;
-    _k_d_shear=1;
-    _k_s_shear=20;
-    _mass = 400;
-  Real particleMass=_mass/(rows*cols);
+  _k_d_elongation=1;
+  _k_s_elongation=10;
+  _k_d_flexion=1;
+  _k_s_flexion=10;
+  _k_d_shear=1;
+  _k_s_shear=10;
+  _mass = 200;
+  Real particleMass=1;
   
   
   if(rows < 0) rows = static_cast<int>(height);
@@ -104,34 +163,13 @@ void TextileModel::buildModel(
   }
   // create springs
   for(int i= 0; i < rows; i++){
-    for(int j=0; j < cols; j++){
-      
+    for(int j=0; j < cols; j++){      
       TextileNode * node = getNode(i,j);
-
-      if(node->east){
-        if(!node->eastElongator){
-          DampedSpring * spring =createSpring(node,node->east,_k_s_elongation,_k_d_elongation);
-          node->eastElongator = spring;
-          node->east->westElongator= spring;
-        }
-        if(!node->eastFlexor){
-          if(node->east->east){
-            DampedSpring * spring= createSpring(node, node->east->east, _k_s_flexion,_k_d_flexion);
-            node->eastFlexor = spring;
-            node->east->east->westFlexor =spring;
-          }
-        }
-        if(!node->northEastShearer){
-          if(node->east->north){
-            DampedSpring * spring =createSpring(node, node->east->north, _k_s_shear,_k_d_shear);
-            node->northEastShearer = spring;
-            node->east->north->southWestShearer = spring;
-          }
-        }
-      }
+      createFlexors(node);
+      createShearers(node);
+      createElongators(node);
     }
-
-}
+  }
 }
 
 TextileModel * TextileModel::createTextileModel( const Vector3D & p,     const Matrix3x3 & orientation,    Real width, Real height,    int rows, int cols){
@@ -151,9 +189,6 @@ TextileNode* TextileModel::getNode(int i, int j){
   return  _nodes.at(index);
 }
 
-void TextileModel::normalize(){
-
-}
 TextileModel::TextileModel(){}
 
 

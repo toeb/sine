@@ -1,9 +1,9 @@
 #pragma once
-#include <Simulation/ISimulationModule.h>
-
+#include <Simulation/SimulationModuleBase.h>
+#include <Simulation/Textiles/TextileModel.h>
 namespace IBDS{
-class TextileAlgorithm: public ISimulationModule{
-private:
+class TextileAlgorithm: public virtual SimulationModuleBase<TextileModel>{
 public:
+  void normalize();
 };
 }

@@ -153,7 +153,7 @@ void MiniGL::drawVector (const Vector3D &a, const Vector3D &b, const float w,con
   
 	glLineWidth (1);
   
-  MiniGL::drawSphere(&b,0.01,color);
+ // MiniGL::drawSphere(&b,0.01,color);
 	
 }
 

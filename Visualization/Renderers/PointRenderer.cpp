@@ -8,5 +8,5 @@ PointRenderer::PointRenderer(const Vector3D & point):_pointCoordinates(point){
 }
 
 void PointRenderer::render(){
-  MiniGL::drawPoint(_pointCoordinates,0.4,MiniGL::darkblue);
+  MiniGL::drawPoint(_pointCoordinates,3,MiniGL::darkblue);
 }
