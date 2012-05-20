@@ -5,6 +5,13 @@
 
 namespace IBDS{
 
+/**
+ * \brief Composite simulation module. 
+ * 				combines multiple simulation modules into one
+ *
+ * \author Tobi
+ * \date 20.05.2012
+ */
 class CompositeSimulationModule:public ISimulationModule{
 private:
   std::vector<ISimulationModule*> _modules;

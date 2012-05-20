@@ -12,6 +12,7 @@ bool  CompositeIntegratable::addSimulationObject(ISimulationObject  * object){
   if(!integrable)return false;
 
   _children.push_back(integrable);
+  return true;
 }
 bool CompositeIntegratable::removeSimulationObject(ISimulationObject * object){
   auto integrable = dynamic_cast<IIntegrable*>(object);

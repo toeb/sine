@@ -56,6 +56,13 @@ Real DampedSpring::getStiffnessConstant()const{
 Real DampedSpring:: getDampeningConstant()const{
   return _k_d;
 }
+void DampedSpring::setDampeningConstant(Real k_d){
+  _k_d = k_d;
+}
+void DampedSpring::setStiffnessConstant(Real k_s){
+  _k_s=k_s;
+}
+
 const Connector & DampedSpring::getConnectorA()const{
   return _cA;
 }

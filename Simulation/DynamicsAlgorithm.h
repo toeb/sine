@@ -8,6 +8,20 @@
 #include <Simulation/CompositeSimulationModule.h>
 
 namespace IBDS{
+
+  /**
+   * \brief Dynamics algorithm. 
+   * 				Represents the algorithm setup for the simulation
+   * 				
+   * 				it currently combines
+   * 				* ImpulseBasedDynamicsAlgorithm  
+   * 				* Force (Spring)  
+   * 				* Connectors  
+   * 				* Rigid Body Dynamics
+   *
+   * \author Tobi
+   * \date 20.05.2012
+   */
   class DynamicsAlgorithm  :  
   public virtual ISystemFunction, 
   public virtual CompositeSimulationModule

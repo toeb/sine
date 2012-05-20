@@ -20,8 +20,13 @@ namespace IBDS{
 			~DampedSpring();
       inline void calculateSpringAndDampeningForce(Vector3D & f_s,Vector3D & f_d)const;
       inline void calculateSpringForce(Vector3D & f)const;
+
       Real getStiffnessConstant()const;
+      void setStiffnessConstant(Real k_s);
+
       Real getDampeningConstant()const;
+      void setDampeningConstant(Real k_d);
+
       const Connector & getConnectorA()const;
       const Connector& getConnectorB()const;
 

@@ -16,7 +16,7 @@ namespace IBDS{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-class KinematicBody{
+class KinematicBody : public virtual IIntegrable{
 private:
   Matrix3x3 _R;
   Matrix3x3 _RT;  
