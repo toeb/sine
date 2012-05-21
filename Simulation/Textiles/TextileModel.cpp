@@ -11,6 +11,39 @@ void TextileModel::normalize(){
 
 }
 
+
+void TextileModel::buildModel(
+  const Vector3D & p, 
+  const Matrix3x3 & orientation,
+  Real mass,
+  Real width, Real height,
+  int rows, int cols){
+    
+  _k_d_elongation=1;
+  _k_s_elongation=10;
+  _k_d_flexion=1;
+  _k_s_flexion=10;
+  _k_d_shear=1;
+  _k_s_shear=10;
+
+
+  _width = width;
+  _height = height;
+  _mass = mass;
+  // (rows ; cols) is in [3,n]x[3,n]
+  if(rows < 0) rows = static_cast<int>(height);//set a row value corresponding to height
+  if(rows < 3)  rows = 3;
+  if(cols < 0) cols = static_cast<int>(width);//set a row value corresponding to width
+  if(cols < 3) cols = 3;
+  
+  _rows = rows;
+  _columns = cols;
+    
+  createNodeMesh(p,orientation);   
+  setupNodeConnectivity();
+  createSprings();
+}
+
 void TextileModel::addSimulationObject(ISimulationObject  * obj){
   _simulationObjects.push_back(obj);
 }
@@ -110,32 +143,13 @@ void TextileModel::createFlexors(TextileNode * node){
   }
 }
 
-void TextileModel::buildModel(
-  const Vector3D & p, 
-  const Matrix3x3 & orientation,
-  Real width, Real height,
-  int rows, int cols){
+void TextileModel::createNodeMesh(const Vector3D & p, const Matrix3x3 & orientation){
+  int n = _rows*_columns;
+  Real particleMass=_mass/n;
 
-  _k_d_elongation=1;
-  _k_s_elongation=10;
-  _k_d_flexion=1;
-  _k_s_flexion=10;
-  _k_d_shear=1;
-  _k_s_shear=10;
-  _mass = 200;
-  Real particleMass=1;
-  
-  
-  if(rows < 0) rows = static_cast<int>(height);
-  if(rows < 3)  rows = 3;
-  if(cols < 0) cols = static_cast<int>(width);
-  if(cols < 3) cols = 3;
-  
-  _rows = rows;
-  _columns = cols;
 
-  Real spacingWidth = width/cols;
-  Real spacingHeight = height/rows;
+  Real spacingWidth = _width/_columns;
+  Real spacingHeight = _height/_rows;
   
   Vector3D x1(orientation(0,0),orientation(1,0), orientation(2,0));
   Vector3D x2(orientation(0,1),orientation(1,1), orientation(2,1));
@@ -143,17 +157,19 @@ void TextileModel::buildModel(
   x2.normalize();
 
   // create particles with correct mass and positions
-  for(int i=0; i < rows; i++){
-    for(int j = 0; j < cols;j++){
-      Vector3D position = x1*spacingWidth*(i-rows/2.0) + x2 * spacingHeight*(j-cols/2.0) + p;
+  for(int i=0; i < _rows; i++){
+    for(int j = 0; j < _columns;j++){
+      Vector3D position = x1*spacingWidth*(i-_rows/2.0) + x2 * spacingHeight*(j-_columns/2.0) + p;
       TextileNode * node = new TextileNode();
       createParticle(node,particleMass,position);
       _nodes.push_back( node);
     }
   }
+}
+void TextileModel::setupNodeConnectivity(){  
   // set structure pointers
-   for(int i=0; i < rows; i++){
-    for(int j = 0; j < cols;j++){
+   for(int i=0; i < _rows; i++){
+    for(int j = 0; j < _columns;j++){
         TextileNode * node = getNode(i,j);
         node->north = getNode(i-1,j);
         node->south = getNode(i+1,j);
@@ -161,9 +177,12 @@ void TextileModel::buildModel(
         node->east =  getNode(i,j+1);
     }
   }
+}
+
+void TextileModel::createSprings(){
   // create springs
-  for(int i= 0; i < rows; i++){
-    for(int j=0; j < cols; j++){      
+  for(int i= 0; i < _rows; i++){
+    for(int j=0; j < _columns; j++){      
       TextileNode * node = getNode(i,j);
       createFlexors(node);
       createShearers(node);
@@ -172,10 +191,11 @@ void TextileModel::buildModel(
   }
 }
 
-TextileModel * TextileModel::createTextileModel( const Vector3D & p,     const Matrix3x3 & orientation,    Real width, Real height,    int rows, int cols){
+
+TextileModel * TextileModel::createTextileModel( const Vector3D & p,     const Matrix3x3 & orientation, Real mass,   Real width, Real height,    int rows, int cols){
   TextileModel * model = new TextileModel();
 
-  model->buildModel(p,orientation,width,height,rows,cols);
+  model->buildModel(p,orientation,mass,width,height,rows,cols);
   return model;
 }
 TextileNode* TextileModel::getNode(int i, int j){

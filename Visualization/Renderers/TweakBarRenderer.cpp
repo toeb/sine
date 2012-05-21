@@ -5,30 +5,22 @@
 #include <iostream>
 using namespace IBDS;
 using namespace std;
-template<class T>
-class TweakBarEntryAdder{
-private:
-  TweakBarRenderer  & _renderer;
-public:
-  TweakBarEntryAdder(TweakBarRenderer & renderer):_renderer(renderer){
-    
-  }
 
-  bool add(ISimulationObject * entry){
-    auto typedEntry = dynamic_cast<T*>(entry);
-    if(!typedEntry)return false;
-    return true;
-  }
-protected:
-  virtual void addEntryToTweakBar(T * entry)=0;
-
-};
-
+void TW_CALL setValueCallback(const void *value, void *clientData){
+  ValueCallback * callback = reinterpret_cast<ValueCallback *>(clientData);
+  callback->set(value);
+}
+void TW_CALL getValueCallback(void *value, void *clientData){
+  ValueCallback * callback = reinterpret_cast<ValueCallback *>(clientData);
+  callback->get(value);  
+}
 
 void TW_CALL actionCallback(void * clientdata){
   IAction * action = reinterpret_cast<IAction*>(clientdata);
   action->execute();
 }
+
+
 void TweakBarRenderer::addAction(IAction * action){
   //assert(action->getName());
   string name = *(action->getName());
@@ -38,12 +30,14 @@ void TweakBarRenderer::addAction(IAction * action){
   TwAddButton(_tweakBar,name.c_str(),actionCallback,action,ss.str().c_str());
 }
 
-void TweakBarRenderer::addValue(RealValue * value){
-  int r = TwAddVarRW(_tweakBar,value->getName()->c_str(), TW_TYPE_DOUBLE,&(value->getValue()), "");
-  _values.push_back(value);
-  if(!r){
-    cout<< TwGetLastError() <<endl;
-  }
+void TweakBarRenderer::addValueCallback(ValueCallback * callback){
+  int r  =TwAddVarCB(
+    _tweakBar,
+    callback->getName()->c_str(), 
+    TW_TYPE_DOUBLE,
+    setValueCallback,
+    getValueCallback,
+    callback,0);
 }
 
 
@@ -56,9 +50,9 @@ void TweakBarRenderer::addEntry(ISimulationObject * o){
   if(action){
     addAction(action);
   }
-  auto value = dynamic_cast<RealValue *>(o);
+  auto value = dynamic_cast<ValueCallback *>(o);
   if(value){
-    addValue(value);
+    addValueCallback(value);
   }
 }
 bool TweakBarRenderer::removeSimulationObject(ISimulationObject * object){
@@ -122,7 +116,7 @@ bool TweakBarRenderer::initializeObject(){
     TwAddButton(_tweakBar,name.c_str(),actionCallback,action,0);
   }
 
-  for_each(_values.begin(), _values.end(), [this](RealValue * v){addValue(v);});
+  for_each(_values.begin(), _values.end(), [this](ValueCallback * v){addValueCallback(v);});
   _initialized =true;
   return true;
 }

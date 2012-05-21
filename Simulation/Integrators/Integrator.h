@@ -89,6 +89,8 @@ protected:
    */
   const VectorND& f(Real t, const VectorND & x, Real h);
 
+
+
   /**
    * \brief Executes the integration operation. 
    *

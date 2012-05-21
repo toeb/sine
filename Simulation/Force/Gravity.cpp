@@ -16,13 +16,35 @@ Gravity::Gravity(const Vector3D & gravity){
   setGravity(gravity);
 }
 
+Real Gravity::getGravityMagnitude()const{
+  return _amount;
+}
+void Gravity::setGravityMagnitude(Real amount){
+  _amount = amount;
+  calculateGravity();
+}
+void Gravity::setDirection(const Vector3D & dir){
+  _direction.assign(dir);
+  _direction.normalize();
+  calculateGravity();
+}
+const Vector3D & Gravity::getDirection()const{
+  return _direction;
+}
+void Gravity::calculateGravity(){
+  _g = _direction*_amount;
+}
 void Gravity::setGravity(const Vector3D & gravity){
-  _g[0]= gravity[0];
-  _g[1]= gravity[1];
-  _g[2]= gravity[2];
+  setDirection(gravity);
+  setGravityMagnitude(gravity.length());
+  calculateGravity();
+}
+const Vector3D & Gravity::getGravity()const{
+  return _g;
 }
 
 void Gravity::act (std::vector<DynamicBody*> & target, Real time) {
+  _g = _direction * _amount;
 	for (std::vector<DynamicBody*>::iterator it = target.begin(); it != target.end(); it++) {
 		Vector3D amount = (*it)->getMass() * _g;
 		(*it)->addExternalForce(amount);

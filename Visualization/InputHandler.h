@@ -138,7 +138,9 @@ protected:
         (*l)->onMouseMove(x,y,dx,dy);
       }
     }
-
+    bool isMouseButtonDown(MouseButtons b){
+      return _mouseButtonsDown[b];
+    }
     bool isKeyDown(Keys key){return _keysDown[key];};
     int getMouseX(){return 0;}
     int getMouseY(){return 0;}

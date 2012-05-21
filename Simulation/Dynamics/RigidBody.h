@@ -25,7 +25,11 @@ private:
   Matrix3x3 _J_inv_ocs;
   ///< The inverse inertia tensor in world coordinates
   Matrix3x3 _J_inv_wcs;  
+
+  ///< The rotationmatrix 
   Matrix3x3 _R;
+
+  ///< The transposed rotation matrix
   Matrix3x3 _RT;  
 
   ///< The mass

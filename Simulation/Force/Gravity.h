@@ -8,7 +8,10 @@ namespace IBDS{
 	class Gravity : public Force
 		{
 		private:
+      Vector3D _direction;
+      Real _amount;
       Vector3D _g;
+      void calculateGravity();
 		public:
 			~Gravity(void);
 
@@ -23,8 +26,16 @@ namespace IBDS{
 			 */
 			Gravity(Real g);
 			Gravity(const Vector3D & g);
-			
+
+      const Vector3D& getDirection()const;
+      void setDirection(const Vector3D & dir);
+
+			void setGravityMagnitude(Real g);
+      Real getGravityMagnitude()const;
+
       void setGravity(const Vector3D & g);
+      const Vector3D& getGravity()const;
+
 
 			void act (std::vector<DynamicBody*> & target, Real time);
 

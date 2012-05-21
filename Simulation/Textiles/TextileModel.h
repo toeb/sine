@@ -51,8 +51,10 @@ class TextileModel : public ISimulationObject{
 private:
   int _rows;
   int _columns;
-  Real _mass;
   
+  Real _width;
+  Real _height;
+  Real _mass;
   
   std::vector<ISimulationObject *> _simulationObjects;
   std::vector<TextileNode*> _nodes;
@@ -63,30 +65,12 @@ private:
   Real _k_s_elongation;
   Real _k_s_shear;
   Real _k_s_flexion;
-
-
-  TextileModel();
-
-  DampedSpring *  createSpring(TextileNode * a, TextileNode * b, Real k_s, Real k_d);
-  Particle * createParticle(TextileNode * node, Real mass, const Vector3D & position);
-  DampedSpring * createFlexor(TextileNode * nodeA, TextileNode* nodeB);
-  DampedSpring * createShearer(TextileNode * nodeA, TextileNode* nodeB);
-  DampedSpring * createElongator(TextileNode * nodeA, TextileNode* nodeB);
-
-  void createFlexors(TextileNode *node);
-  void createShearers(TextileNode *node);
-  void createElongators(TextileNode *node);
-
-  void addSimulationObject(ISimulationObject *  object);
-
-  void buildModel(
-    const Vector3D & p, 
-    const Matrix3x3 & orientation,
-    Real width, Real height,
-    int rows, int cols);
-
-
+  Real _maximumElongation;
+  
 public:
+  static TextileModel * createTextileModel( const Vector3D & p,     const Matrix3x3 & orientation, Real mass,   Real width, Real height,    int rows, int cols);
+  void normalize();
+
   Real getSuggestedStepSize()const;
   void setMaximumElongation(Real valueInPercent);
   Real getMaximumElongation()const;
@@ -111,9 +95,32 @@ public:
   Real getFlexionDampeningConstant(Real k_d_f)const;
 
 
+private:
   
-  static TextileModel * createTextileModel( const Vector3D & p,     const Matrix3x3 & orientation,    Real width, Real height,    int rows, int cols);
+  TextileModel();
 
-  void normalize();
+  DampedSpring *  createSpring(TextileNode * a, TextileNode * b, Real k_s, Real k_d);
+  Particle * createParticle(TextileNode * node, Real mass, const Vector3D & position);
+  DampedSpring * createFlexor(TextileNode * nodeA, TextileNode* nodeB);
+  DampedSpring * createShearer(TextileNode * nodeA, TextileNode* nodeB);
+  DampedSpring * createElongator(TextileNode * nodeA, TextileNode* nodeB);
+  
+  void createFlexors(TextileNode *node);
+  void createShearers(TextileNode *node);
+  void createElongators(TextileNode *node);
+
+  void createNodeMesh(const Vector3D & p,const Matrix3x3 & orientation);
+  void createSprings();
+  void setupNodeConnectivity();
+  
+
+  void addSimulationObject(ISimulationObject *  object);
+
+  void buildModel(
+    const Vector3D & p, 
+    const Matrix3x3 & orientation,
+    Real mass,
+    Real width, Real height,
+    int rows, int cols);
 };
 }

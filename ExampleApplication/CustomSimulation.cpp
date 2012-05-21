@@ -85,14 +85,16 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   
 }
 
-void createCloth(Simulation & s, Real width = 5, Real height = 5, int rows=30, int cols=30){
+void createCloth(Simulation & s, Real mass=2.0, Real width = 5, Real height = 5, int rows=30, int cols=30){
 
   TextileModel * m = TextileModel::createTextileModel(Vector3D(10,0,0),
-    Matrix3x3::Identity(),width,height,rows,cols);
+    Matrix3x3::Identity(),mass,width,height,rows,cols);
   
   
   m->getNode(0,cols-1)->particle->setMass(0);
   m->getNode(rows-1,cols-1)->particle->setMass(0);
+  
+  m->getNode((rows+1)/2,cols-1)->particle->setMass(0);
  
   for_each(m->getSimulationObjects().begin(), m->getSimulationObjects().end(), [&s](ISimulationObject * obj){
     s.addSimulationObject(obj);
@@ -166,19 +168,24 @@ void CustomSimulation::buildModel(){
   
   //addSimulationObject(new ControllableBox());
 
- // b.setGravity(9);
+  Gravity & g = *(b.setGravity(4));
+  ValueCallback * r = new RealCallback("Gravity Magnitude",
+    [&g](){return g.getGravityMagnitude();},
+    [&g](Real val){g.setGravityMagnitude(val);});
 
-  //createDoublePendulum(b,Vector3D::Zero());
+  addSimulationObject(r);
 
-  //addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
+  createDoublePendulum(b,Vector3D::Zero());
 
-  //createCloth(*this,5,5,30,30);
+  addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  //create4BoxesWithSpring(b, Vector3D(6,0,0));
+  createCloth(*this,200,5,5,10,10);
 
-  //createSimplePendulum(b,Vector3D(8,0,0));
+  create4BoxesWithSpring(b, Vector3D(6,0,0));
 
-  //createNPendulum(b,Vector3D(13,0,0), 1000);
+  createSimplePendulum(b,Vector3D(8,0,0));
+
+  createNPendulum(b,Vector3D(13,0,0), 50);
 
   
 }
@@ -207,7 +214,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
   DampedSpring * spring = dynamic_cast<DampedSpring*>(simulationObject);
 
   if(spring){
-    //addSimulationObject(new SpringRenderer(*spring));
+    addSimulationObject(new SpringRenderer(*spring));
   }//*/
 
   

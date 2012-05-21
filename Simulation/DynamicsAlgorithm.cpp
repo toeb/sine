@@ -27,10 +27,10 @@ void DynamicsAlgorithm::evaluate(Real t, Real h){
   //precomputes the connector positions
   connectorModule.calculateConnectorPositions();
   // sets the forces for each body
-  forceModule.setForces(t);*/  
+  forceModule.setForces(t);//*/  
   //calculates the accelerations of the dynamic bodies (evaluates the mass equations)
   
- dynamicBodyModule.calculateDynamics();
+  dynamicBodyModule.calculateDynamics();
     
   //multiBodyDynamics.correctPositions(h);
 }

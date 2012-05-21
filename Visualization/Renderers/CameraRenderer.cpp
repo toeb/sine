@@ -11,16 +11,37 @@
 using namespace std;
 using namespace IBDS;
 
+void CameraRenderer::onMouseMove(int x, int y , int dx, int dy){
+  
+  calculateRotationMatrices();
+  const Matrix3x3 & R=getRotationMatrix(); 
+  Vector3D dir, normal, binormal;
+  R.getCoordinateVectors(dir,normal,binormal);
 
+  if(_input->isMouseButtonDown(MouseButtons::BUTTON_LEFT)){
+    Quaternion q;
+    q.setFromAxisAngle(normal,dx/20.0);
+    q = q * getOrientation();
+    q.normalize();
+    setOrientation(q);
+  
+    q.setFromAxisAngle(binormal,dy/20.0);
+    q = q * getOrientation();
+    q.normalize();
+    setOrientation(q);
+  }
+
+}
 
 void CameraRenderer::setInputHandler(InputHandler * handler){
   _input = handler;
 }
 void CameraRenderer::onBeforeRenderering(){
-      MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (15.0, 1.0, 20.0), Vector3D (5.0, -4, 0.0));
+  MiniGL::setViewport (40.0f, 1.0f, 100.0f, Vector3D (15.0, 1.0, 20.0), Vector3D (5.0, -4, 0.0));
 }
 void CameraRenderer::render(){
-  setMovementToZero();
+  
+  //setMovementToZero();
   calculateRotationMatrices();
   const Matrix3x3 & R=getRotationMatrix(); 
   Vector3D dir, normal, binormal;
@@ -48,7 +69,9 @@ void CameraRenderer::render(){
     setAngularVelocity(normal);
   }
 
-  
+ 
+
+
 	Matrix4x4 transform;
 	Vector3D scale(1, 1, 1);
   transform.setTransformation(getPosition(), R, scale);
@@ -60,4 +83,6 @@ void CameraRenderer::render(){
   MiniGL::drawVector(Vector3D(0,0,-100),Vector3D(0,0,100),1,MiniGL::black);
   MiniGL::drawVector(Vector3D(0,-100,0),Vector3D(0,100,0),1,MiniGL::black);
   MiniGL::drawVector(Vector3D(-100,0,0),Vector3D(100,0,0),1,MiniGL::black);
+
+  
 }

@@ -12,6 +12,7 @@ class CameraRenderer : public IRenderer,public IInputListener,public KinematicBo
     void setInputHandler(InputHandler * handler);
     void render();
     void onBeforeRenderering();
+    void onMouseMove(int x, int y, int dx, int dy);
   };
 
   

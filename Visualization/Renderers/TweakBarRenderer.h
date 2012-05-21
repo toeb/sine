@@ -23,33 +23,33 @@ public:
     _function();
   }
 };
-/*
-class SimulationObjectSelector : public SimulationModuleBase<ISimulationObject> {
-private:
-  std::function<void(ISimulationObject *)> displayName;
-  std::function<const char * (ISimulationObject * )> onSelection;
-public:
-  SimulationObjectSelector(const std::string & name){
-    setName(name);
-  };
-  void setDisplayNameDelegate(std::function<std::string (ISimulationObject * )> f){displayName=f;}
-  void setOnSelectionDelegate(std::function<void(ISimulationObject *)> f){onSelection = f;}
-};
-*/
 
-class RealValue : public virtual ISimulationObject{
-private:
-  Real & _value;
+class ValueCallback : public virtual ISimulationObject{
 public:
-  RealValue(const std::string & name, Real & value):_value(value){
-    setName(name);
-  }
-  Real & getValue(){
-    return _value;
-  }
+  ValueCallback(const std::string & name){setName(name);};
+  virtual void set(const void * value)=0;
+  virtual void get(void * value)=0;
 };
 
+class RealCallback : public virtual ValueCallback{
+public:
+  std::function<void (Real v)> setter;
+  std::function<Real ()> getter;
 
+  RealCallback(const std::string & name, std::function<Real ()> get,std::function<void (Real v)> set):ValueCallback(name){
+    setter = set;
+    getter = get;
+  }
+  void set(const void * val){
+    const Real * realValue = reinterpret_cast<const Real*>(val);
+    setter(*realValue);
+  }
+  void get(void * val){
+    Real * value = reinterpret_cast<Real*>(val);
+    *value = getter();
+
+  }
+};
 
   
 class TweakBarRenderer 
@@ -62,22 +62,14 @@ class TweakBarRenderer
   TwBar  * _tweakBar;
   std::vector<ISimulationObject * > _unprocessedObjects;
   std::map<std::string, IAction*> _actions;
-  std::vector<RealValue * > _values;
- // std::map<std::string, SimulationObjectSelector*> _selectors;
- // std::map<std::string, Value * > _values;
- 
+  std::vector<ValueCallback * > _values;
   void addEntry(ISimulationObject * o);
   public:
     TweakBarRenderer();
     bool addSimulationObject(ISimulationObject * object);
 
     void processTweakBarEntries(ISimulationObject * object);
-
-    bool removeSimulationObject(ISimulationObject * object);
-
-    void addAction(IAction * action);
-   // void addSelector(SimulationObjectSelector * selector);
-    void addValue(RealValue * value);
+    bool removeSimulationObject(ISimulationObject * object);  
     
     void onKeyDown(Keys key);
     void onMouseDown(MouseButtons b);
@@ -90,5 +82,8 @@ protected:
   
   bool initializeObject();
   void cleanupObject();
+private:
+   void addAction(IAction * action);
+    void addValueCallback(ValueCallback * value);
   };
 }
