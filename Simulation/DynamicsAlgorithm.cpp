@@ -4,9 +4,10 @@ using namespace std;
 using namespace IBDS;
 
 
-DynamicsAlgorithm::DynamicsAlgorithm(){
+DynamicsAlgorithm::DynamicsAlgorithm():multiBodyDynamics(20){
   addSimulationModule(&forceModule);
   addSimulationModule(&multiBodyDynamics);
+  
   addSimulationModule(&dynamicBodyModule);
   addSimulationModule(&integrables);
   addSimulationModule(&connectorModule);
@@ -29,6 +30,7 @@ void DynamicsAlgorithm::evaluate(Real t, Real h){
   forceModule.setForces(t);*/  
   //calculates the accelerations of the dynamic bodies (evaluates the mass equations)
   
+ dynamicBodyModule.calculateDynamics();
     
   //multiBodyDynamics.correctPositions(h);
 }

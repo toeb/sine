@@ -6,12 +6,15 @@ using namespace std;
 
 CompositeIntegratable::CompositeIntegratable(){
 }
-
+bool CompositeIntegratable::hasStateDimensionChanged(){
+  return _dimensionChanged;
+}
 bool  CompositeIntegratable::addSimulationObject(ISimulationObject  * object){
   auto integrable = dynamic_cast<IIntegrable*>(object);
   if(!integrable)return false;
 
   _children.push_back(integrable);
+  _dimensionChanged=true;
   return true;
 }
 bool CompositeIntegratable::removeSimulationObject(ISimulationObject * object){
@@ -22,6 +25,7 @@ bool CompositeIntegratable::removeSimulationObject(ISimulationObject * object){
   if(pos == _children.end())return false;
 
   _children.erase(pos);
+   _dimensionChanged=true;
   return true;
 }
 void CompositeIntegratable::getDerivedState(Real * xDot)const{

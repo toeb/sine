@@ -121,21 +121,23 @@ void createDoublePendulum(SimulationBuilder & b, const Vector3D & offset){
 
 void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
   Real s = 10.0/n;
+  if(s<0.1)s = 0.1;
+  Real mass = 1.0 / n;
   Real l=0.75;
   Box * lastBox=0;
   Box* currentBox=0;
-  Vector3D direction(1,1,0);
+  Vector3D direction(1,0,0);
   direction.normalize();
   for(int i=0; i < n; i++){
     lastBox = currentBox;
-    currentBox = b.createBox("",Vector3D::Zero(),1,s,s,s);
-    currentBox->setPosition(s*(offset+(l*i)*direction));
+    currentBox = b.createBox("",Vector3D::Zero(),mass,s,s,s);
+    currentBox->setPosition((offset+s*(l*i)*direction));
     if(i==0){
       currentBox->setMass(0);
       continue;
     }
-    b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),s*(offset+(l*i-l/2)*direction));
-    if(i==n-1)currentBox->setMass(1); 
+    b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),(offset+s*(l*i-l/2)*direction));
+    //if(i==n-1)currentBox->setMass(1); 
   }
 }
 
@@ -148,35 +150,35 @@ void CustomSimulation::buildAlgorithms(){
   integrator->setSystemFunction(dynamicsAlgorithm);
   setIntegrator(*integrator);
   
+  
   addSimulationObject(new LightRenderer());
   addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
-  addSimulationObject(new CameraRenderer());
   addSimulationObject(new TweakBarRenderer());
+  addSimulationObject(new CameraRenderer());
 }
 
 void CustomSimulation::buildModel(){ 
   setName("Custom Simulation");
 
-  
  
   SimulationBuilder b(*this);  
 
   
   //addSimulationObject(new ControllableBox());
 
-  b.setGravity(0.1);
+ // b.setGravity(9);
 
   //createDoublePendulum(b,Vector3D::Zero());
 
   //addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  createCloth(*this,5,5,30,30);
+  //createCloth(*this,5,5,30,30);
 
   //create4BoxesWithSpring(b, Vector3D(6,0,0));
 
   //createSimplePendulum(b,Vector3D(8,0,0));
 
-  //createNPendulum(b,Vector3D(13,0,0), 100);
+  //createNPendulum(b,Vector3D(13,0,0), 1000);
 
   
 }

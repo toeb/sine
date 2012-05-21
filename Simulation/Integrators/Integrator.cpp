@@ -4,7 +4,16 @@
 using namespace std;
 using namespace IBDS;
 
+
+void Integrator::updateStateSize(){  
+  _dimension = _integratable->getStateDimension();
+  _x.resize(_dimension);
+  _xDot.resize(_dimension);
+  _xNext.resize(_dimension);
+}
 Real Integrator::integrate(Real a, Real b){
+  if(_integratable->hasStateDimensionChanged())updateStateSize();
+
   if(_systemFunction)_systemFunction->preIntegration(a,b-a);
   _integratable->getState(_x.v);
    Real result = doIntegration(_x,_xNext,a,b);
@@ -14,10 +23,7 @@ Real Integrator::integrate(Real a, Real b){
 }
 void Integrator::setIntegratable(IIntegrable * integratable){
   _integratable = integratable;
-  _dimension = integratable->getStateDimension();
-  _x.resize(_dimension);
-  _xDot.resize(_dimension);
-  _xNext.resize(_dimension);
+  updateStateSize();
 }
 
 

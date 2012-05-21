@@ -36,6 +36,8 @@ private:
 
 
 public:
+  void setZero();
+  void setMovementToZero();
   KinematicBody();
   ~KinematicBody();
   

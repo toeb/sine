@@ -72,7 +72,7 @@ void Matrix4x4::get(Real *matrix)
 
 /** Sets the translation, rotation and scale of this tranformation matrix
   */
-void Matrix4x4::setTransformation (Vector3D &translation, Matrix3x3 &rotation, Vector3D &scale)
+void Matrix4x4::setTransformation (const Vector3D &translation, const Matrix3x3 &rotation, const Vector3D &scale)
 {
 	m[0][0] = scale[0] * rotation[0][0];
 	m[0][1] = rotation[0][1];

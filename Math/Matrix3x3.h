@@ -48,7 +48,25 @@ namespace IBDS
 		Matrix3x3(const Vector3D &v0, const Vector3D &v1, const Vector3D &v2);
     ~Matrix3x3();
 
+    
+
     //my methods
+    void getCoordinateVectors(Vector3D & direction, Vector3D & normal, Vector3D & binormal)const{
+      direction[0]=(*this)(0,0);
+      direction[1]=(*this)(1,0);
+      direction[2]=(*this)(2,0);
+
+      normal[0]=(*this)(0,1);
+      normal[1]=(*this)(1,1);
+      normal[2]=(*this)(2,1);
+
+      binormal[0]=(*this)(0,2);
+      binormal[1]=(*this)(1,2);
+      binormal[2]=(*this)(2,2);
+
+
+    }
+    
     inline static void symmInverse(const Matrix3x3 & m, Matrix3x3 & m_inverted){
       const Vector3D * v = m.v;
       Real e2_df = v[1].v[2]*v[1].v[2] - v[1].v[1]*v[2].v[2];  // e^2 - d*f

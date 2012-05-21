@@ -19,6 +19,7 @@ private:
   VectorND _x;
   VectorND _xNext;
   VectorND _xDot;
+  void updateStateSize();
 public:
 
   /**

@@ -15,8 +15,9 @@ class CompositeIntegratable : public virtual IIntegrable, public virtual ISimula
 private:
   /// <summary> The children of this composite</summary>
   std::vector<IIntegrable*> _children;
+  bool _dimensionChanged;
 public:
-
+  bool hasStateDimensionChanged();
   CompositeIntegratable();
   bool addSimulationObject(ISimulationObject * object);
   bool removeSimulationObject(ISimulationObject * object);

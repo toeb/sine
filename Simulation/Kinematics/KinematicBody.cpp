@@ -12,12 +12,23 @@ void KinematicBody::objectToWorldCoordinates(const Vector3D & r_ocs, Vector3D & 
   const Matrix3x3 & R = getRotationMatrix();
   r_wcs.assign(getPosition() + R* r_ocs);
 }
-
-KinematicBody::KinematicBody(){
+void KinematicBody::setMovementToZero(){  
+  setVelocity(Vector3D::Zero());
+  setAcceleration(Vector3D::Zero());
+  setAngularVelocity(Vector3D::Zero());
+  setAngularAcceleration(Vector3D::Zero());
+}
+void KinematicBody::setZero(){
+  setPosition(Vector3D::Zero());
   _q.w=1;
   _q.x=0;
   _q.y=0;
   _q.z=0;
+  setMovementToZero();
+}
+
+KinematicBody::KinematicBody(){
+ setZero();
 }
 
 KinematicBody::~KinematicBody() {

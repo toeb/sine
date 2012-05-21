@@ -16,6 +16,8 @@ namespace IBDS{
  */
 class IIntegrable : public virtual ISimulationObject{
 public:
+
+  virtual bool hasStateDimensionChanged(){return false;}
   /**
    * <summary> Sets the state this integratable.</summary>
    *

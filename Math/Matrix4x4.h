@@ -65,7 +65,7 @@ namespace IBDS
 		void getTransformation (Vector3D &translation, Matrix3x3 &rotation, Vector3D &scale) const;
 		void set(const Real matrix[16]);
 		void get(Real *matrix);
-		void setTransformation (Vector3D &translation, Matrix3x3 &rotation, Vector3D &scale);
+		void setTransformation (const Vector3D &translation, const Matrix3x3 &rotation, const Vector3D &scale);
 	};
 }
 

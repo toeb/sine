@@ -109,17 +109,20 @@ class InputHandler:public ISimulationModule{
     int _mouseWheel;
     int _mouseWheelLast;
     int _mouseWheelDelta;
-  public:
+protected:
     bool addSimulationObject(ISimulationObject * object){
       if(dynamic_cast<InputHandler*>(object))return false;
       IInputListener * listener = dynamic_cast<IInputListener*>(object);
       if(!listener)return false;
       addInputListener(listener);
     }
+  public:
+    
     void reset(){
       _listeners.clear();
     }
     void addInputListener(IInputListener * listener){
+      listener->setInputHandler(this);
       _listeners.push_back(listener);
     }
     InputHandler(){
