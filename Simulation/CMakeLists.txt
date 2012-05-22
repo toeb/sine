@@ -82,6 +82,11 @@ SET(simulation_SRC
 	./CompositeSimulationModule.cpp	
 )
 
+set(simulationCore_SRC
+ ./Core/CompositeSimulationObject.h
+ ./Core/CompositeSimulationObject.cpp
+ )
+
 SET(textile_SRC
 ./Textiles/TextileModel.h
 ./Textiles/TextileModel.cpp
@@ -132,8 +137,6 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/CameraRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/CoordinateSystemRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/CoordinateSystemRenderer.cpp
-	${PROJECT_PATH}/Visualization/Renderers/TweakBarRenderer.cpp
-	${PROJECT_PATH}/Visualization/Renderers/TweakBarRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/TextRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/TextRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/ConnectorRenderer.h
@@ -156,12 +159,36 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.cpp	
 	)
 	
+set(tweakbar_SRC
+	${PROJECT_PATH}/Visualization/Renderers/TweakBar/TweakBarRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/TweakBar/TweakBarRenderer.h
+)
+
+set(userinterface_SRC
+	${PROJECT_PATH}/Visualization/UserInterface/DelegateAction.h
+	${PROJECT_PATH}/Visualization/UserInterface/DelegateAction.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/IValue.h
+	${PROJECT_PATH}/Visualization/UserInterface/IValue.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/IAction.h
+	${PROJECT_PATH}/Visualization/UserInterface/IAction.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/RealValue.h
+	${PROJECT_PATH}/Visualization/UserInterface/RealValue.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/IDisplayable.h
+	${PROJECT_PATH}/Visualization/UserInterface/IDisplayable.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/IUserInterface.h
+	${PROJECT_PATH}/Visualization/UserInterface/IUserInterface.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/IComponent.h
+	${PROJECT_PATH}/Visualization/UserInterface/IComponent.cpp
+)
+	
 source_group("simulation\\integration" FILES ${integrators_SRC})
 source_group("simulation\\integration\\implementations" FILES ${integratorImplementations_SRC})
 source_group("simulation" FILES ${simulation_SRC})
 source_group("simulation\\objects" FILES ${simulationObjects_SRC})
 source_group("visualization" FILES ${visualisation_SRC})
 source_group("visualization\\renderers" FILES ${renderers_SRC})
+source_group("visualization\\userinterface" FILES ${userinterface_SRC})
+source_group("visualization\\renderers\\tweakbar" FILES ${tweakbar_SRC})
 source_group("simulation\\textiles" FILES ${textile_SRC})
 source_group("simulation\\runner\\glut" FILES ${glutrunner_SRC})
 source_group("simulation\\kinematics" FILES ${kinematics_SRC})
@@ -170,6 +197,7 @@ source_group("simulation\\force" FILES ${force_SRC})
 source_group("simulation\\dynamics" FILES ${dynamics_SRC})
 source_group("simulation\\dynamics\\bodyprimitives" FILES ${bodyprimitives_SRC})
 source_group("simulation\\multibodydynamics" FILES ${multibodydynamics_SRC})
+source_group("simulation\\core" FILES ${simulationCore_SRC})
 
 # PROJECT(Simulation)
 add_library(Simulation 
@@ -187,6 +215,9 @@ ${runner_SRC}
 	   ${glutrunner_SRC}
 	   ${kinematics_SRC}
 	   ${bodyprimitives_SRC}
+	   ${tweakbar_SRC}
+	   ${simulationCore_SRC}
+	   ${userinterface_SRC}
 	  ${PROJECT_PATH}/Common/Config.h			  
 	  ${PROJECT_PATH}/Common/StringTools.h			  
 	  ${PROJECT_PATH}/Common/StringTools.cpp
