@@ -57,6 +57,8 @@ Keys charToKeyCode(char c){
   case '\n':return Keys::KEY_ENTER; break;
   case ' ':return Keys::KEY_SPACE;break;
   case '\t':return Keys::KEY_TAB;break;
+  case '\b':return Keys::KEY_BACKSPACE;break;
+  case '.':return Keys::KEY_PERIOD;break;
 
   default:
     return Keys::KEY_UNKNOWN;
