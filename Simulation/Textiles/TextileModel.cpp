@@ -17,76 +17,51 @@ Real TextileModel::getSuggestedStepSize()const{
   Real T_0 = PI*sqrt(m_particle/k);
   return T_0;
 }
-
-void TextileModel::normalizeElongators(Real maxElongationRate) {
-	for_each_elongator ([maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
-		Real maxElongation = maxElongationRate * (spring->getRestLength());
-		Real currentElongation = spring->getCurrentLength();
-
-		if (currentElongation > maxElongation) {
-			ParticleConnector *c1 = n1->connector;
-			ParticleConnector *c2 = n2->connector;
-
-			Vector3D pos1 = c1->getWorldPosition();
-			Vector3D pos2 = c2->getWorldPosition();
-
-			Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
-			Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
-
-			Real mass1 = (c1->getBody()).getMass();
-			Real mass2 = (c2->getBody()).getMass();
-
-			if (mass1 == 0 && mass2 != 0) {
-				c2->setWorldPosition(pos2 - offsetVector); 
-				}
-			else if (mass1 != 0 && mass2 == 0) {
-				c1->setWorldPosition(pos1 + offsetVector);
-				}
-			else if (mass1 != 0 && mass2 != 0) {
-				c1->setWorldPosition(pos1 + 0.5 * offsetVector);
-				c2->setWorldPosition(pos2 - 0.5 * offsetVector);
-				}
-			}
-	});
+void TextileModel::setMass(Real mass){
+  _mass = mass;
+  Real massPerNode = mass  /(_rows*_columns);
+  for_each(_nodes.begin(), _nodes.end(), [massPerNode](TextileNode* node){
+    if(!node->particle->isFixed())node->particle->setMass(massPerNode);
+  });
 }
-void TextileModel::normalizeShearers(Real maxElongationRate) {
-	for_each_shearer ([maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
+
+Real TextileModel::getMass()const{
+  return _mass;
+}
+
+void TextileModel::normalize(){
+  if(!isNormalizing())return;
+  Real maxElongationRate = getMaximumElongation();
+	for_each_spring([&maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
+
 		Real maxElongation = maxElongationRate * (spring->getRestLength());
 		Real currentElongation = spring->getCurrentLength();
 
 		if (currentElongation > maxElongation) {
-			ParticleConnector *c1 = n1->connector;
-			ParticleConnector *c2 = n2->connector;
+			Particle *particle1 = n1->particle;
+			Particle *particle2 = n2->particle;
 
-			Vector3D pos1 = c1->getWorldPosition();
-			Vector3D pos2 = c2->getWorldPosition();
-
+			Vector3D pos1 = particle1->getPosition();
+			Vector3D pos2 = particle2->getPosition();
 			Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
 			Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
 
-			Real mass1 = (c1->getBody()).getMass();
-			Real mass2 = (c2->getBody()).getMass();
-
+			Real mass1 = particle1->getMass();
+			Real mass2 = particle2->getMass();
 			if (mass1 == 0 && mass2 != 0) {
-				c2->setWorldPosition(pos2 - offsetVector); 
+				particle2->setPosition(pos2 - offsetVector); 
 				}
 			else if (mass1 != 0 && mass2 == 0) {
-				c1->setWorldPosition(pos1 + offsetVector);
+				particle1->setPosition(pos1 + offsetVector);
 				}
 			else if (mass1 != 0 && mass2 != 0) {
-				c1->setWorldPosition(pos1 + 0.5 * offsetVector);
-				c2->setWorldPosition(pos2 - 0.5 * offsetVector);
+				particle1->setPosition(pos1 + 0.5 * offsetVector);
+				particle2->setPosition(pos2 - 0.5 * offsetVector);
 				}
 			}
 	});
 }
 
-void TextileModel::normalize() {
-	Real maxElongationRate = 1.1;
-
-	normalizeElongators(maxElongationRate);
-	normalizeShearers(maxElongationRate);
-}
 
 void TextileModel::buildModel(
   const Vector3D & p, 
@@ -95,19 +70,18 @@ void TextileModel::buildModel(
   Real width, Real height,
   int rows, int cols){
     
-  _k_d_elongation=12;
-  _k_s_elongation=10000;
+  _k_d_elongation=1;
+  _k_s_elongation=10;
 
-  _k_d_flexion=0;
-  _k_s_flexion=95;
+  _k_d_flexion=1;
+  _k_s_flexion=10;
 
-  _k_d_shear=11;
-  _k_s_shear=10000;
+  _k_d_shear=1;
+  _k_s_shear=10;
 
 
   _width = width;
   _height = height;
-  _mass = mass;
   // (rows ; cols) is in [3,n]x[3,n]
   if(rows < 0) rows = static_cast<int>(height);//set a row value corresponding to height
   if(rows < 3)  rows = 3;
@@ -118,8 +92,8 @@ void TextileModel::buildModel(
   _columns = cols;
     
   createNodeMesh(p,orientation);   
+  setMass(mass);
   setupNodeConnectivity();
-
   createSprings();
 }
 
@@ -175,7 +149,7 @@ void TextileModel::addSimulationObject(ISimulationObject  * obj){
   _simulationObjects.push_back(obj);
 }
 
-Particle * TextileModel::createParticle(TextileNode * node, Real mass, const Vector3D & position){
+Particle * TextileModel::createParticle(TextileNode * node, const Vector3D & position){
   Particle *p = node->particle;
   if(!p) {
     p = new Particle();
@@ -187,25 +161,29 @@ Particle * TextileModel::createParticle(TextileNode * node, Real mass, const Vec
     //addSimulationObject(p);
   }
   p->setPosition(position);
-  p->setMass(mass);
   addSimulationObject(p);
   return p;
 }
 
-
-
+Real TextileModel::getMaximumElongation()const{
+  return _maximumElongation;
+}
+void TextileModel::setMaximumElongation(Real value){
+  _maximumElongation = value;
+}
+bool TextileModel::isNormalizing()const{
+  return _normalize;
+}
+void TextileModel::setNormalizing(bool flag){
+  _normalize = flag;
+}
 DampedSpring * TextileModel::createSpring(TextileNode * nodeA, TextileNode * nodeB, Real k_s, Real k_d){
-  
-  
   Connector * a = nodeA->connector;
   Connector * b = nodeB->connector;
   Real l_0 = (a->getWorldPosition()-b->getWorldPosition()).length();
   DampedSpring * spring = new DampedSpring(*a,*b,k_s,k_d,l_0);
   addSimulationObject(spring);
-
   return spring;
-
-
 }
 
 vector<ISimulationObject*> & TextileModel::getSimulationObjects(){
@@ -294,7 +272,7 @@ void TextileModel::createNodeMesh(const Vector3D & p, const Matrix3x3 & orientat
       node->i=i;
       node->j=j;
       _nodes.push_back( node);
-      createParticle(node,particleMass,position);
+      createParticle(node,position);
     }
   }
 }
@@ -341,7 +319,7 @@ TextileNode* TextileModel::getNode(int i, int j){
   return  _nodes.at(index);
 }
 
-TextileModel::TextileModel(){}
+TextileModel::TextileModel():_maximumElongation(1.08), _normalize(true){}
 
 
 void TextileModel::setElongationSpringConstant(Real k_s){
