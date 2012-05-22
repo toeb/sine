@@ -13,11 +13,11 @@ SpringRenderer::SpringRenderer(DampedSpring & spring):_spring(spring){
 void SpringRenderer::render(){
   _spring.calculateSpringAndDampeningForce();
   
-  const Connector & cA = _spring.getConnectorA();
-  const Connector & cB = _spring.getConnectorB();
+  Connector & cA = _spring.getConnectorA();
+  Connector & cB = _spring.getConnectorB();
 
-  const Vector3D  & a_wcs = cA.getCachedWorldPosition();
-  const Vector3D  & b_wcs = cB.getCachedWorldPosition();
+  const Vector3D  & a_wcs = cA.getWorldPosition();
+  const Vector3D  & b_wcs = cB.getWorldPosition();
   float color[4];
   const Vector3D & f=_spring.getSpringForce();
   Real amount = f.length();
