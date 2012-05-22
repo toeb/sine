@@ -89,3 +89,11 @@ Connector & DampedSpring::getConnectorA(){
 Connector& DampedSpring::getConnectorB(){
   return _cB;
 }
+
+Real DampedSpring::getRestLength() const {
+	return _l0;
+	}
+
+Real DampedSpring::getCurrentLength()const {
+	return (_cA.getWorldPosition() - _cB.getWorldPosition()).length();
+	}

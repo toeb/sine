@@ -221,7 +221,7 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  TextileModel & cloth = *(createCloth(*this,200,5,5,31,31));
+  TextileModel & cloth = *(createCloth(*this,40,5,5,31,31));
   
   
 

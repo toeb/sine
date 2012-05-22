@@ -18,9 +18,35 @@ Real TextileModel::getSuggestedStepSize()const{
   return T_0;
 }
 void TextileModel::normalize(){
-  
+	Real maxElongationRate = 1.08;
+	for_each_spring([&maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
 
+		Real maxElongation = maxElongationRate * (spring->getRestLength());
+		Real currentElongation = spring->getCurrentLength();
 
+		if (currentElongation > maxElongation) {
+			Particle *particle1 = n1->particle;
+			Particle *particle2 = n2->particle;
+
+			Vector3D pos1 = particle1->getPosition();
+			Vector3D pos2 = particle2->getPosition();
+			Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
+			Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
+
+			Real mass1 = particle1->getMass();
+			Real mass2 = particle2->getMass();
+			if (mass1 == 0 && mass2 != 0) {
+				particle2->setPosition(pos2 - offsetVector); 
+				}
+			else if (mass1 != 0 && mass2 == 0) {
+				particle1->setPosition(pos1 + offsetVector);
+				}
+			else if (mass1 != 0 && mass2 != 0) {
+				particle1->setPosition(pos1 + 0.5 * offsetVector);
+				particle2->setPosition(pos2 - 0.5 * offsetVector);
+				}
+			}
+	});
 }
 
 
@@ -33,8 +59,10 @@ void TextileModel::buildModel(
     
   _k_d_elongation=1;
   _k_s_elongation=10;
+
   _k_d_flexion=1;
   _k_s_flexion=10;
+
   _k_d_shear=1;
   _k_s_shear=10;
 
@@ -112,10 +140,12 @@ Particle * TextileModel::createParticle(TextileNode * node, Real mass, const Vec
   Particle *p = node->particle;
   if(!p) {
     p = new Particle();
+
+	node->particle = p;
     node->connector = new ParticleConnector(*p);
-    addSimulationObject(node->connector);
-    addSimulationObject(p);
-    node->particle = p;
+    
+	addSimulationObject(node->connector);
+    //addSimulationObject(p);
   }
   p->setPosition(position);
   p->setMass(mass);
@@ -223,8 +253,8 @@ void TextileModel::createNodeMesh(const Vector3D & p, const Matrix3x3 & orientat
       TextileNode * node = new TextileNode();
       node->i=i;
       node->j=j;
-      createParticle(node,particleMass,position);
       _nodes.push_back( node);
+      createParticle(node,particleMass,position);
     }
   }
 }

@@ -24,6 +24,6 @@ const Vector3D & DynamicBody::getAcceleration()const {
   return _acceleration;
 }
 
-bool DynamicBody::isFixed()const{
-  return getMass()==0;
-}
+//bool DynamicBody::isFixed()const{
+//  return getMass()==0;
+//}
