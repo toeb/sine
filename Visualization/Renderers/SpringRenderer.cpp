@@ -11,10 +11,12 @@ SpringRenderer::SpringRenderer(const DampedSpring & spring):_spring(spring){
 
 
 void SpringRenderer::render(){
-  const Connector & cA = _spring.getConnectorA();
-  const Connector & cB = _spring.getConnectorB();
-  const Vector3D  & a_wcs = cA.getCachedWorldPosition();
-  const Vector3D  & b_wcs = cB.getCachedWorldPosition();
+   Connector & cA = _spring.getConnectorA();
+   Connector & cB = _spring.getConnectorB();
+
+   // cached position causes problems if the position was previously changed during Provot normalization
+  const Vector3D  & a_wcs = cA.getWorldPosition();//cA.getCachedWorldPosition();
+  const Vector3D  & b_wcs = cB.getWorldPosition();//cB.getCachedWorldPosition();
   float color[4];
   const Vector3D & f=_spring.getSpringForce();
   Real amount = f.length();

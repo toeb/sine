@@ -47,3 +47,8 @@ void  ParticleConnector::calculateWorldVelocity(Vector3D & v_wcs)const{
 void ParticleConnector::calculateWorldAcceleration(Vector3D & a_wcs)const{
   a_wcs.assign( _particle.getAcceleration());
 }
+
+void ParticleConnector::setWorldPosition(Vector3D &position) {
+	_particle.setPosition(position);
+	calculateWorldPosition(_worldPosition);	// updated cached value
+}

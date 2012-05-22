@@ -17,38 +17,76 @@ Real TextileModel::getSuggestedStepSize()const{
   Real T_0 = PI*sqrt(m_particle/k);
   return T_0;
 }
-void TextileModel::normalize(){
-	Real maxElongationRate = 1.08;
-	for_each_spring([&maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
 
+void TextileModel::normalizeElongators(Real maxElongationRate) {
+	for_each_elongator ([maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
 		Real maxElongation = maxElongationRate * (spring->getRestLength());
 		Real currentElongation = spring->getCurrentLength();
 
 		if (currentElongation > maxElongation) {
-			Particle *particle1 = n1->particle;
-			Particle *particle2 = n2->particle;
+			ParticleConnector *c1 = n1->connector;
+			ParticleConnector *c2 = n2->connector;
 
-			Vector3D pos1 = particle1->getPosition();
-			Vector3D pos2 = particle2->getPosition();
+			Vector3D pos1 = c1->getWorldPosition();
+			Vector3D pos2 = c2->getWorldPosition();
+
 			Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
 			Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
 
-			Real mass1 = particle1->getMass();
-			Real mass2 = particle2->getMass();
+			Real mass1 = (c1->getBody()).getMass();
+			Real mass2 = (c2->getBody()).getMass();
+
 			if (mass1 == 0 && mass2 != 0) {
-				particle2->setPosition(pos2 - offsetVector); 
+				c2->setWorldPosition(pos2 - offsetVector); 
 				}
 			else if (mass1 != 0 && mass2 == 0) {
-				particle1->setPosition(pos1 + offsetVector);
+				c1->setWorldPosition(pos1 + offsetVector);
 				}
 			else if (mass1 != 0 && mass2 != 0) {
-				particle1->setPosition(pos1 + 0.5 * offsetVector);
-				particle2->setPosition(pos2 - 0.5 * offsetVector);
+				c1->setWorldPosition(pos1 + 0.5 * offsetVector);
+				c2->setWorldPosition(pos2 - 0.5 * offsetVector);
+				}
+			}
+	});
+}
+void TextileModel::normalizeShearers(Real maxElongationRate) {
+	for_each_shearer ([maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
+		Real maxElongation = maxElongationRate * (spring->getRestLength());
+		Real currentElongation = spring->getCurrentLength();
+
+		if (currentElongation > maxElongation) {
+			ParticleConnector *c1 = n1->connector;
+			ParticleConnector *c2 = n2->connector;
+
+			Vector3D pos1 = c1->getWorldPosition();
+			Vector3D pos2 = c2->getWorldPosition();
+
+			Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
+			Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
+
+			Real mass1 = (c1->getBody()).getMass();
+			Real mass2 = (c2->getBody()).getMass();
+
+			if (mass1 == 0 && mass2 != 0) {
+				c2->setWorldPosition(pos2 - offsetVector); 
+				}
+			else if (mass1 != 0 && mass2 == 0) {
+				c1->setWorldPosition(pos1 + offsetVector);
+				}
+			else if (mass1 != 0 && mass2 != 0) {
+				c1->setWorldPosition(pos1 + 0.5 * offsetVector);
+				c2->setWorldPosition(pos2 - 0.5 * offsetVector);
 				}
 			}
 	});
 }
 
+void TextileModel::normalize() {
+	Real maxElongationRate = 1.1;
+
+	normalizeElongators(maxElongationRate);
+	normalizeShearers(maxElongationRate);
+}
 
 void TextileModel::buildModel(
   const Vector3D & p, 
@@ -57,14 +95,14 @@ void TextileModel::buildModel(
   Real width, Real height,
   int rows, int cols){
     
-  _k_d_elongation=1;
-  _k_s_elongation=10;
+  _k_d_elongation=12;
+  _k_s_elongation=10000;
 
-  _k_d_flexion=1;
-  _k_s_flexion=10;
+  _k_d_flexion=0;
+  _k_s_flexion=95;
 
-  _k_d_shear=1;
-  _k_s_shear=10;
+  _k_d_shear=11;
+  _k_s_shear=10000;
 
 
   _width = width;
@@ -81,6 +119,7 @@ void TextileModel::buildModel(
     
   createNodeMesh(p,orientation);   
   setupNodeConnectivity();
+
   createSprings();
 }
 
@@ -163,6 +202,7 @@ DampedSpring * TextileModel::createSpring(TextileNode * nodeA, TextileNode * nod
   Real l_0 = (a->getWorldPosition()-b->getWorldPosition()).length();
   DampedSpring * spring = new DampedSpring(*a,*b,k_s,k_d,l_0);
   addSimulationObject(spring);
+
   return spring;
 
 

@@ -41,5 +41,7 @@ namespace IBDS {
      */
     void calculateWorldVelocity(Vector3D & b_wcs)const;
     void calculateWorldAcceleration(Vector3D & a_wcs)const;
+
+	void setWorldPosition(Vector3D &position);
 	};
 }

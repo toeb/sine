@@ -33,8 +33,8 @@ namespace IBDS{
 			Real getDampeningConstant()const;
 			void setDampeningConstant(Real k_d);
 
-			const Connector & getConnectorA()const;
-			const Connector& getConnectorB()const;
+			Connector & getConnectorA()const;
+			Connector& getConnectorB()const;
 
 			Connector & getConnectorA();
 			Connector& getConnectorB();

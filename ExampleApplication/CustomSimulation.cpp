@@ -74,14 +74,14 @@ public:
 
 void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){  
   Box* box1 =b.createBox("box1",offset+Vector3D::Zero(),0);
-  Box* box2= b.createBox("box2",offset+Vector3D(0,-1,0));
-  Box* box3 = b.createBox("box3",offset+Vector3D(0,-2,0));
-  Box* box4 = b.createBox("box4",offset+Vector3D(0,-3,0));
+  Box* box2= b.createBox("box2",offset+Vector3D(0.1,-2,0));
+  //Box* box3 = b.createBox("box3",offset+Vector3D(0,-2,0));
+  //Box* box4 = b.createBox("box4",offset+Vector3D(0,-3,0));
 
   //box2->addExternalForce(offset+Vector3D(0,0,0),Vector3D(1,0,0));
-  b.createSpring("spring1","box1","box2",0.5,0, box1->getPosition(), box2->getPosition());
-  b.createSpring("spring2","box2","box3",0.1,0, box2->getPosition(), box3->getPosition());
-  b.createSpring("spring3","box3","box4",0.11,0, box3->getPosition(), box4->getPosition());
+  b.createSpring("spring1","box1","box2",60,9, box1->getPosition()-Vector3D(0,0.5,0), box2->getPosition()+Vector3D(0,0.5,0),1.5);
+  //b.createSpring("spring2","box2","box3",0.1,0, box2->getPosition(), box3->getPosition());
+  //b.createSpring("spring3","box3","box4",0.11,0, box3->getPosition(), box4->getPosition());
   
 }
 
@@ -100,7 +100,7 @@ TextileModel *  createCloth(Simulation & s, Real mass=2.0, Real width = 5, Real 
   m->getNode(0,cols-1)->particle->setMass(0);
   m->getNode(rows-1,cols-1)->particle->setMass(0);
   
-  m->getNode((rows+1)/2,cols-1)->particle->setMass(0);
+ // m->getNode((rows+1)/2,cols-1)->particle->setMass(0);
  
   for_each(m->getSimulationObjects().begin(), m->getSimulationObjects().end(), [&s](ISimulationObject * obj){
     s.addSimulationObject(obj);
@@ -221,13 +221,13 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  TextileModel & cloth = *(createCloth(*this,40,5,5,31,31));
+  TextileModel & cloth = *(createCloth(*this,100,5,5,15,15));
   
   
 
 
 
-  //create4BoxesWithSpring(b, Vector3D(6,0,0));
+  //create4BoxesWithSpring(b, Vector3D(3,0,0));
 
 //  createSimplePendulum(b,Vector3D(8,0,0));
 

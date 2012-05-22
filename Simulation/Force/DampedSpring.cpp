@@ -32,9 +32,10 @@ void DampedSpring::act (std::vector<DynamicBody*> & target, Real time) {
 void DampedSpring::calculateSpringAndDampeningForce(){  
   _lastLength = _currentLength;
 
+   //_cA.calculateCachedValues();
+   //_cB.calculateCachedValues();
   const Vector3D & a_wcs = _cA.getCachedWorldPosition();
   const Vector3D & b_wcs = _cB.getCachedWorldPosition();
-
   Vector3D v_a_wcs,v_b_wcs;  
   _cA.calculateWorldVelocity(v_a_wcs);
   _cB.calculateWorldVelocity(v_b_wcs);
@@ -77,10 +78,10 @@ void DampedSpring::setStiffnessConstant(Real k_s){
   _k_s=k_s;
 }
 
-const Connector & DampedSpring::getConnectorA()const{
+ Connector & DampedSpring::getConnectorA()const{
   return _cA;
 }
-const Connector& DampedSpring::getConnectorB()const{
+ Connector& DampedSpring::getConnectorB()const{
   return _cB;
 }
 Connector & DampedSpring::getConnectorA(){
@@ -95,5 +96,8 @@ Real DampedSpring::getRestLength() const {
 	}
 
 Real DampedSpring::getCurrentLength()const {
+	//_cA.calculateCachedValues();
+	//_cB.calculateCachedValues();
 	return (_cA.getWorldPosition() - _cB.getWorldPosition()).length();
 	}
+

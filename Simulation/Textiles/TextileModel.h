@@ -129,5 +129,8 @@ private:
     Real mass,
     Real width, Real height,
     int rows, int cols);
-};
+
+	void TextileModel::normalizeShearers(Real maxElongationRate);
+	void TextileModel::normalizeElongators(Real maxElongationRate);
+	};
 }
