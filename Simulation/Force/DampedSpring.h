@@ -37,7 +37,7 @@ namespace IBDS{
       inline const Connector& getConnectorB()const{return _cB;};
 
 			inline Connector & getConnectorA(){return _cA;};
-			inline Connector& getConnectorB(){return _cB;};
+			inline Connector & getConnectorB(){return _cB;};
 
 			Real getLastLength()const;
 			Real getCurrentLength()const;
