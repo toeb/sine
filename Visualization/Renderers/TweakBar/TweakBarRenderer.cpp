@@ -7,11 +7,11 @@ using namespace IBDS;
 using namespace std;
 
 void TW_CALL setValueCallback(const void *value, void *clientData){
-  ValueCallback * callback = reinterpret_cast<ValueCallback *>(clientData);
+  IValue * callback = reinterpret_cast<IValue *>(clientData);
   callback->set(value);
 }
 void TW_CALL getValueCallback(void *value, void *clientData){
-  ValueCallback * callback = reinterpret_cast<ValueCallback *>(clientData);
+  IValue * callback = reinterpret_cast<IValue *>(clientData);
   callback->get(value);  
 }
 
@@ -30,7 +30,7 @@ void TweakBarRenderer::addAction(IAction * action){
   TwAddButton(_tweakBar,name.c_str(),actionCallback,action,ss.str().c_str());
 }
 
-void TweakBarRenderer::addValueCallback(ValueCallback * callback){
+void TweakBarRenderer::addValueCallback(IValue * callback){
   int r  =TwAddVarCB(
     _tweakBar,
     callback->getName()->c_str(), 
@@ -40,6 +40,9 @@ void TweakBarRenderer::addValueCallback(ValueCallback * callback){
     callback,0);
 }
 
+void TweakBarRenderer::addComponent(IComponent * component){
+
+}
 
 bool TweakBarRenderer::addSimulationObject(ISimulationObject * object){
   processTweakBarEntries(object);
@@ -50,7 +53,7 @@ void TweakBarRenderer::addEntry(ISimulationObject * o){
   if(action){
     addAction(action);
   }
-  auto value = dynamic_cast<ValueCallback *>(o);
+  auto value = dynamic_cast<IValue *>(o);
   if(value){
     addValueCallback(value);
   }
@@ -71,6 +74,22 @@ void TweakBarRenderer::processTweakBarEntries(ISimulationObject * object){
 void TweakBarRenderer::onKeyDown(Keys key){
   switch(key){
     case KEY_A:TwKeyPressed('a',0);break;
+
+    case KEY_0:TwKeyPressed('0',0);break;
+    case KEY_1:TwKeyPressed('1',0);break;
+    case KEY_2:TwKeyPressed('2',0);break;
+    case KEY_3:TwKeyPressed('3',0);break;
+    case KEY_4:TwKeyPressed('4',0);break;
+    case KEY_5:TwKeyPressed('5',0);break;
+    case KEY_6:TwKeyPressed('6',0);break;
+    case KEY_7:TwKeyPressed('7',0);break;
+    case KEY_8:TwKeyPressed('8',0);break;
+    case KEY_9:TwKeyPressed('9',0);break;
+      
+    case KEY_PERIOD:TwKeyPressed('.',0);break;
+    case KEY_DELETE:TwKeyPressed(TW_KEY_DELETE,0);break;
+    case KEY_BACKSPACE:TwKeyPressed(TW_KEY_BACKSPACE,0);break;
+    case KEY_ENTER:TwKeyPressed(TW_KEY_RETURN,0);break;
   }
     //;//, TwMouseButton, TwMouseMotion, TwMouseWheel and TwWindowSiz
 }
@@ -116,7 +135,7 @@ bool TweakBarRenderer::initializeObject(){
     TwAddButton(_tweakBar,name.c_str(),actionCallback,action,0);
   }
 
-  for_each(_values.begin(), _values.end(), [this](ValueCallback * v){addValueCallback(v);});
+  for_each(_values.begin(), _values.end(), [this](IValue * v){addValueCallback(v);});
   _initialized =true;
   return true;
 }

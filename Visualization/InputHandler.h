@@ -70,7 +70,9 @@ namespace IBDS{
     KEY_DELETE   ,
     KEY_CTRL,
     KEY_ALT,
-    KEY_SHIFT
+    KEY_SHIFT,
+    KEY_PERIOD,
+    KEY_BACKSPACE
   };
   enum MouseButtons{
     BUTTON_UNKNOWN=99,

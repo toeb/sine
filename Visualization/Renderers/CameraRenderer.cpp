@@ -18,7 +18,7 @@ void CameraRenderer::onMouseMove(int x, int y , int dx, int dy){
   Vector3D dir, normal, binormal;
   R.getCoordinateVectors(dir,normal,binormal);
 
-  if(_input->isMouseButtonDown(MouseButtons::BUTTON_LEFT)){
+  if(_input->isMouseButtonDown(MouseButtons::BUTTON_RIGHT)){
     Quaternion q;
     q.setFromAxisAngle(normal,dx/20.0);
     q = q * getOrientation();
