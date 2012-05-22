@@ -5,18 +5,19 @@
 using namespace IBDS;
 using namespace std;
 
-SpringRenderer::SpringRenderer(const DampedSpring & spring):_spring(spring){
+SpringRenderer::SpringRenderer(DampedSpring & spring):_spring(spring){
   _maxForceAmount = 0.0001;
 }
 
 
 void SpringRenderer::render(){
-   Connector & cA = _spring.getConnectorA();
-   Connector & cB = _spring.getConnectorB();
+  _spring.calculateSpringAndDampeningForce();
+  
+  const Connector & cA = _spring.getConnectorA();
+  const Connector & cB = _spring.getConnectorB();
 
-   // cached position causes problems if the position was previously changed during Provot normalization
-  const Vector3D  & a_wcs = cA.getWorldPosition();//cA.getCachedWorldPosition();
-  const Vector3D  & b_wcs = cB.getWorldPosition();//cB.getCachedWorldPosition();
+  const Vector3D  & a_wcs = cA.getCachedWorldPosition();
+  const Vector3D  & b_wcs = cB.getCachedWorldPosition();
   float color[4];
   const Vector3D & f=_spring.getSpringForce();
   Real amount = f.length();

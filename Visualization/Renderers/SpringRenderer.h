@@ -7,9 +7,9 @@ namespace IBDS{
   class SpringRenderer:public IRenderer{
   private:
     Real _maxForceAmount;
-    const DampedSpring & _spring;
+    DampedSpring & _spring;
   public:
-    SpringRenderer(const DampedSpring & spring);
+    SpringRenderer(DampedSpring & spring);
     void render();
   };
 }
