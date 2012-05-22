@@ -49,6 +49,8 @@ void Particle::calculateDynamics(){
   _acceleration = _f*(1/m);
 }
 
+
+
 void Particle::getDerivedState(Real * xDot)const{
   xDot[0]= _velocity[0];
   xDot[1]= _acceleration[0];

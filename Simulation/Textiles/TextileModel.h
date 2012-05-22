@@ -20,7 +20,7 @@ struct TextileNode{
     westElongator(0), southElongator(0),
     northEastShearer(0), southEastShearer(0), 
     southWestShearer(0), northWestShearer(0),
-    northFlexor(0), southFlexor(0), westFlexor(0), eastFlexor(0){};
+    northFlexor(0), southFlexor(0), westFlexor(0), eastFlexor(0),i(0),j(0){};
 
 
   TextileNode * north;
@@ -30,7 +30,7 @@ struct TextileNode{
 
   ParticleConnector * connector;
   Particle * particle;
-
+  int i,j;
   DampedSpring * northElongator;
   DampedSpring * eastElongator;
   DampedSpring * southElongator;
@@ -58,6 +58,7 @@ private:
   
   std::vector<ISimulationObject *> _simulationObjects;
   std::vector<TextileNode*> _nodes;
+  
 
   Real _k_d_elongation;
   Real _k_d_shear;
@@ -87,16 +88,22 @@ public:
   void setShearDampeningConstant(Real k_d_s);
   void setFlexionDampeningConstant(Real k_d_f);
 
-  Real getElongationSpringConstant(Real k_d_e)const;
-  Real getShearSpringConstant(Real k_d_s)const;
-  Real getFlexionSpringConstant(Real k_d_f)const;
-  Real getElongationDampeningConstant(Real k_d_e)const;
-  Real getShearDampeningConstant(Real k_d_s)const;
-  Real getFlexionDampeningConstant(Real k_d_f)const;
+  Real getElongationSpringConstant()const;
+  Real getShearSpringConstant()const;
+  Real getFlexionSpringConstant()const;
+  Real getElongationDampeningConstant()const;
+  Real getShearDampeningConstant()const;
+  Real getFlexionDampeningConstant()const;
 
 
 private:
   
+  void for_each_spring(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
+
+  void for_each_elongator(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
+  void for_each_flexor(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
+  void for_each_shearer(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
+
   TextileModel();
 
   DampedSpring *  createSpring(TextileNode * a, TextileNode * b, Real k_s, Real k_d);

@@ -3,12 +3,12 @@
 
 #include <Simulation/Simulation.h>
 #include <Simulation/DynamicsAlgorithm.h>
-#include <Simulation/Integrators/Integrator.h>
+#include <Simulation/Integrators/SingleStepIntegrator.h>
 namespace IBDS{
 class CustomSimulation : public Simulation{
 private:
   DynamicsAlgorithm dynamicsAlgorithm;
-  Integrator * integrator;
+  SingleStepIntegrator * integrator;
 public:
   void buildModel();
   void buildAlgorithms();

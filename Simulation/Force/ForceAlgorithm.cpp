@@ -1,5 +1,6 @@
 #include "ForceAlgorithm.h"
-
+#include <algorithm>
+using namespace std;
 using namespace IBDS;
 
 ForceAlgorithm::ForceAlgorithm(){
@@ -25,16 +26,20 @@ bool ForceAlgorithm::removeSimulationObject(ISimulationObject * object){
 }
 
 void ForceAlgorithm::resetForces(){  
+  /*
   for(auto it = _forceAccumulators.begin(); it != _forceAccumulators.end(); it++){
     (*it)->resetForce();
-  }  
+  }  */
+  for_each(_forceAccumulators.begin(),_forceAccumulators.end(),[](DynamicBody * b){b->resetForce();});
 }
 void ForceAlgorithm::setForces(Real time){
   resetForces();
   applyForces(time);
 }
 void ForceAlgorithm::applyForces(Real time){
-   for(auto it = _forces.begin(); it != _forces.end(); it++){
-     (*it)->act(_forceAccumulators,time);
-  }  
+  for_each(_forces.begin(),_forces.end(),
+    [&time, this](Force * force){
+      force->act(_forceAccumulators,time);
+  });
+ 
 }

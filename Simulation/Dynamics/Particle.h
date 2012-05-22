@@ -43,6 +43,7 @@ class Particle : public DynamicBody
     void getState(Real * state)const;
     int getStateDimension()const;
 
+
     void resetForce();
     void addExternalForce(const Vector3D & f);
     void setForce(const Vector3D & f);

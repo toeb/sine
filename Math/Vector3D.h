@@ -50,6 +50,37 @@ namespace IBDS
 		Vector3D();
 		Vector3D(const Vector3D &vector);
     ~Vector3D();
+
+
+    //inline mehtods for performance critical sections
+    //b = s*a
+    inline static void multiplyScalar(Real s, const Vector3D & a, Vector3D & b){
+      b.v[0] = s*a[0];
+      b.v[1] = s*a[1];
+      b.v[2] = s*a[2];
+    }
+    inline static void dotProduct(const Vector3D & a, const Vector3D & b, Real & c){
+      c= a.v[0]*b.v[0]+a.v[1]*b.v[1]+a.v[2]*b.v[2];
+    }
+    //c = a-b
+    inline static void subtract(const Vector3D & a, const Vector3D & b, Vector3D & c){
+      c.v[0] = a.v[0]-b.v[0];
+      c.v[1] = a.v[1]-b.v[1];
+      c.v[2] = a.v[2]-b.v[2];
+    }
+    
+    inline static void add(const Vector3D & a, const Vector3D & b, Vector3D & c){
+      c.v[0] = a.v[0]+b.v[0];
+      c.v[1] = a.v[1]+b.v[1];
+      c.v[2] = a.v[2]+b.v[2];
+    }
+    inline static void crossProduct(const Vector3D & a, const Vector3D & b,Vector3D & c){
+      c.v[0] = a.v[1]*b.v[2]-a.v[2]*b.v[1];
+      c.v[1] = a.v[2]*b.v[0]-a.v[0]*b.v[2];
+      c.v[2] = a.v[0]*b.v[1]-a.v[1]*b.v[0];
+    }
+
+
     static const Vector3D & Zero();
     void setZero();
 		friend Vector3D operator - (const Vector3D& v);						  // -v1

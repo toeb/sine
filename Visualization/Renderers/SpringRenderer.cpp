@@ -16,8 +16,7 @@ void SpringRenderer::render(){
   const Vector3D  & a_wcs = cA.getCachedWorldPosition();
   const Vector3D  & b_wcs = cB.getCachedWorldPosition();
   float color[4];
-  Vector3D f;
-  _spring.calculateSpringForce(f);
+  const Vector3D & f=_spring.getSpringForce();
   Real amount = f.length();
   if(amount > _maxForceAmount)_maxForceAmount = amount;
   MiniGL::valueToColor(amount,color,0,_maxForceAmount);  

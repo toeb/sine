@@ -1,4 +1,7 @@
 #include "Gravity.h"
+#include <algorithm>
+
+using namespace std;
 using namespace IBDS;
 
 Gravity::Gravity(void) {
@@ -44,9 +47,10 @@ const Vector3D & Gravity::getGravity()const{
 }
 
 void Gravity::act (std::vector<DynamicBody*> & target, Real time) {
-  _g = _direction * _amount;
-	for (std::vector<DynamicBody*>::iterator it = target.begin(); it != target.end(); it++) {
-		Vector3D amount = (*it)->getMass() * _g;
-		(*it)->addExternalForce(amount);
-	}
+  //calculateGravity();
+
+  for_each(target.begin(),target.end(),[this](DynamicBody* body){
+    Vector3D amount = body->getMass() * _g;
+		body->addExternalForce(amount);
+  });
 }

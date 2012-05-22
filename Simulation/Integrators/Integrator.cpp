@@ -4,6 +4,13 @@
 using namespace std;
 using namespace IBDS;
 
+Real Integrator::getSuggestedStepSize()const{
+  return _suggestedStepSize;
+}
+void Integrator::setSuggestedStepSize(Real h){
+  _suggestedStepSize= h;
+  onSuggestedStepSizeChanged();
+}
 
 void Integrator::updateStateSize(){  
   _dimension = _integratable->getStateDimension();
@@ -14,11 +21,11 @@ void Integrator::updateStateSize(){
 Real Integrator::integrate(Real a, Real b){
   if(_integratable->hasStateDimensionChanged())updateStateSize();
 
-  if(_systemFunction)_systemFunction->preIntegration(a,b-a);
+ // if(_systemFunction)_systemFunction->preIntegration(a,b-a);
   _integratable->getState(_x.v);
    Real result = doIntegration(_x,_xNext,a,b);
   _integratable->setState(_xNext.v);
-  if(_systemFunction)_systemFunction->postIntegration(b,b-a);
+ // if(_systemFunction)_systemFunction->postIntegration(b,b-a);
   return result;
 }
 void Integrator::setIntegratable(IIntegrable * integratable){
@@ -41,7 +48,7 @@ const VectorND & Integrator::getState()const{
   return _x;
 }
 
-Integrator::Integrator(): _integratable(0){
+Integrator::Integrator(): _integratable(0),_suggestedStepSize(0.01){
   setName("Integrator");
 }
 

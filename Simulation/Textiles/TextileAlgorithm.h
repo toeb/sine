@@ -4,6 +4,7 @@
 namespace IBDS{
 class TextileAlgorithm: public virtual SimulationModuleBase<TextileModel>{
 public:
+  Real getSuggestedStepSize();
   void normalize();
 };
 }

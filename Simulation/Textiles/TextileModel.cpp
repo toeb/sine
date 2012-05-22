@@ -6,8 +6,20 @@
 using namespace std;
 using namespace IBDS;
 
+#define PI 3.14159265
 
+Real TextileModel::getSuggestedStepSize()const{
+  Real k=getElongationSpringConstant();
+  if(k<getFlexionSpringConstant())k=getFlexionSpringConstant();
+  if(k < getShearSpringConstant())k= getShearSpringConstant();
+  int n= _rows*_columns;
+  Real m_particle = _mass/n;
+  Real T_0 = PI*sqrt(m_particle/k);
+  return T_0;
+}
 void TextileModel::normalize(){
+  
+
 
 }
 
@@ -43,6 +55,54 @@ void TextileModel::buildModel(
   setupNodeConnectivity();
   createSprings();
 }
+
+
+void TextileModel::for_each_elongator(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f){
+  for(int i =0; i < _rows; i++){
+    for(int j =0; j < _rows; j++){
+      TextileNode * n = getNode(i,j);
+      if(n->eastElongator){
+        f(n,n->east,n->eastElongator);
+      }
+      if(n->southElongator){
+        f(n,n->south,n->southElongator);
+      }
+    }
+  }
+}
+void TextileModel::for_each_flexor(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f){
+  for(int i =0; i < _rows; i++){
+    for(int j =0; j < _rows; j++){
+      TextileNode * n = getNode(i,j);
+      if(n->eastFlexor){
+        f(n,n->east->east,n->eastFlexor);
+      }
+      if(n->southFlexor){
+        f(n,n->south->south,n->southFlexor);
+      }
+    }
+  }
+}
+void TextileModel::for_each_shearer(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f){
+  for(int i =0; i < _rows; i++){
+    for(int j =0; j < _rows; j++){
+      TextileNode * n = getNode(i,j);
+      if(n->southEastShearer){
+        f(n,n->east->south,n->southEastShearer);
+      }
+      if(n->southWestShearer){
+        f(n,n->south->west,n->southWestShearer);
+      }
+    }
+  }
+}
+
+void TextileModel::for_each_spring(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f){
+  for_each_elongator(f);
+  for_each_flexor(f);
+  for_each_shearer(f);
+}
+
 
 void TextileModel::addSimulationObject(ISimulationObject  * obj){
   _simulationObjects.push_back(obj);
@@ -161,6 +221,8 @@ void TextileModel::createNodeMesh(const Vector3D & p, const Matrix3x3 & orientat
     for(int j = 0; j < _columns;j++){
       Vector3D position = x1*spacingWidth*(i-_rows/2.0) + x2 * spacingHeight*(j-_columns/2.0) + p;
       TextileNode * node = new TextileNode();
+      node->i=i;
+      node->j=j;
       createParticle(node,particleMass,position);
       _nodes.push_back( node);
     }
@@ -214,44 +276,58 @@ TextileModel::TextileModel(){}
 
 void TextileModel::setElongationSpringConstant(Real k_s){
   _k_s_elongation = k_s;
+  for_each_elongator([&k_s](TextileNode * n1, TextileNode * n2, DampedSpring * spring){
+    spring->setStiffnessConstant(k_s);
+  });
 
 }
 void TextileModel::setShearSpringConstant(Real k_s){
   _k_s_shear = k_s;
-
+   for_each_shearer([&k_s](TextileNode * n1, TextileNode * n2, DampedSpring * spring){
+    spring->setStiffnessConstant(k_s);
+  });
 }
 void TextileModel::setFlexionSpringConstant(Real k_s){
   _k_s_flexion = k_s;
-
+  for_each_flexor([&k_s](TextileNode * n1, TextileNode * n2, DampedSpring * spring){
+    spring->setStiffnessConstant(k_s);
+  });
 }
 void TextileModel::setElongationDampeningConstant(Real k_d){
   _k_d_elongation = k_d;
-
+  
+  for_each_elongator([&k_d](TextileNode * n1, TextileNode * n2, DampedSpring * spring){
+    spring->setDampeningConstant(k_d);
+  });
 }
 void TextileModel::setShearDampeningConstant(Real k_d){
   _k_d_shear = k_d;
-
+   for_each_shearer([&k_d](TextileNode * n1, TextileNode * n2, DampedSpring * spring){
+    spring->setDampeningConstant(k_d);
+  });
 }
 void TextileModel::setFlexionDampeningConstant(Real k_d){
   _k_d_flexion = k_d;
-
+   for_each_flexor([&k_d](TextileNode * n1, TextileNode * n2, DampedSpring * spring){
+    spring->setDampeningConstant(k_d);
+  });
 }
        
-Real TextileModel::getElongationSpringConstant(Real k_d_e)const{
+Real TextileModel::getElongationSpringConstant()const{
   return _k_s_elongation;
 }
-Real TextileModel::getShearSpringConstant(Real k_d_s)const{
+Real TextileModel::getShearSpringConstant()const{
   return _k_s_shear;
 }
-Real TextileModel::getFlexionSpringConstant(Real k_d_f)const{
+Real TextileModel::getFlexionSpringConstant()const{
   return _k_s_flexion;
 }
-Real TextileModel::getElongationDampeningConstant(Real k_d_e)const{
+Real TextileModel::getElongationDampeningConstant()const{
   return _k_d_elongation;
 }
-Real TextileModel::getShearDampeningConstant(Real k_d_s)const{
+Real TextileModel::getShearDampeningConstant()const{
   return _k_d_shear;
 }
-Real TextileModel::getFlexionDampeningConstant(Real k_d_f)const{
+Real TextileModel::getFlexionDampeningConstant()const{
   return _k_d_flexion;
 }

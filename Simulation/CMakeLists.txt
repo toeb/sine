@@ -15,6 +15,8 @@ SET (integrators_SRC
 SET (integratorImplementations_SRC
   ./Integrators/Implementations/ExplicitEuler.h
   ./Integrators/Implementations/ExplicitEuler.cpp
+  ./Integrators/Implementations/ImplicitEuler.h
+  ./Integrators/Implementations/ImplicitEuler.cpp
   ./Integrators/Implementations/RungeKutta4.h
   ./Integrators/Implementations/RungeKutta4.cpp
   ./Integrators/Implementations/RungeKuttaFehlberg45.h
@@ -154,8 +156,8 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.cpp	
 	)
 	
-source_group("integration" FILES ${integrators_SRC})
-source_group("integration\\implementations" FILES ${integratorImplementations_SRC})
+source_group("simulation\\integration" FILES ${integrators_SRC})
+source_group("simulation\\integration\\implementations" FILES ${integratorImplementations_SRC})
 source_group("simulation" FILES ${simulation_SRC})
 source_group("simulation\\objects" FILES ${simulationObjects_SRC})
 source_group("visualization" FILES ${visualisation_SRC})

@@ -56,6 +56,9 @@ public:
    * <returns> The state dimension.</returns>
    */
    virtual int getStateDimension()const=0;
+
+
+  
 };
 
 }

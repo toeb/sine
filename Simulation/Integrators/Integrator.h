@@ -20,8 +20,10 @@ private:
   VectorND _xNext;
   VectorND _xDot;
   void updateStateSize();
+  Real _suggestedStepSize;
 public:
-
+  void setSuggestedStepSize(Real h);
+  Real getSuggestedStepSize()const;
   /**
    * <summary> Default constructor.</summary>
    *
@@ -78,6 +80,7 @@ public:
    */
   const VectorND & getState()const;
 protected:
+  virtual void onSuggestedStepSizeChanged(){};
   /**
    * <summary> evaluates the function at state x</summary>
    *

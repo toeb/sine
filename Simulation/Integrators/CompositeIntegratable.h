@@ -16,6 +16,7 @@ private:
   /// <summary> The children of this composite</summary>
   std::vector<IIntegrable*> _children;
   bool _dimensionChanged;
+  const Real * _currentState;
 public:
   bool hasStateDimensionChanged();
   CompositeIntegratable();
@@ -26,6 +27,7 @@ public:
   void virtual setState(const Real * state);
   virtual void getState(Real * state)const;
   virtual int getStateDimension()const;
+
 };
 }
 #endif

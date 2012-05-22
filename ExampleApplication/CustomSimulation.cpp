@@ -85,10 +85,16 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   
 }
 
-void createCloth(Simulation & s, Real mass=2.0, Real width = 5, Real height = 5, int rows=30, int cols=30){
+TextileModel *  createCloth(Simulation & s, Real mass=2.0, Real width = 5, Real height = 5, int rows=30, int cols=30){
+
+  Quaternion q;
+  q.setFromAxisAngle(Vector3D(1,0,0),3.14/2);
+  Matrix3x3 ori;
+  q.getMatrix3x3(ori);
+
 
   TextileModel * m = TextileModel::createTextileModel(Vector3D(10,0,0),
-    Matrix3x3::Identity(),mass,width,height,rows,cols);
+    ori,mass,width,height,rows,cols);
   
   
   m->getNode(0,cols-1)->particle->setMass(0);
@@ -100,7 +106,43 @@ void createCloth(Simulation & s, Real mass=2.0, Real width = 5, Real height = 5,
     s.addSimulationObject(obj);
   });
 
+  m->setElongationSpringConstant(50);
+  m->setFlexionSpringConstant(50);
+  m->setShearSpringConstant(50);
+
   s.addSimulationObject(m);
+  // tweak bar entries
+  TextileModel & cloth=*m;
+
+  s.addSimulationObject( new RealCallback("Flex Stiffness Constant",
+    [&cloth](){return cloth.getFlexionSpringConstant();},
+    [&cloth](Real value){cloth.setFlexionSpringConstant(value);}));
+
+  s.addSimulationObject( new RealCallback("Flex Dampening Constant",
+    [&cloth](){return cloth.getFlexionDampeningConstant();},
+    [&cloth](Real value){cloth.setFlexionDampeningConstant(value);}));
+
+  s.addSimulationObject( new RealCallback("Elongator Stiffness Constant",
+    [&cloth](){return cloth.getElongationSpringConstant();},
+    [&cloth](Real value){cloth.setElongationSpringConstant(value);}));
+
+  s.addSimulationObject( new RealCallback("Elongator Dampening Constant",
+    [&cloth](){return cloth.getElongationDampeningConstant();},
+    [&cloth](Real value){cloth.setElongationDampeningConstant(value);}));
+
+
+  s.addSimulationObject( new RealCallback("Shearer Stiffness Constant",
+    [&cloth](){return cloth.getShearSpringConstant();},
+    [&cloth](Real value){cloth.setShearSpringConstant(value);}));
+
+  s.addSimulationObject( new RealCallback("Shearer Dampening Constant",
+    [&cloth](){return cloth.getShearDampeningConstant();},
+    [&cloth](Real value){cloth.setShearDampeningConstant(value);}));
+
+
+  return m;
+
+
 
 }
 void createSimplePendulum(SimulationBuilder & b, const Vector3D & offset){
@@ -124,7 +166,7 @@ void createDoublePendulum(SimulationBuilder & b, const Vector3D & offset){
 void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
   Real s = 10.0/n;
   if(s<0.1)s = 0.1;
-  Real mass = 1.0 / n;
+  Real mass = 1.0 ;
   Real l=0.75;
   Box * lastBox=0;
   Box* currentBox=0;
@@ -145,7 +187,7 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
 
 void CustomSimulation::buildAlgorithms(){
   integrator = new RungeKutta4(0.01);
-  //integrator = new ExplicitEuler();
+  //integrator = new ExplicitEuler(0.005);
 
   addSimulationObject(&dynamicsAlgorithm);
 
@@ -175,18 +217,23 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(r);
 
-  createDoublePendulum(b,Vector3D::Zero());
+  //createDoublePendulum(b,Vector3D::Zero());
 
   addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  createCloth(*this,200,5,5,10,10);
+  TextileModel & cloth = *(createCloth(*this,200,5,5,31,31));
+  
+  
 
-  create4BoxesWithSpring(b, Vector3D(6,0,0));
 
-  createSimplePendulum(b,Vector3D(8,0,0));
 
-  createNPendulum(b,Vector3D(13,0,0), 50);
+  //create4BoxesWithSpring(b, Vector3D(6,0,0));
 
+//  createSimplePendulum(b,Vector3D(8,0,0));
+
+  //createNPendulum(b,Vector3D(13,0,0), 10);
+
+  
   
 }
 
