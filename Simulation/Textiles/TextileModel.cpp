@@ -28,12 +28,8 @@ void TextileModel::setMass(Real mass){
 Real TextileModel::getMass()const{
   return _mass;
 }
-
-void TextileModel::normalize(){
-  if(!isNormalizing())return;
-  Real maxElongationRate = getMaximumElongation();
-	for_each_spring([&maxElongationRate](TextileNode * n1, TextileNode * n2, DampedSpring * spring) {
-
+inline void normalizeSpring(TextileNode * n1, TextileNode * n2, DampedSpring * spring, Real maxElongationRate){
+  
 		Real maxElongation = maxElongationRate * (spring->getRestLength());
 		Real currentElongation = spring->getCurrentLength();
 
@@ -59,7 +55,12 @@ void TextileModel::normalize(){
 				particle2->setPosition(pos2 - 0.5 * offsetVector);
 				}
 			}
-	});
+}
+void TextileModel::normalize(){
+  if(!isNormalizing())return;
+  
+  Real maxElongationRate = getMaximumElongation();
+  normalizeEachSpring(maxElongationRate);
 }
 
 
@@ -97,6 +98,31 @@ void TextileModel::buildModel(
   createSprings();
 }
 
+void TextileModel::normalizeEachSpring(Real maxElongationRate){
+  for(int i =0; i < _rows; i++){
+    for(int j =0; j < _rows; j++){
+      TextileNode * n = getNode(i,j);
+      if(n->eastElongator){
+        normalizeSpring(n,n->east,n->eastElongator,maxElongationRate);
+      }
+      if(n->southElongator){
+        normalizeSpring(n,n->south,n->southElongator,maxElongationRate);
+      }
+      if(n->eastFlexor){
+        normalizeSpring(n,n->east->east,n->eastFlexor,maxElongationRate);
+      }
+      if(n->southFlexor){
+        normalizeSpring(n,n->south->south,n->southFlexor,maxElongationRate);
+      }
+      if(n->southEastShearer){
+        normalizeSpring(n,n->east->south,n->southEastShearer,maxElongationRate);
+      }
+      if(n->southWestShearer){
+        normalizeSpring(n,n->south->west,n->southWestShearer,maxElongationRate);
+      }
+    }
+  }
+}
 
 void TextileModel::for_each_elongator(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f){
   for(int i =0; i < _rows; i++){

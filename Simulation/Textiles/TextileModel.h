@@ -114,7 +114,7 @@ public:
 
 
 private:
-  
+  void normalizeEachSpring(Real maxElongationRate);
   void for_each_spring(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
   void for_each_elongator(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
   void for_each_flexor(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);

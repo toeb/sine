@@ -41,7 +41,7 @@ namespace IBDS{
 
 			Real getLastLength()const;
 			Real getCurrentLength()const;
-			Real getRestLength() const;
+      inline Real getRestLength() const{return _l0;};
 
 			const Vector3D & getForce()const;
 			const Vector3D & getSpringForce()const;

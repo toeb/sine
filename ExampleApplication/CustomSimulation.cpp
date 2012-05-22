@@ -169,7 +169,7 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
 
 void CustomSimulation::buildAlgorithms(){
   //integrator = new RungeKutta4(0.01);
-  integrator = new ExplicitEuler(0.005);
+  integrator = new ExplicitEuler(0.001);
 
   addSimulationObject(&dynamicsAlgorithm);
 
@@ -206,7 +206,7 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  TextileModel & cloth = *(createCloth(*this,1,10,10,31,31));
+  TextileModel & cloth = *(createCloth(*this,1,10,10,101,101));
   
   //create4BoxesWithSpring(b, Vector3D(3,0,0));
 
