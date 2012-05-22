@@ -58,5 +58,5 @@ void Connector::calculateCachedValues(){
 
 void Connector::addExternalForce(const Vector3D & force){
   addExternalForceToBody(force);
-  _f= force;
+  _f.assign( force);
 }

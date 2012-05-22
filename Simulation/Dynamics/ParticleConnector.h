@@ -39,7 +39,7 @@ namespace IBDS {
      *
      * \return  The calculated world velocity.
      */
-    void calculateWorldVelocity(Vector3D & b_wcs)const;
+    inline void calculateWorldVelocity(Vector3D & b_wcs)const;
     void calculateWorldAcceleration(Vector3D & a_wcs)const;
 
 	void setWorldPosition(Vector3D &position);

@@ -78,18 +78,6 @@ void DampedSpring::setStiffnessConstant(Real k_s){
   _k_s=k_s;
 }
 
- Connector & DampedSpring::getConnectorA()const{
-  return _cA;
-}
- Connector& DampedSpring::getConnectorB()const{
-  return _cB;
-}
-Connector & DampedSpring::getConnectorA(){
-  return _cA;
-}
-Connector& DampedSpring::getConnectorB(){
-  return _cB;
-}
 
 Real DampedSpring::getRestLength() const {
 	return _l0;
@@ -99,5 +87,4 @@ Real DampedSpring::getCurrentLength()const {
 	//_cA.calculateCachedValues();
 	//_cB.calculateCachedValues();
 	return (_cA.getWorldPosition() - _cB.getWorldPosition()).length();
-	}
-
+}

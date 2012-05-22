@@ -27,10 +27,11 @@
 using namespace IBDS;
 
 void Particle::setForce(const Vector3D & f){
-  _f = f;
+  _f.assign( f);
 }
 void Particle::addExternalForce(const Vector3D & f){
-  _f += f;
+  Vector3D::add(_f,f,_f);
+ // _f += f;
 }
 void Particle::resetForce(){
   _f[0]=0;_f[1]=0;_f[2]=0;

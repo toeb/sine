@@ -25,7 +25,7 @@ namespace IBDS{
 			//static DampedSpring * createSpring(
 
 			~DampedSpring();
-			void calculateSpringAndDampeningForce();
+			inline void calculateSpringAndDampeningForce();
 
 			Real getStiffnessConstant()const;
 			void setStiffnessConstant(Real k_s);
@@ -33,11 +33,11 @@ namespace IBDS{
 			Real getDampeningConstant()const;
 			void setDampeningConstant(Real k_d);
 
-			Connector & getConnectorA()const;
-			Connector& getConnectorB()const;
+      inline const Connector & getConnectorA()const{return _cA;};
+      inline const Connector& getConnectorB()const{return _cB;};
 
-			Connector & getConnectorA();
-			Connector& getConnectorB();
+			inline Connector & getConnectorA(){return _cA;};
+			inline Connector& getConnectorB(){return _cB;};
 
 			Real getLastLength()const;
 			Real getCurrentLength()const;
@@ -53,6 +53,6 @@ namespace IBDS{
 			*/
 			DampedSpring(Connector & c1, Connector &c2, Real k_s, Real k_d, Real restLength);
 
-			void act (std::vector<DynamicBody*> & target, Real time);      
+			inline void act (std::vector<DynamicBody*> & target, Real time);      
 		};
 	}

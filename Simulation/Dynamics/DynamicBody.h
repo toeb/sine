@@ -67,5 +67,7 @@ namespace IBDS {
      * \return the approximated position .
      */
     void previewPosition(Real h, Vector3D& s_next_wcs)const;
+
+    bool isFixed()const;
   };
 }
