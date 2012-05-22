@@ -19,7 +19,11 @@
 #include <Visualization/Renderers/ParticleRenderer.h>
 #include <Visualization/Renderers/BoxRenderer.h>
 #include <Visualization/Renderers/SpringRenderer.h>
-#include <Visualization/Renderers/TweakBarRenderer.h>
+
+#include <Visualization/Renderers/TweakBar/TweakBarRenderer.h>
+
+#include <Visualization/UserInterface/DelegateAction.h>
+#include <Visualization/UserInterface/RealValue.h>
 
 #include <Visualization/InputHandler.h>
 
@@ -36,42 +40,6 @@
 using namespace IBDS;
 using namespace std;
 
-
-
-
-
-class ControllableBox : public  Box,  public IInputListener,  public Force{
-public:
-  bool l,r,u,d;
-  ControllableBox():Box(1,1,1,1){
-    l=r=u=d=false;
-  }
-   void onKeyDown(Keys key){
-     switch(key){
-      case Keys::KEY_W: u = true; break;
-      case Keys::KEY_A: l = true; break;
-      case Keys::KEY_S: d = true; break;
-      case Keys::KEY_D: r = true; break;
-     }
-  }
-   void onKeyUp(Keys key){
-     switch(key){
-      case Keys::KEY_W: u = false; break;
-      case Keys::KEY_A: l = false; break;
-      case Keys::KEY_S: d = false; break;
-      case Keys::KEY_D: r = false; break;
-     }
-  }
-  void act( std::vector<DynamicBody*> & target, Real time){
-   // addExternalForce(Vector3D(0,9.81,0));
-    if(u) addExternalForce(Vector3D(0,1,0));
-    if(d) addExternalForce(Vector3D(0,-1,0));
-    if(l) addExternalForce(Vector3D(-1,0,0));
-    if(r) addExternalForce(Vector3D(1,0,0));
-  }
-
-};
-
 void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){  
   Box* box1 =b.createBox("box1",offset+Vector3D::Zero(),0);
   Box* box2= b.createBox("box2",offset+Vector3D(0.1,-2,0));
@@ -85,16 +53,17 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   
 }
 
-TextileModel *  createCloth(Simulation & s, Real mass=2.0, Real width = 5, Real height = 5, int rows=30, int cols=30){
+TextileModel *  createCloth(Simulation & s, Real massPerSqrMeter=2.0, Real width = 5, Real height = 5, int rows=30, int cols=30){
 
   Quaternion q;
   q.setFromAxisAngle(Vector3D(1,0,0),3.14/2);
   Matrix3x3 ori;
   q.getMatrix3x3(ori);
 
+  
 
   TextileModel * m = TextileModel::createTextileModel(Vector3D(10,0,0),
-    ori,mass,width,height,rows,cols);
+    ori,massPerSqrMeter*width*height,width,height,rows,cols);
   
   
   m->getNode(0,cols-1)->particle->setMass(0);
@@ -114,28 +83,41 @@ TextileModel *  createCloth(Simulation & s, Real mass=2.0, Real width = 5, Real 
   // tweak bar entries
   TextileModel & cloth=*m;
 
-  s.addSimulationObject( new RealCallback("Flex Stiffness Constant",
+  s.addSimulationObject(new DelegateAction("Toggle Cloth Normalization", [&cloth](){
+    cloth.setNormalizing(!cloth.isNormalizing());
+  }));
+  s.addSimulationObject( new RealValue("Maximum Cloth Spring Elongation",
+    [&cloth](){return cloth.getMaximumElongation();},
+    [&cloth](Real value){cloth.setMaximumElongation(value);}));
+
+  
+  s.addSimulationObject( new RealValue("Cloth mass",
+    [&cloth](){return cloth.getMass();},
+    [&cloth](Real value){cloth.setMass(value);}));
+
+
+  s.addSimulationObject( new RealValue("Flex Stiffness Constant",
     [&cloth](){return cloth.getFlexionSpringConstant();},
     [&cloth](Real value){cloth.setFlexionSpringConstant(value);}));
 
-  s.addSimulationObject( new RealCallback("Flex Dampening Constant",
+  s.addSimulationObject( new RealValue("Flex Dampening Constant",
     [&cloth](){return cloth.getFlexionDampeningConstant();},
     [&cloth](Real value){cloth.setFlexionDampeningConstant(value);}));
 
-  s.addSimulationObject( new RealCallback("Elongator Stiffness Constant",
+  s.addSimulationObject( new RealValue("Elongator Stiffness Constant",
     [&cloth](){return cloth.getElongationSpringConstant();},
     [&cloth](Real value){cloth.setElongationSpringConstant(value);}));
 
-  s.addSimulationObject( new RealCallback("Elongator Dampening Constant",
+  s.addSimulationObject( new RealValue("Elongator Dampening Constant",
     [&cloth](){return cloth.getElongationDampeningConstant();},
     [&cloth](Real value){cloth.setElongationDampeningConstant(value);}));
 
 
-  s.addSimulationObject( new RealCallback("Shearer Stiffness Constant",
+  s.addSimulationObject( new RealValue("Shearer Stiffness Constant",
     [&cloth](){return cloth.getShearSpringConstant();},
     [&cloth](Real value){cloth.setShearSpringConstant(value);}));
 
-  s.addSimulationObject( new RealCallback("Shearer Dampening Constant",
+  s.addSimulationObject( new RealValue("Shearer Dampening Constant",
     [&cloth](){return cloth.getShearDampeningConstant();},
     [&cloth](Real value){cloth.setShearDampeningConstant(value);}));
 
@@ -186,14 +168,19 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
 }
 
 void CustomSimulation::buildAlgorithms(){
-  integrator = new RungeKutta4(0.01);
-  //integrator = new ExplicitEuler(0.005);
+  //integrator = new RungeKutta4(0.01);
+  integrator = new ExplicitEuler(0.005);
 
   addSimulationObject(&dynamicsAlgorithm);
 
   integrator->setSystemFunction(dynamicsAlgorithm);
   setIntegrator(*integrator);
   
+
+  addSimulationObject( new RealValue("Integrator Step Size",
+    [this](){return integrator->getStepSize();},
+    [this](Real value){integrator->setStepSize(value);}));
+
   
   addSimulationObject(new LightRenderer());
   addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
@@ -203,15 +190,13 @@ void CustomSimulation::buildAlgorithms(){
 
 void CustomSimulation::buildModel(){ 
   setName("Custom Simulation");
-
- 
+   
   SimulationBuilder b(*this);  
-
-  
+    
   //addSimulationObject(new ControllableBox());
 
   Gravity & g = *(b.setGravity(4));
-  ValueCallback * r = new RealCallback("Gravity Magnitude",
+  IValue * r = new RealValue("Gravity Magnitude",
     [&g](){return g.getGravityMagnitude();},
     [&g](Real val){g.setGravityMagnitude(val);});
 
@@ -221,20 +206,13 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  TextileModel & cloth = *(createCloth(*this,100,5,5,15,15));
+  TextileModel & cloth = *(createCloth(*this,1,10,10,31,31));
   
-  
-
-
-
   //create4BoxesWithSpring(b, Vector3D(3,0,0));
 
 //  createSimplePendulum(b,Vector3D(8,0,0));
 
   //createNPendulum(b,Vector3D(13,0,0), 10);
-
-  
-  
 }
 
 

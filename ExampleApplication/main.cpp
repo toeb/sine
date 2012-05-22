@@ -26,7 +26,7 @@
 #include "CustomSimulation.h"
 #include <GlutRunner/GlutSimulationRunner.h>
 #include <Visualization/Renderers/SimulationRunnerRenderer.h>
-#include <Visualization/Renderers/TweakBarRenderer.h>
+#include <Visualization/UserInterface/DelegateAction.h>
 // Enable memory leak detection
 #ifdef _DEBUG
   #define new DEBUG_NEW 
