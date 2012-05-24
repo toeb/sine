@@ -234,7 +234,7 @@ void CustomSimulation::buildModel(){
 
   //createDoublePendulum(b,Vector3D::Zero());
 
-  addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
+  //addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
   TextileModel & cloth = *(createCloth(*this,5,10,10,31,31));
   
