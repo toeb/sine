@@ -179,6 +179,8 @@ set(userinterface_SRC
 	${PROJECT_PATH}/Visualization/UserInterface/IUserInterface.cpp
 	${PROJECT_PATH}/Visualization/UserInterface/IComponent.h
 	${PROJECT_PATH}/Visualization/UserInterface/IComponent.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/DelegateValue.h
+	${PROJECT_PATH}/Visualization/UserInterface/DelegateValue.cpp
 )
 	
 source_group("simulation\\integration" FILES ${integrators_SRC})
