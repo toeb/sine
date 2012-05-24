@@ -1,6 +1,31 @@
 SET(SIMULATION_LINK_LIBRARIES Math freeglut opengl32.lib glu32.lib ${ANTTWEAKBAR_LIBS})
 SET (SIMULATION_DEPENDENCIES Math freeglut)
 
+SET(collision_SRC
+ ./Collision/Collision.h
+ ./Collision/Collision.cpp
+)
+source_group("simulation\\collision" FILES ${collision_SRC})
+set(collisionDetection_SRC 
+ ./Collision/Detection/CollisionDetector.h
+ ./Collision/Detection/CollisionDetector.cpp
+)
+source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
+set(geometry_SRC
+ GeometricObject.h
+ GeometricObject.cpp
+)
+
+source_group("simulation\\geometry" FILES ${geometry_SRC})
+set(geometryPrimitives_SRC
+ Cylinder.h
+ Cylinder.cpp
+ Hexahedron.h
+ Hexahedron.cpp
+ Sphere.h
+ Sphere.cpp
+)
+source_group("simulation\\geometry" FILES ${geometryPrimitives_SRC})
 SET (integrators_SRC
   ./Integrators/IIntegrable.h
   ./Integrators/Integrator.h
@@ -68,24 +93,24 @@ set(runner_SRC
 	./runner/SimulationRunner.cpp
 )
 SET(simulation_SRC
-	./Simulation.h
-	./Simulation.cpp
-	./ISimulationObject.h
 	./SimulationBuilder.h
 	./SimulationBuilder.cpp
-	./ISimulationModule.h
-	./SimulationModuleBase.h
-	./SimulationModuleBase.cpp
 	./DynamicsAlgorithm.h
 	./DynamicsAlgorithm.cpp
-	./CompositeSimulationModule.h
-	./CompositeSimulationModule.cpp	
 )
 
 set(simulationCore_SRC
- ./Core/CompositeSimulationObject.h
- ./Core/CompositeSimulationObject.cpp
- )
+	./Core/CompositeSimulationObject.h
+	./Core/CompositeSimulationObject.cpp
+	./Core/ISimulationModule.h
+	./Core/Simulation.h
+	./Core/Simulation.cpp
+	./Core/CompositeSimulationModule.h
+	./Core/CompositeSimulationModule.cpp	
+	./Core/SimulationModuleBase.h
+	./Core/SimulationModuleBase.cpp
+	./Core/ISimulationObject.h
+)
 
 SET(textile_SRC
 ./Textiles/TextileModel.h
@@ -207,25 +232,29 @@ ${multibodydynamics_SRC}
 ${dynamics_SRC}
 ${force_SRC}
 ${runner_SRC}
-	  ${integrators_SRC}
-	  ${integratorImplementations_SRC}
-	  ${simulation_SRC}
-	  ${simulationObjects_SRC}
-	  ${visualisation_SRC}         
-	   ${renderers_SRC}
-	   ${textile_SRC}
-	   ${glutrunner_SRC}
-	   ${kinematics_SRC}
-	   ${bodyprimitives_SRC}
-	   ${tweakbar_SRC}
-	   ${simulationCore_SRC}
-	   ${userinterface_SRC}
-	  ${PROJECT_PATH}/Common/Config.h			  
-	  ${PROJECT_PATH}/Common/StringTools.h			  
-	  ${PROJECT_PATH}/Common/StringTools.cpp
-	  ${PROJECT_PATH}/Common/timing.h			  	  
-	  ${PROJECT_PATH}/Common/timing.cpp
-	  CMakeLists.txt
+${integrators_SRC}
+${integratorImplementations_SRC}
+${simulation_SRC}
+${simulationObjects_SRC}
+${visualisation_SRC}         
+${renderers_SRC}
+${textile_SRC}
+${glutrunner_SRC}
+${kinematics_SRC}
+${bodyprimitives_SRC}
+${tweakbar_SRC}
+${simulationCore_SRC}
+${userinterface_SRC}
+${collision_SRC} 
+${collisionDetection_SRC} 
+${geometry_SRC} 
+${geometryPrimitives_SRC}
+${PROJECT_PATH}/Common/Config.h			  
+${PROJECT_PATH}/Common/StringTools.h			  
+${PROJECT_PATH}/Common/StringTools.cpp
+${PROJECT_PATH}/Common/timing.h			  	  
+${PROJECT_PATH}/Common/timing.cpp
+CMakeLists.txt
 )
 #ADD_DEPENDENCIES(Simulation ${SIMULATION_DEPENDENCIES})
 #TARGET_LINK_LIBRARIES(Simulation ${SIMULATION_LINK_LIBRARIES})
