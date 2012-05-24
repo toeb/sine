@@ -46,6 +46,7 @@ namespace IBDS
 		Real z;
 
 	public:
+    Quaternion(const Real * elements){assign(elements);}
 		Quaternion();
 		Quaternion(const Real pw, const Real px, const Real py, const Real pz);
 		void setFromAxisAngle (const Vector3D &axis, const Real angle);
@@ -59,6 +60,18 @@ namespace IBDS
 		Real length2 ();
 		Quaternion conjugate ();
 
+    inline void assign(const Real * elements){
+      w = elements[0];
+      x = elements[1];
+      y = elements[2];
+      z = elements[3];
+    }
+    inline void copyTo(Real * elements)const{
+      elements[0]=w;
+      elements[1]=x;
+      elements[2]=y;
+      elements[3]=z;
+    }
     static const Quaternion & zeroRotation();
 
 		friend Quaternion operator - (const Quaternion& a);							// -m1

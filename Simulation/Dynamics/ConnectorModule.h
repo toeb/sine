@@ -1,6 +1,6 @@
 #pragma once
 #include <Simulation/Dynamics/Connector.h>
-#include <Simulation/SimulationModuleBase.h>
+#include <Simulation/Core/SimulationModuleBase.h>
 namespace IBDS{
   
 class ConnectorModule  :public SimulationModuleBase<Connector>{

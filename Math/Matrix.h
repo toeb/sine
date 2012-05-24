@@ -33,8 +33,8 @@ namespace IBDS
 	public:
 		virtual int getRows () const = 0;
 		virtual int getCols () const = 0;
-        virtual Real& operator () (int i, int j) = 0;             // Zugriff per Index
-        virtual const Real& operator () (int i, int j) const = 0;
+    virtual Real& operator () (int i, int j) = 0;             // Zugriff per Index
+    virtual const Real& operator () (int i, int j) const = 0;
 	};
 }
 

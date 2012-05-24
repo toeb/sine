@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/SimulationModuleBase.h>
+#include <Simulation/Core/SimulationModuleBase.h>
 #include <Simulation/Textiles/TextileModel.h>
 namespace IBDS{
 class TextileAlgorithm: public virtual SimulationModuleBase<TextileModel>{

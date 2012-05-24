@@ -49,7 +49,21 @@ namespace IBDS
     Vector3D(const Real x, const Real y, const Real z);
 		Vector3D();
 		Vector3D(const Vector3D &vector);
+		Vector3D(const Real * elements){
+      assign(elements);
+    }
     ~Vector3D();
+
+    inline void assign(const Real * elements){
+      v[0]=elements[0];
+      v[1]=elements[1];
+      v[2]=elements[2];
+    }
+    inline void copyTo(Real * elements)const{
+     elements[0] =v[0];
+     elements[1] =v[1];
+     elements[2] =v[2];
+    }
 
     static inline void toBarycentricCoordinates(const Vector3D & p, const Vector3D & x1, const Vector3D & x2, const Vector3D & x3, Vector3D & uvw){
       Vector3D n1,n2,n3;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 #include <Simulation/Integrators/IIntegrable.h>
 namespace IBDS{
 class ISystemFunction : public virtual ISimulationObject{

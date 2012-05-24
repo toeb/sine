@@ -12,20 +12,23 @@ set(collisionDetection_SRC
 )
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
 set(geometry_SRC
- GeometricObject.h
- GeometricObject.cpp
+ ./Geometry/GeometricObject.h
+ ./Geometry/GeometricObject.cpp
+ ./Geometry/CoordinateSystem.h
+ ./Geometry/CoordinateSystem.cpp
+ 
 )
 
 source_group("simulation\\geometry" FILES ${geometry_SRC})
 set(geometryPrimitives_SRC
- Cylinder.h
- Cylinder.cpp
- Hexahedron.h
- Hexahedron.cpp
- Sphere.h
- Sphere.cpp
+ ./Geometry/Primitives/Cylinder.h
+ ./Geometry/Primitives/Cylinder.cpp
+ ./Geometry/Primitives/Hexahedron.h
+ ./Geometry/Primitives/Hexahedron.cpp
+ ./Geometry/Primitives/Sphere.h
+ ./Geometry/Primitives/Sphere.cpp
 )
-source_group("simulation\\geometry" FILES ${geometryPrimitives_SRC})
+source_group("simulation\\geometry\\primitives" FILES ${geometryPrimitives_SRC})
 SET (integrators_SRC
   ./Integrators/IIntegrable.h
   ./Integrators/Integrator.h

@@ -5,7 +5,7 @@
 #include <Simulation/Dynamics/ConnectorModule.h>
 #include <Simulation/Integrators/CompositeIntegratable.h>
 #include <Simulation/Integrators/ISystemFunction.h>
-#include <Simulation/CompositeSimulationModule.h>
+#include <Simulation/Core/CompositeSimulationModule.h>
 #include <Simulation/Textiles/TextileAlgorithm.h>
 
 namespace IBDS{

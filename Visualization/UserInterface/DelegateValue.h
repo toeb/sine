@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation\ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 #include <Visualization/UserInterface/IValue.h>
 #include <Visualization\UserInterface\IComponent.h>
 #include <functional>

@@ -2,7 +2,7 @@
 #define __CompositeIntegratable_h__
 #include <vector>
 #include "IIntegrable.h"
-#include <Simulation/ISimulationModule.h>
+#include <Simulation/Core/ISimulationModule.h>
 namespace IBDS{
 
 /**

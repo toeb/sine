@@ -1,8 +1,7 @@
 #pragma once
 
 #include <Simulation/Integrators/Integrator.h>
-#include <Simulation/ISimulationModule.h>
-#include <Simulation/ISimulationModule.h>
+#include <Simulation/Core/ISimulationModule.h>
 
 #include <vector>
 

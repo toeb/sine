@@ -30,7 +30,7 @@
 /** Epsilon wird für Tests gegen 0 verwendet (=> Rundungsfehler)
   */
 #define EPSILON 1.0E-9
-
+#define PI 3.14159
 namespace IBDS
 {
 	/** Ebene in Hesse-Normalform: a*x + b*y + c*z + d = 0

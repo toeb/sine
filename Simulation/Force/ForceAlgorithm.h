@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/ISimulationModule.h>
+#include <Simulation/Core/ISimulationModule.h>
 #include <Simulation/Force/Force.h>
 
 namespace IBDS{

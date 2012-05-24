@@ -1,7 +1,7 @@
 #ifndef __Integrator_h__
 #define __Integrator_h__
 #include "IIntegrable.h"
-#include <Simulation/ISimulationModule.h>
+#include <Simulation/Core/ISimulationModule.h>
 #include <Simulation/Integrators/ISystemFunction.h>
 namespace IBDS{
   

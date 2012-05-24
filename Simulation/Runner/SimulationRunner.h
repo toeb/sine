@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation/Simulation.h>
+#include <Simulation/Core/Simulation.h>
 
 namespace IBDS{
 class SimulationRunner : public virtual ISimulationObject{

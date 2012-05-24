@@ -49,7 +49,13 @@ namespace IBDS
     ~Matrix3x3();
 
     
-
+    
+    inline void transposeInPlace(){
+      Real tmp;
+      tmp = v[0].v[1]; v[0].v[1] = v[1].v[0]; v[1].v[0] = tmp;
+      tmp = v[0].v[2]; v[0].v[2] = v[2].v[0]; v[2].v[0] = tmp;      
+      tmp = v[1].v[2]; v[1].v[2] = v[2].v[1]; v[2].v[1] = tmp;
+    }
     //my methods
     void getCoordinateVectors(Vector3D & direction, Vector3D & normal, Vector3D & binormal)const{
       direction[0]=(*this)(0,0);

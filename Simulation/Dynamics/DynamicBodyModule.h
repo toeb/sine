@@ -1,6 +1,6 @@
 #pragma once
 #include <Simulation/Dynamics/DynamicBody.h>
-#include <Simulation/SimulationModuleBase.h>
+#include <Simulation/Core/SimulationModuleBase.h>
 namespace IBDS{
  
 class DynamicBodyModule : public SimulationModuleBase<DynamicBody>{

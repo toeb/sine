@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 #include <Simulation/Force/DampedSpring.h>
 #include <vector>
 #include <Simulation/Dynamics/Particle.h>

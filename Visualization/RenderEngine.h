@@ -1,9 +1,9 @@
 #pragma once
 #include "IRenderer.h"
 #include "CompositeRenderer.h"
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 
-#include <Simulation/ISimulationModule.h>
+#include <Simulation/Core/ISimulationModule.h>
 namespace IBDS{
   class Camera : virtual public ISimulationObject{
     virtual void camera()=0;

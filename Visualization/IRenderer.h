@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 namespace IBDS{
 class IRenderer:public virtual ISimulationObject{
 public:

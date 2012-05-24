@@ -1,7 +1,7 @@
 #ifndef __Integratable_h__
 #define __Integratable_h__
 #include <Math/VectorND.h>
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 //#include <Simulation/ISimulationObject.h>
 namespace IBDS{
 

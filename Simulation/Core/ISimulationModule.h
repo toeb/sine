@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 #include <Math/MathDefs.h>
 #include <vector>
 #include <algorithm>

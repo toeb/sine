@@ -1,7 +1,7 @@
 #ifndef __CustomSimulation_h__
 #define __CustomSimulation_h__
 
-#include <Simulation/Simulation.h>
+#include <Simulation/Core/Simulation.h>
 #include <Simulation/DynamicsAlgorithm.h>
 #include <Simulation/Integrators/SingleStepIntegrator.h>
 namespace IBDS{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation/Simulation.h>
+#include <Simulation/Core/Simulation.h>
 #include <Simulation/Dynamics/BodyPrimitives/Box.h>
 #include <Simulation/Force/Gravity.h>
 #include <Simulation/Force/DampedSpring.h>

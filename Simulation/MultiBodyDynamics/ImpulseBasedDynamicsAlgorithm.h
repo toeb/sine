@@ -1,6 +1,6 @@
 #pragma once
 #include <Simulation/MultiBodyDynamics/Joint.h>
-#include <Simulation/ISimulationModule.h>
+#include <Simulation/Core/ISimulationModule.h>
 #include <vector>
 namespace IBDS{
   

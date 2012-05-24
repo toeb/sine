@@ -2,8 +2,8 @@
 #include <Visualization/IRenderer.h>
 #include <AntTweakBar/AntTweakBar.h>
 #include <Visualization/InputHandler.h>
-#include <Simulation/ISimulationModule.h>
-#include <Simulation/SimulationModuleBase.h>
+#include <Simulation/Core/ISimulationModule.h>
+#include <Simulation/Core/SimulationModuleBase.h>
 #include <functional>
 #include <map>
 
