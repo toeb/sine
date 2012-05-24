@@ -15,5 +15,14 @@ public:
   void set(const void * val);
   void get(void * val);
 };
+class IntValue : public virtual IValue{
+private:
+  std::function<void (int v)> setter;
+  std::function<int()> getter;
+public:
+  IntValue(const std::string & name, std::function<int ()> get,std::function<void (int v)> set);
+  void set(const void * val);
+  void get(void * val);
+};
 
 }

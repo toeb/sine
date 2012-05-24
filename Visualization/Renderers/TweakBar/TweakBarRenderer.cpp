@@ -3,6 +3,7 @@
 #include <GL\glut.h>
 #include <sstream>
 #include <iostream>
+#include <Visualization/UserInterface/RealValue.h>
 using namespace IBDS;
 using namespace std;
 
@@ -31,10 +32,20 @@ void TweakBarRenderer::addAction(IAction * action){
 }
 
 void TweakBarRenderer::addValueCallback(IValue * callback){
+  TwType type = TW_TYPE_UNDEF;
+  if(dynamic_cast<IntValue*>(callback)){
+    type = TW_TYPE_INT32;
+  }
+  if(dynamic_cast<RealValue*>(callback)){
+    type = TW_TYPE_DOUBLE;
+  }
+  if(type == TW_TYPE_UNDEF)return;
+
+
   int r  =TwAddVarCB(
     _tweakBar,
     callback->getName()->c_str(), 
-    TW_TYPE_DOUBLE,
+    type,
     setValueCallback,
     getValueCallback,
     callback,0);

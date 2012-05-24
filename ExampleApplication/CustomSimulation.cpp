@@ -3,6 +3,7 @@
 #include <Visualization/IRenderer.h>
 
 #include <Simulation/Integrators/Implementations/ExplicitEuler.h>
+#include <Simulation/Integrators/Implementations/ImplicitEuler.h>
 #include <Simulation/Integrators/Implementations/RungeKutta4.h>
 #include <Simulation/Integrators/Implementations/RungeKuttaFehlberg45.h>
 
@@ -167,19 +168,48 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
   }
 }
 
-void CustomSimulation::buildAlgorithms(){
-  //integrator = new RungeKutta4(0.01);
-  integrator = new ExplicitEuler(0.001);
 
+int integratorIndex=0;
+vector<SingleStepIntegrator*> integrators;
+
+
+void CustomSimulation::buildAlgorithms(){
+  
+  integrators.push_back(new ExplicitEuler(0.01));
+  integrators.push_back(new ImplicitEuler(0.01));
+  integrators.push_back(new RungeKutta4(0.01));
+
+  
   addSimulationObject(&dynamicsAlgorithm);
 
+  integrator = integrators.at(0);
+
   integrator->setSystemFunction(dynamicsAlgorithm);
+  
+  
   setIntegrator(*integrator);
   
+
+  addSimulationObject(new IntValue("Integrator 0-2 (0=ee, 1=ie,2=rk4)", 
+    [this](){
+      return integratorIndex;
+  },
+    [this](int val){
+      integratorIndex = val % 3;
+      integrator= integrators.at(integratorIndex);
+      integrator->setSystemFunction(dynamicsAlgorithm);
+      setIntegrator(*integrator);
+
+    }));
+
+
 
   addSimulationObject( new RealValue("Integrator Step Size",
     [this](){return integrator->getStepSize();},
     [this](Real value){integrator->setStepSize(value);}));
+
+  
+
 
   
   addSimulationObject(new LightRenderer());
@@ -195,7 +225,7 @@ void CustomSimulation::buildModel(){
     
   //addSimulationObject(new ControllableBox());
 
-  Gravity & g = *(b.setGravity(4));
+  Gravity & g = *(b.setGravity(1));
   IValue * r = new RealValue("Gravity Magnitude",
     [&g](){return g.getGravityMagnitude();},
     [&g](Real val){g.setGravityMagnitude(val);});
@@ -206,7 +236,7 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(new TextRenderer(*(new string("4 Boxes connected by springs")),*(new  Vector3D(4,1,0))));
 
-  TextileModel & cloth = *(createCloth(*this,1,10,10,101,101));
+  TextileModel & cloth = *(createCloth(*this,5,10,10,31,31));
   
   //create4BoxesWithSpring(b, Vector3D(3,0,0));
 
@@ -228,7 +258,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
   
   Particle * particle = dynamic_cast<Particle*>(simulationObject);
   if(particle){
-    addSimulationObject(new ParticleRenderer(*particle));
+    //addSimulationObject(new ParticleRenderer(*particle));
   }
 
   Box * box = dynamic_cast<Box*>(simulationObject);

@@ -67,7 +67,9 @@ VectorND::~VectorND()
   */
 VectorND& VectorND::operator = (const VectorND& vn)
 { 
-  n = vn.n;
+  if(n !=vn.n){
+    resize(vn.n);
+  }
   #pragma omp parallel for
   for (int i=0; i < n; i++)
     v[i] = vn.v[i]; 

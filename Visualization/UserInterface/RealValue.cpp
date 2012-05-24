@@ -17,3 +17,19 @@ using namespace IBDS;
     Real * value = reinterpret_cast<Real*>(val);
     *value = getter();
   }
+
+
+  
+
+  IntValue::IntValue(const string & name, function<int ()> get,function<void (int v)> set):IValue(name){
+    setter = set;
+    getter = get;
+  }
+  void IntValue::set(const void * val){
+    const int * realValue = reinterpret_cast<const int*>(val);
+    setter(*realValue);
+  }
+  void IntValue::get(void * val){
+    int * value = reinterpret_cast<int*>(val);
+    *value = getter();
+  }

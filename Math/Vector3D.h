@@ -51,6 +51,22 @@ namespace IBDS
 		Vector3D(const Vector3D &vector);
     ~Vector3D();
 
+    static inline void toBarycentricCoordinates(const Vector3D & p, const Vector3D & x1, const Vector3D & x2, const Vector3D & x3, Vector3D & uvw){
+      Vector3D n1,n2,n3;
+      Vector3D r;
+      
+      subtract(x2,x1,n1);
+      subtract(x3,x1,n2);
+      subtract(p,x1,r);
+      
+      n1.normalize();
+      n2.normalize();
+      crossProduct(n1,n2,n3);
+      
+      dotProduct(n1,r,uvw.v[0]);
+      dotProduct(n2,r,uvw.v[1]);
+      dotProduct(n3,r,uvw.v[2]);
+    }
 
     //inline mehtods for performance critical sections
     //b = s*a
