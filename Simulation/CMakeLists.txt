@@ -6,17 +6,20 @@ SET(collision_SRC
  ./Collision/Collision.cpp
 )
 source_group("simulation\\collision" FILES ${collision_SRC})
+
 set(collisionDetection_SRC 
  ./Collision/Detection/CollisionDetector.h
  ./Collision/Detection/CollisionDetector.cpp
+ ./Collision/Detection/BoundingSphere.h
+ ./Collision/Detection/BoundingSphereHierarchy.h 
 )
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
+
 set(geometry_SRC
  ./Geometry/GeometricObject.h
  ./Geometry/GeometricObject.cpp
  ./Geometry/CoordinateSystem.h
  ./Geometry/CoordinateSystem.cpp
- 
 )
 
 source_group("simulation\\geometry" FILES ${geometry_SRC})
