@@ -28,14 +28,21 @@ namespace IBDS
 class Particle : public DynamicBody
   {
   private:
-    Real _mass;
     Vector3D _position;
     Vector3D _velocity;
     Vector3D _acceleration;
     Vector3D _f;
+    Real _m;
+
   public:
     Particle ();
     ~Particle ();
+   
+    const Vector3D &  getCenterOfGravity()const {return getPosition();};
+
+    Real getMass()const{return _m;}
+    void setMass(Real m){_m = m;}
+
     void applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs);
     
     void getDerivedState(Real * xDot)const;
@@ -43,20 +50,23 @@ class Particle : public DynamicBody
     void getState(Real * state)const;
     int getStateDimension()const;
 
-
     void resetForce();
     void addExternalForce(const Vector3D & f);
+    void addExternalTorque(const Vector3D & tau){};
     void setForce(const Vector3D & f);
     const Vector3D & getForce()const;
+    const Vector3D & getTorque()const{return Vector3D::Zero();}
     
     void calculateDynamics();
+    void calculateCachedValues(){};
 
-    Real getMass() const;
-    void setMass(const Real & val);
     const  Vector3D  & getPosition() const;
     void setPosition(const Vector3D & val);
+
     const  Vector3D  &   getVelocity() const;
     void setVelocity(const Vector3D & val);
+
+    const Vector3D & getAcceleration() const;
 
     void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
 

@@ -1,26 +1,3 @@
-/*
- * IBDS - Impulse-Based Dynamic Simulation Library
- * Copyright (c) 2003-2008 Jan Bender http://www.impulse-based.de
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event will the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Permission is granted to anyone to use this software for any purpose,
- * including commercial applications, and to alter it and redistribute it
- * freely, subject to the following restrictions:
- *
- * 1. The origin of this software must not be misrepresented; you must not
- *    claim that you wrote the original software. If you use this software
- *    in a product, an acknowledgment in the product documentation would be
- *    appreciated but is not required.
- * 2. Altered source versions must be plainly marked as such, and must not be
- *    misrepresented as being the original software.
- * 3. This notice may not be removed or altered from any source distribution.
- *
- * Jan Bender - Jan.Bender@impulse-based.de
- */
-
 #include "Particle.h"
 #include <Math/Matrix3x3.h>
 
@@ -50,32 +27,22 @@ void Particle::calculateDynamics(){
   _acceleration = _f*(1/m);
 }
 
+const Vector3D & Particle::getAcceleration()const{
+  return _acceleration;
+}
 
 
 void Particle::getDerivedState(Real * xDot)const{
-  xDot[0]= _velocity[0];
-  xDot[1]= _acceleration[0];
-  xDot[2]= _velocity[1];
-  xDot[3]= _acceleration[1];
-  xDot[4]= _velocity[2];
-  xDot[5]= _acceleration[2];
+  _velocity.copyTo(&(xDot[0]));
+  _acceleration.copyTo(&(xDot[3]));
 }
 void Particle::setState(const Real * state){
-  _position[0]=state[0]; 
-  _velocity[0]=state[1];
-  _position[1]=state[2];
-  _velocity[1]=state[3];
-  _position[2]=state[4];
-  _velocity[2]=state[5];
+  _position.assign(&(state[0]));
+  _velocity.assign(&(state[3]));
 }
  void Particle::getState(Real * state)const{
-  //store the state in alternating fashion (always x_i \dot{x_i} which is needed for some integration algorithms
-  state[0] =_position[0];
-  state[1] =_velocity[0];
-  state[2] =_position[1];
-  state[3] =_velocity[1];
-  state[4] =_position[2];
-  state[5] =_velocity[2];
+   _position.copyTo(&(state[0]));
+   _velocity.copyTo(&(state[3]));
 }
  int Particle::getStateDimension()const{
   static int dim = 6;
@@ -85,7 +52,7 @@ void Particle::setState(const Real * state){
 
 Particle::Particle () 
 {
- _mass = 1.0;
+  setMass(1.0);
  _position = Vector3D(0,0,0);
  _velocity = Vector3D(0,0,0);
  _acceleration = Vector3D(0,0,0);
@@ -93,16 +60,6 @@ Particle::Particle ()
 
 Particle::~Particle () 
 {	
-}
-
-Real IBDS::Particle::getMass() const
-{
-  return _mass;
-}
-
-void Particle::setMass( const Real & val )
-{
-  _mass = val;
 }
 
 const Vector3D & Particle::getPosition() const

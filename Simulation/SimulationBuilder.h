@@ -2,6 +2,7 @@
 
 #include <Simulation/Core/Simulation.h>
 #include <Simulation/Dynamics/BodyPrimitives/Box.h>
+#include <Simulation/Dynamics/BodyPrimitives/Sphere.h>
 #include <Simulation/Force/Gravity.h>
 #include <Simulation/Force/DampedSpring.h>
 #include <Simulation/MultiBodyDynamics/BallJoint.h>
@@ -19,9 +20,13 @@ class SimulationBuilder{
     int _connectorNumber;
     Simulation & _simulation;
     std::map<std::string,ISimulationObject *> _simulationObjects; 
+    Vector3D _currentOffset;
+    
   public:
 
-
+    void setOffset(const Vector3D & offset){
+      _currentOffset.assign(offset);
+    }
     SimulationBuilder(Simulation & simulation);
 
   std::map<std::string,ISimulationObject *> & getSimulationObjects();
@@ -41,7 +46,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    Box * createBox(std::string name="",const Vector3D & position=Vector3D::Zero(),Real mass=1,Real width=1,Real height=1, Real depth=1);
+    DynamicBox * createBox(std::string name="",const Vector3D & position=Vector3D::Zero(),Real mass=1,Real width=1,Real height=1, Real depth=1);
     
     /**
      * \brief Sets a gravity.
@@ -99,7 +104,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    Sphere * createSphere(std::string name="", const Vector3D & position=Vector3D::Zero(), Real mass=1,Real radius = 1){};
+    Sphere * createSphere(std::string name="", const Vector3D & position=Vector3D::Zero(), Real mass=1,Real radius = 1);
 
     /**
      * \brief Creates a particle.

@@ -8,9 +8,11 @@ CoordinateSystem::CoordinateSystem():_orientation(1,0,0,0),_p(0,0,0), _R(0),_RT(
 
 }
 
+
 CoordinateSystem::~CoordinateSystem(){
   if(_R)delete _R;
   if(_RT)delete _RT;
+
 }
 
 

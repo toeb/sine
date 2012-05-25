@@ -45,7 +45,8 @@ namespace IBDS
 		Real v[3];
 
 	public:
-		void assign(const Vector3D &vector);
+		
+    void assign(const Vector3D &vector);
     Vector3D(const Real x, const Real y, const Real z);
 		Vector3D();
 		Vector3D(const Vector3D &vector);

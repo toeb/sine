@@ -3,10 +3,9 @@
 using namespace std;
 using namespace IBDS;
 
-BoxRenderer::BoxRenderer(const Box & box):
+BoxRenderer::BoxRenderer(const Hexahedron & box):
 _box(box),
 _textRenderer(0), 
-_RT(box.getTransposedRotationMatrix()),
 _p(box.getPosition()){
   boxExtent[0] = box.getXExtent();
   boxExtent[1] = box.getYExtent();
@@ -15,7 +14,7 @@ _p(box.getPosition()){
 void BoxRenderer::render(){  
   MiniGL::drawCube(
     &_p,
-    &_RT,
+    _box.getCachedTransposedRotationMatrix(),
     (float)boxExtent[0],
     (float)boxExtent[1],
     (float)boxExtent[2],

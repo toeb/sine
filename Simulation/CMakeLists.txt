@@ -4,12 +4,16 @@ SET (SIMULATION_DEPENDENCIES Math freeglut)
 SET(collision_SRC
  ./Collision/Collision.h
  ./Collision/Collision.cpp
+ ./Collision/Collidable.h
+ ./Collision/Collidable.cpp
 )
 source_group("simulation\\collision" FILES ${collision_SRC})
 
 set(collisionDetection_SRC 
  ./Collision/Detection/CollisionDetector.h
  ./Collision/Detection/CollisionDetector.cpp
+ ./Collision/Detection/SphereCollisionDetector.h
+ ./Collision/Detection/SphereCollisionDetector.cpp
  ./Collision/Detection/BoundingSphere.h
  ./Collision/Detection/BoundingSphereHierarchy.h 
 )
@@ -21,8 +25,26 @@ set(geometry_SRC
  ./Geometry/CoordinateSystem.h
  ./Geometry/CoordinateSystem.cpp
 )
-
 source_group("simulation\\geometry" FILES ${geometry_SRC})
+set(CollisionTests_SRC
+./Collision/Detection/CollisionTest/SphereSphere.h
+./Collision/Detection/CollisionTest/SphereSphere.cpp
+./Collision/Detection/CollisionTest/SpherePlane.h
+./Collision/Detection/CollisionTest/SpherePlane.cpp
+./Collision/Detection/CollisionTest/CollisionTest.h
+./Collision/Detection/CollisionTest/CollisionTest.cpp
+	
+)
+source_group("simulation\\collision\\detection\\collisiontest" FILES ${CollisionTests_SRC})
+
+set(CollisionPrimitives_SRC
+	./Collision/CollisionPrimitives/CollisionSphere.h
+	./Collision/CollisionPrimitives/CollisionSphere.cpp
+	./Collision/CollisionPrimitives/CollisionPlane.h
+	./Collision/CollisionPrimitives/CollisionPlane.cpp
+)
+source_group("simulation\\collision\\collisionprimitives" FILES ${CollisionPrimitives_SRC})
+
 set(geometryPrimitives_SRC
  ./Geometry/Primitives/Cylinder.h
  ./Geometry/Primitives/Cylinder.cpp
@@ -30,6 +52,8 @@ set(geometryPrimitives_SRC
  ./Geometry/Primitives/Hexahedron.cpp
  ./Geometry/Primitives/Sphere.h
  ./Geometry/Primitives/Sphere.cpp
+ ./Geometry/Primitives/Plane.h
+ ./Geometry/Primitives/Plane.cpp
 )
 source_group("simulation\\geometry\\primitives" FILES ${geometryPrimitives_SRC})
 SET (integrators_SRC
@@ -116,6 +140,10 @@ set(simulationCore_SRC
 	./Core/SimulationModuleBase.h
 	./Core/SimulationModuleBase.cpp
 	./Core/ISimulationObject.h
+	./Core/IUpdateable.h
+	./Core/IUpdateable.cpp
+	./Core/UpdateablesModule.h
+	./Core/UpdateablesModule.cpp	
 )
 
 SET(textile_SRC
@@ -188,6 +216,8 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/SphereRenderer.cpp	
 	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.cpp	
+	${PROJECT_PATH}/Visualization/Renderers/CollisionRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/CollisionRenderer.cpp	
 	)
 	
 set(tweakbar_SRC
@@ -254,7 +284,9 @@ ${userinterface_SRC}
 ${collision_SRC} 
 ${collisionDetection_SRC} 
 ${geometry_SRC} 
+${CollisionPrimitives_SRC}
 ${geometryPrimitives_SRC}
+${CollisionTests_SRC}
 ${PROJECT_PATH}/Common/Config.h			  
 ${PROJECT_PATH}/Common/StringTools.h			  
 ${PROJECT_PATH}/Common/StringTools.cpp

@@ -7,7 +7,7 @@ RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
 }
 RigidBodyConnector* RigidBodyConnector::createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs){
   Vector3D r_ocs;
-  body.worldToObjectCoordinates(r_wcs,r_ocs);
+  body.toObjectCoordinates(r_wcs,r_ocs);
   return RigidBodyConnector::createWithLocalConnectionPoint(body,r_ocs);
 }
 RigidBodyConnector* RigidBodyConnector::createWithLocalConnectionPoint(RigidBody & body, const Vector3D & r_ocs){
@@ -41,7 +41,7 @@ void RigidBodyConnector::applyImpulse(const Vector3D & p_wcs){
 
 
 void  RigidBodyConnector::calculateWorldPosition(Vector3D& p_wcs)const{  
-  _rigidBody.objectToWorldCoordinates(_r, p_wcs);
+  _rigidBody.toWorldCoordinates(_r, p_wcs);
 }
 
 void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{  

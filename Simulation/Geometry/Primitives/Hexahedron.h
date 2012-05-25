@@ -12,5 +12,9 @@ public:
   Hexahedron(Real x= 0,Real y=0,Real z=0);
   bool isInside(const Vector3D & p_wcs)const;
   Real calculateBoundingSphereRadius()const;
+  Real getXExtent()const;
+  Real getYExtent()const;
+  Real getZExtent()const;
+
 };
 }

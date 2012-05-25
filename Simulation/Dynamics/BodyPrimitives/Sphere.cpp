@@ -1,13 +1,12 @@
 #include "Sphere.h"
 using namespace IBDS;
 
-Sphere::Sphere() {}
 
-Sphere::~Sphere() {}
+DynamicSphere::~DynamicSphere() {}
 
-Sphere::Sphere(Real m, Real r) : _r(r) {
-	RigidBody::setMass(m);
-
+DynamicSphere::DynamicSphere(Real m, Real r):Sphere(r){
+	setMass(m);
+  
 	Real scalarInertia = m*r*r*0.4; // 2/5*r²
 	Matrix3x3 inertia;
 	inertia = scalarInertia*inertia;

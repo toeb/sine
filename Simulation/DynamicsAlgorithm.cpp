@@ -7,11 +7,12 @@ using namespace IBDS;
 DynamicsAlgorithm::DynamicsAlgorithm():multiBodyDynamics(20){
   addSimulationModule(&forceModule);
   addSimulationModule(&multiBodyDynamics);
-  
+  addSimulationModule(&updatablesModule);
   addSimulationModule(&dynamicBodyModule);
   addSimulationModule(&integrables);
   addSimulationModule(&connectorModule);
   addSimulationModule(&textilesModule);
+  addSimulationModule(&sphereCollisionDetector);
 }
 
 IIntegrable & DynamicsAlgorithm::getIntegrable(){
@@ -25,9 +26,15 @@ void DynamicsAlgorithm::evaluate(Real t, Real h){
   dynamicBodyModule.calculateDynamics();
 }
 void DynamicsAlgorithm::preIntegration(Real t, Real h){
+  
+  dynamicBodyModule.calculateCachedValues(); 
+  connectorModule.calculateConnectorPositions();
   multiBodyDynamics.correctPositions(h);
 }
 void DynamicsAlgorithm::postIntegration(Real t,Real h){
   multiBodyDynamics.correctVelocities();
   textilesModule.normalize();
+  updatablesModule.update(t,h);
+  sphereCollisionDetector.resetCollisions();
+  sphereCollisionDetector.detectCollisions();
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <Visualization/IRenderer.h>
-#include <Simulation/Dynamics/BodyPrimitives/Box.h>
+
+#include <Simulation/Geometry/Primitives/Hexahedron.h>
 #include <Visualization/Renderers/TextRenderer.h>
 
 namespace IBDS{
@@ -8,14 +9,13 @@ namespace IBDS{
 class BoxRenderer : public IRenderer{
 private:  
   TextRenderer * _textRenderer;
-  const Box & _box;
-  const Matrix3x3  & _RT;
+  const Hexahedron & _box;
   const Vector3D & _p;
   Vector3D _textPosition;
   Vector3D boxExtent;
 public:
   bool initializeObject();
-  BoxRenderer(const Box & box);
+  BoxRenderer(const Hexahedron & box);
   void render();
 };
 }

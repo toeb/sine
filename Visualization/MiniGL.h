@@ -77,6 +77,10 @@ namespace IBDS
 		static const float darkYellow[4];
 		static const float darkGray[4];
 
+    
+    
+		/** Gibt an, wie die Szene gezeichnet werden soll. (Wireframe) */
+		static int drawMode;
  /**
   * \brief Value to color.
   *
@@ -181,8 +185,6 @@ namespace IBDS
 		static int mouse_pos_x_old;
 		/** Letzte Mausposition */
 		static int mouse_pos_y_old;
-		/** Gibt an, wie die Szene gezeichnet werden soll. (Wireframe) */
-		static int drawMode;
 		
 		static void processMenuEvents(int option);
 		static void idle ();

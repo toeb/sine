@@ -3,13 +3,8 @@
 using namespace IBDS;
 
 ConnectorRenderer::ConnectorRenderer(Connector & connector):_connector(connector),_coordinateSystemRenderer(0){
-  
-
- // _coordinateSystemRenderer = new CoordinateSystemRenderer(connector.getWorldPosition(),connector.getBody().
 }
 void ConnectorRenderer::render(){
- // MiniGL::drawVector(_connector.getWorldPosition(),_connector.getBody().getPosition(),0.01,MiniGL::black);
-
-  MiniGL::drawPoint(_connector.getWorldPosition(),4,MiniGL::yellow);
-  //  MiniGL::drawSphere(&(_connector.getWorldPosition()),0.05,MiniGL::yellow);
+  MiniGL::drawVector(_connector.getCachedWorldPosition(),_connector.getBody().getCenterOfGravity(),0.01,MiniGL::black);
+  MiniGL::drawPoint(_connector.getCachedWorldPosition(),4,MiniGL::yellow);
 }

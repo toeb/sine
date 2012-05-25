@@ -5,16 +5,25 @@ using namespace IBDS;
 
 SimulationBuilder::SimulationBuilder(Simulation & simulation):_simulation(simulation),_connectorNumber(1),_unknownCounter(1){}
 
-Box * SimulationBuilder::createBox(string name, const Vector3D & position, Real mass, Real width, Real height, Real depth){
+DynamicBox * SimulationBuilder::createBox(string name, const Vector3D & position, Real mass, Real width, Real height, Real depth){
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;    
-  Box * box = new Box(mass,width,height,depth);
+  DynamicBox * box = new DynamicBox(mass,width,height,depth);
   box->setName(name);
-  box->setPosition(position);
+  box->setPosition(position+_currentOffset);
   addSimulationObject(box);
   return box;
 }
 
+Sphere * SimulationBuilder::createSphere(std::string name, const Vector3D & position, Real mass,Real radius){
+  if(name.compare("")==0)name = createUnknownName();
+  if(nameExists(name))return 0;    
+  DynamicSphere * sphere = new DynamicSphere(mass,radius);
+  sphere->setName(name);
+  sphere->setPosition(position+_currentOffset);
+  addSimulationObject(sphere);
+  return sphere;
+}
 Gravity* SimulationBuilder::setGravity(const Vector3D & gravityVector){
   Gravity * gravity = dynamic_cast<Gravity*>(getObject("gravity"));
 
@@ -74,7 +83,7 @@ Particle * SimulationBuilder::createParticle(string name, const Vector3D & posit
   if(nameExists(name))return 0;
   Particle * particle = new Particle();
   particle->setName(name);
-  particle->setPosition(position);
+  particle->setPosition(position+_currentOffset);
   particle->setMass(mass);
   addSimulationObject(particle);
 }
@@ -84,8 +93,8 @@ BallJoint * SimulationBuilder::createBallJoint(string jointName, string bodyA, s
   if(jointName.compare("")==0)jointName = createUnknownName();
   if(nameExists(jointName))return 0;
   //create connectors
-  Connector * a = createConnector(bodyA,position);
-  Connector * b = createConnector(bodyB,position);
+  Connector * a = createConnector(bodyA,position+_currentOffset);
+  Connector * b = createConnector(bodyB,position+_currentOffset);
   //return if a connector was not correctly created
   if(!(a&&b))return 0;
   //create ball joint
@@ -121,8 +130,7 @@ Connector* SimulationBuilder::createConnector(string bodyName, const Vector3D & 
 ParticleConnector * SimulationBuilder::createParticleConnector(DynamicBody* body, const Vector3D & position){
   Particle * particle = dynamic_cast<Particle*>(body);
   if(!particle)return 0;
-  if(position!=particle->getPosition())return 0; //particle connectors may only be connected at the position of the particle
-  
+ 
   ParticleConnector* connector = new ParticleConnector(*particle);
   return connector;
 }

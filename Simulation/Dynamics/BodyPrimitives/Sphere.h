@@ -1,29 +1,20 @@
 #pragma once
 
 #include <Simulation/Dynamics/RigidBody.h>
-
+#include <Simulation/Geometry/Primitives/Sphere.h>
 namespace IBDS{
-	class Sphere: public RigidBody
-		{
-		private:
+class DynamicSphere: public virtual RigidBody, public virtual Sphere
+{
+public:
 			
-			// mass
-			Real _m;
+	~DynamicSphere();
 			
-			// radius
-			Real _r;
-			
-			Sphere();
-		public:
-			
-			~Sphere();
-			
-			/**
-			 *  Creates a sphere with given mass and radius.
-			 * \param m mass
-			 * \param r radius
-			 */
-			Sphere(Real m, Real r);
+	/**
+		*  Creates a sphere with given mass and radius.
+		* \param m mass
+		* \param r radius
+		*/
+	DynamicSphere(Real m, Real r);
 
-		};
-	}
+};
+}

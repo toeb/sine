@@ -7,7 +7,8 @@
 #include <Simulation/Integrators/ISystemFunction.h>
 #include <Simulation/Core/CompositeSimulationModule.h>
 #include <Simulation/Textiles/TextileAlgorithm.h>
-
+#include <Simulation/Core/UpdateablesModule.h>
+#include <Simulation/Collision/Detection/SphereCollisionDetector.h>
 namespace IBDS{
 
   /**
@@ -34,6 +35,8 @@ public:
   CompositeIntegratable integrables;
   ConnectorModule connectorModule;
   TextileAlgorithm textilesModule;
+  UpdatablesModule updatablesModule;
+  SphereCollisionDetector sphereCollisionDetector;
   DynamicsAlgorithm();
 
   IIntegrable & getIntegrable();

@@ -3,30 +3,16 @@
 
 #include <Simulation\Dynamics\RigidBody.h>
 #include <Math/Matrix3x3.h>
+#include <Simulation/Geometry/Primitives/Hexahedron.h>
 
 namespace IBDS{
-	class Box: public RigidBody
-		{
-     
-		private:
-			// size of the box
-			Real _x, _y, _z;
-			Box();
-		public:
-      Real getXExtent()const;
-      Real getYExtent()const;
-      Real getZExtent()const;
+class DynamicBox: public virtual RigidBody, public virtual Hexahedron
+	{
+  public:
+		~DynamicBox();
 
-			~Box();
-			/**
-			 *  Creates a box with given mass and extents.
-			 * \param m mass
-			 * \param x width
-			 * \param y height
-			 * \param z depth
-			 */
-			Box(Real m, Real x, Real y, Real z);
-		};
-	}
+		DynamicBox(Real m, Real x, Real y, Real z);
+	};
+}
 
 #endif 

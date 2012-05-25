@@ -4,4 +4,5 @@ using namespace IBDS;
 
  void LightRenderer::onBeforeRenderering(){  
   MiniGL::initLights();	
+  
 }

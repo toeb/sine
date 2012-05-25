@@ -42,8 +42,8 @@ using namespace IBDS;
 using namespace std;
 
 void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){  
-  Box* box1 =b.createBox("box1",offset+Vector3D::Zero(),0);
-  Box* box2= b.createBox("box2",offset+Vector3D(0.1,-2,0));
+  DynamicBox* box1 =b.createBox("box1",offset+Vector3D::Zero(),0);
+  DynamicBox* box2= b.createBox("box2",offset+Vector3D(0.1,-2,0));
   //Box* box3 = b.createBox("box3",offset+Vector3D(0,-2,0));
   //Box* box4 = b.createBox("box4",offset+Vector3D(0,-3,0));
 
@@ -151,8 +151,8 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
   if(s<0.1)s = 0.1;
   Real mass = 1.0 ;
   Real l=0.75;
-  Box * lastBox=0;
-  Box* currentBox=0;
+  DynamicBox * lastBox=0;
+  DynamicBox* currentBox=0;
   Vector3D direction(1,0,0);
   direction.normalize();
   for(int i=0; i < n; i++){
@@ -261,7 +261,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
     //addSimulationObject(new ParticleRenderer(*particle));
   }
 
-  Box * box = dynamic_cast<Box*>(simulationObject);
+  DynamicBox * box = dynamic_cast<DynamicBox*>(simulationObject);
   if(box){
     addSimulationObject(new BoxRenderer(*box));
   }
