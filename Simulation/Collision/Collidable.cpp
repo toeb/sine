@@ -4,6 +4,14 @@
 using namespace std;
 using namespace IBDS;
 
+Collidable::Collidable(GeometricObject & o):_geometricObject(o){
+
+}
+
+GeometricObject & Collidable::getGeometricObject()const{
+  return _geometricObject;
+}
+
 void Collidable::addCollision(Collision* col){
   _collisions.push_back(col);
 }

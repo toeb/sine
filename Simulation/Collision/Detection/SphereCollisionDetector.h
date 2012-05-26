@@ -7,11 +7,9 @@
 namespace IBDS{
 class SphereCollisionDetector:public virtual CollisionDetector{
   SphereSphere collisionTest;
-  std::vector<CollisionSphere*> _spheres;
 public:
   int detectCollisions();
 protected:
-  void onObjectAdded(Collidable* collidable);
-  void onObjectRemoved(Collidable * collidable);
+  bool acceptObject(Collidable* collidable);
 };
 }

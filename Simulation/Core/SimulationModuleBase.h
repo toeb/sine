@@ -15,7 +15,8 @@ public:
 
 protected:
   virtual void onObjectAdded(T * object){ }
-virtual void onObjectRemoved(T * object){ }
+  virtual void onObjectRemoved(T * object){ }
+  virtual bool acceptObject(T * object){return true;}
 
   void foreach(std::function<void(T*)> action);
   std::vector<T*> & objects();
@@ -25,6 +26,7 @@ template<class T>
 bool SimulationModuleBase<T>::addSimulationObject(ISimulationObject * object){
   auto typedObject = dynamic_cast<T*>(object);
   if(!typedObject)return false;
+  if(!acceptObject(typedObject))return false;
   _objects.push_back(typedObject);
   onObjectAdded(typedObject);
 }

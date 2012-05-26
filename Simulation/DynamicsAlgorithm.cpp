@@ -34,7 +34,6 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
 void DynamicsAlgorithm::postIntegration(Real t,Real h){
   multiBodyDynamics.correctVelocities();
   textilesModule.normalize();
-  updatablesModule.update(t,h);
-  sphereCollisionDetector.resetCollisions();
-  sphereCollisionDetector.detectCollisions();
+  updatablesModule.update(t,h);  
+  cout <<sphereCollisionDetector.detectCollisions()<<endl;
 }

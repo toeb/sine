@@ -4,30 +4,30 @@
 using namespace std;
 using namespace IBDS;
 
+#define GET_SPHERE(coll) dynamic_cast<Sphere*>( &( coll->getGeometricObject()))
+
 int SphereCollisionDetector::detectCollisions(){
+  resetCollisions();
   Collision collision;
-  for(int i=0; i < _spheres.size(); i++){
-    collisionTest._A = _spheres.at(i);
-    for(int j=0; j < _spheres.size(); j++){
-      if(i==j)continue;
-      collisionTest._B = _spheres.at(j);
+  int cols = 0;
+  vector<Collidable*> & collidables = objects();
+  for(int i=0; i < collidables.size(); i++){
+    collision.objectA = collidables.at(i);
+    collisionTest._sphereA = GET_SPHERE(collision.objectA);
+    for(int j=i+1; j < collidables.size(); j++){
+      collision.objectB = collidables.at(j);
+      collisionTest._sphereB = GET_SPHERE(collision.objectB);
+      
       if(collisionTest.testCollision(collision)){
         addCollision(new Collision(collision));
+        cols++;
       }
     }
   }
-  return 0;
+  return cols;
 }
 
-void SphereCollisionDetector::onObjectAdded(Collidable * collidable){
-  CollisionSphere * sphere  =dynamic_cast<CollisionSphere*>(collidable);
-  if(sphere) _spheres.push_back(sphere);
+bool SphereCollisionDetector::acceptObject(Collidable * collidable){
+  if( !dynamic_cast<Sphere*>(&(collidable->getGeometricObject())))return false;
+  return true;
 }
-void SphereCollisionDetector::onObjectRemoved(Collidable * collidable){
-  CollisionSphere * sphere  =dynamic_cast<CollisionSphere*>(collidable);
-  if(!sphere) return;
-  auto it = find(_spheres.begin(), _spheres.end(), sphere);
-  if(it==_spheres.end())return;
-  _spheres.erase(it);
-}
-

@@ -105,6 +105,9 @@ void CustomSimulation::buildModel(){
   b.createSphere("s2",Vector3D(3,0,0),1,1);
   b.createBallJoint("j2","s2","p2",Vector3D(1,0,0));
 
+  b.createParticle("p3",Vector3D(2,0,0),0);
+  b.createSphere("s3",Vector3D(3,0,0),1,1);
+  b.createBallJoint("j3","s3","p3",Vector3D(2,0,0));
 
 }
 
@@ -137,12 +140,12 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
 
   Sphere * sphere = dynamic_cast<Sphere*>(simulationObject);
   if(sphere){
-    //addSimulationObject(new SphereRenderer(*sphere));
+    addSimulationObject(new SphereRenderer(*sphere));
   }
 
   DynamicSphere * dSphere = dynamic_cast<DynamicSphere*>(simulationObject);
   if(dSphere){
-    addSimulationObject(new CollisionSphere(*dSphere));
+    addSimulationObject(new Collidable(*dSphere));
   }
   Collidable* collidable = dynamic_cast<Collidable*>(simulationObject);
 

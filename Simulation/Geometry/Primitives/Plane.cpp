@@ -18,3 +18,15 @@ bool Plane::isInside(const Vector3D & p_wcs){
 Real Plane::calculateBoundingSphereRadius()const{
   return _dimension.length2();
 }
+
+void Plane::setDimension(const Vector3D & dim){
+  _dimension=dim;
+}
+void Plane::setDimension(Real x,Real y){
+  _dimension[0]=x;
+  _dimension[1]=y;
+
+}
+const Vector2D & Plane::getDimension()const{
+  return _dimension;
+}

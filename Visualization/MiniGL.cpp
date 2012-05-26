@@ -214,6 +214,15 @@ void MiniGL::drawPoint (const Vector3D &translation, const float pointSize, cons
 	glPointSize(1);
 }
 
+void MiniGL::multMatrix(const Matrix3x3  & R){
+  Real val[16];
+	val[0] = R[0][0]; val[1] = R[0][1]; val[2] = R[0][2]; val[3] = 0;
+	val[4] = R[1][0]; val[5] = R[1][1]; val[6] = R[1][2]; val[7] = 0;
+	val[8] =R[2][0]; val[9] = R[2][1]; val[10] = R[2][2]; val[11] = 0;
+	val[12] = 0; val[13] = 0; val[14] =0; val[15] = 1;
+
+	glMultMatrix (val);
+}
 
 /** Zeichnet einen Quader an der Stelle translation 
   * in der übergebenen Farbe.
@@ -484,6 +493,17 @@ float MiniGL::hat(Real x){
   */
 void MiniGL::destroy ()
 {
+}
+
+void MiniGL::translate(const Vector3D & t){
+  glTranslated(t[0],t[1],t[2]);
+}
+
+void MiniGL::pushMatrix(){
+  glPushMatrix();     
+}
+void MiniGL::popMatrix(){
+  glPopMatrix();
 }
 
 /** Wird aufgerufen, wenn sich die Höhe oder die Breite des Fensters

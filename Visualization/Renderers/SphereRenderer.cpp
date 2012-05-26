@@ -11,5 +11,15 @@ void SphereRenderer::render(){
   color[1] = MiniGL::darkGreen[1];
   color[2] = MiniGL::darkGreen[2];
   color[3] = 0.5;
-  MiniGL::drawSphere(&(_sphere.getPosition()),_sphere.getRadius(),color);
+
+  const Matrix3x3 & orientation =  *(_sphere.getCachedTransposedRotationMatrix());
+  
+  MiniGL::pushMatrix();
+
+  MiniGL::translate(_sphere.getPosition());
+  MiniGL::multMatrix(orientation);
+
+  MiniGL::drawSphere(&(Vector3D::Zero()),_sphere.getRadius(),color);
+  
+  MiniGL::popMatrix();
 }

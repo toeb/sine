@@ -198,6 +198,10 @@ namespace IBDS
 		static void breakPointMainLoop();
 		
 	public:
+    static void pushMatrix();
+    static void popMatrix();
+    static void translate(const Vector3D & t);
+    static void multMatrix(const Matrix3x3  & R);
 		static void reshape (int w, int h);
 		static void coordinateSystem ();
 		static void drawVector (const Vector3D &a, const Vector3D &b, const float w, const float *color);

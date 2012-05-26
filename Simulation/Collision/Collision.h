@@ -6,7 +6,7 @@ namespace IBDS{
 class Collidable;
 
 struct Collision{
-  Collision():objectA(0),objectB(0),handled(false){}
+  Collision():objectA(0),objectB(0),handled(false),colliding(false),calculateValues(true){}
 
   Collidable * objectA;
   Collidable * objectB;  
@@ -15,5 +15,7 @@ struct Collision{
   Vector3D normal;
   Real penetrationDepth;
   bool handled;
+  bool calculateValues;
+  bool colliding;
 };
 }
