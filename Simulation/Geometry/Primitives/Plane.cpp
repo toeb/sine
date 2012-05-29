@@ -7,26 +7,52 @@ Plane::Plane( const Vector2D & dimension):
  _dimension(dimension){
 
 }
-bool Plane::isInside(const Vector3D & p_wcs){
-  Vector3D p_ocs ;
-  toObjectCoordinates(p_wcs,p_ocs);
-  if(abs(p_ocs[2]) > EPSILON)return false;
-  if(p_ocs[0]*p_ocs[0]+p_ocs[1]*p_ocs[1] > _dimension.length2())return false;
-  return true;
-}
 
-Real Plane::calculateBoundingSphereRadius()const{
-  return _dimension.length2();
-}
 
-void Plane::setDimension(const Vector3D & dim){
+
+void Plane::createGeometry(){
+  deleteGeometry();
+  Real x = _dimension[0]/2;
+  Real y= _dimension[1]/2;
+  
+  addVertex(Vector3D(-x,-y,0));
+  addVertex(Vector3D(-x,y,0));
+  addVertex(Vector3D(x,y,0));
+  addVertex(Vector3D(x,-y,0));
+
+  addEdge(0,1);
+  addEdge(1,2);
+  addEdge(2,3);
+  addEdge(3,0);
+  
+  addFace(0,1,2,3); //frontface
+  addFace(3,2,1,0); //backface
+}
+void Plane::setDimension(const Vector2D & dim){
   _dimension=dim;
+
+  deleteGeometry();
+  createGeometry();
+
 }
 void Plane::setDimension(Real x,Real y){
-  _dimension[0]=x;
-  _dimension[1]=y;
+  setDimension(Vector2D(x,y));
 
 }
 const Vector2D & Plane::getDimension()const{
   return _dimension;
 }
+
+
+
+ void Plane::getNormal(Vector3D &n_wcs)const{
+   Matrix3x3 RT;
+   getOrientation().getMatrix3x3T(RT);
+   n_wcs.assign(RT.v[2]);
+ }
+
+
+
+
+
+

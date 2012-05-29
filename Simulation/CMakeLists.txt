@@ -1,6 +1,16 @@
 SET(SIMULATION_LINK_LIBRARIES Math freeglut opengl32.lib glu32.lib ${ANTTWEAKBAR_LIBS})
 SET (SIMULATION_DEPENDENCIES Math freeglut)
 
+set(collisionAcceleration_SRC 
+./Collision/Detection/Acceleration/BoundingSphereTree.h
+./Collision/Detection/Acceleration/BoundingSphereTree.cpp
+./Collision/Detection/Acceleration/Octree.h
+./Collision/Detection/Acceleration/Octree.cpp
+)
+
+
+source_group("simulation\\collision\\detection\\acceleration" FILES ${collisionAcceleration_SRC})
+
 SET(collision_SRC
  ./Collision/Collision.h
  ./Collision/Collision.cpp
@@ -20,12 +30,29 @@ set(collisionDetection_SRC
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
 
 set(geometry_SRC
- ./Geometry/GeometricObject.h
- ./Geometry/GeometricObject.cpp
+ ./Geometry/Geometry.h
+ ./Geometry/Geometry.cpp
  ./Geometry/CoordinateSystem.h
  ./Geometry/CoordinateSystem.cpp
 )
 source_group("simulation\\geometry" FILES ${geometry_SRC})
+
+set(polygon_SRC
+ ./Geometry/Polygon/Polygon.h
+ ./Geometry/Polygon/Polygon.cpp
+ ./Geometry/Polygon/Vertex.h
+ ./Geometry/Polygon/Vertex.cpp
+ ./Geometry/Polygon/HalfEdge.h
+ ./Geometry/Polygon/HalfEdge.cpp
+ ./Geometry/Polygon/Edge.h
+ ./Geometry/Polygon/Edge.cpp
+ ./Geometry/Polygon/Face.h
+ ./Geometry/Polygon/Face.cpp
+ ./Geometry/Polygon/Element.h
+ ./Geometry/Polygon/Element.cpp
+)
+source_group("simulation\\geometry\\polygon" FILES ${polygon_SRC})
+
 set(CollisionTests_SRC
 ./Collision/Detection/CollisionTest/SphereSphere.h
 ./Collision/Detection/CollisionTest/SphereSphere.cpp
@@ -33,17 +60,13 @@ set(CollisionTests_SRC
 ./Collision/Detection/CollisionTest/SpherePlane.cpp
 ./Collision/Detection/CollisionTest/CollisionTest.h
 ./Collision/Detection/CollisionTest/CollisionTest.cpp
+./Collision/Detection/CollisionTest/SeparatingAxes.h
+./Collision/Detection/CollisionTest/SeparatingAxes.cpp
+
 	
 )
 source_group("simulation\\collision\\detection\\collisiontest" FILES ${CollisionTests_SRC})
 
-set(CollisionPrimitives_SRC
-	./Collision/CollisionPrimitives/CollisionSphere.h
-	./Collision/CollisionPrimitives/CollisionSphere.cpp
-	./Collision/CollisionPrimitives/CollisionPlane.h
-	./Collision/CollisionPrimitives/CollisionPlane.cpp
-)
-source_group("simulation\\collision\\collisionprimitives" FILES ${CollisionPrimitives_SRC})
 
 set(geometryPrimitives_SRC
  ./Geometry/Primitives/Cylinder.h
@@ -184,12 +207,8 @@ SET(visualisation_SRC
 SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/SimulationRunnerRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/SimulationRunnerRenderer.cpp
-	${PROJECT_PATH}/Visualization/Renderers/ForceRenderer.h
-	${PROJECT_PATH}/Visualization/Renderers/ForceRenderer.cpp
-	${PROJECT_PATH}/Visualization/Renderers/AccelerationRenderer.h
-	${PROJECT_PATH}/Visualization/Renderers/AccelerationRenderer.cpp
-	${PROJECT_PATH}/Visualization/Renderers/VelocityRenderer.h
-	${PROJECT_PATH}/Visualization/Renderers/VelocityRenderer.cpp
+	${PROJECT_PATH}/Visualization/Renderers/PolygonRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/PolygonRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/LightRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/LightRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/CameraRenderer.h
@@ -206,8 +225,6 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/ConnectorForceRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/ParticleRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/ParticleRenderer.cpp
-	${PROJECT_PATH}/Visualization/Renderers/RigidBodyRenderer.h
-	${PROJECT_PATH}/Visualization/Renderers/RigidBodyRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/BoxRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/BoxRenderer.cpp
 	${PROJECT_PATH}/Visualization/Renderers/PointRenderer.h
@@ -218,6 +235,10 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.cpp	
 	${PROJECT_PATH}/Visualization/Renderers/CollisionRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/CollisionRenderer.cpp	
+	${PROJECT_PATH}/Visualization/Renderers/BoundingSphereHierarchyRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/BoundingSphereHierarchyRenderer.cpp	
+	${PROJECT_PATH}/Visualization/Renderers/PlaneRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/PlaneRenderer.cpp	
 	)
 	
 set(tweakbar_SRC
@@ -265,6 +286,7 @@ source_group("simulation\\core" FILES ${simulationCore_SRC})
 # PROJECT(Simulation)
 add_library(Simulation 
 ${multibodydynamics_SRC}
+${polygon_SRC}
 ${dynamics_SRC}
 ${force_SRC}
 ${runner_SRC}
@@ -284,7 +306,7 @@ ${userinterface_SRC}
 ${collision_SRC} 
 ${collisionDetection_SRC} 
 ${geometry_SRC} 
-${CollisionPrimitives_SRC}
+${collisionAcceleration_SRC}
 ${geometryPrimitives_SRC}
 ${CollisionTests_SRC}
 ${PROJECT_PATH}/Common/Config.h			  

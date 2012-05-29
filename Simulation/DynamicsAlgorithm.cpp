@@ -29,11 +29,14 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
   
   dynamicBodyModule.calculateCachedValues(); 
   connectorModule.calculateConnectorPositions();
-  multiBodyDynamics.correctPositions(h);
+  
+  updatablesModule.update(t,h);  
+  if(detectCollisions)sphereCollisionDetector.detectCollisions(t,h);
+
+  if(doMultiBody)multiBodyDynamics.correctPositions(h);
+  
 }
 void DynamicsAlgorithm::postIntegration(Real t,Real h){
-  multiBodyDynamics.correctVelocities();
+  if(doMultiBody)multiBodyDynamics.correctVelocities();
   textilesModule.normalize();
-  updatablesModule.update(t,h);  
-  cout <<sphereCollisionDetector.detectCollisions()<<endl;
 }

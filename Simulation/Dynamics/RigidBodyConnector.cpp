@@ -41,7 +41,7 @@ void RigidBodyConnector::applyImpulse(const Vector3D & p_wcs){
 
 
 void  RigidBodyConnector::calculateWorldPosition(Vector3D& p_wcs)const{  
-  _rigidBody.toWorldCoordinates(_r, p_wcs);
+  _rigidBody.fromObjectCoordinates(_r, p_wcs);
 }
 
 void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{  

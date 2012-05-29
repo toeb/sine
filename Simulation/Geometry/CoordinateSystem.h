@@ -46,14 +46,15 @@ public:
 
   
   void toObjectCoordinates(const Vector3D & p_wcs, Vector3D & p_ocs);
-  void toWorldCoordinates(const Vector3D & p_ocs, Vector3D & p_wcs);
+  void fromObjectCoordinates(const Vector3D & p_ocs, Vector3D & p_wcs);
 
   void toObjectCoordinates(const Vector3D & p_wcs, Vector3D & p_ocs)const;
-  void toWorldCoordinates(const Vector3D & p_ocs, Vector3D & p_wcs)const;
+  void fromObjectCoordinates(const Vector3D & p_ocs, Vector3D & p_wcs)const;
 
   void toObjectCoordinatesCached(const Vector3D & p_wcs, Vector3D & p_ocs)const;
-  void toWorldCoordinatesCached(const Vector3D & p_ocs, Vector3D & p_wcs)const;
+  void fromObjectCoordinatesCached(const Vector3D & p_ocs, Vector3D & p_wcs)const;
 
+  
   
 
 };

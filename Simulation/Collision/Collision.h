@@ -6,8 +6,8 @@ namespace IBDS{
 class Collidable;
 
 struct Collision{
-  Collision():objectA(0),objectB(0),handled(false),colliding(false),calculateValues(true){}
-
+  Collision():objectA(0),objectB(0),handled(false),colliding(false),calculateValues(true),time(0){}
+  Real time;
   Collidable * objectA;
   Collidable * objectB;  
   Vector3D pA_wcs;

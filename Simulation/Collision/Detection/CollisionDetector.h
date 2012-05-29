@@ -12,7 +12,7 @@ private:
 public:
   void resetCollisions();
   CollisionDetector();
-  virtual int detectCollisions()=0;
+  virtual int detectCollisions(Real time, Real h)=0;
   const std::vector<Collision*> & getCollisions()const;
 protected:
   void addCollision(Collision*) ;

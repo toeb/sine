@@ -6,9 +6,10 @@ using namespace IBDS;
 
 #define GET_SPHERE(coll) dynamic_cast<Sphere*>( &( coll->getGeometricObject()))
 
-int SphereCollisionDetector::detectCollisions(){
+int SphereCollisionDetector::detectCollisions(Real t, Real h){
   resetCollisions();
   Collision collision;
+  collision.time = t;
   int cols = 0;
   vector<Collidable*> & collidables = objects();
   for(int i=0; i < collidables.size(); i++){

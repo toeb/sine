@@ -51,7 +51,7 @@ void CoordinateSystem::toObjectCoordinates(const Vector3D & r_wcs, Vector3D & r_
   const Matrix3x3 & RT = getTransposedRotationMatrix();  
   r_ocs.assign(RT*r);
 }
-void CoordinateSystem::toWorldCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs){
+void CoordinateSystem::fromObjectCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs){
   const Matrix3x3 & R = getRotationMatrix();
   r_wcs.assign(getPosition() + R* r_ocs);
 }
@@ -62,7 +62,7 @@ void CoordinateSystem::toObjectCoordinates(const Vector3D & r_wcs, Vector3D & r_
   _orientation.getMatrix3x3T(RT);
   r_ocs.assign(RT*r);
 }
-void CoordinateSystem::toWorldCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs)const{
+void CoordinateSystem::fromObjectCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs)const{
   Matrix3x3 R;
   _orientation.getMatrix3x3(R);
   r_wcs.assign(getPosition() + R* r_ocs);
@@ -74,7 +74,7 @@ void CoordinateSystem::toObjectCoordinatesCached(const Vector3D & r_wcs, Vector3
   if(!RT)cout<<"RT not cached"<<endl;
   r_ocs.assign(*RT*r);
 }
-void CoordinateSystem::toWorldCoordinatesCached(const Vector3D & r_ocs, Vector3D & r_wcs)const{
+void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vector3D & r_wcs)const{
   const Matrix3x3 * R = getCachedRotationMatrix();
   if(!R)cout<<"R not cached"<<endl;
   r_wcs.assign(getPosition() + *R* r_ocs);

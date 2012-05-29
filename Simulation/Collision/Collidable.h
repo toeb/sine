@@ -4,17 +4,17 @@
 #include <Simulation/Core/ISimulationObject.h>
 #include <vector>
 #include <functional>
-#include <Simulation/Geometry/GeometricObject.h>
+#include <Simulation/Geometry/Geometry.h>
 namespace IBDS{
 
 class Collidable : public virtual ISimulationObject{
 private:
   std::vector<Collision*> _collisions;
-  GeometricObject & _geometricObject;
+  Geometry & _geometricObject;
 public:
-  Collidable(GeometricObject & go);
+  Collidable(Geometry & go);
   
-  GeometricObject & getGeometricObject()const;
+  Geometry & getGeometricObject()const;
 
 
   

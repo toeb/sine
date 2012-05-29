@@ -4,11 +4,11 @@
 using namespace std;
 using namespace IBDS;
 
-Collidable::Collidable(GeometricObject & o):_geometricObject(o){
+Collidable::Collidable(Geometry & o):_geometricObject(o){
 
 }
 
-GeometricObject & Collidable::getGeometricObject()const{
+Geometry & Collidable::getGeometricObject()const{
   return _geometricObject;
 }
 

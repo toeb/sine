@@ -41,6 +41,10 @@ public:
 
   IIntegrable & getIntegrable();
 
+  bool detectCollisions;
+  bool handleCollisions;
+  bool doMultiBody;
+  
   void evaluate(Real t, Real h);
   void postIntegration(Real t, Real h);
   void preIntegration(Real t, Real h);

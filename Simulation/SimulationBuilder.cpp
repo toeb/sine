@@ -5,6 +5,19 @@ using namespace IBDS;
 
 SimulationBuilder::SimulationBuilder(Simulation & simulation):_simulation(simulation),_connectorNumber(1),_unknownCounter(1){}
 
+
+Plane * SimulationBuilder::createFixedPlane(std::string name,const Vector3D& position,const Quaternion & orientation,Real width,Real height){
+  if(name.compare("")==0)name = createUnknownName();
+  if(nameExists(name))return 0;  
+  Plane * plane = new Plane(Vector2D(width,height));
+  plane->setOrientation(orientation);
+  plane->setPosition(position+_currentOffset);
+  plane->setName(name);
+  addSimulationObject(plane);
+  return plane;
+}
+
+
 DynamicBox * SimulationBuilder::createBox(string name, const Vector3D & position, Real mass, Real width, Real height, Real depth){
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;    

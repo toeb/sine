@@ -9,6 +9,7 @@
 #include <Simulation/Dynamics/BodyPrimitives/Sphere.h>
 #include <Simulation/Dynamics/ParticleConnector.h>
 #include <Simulation/Dynamics/RigidBodyConnector.h>
+#include <Simulation/Geometry/Primitives/Plane.h>
 
 #include <string>
 #include <map>
@@ -30,6 +31,8 @@ class SimulationBuilder{
     SimulationBuilder(Simulation & simulation);
 
   std::map<std::string,ISimulationObject *> & getSimulationObjects();
+
+  Plane * createFixedPlane(std::string name="",const Vector3D& position=Vector3D::Zero(),const Quaternion & orientation=Quaternion::zeroRotation(),Real width=1,Real height =1);
 
     /**
      * \brief Creates a box.
