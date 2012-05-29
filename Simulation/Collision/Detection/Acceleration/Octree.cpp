@@ -7,19 +7,24 @@ void Octree::classify(){
   if(_depth==0)_classfication = classifyGeometrically();
   else _classfication = classifyByChildNodes();
 }
+Octree::~Octree(){
+  delete _boundingVolume;
+  _boundingVolume =0;
+  
+}
+void Octree::createBoundingVolume(){
+  _boundingVolume = _boundingVolumeFactory.create(getGeometry(),getAABB());
+}
 
 Octree *  Octree::createChild( OctreeNodeId id){
-  
-    Octree * child = instanciate(id, getGeometry());
-    unsigned int level = getLevel()+1;
-    unsigned int depth = _depth -1;
-    child->_level = level;
-    child->_depth = depth;
+    Octree * child = new Octree(id, *this);
+    child->_level = getLevel()+1;
+    child->_depth =  _depth -1;
 
+    // calculate the node bounding box
     child->_aabb.min = _aabb.min;
     child->_aabb.max = _aabb.max;
     Vector3D delta = 0.5*(_aabb.max - _aabb.min);
-
     if((id/4)%2==1){
       child->_aabb.min[0] += delta[0];
     }else{
@@ -35,16 +40,20 @@ Octree *  Octree::createChild( OctreeNodeId id){
     }else{
       child->_aabb.max[2] -= delta[2];
     }
+    
+    child->createBoundingVolume();
 
     return child;
 }
 
-Octree * Octree::instanciate(OctreeNodeId id, Geometry & geometry){
-  return new Octree(id,*this);
-}
 
 Octree::Octree(OctreeNodeId id, Octree & parent):
-_geometry(parent.getGeometry()), _id(id),_boundingVolume(_aabb),_children(0){
+_geometry(parent.getGeometry()),
+  _id(id),
+  _children(0),
+  _boundingVolumeFactory(parent._boundingVolumeFactory),
+  _boundingVolume(0)
+{
   _classfication = Classification::UNCLASSIFIED;
 }
 OctreeNodeId Octree::getId()const{
@@ -82,17 +91,16 @@ void Octree::deleteChildren(){
     delete _children;
     _children =0;
   }
-  /*
-  for(auto it = _children.begin(); it != _children.end(); it++){
-    Octree * child = (*it).second;
-    if(!child)continue;
-    child->deleteChildren();
-    delete child;
-  }
-  _children.clear();*/
 }
-Octree::Octree( Geometry & geometry,int depth):_geometry(geometry),
-  _id(OctreeNodeId::NODE_ROOT),_depth(depth),_level(0),_boundingVolume(_aabb),_children(0){}
+Octree::Octree( Geometry & geometry,int depth, BoundingVolumeFactory & boundingVolumeFactory)
+  :
+_boundingVolume(0),
+_boundingVolumeFactory(boundingVolumeFactory),
+  _geometry(geometry),
+  _id(OctreeNodeId::NODE_ROOT),
+  _depth(depth),
+  _level(0),
+  _children(0){}
 
 bool Octree::initializeObject(){
   cout<< "initializing octree for "<< *(_geometry.getName())<<endl;
@@ -117,12 +125,8 @@ Classification Octree::getClassification()const{
   return _classfication;
 }
 bool Octree::isLeaf()const {
+  // octree is a leaf if it has no children
   if(_children)return false;
-  /*
-  for(int i= 0; i < 8; i++){
-    Octree * child = _children.at(static_cast<OctreeNodeId>(i));
-    if(child)return false;
-  }*/
   return true;
 }
 Geometry & Octree::getGeometry()const{
@@ -132,17 +136,19 @@ void Octree::getCenter(Vector3D & c_ocs)const{
   c_ocs.assign(_aabb.min+0.5*(_aabb.max - _aabb.min));
 }
 Classification Octree::classifyGeometrically()const{
-  // classifies node by checking if the center of the node is inside the geometry or outside
- /* Vector3D c_ocs;
-  getCenter(c_ocs);
-  if(getGeometry().isInsideOCS(c_ocs))return Classification::INSIDE;
-
-
-
-  return Classification::OUTSIDE;*/
-  return _boundingVolume.classify(getGeometry());
+  Vector3D center;
+  _aabb.getCenter(center);
+  Real radius;
+  radius = (_aabb.min-_aabb.max).length();
+  return _geometry.classify(center,radius);
 }
 Classification Octree::classifyByChildNodes()const{
+  // classifies by child nodes.  if all nodes are inside it returns inside
+  //if all nodes are otuside it returns outside
+  // if there is a child which is inside and another which is outside it returns both
+  // if this is a leaf it returns outside.  classifiying by child nodes when node is a leaf is an undefined 
+  // process
+
   Classification result = Classification::OUTSIDE;
   if(isLeaf()){
     return result;
@@ -163,6 +169,7 @@ Classification Octree::classifyByChildNodes()const{
 }
 
 const AABB & Octree::getAABB()const{
+  // returns the dimesion of the octree in AABB ocs format
   return _aabb;
 }
 
@@ -235,7 +242,7 @@ void Octree::foreachLeaf(std::function<void (Octree*)> f){
 void Octree::foreachChild(function<void (Octree*)> f){
   if(!_children)return;
   for(int i=0; i < 8; i ++){
-    Octree * child = _children[static_cast<OctreeNodeId>(i)];
+    Octree * child = _children[i];
     if(!child)continue;
     f(child);
   }

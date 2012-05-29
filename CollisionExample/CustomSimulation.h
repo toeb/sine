@@ -1,5 +1,4 @@
-#ifndef __CustomSimulation_h__
-#define __CustomSimulation_h__
+#pragma once
 
 #include <Simulation/Core/Simulation.h>
 #include <Simulation/DynamicsAlgorithm.h>
@@ -17,4 +16,3 @@ protected:
   void onSimulationObjectAdded(ISimulationObject * simObj);
 };
 }
-#endif

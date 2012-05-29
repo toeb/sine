@@ -28,6 +28,7 @@
 #include <Visualization/Renderers/CollisionRenderer.h>
 #include <Simulation/Collision/Detection/Acceleration/BoundingSphereTree.h>
 #include <Visualization/Renderers/BoundingSphereHierarchyRenderer.h>
+#include <Simulation/Collision/Detection/BoundingVolumes/BoundingSphere.h>
 #include <map>
 #include <sstream>
 #include <Visualization/Renderers/PolygonRenderer.h>
@@ -142,15 +143,16 @@ void CustomSimulation::buildModel(){
 
   for_each(geoms.begin(), geoms.end(), [this, &geoms,&depth](Geometry * geo){
   
-    Octree * octree= new Octree(*geo,depth);
+    Octree * octree= new Octree(*geo,depth, *(new BoundingSphereFactory()));
     OctreeRenderer & otr= *(new OctreeRenderer(*octree));
     addSimulationObject(octree);
     addSimulationObject(&otr);
     
   });
+
   addSimulationObject(new DelegateAction("inc octreelevel",[depth](){
       OctreeRenderer::level = (OctreeRenderer::level+1)%(depth+1);
-    }));
+  }));
 
 }
 

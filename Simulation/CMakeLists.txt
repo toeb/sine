@@ -24,8 +24,6 @@ set(collisionDetection_SRC
  ./Collision/Detection/CollisionDetector.cpp
  ./Collision/Detection/SphereCollisionDetector.h
  ./Collision/Detection/SphereCollisionDetector.cpp
- ./Collision/Detection/BoundingSphere.h
- ./Collision/Detection/BoundingSphereHierarchy.h 
 )
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
 
@@ -36,6 +34,15 @@ set(geometry_SRC
  ./Geometry/CoordinateSystem.cpp
 )
 source_group("simulation\\geometry" FILES ${geometry_SRC})
+
+set(boundingVolumes_SRC
+ ./Collision/Detection/BoundingVolumes/BoundingSphere.h
+ ./Collision/Detection/BoundingVolumes/BoundingSphere.cpp
+ ./Collision/Detection/BoundingVolumes/BoundingVolume.h
+ ./Collision/Detection/BoundingVolumes/BoundingVolume.cpp
+)
+source_group("simulation\\collision\\detection\\boundingvolumes" FILES ${boundingVolumes_SRC})
+
 
 set(polygon_SRC
  ./Geometry/Polygon/Polygon.h
@@ -285,6 +292,7 @@ source_group("simulation\\core" FILES ${simulationCore_SRC})
 
 # PROJECT(Simulation)
 add_library(Simulation 
+${boundingVolumes_SRC}
 ${multibodydynamics_SRC}
 ${polygon_SRC}
 ${dynamics_SRC}

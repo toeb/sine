@@ -4,7 +4,7 @@
 using namespace std;
 using namespace IBDS;
 
-#define GET_SPHERE(coll) dynamic_cast<Sphere*>( &( coll->getGeometricObject()))
+#define GET_SPHERE(coll) dynamic_cast<Sphere*>( &( coll->getGeometry()))
 
 int SphereCollisionDetector::detectCollisions(Real t, Real h){
   resetCollisions();
@@ -29,6 +29,6 @@ int SphereCollisionDetector::detectCollisions(Real t, Real h){
 }
 
 bool SphereCollisionDetector::acceptObject(Collidable * collidable){
-  if( !dynamic_cast<Sphere*>(&(collidable->getGeometricObject())))return false;
+  if( !dynamic_cast<Sphere*>(&(collidable->getGeometry())))return false;
   return true;
 }

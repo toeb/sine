@@ -1,8 +1,7 @@
 #pragma once
 #include <Simulation/Core/IUpdateable.h>
 #include <Simulation/Geometry/Geometry.h>
-#include <Simulation/Geometry/Primitives/Hexahedron.h>
-#include <Simulation/Geometry/Primitives/Sphere.h>
+#include <Simulation/Collision/Detection/BoundingVolumes/BoundingVolume.h>
 #include <map>
 #include <functional>
 
@@ -20,19 +19,6 @@ enum OctreeNodeId{
   NODE_111=7,
   NODE_ROOT=8
 };
-class BoundingVolume{
-  AABB  & _aabb;
-public:
-  BoundingVolume(AABB  & aabb):_aabb(aabb){}
-  Classification classify(Geometry & geometry) const {
-    Vector3D center;
-    _aabb.getCenter(center);
-    Real radius;
-    radius = (_aabb.min-_aabb.max).length();
-
-    return geometry.classify(center,radius);
-  }
-};
 
 
 class Octree : public virtual ISimulationObject{
@@ -45,11 +31,19 @@ private:
   unsigned int _level;
   ///< The classfication (inside, outside or both)
   Classification _classfication;
-  ///< The axis align boundary box in object coordinats
+
+
+  ///< The aabb representing the dimension of this octree node
   AABB _aabb;
-  BoundingVolume _boundingVolume;
+
+
+  ///< The bounding volume used for collision and classification
+  BoundingVolume * _boundingVolume;
+
+  ///< The bounding volume factory it is same for all nodes of an octree
+  BoundingVolumeFactory & _boundingVolumeFactory;
+
   ///< The children
-  //std::map<OctreeNodeId, Octree*> _children;
   Octree ** _children;
   ///< The geometry that this octree represents
   Geometry & _geometry;
@@ -80,7 +74,8 @@ private:
   void setNode(Octree * node);
 
 protected:
-
+  void createBoundingVolume();
+  BoundingVolume & getBoundingVolume();
   /**
    * \brief Initializes the object.
    * 				refines the octree to the requested level and prunes the tree
@@ -95,16 +90,7 @@ protected:
    */
   void cleanupObject();
 
-  /**
-   * \brief Instanciates an octree node.  this is a factory method
-   * 				used if subclasses want to supply a different octree implementation.
-   *
-   * \param id                  The node identifier.
-   * \param [in,out]  geometry  The geometry.
-   *
-   * \return  null if it fails, else.
-   */
-  virtual Octree * instanciate(OctreeNodeId id, Geometry & geometry);
+
 
   /**
    * \brief Deletes all the children of this tree recursively.
@@ -118,21 +104,21 @@ protected:
 
   
 public:
-
+  ~Octree();
+  BoundingVolume & getBoundingVolume()const;
   /**
    * \brief Constructor.
    *        creates a octree from the geometry which will be refined to depth when initialized
    * \param depth               The depth.
    * \param [in,out]  geometry  The geometry.
    */
-  Octree( Geometry & geometry,int depth);
+  Octree( Geometry & geometry,int depth, BoundingVolumeFactory & boundingVolumeFactory);
 
   /**
    * \brief classifies the current node geometrically.  
-   *       may be overriden by subclasses
    *
    */
-  virtual Classification  classifyGeometrically() const;
+  Classification  classifyGeometrically()const;
 
   /**
    * \brief Classifies this node by its children by child nodes.
