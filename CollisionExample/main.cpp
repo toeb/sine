@@ -55,7 +55,7 @@ int main( int argc, char **argv )
   simulation->buildAlgorithms();
   simulation->buildModel();
     
-  MiniGL::drawMode = 0x1B01;
+  //MiniGL::drawMode = 0x1B01;
 
   auto integrable = simulation->getIntegrator()->getIntegratable();
   Real* initialState = new Real[integrable->getStateDimension()];

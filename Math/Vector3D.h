@@ -45,7 +45,15 @@ namespace IBDS
 		Real v[3];
 
 	public:
-		
+    static const Vector3D & e1();
+    static const Vector3D & e2();
+    static const Vector3D & e3();
+
+		void set(Real x, Real y, Real z){
+      v[0]=x;
+      v[1]=y;
+      v[2]=z;
+    }
     void assign(const Vector3D &vector);
     Vector3D(const Real x, const Real y, const Real z);
 		Vector3D();
@@ -110,7 +118,16 @@ namespace IBDS
       c.v[1] = a.v[2]*b.v[0]-a.v[0]*b.v[2];
       c.v[2] = a.v[0]*b.v[1]-a.v[1]*b.v[0];
     }
+    inline static void signum(const Vector3D& a, Vector3D & b){
+      b[0]=1;
+      b[1]=1;
+      b[2]=1;
+      
+      if(a[0]<0)b[0]=-1;
+      if(a[1]<0)b[1]=-1;
+      if(a[2]<0)b[2]=-1;
 
+    }
 
     static const Vector3D & Zero();
     void setZero();

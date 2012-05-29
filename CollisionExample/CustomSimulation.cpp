@@ -19,15 +19,18 @@
 #include <Visualization/Renderers/TweakBar/TweakBarRenderer.h>
 #include <Visualization/UserInterface/DelegateAction.h>
 #include <Visualization/UserInterface/RealValue.h>
+#include <Visualization/Renderers/PlaneRenderer.h>
 #include <Visualization/InputHandler.h>
 #include <Simulation/SimulationBuilder.h>
 #include <Simulation/Textiles/TextileModel.h>
 #include <Simulation/DynamicsAlgorithm.h>
 #include <Visualization/Renderers/SphereRenderer.h>
 #include <Visualization/Renderers/CollisionRenderer.h>
-
+#include <Simulation/Collision/Detection/Acceleration/BoundingSphereTree.h>
+#include <Visualization/Renderers/BoundingSphereHierarchyRenderer.h>
 #include <map>
 #include <sstream>
+#include <Visualization/Renderers/PolygonRenderer.h>
 
 using namespace IBDS;
 using namespace std;
@@ -52,6 +55,17 @@ void CustomSimulation::buildAlgorithms(){
   
   setIntegrator(*integrator);
   
+  addSimulationObject(new DelegateAction("toggle collision detection",[this](){
+    dynamicsAlgorithm.detectCollisions = ! dynamicsAlgorithm.detectCollisions;
+    dynamicsAlgorithm.sphereCollisionDetector.resetCollisions();
+  }));
+
+  addSimulationObject(new DelegateAction("toggle multibody",[this](){
+    dynamicsAlgorithm.doMultiBody = ! dynamicsAlgorithm.doMultiBody;
+  }));
+
+
+
 
   addSimulationObject(new IntValue("Integrator 0-2 (0=ee, 1=ie,2=rk4)", 
     [this](){
@@ -95,6 +109,8 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(r);
 
+  
+  /*
   b.setOffset(Vector3D(10,0,0));
   
   b.createParticle("p1",Vector3D(-1,0,0),0);
@@ -108,6 +124,33 @@ void CustomSimulation::buildModel(){
   b.createParticle("p3",Vector3D(2,0,0),0);
   b.createSphere("s3",Vector3D(3,0,0),1,1);
   b.createBallJoint("j3","s3","p3",Vector3D(2,0,0));
+  */
+
+
+  //create three geometries and their bounding octrees
+  vector<Geometry*> & geoms = *(new vector<Geometry*>());
+  b.setOffset(Vector3D(12,0,0));
+  Geometry * geom = b.createSphere("",Vector3D::Zero(),0,3);
+  geoms.push_back(geom);
+  b.setOffset(Vector3D(6,0,0));
+  geom = b.createFixedPlane("",Vector3D::Zero(),Quaternion::zeroRotation(),4,2);
+  geoms.push_back(geom);
+  b.setOffset(Vector3D(2,0,0));
+  geoms.push_back(b.createBox("box13",Vector3D::Zero(),0));
+
+  int depth=5;
+
+  for_each(geoms.begin(), geoms.end(), [this, &geoms,&depth](Geometry * geo){
+  
+    Octree * octree= new Octree(*geo,depth);
+    OctreeRenderer & otr= *(new OctreeRenderer(*octree));
+    addSimulationObject(octree);
+    addSimulationObject(&otr);
+    
+  });
+  addSimulationObject(new DelegateAction("inc octreelevel",[depth](){
+      OctreeRenderer::level = (OctreeRenderer::level+1)%(depth+1);
+    }));
 
 }
 
@@ -129,7 +172,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
 
   Hexahedron * box = dynamic_cast<Hexahedron*>(simulationObject);
   if(box){
-    addSimulationObject(new BoxRenderer(*box));
+    //addSimulationObject(new BoxRenderer(*box));
   }
 
   DampedSpring * spring = dynamic_cast<DampedSpring*>(simulationObject);
@@ -140,16 +183,18 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
 
   Sphere * sphere = dynamic_cast<Sphere*>(simulationObject);
   if(sphere){
-    addSimulationObject(new SphereRenderer(*sphere));
+    //addSimulationObject(new SphereRenderer(*sphere));
   }
 
   DynamicSphere * dSphere = dynamic_cast<DynamicSphere*>(simulationObject);
   if(dSphere){
     addSimulationObject(new Collidable(*dSphere));
+   //     addSimulationObject(new SphereRenderer(*sphere));
   }
   Collidable* collidable = dynamic_cast<Collidable*>(simulationObject);
 
   if(collidable){
     addSimulationObject(new CollisionRenderer(*collidable));
   }
+
 }

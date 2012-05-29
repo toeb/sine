@@ -37,6 +37,20 @@ using namespace IBDS;
 int vecCount=0;
 long vecChanges=0;
 
+Vector3D _e1(1,0,0);
+Vector3D _e2(0,1,0);
+Vector3D _e3(0,0,1);
+
+const Vector3D & Vector3D::e1(){
+  return _e1;
+}
+const Vector3D & Vector3D::e2(){
+  return _e2;
+}
+const Vector3D & Vector3D::e3(){
+  return _e3;
+}
+
 void incVec(){
   vecCount++;
   vecChanges++;
