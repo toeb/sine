@@ -10,7 +10,7 @@ void SphereRenderer::render(){
   color[0] = MiniGL::darkGreen[0];
   color[1] = MiniGL::darkGreen[1];
   color[2] = MiniGL::darkGreen[2];
-  color[3] = 0.5;
+  color[3] = 0.2;
 
   const Matrix3x3 & orientation =  *(_sphere.getCachedTransposedRotationMatrix());
   

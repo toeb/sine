@@ -95,7 +95,7 @@ namespace IBDS
  static void valueToColor(Real value, float * color, Real min=0, Real max=10);
 
 	private:
-  /**
+  /**d
    * \brief Hat function.  is defined as 
    * 				
    * 				0 if x < 0;
@@ -209,7 +209,7 @@ namespace IBDS
 		static void drawSphere (const Vector3D *translation, float radius, const float *color, const unsigned int subDivision =  16);
 		static void drawQuad (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d, const Vector3D &norm,const float *color);
 		static void drawTetrahedron(const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d, float *color);
-		static void drawTriangle (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &norm, float *color);
+		static void drawTriangle (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &norm, const float *color);
 		static void drawBitmapText (float x, float y, const char *str, int strLength, float *color);
 		static void drawStrokeText (const Real x, const Real y, const Real z, float scale, const char *str, int strLength, const float *color);
 		static void drawStrokeText (const Vector3D &pos, float scale, const char *str, int strLength, const float *color);

@@ -326,7 +326,7 @@ void MiniGL::drawQuad (const Vector3D &a, const Vector3D &b, const Vector3D &c, 
 /** Zeichnet ein Dreieck mit den Eckpunkten a,b,c, der Normalen norm und
   * der Farbe color.
   */
-void MiniGL::drawTriangle (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &norm, float *color)
+void MiniGL::drawTriangle (const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &norm, const float *color)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);

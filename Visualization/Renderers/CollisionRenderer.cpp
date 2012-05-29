@@ -12,7 +12,7 @@ void CollisionRenderer::render(){
       MiniGL::drawVector(c->pA_wcs,c->pA_wcs+c->normal,2,MiniGL::red);
       MiniGL::drawVector(c->pA_wcs,c->pA_wcs - (c->normal*c->penetrationDepth),2,MiniGL::darkblue);
       
-       MiniGL::drawPoint(c->pB_wcs,4,MiniGL::green);
+      MiniGL::drawPoint(c->pB_wcs,4,MiniGL::green);
       MiniGL::drawVector(c->pB_wcs,c->pB_wcs-c->normal,2,MiniGL::green);
       MiniGL::drawVector(c->pB_wcs,c->pB_wcs + (c->normal*c->penetrationDepth),2,MiniGL::darkblue);
       
