@@ -18,6 +18,7 @@ Classification Sphere::classify(const AABB & aabb_ocs)const{
   aabb_ocs.projectOCS(axis,aabbInterval);
   
   if(aabbInterval.disjoint(sphereInterval))return Classification::OUTSIDE;
+
   if(aabbInterval.subsetOf(sphereInterval)){
     return Classification::INSIDE;
   }
@@ -36,15 +37,15 @@ Classification Sphere::classify(const Vector3D & p, Real radius)const{
   }
   // axis of separation is the center of aabb to center of sphere
 
-  Interval intervalA;
-  Interval intervalB(-_radius,_radius);
+  Interval intervalOfOtherSphere;
+  Interval intervalOfThis(-_radius,_radius);
 
   Real val = axis.projectOnAxis(p);
-  intervalA.a=val-radius;
-  intervalA.b=val+radius;
+  intervalOfOtherSphere.a=val-radius;
+  intervalOfOtherSphere.b=val+radius;
 
-  if(intervalA.disjoint(intervalB))return Classification::OUTSIDE;
-  if(intervalA.subsetOf(intervalB)){
+  if(intervalOfThis.disjoint(intervalOfOtherSphere))return Classification::OUTSIDE;
+  if(intervalOfOtherSphere.subsetOf(intervalOfThis)){
     return Classification::INSIDE;
   }
   return Classification::BOTH;

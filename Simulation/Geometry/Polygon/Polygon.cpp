@@ -6,17 +6,16 @@ using namespace std;
 
 
 Classification Polygon::classify(const Vector3D & c, Real radius)const{
-  vector<Axis> axes;
-   for(int i = 0; i < faces().size(); i++){
-    axes.push_back(Axis(face(i)->n_ocs));
-  }
-
+  Axis currentAxis;
    Classification result = Classification::UNCLASSIFIED;
-  for(int i = 0 ; i < axes.size(); i++){
+   for(int i = 0; i < faces().size(); i++){
+    currentAxis.n = face(i)->n_ocs;
     Interval a;
     Interval b;
-    projectOCS(axes[i],a);
-    Real val = axes[i].projectOnAxis(c);
+    
+    
+    projectOCS(currentAxis,a);
+    Real val = currentAxis.projectOnAxis(c);
     b.a = val - radius;
     b.b = val + radius;
 
@@ -29,8 +28,6 @@ Classification Polygon::classify(const Vector3D & c, Real radius)const{
     }else{
       result = static_cast<Classification>(result | Classification::BOTH); 
     }
-
-
   }
   return result;
 }
@@ -87,11 +84,11 @@ bool Polygon::initializeObject(){
 void Polygon::projectOCS(const Axis & axis_ocs, Interval & interval)const{
   interval.setInvalid();
 
-  
+  Vector3D difference;
   for(int i =0; i < vertices().size(); i++){
-    Real val = axis_ocs.projectOnAxis(vertex(i)->p_ocs-axis_ocs.p);
-    if(interval.a>val)interval.a = val;
-    if(interval.b<val)interval.b = val;
+    Vector3D::subtract(vertex(i)->p_ocs,axis_ocs.p,difference);
+    Real val = axis_ocs.projectOnAxis(difference);
+    interval.extendTo(val);
 
   }
 }

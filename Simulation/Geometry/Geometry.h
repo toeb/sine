@@ -19,8 +19,11 @@ namespace IBDS{
   Vector3D p;
   Vector3D n;
   Real projectOnAxis(const Vector3D & a)const {
-    Vector3D diff = a - p;
-    return n * diff;
+    Vector3D diff;
+    Real result;
+    Vector3D::subtract(a, p,diff);
+    Vector3D::dotProduct(n,diff,result);
+    return result;
   }
 };
 
@@ -39,6 +42,19 @@ struct Interval{
   void setUnbounded(){
     a = -DBL_MAX;
     b = DBL_MAX;
+  }
+
+  /**
+   * \brief Extends interval to contain value.
+   *
+   * \author Tobi
+   * \date 30.05.2012
+   *
+   * \param value The value.
+   */
+  inline void extendTo(Real value){
+    if(value < a)a = value;
+    if(value > b)b  =value;
   }
   Interval(Real low, Real high):a(low), b(high){
     

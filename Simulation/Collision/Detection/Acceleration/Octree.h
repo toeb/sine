@@ -73,6 +73,8 @@ private:
   
   void setNode(Octree * node);
 
+  void calculateDepth();
+
 protected:
   void createBoundingVolume();
   BoundingVolume & getBoundingVolume();

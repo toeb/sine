@@ -6,6 +6,9 @@ using namespace std;
 void Octree::classify(){
   if(_depth==0)_classfication = classifyGeometrically();
   else _classfication = classifyByChildNodes();
+  if(_classfication == Classification::UNCLASSIFIED){
+    cout << "Node not classifiable" << endl;
+  }
 }
 Octree::~Octree(){
   delete _boundingVolume;
@@ -148,18 +151,20 @@ Classification Octree::classifyByChildNodes()const{
   // if there is a child which is inside and another which is outside it returns both
   // if this is a leaf it returns outside.  classifiying by child nodes when node is a leaf is an undefined 
   // process
+  
+  if(isLeaf())return Classification::OUTSIDE;
 
-  Classification result = Classification::OUTSIDE;
-  if(isLeaf()){
-    return result;
-  }
+  Classification result = Classification::UNCLASSIFIED;
   int numberOfChildren=0;
+  
   for(int i =0; i < 8; i++){
     Octree * child = _children[i];
     if(!child){
      result = static_cast<Classification>(result | Classification::OUTSIDE); 
     }else{
-      result = static_cast<Classification>(result | child->getClassification());
+      Classification childsClassification = child->getClassification();
+      if(childsClassification==Classification::UNCLASSIFIED)return Classification::UNCLASSIFIED;
+      result = static_cast<Classification>(result |childsClassification);
       numberOfChildren++;
     }
     if(result==Classification::BOTH)return result;
@@ -173,6 +178,16 @@ const AABB & Octree::getAABB()const{
   return _aabb;
 }
 
+void Octree::calculateDepth(){
+  
+  //calulate the new depth of this node (it is the max(depth(child))+1
+  int d = -1;
+  foreachChild([&d](Octree * child){
+    if(d < child->getDepth())d = child->getDepth();
+  });
+  _depth = static_cast<unsigned int>(d+1);
+}
+
 void Octree::refine(){
   // if finest level is not yet reached
   // recurse until it is.
@@ -182,7 +197,7 @@ void Octree::refine(){
       Octree * child =createChild(static_cast<OctreeNodeId>(i));
       child->refine();
       // if child is outside then throw it away
-      if(child->getClassification()==Classification::OUTSIDE)
+      if(child->getClassification()!=Classification::BOTH)
         delete child;
       else  
         setNode(child); // else save it
@@ -198,12 +213,7 @@ void Octree::refine(){
      
       break;
   }
-  //calulate the new depth of this node (it is the max(depth(child))+1
-  int d = -1;
-  foreachChild([&d](Octree * child){
-    if(d < child->getDepth())d = child->getDepth();
-  });
-  _depth = static_cast<unsigned int>(d+1);
+  calculateDepth();
 }
 
 unsigned int Octree::getDepth()const{

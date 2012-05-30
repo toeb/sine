@@ -139,7 +139,7 @@ void CustomSimulation::buildModel(){
   b.setOffset(Vector3D(2,0,0));
   geoms.push_back(b.createBox("box13",Vector3D::Zero(),0));
 
-  int depth=5;
+  int depth=6;
 
   for_each(geoms.begin(), geoms.end(), [this, &geoms,&depth](Geometry * geo){
   

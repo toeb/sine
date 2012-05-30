@@ -25,7 +25,7 @@ void OctreeRenderer::render(){
     //MiniGL::drawPoint(aabb.max,5,MiniGL::darkblue);    
     MiniGL::drawPoint(center,5,MiniGL::darkblue);
     
-    MiniGL::drawCube(&center,&((Matrix3x3::Identity())),aabb.getWidth(), aabb.getHeight(), aabb.getDepth(),color);
+    //MiniGL::drawCube(&center,&((Matrix3x3::Identity())),aabb.getWidth(), aabb.getHeight(), aabb.getDepth(),color);
     
     //MiniGL::drawSphere();
   });
