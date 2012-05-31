@@ -3,6 +3,19 @@
 using namespace IBDS;
 using namespace std;
 
+
+BoundingVolume &  Octree::getBoundingVolume(){
+  return *_boundingVolume;
+}
+BoundingVolume & Octree::getBoundingVolume()const{
+  return *_boundingVolume;
+}
+
+const Octree * Octree::child(OctreeNodeId i)const{
+  if(isLeaf())return 0;
+  return _children[i];
+}
+
 void Octree::classify(){
   if(_depth==0)_classfication = classifyGeometrically();
   else _classfication = classifyByChildNodes();
@@ -50,8 +63,7 @@ Octree *  Octree::createChild( OctreeNodeId id){
 }
 
 
-Octree::Octree(OctreeNodeId id, Octree & parent):
-_geometry(parent.getGeometry()),
+Octree::Octree(OctreeNodeId id, Octree & parent):Collidable(parent.getGeometry()),
   _id(id),
   _children(0),
   _boundingVolumeFactory(parent._boundingVolumeFactory),
@@ -98,22 +110,23 @@ void Octree::deleteChildren(){
 Octree::Octree( Geometry & geometry,int depth, BoundingVolumeFactory & boundingVolumeFactory)
   :
 _boundingVolume(0),
-_boundingVolumeFactory(boundingVolumeFactory),
-  _geometry(geometry),
+_boundingVolumeFactory(boundingVolumeFactory),Collidable(geometry),
   _id(OctreeNodeId::NODE_ROOT),
   _depth(depth),
   _level(0),
   _children(0){}
 
+
 bool Octree::initializeObject(){
-  cout<< "initializing octree for "<< *(_geometry.getName())<<endl;
+  cout<< "initializing octree for "<< *(getGeometry().getName())<<endl;
   if( NODE_ROOT != _id)return true;
-  deleteChildren();
-  _geometry.initialize();
-  _geometry.getBoundingBoxOCS(_aabb);
+  deleteChildren(); //safety first
+  getGeometry().initialize(); // (if not initialized initialize now)
+  getGeometry().getBoundingBoxOCS(_aabb); // get boundingBox in OCS
+  createBoundingVolume(); //create boundingvolume for root node
   refine();
   
-  cout<< "done initializing octree for "<< *(_geometry.getName())<<endl;
+  cout<< "done initializing octree for "<< *(getGeometry().getName())<<endl;
   return true;
 }
 void Octree::cleanupObject(){
@@ -132,18 +145,12 @@ bool Octree::isLeaf()const {
   if(_children)return false;
   return true;
 }
-Geometry & Octree::getGeometry()const{
-  return _geometry;
-}
+
 void Octree::getCenter(Vector3D & c_ocs)const{
   c_ocs.assign(_aabb.min+0.5*(_aabb.max - _aabb.min));
 }
 Classification Octree::classifyGeometrically()const{
-  Vector3D center;
-  _aabb.getCenter(center);
-  Real radius;
-  radius = (_aabb.min-_aabb.max).length();
-  return _geometry.classify(center,radius);
+  return _boundingVolume->classify(getGeometry());
 }
 Classification Octree::classifyByChildNodes()const{
   // classifies by child nodes.  if all nodes are inside it returns inside
@@ -218,6 +225,20 @@ void Octree::refine(){
 
 unsigned int Octree::getDepth()const{
   return _depth;
+}
+
+void Octree::update(){
+  _boundingVolume->update();
+}
+void Octree::reset(){
+  if(!_boundingVolume->isUpToDate()){
+      _boundingVolume->reset();
+      return;
+  }
+  _boundingVolume->reset();
+  foreachChild([](Octree* child){
+    child->reset();
+  });
 }
 
 

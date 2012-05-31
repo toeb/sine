@@ -39,6 +39,26 @@ using namespace std;
 int integratorIndex=0;
 vector<SingleStepIntegrator*> integrators;
 
+class CustomGeometry : public Polygon{
+public:
+  CustomGeometry(){
+    setName("test");
+  }
+protected:
+  void createGeometrty(){
+    addVertex(Vector3D(-1,-1,0));
+    addVertex(Vector3D(+1,-1,0));
+    addVertex(Vector3D(0,1,0));
+    
+    addEdge(0,1);
+    addEdge(1,2);
+    addEdge(2,0);
+
+    
+    addFace(0,1,2);
+    addFace(2,1,0);
+  }
+};
 
 void CustomSimulation::buildAlgorithms(){
   
@@ -93,7 +113,12 @@ void CustomSimulation::buildAlgorithms(){
   addSimulationObject(new LightRenderer());
   addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
   addSimulationObject(new TweakBarRenderer());
-  addSimulationObject(new CameraRenderer());
+  CameraRenderer * cam = new CameraRenderer();
+  cam->setPosition(Vector3D(8,0,30));
+  Quaternion q;
+  q.setFromAxisAngle(Vector3D(0,1,0),3.14190/2);
+  cam->setOrientation(q);
+  addSimulationObject(cam);
 }
 
 void CustomSimulation::buildModel(){ 
@@ -103,7 +128,7 @@ void CustomSimulation::buildModel(){
     
   //addSimulationObject(new ControllableBox());
 
-  Gravity & g = *(b.setGravity(1));
+  Gravity & g = *(b.setGravity(Vector3D(0.1,0,0)));
   IValue * r = new RealValue("Gravity Magnitude",
     [&g](){return g.getGravityMagnitude();},
     [&g](Real val){g.setGravityMagnitude(val);});
@@ -130,21 +155,39 @@ void CustomSimulation::buildModel(){
 
   //create three geometries and their bounding octrees
   vector<Geometry*> & geoms = *(new vector<Geometry*>());
-  b.setOffset(Vector3D(12,0,0));
+  b.setOffset(Vector3D(18,0,0));
   Geometry * geom = b.createSphere("",Vector3D::Zero(),0,3);
   geoms.push_back(geom);
   b.setOffset(Vector3D(6,0,0));
+
   geom = b.createFixedPlane("",Vector3D::Zero(),Quaternion::zeroRotation(),4,2);
   geoms.push_back(geom);
-  b.setOffset(Vector3D(2,0,0));
-  geoms.push_back(b.createBox("box13",Vector3D::Zero(),0));
+  b.setOffset(Vector3D(-2,0,0));
+  DynamicBox & bx =*(b.createBox("box13",Vector3D::Zero(),1)); 
+  geoms.push_back(&bx);
+  
+  CustomGeometry * cg = new CustomGeometry();
+  PolygonRenderer * pr = new PolygonRenderer(*cg);
+  addSimulationObject(cg);
+  addSimulationObject(pr);
+  // geoms.push_back(new CustomGeometry());
+  int depth=4;
+ 
 
-  int depth=6;
+  addSimulationObject(new RealValue("p cube",
+    [&bx](){
+    return bx.getPosition().v[0]; 
+    },
+      [&bx](Real val){
+        bx.position().v[0] = val;
+    }
+      ));
 
   for_each(geoms.begin(), geoms.end(), [this, &geoms,&depth](Geometry * geo){
   
     Octree * octree= new Octree(*geo,depth, *(new BoundingSphereFactory()));
     OctreeRenderer & otr= *(new OctreeRenderer(*octree));
+    addSimulationObject(new CollisionRenderer(*octree));
     addSimulationObject(octree);
     addSimulationObject(&otr);
     

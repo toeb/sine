@@ -24,6 +24,9 @@ set(collisionDetection_SRC
  ./Collision/Detection/CollisionDetector.cpp
  ./Collision/Detection/SphereCollisionDetector.h
  ./Collision/Detection/SphereCollisionDetector.cpp
+ ./Collision/Detection/OctreeCollisionDetector.h
+ ./Collision/Detection/OctreeCollisionDetector.cpp
+ 
 )
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
 
@@ -69,6 +72,8 @@ set(CollisionTests_SRC
 ./Collision/Detection/CollisionTest/CollisionTest.cpp
 ./Collision/Detection/CollisionTest/SeparatingAxes.h
 ./Collision/Detection/CollisionTest/SeparatingAxes.cpp
+./Collision/Detection/CollisionTest/OctreeOctree.h
+./Collision/Detection/CollisionTest/OctreeOctree.cpp
 
 	
 )

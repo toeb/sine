@@ -5,9 +5,7 @@
 
 namespace IBDS{
 struct SphereSphere{
-  Sphere * _sphereA;
-  Sphere * _sphereB;
 public:
-  bool testCollision(Collision & col);
+  bool testCollision(const Sphere & a, const Sphere & b, Collision * collision)const;
 };
 }

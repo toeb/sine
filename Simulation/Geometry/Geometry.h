@@ -7,7 +7,8 @@
 
 namespace IBDS{
 
-  struct Axis{
+  class Axis{
+  public:
     Axis(const Vector3D & normal){
       p.setZero();
       n.assign(normal);
@@ -18,12 +19,13 @@ namespace IBDS{
     }
   Vector3D p;
   Vector3D n;
-  Real projectOnAxis(const Vector3D & a)const {
-    Vector3D diff;
+  inline Real projectOnAxis(const Vector3D & a) const{
+   Vector3D diff;
     Real result;
     Vector3D::subtract(a, p,diff);
     Vector3D::dotProduct(n,diff,result);
     return result;
+  
   }
 };
 
@@ -128,13 +130,13 @@ struct AABB{
   }
 };
 
-
 enum Classification{
   UNCLASSIFIED=0,
   INSIDE=1,
   OUTSIDE=2,
   BOTH=3
 };
+
 
 
 class Geometry : public virtual CoordinateSystem{

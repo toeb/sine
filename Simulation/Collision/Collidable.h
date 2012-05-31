@@ -6,7 +6,7 @@
 #include <functional>
 #include <Simulation/Geometry/Geometry.h>
 namespace IBDS{
-
+  
 class Collidable : public virtual ISimulationObject{
 private:
   std::vector<Collision*> _collisions;
@@ -14,14 +14,15 @@ private:
 public:
   Collidable(Geometry & go);
   
-  Geometry & getGeometry()const;
+  virtual Geometry & getGeometry()const;
 
   virtual void update(){};
+  virtual void reset(){};
   virtual void handleCollisions(){};
   
   void addCollision(Collision * col);
   void resetCollisions();  
-
+  bool isColliding()const;
   const std::vector<Collision*> & getCollisions()const;
   void for_each_Collision(std::function<void(Collision *)> f);
 };

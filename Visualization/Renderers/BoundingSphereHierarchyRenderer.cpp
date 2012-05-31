@@ -1,6 +1,6 @@
 #include <Visualization/MiniGL.h>
 #include "BoundingSphereHierarchyRenderer.h"
-
+#include <Simulation/Collision/Detection/BoundingVolumes/BoundingSphere.h>
 
 
 using namespace IBDS;
@@ -18,13 +18,29 @@ void OctreeRenderer::render(){
     octree->getCenter(center);
     const AABB & aabb =octree->getAABB();
     float color [4];
-    for(int i=0; i < 4; i++){ color[i]= MiniGL::cyan[i];}
+    const float * baseColor = MiniGL::cyan;
+    BoundingVolume * volume = &(octree->getBoundingVolume());
+    if(volume->isUpToDate()){
+      baseColor = MiniGL::darkCyan;
+    }
+    if(volume->isColliding()){
+      baseColor = MiniGL::red;
+    }
+    for(int i=0; i < 4; i++){ color[i]= baseColor[i];}
+        
     color[3]=0.4;
     
+
+    
+
     //MiniGL::drawPoint(aabb.min,5,MiniGL::darkblue);
     //MiniGL::drawPoint(aabb.max,5,MiniGL::darkblue);    
     MiniGL::drawPoint(center,5,MiniGL::darkblue);
     
+    BoundingSphere * bs = dynamic_cast<BoundingSphere*>(volume);
+    if(bs){
+      MiniGL::drawSphere(&(bs->getPositionOCS()),bs->getRadius(),color,14U);
+    }
     //MiniGL::drawCube(&center,&((Matrix3x3::Identity())),aabb.getWidth(), aabb.getHeight(), aabb.getDepth(),color);
     
     //MiniGL::drawSphere();

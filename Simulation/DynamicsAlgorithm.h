@@ -9,6 +9,7 @@
 #include <Simulation/Textiles/TextileAlgorithm.h>
 #include <Simulation/Core/UpdateablesModule.h>
 #include <Simulation/Collision/Detection/SphereCollisionDetector.h>
+#include <Simulation/Collision/Detection/OctreeCollisionDetector.h>
 namespace IBDS{
 
   /**
@@ -37,6 +38,7 @@ public:
   TextileAlgorithm textilesModule;
   UpdatablesModule updatablesModule;
   SphereCollisionDetector sphereCollisionDetector;
+  OctreeCollisionDetector octreeCollisionDetector;
   DynamicsAlgorithm();
 
   IIntegrable & getIntegrable();

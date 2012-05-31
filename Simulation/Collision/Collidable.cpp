@@ -16,6 +16,7 @@ void Collidable::addCollision(Collision* col){
   _collisions.push_back(col);
 }
 void Collidable::resetCollisions(){
+  reset();
   _collisions.clear();
 }
 const std::vector<Collision*> & Collidable::getCollisions()const{
@@ -24,4 +25,7 @@ const std::vector<Collision*> & Collidable::getCollisions()const{
 
 void Collidable::for_each_Collision(function<void (Collision*)> f){
   for_each(_collisions.begin(), _collisions.end(), f);
+}
+bool Collidable::isColliding()const{
+  return _collisions.size()!=0;
 }

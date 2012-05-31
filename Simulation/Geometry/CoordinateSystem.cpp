@@ -14,7 +14,9 @@ CoordinateSystem::~CoordinateSystem(){
   if(_RT)delete _RT;
 
 }
-
+Vector3D & CoordinateSystem::position(){
+  return _p;
+}
 
 const Vector3D & CoordinateSystem::getPosition()const{
   return _p;    

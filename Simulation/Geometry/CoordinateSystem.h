@@ -26,6 +26,7 @@ public:
   
   const Vector3D & getPosition()const;
   void setPosition(const Vector3D & p_wcs);
+  Vector3D & position();
 
   const Quaternion & getOrientation()const;
 

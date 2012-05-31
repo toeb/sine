@@ -2,6 +2,7 @@
 #include <Simulation/Core/IUpdateable.h>
 #include <Simulation/Geometry/Geometry.h>
 #include <Simulation/Collision/Detection/BoundingVolumes/BoundingVolume.h>
+#include <Simulation/Collision/Collidable.h>
 #include <map>
 #include <functional>
 
@@ -21,7 +22,7 @@ enum OctreeNodeId{
 };
 
 
-class Octree : public virtual ISimulationObject{
+class Octree : public Collidable{
 private:
   ///< The id of the node
   const OctreeNodeId _id;
@@ -45,8 +46,6 @@ private:
 
   ///< The children
   Octree ** _children;
-  ///< The geometry that this octree represents
-  Geometry & _geometry;
 
   /**
    * \brief private Constructor.
@@ -77,7 +76,6 @@ private:
 
 protected:
   void createBoundingVolume();
-  BoundingVolume & getBoundingVolume();
   /**
    * \brief Initializes the object.
    * 				refines the octree to the requested level and prunes the tree
@@ -106,7 +104,12 @@ protected:
 
   
 public:
+  void update();
+  void reset();
+
+  const Octree * child(OctreeNodeId i)const;
   ~Octree();
+  BoundingVolume & getBoundingVolume();
   BoundingVolume & getBoundingVolume()const;
   /**
    * \brief Constructor.
@@ -137,7 +140,6 @@ public:
   bool isLeaf()const;
   unsigned int getLevel()const;
   Octree * getNode(OctreeNodeId id);
-  Geometry & getGeometry()const;
 
 
   

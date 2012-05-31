@@ -12,7 +12,7 @@ DynamicsAlgorithm::DynamicsAlgorithm():multiBodyDynamics(20){
   addSimulationModule(&integrables);
   addSimulationModule(&connectorModule);
   addSimulationModule(&textilesModule);
-  addSimulationModule(&sphereCollisionDetector);
+  addSimulationModule(&octreeCollisionDetector);
 }
 
 IIntegrable & DynamicsAlgorithm::getIntegrable(){
@@ -31,8 +31,12 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
   connectorModule.calculateConnectorPositions();
   
   updatablesModule.update(t,h);  
-  if(detectCollisions)sphereCollisionDetector.detectCollisions(t,h);
 
+  if(detectCollisions){
+    octreeCollisionDetector.reset();
+    octreeCollisionDetector.update();
+    octreeCollisionDetector.detectCollisions(t,h);
+  }
   if(doMultiBody)multiBodyDynamics.correctPositions(h);
   
 }

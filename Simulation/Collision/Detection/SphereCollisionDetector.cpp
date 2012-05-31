@@ -4,27 +4,25 @@
 using namespace std;
 using namespace IBDS;
 
-#define GET_SPHERE(coll) dynamic_cast<Sphere*>( &( coll->getGeometry()))
 
 int SphereCollisionDetector::detectCollisions(Real t, Real h){
   resetCollisions();
-  Collision collision;
-  collision.time = t;
   int cols = 0;
-  vector<Collidable*> & collidables = objects();
-  for(int i=0; i < collidables.size(); i++){
-    collision.objectA = collidables.at(i);
-    collisionTest._sphereA = GET_SPHERE(collision.objectA);
-    for(int j=i+1; j < collidables.size(); j++){
-      collision.objectB = collidables.at(j);
-      collisionTest._sphereB = GET_SPHERE(collision.objectB);
-      
-      if(collisionTest.testCollision(collision)){
-        addCollision(new Collision(collision));
-        cols++;
-      }
+ 
+  foreachCombination([&cols,this](Collidable * a, Collidable * b){
+    Collision * collision = new Collision(*a,*b);
+    Sphere* sphereA = dynamic_cast<Sphere*>(&(a->getGeometry()));
+    Sphere* sphereB = dynamic_cast<Sphere*>(&(b->getGeometry()));
+    if(collisionTest.testCollision(*sphereA,*sphereB,collision)){
+      addCollision(collision);
+      cols++;
+    }else{
+      delete collision;
     }
-  }
+
+  });
+  
+ 
   return cols;
 }
 
