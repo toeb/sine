@@ -34,8 +34,6 @@ set(geometry_SRC
  ./Geometry/Geometry.cpp
  ./Geometry/CoordinateSystem.h
  ./Geometry/CoordinateSystem.cpp
- ./Geometry/AABB.h
- ./Geometry/AABB.cpp 
  ./Geometry/Plane.h
  ./Geometry/Plane.cpp
  ./Geometry/Interval.h
@@ -50,6 +48,8 @@ set(boundingVolumes_SRC
  ./Geometry/BoundingVolumes/BoundingSphere.cpp
  ./Geometry/BoundingVolumes/BoundingVolume.h
  ./Geometry/BoundingVolumes/BoundingVolume.cpp
+ ./Geometry/BoundingVolumes/BoundingBox.h
+ ./Geometry/BoundingVolumes/BoundingBox.cpp 
 )
 source_group("simulation\\geometry\\boundingvolumes" FILES ${boundingVolumes_SRC})
 

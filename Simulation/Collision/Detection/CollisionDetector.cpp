@@ -49,9 +49,9 @@ void CollisionDetector::addCollision(Collision * collision){
 
 void CollisionDetector::foreachCombination(std::function<void (Collidable * a, Collidable* b)> f){
   for(int i =0; i < objects().size(); i++){
-    for(int j = 0; j < objects().size(); j++){
+    for(int j = i+1; j < objects().size(); j++){
       if(i==j)continue;
-      f(objects().at(i),objects().at(j));
+      f(objects().at(j),objects().at(i));
     }
   }
 }
