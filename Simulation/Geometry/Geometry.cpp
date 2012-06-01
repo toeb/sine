@@ -2,11 +2,7 @@
 
 using namespace IBDS;
 
-bool  Geometry::isInside(const Vector3D & p_wcs)const{
-  Vector3D p_ocs;
-  toObjectCoordinates(p_wcs,p_ocs);
-  return isInsideOCS(p_ocs);
-}
+
 
 void Geometry::getBoundingBoxOCS(AABB & aabb)const{
   Axis x,y,z;

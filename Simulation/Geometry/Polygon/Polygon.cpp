@@ -1,20 +1,27 @@
 #include "Polygon.h"
+#include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 
 
 using namespace IBDS;
 using namespace std;
 
+const TypeId Polygon::type = "Polygon";
+const TypeId Polygon::getType()const{
+  return type;
+}
 
-Classification Polygon::classify(const Vector3D & c, Real radius)const{
+Classification classifySphere(const BoundingSphere & sphere, const Polygon & polygon){
+  const Vector3D & c = sphere.getPositionPCS();
+  Real radius = sphere.getRadius();
   Axis currentAxis;
-   Classification result = Classification::UNCLASSIFIED;
-   for(int i = 0; i < faces().size(); i++){
-    currentAxis.n = face(i)->n_ocs;
-    Interval a;
+  Interval a;
     Interval b;
+    //check faces
+   Classification result = Classification::UNCLASSIFIED;
+   for(int i = 0; i < polygon.faces().size(); i++){
+    currentAxis.n = polygon.face(i)->n_ocs;
     
-    
-    projectOCS(currentAxis,a);
+    polygon.projectOCS(currentAxis,a);
     Real val = currentAxis.projectOnAxis(c);
     b.a = val - radius;
     b.b = val + radius;
@@ -29,20 +36,43 @@ Classification Polygon::classify(const Vector3D & c, Real radius)const{
       result = static_cast<Classification>(result | Classification::BOTH); 
     }
   }
+   Vector3D dir;
+   // check edges
+   for(int i=0; i < polygon.edges().size(); i++){
+     Edge * e = polygon.edge(i);
+     e->getDirection(dir);
+     currentAxis.n = e->forward->face->n_ocs ^ dir;
+     currentAxis.n.normalize();
+
+    polygon.projectOCS(currentAxis,a);
+    Real val = currentAxis.projectOnAxis(c);
+    b.a = val - radius;
+    b.b = val + radius;
+
+    
+    if(a.disjoint(b)){
+      return Classification::OUTSIDE;
+    }
+    if(b.subsetOf(a)) {
+      result = static_cast<Classification>(result | Classification::INSIDE); 
+    }else{
+      result = static_cast<Classification>(result | Classification::BOTH); 
+    }
+   }
+
   return result;
 }
-
-Classification Polygon::classify(const AABB & aabb)const{
+Classification classifyAABB(const AABB & aabb, const Polygon & polygon){
   vector<Axis> axes;
   axes.push_back(Axis(Vector3D::e1()));
   axes.push_back(Axis(Vector3D::e2()));
   axes.push_back(Axis(Vector3D::e3()));
-  for(int i = 0; i < faces().size(); i++){
-    axes.push_back(face(i)->n_ocs);
+  for(int i = 0; i < polygon.faces().size(); i++){
+    axes.push_back(polygon.face(i)->n_ocs);
   }
-  for(int i = 0; i < edges().size(); i++){
+  for(int i = 0; i < polygon.edges().size(); i++){
     Vector3D edgeDir,e_n;
-    edge(i)->getDirection(edgeDir);
+    polygon.edge(i)->getDirection(edgeDir);
     Vector3D::crossProduct(edgeDir,Vector3D::e1(),e_n);
     e_n.normalize();
     axes.push_back(Axis(e_n));
@@ -59,7 +89,7 @@ Classification Polygon::classify(const AABB & aabb)const{
   for(int i = 0 ; i < axes.size(); i++){
     Interval a;
     Interval b;
-    projectOCS(axes[i],a);
+    polygon.projectOCS(axes[i],a);
     aabb.projectOCS(axes[i],b);
     
     if(a.disjoint(b)){
@@ -76,6 +106,18 @@ Classification Polygon::classify(const AABB & aabb)const{
   }
   return result;
 }
+
+
+Classification Polygon::classify(const BoundingVolume & volume)const{
+  const BoundingSphere * sphere = dynamic_cast<const BoundingSphere*>(&volume);
+  if(sphere)return classifySphere(*sphere,*this);
+  const AABB * aabb = dynamic_cast<const AABB*>(&volume); 
+  if(aabb)return classifyAABB(*aabb,*this);
+  return UNCLASSIFIED;
+}
+
+
+
 
 bool Polygon::initializeObject(){
   createGeometry();

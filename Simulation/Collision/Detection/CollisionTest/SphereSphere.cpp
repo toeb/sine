@@ -5,8 +5,17 @@ using namespace std;
 
 
 
-bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision * collision)const{
   
+const TypeId SphereSphere::getTypeA()const{
+  return Sphere::type;
+}
+const TypeId SphereSphere::getTypeB()const{
+  return Sphere::type;
+}
+
+
+
+bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision * collision)const{
   //calculate the vector from A to B
   const Vector3D & pA = A.getPosition();
   const Vector3D & pB = B.getPosition();
@@ -36,6 +45,7 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   
   //positive penetration means the objects are inside each other
   if(penetrationDepth<0)return false;
+  //if there is no collision set then no contact parameters have to be computed
   if(!collision)return true;
 
   Contact * contact = new Contact();
@@ -50,4 +60,10 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   Vector3D::add(contact->pB_wcs,pB,contact->pB_wcs);
   
   collision->addContact(contact);
+}
+
+bool SphereSphere::testCollision(const ICollidable & objA, const ICollidable & objB, Collision * collision)const{
+  const Sphere & A = static_cast<const Sphere &>(objA.getGeometry());
+  const Sphere & B = static_cast<const Sphere &>(objB.getGeometry());
+  return testCollision(A,B,collision);  
 }

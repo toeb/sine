@@ -1,7 +1,7 @@
 #pragma once
 #include <Simulation/Core/IUpdateable.h>
 #include <Simulation/Geometry/Geometry.h>
-#include <Simulation/Collision/Detection/BoundingVolumes/BoundingVolume.h>
+#include <Simulation/Geometry/BoundingVolumes/BoundingVolume.h>
 #include <Simulation/Collision/Collidable.h>
 #include <map>
 #include <functional>
@@ -104,6 +104,9 @@ protected:
 
   
 public:
+  static const TypeId type;
+  const TypeId getType()const;
+
   void update();
   void reset();
 
@@ -111,11 +114,15 @@ public:
   ~Octree();
   BoundingVolume & getBoundingVolume();
   BoundingVolume & getBoundingVolume()const;
+
   /**
-   * \brief Constructor.
-   *        creates a octree from the geometry which will be refined to depth when initialized
-   * \param depth               The depth.
-   * \param [in,out]  geometry  The geometry.
+   * \brief Constructor. creates a octree from the geometry which will be refined to depth when
+   *  initialized.
+   *
+   * \param [in,out] geometry              The geometry.
+   * \param depth                          The depth.
+   * \param [in,out] boundingVolumeFactory The bounding volume factory.
+   * \param precision                      (optional) the precision (zero means as exact as possible).
    */
   Octree( Geometry & geometry,int depth, BoundingVolumeFactory & boundingVolumeFactory);
 

@@ -1,11 +1,23 @@
 #pragma once
 #include <string>
 namespace IBDS{
+
+typedef const char * TypeId;
+
 class ISimulationObject {
 private:
+
   const std::string * _name;
   bool _initialized;
 public:
+
+  /**
+   * \brief Gets the type (sublasses may implement if needed else it returns "ISimulationObject".  
+   *
+   * \return The type.
+   */
+  virtual const TypeId getType()const;
+
   ISimulationObject():_name(0), _initialized(false){}
   ~ISimulationObject(){delete _name;}
   /**

@@ -4,10 +4,10 @@
 using namespace IBDS;
 using namespace std;
 
-PlaneRenderer::PlaneRenderer( Plane & plane):_plane(plane){
+RectangleRenderer::RectangleRenderer( Rectangle & plane):_plane(plane){
 
 }
-void PlaneRenderer::render(){
+void RectangleRenderer::render(){
   Vector3D a,b,c,d,n;
   const float * color = MiniGL::darkCyan;
   a =  _plane.vertices().at(0)->p_ocs;

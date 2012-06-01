@@ -36,6 +36,9 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
     octreeCollisionDetector.reset();
     octreeCollisionDetector.update();
     octreeCollisionDetector.detectCollisions(t,h);
+    cout << "Collisions Detected: "<<octreeCollisionDetector.getCollisionCount()<<endl;
+    cout << "Contacts: "<<octreeCollisionDetector.getContactCount()<<endl;
+
   }
   if(doMultiBody)multiBodyDynamics.correctPositions(h);
   

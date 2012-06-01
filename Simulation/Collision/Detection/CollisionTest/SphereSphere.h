@@ -1,11 +1,16 @@
 #pragma once
-#include <Simulation/Collision/Collision.h>
-#include <Simulation/Geometry/Primitives/Sphere.h>
 #include <Simulation/Collision/Detection/CollisionTest/CollisionTest.h>
+#include <Simulation/Geometry/Primitives/Sphere.h>
 
 namespace IBDS{
-struct SphereSphere{
+class SphereSphere : public CollisionTest{
 public:
-  bool testCollision(const Sphere & a, const Sphere & b, Collision * collision)const;
+  
+  const TypeId getTypeA()const;
+  const TypeId getTypeB()const;
+   bool testCollision(const ICollidable & a, const ICollidable & b, Collision * collision)const;
+   bool testCollision(const Sphere & a, const Sphere & b, Collision * collision)const;
 };
+
+
 }

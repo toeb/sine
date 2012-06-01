@@ -11,9 +11,7 @@ int SphereCollisionDetector::detectCollisions(Real t, Real h){
  
   foreachCombination([&cols,this](Collidable * a, Collidable * b){
     Collision * collision = new Collision(*a,*b);
-    Sphere* sphereA = dynamic_cast<Sphere*>(&(a->getGeometry()));
-    Sphere* sphereB = dynamic_cast<Sphere*>(&(b->getGeometry()));
-    if(collisionTest.testCollision(*sphereA,*sphereB,collision)){
+    if(collisionTest.testCollision(*a,*b,collision)){
       addCollision(collision);
       cols++;
     }else{

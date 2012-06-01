@@ -13,9 +13,9 @@ int OctreeCollisionDetector::detectCollisions(Real t, Real h){
 
   foreachCombination([&cols,this](Collidable* a, Collidable * b){
     Collision * collision = new Collision(*a,*b);
-    Octree * octreeA = dynamic_cast<Octree*>(a);
-    Octree * octreeB = dynamic_cast<Octree*>(b);
-    if(collisionTest.testCollision(*octreeA,*octreeB,collision)){
+    Octree & aref = static_cast<Octree &>(*a);
+    Octree & bref = static_cast<Octree &>(*b);
+    if(collisionTest.testCollision(aref,bref,collision)){
       cols++;
       addCollision(collision);
     }else{

@@ -1,12 +1,15 @@
 #include <Visualization/MiniGL.h>
+#include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 #include "BoundingSphereHierarchyRenderer.h"
-#include <Simulation/Collision/Detection/BoundingVolumes/BoundingSphere.h>
+
 
 
 using namespace IBDS;
 using namespace std;
 int OctreeRenderer::level =0;
+bool OctreeRenderer::doRender =true;
 void OctreeRenderer::render(){
+  if(!doRender)return;
   MiniGL::pushMatrix();
   
   const Matrix3x3 & R =_octree.getGeometry().getRotationMatrix();
@@ -39,7 +42,7 @@ void OctreeRenderer::render(){
     
     BoundingSphere * bs = dynamic_cast<BoundingSphere*>(volume);
     if(bs){
-      MiniGL::drawSphere(&(bs->getPositionOCS()),bs->getRadius(),color,14U);
+      MiniGL::drawSphere(&(bs->getPositionPCS()),bs->getRadius(),color,14U);
     }
     //MiniGL::drawCube(&center,&((Matrix3x3::Identity())),aabb.getWidth(), aabb.getHeight(), aabb.getDepth(),color);
     
@@ -47,22 +50,4 @@ void OctreeRenderer::render(){
   });
   
   MiniGL::popMatrix();
-}
-
-void BoundingSphereHierarchyRenderer::render(){
-  
-    static float color[4];
-  color[0] = MiniGL::darkGreen[0];
-  color[1] = MiniGL::darkGreen[1];
-  color[2] = MiniGL::darkGreen[2];
-  color[3] = 0.2;
-
-  _hierarchy.for_each_in_level(level,[this](BoundingSphereHierarchy* b){
-  
-    const Vector3D & p  = b->getPosition();
-    MiniGL::drawSphere(&p,b->getRadius(),color);
-    MiniGL::drawPoint(p, 5,MiniGL::darkYellow); 
-  });
-
-
 }

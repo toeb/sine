@@ -2,8 +2,6 @@ SET(SIMULATION_LINK_LIBRARIES Math freeglut opengl32.lib glu32.lib ${ANTTWEAKBAR
 SET (SIMULATION_DEPENDENCIES Math freeglut)
 
 set(collisionAcceleration_SRC 
-./Collision/Detection/Acceleration/BoundingSphereTree.h
-./Collision/Detection/Acceleration/BoundingSphereTree.cpp
 ./Collision/Detection/Acceleration/Octree.h
 ./Collision/Detection/Acceleration/Octree.cpp
 )
@@ -22,11 +20,12 @@ source_group("simulation\\collision" FILES ${collision_SRC})
 set(collisionDetection_SRC 
  ./Collision/Detection/CollisionDetector.h
  ./Collision/Detection/CollisionDetector.cpp
+ ./Collision/Detection/CompositeCollisionDetector.h
+ ./Collision/Detection/CompositeCollisionDetector.cpp
  ./Collision/Detection/SphereCollisionDetector.h
  ./Collision/Detection/SphereCollisionDetector.cpp
  ./Collision/Detection/OctreeCollisionDetector.h
- ./Collision/Detection/OctreeCollisionDetector.cpp
- 
+ ./Collision/Detection/OctreeCollisionDetector.cpp 
 )
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
 
@@ -35,16 +34,24 @@ set(geometry_SRC
  ./Geometry/Geometry.cpp
  ./Geometry/CoordinateSystem.h
  ./Geometry/CoordinateSystem.cpp
+ ./Geometry/AABB.h
+ ./Geometry/AABB.cpp 
+ ./Geometry/Plane.h
+ ./Geometry/Plane.cpp
+ ./Geometry/Interval.h
+ ./Geometry/Interval.cpp
+ ./Geometry/Axis.h
+ ./Geometry/Axis.cpp
 )
 source_group("simulation\\geometry" FILES ${geometry_SRC})
 
 set(boundingVolumes_SRC
- ./Collision/Detection/BoundingVolumes/BoundingSphere.h
- ./Collision/Detection/BoundingVolumes/BoundingSphere.cpp
- ./Collision/Detection/BoundingVolumes/BoundingVolume.h
- ./Collision/Detection/BoundingVolumes/BoundingVolume.cpp
+ ./Geometry/BoundingVolumes/BoundingSphere.h
+ ./Geometry/BoundingVolumes/BoundingSphere.cpp
+ ./Geometry/BoundingVolumes/BoundingVolume.h
+ ./Geometry/BoundingVolumes/BoundingVolume.cpp
 )
-source_group("simulation\\collision\\detection\\boundingvolumes" FILES ${boundingVolumes_SRC})
+source_group("simulation\\geometry\\boundingvolumes" FILES ${boundingVolumes_SRC})
 
 
 set(polygon_SRC
@@ -74,8 +81,8 @@ set(CollisionTests_SRC
 ./Collision/Detection/CollisionTest/SeparatingAxes.cpp
 ./Collision/Detection/CollisionTest/OctreeOctree.h
 ./Collision/Detection/CollisionTest/OctreeOctree.cpp
-
-	
+./Collision/Detection/CollisionTest/CollisionTestFactory.h
+./Collision/Detection/CollisionTest/CollisionTestFactory.cpp	
 )
 source_group("simulation\\collision\\detection\\collisiontest" FILES ${CollisionTests_SRC})
 
@@ -87,8 +94,12 @@ set(geometryPrimitives_SRC
  ./Geometry/Primitives/Hexahedron.cpp
  ./Geometry/Primitives/Sphere.h
  ./Geometry/Primitives/Sphere.cpp
- ./Geometry/Primitives/Plane.h
- ./Geometry/Primitives/Plane.cpp
+ ./Geometry/Primitives/Rectangle.h
+ ./Geometry/Primitives/Rectangle.cpp
+ ./Geometry/Primitives/Pyramid.h
+ ./Geometry/Primitives/Pyramid.cpp
+ ./Geometry/Primitives/Triangle.h
+ ./Geometry/Primitives/Triangle.cpp
 )
 source_group("simulation\\geometry\\primitives" FILES ${geometryPrimitives_SRC})
 SET (integrators_SRC
@@ -163,7 +174,11 @@ SET(simulation_SRC
 	./DynamicsAlgorithm.h
 	./DynamicsAlgorithm.cpp
 )
-
+set(implicitGeometry_SRC
+	./Geometry/Implicit/ImplicitSurface.h
+	./Geometry/Implicit/ImplicitSurface.cpp
+)
+source_group("simulation\\geometry\\implicit" FILES ${implicitGeometry_SRC})
 set(simulationCore_SRC
 	./Core/CompositeSimulationObject.h
 	./Core/CompositeSimulationObject.cpp
@@ -175,6 +190,7 @@ set(simulationCore_SRC
 	./Core/SimulationModuleBase.h
 	./Core/SimulationModuleBase.cpp
 	./Core/ISimulationObject.h
+	./Core/ISimulationObject.cpp
 	./Core/IUpdateable.h
 	./Core/IUpdateable.cpp
 	./Core/UpdateablesModule.h
@@ -322,6 +338,7 @@ ${geometry_SRC}
 ${collisionAcceleration_SRC}
 ${geometryPrimitives_SRC}
 ${CollisionTests_SRC}
+${implicitGeometry_SRC}
 ${PROJECT_PATH}/Common/Config.h			  
 ${PROJECT_PATH}/Common/StringTools.h			  
 ${PROJECT_PATH}/Common/StringTools.cpp

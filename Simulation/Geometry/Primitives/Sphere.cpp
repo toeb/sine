@@ -1,9 +1,17 @@
 #include "Sphere.h"
-
+#include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 using namespace std;
 using namespace IBDS;
 
-Classification Sphere::classify(const AABB & aabb_ocs)const{
+const TypeId Sphere::type = "Sphere";
+
+const TypeId Sphere::getType()const{
+  return type;
+}
+
+Classification classifyAABB(const AABB & aabb_ocs, const Sphere & sphere){
+  Real radius = sphere.getRadius();
+
   Vector3D center;
   aabb_ocs.getCenter(center);
   Axis axis;
@@ -13,7 +21,7 @@ Classification Sphere::classify(const AABB & aabb_ocs)const{
   // axis of separation is the center of aabb to center of sphere
 
   Interval aabbInterval;
-  Interval sphereInterval(-_radius,_radius);
+  Interval sphereInterval(-radius,radius);
 
   aabb_ocs.projectOCS(axis,aabbInterval);
   
@@ -26,42 +34,51 @@ Classification Sphere::classify(const AABB & aabb_ocs)const{
 
 }
 
-Classification Sphere::classify(const Vector3D & p, Real radius)const{
+Classification classifySphere(const BoundingSphere & boundingSphere, const Sphere & sphere){
+  Axis direction;
+  // the axis on which to project is boundingSphere.p_ocs-sphere.p_ocs/|| boundingSphere.p_ocs-sphere.p_ocs||
+  direction.n = boundingSphere.getPositionPCS();   
+  direction.n.normalize();
+
+  Interval boundingSphereInterval, sphereInterval;
   
-  Axis axis;
-  if(p.length2()==0){
-    axis.n.assign(Vector3D::e1());
-  }else{
-    axis.n = p;
-    axis.n.normalize();
-  }
-  // axis of separation is the center of aabb to center of sphere
+  //project both spheres on the axis
+  sphere.projectOCS(direction,sphereInterval);
 
-  Interval intervalOfOtherSphere;
-  Interval intervalOfThis(-_radius,_radius);
+  //bounding sphere needs custom projection
+  
+  boundingSphere.projectPCS(direction,boundingSphereInterval);
+    
 
-  Real val = axis.projectOnAxis(p);
-  intervalOfOtherSphere.a=val-radius;
-  intervalOfOtherSphere.b=val+radius;
+  // if the spheres do not overlap at all the bounding sphere is outside
+  if(boundingSphereInterval.disjoint(sphereInterval))return Classification::OUTSIDE;
 
-  if(intervalOfThis.disjoint(intervalOfOtherSphere))return Classification::OUTSIDE;
-  if(intervalOfOtherSphere.subsetOf(intervalOfThis)){
+  // if the spheres overlap and the boundinsphere is inside the sphere return INSIDE
+  if(boundingSphereInterval.subsetOf(sphereInterval)){
     return Classification::INSIDE;
   }
+  //else both applies
   return Classification::BOTH;
 }
-bool Sphere::boundaryIntersects(const AABB & aabb_ocs)const{
-  return false;
+
+Classification Sphere::classify(const BoundingVolume & volume)const{
+  const BoundingSphere * bSphere = dynamic_cast<const BoundingSphere*>(&volume);
+  if(bSphere){
+    return classifySphere(*bSphere,*this);
+  }
+
+  const AABB * aabb = dynamic_cast<const AABB*>(&volume);
+  if(aabb){
+    return classifyAABB(*aabb,*this);
+  }
+
+  return UNCLASSIFIED;
 }
 
 Sphere::Sphere(Real radius){
   _radius = radius;
 }
-bool Sphere::isInsideOCS(const Vector3D & p_ocs)const{
-  Real lengthSquared = p_ocs.length2();
-  if(_radius*_radius < lengthSquared)return false;
-  return true;
-}
+
 
 Real Sphere::calculateBoundingSphereRadius()const{
   return _radius;
@@ -80,18 +97,11 @@ void Sphere::setRadius(Real radius){
   onRadiusChanged();
 }
 
-void Sphere::fitInto(const AABB & aabb){
-    Vector3D position;
-    aabb.getCenter(position);
-    setPosition(position);
-    //setRadius((aabb.min - position).length());
-}
-
 
   
-  void Sphere::projectOCS(const Axis & axis_ocs, Interval & result)const{
-    Real val = axis_ocs.projectOnAxis(-axis_ocs.p);
+void Sphere::projectOCS(const Axis & axis_ocs, Interval & result)const{
+  Real val = axis_ocs.projectOnAxis(-axis_ocs.p);
 
-    result.a = val - _radius;
-    result.b = val +  _radius;
-  }
+  result.a = val - _radius;
+  result.b = val +  _radius;
+}

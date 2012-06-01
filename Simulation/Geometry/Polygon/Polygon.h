@@ -11,15 +11,20 @@
 
 namespace IBDS{
 
-class Polygon : public virtual Geometry{
+class Polygon : public Geometry{
 private:
+  // a polygon consiste of faces, edges, half edges and vertices
   std::vector<Face*> _faces;
   std::vector<Edge*> _edges;
   std::vector<HalfEdge*> _halfEdges;
   std::vector<Vertex*> _vertices;
-
 public:
+  static const TypeId type;
+  const TypeId getType()const;
+  Classification classify(const BoundingVolume & volume)const;
   
+  
+
   const std::vector<HalfEdge*> & halfEdges() const;
   const std::vector<Face*> & faces() const;
   const std::vector<Edge*> & edges() const;
@@ -30,8 +35,7 @@ public:
   std::vector<Edge*> & edges();
   std::vector<Vertex*> & vertices();
   
-  Classification classify(const AABB & aabb)const;
-  Classification classify(const Vector3D & c, Real radius)const;
+  
   inline Vertex * vertex(Index i);
   inline Edge * edge(Index i);
   inline Face * face(Index i);
@@ -40,11 +44,13 @@ public:
   inline Edge * edge(Index i)const;
   inline Face * face(Index i)const;
   inline HalfEdge * halfEdge(Index i)const;
+
   bool isInsideOCS(const Vector3D & p_ocs)const;
   virtual Real calculateBoundingSphereRadius()const;
 
   void projectOCS(const Axis & axis_ocs, Interval & result)const; 
 protected:
+  // some utility methods
   HalfEdge * getHalfEdge(const Vertex * a, const Vertex  *b)const;
   Vertex * addVertex(const Vector3D & p_ocs);
   Edge * addEdge(Index v_i, Index v_j);
@@ -57,16 +63,12 @@ protected:
 
 
   virtual void createGeometry(){};
-
   void deleteGeometry();
-
-  
-
-
 
   virtual bool initializeObject();
   virtual void cleanupObject();
 private:
-  
+
+
 };
 }

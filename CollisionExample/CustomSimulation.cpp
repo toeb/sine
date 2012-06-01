@@ -26,9 +26,8 @@
 #include <Simulation/DynamicsAlgorithm.h>
 #include <Visualization/Renderers/SphereRenderer.h>
 #include <Visualization/Renderers/CollisionRenderer.h>
-#include <Simulation/Collision/Detection/Acceleration/BoundingSphereTree.h>
 #include <Visualization/Renderers/BoundingSphereHierarchyRenderer.h>
-#include <Simulation/Collision/Detection/BoundingVolumes/BoundingSphere.h>
+#include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 #include <map>
 #include <sstream>
 #include <Visualization/Renderers/PolygonRenderer.h>
@@ -39,29 +38,9 @@ using namespace std;
 int integratorIndex=0;
 vector<SingleStepIntegrator*> integrators;
 
-class CustomGeometry : public Polygon{
-public:
-  CustomGeometry(){
-    setName("test");
-  }
-protected:
-  void createGeometrty(){
-    addVertex(Vector3D(-1,-1,0));
-    addVertex(Vector3D(+1,-1,0));
-    addVertex(Vector3D(0,1,0));
-    
-    addEdge(0,1);
-    addEdge(1,2);
-    addEdge(2,0);
 
-    
-    addFace(0,1,2);
-    addFace(2,1,0);
-  }
-};
 
-void CustomSimulation::buildAlgorithms(){
-  
+void CustomSimulation::buildAlgorithms(){  
   integrators.push_back(new ExplicitEuler(0.01));
   integrators.push_back(new ImplicitEuler(0.01));
   integrators.push_back(new RungeKutta4(0.01));
@@ -135,6 +114,7 @@ void CustomSimulation::buildModel(){
 
   addSimulationObject(r);
 
+  cout << g.getType() << g.getType();
   
   /*
   b.setOffset(Vector3D(10,0,0));
@@ -158,20 +138,35 @@ void CustomSimulation::buildModel(){
   b.setOffset(Vector3D(18,0,0));
   Geometry * geom = b.createSphere("",Vector3D::Zero(),0,3);
   geoms.push_back(geom);
+  addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geom))));
   b.setOffset(Vector3D(6,0,0));
 
-  geom = b.createFixedPlane("",Vector3D::Zero(),Quaternion::zeroRotation(),4,2);
+  geom = b.createFixedRectangle("",Vector3D::Zero(),Quaternion::zeroRotation(),4,2);
   geoms.push_back(geom);
+  
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geom))));
   b.setOffset(Vector3D(-2,0,0));
   DynamicBox & bx =*(b.createBox("box13",Vector3D::Zero(),1)); 
+  
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(&bx))));
   geoms.push_back(&bx);
   
-  CustomGeometry * cg = new CustomGeometry();
-  PolygonRenderer * pr = new PolygonRenderer(*cg);
-  addSimulationObject(cg);
+  Triangle * t = new Triangle();
+  PolygonRenderer * pr = new PolygonRenderer(*t);
   addSimulationObject(pr);
-  // geoms.push_back(new CustomGeometry());
-  int depth=4;
+  addSimulationObject(t);
+  geoms.push_back(t);
+
+  Pyramid * pyr = new Pyramid();
+  t->setPosition(Vector3D(-3,0,0));
+  pr = new PolygonRenderer(*pyr);
+  addSimulationObject(pr);
+  addSimulationObject(pyr);
+  geoms.push_back(pyr);
+
+
+
+  int depth=3;
  
 
   addSimulationObject(new RealValue("p cube",
@@ -187,14 +182,18 @@ void CustomSimulation::buildModel(){
   
     Octree * octree= new Octree(*geo,depth, *(new BoundingSphereFactory()));
     OctreeRenderer & otr= *(new OctreeRenderer(*octree));
-    addSimulationObject(new CollisionRenderer(*octree));
+    //addSimulationObject(new CollisionRenderer(*octree));
     addSimulationObject(octree);
     addSimulationObject(&otr);
     
   });
-
+  
   addSimulationObject(new DelegateAction("inc octreelevel",[depth](){
-      OctreeRenderer::level = (OctreeRenderer::level+1)%(depth+1);
+    OctreeRenderer::level = (OctreeRenderer::level+1)%(depth+1);
+      
+  }));  
+  addSimulationObject(new DelegateAction("renderOctree",[depth](){
+    OctreeRenderer::doRender = !OctreeRenderer::doRender;
   }));
 
 }
@@ -239,7 +238,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
   Collidable* collidable = dynamic_cast<Collidable*>(simulationObject);
 
   if(collidable){
-    addSimulationObject(new CollisionRenderer(*collidable));
+    //addSimulationObject(new CollisionRenderer(*collidable));
   }
 
 }

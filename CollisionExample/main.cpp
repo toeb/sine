@@ -51,7 +51,7 @@ int main( int argc, char **argv )
 
   runner.setSimulation(simulation); 
 
-  // this order has to be maintaned.  i'll need to fix this.
+
   simulation->buildAlgorithms();
   simulation->buildModel();
     

@@ -7,23 +7,30 @@ namespace IBDS{
   class Collidable;
 
 struct Contact{
-
   Vector3D pA_wcs;
   Vector3D pB_wcs;
   Vector3D normal;
   Real penetrationDepth;
-
 };
 
 class Collision{
 private:
-  std::vector<Contact*> contacts;
+  std::vector<Contact*> _contacts;
+  Collidable & _objectA;
+  Collidable & _objectB;
 public:
+  int getContactCount()const{return _contacts.size();}
+  ~Collision(){
+    foreachContact([](Contact * c){
+      delete c;
+    });
+    _contacts.clear();
+  }
   void addContact(Contact * contact){
-    contacts.push_back(contact);
+    _contacts.push_back(contact);
   }
   void foreachContact(std::function<void (Contact *)> f){
-    for_each(contacts.begin(), contacts.end(), f);
+    for_each(_contacts.begin(), _contacts.end(), f);
   }
 
   void combineContacts(Contact & contact){
@@ -35,13 +42,16 @@ public:
       contact.penetrationDepth += currentContact->penetrationDepth;
     });
     
-    Vector3D::multiplyScalar(1.0/contacts.size(),contact.pA_wcs,contact.pA_wcs );
-    Vector3D::multiplyScalar(1.0/contacts.size(),contact.pB_wcs,contact.pB_wcs );
-    contact.penetrationDepth /= contacts.size();
+    Vector3D::multiplyScalar(1.0/_contacts.size(),contact.pA_wcs,contact.pA_wcs );
+    Vector3D::multiplyScalar(1.0/_contacts.size(),contact.pB_wcs,contact.pB_wcs );
+    contact.penetrationDepth /= _contacts.size();
     contact.normal.normalize();
   }
-  Collision(Collidable & a, Collidable & b):objectA(a), objectB(b){};
-  Collidable & objectA;
-  Collidable & objectB;
+
+
+  Collision(Collidable & a, Collidable & b):_objectA(a), _objectB(b){};
+
+  Collidable & getObjectA()const{return _objectA;}
+  Collidable & getObjectB()const{return _objectB;}
 };
 }

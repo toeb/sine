@@ -3,6 +3,10 @@
 using namespace IBDS;
 using namespace std;
 
+const TypeId Octree::type = "Octree";
+const TypeId Octree::getType()const{
+  return type;
+}
 
 BoundingVolume &  Octree::getBoundingVolume(){
   return *_boundingVolume;
@@ -29,7 +33,7 @@ Octree::~Octree(){
   
 }
 void Octree::createBoundingVolume(){
-  _boundingVolume = _boundingVolumeFactory.create(getGeometry(),getAABB());
+  _boundingVolume = _boundingVolumeFactory.create(getAABB().min, getAABB().max,getGeometry());
 }
 
 Octree *  Octree::createChild( OctreeNodeId id){
@@ -37,21 +41,21 @@ Octree *  Octree::createChild( OctreeNodeId id){
     child->_level = getLevel()+1;
     child->_depth =  _depth -1;
 
-    // calculate the node bounding box
+    // calculate the node's bounding box
     child->_aabb.min = _aabb.min;
     child->_aabb.max = _aabb.max;
     Vector3D delta = 0.5*(_aabb.max - _aabb.min);
-    if((id/4)%2==1){
+    if((id/4)%2==1){ //left half volume
       child->_aabb.min[0] += delta[0];
     }else{
       child->_aabb.max[0] -= delta[0];
     }
-    if((id/2)%2==1){
+    if((id/2)%2==1){//bottom half volume
       child->_aabb.min[1] += delta[1];
     }else{
       child->_aabb.max[1] -= delta[1];
     }
-    if((id/1)%2==1){
+    if((id/1)%2==1){//back half volume
       child->_aabb.min[2] += delta[2];
     }else{
       child->_aabb.max[2] -= delta[2];
@@ -118,7 +122,7 @@ _boundingVolumeFactory(boundingVolumeFactory),Collidable(geometry),
 
 
 bool Octree::initializeObject(){
-  cout<< "initializing octree for "<< *(getGeometry().getName())<<endl;
+  cout<< "initializing octree "<<endl;
   if( NODE_ROOT != _id)return true;
   deleteChildren(); //safety first
   getGeometry().initialize(); // (if not initialized initialize now)
@@ -126,7 +130,7 @@ bool Octree::initializeObject(){
   createBoundingVolume(); //create boundingvolume for root node
   refine();
   
-  cout<< "done initializing octree for "<< *(getGeometry().getName())<<endl;
+  cout<< "done initializing octree "<<endl;
   return true;
 }
 void Octree::cleanupObject(){
@@ -150,7 +154,7 @@ void Octree::getCenter(Vector3D & c_ocs)const{
   c_ocs.assign(_aabb.min+0.5*(_aabb.max - _aabb.min));
 }
 Classification Octree::classifyGeometrically()const{
-  return _boundingVolume->classify(getGeometry());
+  return getGeometry().classify(*_boundingVolume);
 }
 Classification Octree::classifyByChildNodes()const{
   // classifies by child nodes.  if all nodes are inside it returns inside

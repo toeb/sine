@@ -1,16 +1,16 @@
-#include "Plane.h"
+#include "Rectangle.h"
 
 using namespace std;
 using namespace IBDS;
 
-Plane::Plane( const Vector2D & dimension):
+Rectangle::Rectangle( const Vector2D & dimension):
  _dimension(dimension){
 
 }
 
 
 
-void Plane::createGeometry(){
+void Rectangle::createGeometry(){
   deleteGeometry();
   Real x = _dimension[0]/2;
   Real y= _dimension[1]/2;
@@ -28,24 +28,24 @@ void Plane::createGeometry(){
   addFace(0,1,2,3); //frontface
   addFace(3,2,1,0); //backface
 }
-void Plane::setDimension(const Vector2D & dim){
+void Rectangle::setDimension(const Vector2D & dim){
   _dimension=dim;
 
   deleteGeometry();
   createGeometry();
 
 }
-void Plane::setDimension(Real x,Real y){
+void Rectangle::setDimension(Real x,Real y){
   setDimension(Vector2D(x,y));
 
 }
-const Vector2D & Plane::getDimension()const{
+const Vector2D & Rectangle::getDimension()const{
   return _dimension;
 }
 
 
 
- void Plane::getNormal(Vector3D &n_wcs)const{
+ void Rectangle::getNormal(Vector3D &n_wcs)const{
    Matrix3x3 RT;
    getOrientation().getMatrix3x3T(RT);
    n_wcs.assign(RT.v[2]);

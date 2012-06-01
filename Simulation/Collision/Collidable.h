@@ -6,8 +6,13 @@
 #include <functional>
 #include <Simulation/Geometry/Geometry.h>
 namespace IBDS{
-  
-class Collidable : public virtual ISimulationObject{
+class ICollidable : public virtual ISimulationObject{
+public:
+   virtual Geometry & getGeometry()const=0;
+};
+
+
+class Collidable : public ICollidable{
 private:
   std::vector<Collision*> _collisions;
   Geometry & _geometry;

@@ -8,11 +8,24 @@ CoordinateSystem::CoordinateSystem():_orientation(1,0,0,0),_p(0,0,0), _R(0),_RT(
 
 }
 
+CoordinateSystem::CoordinateSystem(const Vector3D & p, const Quaternion & q):_orientation(q),_p(p), _R(0),_RT(0){
+  calculateRotationMatrices();
+}
+
 
 CoordinateSystem::~CoordinateSystem(){
   if(_R)delete _R;
   if(_RT)delete _RT;
 
+}
+
+const CoordinateSystem & CoordinateSystem::identity(){
+  static CoordinateSystem system(Vector3D::Zero(),Quaternion::zeroRotation());
+  return system;
+}
+
+Quaternion & CoordinateSystem::orientation(){
+  return _orientation;
 }
 Vector3D & CoordinateSystem::position(){
   return _p;

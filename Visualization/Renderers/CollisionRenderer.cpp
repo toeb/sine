@@ -6,7 +6,7 @@ using namespace std;
 
 void CollisionRenderer::render(){
   _collidable.for_each_Collision([this](Collision * c){
-    if(&(c->objectA) == &_collidable){
+    if(&(c->getObjectA()) == &_collidable){
 
         Contact p ;
 

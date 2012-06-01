@@ -21,6 +21,8 @@ protected:
   Matrix3x3 * _R;
   Matrix3x3 * _RT;
 public:
+  static const CoordinateSystem & identity();
+  CoordinateSystem(const Vector3D & p, const Quaternion & q);
   CoordinateSystem();
   ~CoordinateSystem();
   
@@ -29,6 +31,7 @@ public:
   Vector3D & position();
 
   const Quaternion & getOrientation()const;
+  Quaternion & orientation();
 
   /**
    * \brief Sets an orientation.

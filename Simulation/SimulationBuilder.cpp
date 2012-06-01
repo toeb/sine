@@ -6,15 +6,15 @@ using namespace IBDS;
 SimulationBuilder::SimulationBuilder(Simulation & simulation):_simulation(simulation),_connectorNumber(1),_unknownCounter(1){}
 
 
-Plane * SimulationBuilder::createFixedPlane(std::string name,const Vector3D& position,const Quaternion & orientation,Real width,Real height){
+Rectangle * SimulationBuilder::createFixedRectangle(std::string name,const Vector3D& position,const Quaternion & orientation,Real width,Real height){
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;  
-  Plane * plane = new Plane(Vector2D(width,height));
-  plane->setOrientation(orientation);
-  plane->setPosition(position+_currentOffset);
-  plane->setName(name);
-  addSimulationObject(plane);
-  return plane;
+  Rectangle * rectangle = new Rectangle(Vector2D(width,height));
+  rectangle->setOrientation(orientation);
+  rectangle->setPosition(position+_currentOffset);
+  rectangle->setName(name);
+  addSimulationObject(rectangle);
+  return rectangle;
 }
 
 
