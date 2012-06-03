@@ -9,7 +9,13 @@ namespace IBDS{
 class ICollidable : public virtual ISimulationObject{
 public:
    virtual Geometry & getGeometry()const=0;
+   virtual void addCollision(Collision * col){};
+   virtual void resetCollisions(){};  
+   virtual void reset(){};
+   virtual void update(){};
+   virtual void handleCollisions(){};
 };
+
 
 
 class Collidable : public ICollidable{
@@ -18,17 +24,15 @@ private:
   Geometry & _geometry;
 public:
   Collidable(Geometry & go);
-  
-  virtual Geometry & getGeometry()const;
+  virtual const TypeId getType()const;
 
-  virtual void update(){};
-  virtual void reset(){};
-  virtual void handleCollisions(){};
+  virtual Geometry & getGeometry()const;
   
+  const std::vector<Collision*> & getCollisions()const;
   void addCollision(Collision * col);
   void resetCollisions();  
   bool isColliding()const;
-  const std::vector<Collision*> & getCollisions()const;
-  void for_each_Collision(std::function<void(Collision *)> f);
+
+  void foreachCollision(std::function<void(Collision *)> f);
 };
 }

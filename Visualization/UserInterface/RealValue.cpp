@@ -5,9 +5,20 @@ using namespace IBDS;
 
 
 
+
   RealValue::RealValue(const string & name, function<Real ()> get,function<void (Real v)> set):IValue(name){
     setter = set;
     getter = get;
+  }
+  RealValue::RealValue(const string & name, Real  & value):IValue(name){
+    _value = & value;
+
+    setter = [this](Real v){
+      *_value = v;
+    };
+    getter = [this](){
+      return *_value;
+    };
   }
   void RealValue::set(const void * val){
     const Real * realValue = reinterpret_cast<const Real*>(val);

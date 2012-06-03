@@ -7,9 +7,10 @@
 #include <functional>
 
 namespace IBDS{
-class CollisionDetector:public virtual SimulationModuleBase<Collidable>{
+class CollisionDetector:public virtual ISimulationModule{
 private:
   ///< The collisions that are detected
+  std::vector<ICollidable*> _collidables;
   std::vector<Collision*> _collisions;
 public:
   int getContactCount();
@@ -47,8 +48,16 @@ public:
 
   void update();
   void reset();
+
+  
 protected:
-  void foreachCombination(std::function<void (Collidable * a, Collidable* b)> f);
+  virtual bool accepts(ICollidable * collidables)=0;
+  void foreachCollidable(std::function<void( ICollidable*)> f);
+  virtual void foreachPotentialCollision(std::function<void( ICollidable*,ICollidable*)> f);
+  void foreachCombination(std::function<void (ICollidable * a,ICollidable* b)> f);
   void addCollision(Collision * collision);
+
+  bool addSimulationObject(ISimulationObject * object);
+  bool removeSimulationObject(ISimulationObject * object);
 };
 }

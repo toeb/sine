@@ -11,6 +11,6 @@ class OctreeCollisionDetector:public CollisionDetector{
 public:
   void detectCollisions(Real time, Real h);
 protected:
-  bool acceptObject(Collidable * c);
+  bool acceptObject(ICollidable * c);
 };
 }

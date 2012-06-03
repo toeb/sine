@@ -27,7 +27,7 @@ Classification classifyAABB(const AABB & aabb_ocs, const Sphere & sphere){
   
   if(aabbInterval.disjoint(sphereInterval))return Classification::OUTSIDE;
 
-  if(aabbInterval.subsetOf(sphereInterval)){
+  if(aabbInterval.isSubsetOf(sphereInterval)){
     return Classification::INSIDE;
   }
   return Classification::BOTH;
@@ -54,7 +54,7 @@ Classification classifySphere(const BoundingSphere & boundingSphere, const Spher
   if(boundingSphereInterval.disjoint(sphereInterval))return Classification::OUTSIDE;
 
   // if the spheres overlap and the boundinsphere is inside the sphere return INSIDE
-  if(boundingSphereInterval.subsetOf(sphereInterval)){
+  if(boundingSphereInterval.isSubsetOf(sphereInterval)){
     return Classification::INSIDE;
   }
   //else both applies

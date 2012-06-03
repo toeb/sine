@@ -24,11 +24,12 @@ protected:
 
 template<class T>
 bool SimulationModuleBase<T>::addSimulationObject(ISimulationObject * object){
-  auto typedObject = dynamic_cast<T*>(object);
+  T* typedObject = dynamic_cast<T*>(object);
   if(!typedObject)return false;
   if(!acceptObject(typedObject))return false;
   _objects.push_back(typedObject);
   onObjectAdded(typedObject);
+  return true;
 }
 template<class T>
 bool  SimulationModuleBase<T>::removeSimulationObject(ISimulationObject * object){
@@ -36,6 +37,7 @@ bool  SimulationModuleBase<T>::removeSimulationObject(ISimulationObject * object
   if(pos == _objects.end())return false;
   _objects.erase(pos);
   onObjectRemoved( dynamic_cast<T*>(object));
+  return true;
 }
 template<class T>
 void SimulationModuleBase<T>:: foreach(std::function<void(T*)> action){

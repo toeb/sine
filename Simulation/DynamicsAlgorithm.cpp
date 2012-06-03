@@ -12,7 +12,7 @@ DynamicsAlgorithm::DynamicsAlgorithm():multiBodyDynamics(20){
   addSimulationModule(&integrables);
   addSimulationModule(&connectorModule);
   addSimulationModule(&textilesModule);
-  addSimulationModule(&octreeCollisionDetector);
+  addSimulationModule(&collisionDetector);
 }
 
 IIntegrable & DynamicsAlgorithm::getIntegrable(){
@@ -33,11 +33,11 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
   updatablesModule.update(t,h);  
 
   if(detectCollisions){
-    octreeCollisionDetector.reset();
-    octreeCollisionDetector.update();
-    octreeCollisionDetector.detectCollisions(t,h);
-    cout << "Collisions Detected: "<<octreeCollisionDetector.getCollisionCount()<<endl;
-    cout << "Contacts: "<<octreeCollisionDetector.getContactCount()<<endl;
+    collisionDetector.reset();
+    collisionDetector.update();
+    collisionDetector.detectCollisions(t,h);
+    cout << "Collisions Detected: "<<collisionDetector.getCollisionCount()<<endl;
+    cout << "Contacts: "<<collisionDetector.getContactCount()<<endl;
 
   }
   if(doMultiBody)multiBodyDynamics.correctPositions(h);

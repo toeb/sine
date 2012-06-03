@@ -10,6 +10,6 @@ class SphereCollisionDetector:public virtual CollisionDetector{
 public:
   void detectCollisions(Real time, Real h);
 protected:
-  bool acceptObject(Collidable* collidable);
+  bool acceptObject(ICollidable* collidable);
 };
 }

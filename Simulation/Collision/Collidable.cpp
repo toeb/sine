@@ -8,6 +8,10 @@ Collidable::Collidable(Geometry & o):_geometry(o){
 
 }
 
+const TypeId Collidable::getType()const{
+  return _geometry.getType();
+}
+
 Geometry & Collidable::getGeometry()const{
   return _geometry;
 }
@@ -23,7 +27,7 @@ const std::vector<Collision*> & Collidable::getCollisions()const{
   return _collisions;
 }
 
-void Collidable::for_each_Collision(function<void (Collision*)> f){
+void Collidable::foreachCollision(function<void (Collision*)> f){
   for_each(_collisions.begin(), _collisions.end(), f);
 }
 bool Collidable::isColliding()const{

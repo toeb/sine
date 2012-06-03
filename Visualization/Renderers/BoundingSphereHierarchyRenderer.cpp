@@ -2,14 +2,13 @@
 #include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 #include "BoundingSphereHierarchyRenderer.h"
 
-
-
 using namespace IBDS;
 using namespace std;
 int OctreeRenderer::level =0;
 bool OctreeRenderer::doRender =true;
 void OctreeRenderer::render(){
   if(!doRender)return;
+
   MiniGL::pushMatrix();
   
   const Matrix3x3 & R =_octree.getGeometry().getRotationMatrix();
@@ -17,12 +16,14 @@ void OctreeRenderer::render(){
   MiniGL::multMatrix(R);
 
   _octree.foreachChildOfLevel(level,[](Octree * octree){
+    
     Vector3D center;
     octree->getCenter(center);
     const AABB & aabb =octree->getAABB();
     float color [4];
     const float * baseColor = MiniGL::cyan;
     BoundingVolume * volume = &(octree->getBoundingVolume());
+    
     if(volume->isUpToDate()){
       baseColor = MiniGL::darkCyan;
     }

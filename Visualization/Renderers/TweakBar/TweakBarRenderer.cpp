@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <Visualization/UserInterface/RealValue.h>
+#include <Visualization/UserInterface/Vector3DValue.h>
 using namespace IBDS;
 using namespace std;
 
@@ -32,6 +33,8 @@ void TweakBarRenderer::addAction(IAction * action){
 }
 
 void TweakBarRenderer::addValueCallback(IValue * callback){
+
+  
   TwType type = TW_TYPE_UNDEF;
   if(dynamic_cast<IntValue*>(callback)){
     type = TW_TYPE_INT32;
@@ -39,6 +42,8 @@ void TweakBarRenderer::addValueCallback(IValue * callback){
   if(dynamic_cast<RealValue*>(callback)){
     type = TW_TYPE_DOUBLE;
   }
+  
+
   if(type == TW_TYPE_UNDEF)return;
 
 
@@ -48,19 +53,17 @@ void TweakBarRenderer::addValueCallback(IValue * callback){
     type,
     setValueCallback,
     getValueCallback,
-    callback,0);
+    callback," step=0.01");
 }
 
-void TweakBarRenderer::addComponent(IComponent * component){
 
-}
 
 bool TweakBarRenderer::addSimulationObject(ISimulationObject * object){
   processTweakBarEntries(object);
   return true;
 }
 void TweakBarRenderer::addEntry(ISimulationObject * o){
-   auto action = dynamic_cast<IAction*>(o);
+  auto action = dynamic_cast<IAction*>(o);
   if(action){
     addAction(action);
   }
@@ -68,6 +71,13 @@ void TweakBarRenderer::addEntry(ISimulationObject * o){
   if(value){
     addValueCallback(value);
   }
+  auto vecval = dynamic_cast<Vector3DValue*>(o);
+  if(vecval){
+    addEntry(&(vecval->x));
+    addEntry(&(vecval->y));
+    addEntry(&(vecval->z));
+  }
+ 
 }
 bool TweakBarRenderer::removeSimulationObject(ISimulationObject * object){
   return false;

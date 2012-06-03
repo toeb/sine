@@ -40,26 +40,31 @@ const TypeId OctreeOctree::getTypeB()const{
   if(!sphereTest.testCollision(sphereA,sphereB,0) ){
     return false;    
   }
+  sphereA.setColliding(true);
+  sphereB.setColliding(true);
+  
   //else test collision of the children of the larger octree or the octree which isnot   leaf;
   bool collisionDetected = false;
-  if(sphereA.getRadius() > sphereB.getRadius()&& !a.isLeaf()){
+  // if b is leaf split a, else split the octree with the larger radius if a is no a leaf
+  if(b.isLeaf() || sphereA.getRadius() > sphereB.getRadius()&& !a.isLeaf()){
     //refine a
     for(int i = 0; i < 8; i ++){
       const Octree * child_i = a.child(static_cast<OctreeNodeId>(i));
       if(!child_i)continue;
+      
       if(testCollision(*child_i,b,collision))collisionDetected = true;
+      //if(collisionDetected)return true;
     }
   }else{
     //refine b
     for(int i = 0; i < 8; i ++){
       const Octree * child_i = b.child(static_cast<OctreeNodeId>(i));
       if(!child_i)continue;
+
       if(testCollision(a,*child_i,collision))collisionDetected= true;
+      //if(collisionDetected)return true;
     }
   }
-  
-  sphereA.setColliding(true);
-  sphereB.setColliding(true);
   
   return collisionDetected;
 }

@@ -5,13 +5,11 @@ using namespace IBDS;
 using namespace std;
 
 void CollisionRenderer::render(){
-  _collidable.for_each_Collision([this](Collision * c){
+  _collidable.foreachCollision([this](Collision * c){
     if(&(c->getObjectA()) == &_collidable){
-
-        Contact p ;
+        Contact p;
 
         c->combineContacts(p);
-
 
         MiniGL::drawPoint(p.pA_wcs,4,MiniGL::red);
         MiniGL::drawVector(p.pA_wcs,p.pA_wcs+p.normal,2,MiniGL::red);

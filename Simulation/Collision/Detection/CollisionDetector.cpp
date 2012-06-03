@@ -30,13 +30,13 @@ void CollisionDetector::resetCollisions(){
 }
 
 void CollisionDetector::reset(){
-  foreach([](Collidable * collidable){
+  foreachCollidable([](ICollidable * collidable){
     collidable->reset();
   });
 }
 
 void CollisionDetector::update(){
-  foreach([](Collidable * collidable){
+  foreachCollidable([](ICollidable * collidable){
     collidable->update();
   });
 }
@@ -47,11 +47,40 @@ void CollisionDetector::addCollision(Collision * collision){
   collision->getObjectB().addCollision(collision);
 }
 
-void CollisionDetector::foreachCombination(std::function<void (Collidable * a, Collidable* b)> f){
-  for(int i =0; i < objects().size(); i++){
-    for(int j = i+1; j < objects().size(); j++){
-      if(i==j)continue;
-      f(objects().at(j),objects().at(i));
+
+void CollisionDetector::foreachCollidable(std::function<void( ICollidable*)> f){
+  for_each(_collidables.begin(), _collidables.end(), f);
+}
+void CollisionDetector::foreachPotentialCollision(std::function<void( ICollidable*,ICollidable*)> f){
+  foreachCombination(f);
+}
+
+void CollisionDetector::foreachCombination(std::function<void (ICollidable * , ICollidable* )> f){
+  for(int i =0; i < _collidables.size(); i++){
+    for(int j = i+1; j < _collidables.size(); j++){
+      ICollidable * a=_collidables.at(i);
+      ICollidable * b=_collidables.at(j);
+      f(a,b);
     }
   }
+}
+
+
+
+bool CollisionDetector::addSimulationObject(ISimulationObject * object){
+  ICollidable* collidable = dynamic_cast<ICollidable*>(object);
+  if(!collidable)return false;
+  if(!accepts(collidable))return false;
+  _collidables.push_back(collidable);
+  cout << collidable->getType()<<endl;
+  return true;
+}
+
+bool CollisionDetector::removeSimulationObject(ISimulationObject * object){
+  ICollidable* collidable = dynamic_cast<ICollidable*>(object);
+  if(!collidable)return false;
+  auto it=  find(_collidables.begin(), _collidables.end(),collidable);
+  if(it==_collidables.end())return false;
+  _collidables.erase(it);
+  return true;
 }

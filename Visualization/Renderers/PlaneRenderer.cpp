@@ -4,18 +4,20 @@
 using namespace IBDS;
 using namespace std;
 
-RectangleRenderer::RectangleRenderer( Rectangle & plane):_plane(plane){
+PlaneRenderer::PlaneRenderer( Plane & plane):_plane(plane){
 
 }
-void RectangleRenderer::render(){
+void PlaneRenderer::render(){
   Vector3D a,b,c,d,n;
   const float * color = MiniGL::darkCyan;
-  a =  _plane.vertices().at(0)->p_ocs;
-  b =  _plane.vertices().at(1)->p_ocs;
-  c =  _plane.vertices().at(2)->p_ocs;
-  d =  _plane.vertices().at(3)->p_ocs;
+  Real size = 10;
+  a =  _plane.getPositionFromUV(Vector2D(-size,-size));
+  b =  _plane.getPositionFromUV(Vector2D(-size,size));
+  c =  _plane.getPositionFromUV(Vector2D(size,size));
+  d =  _plane.getPositionFromUV(Vector2D(size,-size));
 
   _plane.getNormal(n);
+  MiniGL::drawVector(0.25*(a+b+c+d),0.25*(a+b+c+d)+n,3,MiniGL::blue);
   MiniGL::drawPoint(a,4,MiniGL::blue);
   MiniGL::drawPoint(b,4,MiniGL::blue);
   MiniGL::drawPoint(c,4,MiniGL::blue);

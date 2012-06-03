@@ -83,6 +83,12 @@ set(CollisionTests_SRC
 ./Collision/Detection/CollisionTest/OctreeOctree.cpp
 ./Collision/Detection/CollisionTest/CollisionTestFactory.h
 ./Collision/Detection/CollisionTest/CollisionTestFactory.cpp	
+./Collision/Detection/CollisionTest/ReverseCollisionTest.h
+./Collision/Detection/CollisionTest/ReverseCollisionTest.cpp	
+./Collision/Detection/CollisionTest/PlaneOctree.h
+./Collision/Detection/CollisionTest/PlaneOctree.cpp	
+./Collision/Detection/CollisionTest/SphereOctree.h
+./Collision/Detection/CollisionTest/SphereOctree.cpp	
 )
 source_group("simulation\\collision\\detection\\collisiontest" FILES ${CollisionTests_SRC})
 
@@ -283,14 +289,9 @@ set(userinterface_SRC
 	${PROJECT_PATH}/Visualization/UserInterface/IAction.cpp
 	${PROJECT_PATH}/Visualization/UserInterface/RealValue.h
 	${PROJECT_PATH}/Visualization/UserInterface/RealValue.cpp
-	${PROJECT_PATH}/Visualization/UserInterface/IDisplayable.h
-	${PROJECT_PATH}/Visualization/UserInterface/IDisplayable.cpp
-	${PROJECT_PATH}/Visualization/UserInterface/IUserInterface.h
-	${PROJECT_PATH}/Visualization/UserInterface/IUserInterface.cpp
-	${PROJECT_PATH}/Visualization/UserInterface/IComponent.h
-	${PROJECT_PATH}/Visualization/UserInterface/IComponent.cpp
-	${PROJECT_PATH}/Visualization/UserInterface/DelegateValue.h
-	${PROJECT_PATH}/Visualization/UserInterface/DelegateValue.cpp
+	${PROJECT_PATH}/Visualization/UserInterface/Vector3DValue.h
+	${PROJECT_PATH}/Visualization/UserInterface/Vector3DValue.cpp
+	
 )
 	
 source_group("simulation\\integration" FILES ${integrators_SRC})

@@ -30,7 +30,7 @@ Classification classifySphere(const BoundingSphere & sphere, const Polygon & pol
     if(a.disjoint(b)){
       return Classification::OUTSIDE;
     }
-    if(b.subsetOf(a)) {
+    if(b.isSubsetOf(a)) {
       result = static_cast<Classification>(result | Classification::INSIDE); 
     }else{
       result = static_cast<Classification>(result | Classification::BOTH); 
@@ -53,7 +53,7 @@ Classification classifySphere(const BoundingSphere & sphere, const Polygon & pol
     if(a.disjoint(b)){
       return Classification::OUTSIDE;
     }
-    if(b.subsetOf(a)) {
+    if(b.isSubsetOf(a)) {
       result = static_cast<Classification>(result | Classification::INSIDE); 
     }else{
       result = static_cast<Classification>(result | Classification::BOTH); 
@@ -95,7 +95,7 @@ Classification classifyAABB(const AABB & aabb, const Polygon & polygon){
     if(a.disjoint(b)){
       return Classification::OUTSIDE;
     }
-    if(b.subsetOf(a)) {
+    if(b.isSubsetOf(a)) {
       result = static_cast<Classification>(result | Classification::INSIDE); 
     }else{
       result = static_cast<Classification>(result | Classification::BOTH); 

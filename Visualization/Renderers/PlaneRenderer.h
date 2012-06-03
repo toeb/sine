@@ -1,15 +1,15 @@
 #pragma once
 #include <Visualization/IRenderer.h>
-#include <Simulation/Geometry/Primitives/Rectangle.h>
+#include <Simulation/Geometry/Plane.h>
 
 namespace IBDS{
 
 
-class RectangleRenderer :public IRenderer{
+class PlaneRenderer :public IRenderer{
 private:
-  Rectangle & _plane;
+  Plane & _plane;
 public:
-  RectangleRenderer( Rectangle & plane);
+  PlaneRenderer( Plane & plane);
   void render();
 };
 }

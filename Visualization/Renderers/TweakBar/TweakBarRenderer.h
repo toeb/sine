@@ -7,18 +7,17 @@
 #include <functional>
 #include <map>
 
-#include <Visualization/UserInterface/IComponent.h>
+
 #include <Visualization/UserInterface/IAction.h>
 #include <Visualization/UserInterface/IValue.h>
-#include <Visualization/UserInterface/IUserInterface.h>
+
 
 namespace IBDS{
   
 class TweakBarRenderer 
   :public virtual IRenderer, 
   public virtual IInputListener, 
-  public virtual ISimulationModule,
-  public virtual IUserInterface
+  public virtual ISimulationModule
 {
   private:
     bool _initialized;
@@ -42,7 +41,7 @@ class TweakBarRenderer
     void render();    
     void sceneResized(int newWidth, int newHeight);
 
-    void addComponent(IComponent * component);
+
 
 protected:
   

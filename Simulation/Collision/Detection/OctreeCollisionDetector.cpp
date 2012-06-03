@@ -10,7 +10,7 @@ void OctreeCollisionDetector::detectCollisions(Real t, Real h){
   update();
   
 
-  foreachCombination([this](Collidable* a, Collidable * b){
+  foreachCombination([this](ICollidable* a,ICollidable * b){
     Collision * collision = new Collision(*a,*b);
     Octree & aref = static_cast<Octree &>(*a);
     Octree & bref = static_cast<Octree &>(*b);
@@ -23,7 +23,7 @@ void OctreeCollisionDetector::detectCollisions(Real t, Real h){
   
 }
 
-bool OctreeCollisionDetector::acceptObject(Collidable * c){
+bool OctreeCollisionDetector::acceptObject(ICollidable * c){
   if(dynamic_cast<Octree*> (c))return true;
   return false;
 }

@@ -7,16 +7,16 @@ struct Interval{
   // set the interval to the invalid values (+inf, -inf) 
   // which is useful for detrmining the max and min values 
   void setInvalid(){
-    b = -DBL_MAX;
-    a = DBL_MAX;
+    b = -REAL_MAX;
+    a = REAL_MAX;
   }
 
   /**
    * \brief Sets the interval to (-inf,inf) .
    */
   void setUnbounded(){
-    a = -DBL_MAX;
-    b = DBL_MAX;
+    a = -REAL_MAX;
+    b = REAL_MAX;
   }
 
   /**
@@ -45,11 +45,22 @@ struct Interval{
   bool disjoint(const Interval & other){
     return !overlaps(other);
   }
-  bool subsetOf(const Interval & other){
+  bool isSubsetOf(const Interval & other){
     if(other.a <= a && other.b >= b)return true;
     return false;
   }
-
+  bool isBefore(Real value)const{
+    if(b < value)return true;
+    return false;
+  }
+  bool isAfter(Real value)const{
+    if(value < a)return true;
+    return false;
+  }
+  bool isElementOf(Real value)const{
+    if(a <= value && value <= b)return true;
+    return false;
+  }
   Real a;
   Real b;
 };
