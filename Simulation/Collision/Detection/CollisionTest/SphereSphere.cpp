@@ -49,13 +49,16 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   if(!collision)return true;
 
   Contact * contact = new Contact();
+  contact->pA_wcs = pA;
+  contact->pB_wcs = pB;
+
   contact->penetrationDepth = penetrationDepth;
   contact->normal = collisionNormal;
   //set point of collision A:  pA = positionA + n * radiusA 
   Vector3D::multiplyScalar(radiusA,contact->normal, contact->pA_wcs);
   Vector3D::add(contact->pA_wcs,pA,contact->pA_wcs);
 
-  //set point of collision B:  pB = positionB + n * radiusB
+  //set point of collision B:  pB = positionB - n * radiusB
   Vector3D::multiplyScalar(-radiusB,contact->normal,contact->pB_wcs);
   Vector3D::add(contact->pB_wcs,pB,contact->pB_wcs);
   

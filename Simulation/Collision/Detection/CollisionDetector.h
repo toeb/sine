@@ -50,9 +50,10 @@ public:
   void reset();
 
   
+  void foreachCollidable(std::function<void( ICollidable*)> f);
+  void foreachCollision(std::function<void (Collision* )>f);
 protected:
   virtual bool accepts(ICollidable * collidables)=0;
-  void foreachCollidable(std::function<void( ICollidable*)> f);
   virtual void foreachPotentialCollision(std::function<void( ICollidable*,ICollidable*)> f);
   void foreachCombination(std::function<void (ICollidable * a,ICollidable* b)> f);
   void addCollision(Collision * collision);

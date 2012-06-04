@@ -66,13 +66,16 @@ void CollisionDetector::foreachCombination(std::function<void (ICollidable * , I
 }
 
 
+void CollisionDetector::foreachCollision(std::function<void (Collision* )>f){
+ for_each(_collisions.begin(), _collisions.end(), f);
+}
+
 
 bool CollisionDetector::addSimulationObject(ISimulationObject * object){
   ICollidable* collidable = dynamic_cast<ICollidable*>(object);
   if(!collidable)return false;
   if(!accepts(collidable))return false;
   _collidables.push_back(collidable);
-  cout << collidable->getType()<<endl;
   return true;
 }
 

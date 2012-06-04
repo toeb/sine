@@ -67,6 +67,7 @@ void CustomSimulation::buildAlgorithms(){
   }));
 
 
+
   addSimulationObject(new IntValue("Integrator 0-2 (0=ee, 1=ie,2=rk4)", 
     [this](){
       return integratorIndex;
@@ -98,6 +99,8 @@ void CustomSimulation::buildAlgorithms(){
   q.setFromAxisAngle(Vector3D(0,1,0),3.14190/2);
   cam->setOrientation(q);
   addSimulationObject(cam);
+
+
 }
 
 void CustomSimulation::buildModel(){ 
@@ -110,94 +113,117 @@ void CustomSimulation::buildModel(){
   Gravity & g = *(b.setGravity(Vector3D(0,-1,0)));
 
   
+  
 
-
-  g.setGravityMagnitude(0);
+  g.setGravityMagnitude(1);
   IValue * r = new RealValue("Gravity Magnitude",
     [&g](){return g.getGravityMagnitude();},
     [&g](Real val){g.setGravityMagnitude(val);});
 
   addSimulationObject(r);
 
-  cout << g.getType() << g.getType();
+
+
   
-  /*
-  b.setOffset(Vector3D(10,0,0));
-  
+  Sphere * sphere = 0;
+  Collidable * collidable;
+
+
+  b.setOffset(Vector3D(10,3,4));
+  Real radius = 0.5;
   b.createParticle("p1",Vector3D(-1,0,0),0);
-  b.createSphere("s1",Vector3D(-3,-0.3,0),1,1);
+  sphere = b.createSphere("s1",Vector3D(-3,-0.3,0),1,radius);
   b.createBallJoint("j1","s1","p1",Vector3D(-1,0,0));
+  addSimulationObject(new SphereRenderer(*sphere));
+  collidable = new Collidable(*sphere);
+  addSimulationObject(collidable);
   
   b.createParticle("p2",Vector3D(1,0,0),0);
-  b.createSphere("s2",Vector3D(3,0,0),1,1);
+  sphere= b.createSphere("s2",Vector3D(3,0,0),1,radius);
   b.createBallJoint("j2","s2","p2",Vector3D(1,0,0));
+  addSimulationObject(new SphereRenderer(*sphere));
+  collidable = new Collidable(*sphere);
+  addSimulationObject(collidable);
 
   b.createParticle("p3",Vector3D(2,0,0),0);
-  b.createSphere("s3",Vector3D(3,0,0),1,1);
+  sphere= b.createSphere("s3",Vector3D(3,0,0),1,radius);
   b.createBallJoint("j3","s3","p3",Vector3D(2,0,0));
-  */
+  addSimulationObject(new SphereRenderer(*sphere));
+  collidable = new Collidable(*sphere);
+  addSimulationObject(collidable);
+  
+
+  
 
 
-  //create three geometries and their bounding octrees
+  //create geometries which are approximated by a bounding tree and add them to the geoms vector
+  Geometry * geometry;
   vector<Geometry*> & geoms = *(new vector<Geometry*>());
+    
+  //sphere
   b.setOffset(Vector3D(18,0,0));
-  Geometry * geom = b.createSphere("",Vector3D::Zero(),0,3);
-
-  //geoms.push_back(geom);
-  addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geom))));
-  b.setOffset(Vector3D(6,0,0));
-
-  geom = b.createFixedRectangle("",Vector3D::Zero(),Quaternion::zeroRotation(),4,2);
-  //geoms.push_back(geom);
+  geometry = b.createSphere("",Vector3D::Zero(),0,2);
+  //geoms.push_back(geometry);
+  // use Sphere Renderer  
+  addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
   
-  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geom))));
-  b.setOffset(Vector3D(-2,0,0));
-  DynamicBox & bx =*(b.createBox("box13",Vector3D::Zero(),1)); 
   
-  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(&bx))));
-  //geoms.push_back(&bx);
+  //rectangle (flat)
+  b.setOffset(Vector3D(8,0,0));
+  geometry = b.createFixedRectangle("",Vector3D::Zero(),Quaternion::zeroRotation(),4,2);
+  geoms.push_back(geometry);
+  //use polygon renderer
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
+  //add position to tweakbar
+  addSimulationObject(new Vector3DValue("rectangle",geometry->position()));
+
   
-  Triangle * t = new Triangle();
-  PolygonRenderer * pr = new PolygonRenderer(*t);
-  addSimulationObject(pr);
-  addSimulationObject(t);
-  //geoms.push_back(t);
+  //box
+  b.setOffset(Vector3D(-5,0,0));
+  geometry =  b.createBox("box",Vector3D::Zero(),0); 
+  geoms.push_back(geometry);
+  //polygon renderer
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
+  //add position to tweakbar  
+  addSimulationObject(new Vector3DValue("box",geometry->position()));
 
-  addSimulationObject(new Vector3DValue("Triangle Position",t->position()));
 
-  Pyramid * pyr = new Pyramid();
-  t->setPosition(Vector3D(-3,0,0));
-  addSimulationObject(new Vector3DValue("pyr pos", pyr->position()));
-  pr = new PolygonRenderer(*pyr);
-  addSimulationObject(pr);
-  addSimulationObject(pyr);
-  geoms.push_back(pyr);
+  //triangle
+  geometry = new Triangle();  
+  geometry->setPosition(Vector3D(-2,0,0));
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
+  geoms.push_back(geometry);
+  addSimulationObject(new Vector3DValue("triangle",geometry->position()));
 
-  Plane * plane = new Plane();
-  addSimulationObject(new PlaneRenderer(*plane));
-  Collidable * planeCollidable = new Collidable(*plane);
 
+  //pyramid
+  geometry = new Pyramid();
+  geometry->setPosition(Vector3D(3,0,0));
+ // geometry->setOrientation();
+  //position to tweakbar
+  addSimulationObject(new Vector3DValue("pyramid", geometry->position()));
+  //polygon renderer
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
+  geoms.push_back(geometry);
+
+  //plane
+  geometry = new Plane();
+  geometry->setPosition(Vector3D(0,-6,0));  
+  addSimulationObject(new Vector3DValue("pyramid", geometry->position()));
+  addSimulationObject(new PlaneRenderer(*dynamic_cast<Plane*>(geometry)));
+  //create a collidable to wrap the plane
+  Collidable * planeCollidable = new Collidable(*dynamic_cast<Plane*>(geometry));
   addSimulationObject(planeCollidable);
-  addSimulationObject(new CollisionRenderer(*planeCollidable));
+
+
+
+  //generate octrees
   int depth=5;
  
-  addSimulationObject(new RealValue("pyr pos ",pyr->position()[0]));
-
-  addSimulationObject(new RealValue("p cube",
-    [&bx](){
-      
-    return bx.getPosition().v[0]; 
-    },
-      [&bx](Real val){
-        bx.position().v[0] = val;
-    }
-      ));
-
   for_each(geoms.begin(), geoms.end(), [this, &geoms,&depth](Geometry * geo){
   
     Octree * octree= new Octree(*geo,depth, *(new BoundingSphereFactory()));
     OctreeRenderer & otr= *(new OctreeRenderer(*octree));
-    addSimulationObject(new CollisionRenderer(*octree));
     addSimulationObject(octree);
     addSimulationObject(&otr);
     
@@ -210,6 +236,10 @@ void CustomSimulation::buildModel(){
   addSimulationObject(new DelegateAction("renderOctree",[depth](){
     OctreeRenderer::doRender = !OctreeRenderer::doRender;
   }));
+
+
+   addSimulationObject(new CollisionRenderer(dynamicsAlgorithm.collisionDetector));
+
 
 }
 
@@ -245,15 +275,6 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
     //addSimulationObject(new SphereRenderer(*sphere));
   }
 
-  DynamicSphere * dSphere = dynamic_cast<DynamicSphere*>(simulationObject);
-  if(dSphere){
-    addSimulationObject(new Collidable(*dSphere));
-   //     addSimulationObject(new SphereRenderer(*sphere));
-  }
-  Collidable* collidable = dynamic_cast<Collidable*>(simulationObject);
 
-  if(collidable){
-    //addSimulationObject(new CollisionRenderer(*collidable));
-  }
 
 }

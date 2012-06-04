@@ -19,6 +19,7 @@ bool SpherePlane::testCollision(const ICollidable & a, const ICollidable & b, Co
 bool SpherePlane::testCollision(const Sphere & sphere, const Plane & plane, Collision * col)const{
   Axis normalAxis;  
   plane.getNormalAxis(normalAxis);
+  normalAxis.n.normalize();
   Interval sphereInterval;
   sphere.project(normalAxis,sphereInterval);
   
@@ -28,8 +29,12 @@ bool SpherePlane::testCollision(const Sphere & sphere, const Plane & plane, Coll
 
   Contact * contact = new Contact();
   contact->normal = -normalAxis.n;
-  contact->pA_wcs = normalAxis.p + sphereInterval.a * normalAxis.n;
-  contact->pB_wcs = normalAxis.p;
+  contact->pA_wcs = sphere.getPosition() + sphere.getRadius() * contact->normal;
+  Vector2D position2D;
+  plane.projectOnPlane(contact->pA_wcs,position2D);
+  plane.getPositionFromUV(position2D,contact->pB_wcs);
+
+  contact->penetrationDepth = (contact->pA_wcs-contact->pB_wcs).length();
 
   col->addContact(contact);
   

@@ -46,6 +46,11 @@ namespace IBDS
 		Real z;
 
 	public:
+    static Quaternion axisAngle(const Vector3D & axis, Real angle){
+      Quaternion ret;
+      ret.setFromAxisAngle(axis,angle);
+      return ret;
+    }
     Quaternion(const Real * elements){assign(elements);}
 		Quaternion();
 		Quaternion(const Real pw, const Real px, const Real py, const Real pz);

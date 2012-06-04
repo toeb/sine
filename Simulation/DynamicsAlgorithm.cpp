@@ -36,8 +36,8 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
     collisionDetector.reset();
     collisionDetector.update();
     collisionDetector.detectCollisions(t,h);
-    cout << "Collisions Detected: "<<collisionDetector.getCollisionCount()<<endl;
-    cout << "Contacts: "<<collisionDetector.getContactCount()<<endl;
+    //cout << "Collisions Detected: "<<collisionDetector.getCollisionCount()<<endl;
+    //cout << "Contacts: "<<collisionDetector.getContactCount()<<endl;
 
   }
   if(doMultiBody)multiBodyDynamics.correctPositions(h);
