@@ -163,7 +163,7 @@ void CustomSimulation::buildModel(){
   //sphere
   b.setOffset(Vector3D(18,0,0));
   geometry = b.createSphere("",Vector3D::Zero(),0,2);
-  //geoms.push_back(geometry);
+  geoms.push_back(geometry);
   // use Sphere Renderer  
   addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
   
