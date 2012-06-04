@@ -175,8 +175,10 @@ void CustomSimulation::buildModel(){
 
   Plane * plane = new Plane();
   addSimulationObject(new PlaneRenderer(*plane));
-  addSimulationObject(new Collidable(*plane));
+  Collidable * planeCollidable = new Collidable(*plane);
 
+  addSimulationObject(planeCollidable);
+  addSimulationObject(new CollisionRenderer(*planeCollidable));
   int depth=5;
  
   addSimulationObject(new RealValue("pyr pos ",pyr->position()[0]));
