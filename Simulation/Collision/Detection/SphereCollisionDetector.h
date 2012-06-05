@@ -7,9 +7,8 @@
 namespace IBDS{
 class SphereCollisionDetector:public virtual CollisionDetector{
   SphereSphere collisionTest;
-public:
-  void detectCollisions(Real time, Real h);
 protected:
+  void doCollisionDetection(Real time, Real h);
   bool acceptObject(ICollidable* collidable);
 };
 }

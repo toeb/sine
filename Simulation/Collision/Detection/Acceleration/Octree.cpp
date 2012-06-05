@@ -4,8 +4,21 @@ using namespace IBDS;
 using namespace std;
 
 const TypeId Octree::type = "Octree";
+
 const TypeId Octree::getType()const{
   return type;
+}
+const TypeId Octree::getCollisionType()const{
+  return type;
+}
+
+
+void Octree::classify(){
+  if(_depth==0)_classfication = classifyGeometrically();
+  else _classfication = classifyByChildNodes();
+  if(_classfication == Classification::UNCLASSIFIED){
+    cout << "Node not classifiable" << endl;
+  }
 }
 
 BoundingVolume &  Octree::getBoundingVolume(){
@@ -20,13 +33,7 @@ const Octree * Octree::child(OctreeNodeId i)const{
   return _children[i];
 }
 
-void Octree::classify(){
-  if(_depth==0)_classfication = classifyGeometrically();
-  else _classfication = classifyByChildNodes();
-  if(_classfication == Classification::UNCLASSIFIED){
-    cout << "Node not classifiable" << endl;
-  }
-}
+
 Octree::~Octree(){
   delete _boundingVolume;
   _boundingVolume =0;
@@ -234,7 +241,7 @@ unsigned int Octree::getDepth()const{
 void Octree::update(){
   _boundingVolume->update();
 }
-void Octree::reset(){
+void Octree::resetCollidable(){
   if(!_boundingVolume->isUpToDate()){
       _boundingVolume->reset();
       return;

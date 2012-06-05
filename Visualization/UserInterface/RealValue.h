@@ -30,4 +30,5 @@ public:
   void get(void * val);
 };
 
+
 }

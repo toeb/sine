@@ -17,6 +17,7 @@ public:
   Vector3D getNormal()const;
   bool isInFront(const Vector3D & p)const;
   void projectOnPlane(const Vector3D & p, Vector2D & result)const;
+  void projectOnPlane(const Vector3D & p, Vector3D & p_plane)const;
   Real projectOnNormal(const Vector3D & p)const;
 };
 }

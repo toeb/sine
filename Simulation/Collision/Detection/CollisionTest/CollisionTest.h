@@ -19,7 +19,7 @@ public:
    *
    * \return true if the the geometries collide . else false
    */
-  virtual bool testCollision(const ICollidable &a, const ICollidable &b, Collision * col)const=0;
+  virtual bool testCollision(const ICollidable &a, const ICollidable &b, Collision * collision=0)const=0;
   
 };
 }

@@ -4,7 +4,7 @@ using namespace std;
 using namespace IBDS;
 
 
-DynamicsAlgorithm::DynamicsAlgorithm():multiBodyDynamics(20){
+DynamicsAlgorithm::DynamicsAlgorithm():multiBodyDynamics(20),doMultiBody(true),detectCollisions(true){
   addSimulationModule(&forceModule);
   addSimulationModule(&multiBodyDynamics);
   addSimulationModule(&updatablesModule);

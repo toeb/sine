@@ -26,7 +26,7 @@
 #include <Simulation/DynamicsAlgorithm.h>
 #include <Visualization/Renderers/SphereRenderer.h>
 #include <Visualization/Renderers/CollisionRenderer.h>
-#include <Visualization/Renderers/BoundingSphereHierarchyRenderer.h>
+#include <Visualization/Renderers/OctreeRenderer.h>
 #include <Simulation/Geometry/Plane.h>
 #include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 #include <map>
@@ -92,7 +92,6 @@ void CustomSimulation::buildAlgorithms(){
   
   addSimulationObject(new LightRenderer());
   addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
-  addSimulationObject(new TweakBarRenderer());
   CameraRenderer * cam = new CameraRenderer();
   cam->setPosition(Vector3D(8,0,30));
   Quaternion q;
@@ -112,7 +111,12 @@ void CustomSimulation::buildModel(){
 
   Gravity & g = *(b.setGravity(Vector3D(0,-1,0)));
 
+  //add collision renderer first so that transparent objects render correctly
+  addSimulationObject(new CollisionRenderer(dynamicsAlgorithm.collisionDetector));
   
+  addSimulationObject(new IntValue("Number of Collision",[this](){return dynamicsAlgorithm.collisionDetector.getCollisionCount();},[](int val){}));
+  addSimulationObject(new IntValue("Number of Contacts",[this](){return dynamicsAlgorithm.collisionDetector.getContactCount();},[](int val){}));
+
   
 
   g.setGravityMagnitude(1);
@@ -124,7 +128,7 @@ void CustomSimulation::buildModel(){
 
 
 
-  
+  //create 3 sphere pendulums that collide
   Sphere * sphere = 0;
   Collidable * collidable;
 
@@ -160,12 +164,7 @@ void CustomSimulation::buildModel(){
   Geometry * geometry;
   vector<Geometry*> & geoms = *(new vector<Geometry*>());
     
-  //sphere
-  b.setOffset(Vector3D(18,0,0));
-  geometry = b.createSphere("",Vector3D::Zero(),0,2);
-  geoms.push_back(geometry);
-  // use Sphere Renderer  
-  addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
+
   
   
   //rectangle (flat)
@@ -215,7 +214,12 @@ void CustomSimulation::buildModel(){
   Collidable * planeCollidable = new Collidable(*dynamic_cast<Plane*>(geometry));
   addSimulationObject(planeCollidable);
 
-
+  //sphere
+  b.setOffset(Vector3D(18,0,0));
+  geometry = b.createSphere("",Vector3D::Zero(),0,2);
+  geoms.push_back(geometry);
+  // use Sphere Renderer  
+  addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
 
   //generate octrees
   int depth=5;
@@ -237,10 +241,8 @@ void CustomSimulation::buildModel(){
     OctreeRenderer::doRender = !OctreeRenderer::doRender;
   }));
 
-
-   addSimulationObject(new CollisionRenderer(dynamicsAlgorithm.collisionDetector));
-
-
+  //add tweakbar renderer last so it is drawn over everything else  
+  addSimulationObject(new TweakBarRenderer());
 }
 
 

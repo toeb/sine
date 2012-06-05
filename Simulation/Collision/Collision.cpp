@@ -3,12 +3,7 @@
 using namespace IBDS;
 using namespace std;
 
-Contact::Contact(){
 
-}
-Contact::~Contact(){
-
-}
 
 Collision::~Collision(){
 

@@ -6,6 +6,10 @@ using namespace IBDS;
 CollisionDetector::CollisionDetector(){
 }
 
+void CollisionDetector::detectCollisions(Real t, Real h){
+  resetCollisions();
+  doCollisionDetection(t,h);
+}
 
 int CollisionDetector::getContactCount(){
   int count=0;

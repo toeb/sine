@@ -5,9 +5,7 @@ using namespace std;
 using namespace IBDS;
 
 
-void SphereCollisionDetector::detectCollisions(Real t, Real h){
-  resetCollisions();
-  
+void SphereCollisionDetector::doCollisionDetection(Real t, Real h){
   foreachCombination([this](ICollidable * a, ICollidable * b){
     Collision * collision = new Collision(*a,*b);
     if(collisionTest.testCollision(*a,*b,collision)){

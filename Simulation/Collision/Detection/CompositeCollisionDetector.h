@@ -6,8 +6,8 @@ namespace IBDS{
 class CompositeCollisionDetector : public CollisionDetector{
 public:
   CompositeCollisionDetector();
-  void detectCollisions(Real time, Real h);
 protected:
+  void doCollisionDetection(Real time, Real h);
   bool accepts(ICollidable * c);
 };
 }

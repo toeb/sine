@@ -59,6 +59,15 @@ Vector3D Plane::getPositionFromUV(const Vector2D & uv)const{
   result[1] = vAxis.projectOnAxis(p);
 
 }
+
+ 
+void Plane::projectOnPlane(const Vector3D & p, Vector3D & p_plane)const{
+  Vector2D uv;
+  projectOnPlane(p,uv);
+  getPositionFromUV(uv,p_plane);
+}
+
+
  Real Plane::projectOnNormal(const Vector3D & p)const{
   Axis axis;
   getNormal(axis.n);

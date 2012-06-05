@@ -48,13 +48,18 @@ const CollisionTest* CollisionTestRepository::getTest(const TypeId a,const TypeI
 }
 
 bool CollisionTestRepository::hasTestFor(const ISimulationObject & a)const{
+  return hasTestFor(a.getType());
+}
+
+bool CollisionTestRepository::hasTestFor(const ICollidable & a)const{
+  return hasTestFor(a.getCollisionType());
+}
+
+bool CollisionTestRepository::hasTestFor(const TypeId  a)const{
   const CollisionTest * current=0;
   for(int i=0; i < _tests.size(); i++){
     current = _tests.at(i);
-    TypeId t1 = a.getType();
-    TypeId t2 = current->getTypeA();
-    TypeId t3 = current->getTypeB();
-    if(current->getTypeA()==a.getType() || current->getTypeB()==a.getType()){
+    if(current->getTypeA()==a || current->getTypeB()==a){
       return true;
     }
   }
@@ -63,4 +68,7 @@ bool CollisionTestRepository::hasTestFor(const ISimulationObject & a)const{
 
 const CollisionTest* CollisionTestRepository::getTest(const ISimulationObject & a,const ISimulationObject & b)const{
   return getTest(a.getType(),b.getType());
+}
+const CollisionTest* CollisionTestRepository::getTest(const ICollidable & a,const ICollidable & b)const{
+  return getTest(a.getCollisionType(),b.getCollisionType());
 }

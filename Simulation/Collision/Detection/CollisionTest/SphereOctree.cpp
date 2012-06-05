@@ -19,13 +19,11 @@ const TypeId SphereOctree::getTypeB()const{
   return testCollision(a,b,collision);
 }
 
- bool SphereOctree::testCollision(const Sphere & sphere, const Octree & octree,Collision * collision)const{
-  
+ bool SphereOctree::testCollision(const Sphere & sphere, const Octree & octree,Collision * collision)const{  
   BoundingSphere & boundingSphere = static_cast< BoundingSphere&> (octree.getBoundingVolume());
   
   //update the bounding sphere involved in this test (this call is cached (the calculation is only done once per timestep)
   boundingSphere.update();
-
 
   //on the finest level do the spheretest with parameters
   if(octree.isLeaf()){
@@ -42,8 +40,7 @@ const TypeId SphereOctree::getTypeB()const{
   }
   
   boundingSphere.setColliding(true);
-
-  
+    
   //else test collision of the children of the larger octree or the octree which isnot   leaf;
   bool collisionDetected = false;
 

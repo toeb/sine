@@ -8,9 +8,8 @@
 namespace IBDS{
 class OctreeCollisionDetector:public CollisionDetector{
   OctreeOctree collisionTest;
-public:
-  void detectCollisions(Real time, Real h);
 protected:
+  void doCollisionDetection(Real time, Real h);
   bool acceptObject(ICollidable * c);
 };
 }

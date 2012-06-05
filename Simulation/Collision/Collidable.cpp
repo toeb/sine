@@ -8,7 +8,7 @@ Collidable::Collidable(Geometry & o):_geometry(o){
 
 }
 
-const TypeId Collidable::getType()const{
+const TypeId Collidable::getCollisionType()const{
   return _geometry.getType();
 }
 
@@ -19,8 +19,9 @@ Geometry & Collidable::getGeometry()const{
 void Collidable::addCollision(Collision* col){
   _collisions.push_back(col);
 }
-void Collidable::resetCollisions(){
-  reset();
+void Collidable::reset(){
+  resetCollidable();
+  //do not delete collisions because this is done by collisiondetector
   _collisions.clear();
 }
 const std::vector<Collision*> & Collidable::getCollisions()const{

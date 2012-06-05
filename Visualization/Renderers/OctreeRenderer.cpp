@@ -1,6 +1,6 @@
 #include <Visualization/MiniGL.h>
 #include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
-#include "BoundingSphereHierarchyRenderer.h"
+#include "OctreeRenderer.h"
 
 using namespace IBDS;
 using namespace std;

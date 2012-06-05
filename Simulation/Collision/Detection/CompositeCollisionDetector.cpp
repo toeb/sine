@@ -6,12 +6,11 @@ using namespace std;
 CompositeCollisionDetector::CompositeCollisionDetector(){
 }
 
-void CompositeCollisionDetector::detectCollisions(Real time, Real h){
-  resetCollisions();
+void CompositeCollisionDetector::doCollisionDetection(Real time, Real h){
+  //iterate through all potential collisions
   foreachPotentialCollision([this](ICollidable * a,ICollidable * b){
-    const CollisionTest * test = CollisionTestRepository::instance().getTest(*a,*b);
+    const CollisionTest * test = CollisionTestRepository::instance().getTest(a->getCollisionType(),b->getCollisionType());
     if(test){
-      //cout << test->getTypeA() << " " <<test->getTypeB() << endl;
       Collision * collision = new Collision(*a,*b);
       if(test->testCollision(*a,*b,collision)){
         addCollision(collision);
@@ -19,7 +18,7 @@ void CompositeCollisionDetector::detectCollisions(Real time, Real h){
         delete collision;
       }
     }else{
-      cout << "No test found for "<<a->getType() << " vs. "<< b->getType() <<endl;
+      cout << "No test found for "<<a->getCollisionType() << " vs. "<< b->getCollisionType() <<endl;
     }
   });
 }

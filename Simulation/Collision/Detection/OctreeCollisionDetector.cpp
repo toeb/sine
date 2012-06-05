@@ -4,12 +4,8 @@
 using namespace std;
 using namespace IBDS;
 
-void OctreeCollisionDetector::detectCollisions(Real t, Real h){
-  resetCollisions();
-  
+void OctreeCollisionDetector::doCollisionDetection(Real t, Real h){  
   update();
-  
-
   foreachCombination([this](ICollidable* a,ICollidable * b){
     Collision * collision = new Collision(*a,*b);
     Octree & aref = static_cast<Octree &>(*a);

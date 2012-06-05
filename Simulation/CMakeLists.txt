@@ -269,8 +269,8 @@ SET(renderers_SRC
 	${PROJECT_PATH}/Visualization/Renderers/SpringRenderer.cpp	
 	${PROJECT_PATH}/Visualization/Renderers/CollisionRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/CollisionRenderer.cpp	
-	${PROJECT_PATH}/Visualization/Renderers/BoundingSphereHierarchyRenderer.h
-	${PROJECT_PATH}/Visualization/Renderers/BoundingSphereHierarchyRenderer.cpp	
+	${PROJECT_PATH}/Visualization/Renderers/OctreeRenderer.h
+	${PROJECT_PATH}/Visualization/Renderers/OctreeRenderer.cpp	
 	${PROJECT_PATH}/Visualization/Renderers/PlaneRenderer.h
 	${PROJECT_PATH}/Visualization/Renderers/PlaneRenderer.cpp	
 	)

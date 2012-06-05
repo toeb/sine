@@ -32,18 +32,12 @@ private:
   unsigned int _level;
   ///< The classfication (inside, outside or both)
   Classification _classfication;
-
-
   ///< The aabb representing the dimension of this octree node
   AABB _aabb;
-
-
   ///< The bounding volume used for collision and classification
   BoundingVolume * _boundingVolume;
-
-  ///< The bounding volume factory it is same for all nodes of an octree
+  ///< The bounding volume factory is same for all nodes of an octree
   BoundingVolumeFactory & _boundingVolumeFactory;
-
   ///< The children
   Octree ** _children;
 
@@ -56,7 +50,7 @@ private:
   Octree(OctreeNodeId id, Octree & parent);
 
   /**
-   * \brief Refines this object.
+   * \brief Refines this octree.
    * 				this central method refines the octree to the desired depth
    */
   void refine();
@@ -69,9 +63,19 @@ private:
    * \return  null if it fails, else.
    */
   Octree * createChild(OctreeNodeId id);
-  
+
+  /**
+   * \brief Sets a node.
+   *
+   * \param [in,out] node If non-null, the node.
+   */
   void setNode(Octree * node);
 
+  /**
+   * \brief Calculates the depth.
+   *
+   * 
+   */
   void calculateDepth();
 
 protected:
@@ -104,11 +108,28 @@ protected:
 
   
 public:
+
+  ///< The type ("Octree")
   static const TypeId type;
+
+  /**
+   * \brief Gets the collision type.
+   *
+   *
+   * \return The collision type.
+   */
+  const TypeId getCollisionType()const;
+
+  /**
+   * \brief Gets the type.
+   *
+   *
+   * \return The type.
+   */
   const TypeId getType()const;
 
   void update();
-  void reset();
+  void resetCollidable();
 
   const Octree * child(OctreeNodeId i)const;
   ~Octree();

@@ -148,7 +148,7 @@ bool TweakBarRenderer::initializeObject(){
   
   if(!getName())setName("TweakBar");
   _tweakBar = TwNewBar(getName()->c_str());
-
+  
 
   for(auto it = _actions.begin(); it != _actions.end(); it++){
     auto action = (*it).second;
