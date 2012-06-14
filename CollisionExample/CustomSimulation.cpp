@@ -157,7 +157,7 @@ void CustomSimulation::buildModel(){
   addSimulationObject(collidable);
   
 
-  
+  //create a spring pendulum that collides a sphere with the plane at y = 0;
 
 
   //create geometries which are approximated by a bounding tree and add them to the geoms vector
@@ -213,6 +213,16 @@ void CustomSimulation::buildModel(){
   //create a collidable to wrap the plane
   Collidable * planeCollidable = new Collidable(*dynamic_cast<Plane*>(geometry));
   addSimulationObject(planeCollidable);
+  Quaternion & quat = geometry->orientation();
+  Real & angle = *(new Real());
+  addSimulationObject(new RealValue("plane z angle",[&angle](){
+    return angle;
+  },
+    [&angle, &quat](Real value){
+      angle = value;
+      quat.setFromAxisAngle(Vector3D::e3(),angle);
+  }));
+  addSimulationObject(new Vector3DValue("plane position", geometry->position()));
 
   //sphere
   b.setOffset(Vector3D(18,0,0));
@@ -242,7 +252,7 @@ void CustomSimulation::buildModel(){
   }));
 
   //add tweakbar renderer last so it is drawn over everything else  
-  addSimulationObject(new TweakBarRenderer());
+
 }
 
 

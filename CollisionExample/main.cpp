@@ -28,6 +28,7 @@
 #include <Visualization/UserInterface/DelegateAction.h>
 #include "CustomSimulation.h"
 #include <Visualization/MiniGL.h>
+#include <Visualization/Renderers/TweakBar/TweakBarRenderer.h>
 
 using namespace IBDS;
 using namespace std;
@@ -66,6 +67,7 @@ int main( int argc, char **argv )
   });
   simulation->addSimulationObject(action);
 
+  simulation->  addSimulationObject(new TweakBarRenderer());
   
   runner.run();
 

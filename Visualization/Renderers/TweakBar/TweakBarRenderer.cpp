@@ -77,6 +77,11 @@ void TweakBarRenderer::addEntry(ISimulationObject * o){
     addEntry(&(vecval->y));
     addEntry(&(vecval->z));
   }
+
+  auto quatval = dynamic_cast<NormalizedQuaternionValue*>(o);
+  if(quatval){
+    TwAddVarCB(_tweakBar,o->getName()->c_str(),TW_TYPE_QUAT4F,setValueCallback,getValueCallback,quatval," open ");
+  }
  
 }
 bool TweakBarRenderer::removeSimulationObject(ISimulationObject * object){
