@@ -3,20 +3,10 @@
 #include <Simulation/Geometry/Geometry.h>
 #include <functional>
 #include <algorithm>
-
+#include <Simulation/Collision/Contact.h>
 namespace IBDS{
 class ICollidable;
 
-struct Contact{
-  ///< the position in world coordinate where object A collides
-  Vector3D pA_wcs;
-  ///< the position in world coordinate where object B collides
-  Vector3D pB_wcs;
-  ///< the collision normal
-  Vector3D normal;
-  ///< The depth of the penetration
-  Real penetrationDepth;
-};
 
 /**
  * \brief Collision. 

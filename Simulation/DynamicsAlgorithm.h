@@ -3,8 +3,8 @@
 #include <Simulation/Force/ForceAlgorithm.h>
 #include <Simulation/Dynamics/DynamicBodyModule.h>
 #include <Simulation/Dynamics/ConnectorModule.h>
-#include <Simulation/Integrators/CompositeIntegratable.h>
-#include <Simulation/Integrators/ISystemFunction.h>
+#include <Simulation/Integration/CompositeIntegratable.h>
+#include <Simulation/Integration/ISystemFunction.h>
 #include <Simulation/Core/CompositeSimulationModule.h>
 #include <Simulation/Textiles/TextileAlgorithm.h>
 #include <Simulation/Core/UpdateablesModule.h>

@@ -1,6 +1,5 @@
-#ifndef __RungeKuttaFehlberg45_h__
-#define __RungeKuttaFehlberg45_h__
-#include <Simulation/Integrators/SingleStepIntegrator.h>
+#pragma once
+#include <Simulation/Integration/SingleStepIntegrator.h>
 namespace IBDS{
 
   /**
@@ -70,4 +69,3 @@ namespace IBDS{
   const Real c21,c31,c32,c41,c42,c43,c51,c52,c53,c54,c61,c62,c63,c64,c65;
   };
 }
-#endif

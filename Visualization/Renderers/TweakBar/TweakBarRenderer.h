@@ -43,8 +43,7 @@ class TweakBarRenderer
 
 
 
-protected:
-  
+protected:  
   bool initializeObject();
   void cleanupObject();
 private:

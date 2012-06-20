@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation/Geometry/CoordinateSystem.h>
+#include <Simulation/Kinematics/CoordinateSystem.h>
 #include <vector>
 
 

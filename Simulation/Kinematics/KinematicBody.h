@@ -2,10 +2,10 @@
 
 #include <Math/Matrix3x3.h>
 #include <Math/Quaternion.h>
-#include <Simulation/Integrators/IIntegrable.h>
+#include <Simulation/Integration/IIntegrable.h>
 #include <Simulation/Core/ISimulationObject.h>
 #include <Math/Vector3D.h>
-#include <Simulation/Geometry/CoordinateSystem.h>
+#include <Simulation/Kinematics/CoordinateSystem.h>
 
 namespace IBDS{
 /**

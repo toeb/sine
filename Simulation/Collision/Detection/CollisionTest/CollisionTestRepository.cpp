@@ -1,4 +1,4 @@
-#include "CollisionTestFactory.h"
+#include "CollisionTestRepository.h"
 
 #include <Simulation/Collision/Detection/CollisionTest/OctreeOctree.h>
 #include <Simulation/Collision/Detection/CollisionTest/PlaneOctree.h>

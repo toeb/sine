@@ -1,7 +1,8 @@
 #pragma once
 #include "Simulation/Core/ISimulationObject.h"
-#include <Simulation/Integrators/IIntegrable.h>
+#include <Simulation/Integration/IIntegrable.h>
 #include <Math/Vector3D.h>
+
 namespace IBDS {
 class DynamicBody : public virtual IIntegrable{
   public:     

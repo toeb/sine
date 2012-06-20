@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/Geometry/CoordinateSystem.h>
+#include <Simulation/Kinematics/CoordinateSystem.h>
 namespace IBDS{
   
 enum Classification{

@@ -1,6 +1,6 @@
 #pragma once
 #include <Math/Vector3D.h>
-#include <Simulation/Integrators/IIntegrable.h>
+#include <Simulation/Integration/IIntegrable.h>
 #include <Simulation/Dynamics/DynamicBody.h>
 #include <Visualization/IRenderer.h>
 namespace IBDS {

@@ -1,5 +1,5 @@
 #include "CompositeCollisionDetector.h"
-#include <Simulation/Collision/Detection/CollisionTest/CollisionTestFactory.h>
+#include <Simulation/Collision/Detection/CollisionTest/CollisionTestRepository.h>
 using namespace IBDS;
 using namespace std;
 
