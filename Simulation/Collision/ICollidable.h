@@ -54,5 +54,21 @@ public:
     *
     */
    virtual void handleCollisions(){};
+
+
+   virtual double getElasticityCoefficient() const = 0;
+
+   virtual double getStaticFrictionCoefficient() const = 0;
+
+   virtual double getDynamicFrictionCoefficient() const = 0; 
+
+
+   virtual void setElasticityCoefficient(double e) = 0;
+
+   virtual void setStaticFrictionCoefficient(double s) = 0;
+
+   virtual void setDynamicFrictionCoefficient(double d) = 0;
+
+
 };
 }

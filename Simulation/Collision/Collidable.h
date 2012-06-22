@@ -13,6 +13,11 @@ class Collidable : public ICollidable{
 private:
   std::vector<Collision*> _collisions;
   Geometry & _geometry;
+
+  double _elasticityCoefficient;
+  double _staticFrictionCoefficient;
+  double _dynamicFrictionCoefficient;
+
 public:
   
   /**
@@ -28,7 +33,9 @@ public:
    * 				
    * \param [in,out] geometry The geometry.
    */
-  Collidable(Geometry & geometry);
+  //Collidable(Geometry & geometry);
+
+  Collidable(Geometry & geometry, double elasticity = 1, double staticFriction = 1, double dynamicFriction = 1);
 
 
   /**
@@ -75,6 +82,21 @@ public:
    * \param the function f called on every collision.
    */
   void foreachCollision(std::function<void(Collision *)> f);
+
+
+  virtual double getElasticityCoefficient() const;
+
+  virtual double getStaticFrictionCoefficient() const;
+
+  virtual double getDynamicFrictionCoefficient() const;
+
+
+  virtual void setElasticityCoefficient(double e);
+
+  virtual void setStaticFrictionCoefficient(double s);
+
+  virtual void setDynamicFrictionCoefficient(double d);
+
 protected:
 
   /**
