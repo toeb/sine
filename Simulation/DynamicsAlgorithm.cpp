@@ -39,6 +39,15 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
     //cout << "Collisions Detected: "<<collisionDetector.getCollisionCount()<<endl;
     //cout << "Contacts: "<<collisionDetector.getContactCount()<<endl;
 
+	//collisionDetector.foreachCollision([](Collision *collision) {
+	//	collision->foreachContact([collision](Contact *contact) {
+	//		ContactType type;
+	//		if ((type = collision->classifyContact(*contact)) != UNKNOWN) {
+	//			cout << type;
+	//			}
+	//		});
+	//	});
+
   }
   if(doMultiBody)multiBodyDynamics.correctPositions(h);
   

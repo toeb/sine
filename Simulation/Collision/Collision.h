@@ -13,7 +13,8 @@ class ICollidable;
  *  a collection of contacts and two objects which parttake
  */
 class Collision{
-private:
+	
+ private:
   ///< The contacts of this collision
   std::vector<Contact*> _contacts;
 
@@ -85,5 +86,7 @@ public:
    * \return The object b.
    */
   ICollidable & getObjectB()const;
+
+  ContactType classifyContact(const Contact& contact);
 };
 }

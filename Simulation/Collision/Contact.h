@@ -11,4 +11,7 @@ struct Contact{
   ///< The depth of the penetration
   Real penetrationDepth;
 };
+
+enum ContactType {COLLISION, RESTING_CONTACT, DRIFTING_APART, UNKNOWN};
+
 }
