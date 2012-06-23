@@ -5,6 +5,7 @@
 #include <vector>
 #include <functional>
 #include <Simulation/Geometry/Geometry.h>
+#include <Simulation\Dynamics\RigidBody.h>
 #include <Simulation/Collision/ICollidable.h>
 
 namespace IBDS{
@@ -13,6 +14,7 @@ class Collidable : public ICollidable{
 private:
   std::vector<Collision*> _collisions;
   Geometry & _geometry;
+  RigidBody * _rigidBody;
 
   double _elasticityCoefficient;
   double _staticFrictionCoefficient;
@@ -27,16 +29,23 @@ public:
    */
   virtual const TypeId getCollisionType()const;
 
-
   /**
    * \brief Constructor.
    * 				
    * \param [in,out] geometry The geometry.
+   * \param rigidBody the associated rigid body (needed for collision handling)
    */
   //Collidable(Geometry & geometry);
 
-  Collidable(Geometry & geometry, double elasticity = 1, double staticFriction = 1, double dynamicFriction = 1);
+  Collidable(Geometry & geometry, RigidBody & rigidBody, double elasticity = 1, double staticFriction = 1, double dynamicFriction = 1);
 
+  /**
+   * \brief Constructor with no associated rigid body specified. 
+   * This way, no collision handling will be performed, either on this collidable, or on other collidables colliding with this one.
+   * 				
+   * \param [in,out] geometry The geometry.
+   */
+  Collidable(Geometry & geometry, double elasticity = 1, double staticFriction = 1, double dynamicFriction = 1);
 
   /**
    * \brief Gets the geometry.
@@ -45,6 +54,8 @@ public:
    * \return The geometry.
    */
   virtual Geometry & getGeometry()const;
+
+  virtual RigidBody * const getRigidBody() const;
 
   /**
    * \brief Adds a collision to this collidable. 

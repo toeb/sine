@@ -25,6 +25,11 @@ public:
    virtual Geometry & getGeometry()const=0;
 
    /**
+    * Returns the underlying rigid body
+    */
+   virtual RigidBody * const getRigidBody() const = 0;
+
+   /**
     * \brief Add a collision to the collidable. 
     *
     *

@@ -4,10 +4,18 @@
 using namespace std;
 using namespace IBDS;
 
+Collidable::Collidable(Geometry & geometry, RigidBody & rigidBody, double elasticity, double staticFriction, double dynamicFriction):
+_geometry(geometry),
+_rigidBody(&rigidBody),
+_elasticityCoefficient(elasticity),
+_staticFrictionCoefficient(staticFriction),
+_dynamicFrictionCoefficient(dynamicFriction) {}
+
 //Collidable::Collidable(Geometry & o):_geometry(o){}
 
 Collidable::Collidable(Geometry & geometry, double elasticity, double staticFriction, double dynamicFriction):
 _geometry(geometry),
+_rigidBody(0),
 _elasticityCoefficient(elasticity),
 _staticFrictionCoefficient(staticFriction),
 _dynamicFrictionCoefficient(dynamicFriction) {}
@@ -20,6 +28,11 @@ const TypeId Collidable::getCollisionType()const{
 Geometry & Collidable::getGeometry()const{
   return _geometry;
 }
+
+RigidBody * const Collidable::getRigidBody() const {
+	return _rigidBody;
+}
+
 
 void Collidable::addCollision(Collision* col){
   _collisions.push_back(col);

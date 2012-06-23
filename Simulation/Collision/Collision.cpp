@@ -51,35 +51,28 @@ ICollidable & Collision::getObjectA()const{return _objectA;}
 ICollidable & Collision::getObjectB()const{return _objectB;}
 
 ContactType Collision::classifyContact(const Contact& contact) {
-	RigidBody *body1 = dynamic_cast<DynamicSphere *>(&getObjectA().getGeometry());
-	if (!body1) {
-		// check against other dynamic body classes
-		// ...
-		// in case of no success:
-		return UNKNOWN;
-		}
-
-	RigidBody *body2 = dynamic_cast<DynamicSphere *>(&getObjectB().getGeometry());
-	if (!body2) {
-		// check against other dynamic body classes
-		// ...
-		// in case of no success:
+	RigidBody *body1 = getObjectA().getRigidBody();
+	RigidBody *body2 = getObjectB().getRigidBody();
+	if (!body1 || !body2) {
 		return UNKNOWN;
 		}
 
 	Connector *c1 = RigidBodyConnector::createWithWorldConnectionPoint(*body1, contact.pA_wcs);
 	Connector *c2 = RigidBodyConnector::createWithWorldConnectionPoint(*body2, contact.pB_wcs);
 
+	// calculateCachedValues is required to get up-to-date velocities
+	c1->calculateCachedValues();
+	c2->calculateCachedValues();
 	const Vector3D &v1 = c1->getWorldVelocity();
 	const Vector3D &v2 = c2->getWorldVelocity();
 
 	Vector3D v_rel;
-	Vector3D::subtract(v1, v2, v_rel);
+	Vector3D::subtract(v2, v1, v_rel);
 	
 	double v_rel_n;
 	Vector3D::dotProduct(v_rel, contact.normal, v_rel_n);
 
-	double threshold = 0.14;
+	double threshold = 10e-3;
 	if (v_rel_n >= threshold)
 		return DRIFTING_APART;
 	else if (v_rel_n > -threshold)

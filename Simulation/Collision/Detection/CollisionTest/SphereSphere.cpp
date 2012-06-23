@@ -47,8 +47,8 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   Contact * contact = new Contact();
 
   //set position of collision at body a and b
-  contact->pA_wcs = pA;
-  contact->pB_wcs = pB;
+  //contact->pA_wcs = pA;
+  //contact->pB_wcs = pB;
 
   //set penetration depth and collision normal
   contact->penetrationDepth = penetrationDepth;

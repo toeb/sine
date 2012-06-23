@@ -139,21 +139,21 @@ void CustomSimulation::buildModel(){
   sphere = b.createSphere("s1",Vector3D(-3,-0.3,0),1,radius);
   b.createBallJoint("j1","s1","p1",Vector3D(-1,0,0));
   addSimulationObject(new SphereRenderer(*sphere));
-  collidable = new Collidable(*sphere);
+  collidable = new Collidable(*sphere,dynamic_cast<DynamicSphere &>(*sphere));
   addSimulationObject(collidable);
   
   b.createParticle("p2",Vector3D(1,0,0),0);
   sphere= b.createSphere("s2",Vector3D(3,0,0),1,radius);
   b.createBallJoint("j2","s2","p2",Vector3D(1,0,0));
   addSimulationObject(new SphereRenderer(*sphere));
-  collidable = new Collidable(*sphere);
+  collidable = new Collidable(*sphere,dynamic_cast<DynamicSphere &>(*sphere));
   addSimulationObject(collidable);
 
   b.createParticle("p3",Vector3D(2,0,0),0);
   sphere= b.createSphere("s3",Vector3D(3,0,0),1,radius);
   b.createBallJoint("j3","s3","p3",Vector3D(2,0,0));
   addSimulationObject(new SphereRenderer(*sphere));
-  collidable = new Collidable(*sphere);
+  collidable = new Collidable(*sphere,dynamic_cast<DynamicSphere &>(*sphere));
   addSimulationObject(collidable);
   
 
@@ -229,10 +229,10 @@ void CustomSimulation::buildModel(){
   geometry = b.createSphere("",Vector3D::Zero(),0,2);
   geoms.push_back(geometry);
   // use Sphere Renderer  
-  addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
+  //addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
 
   //generate octrees
-  int depth=5;
+  int depth=3;
  
   for_each(geoms.begin(), geoms.end(), [this, &geoms,&depth](Geometry * geo){
   
