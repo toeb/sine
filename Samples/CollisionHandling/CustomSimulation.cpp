@@ -233,7 +233,26 @@ void CustomSimulation::buildModel(){
 
   //generate octrees
   int depth=3;
- 
+
+
+
+  //create cloth
+  TextileModel * cloth = TextileModel::createTextileModel(
+    Vector3D(25,0,0), 
+  Quaternion::axisAngle(Vector3D(1,0,0),PI/2).getMatrix3x3(),100,3,3,10,10);
+  b.setOffset(Vector3D(25,4,0));
+  addSimulationObject(new PolygonRenderer(*( b.createBox("trampBox"))));
+  
+
+  cloth->getNode(0,0)->particle->setMass(0);
+  cloth->getNode(9,9)->particle->setMass(0);
+  cloth->getNode(9,0)->particle->setMass(0);
+  cloth->getNode(0,9)->particle->setMass(0);
+  addSimulationObject(cloth);
+  for_each(cloth->getSimulationObjects().begin(), cloth->getSimulationObjects().end(), [this](ISimulationObject * obj){
+    addSimulationObject(obj);
+  });
+
   for_each(geoms.begin(), geoms.end(), [this, &geoms,&depth](Geometry * geo){
   
     Octree * octree= new Octree(*geo,depth, *(new BoundingSphereFactory()));

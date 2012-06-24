@@ -38,6 +38,7 @@ Classification classifySphere(const BoundingSphere & sphere, const Polygon & pol
   }
    Vector3D dir;
    // check edges
+   // [berleg nichmal
    for(int i=0; i < polygon.edges().size(); i++){
      Edge * e = polygon.edge(i);
      e->getDirection(dir);

@@ -31,8 +31,6 @@ void Geometry::getBoundingBoxOCS(AABB & aabb)const{
   }
   aabb.min.set(min,min,min);
   aabb.max.set(max,max,max);
-
-  
 }
 
 

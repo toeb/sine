@@ -32,16 +32,18 @@ public:
     return max[2]-min[2];
   }
   void getCenter(Vector3D & c)const{
+    //todo ist das richtig
     Vector3D::subtract(max,min,c);
     Vector3D::add(min,c,c);
   }
   bool isInside(const Vector3D & p)const{
+    // todo ist das richtig?
     if(p[0] < min[0])return false;
     if(p[1] < min[1])return false;
     if(p[2] < min[2])return false;
-    if(p[0] < max[0])return false;
-    if(p[1] < max[1])return false;
-    if(p[2] < max[2])return false;
+    if(p[0] > max[0])return false;
+    if(p[1] > max[1])return false;
+    if(p[2] > max[2])return false;
 
 
     return true;

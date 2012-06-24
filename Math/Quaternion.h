@@ -79,6 +79,11 @@ namespace IBDS
     }
     static const Quaternion & zeroRotation();
 
+    Matrix3x3 getMatrix3x3()const{
+      Matrix3x3 result;
+      getMatrix3x3(result);
+      return result;
+    }
 		friend Quaternion operator - (const Quaternion& a);							// -m1
 		friend Quaternion operator + (const Quaternion& a, const Quaternion& b);	// m1 + m2
 		friend Quaternion operator - (const Quaternion& a, const Quaternion& b);	// m1 - m2
