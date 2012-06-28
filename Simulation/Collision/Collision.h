@@ -7,7 +7,6 @@
 namespace IBDS{
 class ICollidable;
 
-
 /**
  * \brief Collision. 
  *  a collection of contacts and two objects which parttake
@@ -86,7 +85,5 @@ public:
    * \return The object b.
    */
   ICollidable & getObjectB()const;
-
-  ContactType classifyContact(const Contact& contact);
 };
 }

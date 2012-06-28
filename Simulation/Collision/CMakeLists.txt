@@ -4,6 +4,7 @@ SET(collision_SRC
  ./Collision/Collidable.h
  ./Collision/Collidable.cpp
  ./Collision/Contact.h
+ ./Collision/Contact.cpp
  ./Collision/ICollidable.h
  
 )
@@ -30,6 +31,14 @@ set(collisionDetection_SRC
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
 set(simulationSource ${simulationSource} ${collisionDetection_SRC})
 
+set(collisionHandling_SRC 
+ ./Collision/Handling/ContactHandler.h
+ ./Collision/Handling/ContactHandler.cpp
+ ./Collision/Handling/ContactJoint.h
+ ./Collision/Handling/ContactJoint.cpp
+)
+source_group("simulation\\collision\\handling" FILES ${collisionHandling_SRC})
+set(simulationSource ${simulationSource} ${collisionHandling_SRC})
 
 set(CollisionTests_SRC
 ./Collision/Detection/CollisionTest/SphereSphere.h

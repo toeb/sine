@@ -44,26 +44,22 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   //if there is no collision set then no contact parameters have to be computed
   if(!collision)return true;
 
-  Contact * contact = new Contact();
 
   //set position of collision at body a and b
   //contact->pA_wcs = pA;
   //contact->pB_wcs = pB;
-
-  //set penetration depth and collision normal
-  contact->penetrationDepth = penetrationDepth;
-  contact->normal = collisionNormal;
+  Vector3D contact_pA_wcs, contact_pB_wcs;
 
   //set point of collision A:  collision->pA_wcs = pA + n * radiusA 
-  Vector3D::multiplyScalar(radiusA,contact->normal, contact->pA_wcs);
-  Vector3D::add(contact->pA_wcs,pA,contact->pA_wcs);
+  Vector3D::multiplyScalar(radiusA,collisionNormal, contact_pA_wcs);
+  Vector3D::add(contact_pA_wcs,pA,contact_pA_wcs);
 
   //set point of collision B:  collision->pB_wcs = pB - n * radiusB
-  Vector3D::multiplyScalar(-radiusB,contact->normal,contact->pB_wcs);
-  Vector3D::add(contact->pB_wcs,pB,contact->pB_wcs);
+  Vector3D::multiplyScalar(-radiusB,collisionNormal,contact_pB_wcs);
+  Vector3D::add(contact_pB_wcs,pB,contact_pB_wcs);
   
   //add contact point to collision
-  collision->addContact(contact);
+  collision->addContact(new Contact(*collision->getObjectA().getDynamicBody(), *collision->getObjectB().getDynamicBody(),contact_pA_wcs, contact_pB_wcs, collisionNormal, penetrationDepth));
 
   return true;
 }

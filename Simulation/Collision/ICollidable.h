@@ -1,5 +1,6 @@
 #pragma once
 #include <Simulation/Core/ISimulationObject.h>
+//#include <Simulation/Collision/Collision.h>
 namespace IBDS{
 /**
  * \brief ICollidable interface. 
@@ -25,9 +26,9 @@ public:
    virtual Geometry & getGeometry()const=0;
 
    /**
-    * Returns the underlying rigid body
+    * Returns the underlying dynamic body
     */
-   virtual RigidBody * const getRigidBody() const = 0;
+   virtual DynamicBody * const getDynamicBody() const = 0;
 
    /**
     * \brief Add a collision to the collidable. 

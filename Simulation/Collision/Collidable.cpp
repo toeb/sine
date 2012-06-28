@@ -4,9 +4,9 @@
 using namespace std;
 using namespace IBDS;
 
-Collidable::Collidable(Geometry & geometry, RigidBody & rigidBody, double elasticity, double staticFriction, double dynamicFriction):
+Collidable::Collidable(Geometry & geometry, DynamicBody & dynamicBody, double elasticity, double staticFriction, double dynamicFriction):
 _geometry(geometry),
-_rigidBody(&rigidBody),
+_dynamicBody(&dynamicBody),
 _elasticityCoefficient(elasticity),
 _staticFrictionCoefficient(staticFriction),
 _dynamicFrictionCoefficient(dynamicFriction) {}
@@ -15,7 +15,7 @@ _dynamicFrictionCoefficient(dynamicFriction) {}
 
 Collidable::Collidable(Geometry & geometry, double elasticity, double staticFriction, double dynamicFriction):
 _geometry(geometry),
-_rigidBody(0),
+_dynamicBody(0),
 _elasticityCoefficient(elasticity),
 _staticFrictionCoefficient(staticFriction),
 _dynamicFrictionCoefficient(dynamicFriction) {}
@@ -29,8 +29,8 @@ Geometry & Collidable::getGeometry()const{
   return _geometry;
 }
 
-RigidBody * const Collidable::getRigidBody() const {
-	return _rigidBody;
+DynamicBody * const Collidable::getDynamicBody() const {
+	return _dynamicBody;
 }
 
 

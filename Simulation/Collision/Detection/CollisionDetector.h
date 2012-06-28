@@ -71,6 +71,7 @@ public:
   
   void foreachCollidable(std::function<void( ICollidable*)> f);
   void foreachCollision(std::function<void (Collision* )>f);
+  void foreachContact(std::function<void (Contact* )>f);
 protected:
 
   /**

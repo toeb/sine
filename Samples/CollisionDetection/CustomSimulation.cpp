@@ -229,7 +229,7 @@ void CustomSimulation::buildModel(){
   geometry = b.createSphere("",Vector3D::Zero(),0,2);
   geoms.push_back(geometry);
   // use Sphere Renderer  
-  addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
+  //addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
 
   //generate octrees
   int depth=5;

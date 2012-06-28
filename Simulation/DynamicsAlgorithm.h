@@ -9,6 +9,7 @@
 #include <Simulation/Textiles/TextileAlgorithm.h>
 #include <Simulation/Core/UpdateablesModule.h>
 #include <Simulation/Collision/Detection/CompositeCollisionDetector.h>
+#include <Simulation/Collision/Handling/ContactHandler.h>
 
 namespace IBDS{
 
@@ -38,6 +39,8 @@ public:
   TextileAlgorithm textilesModule;
   UpdatablesModule updatablesModule;
   CompositeCollisionDetector collisionDetector;
+  ContactHandler contactHandler;
+
   DynamicsAlgorithm();
 
   IIntegrable & getIntegrable();
@@ -49,5 +52,6 @@ public:
   void evaluate(Real t, Real h);
   void postIntegration(Real t, Real h);
   void preIntegration(Real t, Real h);
+  
 };
 }
