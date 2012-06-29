@@ -11,7 +11,7 @@ void OctreeRenderer::render(){
 
   MiniGL::pushMatrix();
   
-  const Matrix3x3 & R =_octree.getGeometry().getRotationMatrix();
+  const Matrix3x3 & R =_octree.getGeometry().getTransposedRotationMatrix();
   MiniGL::translate(_octree.getGeometry().getPosition());
   MiniGL::multMatrix(R);
 
