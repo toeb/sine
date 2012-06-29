@@ -41,6 +41,8 @@ private:
   ///< The children
   Octree ** _children;
 
+  DynamicBody *_dynamicBody;
+
   /**
    * \brief private Constructor.
    *
@@ -79,6 +81,8 @@ private:
   void calculateDepth();
 
 protected:
+	DynamicBody * const getDynamicBody() const;
+
   void createBoundingVolume();
   /**
    * \brief Initializes the object.
@@ -146,6 +150,8 @@ public:
    * \param precision                      (optional) the precision (zero means as exact as possible).
    */
   Octree( Geometry & geometry,int depth, BoundingVolumeFactory & boundingVolumeFactory);
+
+  Octree( Geometry & geometry, DynamicBody *body, int depth, BoundingVolumeFactory & boundingVolumeFactory);
 
   /**
    * \brief classifies the current node geometrically.  

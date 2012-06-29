@@ -180,6 +180,8 @@ void CustomSimulation::buildModel(){
   //addSimulationObject(collidable);
   
 
+
+
   //create a spring pendulum that collides a sphere with the plane at y = 0;
 
 
@@ -187,9 +189,38 @@ void CustomSimulation::buildModel(){
   Geometry * geometry;
   vector<Geometry*> & geoms = *(new vector<Geometry*>());
     
+  Octree * octree_;
+  OctreeRenderer *otr_;
+    //generate octrees
+  int depth=4;
 
-  
-  
+
+  Real boxAngle =3.14 / 8;
+  DynamicBox * body = b.createBox("fixed_box",Vector3D(-6+sin(boxAngle),3-cos(boxAngle),0),0,3.5,1,1); 
+  body->setOrientation(Quaternion::axisAngle(Vector3D(0,0,1),boxAngle));
+  geometry =  body;
+  //geoms.push_back(geometry);
+  //polygon renderer
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
+      octree_= new Octree(*geometry,body,depth, *(new BoundingSphereFactory()));
+    otr_= new OctreeRenderer(*octree_);
+    addSimulationObject(octree_);
+    addSimulationObject(otr_);
+
+
+  body =  b.createBox("free_box",Vector3D(-6,3,0),1);
+   body->setOrientation(Quaternion::axisAngle(Vector3D(0,0,1),boxAngle));
+  geometry = body;
+  //geoms.push_back(geometry);
+  //polygon renderer
+  addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
+
+    octree_= new Octree(*geometry,body,depth, *(new BoundingSphereFactory()));
+    otr_= new OctreeRenderer(*octree_);
+    addSimulationObject(octree_);
+    addSimulationObject(otr_);
+
+
   //rectangle (flat)
   b.setOffset(Vector3D(8,0,0));
   geometry = b.createFixedRectangle("",Vector3D::Zero(),Quaternion::zeroRotation(),4,2);
@@ -254,8 +285,6 @@ void CustomSimulation::buildModel(){
   // use Sphere Renderer  
   //addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
 
-  //generate octrees
-  int depth=3;
 
 
 

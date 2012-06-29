@@ -5,6 +5,10 @@ using namespace std;
 
 const TypeId Octree::type = "Octree";
 
+DynamicBody * const Octree::getDynamicBody() const {
+	return _dynamicBody;
+	}
+
 const TypeId Octree::getType()const{
   return type;
 }
@@ -78,7 +82,8 @@ Octree::Octree(OctreeNodeId id, Octree & parent):Collidable(parent.getGeometry()
   _id(id),
   _children(0),
   _boundingVolumeFactory(parent._boundingVolumeFactory),
-  _boundingVolume(0)
+  _boundingVolume(0),
+  _dynamicBody(0)
 {
   _classfication = Classification::UNCLASSIFIED;
 }
@@ -125,8 +130,18 @@ _boundingVolumeFactory(boundingVolumeFactory),Collidable(geometry),
   _id(OctreeNodeId::NODE_ROOT),
   _depth(depth),
   _level(0),
-  _children(0){}
+  _children(0),
+	_dynamicBody(0){}
 
+Octree::Octree( Geometry & geometry, DynamicBody *body, int depth, BoundingVolumeFactory & boundingVolumeFactory)  :
+_boundingVolume(0),
+_boundingVolumeFactory(boundingVolumeFactory),Collidable(geometry),
+  _id(OctreeNodeId::NODE_ROOT),
+  _depth(depth),
+  _level(0),
+  _children(0),
+	_dynamicBody(body){
+	}
 
 bool Octree::initializeObject(){
   cout<< "initializing octree "<<endl;

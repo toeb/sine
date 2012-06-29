@@ -93,10 +93,18 @@ void ContactHandler::handleContacts(CollisionDetector &collisionDetector, Impuls
 		resetCollisionCount();
 
 		collisionDetector.foreachCollision([this](Collision *collision) {
-			ContactHandler *this_ = this;
-			collision->foreachContact([collision, this_](Contact *contact) {
-				this_->handleContact(collision, contact);
-				});
+			Contact contact;
+			collision->combineContacts(contact);
+
+			// TODO: change Collision::combineContacts
+
+			Contact *contact_ = new Contact(*collision->getObjectA().getDynamicBody(),*collision->getObjectB().getDynamicBody(),contact.pA_wcs,contact.pB_wcs,contact.normal,contact.penetrationDepth);
+			this->handleContact(collision, contact_);
+
+			//ContactHandler *this_ = this;
+			//collision->foreachContact([collision, this_](Contact *contact) {
+			//	this_->handleContact(collision, contact);
+			//	});
 			});
 		} while (existCollisions());
 	}

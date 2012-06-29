@@ -17,6 +17,7 @@ void Contact::getRelativeVelocityVector (Vector3D & out) {
 	Vector3D::subtract(v2, v1, out);
 	}
 
+Contact::Contact() {}
 
 Contact::Contact(DynamicBody &body1, DynamicBody &body2, const Vector3D &pA_wcs_in, const Vector3D &pB_wcs_in, const Vector3D &normal_in, Real penetrationDepth_in)
 	: pA_wcs(pA_wcs_in), pB_wcs(pB_wcs_in), normal(normal_in), penetrationDepth(penetrationDepth_in) {
@@ -83,6 +84,7 @@ Connector* Contact::getConnector2 () {
 	}
 
 void Contact::applyNormalImpulse(Vector3D &p) {
+	if (!_c1 || !_c2) return;
 	Vector3D newAccumulatedImpulse = _accumulatedImpulse + p;
 	Real dotProduct;
 	Vector3D::dotProduct(newAccumulatedImpulse, normal, dotProduct);

@@ -38,6 +38,8 @@ namespace IBDS{
 		 */
 		Contact(DynamicBody &body1, DynamicBody &body2, const Vector3D &pA_wcs_in, const Vector3D &pB_wcs_in, const Vector3D &normal_in, Real penetrationDepth_in);
 
+		Contact();
+		
 		void getNormalRelativeVelocity(Real &out);
 
 		void getNormalRelativeVelocityVector (Vector3D &out);
