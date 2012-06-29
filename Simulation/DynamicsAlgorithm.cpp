@@ -50,7 +50,9 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
 		contactHandler.handleContacts(collisionDetector,multiBodyDynamics);
 
 		}
-
+	else {
+		contactHandler.clearContactJoints();
+		}
 	if(doMultiBody)multiBodyDynamics.correctPositions(h);
 
 	}

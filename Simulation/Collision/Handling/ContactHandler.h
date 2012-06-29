@@ -31,9 +31,11 @@ namespace IBDS{
 		bool existCollisions();
 
 		void addContactJoint(Contact* contact);
-		void clearContactJoints();
 
 	public:
+
+		void clearContactJoints();
+
 
 		/**
 		 * Handles contacts detected by the collisionDetector, using multiBodyDynamics to handle the introduced contact joints.
