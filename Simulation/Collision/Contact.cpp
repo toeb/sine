@@ -65,7 +65,7 @@ ContactType Contact::classify() {
 	Real v_rel_n;
 	getNormalRelativeVelocity(v_rel_n);
 
-	double threshold = 0.06;//*10e-5;
+	double threshold = 10e-2;//.16;//*10e-5;
 	if (v_rel_n >= threshold)
 		return DRIFTING_APART;
 	else if (v_rel_n > -threshold)
@@ -80,4 +80,24 @@ Connector* Contact::getConnector1 () {
 
 Connector* Contact::getConnector2 () {
 	return _c2;
+	}
+
+void Contact::applyNormalImpulse(Vector3D &p) {
+	Vector3D newAccumulatedImpulse = _accumulatedImpulse + p;
+	Real dotProduct;
+	Vector3D::dotProduct(newAccumulatedImpulse, normal, dotProduct);
+
+	if (dotProduct <= 0) {
+		_c1->applyImpulse(p);
+		_c2->applyImpulse(-p);
+		Vector3D::add(_accumulatedImpulse, p, _accumulatedImpulse); 
+		}
+
+	// anti-sticking:
+	else {
+		_c1->applyImpulse(-_accumulatedImpulse);
+		_c2->applyImpulse(_accumulatedImpulse);
+		_accumulatedImpulse.setZero();
+		}
+	
 	}

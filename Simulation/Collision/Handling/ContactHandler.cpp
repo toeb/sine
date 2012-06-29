@@ -16,7 +16,7 @@ bool ContactHandler::existCollisions(){
 
 void ContactHandler::addContactJoint(Contact* contact) {
 	if (contact->getConnector1() && contact->getConnector2()) {
-		ContactJoint *joint = new ContactJoint(*contact->getConnector1(), *contact->getConnector2(), 10e-4, contact->normal);
+		ContactJoint *joint = new ContactJoint(contact, 10e-4, contact->normal);
 		contactJoints.push_back(joint);
 		_multiBodyDynamics->addSimulationObject(joint);
 		}
@@ -76,8 +76,7 @@ void ContactHandler::handleContact(Collision* collision, Contact* contact) {
 		Vector3D pos2 = c2->getWorldPosition();
 
 		if (pos1 == pos1 && pos2 == pos2) {
-			c1->applyImpulse(p_a);
-			c2->applyImpulse(p_b);
+			contact->applyNormalImpulse(p_a);
 			}
 		}
 	}

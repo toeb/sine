@@ -15,6 +15,8 @@ namespace IBDS{
 		Connector *_c1;
 		Connector *_c2;
 
+		Vector3D _accumulatedImpulse;
+
 		void getRelativeVelocityVector (Vector3D & out);
 
 	public:
@@ -45,6 +47,13 @@ namespace IBDS{
 		Connector* getConnector1();
 
 		Connector* getConnector2();
+
+		/**
+		 * Applies the impulse p to the first body and -p to the second body.
+		 * If the resulting accumulated impulse would make the bodies stick together, 
+		 * an impulse is applied in order to make the accumulated impulse 0.
+		 */
+		void applyNormalImpulse(Vector3D &p);
 
 		};
 

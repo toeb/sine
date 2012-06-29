@@ -1,7 +1,9 @@
 #include <Simulation\Collision\Handling\ContactJoint.h>
 using namespace IBDS;
 
-	ContactJoint::ContactJoint(Connector &c1, Connector &c2, const Real pTol, const Vector3D &normal): _cA(c1),_cB(c2),_positionTolerance(pTol),_normal(normal){};
+	ContactJoint::ContactJoint(Contact *contact, const Real pTol, const Vector3D &normal)
+		: _contact(contact),_cA(*contact->getConnector1()),_cB(*contact->getConnector2()),_positionTolerance(pTol),_normal(normal) 
+		{}
 
 	void ContactJoint::calculateDistancePreview(Real h, Vector3D & d)const{
 		Vector3D a,b;
@@ -11,8 +13,6 @@ using namespace IBDS;
 		}
 
 	void ContactJoint::correctPosition(Real h) {
-		return;		/* deactivated for now because sticking between contacts needs to be resolved yet */
-
 		// get approximation of next distance
 		Vector3D d;
 		calculateDistancePreview(h,d);  
@@ -22,14 +22,16 @@ using namespace IBDS;
 		/* Actually, a normal for t+h (preview) should be used! */
 		Vector3D::dotProduct(d, _normal, _positionError);
 
-		//abort if positions are within tolerance
+		// do not enforce contact if there is no interpenetration
+		if (_positionError >= 0) return;
+
+		// abort if positions are within tolerance
 		if(arePositionsCorrect())return;
+
 		//approximate velocity
-		
 		Vector3D v = (1/h) * _positionError * _normal;
 
 		// calculate impulse correction
-		//evaluateKInverse();
 		Matrix3x3  K_aa(0);
 		Matrix3x3  K_bb(0);
 		_cA.calculateCachedValues();
@@ -55,37 +57,14 @@ using namespace IBDS;
 		Vector3D p_b = -p_a;
 
 		//apply correction impulse
-		_cA.applyImpulse(p_a);
-		_cB.applyImpulse(p_b);
-		}
+		_contact->applyNormalImpulse(p_a);
+	}
 
 	bool ContactJoint::arePositionsCorrect(){
-		return _positionError < _positionTolerance;
+		return abs(_positionError) < _positionTolerance;
 		}
 
-	void ContactJoint::correctVelocity() {
-		// not used
-		}
+	void ContactJoint::correctVelocity() {	/* not used	*/ }
 
-	void ContactJoint::evaluateKInverse() {
-		Matrix3x3  K_aa(0);
-		Matrix3x3  K_bb(0);
-
-		const Vector3D & a_wcs = _cA.getCachedWorldPosition();
-		const Vector3D & b_wcs = _cB.getCachedWorldPosition();
-
-		_cA.getKMatrix(K_aa,a_wcs,a_wcs);
-		_cB.getKMatrix(K_bb,b_wcs,b_wcs);
-
-		Matrix3x3 K = K_aa + K_bb;
-		// if the sum of the matrices is 0, do not invert it: use 0 for the inverse matrix, too, instead
-		if (K.isZero())
-			_KInverse = Matrix3x3::Zero();
-		else 
-			Matrix3x3::symmInverse(K,_KInverse);//_KInverse = K.symmInverse();
-		}
-
-	void ContactJoint::precompute(){
-		evaluateKInverse();
-		}
+	void ContactJoint::precompute(){}
 

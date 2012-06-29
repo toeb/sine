@@ -136,15 +136,22 @@ void CustomSimulation::buildModel(){
   b.setOffset(Vector3D(10,3,4));
   Real radius = 0.5;
 
-    b.createParticle("p5",Vector3D(-2,0,0),0);
-  sphere = b.createSphere("s5",Vector3D(-2,-2,0),1,radius);
+      b.createParticle("p6",Vector3D(-2,-1,0),1);
+  sphere = b.createSphere("s6",Vector3D(-2,-1,0),1,radius);
+  b.createBallJoint("j6","s6","p6",Vector3D(-2,-1,0));
+  addSimulationObject(new SphereRenderer(*sphere));
+  collidable = new Collidable(*sphere,dynamic_cast<DynamicSphere &>(*sphere));
+  addSimulationObject(collidable); 
+  
+  b.createParticle("p5",Vector3D(-2,0,0),0);
+  sphere = b.createSphere("s5",Vector3D(-2,-2,0),2,radius);
   b.createBallJoint("j5","s5","p5",Vector3D(-2,0,0));
   addSimulationObject(new SphereRenderer(*sphere));
   collidable = new Collidable(*sphere,dynamic_cast<DynamicSphere &>(*sphere));
   addSimulationObject(collidable);
 
   b.createParticle("p4",Vector3D(-1,0,0),0);
-  sphere = b.createSphere("s4",Vector3D(-1,-2,0),1,radius);
+  sphere = b.createSphere("s4",Vector3D(-1,-2,0),2,radius);
   b.createBallJoint("j4","s4","p4",Vector3D(-1,0,0));
   addSimulationObject(new SphereRenderer(*sphere));
   collidable = new Collidable(*sphere,dynamic_cast<DynamicSphere &>(*sphere));
@@ -152,7 +159,7 @@ void CustomSimulation::buildModel(){
 
   b.createParticle("p1",Vector3D(0,0,0),0);
   //sphere = b.createSphere("s1",Vector3D(-3,-0.3,0),1,radius);
-  sphere = b.createSphere("s1",Vector3D(0,-2,0),1,radius);
+  sphere = b.createSphere("s1",Vector3D(0,-2,0),2,radius);
   b.createBallJoint("j1","s1","p1",Vector3D(0,0,0));
   addSimulationObject(new SphereRenderer(*sphere));
   collidable = new Collidable(*sphere,dynamic_cast<DynamicSphere &>(*sphere));
