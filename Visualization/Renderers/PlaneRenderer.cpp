@@ -4,7 +4,7 @@
 using namespace IBDS;
 using namespace std;
 
-PlaneRenderer::PlaneRenderer( Plane & plane):_plane(plane){
+PlaneRenderer::PlaneRenderer( Plane & plane, Real extent):_plane(plane), _extent(extent){
 
 }
 void PlaneRenderer::render(){
@@ -14,14 +14,15 @@ void PlaneRenderer::render(){
   color[0] = MiniGL::gray[0];
   color[1] = MiniGL::gray[1];
   color[2] = MiniGL::gray[2];
-  color[3] = 0.2;
+  color[3] = 0.6;
 
 
-  Real size = 100;
+  Real size = _extent;
   a =  _plane.getPositionFromUV(Vector2D(-size,-size));
   b =  _plane.getPositionFromUV(Vector2D(-size,size));
   c =  _plane.getPositionFromUV(Vector2D(size,size));
   d =  _plane.getPositionFromUV(Vector2D(size,-size));
+
 
   _plane.getNormal(n);
 

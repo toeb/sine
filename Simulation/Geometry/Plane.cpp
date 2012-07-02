@@ -10,20 +10,21 @@ const TypeId Plane::getType()const{
 
  void  Plane::getNormal(Vector3D & n)const{
   Matrix3x3 RT;
-  getOrientation().getMatrix3x3T(RT);
+  coordinates().orientation().getMatrix3x3T(RT);
   n.assign(RT.v[1]);
+  n.normalize();
 }
  void  Plane::getUAxis(Axis & a)const{
   Matrix3x3 RT;
-  getOrientation().getMatrix3x3T(RT);
+  coordinates().orientation().getMatrix3x3T(RT);
   a.n.assign(RT.v[0]);
-  a.p.assign(getPosition());
+  a.p.assign(coordinates().position());
 }
  void  Plane::getVAxis(Axis & b)const{
   Matrix3x3 RT;
-  getOrientation().getMatrix3x3T(RT);
+  coordinates().orientation().getMatrix3x3T(RT);
   b.n.assign(RT.v[2]);
-  b.p.assign(getPosition());
+  b.p.assign(coordinates().position());
 }
 Vector3D Plane::getPositionFromUV(const Vector2D & uv)const{
   Vector3D p;
@@ -35,7 +36,7 @@ Vector3D Plane::getPositionFromUV(const Vector2D & uv)const{
   getUAxis(u);
   getVAxis(v);  
   
-  p = getPosition()+u.n*uv[0]+v.n*uv[1];
+  p = coordinates().position()+u.n*uv[0]+v.n*uv[1];
 }
  Vector3D Plane::getNormal()const{
   Vector3D result;
@@ -71,12 +72,12 @@ void Plane::projectOnPlane(const Vector3D & p, Vector3D & p_plane)const{
  Real Plane::projectOnNormal(const Vector3D & p)const{
   Axis axis;
   getNormal(axis.n);
-  axis.p = getPosition();
+  axis.p = coordinates().position();
   Real val = axis.projectOnAxis(p);
   return val;
 }
 
  void Plane::getNormalAxis(Axis & nAxis)const{
   nAxis.n = getNormal();
-  nAxis.p = getPosition();
+  nAxis.p = coordinates().position();
 }

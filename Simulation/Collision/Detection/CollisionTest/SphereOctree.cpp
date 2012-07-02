@@ -12,10 +12,10 @@ const TypeId SphereOctree::getTypeB()const{
   return Octree::type;
 }
 
- bool SphereOctree::testCollision(const ICollidable & obja, const ICollidable & objb,Collision * collision)const{
+ bool SphereOctree::testCollision(const ISimulationObject & obja, const ISimulationObject & objb,Collision * collision)const{
 
-   const Sphere & a = static_cast<const Sphere &>(obja.getGeometry());
-  const Octree & b = static_cast<const Octree &>(objb);
+   const Sphere & a = dynamic_cast<const Sphere &>(obja);
+  const Octree & b = dynamic_cast<const Octree &>(objb);
   return testCollision(a,b,collision);
 }
 

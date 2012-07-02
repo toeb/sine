@@ -5,7 +5,7 @@
 #include <vector>
 #include <functional>
 #include <Simulation/Geometry/Geometry.h>
-#include <Simulation\Dynamics\DynamicBody.h>
+
 #include <Simulation/Collision/ICollidable.h>
 
 namespace IBDS{
@@ -13,49 +13,32 @@ namespace IBDS{
 class Collidable : public ICollidable{
 private:
   std::vector<Collision*> _collisions;
-  Geometry & _geometry;
-  DynamicBody * _dynamicBody;
-
-  double _elasticityCoefficient;
-  double _staticFrictionCoefficient;
-  double _dynamicFrictionCoefficient;
+  ISimulationObject & _collisionObject;
+  const TypeId _collisionType;
 
 public:
-  
+  static const TypeId type;
+  const TypeId getType()const{return type;}
+
   /**
    * \brief Gets the type of the collision. returns the type of the geometry as default.  may be overridden
    *
    * \return The type.
    */
-  virtual const TypeId getCollisionType()const;
+  const TypeId getCollisionType()const;
+  
+
 
   /**
-   * \brief Constructor.
-   * 				
-   * \param [in,out] geometry The geometry.
-   * \param rigidBody the associated dynamic body (needed for collision handling)
-   */
-  //Collidable(Geometry & geometry);
-
-  Collidable(Geometry & geometry, DynamicBody & dynamicBody, double elasticity = 1, double staticFriction = 1, double dynamicFriction = 1);
-
-  /**
-   * \brief Constructor with no associated dynamic body specified. 
+   * \brief Constructor with no associated rigid body specified. 
    * This way, no collision handling will be performed, either on this collidable, or on other collidables colliding with this one.
    * 				
    * \param [in,out] geometry The geometry.
    */
-  Collidable(Geometry & geometry, double elasticity = 1, double staticFriction = 1, double dynamicFriction = 1);
+  Collidable(ISimulationObject & collisionObject);
 
-  /**
-   * \brief Gets the geometry.
-   *
-   *
-   * \return The geometry.
-   */
-  virtual Geometry & getGeometry()const;
+  virtual ISimulationObject & collisionObject()const{return _collisionObject;}
 
-  virtual DynamicBody * const getDynamicBody() const;
 
   /**
    * \brief Adds a collision to this collidable. 
@@ -95,18 +78,6 @@ public:
   void foreachCollision(std::function<void(Collision *)> f);
 
 
-  virtual double getElasticityCoefficient() const;
-
-  virtual double getStaticFrictionCoefficient() const;
-
-  virtual double getDynamicFrictionCoefficient() const;
-
-
-  virtual void setElasticityCoefficient(double e);
-
-  virtual void setStaticFrictionCoefficient(double s);
-
-  virtual void setDynamicFrictionCoefficient(double d);
 
 protected:
 
@@ -115,4 +86,5 @@ protected:
    */
   virtual void resetCollidable(){};
 };
+
 }

@@ -1,7 +1,7 @@
 #include "TextileModel.h"
 #include <algorithm>
 #include <vector>
-#include <Simulation/Dynamics/ParticleConnector.h>
+#include <Simulation/Dynamics/Connection/ParticleConnector.h>
 #include <functional>
 using namespace std;
 using namespace IBDS;
@@ -37,22 +37,22 @@ inline void normalizeSpring(TextileNode * n1, TextileNode * n2, DampedSpring * s
 			Particle *particle1 = n1->particle;
 			Particle *particle2 = n2->particle;
 
-			Vector3D pos1 = particle1->getPosition();
-			Vector3D pos2 = particle2->getPosition();
+			Vector3D pos1 = particle1->position();
+			Vector3D pos2 = particle2->position();
 			Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
 			Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
 
 			Real mass1 = particle1->getMass();
 			Real mass2 = particle2->getMass();
 			if (mass1 == 0 && mass2 != 0) {
-				particle2->setPosition(pos2 - offsetVector); 
+        particle2->position().assign(pos2 - offsetVector); 
 				}
 			else if (mass1 != 0 && mass2 == 0) {
-				particle1->setPosition(pos1 + offsetVector);
+				particle1->position().assign(pos1 + offsetVector);
 				}
 			else if (mass1 != 0 && mass2 != 0) {
-				particle1->setPosition(pos1 + 0.5 * offsetVector);
-				particle2->setPosition(pos2 - 0.5 * offsetVector);
+				particle1->position().assign(pos1 + 0.5 * offsetVector);
+				particle2->position().assign(pos2 - 0.5 * offsetVector);
 				}
 			}
 }
@@ -186,7 +186,7 @@ Particle * TextileModel::createParticle(TextileNode * node, const Vector3D & pos
 	addSimulationObject(node->connector);
     //addSimulationObject(p);
   }
-  p->setPosition(position);
+  p->position() = position;
   addSimulationObject(p);
   return p;
 }

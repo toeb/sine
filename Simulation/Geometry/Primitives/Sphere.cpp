@@ -9,7 +9,7 @@ const TypeId Sphere::getType()const{
   return type;
 }
 
-Classification classifyAABB(const AABB & aabb_ocs, const Sphere & sphere){
+Classification classifyBoundingBox(const BoundingBox & aabb_ocs, const Sphere & sphere){
   Real radius = sphere.getRadius();
 
   Vector3D center;
@@ -67,9 +67,9 @@ Classification Sphere::classify(const BoundingVolume & volume)const{
     return classifySphere(*bSphere,*this);
   }
 
-  const AABB * aabb = dynamic_cast<const AABB*>(&volume);
+  const BoundingBox * aabb = dynamic_cast<const BoundingBox*>(&volume);
   if(aabb){
-    return classifyAABB(*aabb,*this);
+    return classifyBoundingBox(*aabb,*this);
   }
 
   return UNCLASSIFIED;
@@ -100,7 +100,7 @@ void Sphere::setRadius(Real radius){
 
   
 void Sphere::projectOCS(const Axis & axis_ocs, Interval & result)const{
-  Real val = axis_ocs.projectOnAxis(-axis_ocs.p);
+  Real val = axis_ocs.projectOnAxis(Vector3D::Zero());
 
   result.a = val - _radius;
   result.b = val +  _radius;

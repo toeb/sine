@@ -10,48 +10,51 @@ int RenderEngine::getDesiredFramerate()const{
   return _desiredFramerate;
 }
 
-RenderEngine::RenderEngine():_desiredFramerate(60){
+RenderEngine::RenderEngine():_desiredFramerate(60),_camera(0){
 }
 RenderEngine::~RenderEngine(){
 }
 
-bool RenderEngine::addSimulationObject(ISimulationObject * object){
-  bool added = false;
-  
-  IRenderer * renderer = dynamic_cast<IRenderer*>(object);
-  if(renderer){
-    _renderers.addRenderer(renderer);
-    added =true;
-  }
-  return added;
-}
+
 void RenderEngine::reset(){
-  _renderers.clearRenderers();
+  objects().clear();
 }
 
-CompositeRenderer & RenderEngine::getRenderers(){
-  return _renderers;
-}
 void RenderEngine::render(){
   onBeforeRender();
-  getRenderers().render();
+  //do camera transforms
+  if(_camera)_camera->camera();
+  //render everything
+  foreach([](IRenderer * renderer){
+    renderer->render();
+  });
+
   onAfterRender();
 }
-
+void RenderEngine::onBeforeSimulationObjectAdd(ISimulationObject * object){
+  auto camera = dynamic_cast<Camera *>(object);
+  if(camera)  {
+    this->_camera = camera; 
+  }
+}
 void RenderEngine::resizeScene(int newWidth, int newHeight){ 
-  _renderers.sceneResized(newWidth,newHeight);  
+    foreach([&newWidth,newHeight](IRenderer * renderer){
+    renderer->sceneResized(newWidth,newHeight);
+  });
+
    onSceneResized(newWidth,newHeight);
 }
 
 bool RenderEngine::initializeObject(){
   if(!initializeRenderEngine())return false;
 
-  _renderers.onBeforeRenderering();
+  foreach([](IRenderer * renderer){
+    renderer->onBeforeRenderering();
+  });
 
 }
 
 
-void RenderEngine::cleanupObject(){
-  
+void RenderEngine::cleanupObject(){  
   cleanupRenderEngine();
 }

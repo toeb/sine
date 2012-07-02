@@ -7,6 +7,7 @@
 namespace IBDS{
 class ICollidable;
 
+
 /**
  * \brief Collision. 
  *  a collection of contacts and two objects which parttake
@@ -18,11 +19,26 @@ class Collision{
   std::vector<Contact*> _contacts;
 
   ///< The object a
-  ICollidable & _objectA;
+  ICollidable * _objectA;
   ///< The object b
-  ICollidable & _objectB;
+  ICollidable * _objectB;
+  static bool lastCollisionUsed;
+  static Collision * lastCollision;
+  void setObjectA(ICollidable & obj){_objectA = &obj;};
+  void setObjectB(ICollidable & obj){_objectB = &obj;};
 public:
-
+  static Collision * create(ICollidable & a, ICollidable & b){
+    if(lastCollisionUsed){
+      lastCollision = new Collision(a,b);
+    }
+    lastCollision->setObjectA(a);
+    lastCollision->setObjectB(b);
+    lastCollisionUsed = true;
+    return lastCollision;
+  };
+  static void freeCollision(Collision * col){
+    if(lastCollision == col)lastCollisionUsed = false;
+  };
   /**
    * \brief Constructor.
    *
@@ -85,5 +101,7 @@ public:
    * \return The object b.
    */
   ICollidable & getObjectB()const;
+
+
 };
 }

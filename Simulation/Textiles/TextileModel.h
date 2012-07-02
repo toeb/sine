@@ -4,7 +4,7 @@
 #include <Simulation/Force/DampedSpring.h>
 #include <vector>
 #include <Simulation/Dynamics/Particle.h>
-#include <Simulation/Dynamics/ParticleConnector.h>
+#include <Simulation/Dynamics/Connection/ParticleConnector.h>
 #include <Math/Matrix3x3.h>
 #include <Math/Vector3D.h>
 #include <functional>

@@ -17,8 +17,20 @@ PolygonRenderer::PolygonRenderer(Polygon & poly):_polygon(poly){
 
 void PolygonRenderer::render(){
   MiniGL::pushMatrix();
-  MiniGL::translate(_polygon.getPosition());
-  MiniGL::multMatrix(_polygon.getTransposedRotationMatrix());
+  
+  
+  Matrix3x3  R;
+  _polygon.coordinates().orientation().getMatrix3x3T(R);
+
+  //cout << _polygon.coordinates().position() <<endl;
+
+  MiniGL::drawPoint(_polygon.coordinates().position(),10,MiniGL::blue);
+
+  MiniGL::translate(_polygon.coordinates().position());
+  MiniGL::multMatrix(R);
+
+
+
   if(drawVertices){
     for_each(_polygon.vertices().begin(), _polygon.vertices().end(),[this](Vertex * v){
       MiniGL::drawPoint(v->p_ocs,6,MiniGL::magenta);

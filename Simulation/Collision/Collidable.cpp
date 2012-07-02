@@ -4,34 +4,22 @@
 using namespace std;
 using namespace IBDS;
 
-Collidable::Collidable(Geometry & geometry, DynamicBody & dynamicBody, double elasticity, double staticFriction, double dynamicFriction):
-_geometry(geometry),
-_dynamicBody(&dynamicBody),
-_elasticityCoefficient(elasticity),
-_staticFrictionCoefficient(staticFriction),
-_dynamicFrictionCoefficient(dynamicFriction) {}
+const TypeId Collidable::type = "Collidable";
 
-//Collidable::Collidable(Geometry & o):_geometry(o){}
 
-Collidable::Collidable(Geometry & geometry, double elasticity, double staticFriction, double dynamicFriction):
-_geometry(geometry),
-_dynamicBody(0),
-_elasticityCoefficient(elasticity),
-_staticFrictionCoefficient(staticFriction),
-_dynamicFrictionCoefficient(dynamicFriction) {}
+
+
+Collidable::Collidable(ISimulationObject & collisionObject):
+_collisionObject(collisionObject),_collisionType(collisionObject.getType())
+{
+}
+
 
 
 const TypeId Collidable::getCollisionType()const{
-  return _geometry.getType();
+  return _collisionType ;
 }
 
-Geometry & Collidable::getGeometry()const{
-  return _geometry;
-}
-
-DynamicBody * const Collidable::getDynamicBody() const {
-	return _dynamicBody;
-}
 
 
 void Collidable::addCollision(Collision* col){
@@ -54,27 +42,3 @@ bool Collidable::isColliding()const{
 }
 
 
-double Collidable::getElasticityCoefficient() const {
-	return _elasticityCoefficient;
-}
-
-double Collidable::getStaticFrictionCoefficient() const {
-	return _staticFrictionCoefficient;
-}
-
-double Collidable::getDynamicFrictionCoefficient() const {
-	return _dynamicFrictionCoefficient;
-}
-
-
-void Collidable::setElasticityCoefficient(double e) {
-	_elasticityCoefficient = e;
-}
-
-void Collidable::setStaticFrictionCoefficient(double s) {
-	_staticFrictionCoefficient = s;
-}
-
-void Collidable::setDynamicFrictionCoefficient(double d) {
-	_dynamicFrictionCoefficient = d;
-}

@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/Dynamics/Connector.h>
+#include <Simulation/Dynamics/Connection/Connector.h>
 #include "CoordinateSystemRenderer.h"
 namespace IBDS{
 class ConnectorRenderer : public IRenderer{

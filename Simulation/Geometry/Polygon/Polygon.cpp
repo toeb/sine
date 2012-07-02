@@ -1,6 +1,6 @@
 #include "Polygon.h"
 #include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
-
+#include <algorithm>
 
 using namespace IBDS;
 using namespace std;
@@ -63,7 +63,7 @@ Classification classifySphere(const BoundingSphere & sphere, const Polygon & pol
 
   return result;
 }
-Classification classifyAABB(const AABB & aabb, const Polygon & polygon){
+Classification classifyBoundingBox(const BoundingBox & aabb, const Polygon & polygon){
   vector<Axis> axes;
   axes.push_back(Axis(Vector3D::e1()));
   axes.push_back(Axis(Vector3D::e2()));
@@ -112,8 +112,8 @@ Classification classifyAABB(const AABB & aabb, const Polygon & polygon){
 Classification Polygon::classify(const BoundingVolume & volume)const{
   const BoundingSphere * sphere = dynamic_cast<const BoundingSphere*>(&volume);
   if(sphere)return classifySphere(*sphere,*this);
-  const AABB * aabb = dynamic_cast<const AABB*>(&volume); 
-  if(aabb)return classifyAABB(*aabb,*this);
+  const BoundingBox * aabb = dynamic_cast<const BoundingBox*>(&volume); 
+  if(aabb)return classifyBoundingBox(*aabb,*this);
   return UNCLASSIFIED;
 }
 
@@ -165,8 +165,11 @@ void Polygon::cleanupObject(){
     return sqrt(result);
   }
 
+  Vertex * Polygon::createVertex(){
+    return new Vertex();
+  }
  Vertex * Polygon::addVertex(const Vector3D & p_ocs){
-    Vertex * v = new Vertex();
+    Vertex * v = createVertex();
     v->index = vertices().size();
     v->p_ocs.assign(p_ocs);
     vertices().push_back(v);
@@ -201,6 +204,8 @@ void Polygon::cleanupObject(){
 
     }
   }
+
+
   Face * Polygon::addFace(const vector<Index> & vi){
     
     HalfEdge * e1;
@@ -212,6 +217,25 @@ void Polygon::cleanupObject(){
       a=vertex(vi.at(i));
       b = vertex(vi.at((i+1)%vi.size()));
       c = vertex(vi.at((i+2)%vi.size()));
+      e1 = getHalfEdge(a,b);
+      e2 = getHalfEdge(b,c);
+      e1->next = e2; 
+    }
+    return addFace(e2);
+  }
+
+  
+  Face * Polygon::addFaceSafe(const std::vector<Index> & vertexIndices){
+    HalfEdge * e1;
+    HalfEdge * e2;
+    Vertex * a;
+    Vertex * b;
+    Vertex * c;
+    //todo
+    for(int i = 0; i < vertexIndices.size(); i ++){
+      a=vertex(vertexIndices.at(i));
+      b = vertex(vertexIndices.at((i+1)%vertexIndices.size()));
+      c = vertex(vertexIndices.at((i+2)%vertexIndices.size()));
       e1 = getHalfEdge(a,b);
       e2 = getHalfEdge(b,c);
       e1->next = e2; 

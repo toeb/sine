@@ -14,6 +14,8 @@ set(coreSource
 	./Core/IUpdateable.cpp
 	./Core/UpdateablesModule.h
 	./Core/UpdateablesModule.cpp	
+	./Core/ValueHolder.h
+	
 )
 set(simulationSource ${simulationSource} ${coreSource}  )
 source_group("simulation\\core" FILES ${coreSource})

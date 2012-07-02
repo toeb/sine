@@ -11,9 +11,9 @@ const TypeId OctreeOctree::getTypeB()const{
   return Octree::type;
 }
 
- bool OctreeOctree::testCollision(const ICollidable & obja, const ICollidable & objb,Collision * collision)const{
-  const Octree & a = static_cast<const Octree &>(obja);
-  const Octree & b = static_cast<const Octree &>(objb);
+ bool OctreeOctree::testCollision(const ISimulationObject & obja, const ISimulationObject & objb,Collision * collision)const{
+  const Octree & a = dynamic_cast<const Octree &>(obja);
+  const Octree & b = dynamic_cast<const Octree &>(objb);
   return testCollision(a,b,collision);
 }
 

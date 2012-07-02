@@ -1,6 +1,6 @@
 #pragma once
 #include <Simulation/Collision/Detection/CollisionTest/CollisionTest.h>
-#include <Simulation/Collision/Detection/Acceleration/Octree.h>
+#include <Simulation/Geometry/BoundingVolumes/BoundingOctree.h>
 #include <Simulation/Collision/Detection/CollisionTest/SphereSphere.h>
 #include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 
@@ -22,16 +22,8 @@ public:
    */
   const TypeId getTypeB()const;
 
-  /**
-   * \brief Tests collision.
-   *
-   * \param a                  Collidable a.  - needs to by of type octree (static cast involved)
-   * \param b                  Collidable b.  -  "                  "                  "
-   * \param [in,out] collision If non-null, the collision parameters.
-   *
-   * \return true iff a and b collide.
-   */
-  bool testCollision(const ICollidable & a, const ICollidable & b, Collision * collision)const;
+
+  bool testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const;
 
   /**
    * \brief Tests collision.

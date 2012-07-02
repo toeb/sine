@@ -1,3 +1,21 @@
+set(ImpulseBasedHandlingSRC
+ ./Collision/Handling/ImpulseBased/DynamicCollidable.h
+ ./Collision/Handling/ImpulseBased/DynamicCollidable.cpp
+ ./Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.h
+ ./Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.cpp
+ ./Collision/Handling/ImpulseBased/ContactJoint.h
+ ./Collision/Handling/ImpulseBased/ContactJoint.cpp
+ ./Collision/Handling/ImpulseBased/DynamicContact.h
+ ./Collision/Handling/ImpulseBased/DynamicContact.cpp
+ )
+ source_group("simulation\\collision\\handling\\impulsebased" FILES ${ImpulseBasedHandlingSRC})
+ 
+set(simulationSource ${simulationSource} ${ImpulseBasedHandlingSRC})
+ 
+
+
+
+
 SET(collision_SRC
  ./Collision/Collision.h
  ./Collision/Collision.cpp
@@ -12,8 +30,7 @@ source_group("simulation\\collision" FILES ${collision_SRC})
 set(simulationSource ${simulationSource} ${collision_SRC})
 
 set(collisionAcceleration_SRC 
-./Collision/Detection/Acceleration/Octree.h
-./Collision/Detection/Acceleration/Octree.cpp
+
 )
 source_group("simulation\\collision\\detection\\acceleration" FILES ${collisionAcceleration_SRC})
 set(simulationSource ${simulationSource} ${collisionAcceleration_SRC})
@@ -23,22 +40,12 @@ set(collisionDetection_SRC
  ./Collision/Detection/CollisionDetector.cpp
  ./Collision/Detection/CompositeCollisionDetector.h
  ./Collision/Detection/CompositeCollisionDetector.cpp
- ./Collision/Detection/SphereCollisionDetector.h
- ./Collision/Detection/SphereCollisionDetector.cpp
- ./Collision/Detection/OctreeCollisionDetector.h
- ./Collision/Detection/OctreeCollisionDetector.cpp 
+ 
 )
 source_group("simulation\\collision\\detection" FILES ${collisionDetection_SRC})
 set(simulationSource ${simulationSource} ${collisionDetection_SRC})
 
-set(collisionHandling_SRC 
- ./Collision/Handling/ContactHandler.h
- ./Collision/Handling/ContactHandler.cpp
- ./Collision/Handling/ContactJoint.h
- ./Collision/Handling/ContactJoint.cpp
-)
-source_group("simulation\\collision\\handling" FILES ${collisionHandling_SRC})
-set(simulationSource ${simulationSource} ${collisionHandling_SRC})
+
 
 set(CollisionTests_SRC
 ./Collision/Detection/CollisionTest/SphereSphere.h

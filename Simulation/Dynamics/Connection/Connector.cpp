@@ -1,7 +1,9 @@
 
 #include "Connector.h"
 #include <Math/Matrix3x3.h>
+
 using namespace IBDS;
+
 
 Connector::Connector(DynamicBody & body):_body(body){
       

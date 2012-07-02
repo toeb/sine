@@ -93,11 +93,11 @@ void CustomSimulation::buildAlgorithms(){
   addSimulationObject(new LightRenderer());
   addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
   CameraRenderer * cam = new CameraRenderer();
-  cam->setPosition(Vector3D(8,0,30));
+  cam->position() =Vector3D(8,0,30);
   Quaternion q;
   q.setFromAxisAngle(Vector3D(0,1,0),3.14190/2);
-  cam->setOrientation(q);
-  addSimulationObject(cam);
+  cam->orientation()  = q;
+  addSimulationObject(static_cast<IRenderer*>(cam));
 
 
 }
@@ -112,8 +112,9 @@ void CustomSimulation::buildModel(){
   Gravity & g = *(b.setGravity(Vector3D(0,-1,0)));
 
   //add collision renderer first so that transparent objects render correctly
-  addSimulationObject(new CollisionRenderer(dynamicsAlgorithm.collisionDetector));
+  addSimulationObject(reinterpret_cast<IUpdatable*>(new CollisionRenderer(dynamicsAlgorithm.collisionDetector)));
   
+
   addSimulationObject(new IntValue("Number of Collision",[this](){return dynamicsAlgorithm.collisionDetector.getCollisionCount();},[](int val){}));
   addSimulationObject(new IntValue("Number of Contacts",[this](){return dynamicsAlgorithm.collisionDetector.getContactCount();},[](int val){}));
 
@@ -129,7 +130,7 @@ void CustomSimulation::buildModel(){
 
 
   //create 3 sphere pendulums that collide
-  Sphere * sphere = 0;
+  DynamicSphere * sphere = 0;
   Collidable * collidable;
 
 
@@ -138,22 +139,22 @@ void CustomSimulation::buildModel(){
   b.createParticle("p1",Vector3D(-1,0,0),0);
   sphere = b.createSphere("s1",Vector3D(-3,-0.3,0),1,radius);
   b.createBallJoint("j1","s1","p1",Vector3D(-1,0,0));
-  addSimulationObject(new SphereRenderer(*sphere));
-  collidable = new Collidable(*sphere);
+  addSimulationObject(new SphereRenderer(sphere->geometry()));
+  collidable = new Collidable(sphere->geometry());
   addSimulationObject(collidable);
   
   b.createParticle("p2",Vector3D(1,0,0),0);
   sphere= b.createSphere("s2",Vector3D(3,0,0),1,radius);
   b.createBallJoint("j2","s2","p2",Vector3D(1,0,0));
-  addSimulationObject(new SphereRenderer(*sphere));
-  collidable = new Collidable(*sphere);
+  addSimulationObject(new SphereRenderer(sphere->geometry()));
+  collidable = new Collidable(sphere->geometry());
   addSimulationObject(collidable);
 
   b.createParticle("p3",Vector3D(2,0,0),0);
   sphere= b.createSphere("s3",Vector3D(3,0,0),1,radius);
   b.createBallJoint("j3","s3","p3",Vector3D(2,0,0));
-  addSimulationObject(new SphereRenderer(*sphere));
-  collidable = new Collidable(*sphere);
+  addSimulationObject(new SphereRenderer(sphere->geometry()));
+  collidable = new Collidable(sphere->geometry());
   addSimulationObject(collidable);
   
 
@@ -161,6 +162,7 @@ void CustomSimulation::buildModel(){
 
 
   //create geometries which are approximated by a bounding tree and add them to the geoms vector
+
   Geometry * geometry;
   vector<Geometry*> & geoms = *(new vector<Geometry*>());
     
@@ -174,46 +176,46 @@ void CustomSimulation::buildModel(){
   //use polygon renderer
   addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
   //add position to tweakbar
-  addSimulationObject(new Vector3DValue("rectangle",geometry->position()));
+  addSimulationObject(new Vector3DValue("rectangle",geometry->coordinates().position()));
 
   
   //box
   b.setOffset(Vector3D(-5,0,0));
-  geometry =  b.createBox("box",Vector3D::Zero(),0); 
-  geoms.push_back(geometry);
+  DynamicBox * box =  b.createBox("box",Vector3D::Zero(),0); 
+  geoms.push_back(&box->geometry());
   //polygon renderer
   addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
   //add position to tweakbar  
-  addSimulationObject(new Vector3DValue("box",geometry->position()));
+  addSimulationObject(new Vector3DValue("box",geometry->coordinates().position()));
 
 
   //triangle
   geometry = new Triangle();  
-  geometry->setPosition(Vector3D(-2,0,0));
+  geometry->coordinates().position() = Vector3D(-2,0,0);
   addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
   geoms.push_back(geometry);
-  addSimulationObject(new Vector3DValue("triangle",geometry->position()));
+  addSimulationObject(new Vector3DValue("triangle",geometry->coordinates().position()));
 
 
   //pyramid
   geometry = new Pyramid();
-  geometry->setPosition(Vector3D(3,0,0));
+  geometry->coordinates().position() = Vector3D(3,0,0);
  // geometry->setOrientation();
   //position to tweakbar
-  addSimulationObject(new Vector3DValue("pyramid", geometry->position()));
+  addSimulationObject(new Vector3DValue("pyramid", geometry->coordinates().position()));
   //polygon renderer
   addSimulationObject(new PolygonRenderer(*(dynamic_cast<Polygon*>(geometry))));
   geoms.push_back(geometry);
 
   //plane
   geometry = new Plane();
-  geometry->setPosition(Vector3D(0,-6,0));  
-  addSimulationObject(new Vector3DValue("pyramid", geometry->position()));
+  geometry->coordinates().position() = Vector3D(0,-6,0);  
+  addSimulationObject(new Vector3DValue("pyramid", geometry->coordinates().position()));
   addSimulationObject(new PlaneRenderer(*dynamic_cast<Plane*>(geometry)));
   //create a collidable to wrap the plane
   Collidable * planeCollidable = new Collidable(*dynamic_cast<Plane*>(geometry));
   addSimulationObject(planeCollidable);
-  Quaternion & quat = geometry->orientation();
+  Quaternion & quat = geometry->coordinates().orientation();
   Real & angle = *(new Real());
   addSimulationObject(new RealValue("plane z angle",[&angle](){
     return angle;
@@ -222,12 +224,12 @@ void CustomSimulation::buildModel(){
       angle = value;
       quat.setFromAxisAngle(Vector3D::e3(),angle);
   }));
-  addSimulationObject(new Vector3DValue("plane position", geometry->position()));
+  addSimulationObject(new Vector3DValue("plane position", geometry->coordinates().position()));
 
   //sphere
   b.setOffset(Vector3D(18,0,0));
-  geometry = b.createSphere("",Vector3D::Zero(),0,2);
-  geoms.push_back(geometry);
+  DynamicSphere * dynSphere  = b.createSphere("",Vector3D::Zero(),0,2);
+  geoms.push_back(&dynSphere->geometry());
   // use Sphere Renderer  
   //addSimulationObject(new SphereRenderer(*(dynamic_cast<Sphere*>(geometry))));
 

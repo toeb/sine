@@ -12,10 +12,10 @@ const TypeId OctreePlane::getTypeB()const{
   return Plane::type;
 }
 
- bool OctreePlane::testCollision(const ICollidable & obja, const ICollidable & objb,Collision * collision)const{
+ bool OctreePlane::testCollision(const ISimulationObject & obja, const ISimulationObject & objb,Collision * collision)const{
    
-  const Octree & a = static_cast<const Octree &>(obja);
-   const Plane & b = static_cast<const Plane &>(objb.getGeometry());
+  const Octree & a = dynamic_cast<const Octree &>(obja);
+   const Plane & b = dynamic_cast<const Plane &>(objb);
   return testCollision(a,b,collision);
 }
 

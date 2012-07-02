@@ -5,15 +5,15 @@
 #include <Simulation/Geometry/BoundingVolumes/BoundingVolume.h>
 namespace IBDS{
   
-class AABB : public BoundingVolume{
+class BoundingBox : public BoundingVolume{
 public:
   Vector3D min;
   Vector3D max;
 
-  AABB():BoundingVolume(CoordinateSystem::identity()){
+  BoundingBox():BoundingVolume(CoordinateSystem::identity()){
 
   }
-  AABB(const CoordinateSystem & parentCoordinates):BoundingVolume(parentCoordinates){
+  BoundingBox(const CoordinateSystem & parentCoordinates):BoundingVolume(parentCoordinates){
 
   }
 

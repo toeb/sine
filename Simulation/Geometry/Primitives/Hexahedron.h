@@ -3,7 +3,7 @@
 #include <Simulation/Geometry/Polygon/Polygon.h>
 
 namespace IBDS{
-class Hexahedron : public virtual Polygon{
+class Hexahedron : public Polygon{
 private:
   Real _xExtent;
   Real _yExtent;

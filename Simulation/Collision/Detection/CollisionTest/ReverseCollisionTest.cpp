@@ -14,7 +14,7 @@ const TypeId ReverseCollisionTest::getTypeA()const{
 const TypeId ReverseCollisionTest::getTypeB()const{
   return forwardTest.getTypeA();
 }
-bool ReverseCollisionTest::testCollision(const ICollidable & a, const ICollidable & b, Collision * collision)const{
+bool ReverseCollisionTest::testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const{
   if(!collision) {
     return forwardTest.testCollision(b,a,0);
   }

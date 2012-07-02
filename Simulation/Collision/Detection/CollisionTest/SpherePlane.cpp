@@ -10,9 +10,9 @@ const TypeId SpherePlane::getTypeB()const{
   return Plane::type;
 }
 
-bool SpherePlane::testCollision(const ICollidable & a, const ICollidable & b, Collision * collision)const{
-  const Sphere & sphere = static_cast<const Sphere&>(a.getGeometry());
-  const Plane & plane = static_cast<const Plane & >(b.getGeometry());
+bool SpherePlane::testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const{
+  const Sphere & sphere = dynamic_cast<const Sphere&>(a);
+  const Plane & plane = dynamic_cast<const Plane & >(b);
   return testCollision(sphere,plane,collision);
 }
 
@@ -31,24 +31,22 @@ bool SpherePlane::testCollision(const Sphere & sphere, const Plane & plane, Coll
   //if there is no collision object set parameters need not be computed
   if(!collision)return true;
 
-  ////create contact
-  //Contact * contact = new Contact();
-  //
-  ////contact normal from sphere to plane is the negative plane normal
-  //contact->normal = -normalAxis.n;
+  //create contact
+  Contact * contact = new Contact();
+  
+  //contact normal from sphere to plane is the negative plane normal
+  contact->normal = -normalAxis.n;
 
-  ////set point of collision of sphere
-  //contact->pA_wcs = sphere.getPosition() + sphere.getRadius() * contact->normal;
-  //
-  ////project the collisionPoint of sphere onto plane
-  //plane.projectOnPlane(contact->pA_wcs,contact->pB_wcs);
+  //set point of collision of sphere
+  contact->pA_wcs = sphere.coordinates().position() + sphere.getRadius() * contact->normal;
+  
+  //project the collisionPoint of sphere onto plane
+  plane.projectOnPlane(contact->pA_wcs,contact->pB_wcs);
 
-  //contact->penetrationDepth = (contact->pA_wcs-contact->pB_wcs).length();
+  contact->penetrationDepth = (contact->pA_wcs-contact->pB_wcs).length();
 
-  ////add contact to collision
-  //collision->addContact(contact);
+  //add contact to collision
+  collision->addContact(contact);
     
-  
-  
   return true;
 }

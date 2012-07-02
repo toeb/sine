@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Simulation/Dynamics/Connector.h>
+#include <Simulation/Dynamics/Connection/Connector.h>
 #include <Simulation/Force/Force.h>
 
 namespace IBDS{

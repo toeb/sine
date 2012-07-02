@@ -1,12 +1,13 @@
 #include "ParticleRenderer.h"
 
+#include <Visualization/MiniGL.h>
 using namespace IBDS;
 
 
 ParticleRenderer::ParticleRenderer(const Particle & particle):_particle(particle){
-  _pointRenderer = new PointRenderer(particle.getPosition());
+
 }
 ParticleRenderer::~ParticleRenderer(){delete _pointRenderer;}
 void ParticleRenderer::render(){
-  _pointRenderer->render();
+  MiniGL::drawPoint(_particle.position(),4,MiniGL::black);
 }

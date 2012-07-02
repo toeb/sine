@@ -6,16 +6,20 @@ using namespace std;
 CompositeCollisionDetector::CompositeCollisionDetector(){
 }
 
+
+
+
 void CompositeCollisionDetector::doCollisionDetection(Real time, Real h){
   //iterate through all potential collisions
-  foreachPotentialCollision([this](ICollidable * a,ICollidable * b){
-    const CollisionTest * test = CollisionTestRepository::instance().getTest(a->getCollisionType(),b->getCollisionType());
+  CollisionTestRepository & repository = CollisionTestRepository::instance();
+  foreachPotentialCollision([this,&repository](ICollidable * a,ICollidable * b){
+    const CollisionTest * test = repository(a->getCollisionType(),b->getCollisionType());
     if(test){
-      Collision * collision = new Collision(*a,*b);
-      if(test->testCollision(*a,*b,collision)){
+      Collision * collision = Collision::create(*a,*b);
+      if(test->testCollision(a->collisionObject(),b->collisionObject(),collision)){
         addCollision(collision);
       }else{
-        delete collision;
+        Collision::freeCollision(collision);
       }
     }else{
       cout << "No test found for "<<a->getCollisionType() << " vs. "<< b->getCollisionType() <<endl;
@@ -25,6 +29,12 @@ void CompositeCollisionDetector::doCollisionDetection(Real time, Real h){
   
 
 bool CompositeCollisionDetector::accepts(ICollidable * c){
-  return CollisionTestRepository::instance().hasTestFor(*c);
+  bool result=  CollisionTestRepository::instance().hasTestFor(c->getCollisionObjectType());
+  //explicit: for debugging ...
+  if(result){
+    return true;
+  }else{
+    return false;
+  }
 }
 

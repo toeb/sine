@@ -243,6 +243,10 @@ void Quaternion::getMatrix3x3 (Matrix3x3 &m)const
   */
 void Quaternion::getMatrix3x3T (Matrix3x3 &m)const
 {
+  getMatrix3x3(m);
+  m.transposeInPlace();
+
+  /*
 	Real xx = x*x;
 	Real yy = y*y;
 	Real zz = z*z;
@@ -271,7 +275,7 @@ void Quaternion::getMatrix3x3T (Matrix3x3 &m)const
 	m[0][0] = ww+xx-yy-zz;
 	m[1][1] = ww+yy-xx-zz;
 	m[2][2] = ww+zz-xx-yy;
-
+  */
 }
 	
 /** Berechnet die Länge des Quaternions.

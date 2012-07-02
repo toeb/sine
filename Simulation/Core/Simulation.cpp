@@ -1,5 +1,6 @@
 #include "Simulation.h"
 #include <algorithm>
+#include <Simulation/Core/CompositeSimulationObject.h>
 using namespace IBDS;
 using namespace std;
 
@@ -28,7 +29,7 @@ bool Simulation::addSimulationModule(ISimulationModule * module){
   for(auto it = _simulationModules.begin(); it != _simulationModules.end(); it++){
     if(!(*it)->isCompatibleWith(module))return false;
   }
-  _simulationModules.push_back(module);
+  _simulationModules.insert(module);
   // add all existing sim objects to new algorithm
   for(auto it = _simulationObjects.begin(); it!=_simulationObjects.end(); it++){
     module->add(*it);
@@ -54,9 +55,17 @@ bool Simulation::removeSimulationModule(ISimulationModule * module){
 bool Simulation::addSimulationObject(ISimulationObject * object){
   bool objectWasAdded = false;
   
-  _simulationObjects.push_back(object);
 
-   auto simulationModule = dynamic_cast<ISimulationModule*>(object);
+  if(!_simulationObjects.insert(object).second)return false;
+
+  auto composite = dynamic_cast<CompositeSimulationObject*>(object);
+  if(composite){
+    composite->forEachChild([this](ISimulationObject* child){
+      addSimulationObject(child);
+    });
+  }
+
+  auto simulationModule = dynamic_cast<ISimulationModule*>(object);
   if(simulationModule){
     addSimulationModule(simulationModule);
     objectWasAdded = true;

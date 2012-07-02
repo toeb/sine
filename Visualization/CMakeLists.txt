@@ -11,6 +11,7 @@ SET(visualisation_SRC
 ./RenderManager.cpp
 ./InputHandler.h
 ./InputHandler.cpp
+./Camera.h
 )	
 SET(renderers_SRC
 ./Renderers/SimulationRunnerRenderer.h
@@ -68,11 +69,18 @@ set(userinterface_SRC
 
 )
 
+set(mesh_SRC
+./Renderers/Mesh/MeshRenderer.h
+./Renderers/Mesh/MeshRenderer.cpp
+)
+source_group("visualization\\renderers\\mesh" FILES ${mesh_SRC})
+
 add_library(Visualization 
 ${visualisation_SRC}         
 ${renderers_SRC}
 ${tweakbar_SRC}
-${userinterface_SRC})
+${userinterface_SRC}
+${mesh_SRC})
 
 source_group("visualization" FILES ${visualisation_SRC})
 source_group("visualization\\renderers\\tweakbar" FILES ${tweakbar_SRC})

@@ -3,23 +3,26 @@
 #include "CompositeRenderer.h"
 #include <Simulation/Core/ISimulationObject.h>
 
-#include <Simulation/Core/ISimulationModule.h>
-namespace IBDS{
-  class Camera : virtual public ISimulationObject{
-    virtual void camera()=0;
+#include <Simulation/Core/SimulationModuleBase.h>
+#include <functional>
 
-  };
+namespace IBDS{
+class Camera : virtual public ISimulationObject{
+public:
+  virtual void camera()=0;
+};
+
+
+
 /**
  * \brief Render engine.
  *
  */
-class RenderEngine:public ISimulationModule{
+class RenderEngine:public SimulationModuleBase<IRenderer>{
 private:
-  Camera * camera;
-  CompositeRenderer _renderers;
+  Camera * _camera;
   int _desiredFramerate;
-public:
-  bool addSimulationObject(ISimulationObject * object);
+public:  
   void reset();
     
   void setDesiredFramerate(int hz);
@@ -29,17 +32,20 @@ public:
     
   void render();
 
-  
   RenderEngine();
   ~RenderEngine();
   
-  CompositeRenderer & getRenderers();
 protected:
-  virtual bool initializeRenderEngine()=0;
   bool initializeObject();
   void cleanupObject();
-  virtual void cleanupRenderEngine()=0;
+  
+  void onBeforeSimulationObjectAdd(ISimulationObject * object);
+
   void resizeScene(int newWidth, int newHeight);
+  
+  virtual bool initializeRenderEngine()=0;
+  virtual void cleanupRenderEngine()=0;
+
   virtual void onSceneResized(int newWidth,int newHeight){};
   virtual void onDesiredFramerateChanged(){};
   virtual void onBeforeRender(){};

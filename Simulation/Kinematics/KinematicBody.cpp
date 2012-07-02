@@ -2,25 +2,24 @@
 
 using namespace IBDS;
 
-void KinematicBody::addVelocity(const Vector3D & v){
-  Vector3D::add(_v,v,_v);
-}
-void KinematicBody::addAngularVelocity(const Vector3D & dOmega){
-  Vector3D::add(_omega,dOmega,_omega);
-}
 void KinematicBody::setMovementToZero(){  
-  setVelocity(Vector3D::Zero());
-  setAcceleration(Vector3D::Zero());
-  setAngularVelocity(Vector3D::Zero());
-  setAngularAcceleration(Vector3D::Zero());
+  velocity().setZero();
+  acceleration().setZero();
+  angularVelocity().setZero();
+  angularAcceleration().setZero();
 }
 void KinematicBody::setZero(){
-  setPosition(Vector3D::Zero());
-  setOrientation(Quaternion::zeroRotation());
+  position().setZero();
+  orientation() = Quaternion::zeroRotation();
   setMovementToZero();
 }
 
-KinematicBody::KinematicBody(){
+KinematicBody::KinematicBody():
+velocity(&Vector3D::Zero()),
+acceleration(&Vector3D::Zero()),
+angularAcceleration(&Vector3D::Zero()),
+angularVelocity(&Vector3D::Zero())
+{
  setZero();
 }
 
@@ -28,24 +27,27 @@ KinematicBody::~KinematicBody() {
 }
 
 void KinematicBody::getDerivedState(Real * xDot)const{
+  // calculate angularvelocity in quaternion form
   Quaternion qDot;
   qDot.w=0;
-  qDot.x=_omega[0];
-  qDot.y=_omega[1];
-  qDot.z=_omega[2];
+  qDot.x=angularVelocity()[0];
+  qDot.y=angularVelocity()[1];
+  qDot.z=angularVelocity()[2];
   
-  qDot = 0.5*qDot*getOrientation();
+  qDot = 0.5*qDot*orientation();
 
-  _v.copyTo(&(xDot[0]));
-  _a.copyTo(&(xDot[3]));
+  //copy derived state into the corresponding array
+
+  velocity().copyTo(&(xDot[0]));
+  acceleration().copyTo(&(xDot[3]));
   qDot.copyTo(&(xDot[6]));
-  _omegaDot.copyTo(&(xDot[10]));
+  angularAcceleration().copyTo(&(xDot[10]));
+  Real vals[13];
+  for(int i= 0; i < 13; i++){
+    vals[i] = xDot[i];
+  }
 }
 
-void KinematicBody::evaluate()
-{
-
-}
 
  /**
  * state = (x1,v1, x2,v2, x3,v3, q1,q2,q3,q4, omega1,omega2,omega3). dimension: 2*3+4+3=13
@@ -53,13 +55,11 @@ void KinematicBody::evaluate()
 
 void KinematicBody::setState(const Real * state)
 {
-  _p.assign(&state[0]);
-  _v.assign(&(state[3]));
-  
-  _orientation.assign(&(state[6]));
-  _orientation.normalize();
-  
-  _omega.assign(&(state[10]));
+  position().assign(&state[0]);
+  velocity().assign(&(state[3]));
+  orientation().assign(&(state[6]));
+  orientation().normalize();
+  angularVelocity().assign(&(state[10]));
 }
 
  /**
@@ -67,10 +67,10 @@ void KinematicBody::setState(const Real * state)
  */
  void KinematicBody::getState(Real * state)const
 {
-  _p.copyTo(&(state[0]));
-  _v.copyTo(&(state[3]));
-  _orientation.copyTo(&(state[6]));
-  _omega.copyTo(&(state[10]));
+  position().copyTo(&(state[0]));
+  velocity().copyTo(&(state[3]));
+  orientation().copyTo(&(state[6]));
+  angularVelocity().copyTo(&(state[10]));
 }
 
  int KinematicBody::getStateDimension()const{
@@ -78,25 +78,4 @@ void KinematicBody::setState(const Real * state)
 }
 
 
-const Vector3D & KinematicBody::getVelocity()const {return _v;}
-void KinematicBody::setVelocity(const Vector3D & rDot){_v= rDot;}
-
-const Vector3D & KinematicBody::getAngularAcceleration()const {
-  return _omegaDot;
-}
-void KinematicBody::setAngularAcceleration(const Vector3D & omegaDot){
-  _omegaDot = omegaDot;
-}
-const Vector3D & KinematicBody::getAcceleration()const{
-  return  _a;
-}
-void KinematicBody::setAcceleration(const Vector3D & a_wcs){
-  _a = a_wcs;
-}
-
-const Vector3D & KinematicBody::getAngularVelocity()const{return _omega;}
-void KinematicBody::setAngularVelocity(const Vector3D & omega){_omega = omega;}
-
-
-  
 

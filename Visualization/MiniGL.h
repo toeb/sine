@@ -94,6 +94,14 @@ namespace IBDS
   */
  static void valueToColor(Real value, float * color, Real min=0, Real max=10);
 
+ static void alpha(const float * color, float alpha, float * outColor){
+  for(int i=0; i < 3 ; i++){
+    outColor[i] = color[i]; 
+
+  }
+  outColor[3]  = alpha; 
+}
+
 	private:
   /**d
    * \brief Hat function.  is defined as 

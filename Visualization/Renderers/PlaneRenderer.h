@@ -8,8 +8,10 @@ namespace IBDS{
 class PlaneRenderer :public IRenderer{
 private:
   Plane & _plane;
+  Real _extent;
 public:
-  PlaneRenderer( Plane & plane);
+  Real & extent(){return _extent;}
+  PlaneRenderer( Plane & plane, Real extent=100);
   void render();
 };
 }

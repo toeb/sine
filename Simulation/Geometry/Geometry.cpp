@@ -4,7 +4,7 @@ using namespace IBDS;
 
 
 
-void Geometry::getBoundingBoxOCS(AABB & aabb)const{
+void Geometry::getBoundingBoxOCS(BoundingBox & aabb)const{
   Axis x,y,z;
   x.n = Matrix3x3::Identity().v[0];
   y.n = Matrix3x3::Identity().v[1];
@@ -34,7 +34,7 @@ void Geometry::getBoundingBoxOCS(AABB & aabb)const{
 }
 
 
-void Geometry::getBoundingBox(AABB & aabb)const{
+void Geometry::getBoundingBox(BoundingBox & aabb)const{
   Axis x,y,z;
   x.n = Matrix3x3::Identity().v[0];
   y.n = Matrix3x3::Identity().v[1];
@@ -56,16 +56,16 @@ void Geometry::getBoundingBox(AABB & aabb)const{
 
 void Geometry::project(const Axis & axis_wcs, Interval & interval)const{
   Axis axis_ocs;
-  toObjectCoordinates(axis_wcs.p,axis_ocs.p);
-  toObjectCoordinates(axis_wcs.n+getPosition(),axis_ocs.n);
+  coordinates().toObjectCoordinates(axis_wcs.p,axis_ocs.p);
+  coordinates().toObjectCoordinates(axis_wcs.n+coordinates().position(),axis_ocs.n);
   axis_ocs.n.normalize();
   projectOCS(axis_ocs,interval);
 
 }
 
 Real Geometry::calculateBoundingSphereRadius()const{
-  AABB aabb;
-  getBoundingBoxOCS(aabb);
-  Vector3D delta = aabb.max-aabb.min;
+  BoundingBox bb;
+  getBoundingBoxOCS(bb);
+  Vector3D delta = bb.max-bb.min;
   return delta.length()/2;
 }

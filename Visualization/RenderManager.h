@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/ISimulationObject.h>
+#include <Simulation/Core/ISimulationObject.h>
 #include <Visualization/CompositeRenderer.h>
 namespace IBDS{
 class RenderManager:public ISimulationObject{

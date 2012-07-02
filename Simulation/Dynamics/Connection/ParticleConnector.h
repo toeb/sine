@@ -1,7 +1,8 @@
 #pragma once
 #include <Math/Vector3D.h>
-#include "Particle.h"
-#include "Connector.h"
+#include <Simulation/Dynamics/Particle.h>
+#include <Simulation/Dynamics/Connection/Connector.h>
+
 namespace IBDS {
 	/**
 	 * Subclass of Connector. Used when a connection point lies on a particle.

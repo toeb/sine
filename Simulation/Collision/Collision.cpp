@@ -1,14 +1,12 @@
 #include "Collision.h"
-#include "Simulation\Dynamics\Connector.h"
-#include "Simulation\Dynamics\RigidBodyConnector.h"
-#include "Simulation\Dynamics\RigidBody.h"
-#include "Simulation\Dynamics\BodyPrimitives\Sphere.h"
-#include "Collidable.h"
+
+#include <Simulation/Collision/Collidable.h>
 
 using namespace IBDS;
 using namespace std;
 
-
+ bool Collision::lastCollisionUsed=true;
+   Collision * Collision::lastCollision=0;
 
 Collision::~Collision(){
 
@@ -18,7 +16,8 @@ Collision::~Collision(){
   _contacts.clear();
 }
 
-Collision::Collision(ICollidable & a, ICollidable & b):_objectA(a), _objectB(b){
+Collision::Collision(ICollidable & a, ICollidable & b):_objectA(&a), _objectB(&b){
+
 };
 
 int Collision::getContactCount()const{return _contacts.size();}
@@ -46,5 +45,7 @@ void Collision::combineContacts(Contact & contact){
 }
 
 
-ICollidable & Collision::getObjectA()const{return _objectA;}
-ICollidable & Collision::getObjectB()const{return _objectB;}
+ICollidable & Collision::getObjectA()const{return *_objectA;}
+ICollidable & Collision::getObjectB()const{return *_objectB;}
+
+

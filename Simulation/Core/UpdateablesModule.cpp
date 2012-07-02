@@ -8,3 +8,8 @@ void UpdatablesModule::update(Real t, Real h){
     updatable->update(t,h);
   });
 }
+void UpdatablesModule::afterStep(Real t, Real h){
+  foreach([&t,&h](IUpdatable* updatable){
+    updatable->afterStep(t,h);
+  });
+}

@@ -15,7 +15,8 @@
 namespace IBDS{
   
 class TweakBarRenderer 
-  :public virtual IRenderer, 
+  :
+  public virtual IRenderer, 
   public virtual IInputListener, 
   public virtual ISimulationModule
 {
@@ -27,6 +28,11 @@ class TweakBarRenderer
     std::vector<IValue * > _values;
     void addEntry(ISimulationObject * o);
   public:
+    using IRenderer::getName;
+    using IRenderer::setName;
+
+    ISimulationObject * toSimulationObject(){return static_cast<ISimulationObject*>(static_cast<IRenderer*>(this));}
+
     TweakBarRenderer();
     bool addSimulationObject(ISimulationObject * object);
 

@@ -74,17 +74,14 @@ void CollisionDetector::foreachCollision(std::function<void (Collision* )>f){
  for_each(_collisions.begin(), _collisions.end(), f);
 }
 
-void CollisionDetector::foreachContact(std::function<void (Contact* )>f){
-	foreachCollision([f](Collision *collision){
-
-		std::function<void (Contact* )>f_ = f;
-		
-		collision->foreachContact([collision, f_](Contact* contact){
-			f_(contact);
-		});
-	});
+void CollisionDetector::foreachContact(std::function<void(Collision* ,Contact*)>f){
+  foreachCollision([f](Collision * collision){
+    function<void(Collision* ,Contact*)> f2 =f;
+    collision->foreachContact([collision, f2](Contact* contact){
+     f2(collision,contact); 
+    });
+  });
 }
-
 
 bool CollisionDetector::addSimulationObject(ISimulationObject * object){
   ICollidable* collidable = dynamic_cast<ICollidable*>(object);

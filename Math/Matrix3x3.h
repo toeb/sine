@@ -48,7 +48,14 @@ namespace IBDS
 		Matrix3x3(const Vector3D &v0, const Vector3D &v1, const Vector3D &v2);
     ~Matrix3x3();
 
-    
+    void setIdentity(){
+      for(int i=0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+          (*this)(i,j)=0;
+          if(i==j)(*this)(i,j)=1;
+        }
+      }
+    }
     
     inline void transposeInPlace(){
       Real tmp;

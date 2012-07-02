@@ -11,23 +11,23 @@ const TypeId SeparatingAxes::getTypeB()const{
   return Polygon::type;
 }
 
-bool SeparatingAxes::testCollision(const ICollidable & collidableA, const ICollidable & collidableB, Collision * collision)const{
+bool SeparatingAxes::testCollision(const ISimulationObject & collidableA, const ISimulationObject & collidableB, Collision * collision)const{
   
-  const Polygon & a = static_cast<const Polygon &>(collidableA.getGeometry());
-  const Polygon & b = static_cast<const Polygon &>(collidableB.getGeometry());
+  const Polygon & a = dynamic_cast<const Polygon &>(collidableA);
+  const Polygon & b = dynamic_cast<const Polygon &>(collidableB);
   
   vector<Axis> axes;  
   for(int i = 0; i < a.faces().size(); i++){
     Axis axis;
     const Vector3D & n_ocs = a.face(i)->n_ocs;
-    a.fromObjectCoordinates(n_ocs,axis.n);
+    a.coordinates().fromObjectCoordinates(n_ocs,axis.n);
     axes.push_back(axis);
   }
 
   for(int i = 0; i < b.faces().size(); i++){
     Axis axis;
     const Vector3D & n_ocs = b.face(i)->n_ocs;
-    b.fromObjectCoordinates(n_ocs,axis.n);
+    b.coordinates().fromObjectCoordinates(n_ocs,axis.n);
     axes.push_back(axis);
   }
 
@@ -37,8 +37,8 @@ bool SeparatingAxes::testCollision(const ICollidable & collidableA, const IColli
       Edge * e1 = a.edge(i);
       Edge * e2 = b.edge(j);
       e1->getDirection(dirA);
-      a.fromObjectCoordinates(dirA,dirA);
-      b.fromObjectCoordinates(dirB,dirB);
+      a.coordinates().fromObjectCoordinates(dirA,dirA);
+      b.coordinates().fromObjectCoordinates(dirB,dirB);
       e2->getDirection(dirB);
       Axis axis;
       

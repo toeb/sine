@@ -7,5 +7,7 @@ namespace IBDS{
 class UpdatablesModule : public virtual SimulationModuleBase<IUpdatable>{
 public:
   void update(Real t, Real h);
+  
+  void afterStep(Real t, Real h);
 };
 }

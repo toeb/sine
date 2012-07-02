@@ -4,6 +4,8 @@
 #include <Math/Vector3D.h>
 #include <Math/Quaternion.h>
 #include <Math/Matrix3x3.h>
+#include <Simulation/Kinematics/Position.h>
+#include <Simulation/Kinematics/Orientation.h>
 
 namespace IBDS{
 
@@ -15,30 +17,28 @@ namespace IBDS{
  * \date 24.05.2012
  */
 class CoordinateSystem : public virtual ISimulationObject{
-protected:
-  Vector3D _p;
-  Quaternion _orientation;
+private:
+
   Matrix3x3 * _R;
   Matrix3x3 * _RT;
 public:
+  Position position;
+  Orientation orientation;
+
+  void mirror(CoordinateSystem & original){
+    position.mirror(original.position);
+    orientation.mirror(original.orientation);
+  }
+  void unshare(){
+    position.unshare();
+    orientation.unshare();
+  }
+
   static const CoordinateSystem & identity();
+
   CoordinateSystem(const Vector3D & p, const Quaternion & q);
   CoordinateSystem();
   ~CoordinateSystem();
-  
-  const Vector3D & getPosition()const;
-  void setPosition(const Vector3D & p_wcs);
-  Vector3D & position();
-
-  const Quaternion & getOrientation()const;
-  Quaternion & orientation();
-
-  /**
-   * \brief Sets an orientation.
-   *    orientation is normalized after setting
-   * \param orientation The orientation.
-   */
-  void setOrientation(const Quaternion & orientation);
   
   void calculateRotationMatrices();
 
@@ -57,9 +57,5 @@ public:
 
   void toObjectCoordinatesCached(const Vector3D & p_wcs, Vector3D & p_ocs)const;
   void fromObjectCoordinatesCached(const Vector3D & p_ocs, Vector3D & p_wcs)const;
-
-  
-  
-
 };
 }

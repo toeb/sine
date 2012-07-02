@@ -1,14 +1,13 @@
 #pragma once
 
 #include <Simulation/Core/Simulation.h>
-#include <Simulation/Dynamics/BodyPrimitives/Box.h>
-#include <Simulation/Dynamics/BodyPrimitives/Sphere.h>
+#include <Simulation/Dynamics/BodyPrimitives/DynamicBox.h>
+#include <Simulation/Dynamics/BodyPrimitives/DynamicSphere.h>
 #include <Simulation/Force/Gravity.h>
 #include <Simulation/Force/DampedSpring.h>
 #include <Simulation/MultiBodyDynamics/BallJoint.h>
-#include <Simulation/Dynamics/BodyPrimitives/Sphere.h>
-#include <Simulation/Dynamics/ParticleConnector.h>
-#include <Simulation/Dynamics/RigidBodyConnector.h>
+#include <Simulation/Dynamics/Connection/ParticleConnector.h>
+#include <Simulation/Dynamics/Connection/RigidBodyConnector.h>
 #include <Simulation/Geometry/Primitives/Rectangle.h>
 #include <Simulation/Geometry/Primitives/Pyramid.h>
 #include <Simulation/Geometry/Primitives/Triangle.h>
@@ -109,7 +108,7 @@ class SimulationBuilder{
      *
      * \return null if it fails, else.
      */
-    Sphere * createSphere(std::string name="", const Vector3D & position=Vector3D::Zero(), Real mass=1,Real radius = 1);
+    DynamicSphere * createSphere(std::string name="", const Vector3D & position=Vector3D::Zero(), Real mass=1,Real radius = 1);
 
     /**
      * \brief Creates a particle.

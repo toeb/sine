@@ -32,7 +32,8 @@ public:
    *
    * \return  null if it fails, else the name.
    */
-  const std::string* getName()const;
+   const std::string* getName()const;
+
 
   /**
    * \brief Initializes this object.
@@ -41,6 +42,12 @@ public:
    */
   bool initialize();
 
+  /**
+   * \brief Query if this object is initialized.
+   *
+   *
+   * \return true if initialized, false if not.
+   */
   bool isInitialized()const;
 
 
@@ -49,6 +56,20 @@ public:
    */
   void cleanup();
 
+  /**
+   * \brief Converts this object to a simulation object. (This may seem strange, however when multiple inheritance
+   * 				is used this method may be overriden to return the correct inheritanc hierarchy see C2594 compiler error
+   * 				(which is thus worked around)
+   *
+   * \author Tobi
+   * \date 01.07.2012
+   *
+   * \return null if it fails, else this object as an ISimulationObject*.
+   */
+  virtual ISimulationObject * toSimulationObject(){return this;}
+  ISimulationObject * operator()(){
+    return toSimulationObject();
+  }
 protected:
   virtual void cleanupObject(){};
   virtual bool initializeObject(){return true;}

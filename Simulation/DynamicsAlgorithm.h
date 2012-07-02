@@ -1,17 +1,19 @@
 #pragma once
 #include <Simulation/MultiBodyDynamics/ImpulseBasedDynamicsAlgorithm.h>
+#include <Simulation/Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.h>
 #include <Simulation/Force/ForceAlgorithm.h>
 #include <Simulation/Dynamics/DynamicBodyModule.h>
-#include <Simulation/Dynamics/ConnectorModule.h>
+#include <Simulation/Dynamics/Connection/ConnectorModule.h>
 #include <Simulation/Integration/CompositeIntegratable.h>
 #include <Simulation/Integration/ISystemFunction.h>
 #include <Simulation/Core/CompositeSimulationModule.h>
 #include <Simulation/Textiles/TextileAlgorithm.h>
 #include <Simulation/Core/UpdateablesModule.h>
 #include <Simulation/Collision/Detection/CompositeCollisionDetector.h>
-#include <Simulation/Collision/Handling/ContactHandler.h>
 
 namespace IBDS{
+
+
 
   /**
    * \brief Dynamics algorithm. 
@@ -39,8 +41,7 @@ public:
   TextileAlgorithm textilesModule;
   UpdatablesModule updatablesModule;
   CompositeCollisionDetector collisionDetector;
-  ContactHandler contactHandler;
-
+  ImpulseBasedCollisionHandler collisionHandler;
   DynamicsAlgorithm();
 
   IIntegrable & getIntegrable();
@@ -52,6 +53,5 @@ public:
   void evaluate(Real t, Real h);
   void postIntegration(Real t, Real h);
   void preIntegration(Real t, Real h);
-  
 };
 }

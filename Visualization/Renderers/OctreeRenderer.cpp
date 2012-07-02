@@ -11,15 +11,15 @@ void OctreeRenderer::render(){
 
   MiniGL::pushMatrix();
   
-  const Matrix3x3 & R =_octree.getGeometry().getTransposedRotationMatrix();
-  MiniGL::translate(_octree.getGeometry().getPosition());
+  const Matrix3x3 & R =_octree.getGeometry().coordinates().getTransposedRotationMatrix();
+  MiniGL::translate(_octree.getGeometry().coordinates().position());
   MiniGL::multMatrix(R);
 
   _octree.foreachChildOfLevel(level,[](Octree * octree){
     
     Vector3D center;
     octree->getCenter(center);
-    const AABB & aabb =octree->getAABB();
+    const BoundingBox & aabb =octree->getBoundingBox();
     float color [4];
     const float * baseColor = MiniGL::cyan;
     BoundingVolume * volume = &(octree->getBoundingVolume());

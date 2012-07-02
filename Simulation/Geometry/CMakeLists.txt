@@ -16,6 +16,22 @@ set(geometry_SRC
  ./Geometry/Axis.h
  ./Geometry/Axis.cpp
 )
+
+set(mesh_SRC
+ ./Geometry/Mesh/Mesh.h
+ ./Geometry/Mesh/Mesh.cpp
+ 
+)
+source_group("simulation\\geometry\\mesh" FILES ${mesh_SRC})
+set(meshPly_SRC
+./Geometry/Mesh/Ply/PlyMesh.h
+./Geometry/Mesh/Ply/PlyMesh.cpp
+./Geometry/Mesh/Ply/rply.h
+./Geometry/Mesh/Ply/rply.c
+)
+source_group("simulation\\geometry\\mesh\\ply" FILES ${meshPly_SRC})
+
+
 source_group("simulation\\geometry" FILES ${geometry_SRC})
 set(simulationSource ${simulationSource} ${geometry_SRC}  )
 
@@ -26,6 +42,8 @@ set(boundingVolumes_SRC
  ./Geometry/BoundingVolumes/BoundingVolume.cpp
  ./Geometry/BoundingVolumes/BoundingBox.h
  ./Geometry/BoundingVolumes/BoundingBox.cpp 
+ ./Geometry/BoundingVolumes/BoundingOctree.h
+ ./Geometry/BoundingVolumes/BoundingOctree.cpp 
 )
 source_group("simulation\\geometry\\boundingvolumes" FILES ${boundingVolumes_SRC})
 set(simulationSource ${simulationSource} ${boundingVolumes_SRC}  )
@@ -63,6 +81,6 @@ set(polygon_SRC
  ./Geometry/Polygon/Element.cpp
 )
 source_group("simulation\\geometry\\polygon" FILES ${polygon_SRC})
-set(simulationSource ${simulationSource} ${polygon_SRC}  )
+set(simulationSource ${simulationSource} ${polygon_SRC} ${meshPly_SRC} ${mesh_SRC})
 
 

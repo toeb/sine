@@ -2,7 +2,10 @@
 #include <Math/Matrix3x3.h>
 
 using namespace IBDS;
-
+const TypeId Particle::type ="Particle";
+const TypeId Particle::getBodyType()const{
+  return type;
+}
 void Particle::setForce(const Vector3D & f){
   _f.assign( f);
 }
@@ -19,30 +22,28 @@ const Vector3D & Particle::getForce()const{
 void Particle::calculateDynamics(){
   Real m  = getMass();
   if(m==0){
-    _acceleration = Vector3D::Zero();
-    setVelocity(Vector3D::Zero());
+    acceleration() = Vector3D::Zero();
+    velocity().setZero();
     return;
   }
   // acceleration is force / mass
-  _acceleration = _f*(1/m);
+  acceleration() = _f*(1/m);
 }
 
-const Vector3D & Particle::getAcceleration()const{
-  return _acceleration;
-}
+
 
 
 void Particle::getDerivedState(Real * xDot)const{
-  _velocity.copyTo(&(xDot[0]));
-  _acceleration.copyTo(&(xDot[3]));
+  velocity().copyTo(&(xDot[0]));
+  acceleration().copyTo(&(xDot[3]));
 }
 void Particle::setState(const Real * state){
-  _position.assign(&(state[0]));
-  _velocity.assign(&(state[3]));
+  position().assign(&(state[0]));
+  velocity().assign(&(state[3]));
 }
  void Particle::getState(Real * state)const{
-   _position.copyTo(&(state[0]));
-   _velocity.copyTo(&(state[3]));
+   position().copyTo(&(state[0]));
+   velocity().copyTo(&(state[3]));
 }
  int Particle::getStateDimension()const{
   static int dim = 6;
@@ -50,37 +51,7 @@ void Particle::setState(const Real * state){
 }
 
 
-Particle::Particle () 
-{
-  setMass(1.0);
- _position = Vector3D(0,0,0);
- _velocity = Vector3D(0,0,0);
- _acceleration = Vector3D(0,0,0);
-}
 
-Particle::~Particle () 
-{	
-}
-
-const Vector3D & Particle::getPosition() const
-{
-  return _position;
-}
-
-void IBDS::Particle::setPosition( const Vector3D & val )
-{
-  _position = val;
-}
-
-const Vector3D & Particle::getVelocity() const
-{
-  return _velocity;
-}
-
-void IBDS::Particle::setVelocity(const Vector3D & val )
-{
-  _velocity = val;
-}
 
 
 
@@ -88,7 +59,7 @@ void IBDS::Particle::setVelocity(const Vector3D & val )
    Real m = getMass();
    if(m==0)return;
    Vector3D vDelta = 1/m*p_wcs;
-   _velocity += vDelta;
+   velocity() += vDelta;
  }
 
 void Particle::calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const{

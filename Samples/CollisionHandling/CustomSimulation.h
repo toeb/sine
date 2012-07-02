@@ -12,6 +12,7 @@ public:
   void buildModel();
   void buildAlgorithms();
 protected:
+
   bool initializeSimulation();
   void onSimulationObjectAdded(ISimulationObject * simObj);
 };

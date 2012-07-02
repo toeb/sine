@@ -14,6 +14,8 @@ public:
   bool removeSimulationObject(ISimulationObject * object);
 
 protected:
+  virtual void onBeforeSimulationObjectAdd(ISimulationObject * object){}
+  virtual void onBeforeSimulationObjectRemove(ISimulationObject * object){}
   virtual void onObjectAdded(T * object){ }
   virtual void onObjectRemoved(T * object){ }
   virtual bool acceptObject(T * object){return true;}
@@ -24,6 +26,7 @@ protected:
 
 template<class T>
 bool SimulationModuleBase<T>::addSimulationObject(ISimulationObject * object){
+  onBeforeSimulationObjectAdd(object);
   T* typedObject = dynamic_cast<T*>(object);
   if(!typedObject)return false;
   if(!acceptObject(typedObject))return false;
@@ -33,6 +36,7 @@ bool SimulationModuleBase<T>::addSimulationObject(ISimulationObject * object){
 }
 template<class T>
 bool  SimulationModuleBase<T>::removeSimulationObject(ISimulationObject * object){
+  onBeforeSimulationObjectRemove(object);
   auto pos = std::find(_objects.begin(), _objects.end(), object);
   if(pos == _objects.end())return false;
   _objects.erase(pos);

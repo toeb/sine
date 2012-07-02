@@ -4,7 +4,7 @@
 namespace IBDS{
 class CompositeRenderer:public IRenderer{
 private:
-  std::vector<IRenderer*> * _renderers;
+  std::vector<IRenderer*> _renderers;
 public:
   CompositeRenderer();
   ~CompositeRenderer();
@@ -15,8 +15,7 @@ public:
   void render();
   void onBeforeRenderering();
   void sceneResized(int newWIdth, int newHeight);
-protected:
-  
+protected:  
   bool initializeObject();
   void cleanupObject();
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include <Visualization/IRenderer.h>
-#include <Simulation/Collision/Detection/Acceleration/Octree.h>
+#include <Simulation/Geometry/BoundingVolumes/BoundingOctree.h>
 namespace IBDS{
   class OctreeRenderer : public IRenderer{
     Octree & _octree;

@@ -48,7 +48,7 @@ void create4BoxesWithSpring(SimulationBuilder & b, const Vector3D & offset){
   //Box* box4 = b.createBox("box4",offset+Vector3D(0,-3,0));
 
   //box2->addExternalForce(offset+Vector3D(0,0,0),Vector3D(1,0,0));
-  b.createSpring("spring1","box1","box2",60,9, box1->getPosition()-Vector3D(0,0.5,0), box2->getPosition()+Vector3D(0,0.5,0),1.5);
+  b.createSpring("spring1","box1","box2",60,9, box1->coordinates().position()-Vector3D(0,0.5,0), box2->coordinates().position()+Vector3D(0,0.5,0),1.5);
   //b.createSpring("spring2","box2","box3",0.1,0, box2->getPosition(), box3->getPosition());
   //b.createSpring("spring3","box3","box4",0.11,0, box3->getPosition(), box4->getPosition());
   
@@ -158,9 +158,9 @@ void createNPendulum(SimulationBuilder & b, const Vector3D & offset, int n){
   for(int i=0; i < n; i++){
     lastBox = currentBox;
     currentBox = b.createBox("",Vector3D::Zero(),mass,s,s,s);
-    currentBox->setPosition((offset+s*(l*i)*direction));
+    currentBox->coordinates().position() = offset+s*(l*i)*direction;
     if(i==0){
-      currentBox->setMass(0);
+      currentBox->body().setMass(0);
       continue;
     }
     b.createBallJoint("",*(lastBox->getName()),*(currentBox->getName()),(offset+s*(l*i-l/2)*direction));
@@ -214,8 +214,8 @@ void CustomSimulation::buildAlgorithms(){
   
   addSimulationObject(new LightRenderer());
   addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
-  addSimulationObject(new TweakBarRenderer());
-  addSimulationObject(new CameraRenderer());
+  addSimulationObject(static_cast<ISimulationObject*>(static_cast<IRenderer*>(new TweakBarRenderer())));
+  addSimulationObject(static_cast<ISimulationObject*>(static_cast<IRenderer*>(new CameraRenderer())));
 }
 
 void CustomSimulation::buildModel(){ 

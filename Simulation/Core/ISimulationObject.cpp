@@ -9,7 +9,6 @@ const TypeId ISimulationObject::getType()const{
 }
 
 
-
 ISimulationObject::ISimulationObject():_name(0), _initialized(false){}
 ISimulationObject::~ISimulationObject(){delete _name;}
 void ISimulationObject::setName(const std::string & name ){

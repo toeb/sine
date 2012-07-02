@@ -67,7 +67,7 @@ int main( int argc, char **argv )
   });
   simulation->addSimulationObject(action);
 
-  simulation->  addSimulationObject(new TweakBarRenderer());
+  simulation->addSimulationObject(static_cast<IRenderer*>(new TweakBarRenderer()));
   
   runner.run();
 

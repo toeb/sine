@@ -6,7 +6,7 @@ using namespace IBDS;
 
 BoundingSphere::BoundingSphere(const Vector3D & min, const Vector3D & max, const CoordinateSystem & coordinateSystem):BoundingVolume(coordinateSystem){
   _p_pcs = min+0.5*(max-min);
-  setPosition(_p_pcs);
+  //coordinates().position()=_p_pcs;
   setRadius((0.5*(max-min)).length());
 }
 
@@ -17,7 +17,7 @@ BoundingSphere * BoundingSphereFactory::create(const Vector3D & min, const Vecto
 }
 
 void BoundingSphere::updateBoundingVolume(){
-  getParentCoordinates().fromObjectCoordinates(_p_pcs,position());
+  parentCoordinates().fromObjectCoordinates(_p_pcs,coordinates().position());
 }
 
 const Vector3D & BoundingSphere::getPositionPCS()const{

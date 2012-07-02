@@ -8,6 +8,7 @@ enum Classification{
   OUTSIDE=2,
   BOTH=3
 };
+
 class BoundingVolume{
 private:
   bool _colliding;
@@ -21,7 +22,7 @@ public:
   void update();
   void reset();
   bool isUpToDate()const;
-  const CoordinateSystem & getParentCoordinates()const;
+  const CoordinateSystem & parentCoordinates()const;
 protected:
   virtual void updateBoundingVolume()=0;
 };

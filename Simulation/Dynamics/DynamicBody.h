@@ -4,8 +4,8 @@
 #include <Math/Vector3D.h>
 
 namespace IBDS {
-class DynamicBody : public virtual IIntegrable{
-  public:     
+class DynamicBody : public virtual ISimulationObject{
+public:
     virtual void calculateDynamics()=0;
     virtual void calculateCachedValues()=0;
     
@@ -14,7 +14,6 @@ class DynamicBody : public virtual IIntegrable{
     
     virtual const Vector3D & getCenterOfGravity()const=0;
     
-
 	  virtual void resetForce() = 0;
     virtual void addExternalForce(const Vector3D & f) = 0;
     virtual void addExternalTorque(const Vector3D & tau)=0;
@@ -24,6 +23,7 @@ class DynamicBody : public virtual IIntegrable{
     virtual void applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs)=0;   
     virtual void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const=0;
     
+    virtual const TypeId getBodyType()const =0;
     bool isFixed()const;
 
   };

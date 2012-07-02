@@ -69,9 +69,9 @@ public:
   void reset();
 
   
-  void foreachCollidable(std::function<void( ICollidable*)> f);
+  void foreachCollidable(std::function<void(ICollidable*)> f);
   void foreachCollision(std::function<void (Collision* )>f);
-  void foreachContact(std::function<void (Contact* )>f);
+  void foreachContact(std::function<void(Collision *, Contact*)>f);
 protected:
 
   /**
@@ -83,7 +83,7 @@ protected:
    */
   virtual void doCollisionDetection(Real t, Real h)=0;
 
-  virtual bool accepts(ICollidable * collidables)=0;
+  virtual bool accepts(ICollidable * collidable)=0;
 
   /**
    * \brief Foreach potential collision.

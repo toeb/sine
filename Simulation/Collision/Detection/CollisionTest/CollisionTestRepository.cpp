@@ -36,24 +36,11 @@ void CollisionTestRepository::addTest(const CollisionTest* test){
   _tests.push_back(test);
 }
 
-const CollisionTest* CollisionTestRepository::getTest(const TypeId a,const TypeId b)const{
-  const CollisionTest * current=0;
-  for(int i=0; i < _tests.size(); i++){
-    current = _tests.at(i);
-    if(current->getTypeA()==a && current->getTypeB()==b){
-      return current;
-    }
-  }
-  return 0;
-}
 
 bool CollisionTestRepository::hasTestFor(const ISimulationObject & a)const{
   return hasTestFor(a.getType());
 }
 
-bool CollisionTestRepository::hasTestFor(const ICollidable & a)const{
-  return hasTestFor(a.getCollisionType());
-}
 
 bool CollisionTestRepository::hasTestFor(const TypeId  a)const{
   const CollisionTest * current=0;
@@ -68,7 +55,4 @@ bool CollisionTestRepository::hasTestFor(const TypeId  a)const{
 
 const CollisionTest* CollisionTestRepository::getTest(const ISimulationObject & a,const ISimulationObject & b)const{
   return getTest(a.getType(),b.getType());
-}
-const CollisionTest* CollisionTestRepository::getTest(const ICollidable & a,const ICollidable & b)const{
-  return getTest(a.getCollisionType(),b.getCollisionType());
 }

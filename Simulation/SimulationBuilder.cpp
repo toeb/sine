@@ -10,8 +10,8 @@ Rectangle * SimulationBuilder::createFixedRectangle(std::string name,const Vecto
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;  
   Rectangle * rectangle = new Rectangle(Vector2D(width,height));
-  rectangle->setOrientation(orientation);
-  rectangle->setPosition(position+_currentOffset);
+  rectangle->coordinates().orientation() = orientation;
+  rectangle->coordinates().position() = position+_currentOffset;
   rectangle->setName(name);
   addSimulationObject(rectangle);
   return rectangle;
@@ -23,17 +23,17 @@ DynamicBox * SimulationBuilder::createBox(string name, const Vector3D & position
   if(nameExists(name))return 0;    
   DynamicBox * box = new DynamicBox(mass,width,height,depth);
   box->setName(name);
-  box->setPosition(position+_currentOffset);
+  box->coordinates().position() = position+_currentOffset;
   addSimulationObject(box);
   return box;
 }
 
-Sphere * SimulationBuilder::createSphere(std::string name, const Vector3D & position, Real mass,Real radius){
+DynamicSphere * SimulationBuilder::createSphere(std::string name, const Vector3D & position, Real mass,Real radius){
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;    
   DynamicSphere * sphere = new DynamicSphere(mass,radius);
   sphere->setName(name);
-  sphere->setPosition(position+_currentOffset);
+  sphere->coordinates().position() = position+_currentOffset;
   addSimulationObject(sphere);
   return sphere;
 }
@@ -91,12 +91,12 @@ DampedSpring * SimulationBuilder::createSpring(
 
 //Sphere * SimulationBuilder::createSphere(string name, const Vector3D & position, Real mass,Real radius){}
 
-Particle * SimulationBuilder::createParticle(string name, const Vector3D & position, Real mass){  
+Particle * SimulationBuilder::createParticle(string name, const Vector3D & pos, Real mass){  
   if(name.compare("")==0)name = createUnknownName();
   if(nameExists(name))return 0;
   Particle * particle = new Particle();
   particle->setName(name);
-  particle->setPosition(position+_currentOffset);
+  particle->position() = pos+_currentOffset;
   particle->setMass(mass);
   addSimulationObject(particle);
 }
@@ -129,7 +129,12 @@ string  SimulationBuilder::createConnectorName(string a, string b){
 }
 
 Connector* SimulationBuilder::createConnector(string bodyName, const Vector3D & position, string connectsTo){
-  DynamicBody * body = dynamic_cast<DynamicBody*>(getObject(bodyName));
+  DynamicBody * body;
+  if(dynamic_cast<DynamicSphere*>(getObject(bodyName))){
+    body = & dynamic_cast<DynamicSphere*>(getObject(bodyName))->body();
+  }else{
+    body = dynamic_cast<DynamicBody*>(getObject(bodyName));
+  }
   if(!body)return 0;
   Connector * connector = createRigidBodyConnector(body,position);
   if(!connector){

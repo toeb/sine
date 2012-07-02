@@ -21,14 +21,14 @@ void CameraRenderer::onMouseMove(int x, int y , int dx, int dy){
   if(_input->isKeyDown(Keys::KEY_F3)){
     Quaternion q;
     q.setFromAxisAngle(normal,dx/20.0);
-    q = q * getOrientation();
+    q = q * orientation();
     q.normalize();
-    setOrientation(q);
+    orientation() = q;
   
     q.setFromAxisAngle(binormal,dy/20.0);
-    q = q * getOrientation();
+    q = q * orientation();
     q.normalize();
-    setOrientation(q);
+    orientation() = q;
   }
 
 }
@@ -42,7 +42,7 @@ void CameraRenderer::onBeforeRenderering(){
  // setPosition(Vector3D(15,1,20));
   Quaternion q;
   Matrix3x3 R;
-  R.v[0] = Vector3D(5,-4,0)-getPosition();
+  R.v[0] = Vector3D(5,-4,0)-position();
   R.v[0].normalize();
   R.v[1]=Vector3D(0,1,0);
   R.v[2] = R.v[0] ^ R.v[1];
@@ -51,44 +51,44 @@ void CameraRenderer::onBeforeRenderering(){
   q.setFromMatrix3x3(&R);
   //setOrientation(q);
 }
-void CameraRenderer::render(){
+void CameraRenderer::camera(){
   
   setMovementToZero();
-  calculateRotationMatrices();
-  const Matrix3x3 & R=getRotationMatrix(); 
+  Matrix3x3 R;
+  orientation().getMatrix3x3(R);
   Vector3D dir, normal, binormal;
   R.getCoordinateVectors(dir,normal,binormal);
 
   if(_input->isKeyDown(Keys::KEY_W)){
-    setVelocity(getVelocity()+dir);
+    velocity() = velocity()+dir;
   }
   if(_input->isKeyDown(Keys::KEY_S)){
-    setVelocity(getVelocity()-dir);
+    velocity() = velocity()-dir;
   }
   if(_input->isKeyDown(Keys::KEY_A)){
-    setVelocity(getVelocity()-binormal);
+    velocity() = (velocity()-binormal);
   }
   if(_input->isKeyDown(Keys::KEY_D)){
-    setVelocity(getVelocity()+binormal);
+    velocity()=(velocity()+binormal);
   }
   if(_input->isKeyDown(Keys::KEY_C)){
-    setVelocity(getVelocity()-normal);
+    velocity()=(velocity()-normal);
   }
   if(_input->isKeyDown(Keys::KEY_SPACE)){
-    setVelocity(getVelocity()+normal);
+    velocity()=(velocity()+normal);
   }
   if(_input->isKeyDown(Keys::KEY_J)){
-    setAngularVelocity(getAngularVelocity()+Vector3D(0,1,0)*0.1);
+    angularVelocity()=(angularVelocity()+Vector3D(0,1,0)*0.1);
   }
   if(_input->isKeyDown(Keys::KEY_L)){
-    setAngularVelocity(getAngularVelocity()-Vector3D(0,1,0)*0.1);
+    angularVelocity()=(angularVelocity()-Vector3D(0,1,0)*0.1);
   }
 
   if(_input->isKeyDown(Keys::KEY_I)){
-    setAngularVelocity(getAngularVelocity()+binormal*0.1);
+    angularVelocity()=(angularVelocity()+binormal*0.1);
   }
   if(_input->isKeyDown(Keys::KEY_K)){
-    setAngularVelocity(getAngularVelocity()-binormal*0.1);
+    angularVelocity()=(angularVelocity()-binormal*0.1);
   }
 
   MiniGL::multMatrix(R);
@@ -98,11 +98,6 @@ void CameraRenderer::render(){
   MiniGL::drawVector(Vector3D(0,-100,0),Vector3D(0,100,0),1,MiniGL::black);
   MiniGL::drawVector(Vector3D(-100,0,0),Vector3D(100,0,0),1,MiniGL::black);
 
-  MiniGL::translate(-getPosition());
-  
-
-  
-
-
+  MiniGL::translate(-position());
   
 }

@@ -1,8 +1,7 @@
 #pragma once
 #include <Math/Vector3D.h>
-#include "RigidBody.h"
-#include "Connector.h"
-#include "Math/SimMath.h"
+#include <Simulation/Dynamics/RigidBody.h>
+#include <Simulation/Dynamics/Connection/Connector.h>
 namespace IBDS {
 	/**
 	 * Subclass of Connector. Used when a connection point lies on a rigid body.

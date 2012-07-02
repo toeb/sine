@@ -1,6 +1,6 @@
 #pragma once
 #include <Visualization/IRenderer.h>
-#include <Simulation/Dynamics/Connector.h>
+#include <Simulation/Dynamics/Connection/Connector.h>
 
 namespace IBDS{
 class ConnectorVelocityRenderer : public IRenderer{

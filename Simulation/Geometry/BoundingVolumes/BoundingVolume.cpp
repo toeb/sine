@@ -30,6 +30,6 @@ void BoundingVolume::setColliding(bool flag){
   _colliding = flag;
 }
 
-const CoordinateSystem & BoundingVolume::getParentCoordinates()const{
+const CoordinateSystem & BoundingVolume::parentCoordinates()const{
   return _coordinateSystem;
 }

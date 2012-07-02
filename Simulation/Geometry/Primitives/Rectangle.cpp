@@ -47,7 +47,7 @@ const Vector2D & Rectangle::getDimension()const{
 
  void Rectangle::getNormal(Vector3D &n_wcs)const{
    Matrix3x3 RT;
-   getOrientation().getMatrix3x3T(RT);
+   coordinates().orientation().getMatrix3x3T(RT);
    n_wcs.assign(RT.v[2]);
  }
 

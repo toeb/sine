@@ -3,7 +3,7 @@
 #include <Simulation/Integration/Integrator.h>
 #include <Simulation/Core/ISimulationModule.h>
 
-#include <vector>
+#include <set>
 
 namespace IBDS{
 
@@ -11,9 +11,9 @@ class Simulation : public ISimulationObject{
 private:  
   Integrator * _integrator;
   ///< The simulation objects
-  std::vector<ISimulationObject*> _simulationObjects;
+  std::set<ISimulationObject*> _simulationObjects;
   ///< The simulation modules
-  std::vector<ISimulationModule*> _simulationModules;  
+  std::set<ISimulationModule*> _simulationModules;  
   ///< The time
   Real _time;
   ///< The target time 

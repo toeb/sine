@@ -18,7 +18,7 @@ void SphereCollisionDetector::doCollisionDetection(Real t, Real h){
   
 }
 
-bool SphereCollisionDetector::acceptObject(ICollidable * collidable){
+bool SphereCollisionDetector::acceptObject(ISim * collidable){
   if( !dynamic_cast<Sphere*>(&(collidable->getGeometry())))return false;
   return true;
 }

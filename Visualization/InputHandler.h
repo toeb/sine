@@ -81,6 +81,7 @@ namespace IBDS{
     BUTTON_MIDDLE=2
   };
   class InputHandler;
+
   class IInputListener{
   public:
     virtual void setInputHandler(InputHandler * handler){};

@@ -7,7 +7,7 @@ RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
 }
 RigidBodyConnector* RigidBodyConnector::createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs){
   Vector3D r_ocs;
-  body.toObjectCoordinates(r_wcs,r_ocs);
+  body.kinematics().toObjectCoordinates(r_wcs,r_ocs);
   return RigidBodyConnector::createWithLocalConnectionPoint(body,r_ocs);
 }
 RigidBodyConnector* RigidBodyConnector::createWithLocalConnectionPoint(RigidBody & body, const Vector3D & r_ocs){
@@ -41,16 +41,16 @@ void RigidBodyConnector::applyImpulse(const Vector3D & p_wcs){
 
 
 void  RigidBodyConnector::calculateWorldPosition(Vector3D& p_wcs)const{  
-  _rigidBody.fromObjectCoordinates(_r, p_wcs);
+  _rigidBody.kinematics().fromObjectCoordinates(_r, p_wcs);
 }
 
 void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{  
-  const Vector3D & s_wcs = _rigidBody.getPosition();
+  const Vector3D & s_wcs = _rigidBody.kinematics().position();
   /*Vector3D p_wcs;
   calculateWorldPosition(p_wcs);*/
   const Vector3D & p_wcs =getCachedWorldPosition();
-  const Vector3D & v_s_wcs = _rigidBody.getVelocity();
-  const Vector3D & omega_wcs = _rigidBody.getAngularVelocity();  
+  const Vector3D & v_s_wcs = _rigidBody.kinematics().velocity();
+  const Vector3D & omega_wcs = _rigidBody.kinematics().angularVelocity();  
   Vector3D r_wcs = p_wcs - s_wcs;
   Vector3D v = v_s_wcs + (omega_wcs ^ r_wcs); // + r' which is 0
   v_wcs.assign(v);
@@ -58,14 +58,14 @@ void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{
 
 
 void RigidBodyConnector::calculateWorldAcceleration(Vector3D & a_wcs)const{  
-  const Vector3D & s_wcs = _rigidBody.getPosition();
+  const Vector3D & s_wcs = _rigidBody.kinematics().position();
   /*Vector3D  p_wcs;
   calculateWorldPosition(p_wcs);*/
   const Vector3D & p_wcs =getCachedWorldPosition();
 
-  const Vector3D & a_s_wcs = _rigidBody.getAcceleration();
-  const Vector3D & omega_wcs = _rigidBody.getAngularVelocity();
-  const Vector3D & omega_dot_wcs = _rigidBody.getAngularAcceleration();
+  const Vector3D & a_s_wcs = _rigidBody.kinematics().acceleration();
+  const Vector3D & omega_wcs = _rigidBody.kinematics().angularVelocity();
+  const Vector3D & omega_dot_wcs = _rigidBody.kinematics().angularAcceleration();
   
   Vector3D r_wcs = p_wcs - s_wcs;
   Vector3D a = a_s_wcs;
