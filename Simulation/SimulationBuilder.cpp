@@ -96,9 +96,10 @@ Particle * SimulationBuilder::createParticle(string name, const Vector3D & pos, 
   if(nameExists(name))return 0;
   Particle * particle = new Particle();
   particle->setName(name);
-  particle->position() = pos+_currentOffset;
+  particle->position() = pos + _currentOffset;
   particle->setMass(mass);
   addSimulationObject(particle);
+  return particle;
 }
 
 BallJoint * SimulationBuilder::createBallJoint(string jointName, string bodyA, string bodyB, const Vector3D & position){
