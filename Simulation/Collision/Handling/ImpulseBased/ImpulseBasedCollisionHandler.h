@@ -14,7 +14,7 @@ private:
   CollisionDetector & _detector;
   ImpulseBasedDynamicsAlgorithm & _ibdsAlgorithm;
   void addContactJoint(DynamicContact & contact);
-  std::vector<DynamicContact*> _dynamicContacts;
+  int _collisionsCount;	// keeps track of the handled collisions
 public:
   ImpulseBasedCollisionHandler(CollisionDetector & detector, ImpulseBasedDynamicsAlgorithm & dynamics);
   void handleContact(DynamicContact & contact);

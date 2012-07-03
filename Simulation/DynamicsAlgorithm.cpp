@@ -40,14 +40,12 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
 		collisionDetector.update();
 		collisionDetector.detectCollisions(t,h);
 
-
+		collisionHandler.handleCollisions();
 		}
+
 	if(doMultiBody)multiBodyDynamics.correctPositions(h);
-
-  collisionHandler.reset();
-  collisionHandler.handleCollisions();
-
 	}
+
 void DynamicsAlgorithm::postIntegration(Real t,Real h){
   if(doMultiBody)multiBodyDynamics.correctVelocities();
   textilesModule.normalize();
