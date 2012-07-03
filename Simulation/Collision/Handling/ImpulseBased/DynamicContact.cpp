@@ -22,7 +22,7 @@ void DynamicContact::getRelativeVelocityVector (Vector3D & out) {
 
 
 DynamicContact::DynamicContact( DynamicCollidable &collidableA, 
-      DynamicCollidable &collidableB, Contact & contact): 
+      DynamicCollidable &collidableB, Contact &contact): 
   _contact(contact), 
   _collidableA(collidableA), 
   _collidableB(collidableB),
@@ -55,7 +55,7 @@ ContactType DynamicContact::classify() {
   Real v_rel_n;
   getNormalRelativeVelocity(v_rel_n);
 
-  Real threshold = 10e-5;//.16;//*10e-5;
+  Real threshold = .16;//.16;//*10e-5;
   if (v_rel_n >= threshold)
 	  return DRIFTING_APART;
   else if (v_rel_n > -threshold)
@@ -83,5 +83,9 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 		connectorB().applyImpulse(_accumulatedImpulse);
 		_accumulatedImpulse.setZero();
 	}
-	
-}
+	}
+void DynamicContact::applyTangentialImpulse(Vector3D &p) {
+	connectorA().applyImpulse(p);
+	connectorB().applyImpulse(-p);
+	}
+
