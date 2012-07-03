@@ -24,11 +24,14 @@ private:
 CollisionDetector & _detector;
 std::vector<RenderContact* > collisions;
 Real _timeout;
+bool _render;
 bool _trace;
 public:
+  
+    bool & renderCollisions(){return _render;}
   bool & renderCollisionTrace(){return _trace;}
   Real & timeout(){return _timeout;}
-  CollisionRenderer(CollisionDetector & detector):_detector(detector),_timeout(2),_trace(false){
+  CollisionRenderer(CollisionDetector & detector):_detector(detector),_timeout(2),_trace(false),_render(true){
 
   }
   void render();

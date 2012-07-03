@@ -4,9 +4,15 @@
 #include <Simulation/Dynamics/Connection/Connector.h>
 namespace IBDS{
   class ConnectorFactory{
+  static ConnectorFactory * _instance;
   public:
-    static Connector * createWithLocalConnectionPoint(DynamicBody& body, const Vector3D & p_ocs = Vector3D::Zero());
-    static Connector * createWithWorldConnectionPoint(DynamicBody& body, const Vector3D & p_wcs = Vector3D::Zero());
-
+    static inline ConnectorFactory & instance(){
+      return *_instance;
+    }
+    Connector * createWithLocalConnectionPoint(DynamicBody& body, const Vector3D & p_ocs = Vector3D::Zero());
+    Connector * createWithWorldConnectionPoint(DynamicBody& body, const Vector3D & p_wcs = Vector3D::Zero());
+  
+  
   };
+
 }

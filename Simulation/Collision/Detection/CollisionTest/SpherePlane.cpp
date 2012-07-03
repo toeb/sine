@@ -32,7 +32,7 @@ bool SpherePlane::testCollision(const Sphere & sphere, const Plane & plane, Coll
   if(!collision)return true;
 
   //create contact
-  Contact * contact = new Contact();
+  Contact * contact = ContactPool::instance().create();//new Contact();
   
   //contact normal from sphere to plane is the negative plane normal
   contact->normal = -normalAxis.n;

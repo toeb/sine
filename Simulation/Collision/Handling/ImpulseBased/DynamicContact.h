@@ -40,6 +40,7 @@ namespace IBDS{
 			DynamicCollidable &collidableA, 
 			DynamicCollidable &collidableB, 
 			Contact &contact);
+    ~DynamicContact();
 
 		void getRelativeVelocityVector (Vector3D & out);
 		void getNormalRelativeVelocity(Real &out);

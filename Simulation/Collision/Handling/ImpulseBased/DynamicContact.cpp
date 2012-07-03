@@ -19,7 +19,12 @@ void DynamicContact::getRelativeVelocityVector (Vector3D & out) {
 	Vector3D::subtract(v2, v1, out);
 }
 
-
+DynamicContact::~DynamicContact(){
+  delete _cA;
+  delete _cB;
+  _cA = 0;
+  _cB = 0;
+}
 
 DynamicContact::DynamicContact( DynamicCollidable &collidableA, 
       DynamicCollidable &collidableB, Contact &contact): 
@@ -29,8 +34,8 @@ DynamicContact::DynamicContact( DynamicCollidable &collidableA,
   _cA(0),
   _cB(0) 
 {
-  _cA = ConnectorFactory::createWithWorldConnectionPoint(collidableA.dynamicBody(),contact.pA_wcs);
-  _cB = ConnectorFactory::createWithWorldConnectionPoint(collidableB.dynamicBody(),contact.pB_wcs);
+  _cA = ConnectorFactory::instance().createWithWorldConnectionPoint(collidableA.dynamicBody(),contact.pA_wcs);
+  _cB = ConnectorFactory::instance().createWithWorldConnectionPoint(collidableB.dynamicBody(),contact.pB_wcs);
 
   if(!(_cA&&_cB)){
     cout << "Dynamic Contact could not create Connectors for contact!!!"<<endl;

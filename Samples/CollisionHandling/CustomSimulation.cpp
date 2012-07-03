@@ -52,6 +52,7 @@ void CustomSimulation::buildModel(){
 	Gravity & g = *(b.setGravity(Vector3D(0,-1,0)));
 	g.setGravityMagnitude(0.1);
 
+  addSimulationObject(new DelegateAction("Render Collisions", [collisionRenderer](){collisionRenderer->renderCollisions()=!collisionRenderer->renderCollisions();}));
 	addSimulationObject(new RealValue("Collisiontrace Timeout",collisionRenderer->timeout()));
 	addSimulationObject(new DelegateAction("Collisiontrace", [collisionRenderer](){
 		collisionRenderer->renderCollisionTrace() = !collisionRenderer->renderCollisionTrace();
@@ -91,7 +92,7 @@ void CustomSimulation::buildModel(){
 		addSimulationObject(new Vector3DValue("box", box->coordinates().position()));
 		addSimulationObject(new BoxRenderer(box->geometry()));
 		box->coordinates().position().set(3,2,0);
-		addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),5,* new BoundingSphereFactory()),box->body(),0.3,100,50));
+		addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,* new BoundingSphereFactory()),box->body(),0.3,100,50));
 		}
 
 		{
@@ -100,7 +101,7 @@ void CustomSimulation::buildModel(){
 		addSimulationObject(new Vector3DValue("pyramid",pyramid->coordinates().position()));
 		addSimulationObject(new PolygonRenderer(pyramid->geometry()));
 		pyramid->coordinates().position().set(3,1,0);
-		addSimulationObject(DynamicCollidable::create(*new Octree(pyramid->geometry(),5,* new BoundingSphereFactory()),pyramid->body(),0.3));
+		addSimulationObject(DynamicCollidable::create(*new Octree(pyramid->geometry(),3,* new BoundingSphereFactory()),pyramid->body(),0.3));
 		}
 
 		{
@@ -169,6 +170,43 @@ void CustomSimulation::buildModel(){
 			addSimulationObject(new SphereRenderer(*sphere));
 			}
 		}
+
+    {
+      Quaternion orientation;
+      orientation.setFromAxisAngle(Vector3D(1,0,0),PI /2);
+      int clothDim = 30;
+      TextileModel * cloth = TextileModel::createTextileModel(Vector3D(10,0,12),orientation.getMatrix3x3(),200,8,8,clothDim,clothDim);
+      cloth->setElongationSpringConstant(80);
+      cloth->setFlexionSpringConstant(80);
+      cloth->setShearSpringConstant(80);
+
+      cloth->getNode(0,0)->particle->setMass(0);
+      cloth->getNode(clothDim-1,clothDim-1)->particle->setMass(0);
+      cloth->getNode(0,clothDim-1)->particle->setMass(0);
+      cloth->getNode(clothDim-1,0)->particle->setMass(0);
+
+      addSimulationObject(cloth);
+       for_each(cloth->getSimulationObjects().begin(), cloth->getSimulationObjects().end(), [this](ISimulationObject * obj){
+        addSimulationObject(obj);
+      });
+
+       cloth->foreachNode([this](TextileNode * node){
+         Sphere * sphere = new Sphere(0.1);
+         DynamicCollidable * collidable = DynamicCollidable::create(*sphere,*node->particle);
+         sphere->coordinates().position.mirror(node->particle->position);
+         addSimulationObject(sphere);
+         //addSimulationObject(new SphereRenderer(*sphere));
+         addSimulationObject(collidable);
+       });
+
+
+       DynamicBox * box = new DynamicBox(90);
+       box->kinematics().position() = Vector3D(10,2,12);
+       addSimulationObject(box);
+       addSimulationObject(new PolygonRenderer(box->geometry()));
+       addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,*new BoundingSphereFactory()),box->body()));
+
+    }
 	}
 
 
@@ -188,7 +226,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
 
 void CustomSimulation::buildAlgorithms(){  
 	integrators.push_back(new ExplicitEuler(0.01));
-	integrators.push_back(new ImplicitEuler(0.01));
+	integrators.push_back(new ImplicitEuler(0.02));
 	integrators.push_back(new RungeKutta4(0.01));
 
 

@@ -72,6 +72,8 @@ namespace IBDS
 
 
     }
+
+    
     
     inline static void symmInverse(const Matrix3x3 & m, Matrix3x3 & m_inverted){
       const Vector3D * v = m.v;

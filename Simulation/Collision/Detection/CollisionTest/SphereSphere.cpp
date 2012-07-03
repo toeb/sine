@@ -44,7 +44,7 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   //if there is no collision set then no contact parameters have to be computed
   if(!collision)return true;
 
-  Contact * contact = new Contact();
+  Contact * contact = ContactPool::instance().create();//new Contact();
 
   //set position of collision at body a and b
   //contact->pA_wcs = pA;

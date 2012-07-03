@@ -90,6 +90,7 @@ public:
   
   TextileNode* getNode(int i, int j);
 
+  void foreachNode(std::function<void (TextileNode* node)> f);
 
   void setElongationSpringConstant(Real k_d_e);
   Real getElongationSpringConstant()const;

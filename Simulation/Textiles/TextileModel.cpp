@@ -387,6 +387,9 @@ void TextileModel::setFlexionDampeningConstant(Real k_d){
   });
 }
        
+void TextileModel::foreachNode(std::function<void (TextileNode* node)> f){
+  for_each(_nodes.begin(), _nodes.end(), f);
+}
 Real TextileModel::getElongationSpringConstant()const{
   return _k_s_elongation;
 }

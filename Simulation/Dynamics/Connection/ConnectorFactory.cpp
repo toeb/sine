@@ -3,6 +3,8 @@
 #include <Simulation/Dynamics/Connection/ParticleConnector.h>
 using namespace IBDS;
 
+
+ConnectorFactory * ConnectorFactory::_instance = new ConnectorFactory();
   
 Connector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody & body, const Vector3D & p_ocs){
 
@@ -15,8 +17,6 @@ Connector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody & body,
   if(particle){
     return new ParticleConnector(*particle);
   }
-
-
 }
 
 Connector * ConnectorFactory::createWithWorldConnectionPoint(DynamicBody & body, const Vector3D & p_wcs){
@@ -30,18 +30,6 @@ Connector * ConnectorFactory::createWithWorldConnectionPoint(DynamicBody & body,
   if(body.getBodyType()==Particle::type){
     Particle * particle = static_cast<Particle*>(&body);
     return new ParticleConnector(*particle);
-  }
-  /*
-  RigidBody * rigidBody = dynamic_cast<RigidBody*>(&body);
-  if(rigidBody){
-   return  RigidBodyConnector::createWithWorldConnectionPoint(*rigidBody,p_wcs);
-  }
-  Particle * particle = dynamic_cast<Particle*>(&body);
-
-  if(particle){
-    return new ParticleConnector(*particle);
-  }
-
-  */
+  }  
   return 0;
 }

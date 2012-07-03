@@ -60,6 +60,7 @@ void CollisionRenderer::afterStep(Real t, Real h){
 
 
 void CollisionRenderer::render(){
+  if(!_render)return;
   if(renderCollisionTrace()){
   for_each(collisions.begin(), collisions.end(), [this](RenderContact * rc){
     Contact & p = *rc;
