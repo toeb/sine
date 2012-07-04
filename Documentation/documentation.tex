@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage[ngerman]{babel}
 \usepackage{enumerate}
+\usepackage{wrapfig}
 
 \title{Praktikum: Dynamischen Simulation von Mehrkörpersystemen}
 \subtitle{Dokumentation}
@@ -45,6 +46,16 @@ In den folgenden Abschnitten wird jeder Bereich der Implementation besprochen.  
 \subsection{Framework}
 Das Simulationsframework basiert insbesondere auf zwei Klassen: ISimulationObject und ISimulationModule.  Der Zusammenhang wird in Grafik \ref{} verdeutlicht:  ISimulationObject ist die Basisklasse für alle grundlegenden Simulationsklassen.  Die Klasse ISimulationObject bietet die Möglichkeit instanzen zu benennen außerdem bietet sie Initialisierungs- und Aufräumfunktionalität die über einfache Konstruktoren / Destruktoren nicht möglich sind. So besteht die Möglichkeit für Subklassen die Methoden initializeObject():bool sowie cleanupObject():void zu überschreiben.  Dabei schützt das ISimulationObject seinen eigenen Zustand: Entweder es ist initialisiert oder nicht.  Es wird sichergestellt das das Objekt nur einmal initialisiert werden kann und kann nur aufgeräumt - (cleanup()) - werden falls es initialisiert ist.  Dies ist Praktisch für größere Vorrausberechnungen oder das Laden von Daten.
 
+\begin{wrapfigure}{r}{0.75\textwidth}
+\vspace{-20pt}
+	\begin{center}	 
+		\includegraphics[width=0.75\textwidth]{Architektur.png}
+	\end{center}
+	\caption{Zentrale Architektur des Frameworks}
+	\label{fig:coreArchitecture}
+	\vspace{-20pt}
+\end{wrapfigure}
+
 Das ISimulationModule ist eine Subklasse von ISimulationObject und wird verwendet von den verschiedenen Bereichen der Simulation um SimulationObject zu verwalten.  Ein Beispiel ist am einfachsten:  Der Dynamikalgorithmus muss alle Gelenke der Simulation kennen.  Deswegen nimmt er über die methode addSimulationObject(ISimulationObject * ):bool nur Objekte des types Joint entgegen um diese weiter zu verwedenen.  Diese Module machen im Endeffekt die Simulation aus; sie gruppieren die entsprechenden Objekte zusammen um sie währen des Simulationschrittes korrekt auszuführen.
 
 \subsection{Kinematik - simulation/kinematics}
@@ -80,22 +91,26 @@ Das DynamicBodyModule ist das Simulationmodul welches die dynamischen Körper sam
 
 \subsection{Verbindung - simulation/dynamics/connection}
 
-Um Dynamische Körper zu verbinden mit Federn, Gelenken oder anderem wurde die Klasse Connector erstellt. Diese bietet die Möglichkeit
+Um Dynamische Körper zu verbinden mit Federn, Gelenken oder anderem wurde das Verbindungstück entwickelt, dieses ist in der Klasse Connector modelliert. Diese bietet die Möglichkeit einen beliebige Punkt im lokalen Koordinatensystem eines Dynamischen Körpers zu speichern und als Angriffspunkt für Kräfte, Impulse oder ähnlichem zu verwenden.  Für Festkörper und Partikel wurden eigene Implementierungen des Connectors entwickelt welche in RigidBodyConnector und ParticleConnector zu finden sind.  Ein ParticleConnector ist eine degenerierte Version des RigidBodyConnectors, da ein Particle mangels Trägheitstensor und Ausdehnung nur an dem Lokalen Ursprung verbunden werden kann.
 
-\begin{itemize}
-
-\end{itemize}
-
-\subsection{Kräfte}
+Da häufig Verbindungsstücke erstellt und gelöscht werden, für die verschiedenen dynamischen Körpertypen, wurde die Klasse ConnectorFactory erstellt welche sich um die Speicherverwaltung der Connectorobjekte kümmert.  
 
 
+\subsection{Kräfte und Federn- simulation/force}
 
-\subsection{Geometrie}
+Das Kräftemodell ist relativ einfach gestalltet.  Das Kräftemodul ForceModule filtert sich alle Force Objekte sowie DynamicBody Objekte heraus.  In jedem Dynamischen Körper ist ein Kraftakkumulator welcher über DynamicBody::addExternalForce/Torque externe Kräfte hinzugefügt bekommt.  Dieser wird am anfang des Simulationsschrittes zurückgesetzt auf null. Danach wird jede einzelne Kraft angewendetet.  Jede Kraft kann dabei eine Funktion sein die auf alle, einige oder einzelne Dynamischen Körper wirkt.  Dies ermöglicht beispielsweise die Modellierung von Schwerkraft - in der Lösung in der Klasse Gravity - oder Federn. Die zentrale Methode bei den Kräften ist Force::act(vector<DynamicBody*> \& bodies, Real time, Real stepSize)  Es ist also möglich beliebige Zeitabhängige Kraftfelder auf alle Körper wirken zu lassen 
 
+Das Federmodell, gefunden in der Klasse DampenedSpring, modelliert eine Feder mit Federkonstante $F_C$ und Dämpfungskonstante $F_d$.  Um die Federkräfte auf Partikel und Starrkörper anzuwenden wird hier jedoch der Umweg über die Verbindungstücke gegangen. 
 
+\subsection{Mehrkörperdynamik - simulation/multibody}
 
+\subsection{Textilsimulation - simulation/textile}
 
+\subsection{Geometrie - simulation/geometry}
 
+\subsection{Kollisionserkennung - simulation/collision/detection}
+
+\subsection{Kollisionsbehandlung - simulation/collision/handling/impulsebased}
 
 
 
