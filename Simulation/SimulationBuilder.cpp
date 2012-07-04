@@ -1,5 +1,6 @@
 #include "SimulationBuilder.h"
 #include <sstream>
+#include <Simulation/Dynamics/Connection/ConnectorFactory.h>
 using namespace std;
 using namespace IBDS;
 
@@ -137,32 +138,16 @@ Connector* SimulationBuilder::createConnector(string bodyName, const Vector3D & 
     body = dynamic_cast<DynamicBody*>(getObject(bodyName));
   }
   if(!body)return 0;
-  Connector * connector = createRigidBodyConnector(body,position);
-  if(!connector){
-   connector = createParticleConnector(body,position);
-  }
+  Connector * connector = ConnectorFactory::instance().createWithWorldConnectionPoint(*body,position);
   if(!connector)return 0;
   connector->setName(createConnectorName(bodyName,connectsTo));
   return connector;
 }
 
-ParticleConnector * SimulationBuilder::createParticleConnector(DynamicBody* body, const Vector3D & position){
-  Particle * particle = dynamic_cast<Particle*>(body);
-  if(!particle)return 0;
- 
-  ParticleConnector* connector = new ParticleConnector(*particle);
-  return connector;
-}
 std::map<std::string,ISimulationObject *> & SimulationBuilder::getSimulationObjects(){
   return _simulationObjects;
 }
 
-RigidBodyConnector * SimulationBuilder::createRigidBodyConnector(DynamicBody* body, const Vector3D &position){
-  RigidBody* rigidBody = dynamic_cast<RigidBody*>(body);
-  if(!rigidBody)return 0;    
-  RigidBodyConnector * result = RigidBodyConnector::createWithWorldConnectionPoint(*rigidBody,position);
-  return result;
-}
 
 ISimulationObject* SimulationBuilder::getObject(string name){
   if(!nameExists(name))return 0;

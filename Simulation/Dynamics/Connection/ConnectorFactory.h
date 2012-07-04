@@ -4,6 +4,7 @@
 #include <Simulation/Dynamics/Connection/Connector.h>
 namespace IBDS{
   class ConnectorFactory{
+  private:
   static ConnectorFactory * _instance;
   public:
     static inline ConnectorFactory & instance(){
@@ -11,7 +12,7 @@ namespace IBDS{
     }
     Connector * createWithLocalConnectionPoint(DynamicBody& body, const Vector3D & p_ocs = Vector3D::Zero());
     Connector * createWithWorldConnectionPoint(DynamicBody& body, const Vector3D & p_wcs = Vector3D::Zero());
-  
+    void freeConnector(Connector * connector);
   
   };
 

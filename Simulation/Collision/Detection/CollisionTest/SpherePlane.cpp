@@ -3,13 +3,6 @@
 
 using namespace IBDS;
 
-const TypeId SpherePlane::getTypeA()const{
-  return Sphere::type;
-}
-const TypeId SpherePlane::getTypeB()const{
-  return Plane::type;
-}
-
 bool SpherePlane::testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const{
   const Sphere & sphere = dynamic_cast<const Sphere&>(a);
   const Plane & plane = dynamic_cast<const Plane & >(b);
@@ -38,7 +31,7 @@ bool SpherePlane::testCollision(const Sphere & sphere, const Plane & plane, Coll
   contact->normal = -normalAxis.n;
 
   //set point of collision of sphere
-  contact->pA_wcs = sphere.coordinates().position() + sphere.getRadius() * contact->normal;
+  contact->pA_wcs = sphere.coordinates().position() + sphere.radius() * contact->normal;
   
   //project the collisionPoint of sphere onto plane
   plane.projectOnPlane(contact->pA_wcs,contact->pB_wcs);

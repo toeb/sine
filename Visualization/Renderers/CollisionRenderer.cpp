@@ -85,15 +85,15 @@ void CollisionRenderer::render(){
   _detector.foreachContact([](Collision * c, Contact * contact){
     
     Contact & p = *contact;
-      MiniGL::drawPoint(p.pA_wcs,10,MiniGL::blue);
-      MiniGL::drawVector(p.pA_wcs,p.pA_wcs+p.normal,5,MiniGL::blue);
+      MiniGL::drawPoint(p.pA_wcs,2,MiniGL::blue);
+      MiniGL::drawVector(p.pA_wcs,p.pA_wcs+p.normal,1,MiniGL::blue);
 
 
-      MiniGL::drawPoint(p.pB_wcs,10,MiniGL::green);
-      MiniGL::drawVector(p.pB_wcs,p.pB_wcs-p.normal,5,MiniGL::green);
+      MiniGL::drawPoint(p.pB_wcs,1,MiniGL::green);
+      MiniGL::drawVector(p.pB_wcs,p.pB_wcs-p.normal,1,MiniGL::green);
 
           
-      MiniGL::drawVector(p.pA_wcs,p.pA_wcs - (p.normal*p.penetrationDepth),2,MiniGL::darkblue);
-      MiniGL::drawVector(p.pB_wcs,p.pB_wcs + (p.normal*p.penetrationDepth),2,MiniGL::darkblue);
+      MiniGL::drawVector(p.pA_wcs,p.pA_wcs - (p.normal*p.penetrationDepth),1,MiniGL::darkblue);
+      MiniGL::drawVector(p.pB_wcs,p.pB_wcs + (p.normal*p.penetrationDepth),1,MiniGL::darkblue);
   });
 }

@@ -5,13 +5,6 @@
 using namespace IBDS;
 
 
-const TypeId OctreePlane::getTypeA()const{
-  return Octree::type;
-}
-const TypeId OctreePlane::getTypeB()const{
-  return Plane::type;
-}
-
  bool OctreePlane::testCollision(const ISimulationObject & obja, const ISimulationObject & objb,Collision * collision)const{
    
   const Octree & a = dynamic_cast<const Octree &>(obja);

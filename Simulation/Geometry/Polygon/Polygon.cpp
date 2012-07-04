@@ -12,7 +12,7 @@ const TypeId Polygon::getType()const{
 
 Classification classifySphere(const BoundingSphere & sphere, const Polygon & polygon){
   const Vector3D & c = sphere.getPositionPCS();
-  Real radius = sphere.getRadius();
+  Real radius = sphere.radius();
   Axis currentAxis;
   Interval a;
     Interval b;

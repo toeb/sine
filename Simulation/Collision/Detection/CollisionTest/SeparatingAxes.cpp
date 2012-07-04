@@ -4,12 +4,6 @@ using namespace std;
 using namespace IBDS;
 
 
-const TypeId SeparatingAxes::getTypeA()const{
-  return Polygon::type;
-}
-const TypeId SeparatingAxes::getTypeB()const{
-  return Polygon::type;
-}
 
 bool SeparatingAxes::testCollision(const ISimulationObject & collidableA, const ISimulationObject & collidableB, Collision * collision)const{
   

@@ -23,6 +23,15 @@ public:
       }
     }
     return 0;
+
+    /*
+      const CollisionTest * current=0;
+    auto result = std::find_if(_tests.begin(), _tests.end(), [&a,&b](const CollisionTest* test){
+      return test->getTypeA()==a && test->getTypeB()==b;
+    });
+    if(_tests.end() == result)return 0;
+    return *result;
+    */
   }
 
   const CollisionTest* getTest(const ISimulationObject & a,const ISimulationObject & b)const;

@@ -4,12 +4,6 @@
 using namespace IBDS;
 
 
-const TypeId OctreeOctree::getTypeA()const{
-  return Octree::type;
-}
-const TypeId OctreeOctree::getTypeB()const{
-  return Octree::type;
-}
 
  bool OctreeOctree::testCollision(const ISimulationObject & obja, const ISimulationObject & objb,Collision * collision)const{
   const Octree & a = dynamic_cast<const Octree &>(obja);
@@ -41,7 +35,7 @@ const TypeId OctreeOctree::getTypeB()const{
   //else test collision of the children of the larger octree or the octree which isnot   leaf;
   bool collisionDetected = false;
   // if b is leaf split a, else split the octree with the larger radius if a is no a leaf
-  if(b.isLeaf() || sphereA.getRadius() > sphereB.getRadius()&& !a.isLeaf()){
+  if(b.isLeaf() || sphereA.radius() > sphereB.radius()&& !a.isLeaf()){
     //refine a
     for(int i = 0; i < 8; i ++){
       const Octree * child_i = a.child(static_cast<OctreeNodeId>(i));

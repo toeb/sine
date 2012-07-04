@@ -10,17 +10,8 @@ private:
   ///< The sphere test (the octrees bounding volumes are statically represented as spheres)
   SphereSphere sphereTest;
 public:
+  OctreeOctree():CollisionTest(Octree::type,Octree::type){}
 
-  /**
-   * \brief returns Octree::type
-   * \return The type a.
-   */
-  const TypeId getTypeA()const;
-  /**
-   * \brief returns Octree::type
-   * \return The type b.
-   */
-  const TypeId getTypeB()const;
 
 
   bool testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const;

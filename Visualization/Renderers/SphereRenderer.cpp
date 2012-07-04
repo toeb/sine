@@ -20,6 +20,6 @@ void SphereRenderer::render(){
   MiniGL::translate(pos);
   MiniGL::multMatrix(orientation);
 
-  MiniGL::drawSphere(&Vector3D::Zero(),_sphere.getRadius(),color);
+  MiniGL::drawSphere(&Vector3D::Zero(),_sphere.radius(),color);
   MiniGL::popMatrix();
 }

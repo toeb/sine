@@ -1,17 +1,13 @@
 #pragma once
 
-#pragma once
-
-
-
 #include <Simulation/Dynamics/Connection/Connector.h>
 #include <Simulation/Collision/Contact.h>
 #include <Simulation/Collision/Handling/ImpulseBased/DynamicCollidable.h>
 namespace IBDS{
 
-	enum ContactType {COLLISION, RESTING_CONTACT, DRIFTING_APART, UNKNOWN};
+enum ContactType {COLLISION, RESTING_CONTACT, DRIFTING_APART, UNKNOWN};
 
-	class DynamicContact{
+class DynamicContact{
 	private:
 		Contact _contact;
 
@@ -20,12 +16,9 @@ namespace IBDS{
 
 		DynamicCollidable & _collidableA;
 		DynamicCollidable & _collidableB;
-
-
+    
 		Vector3D _accumulatedImpulse;
-
-
-	public:
+  public:
 
 		Contact & contact(){return _contact;}
 
@@ -63,8 +56,7 @@ namespace IBDS{
 		* an impulse is applied in order to make the accumulated impulse 0.
 		*/
 		void applyNormalImpulse(Vector3D &p);
-
-		void applyTangentialImpulse(Vector3D &p);
+    void applyTangentialImpulse(Vector3D &p);
 
 		};
 

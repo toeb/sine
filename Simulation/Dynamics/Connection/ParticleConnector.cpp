@@ -1,7 +1,8 @@
 #include "ParticleConnector.h"
 using namespace IBDS;
 
-ParticleConnector::ParticleConnector(Particle & p):Connector(p), _particle(p) {
+ParticleConnector::ParticleConnector(Particle & p):Connector(p), _particle(p){
+
 }
 
 ParticleConnector::~ParticleConnector(void)

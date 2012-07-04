@@ -9,8 +9,7 @@ class OctreePlane : public CollisionTest{
 private:
   SpherePlane test;
 public:
-  const TypeId getTypeA()const;
-  const TypeId getTypeB()const;
+  OctreePlane():CollisionTest(Octree::type,Plane::type){}
   bool testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const;
   bool testCollision(const Octree & a, const Plane & b, Collision * collision)const;
 

@@ -5,13 +5,6 @@
 using namespace IBDS;
 
 
-const TypeId SphereOctree::getTypeA()const{
-  return Sphere::type;
-}
-const TypeId SphereOctree::getTypeB()const{
-  return Octree::type;
-}
-
  bool SphereOctree::testCollision(const ISimulationObject & obja, const ISimulationObject & objb,Collision * collision)const{
 
    const Sphere & a = dynamic_cast<const Sphere &>(obja);

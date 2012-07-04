@@ -58,4 +58,8 @@ public:
     return *this;
   }
 };
+
+class NamedValueHolder{
+
+};
 }

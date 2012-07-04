@@ -5,8 +5,7 @@
 namespace IBDS{
 class SphereSphere : public CollisionTest{
 public:  
-  const TypeId getTypeA()const;
-  const TypeId getTypeB()const;
+  SphereSphere():CollisionTest(Sphere::type,Sphere::type){}
   bool testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const;
   bool testCollision(const Sphere & a, const Sphere & b, Collision * collision)const;
 };

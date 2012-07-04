@@ -263,7 +263,7 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
   //*
   Connector * connector = dynamic_cast<Connector*>(simulationObject);
   if(connector){
-   addSimulationObject(new ConnectorRenderer(*connector));
+   //addSimulationObject(new ConnectorRenderer(*connector));
     //addRenderer(new ConnectorVelocityRenderer(*connector));
     //addRenderer(new ConnectorForceRenderer(*connector));
   }

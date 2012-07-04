@@ -5,8 +5,7 @@
 namespace IBDS{
 class SeparatingAxes : public CollisionTest{  
 public:
-  const TypeId getTypeA()const;
-  const TypeId getTypeB()const;
+  SeparatingAxes():CollisionTest(Polygon::type,Polygon::type){}
 
   bool testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const;
 };

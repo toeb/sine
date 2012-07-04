@@ -1,6 +1,7 @@
 #include "TextileModel.h"
 #include <algorithm>
 #include <vector>
+#include <Simulation/Dynamics/Connection/ConnectorFactory.h>
 #include <Simulation/Dynamics/Connection/ParticleConnector.h>
 #include <functional>
 using namespace std;
@@ -181,7 +182,7 @@ Particle * TextileModel::createParticle(TextileNode * node, const Vector3D & pos
     p = new Particle();
 
 	node->particle = p;
-    node->connector = new ParticleConnector(*p);
+  node->connector = (ParticleConnector*) ConnectorFactory::instance().createWithLocalConnectionPoint(*p,Vector3D::Zero());
     
 	addSimulationObject(node->connector);
     //addSimulationObject(p);

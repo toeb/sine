@@ -5,7 +5,11 @@ using namespace IBDS;
 
 
 ConnectorFactory * ConnectorFactory::_instance = new ConnectorFactory();
-  
+
+void ConnectorFactory::freeConnector(Connector * connector){
+  delete connector;
+}
+
 Connector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody & body, const Vector3D & p_ocs){
 
   RigidBody * rigidBody = dynamic_cast<RigidBody*>(&body);

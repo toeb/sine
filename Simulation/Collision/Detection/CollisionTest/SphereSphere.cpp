@@ -3,12 +3,6 @@
 using namespace IBDS;
 using namespace std;
   
-const TypeId SphereSphere::getTypeA()const{
-  return Sphere::type;
-}
-const TypeId SphereSphere::getTypeB()const{
-  return Sphere::type;
-}
 
 bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision * collision)const{
   Vector3D collisionNormal;
@@ -29,8 +23,8 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   // normalise the vector from A to B  to get the normal
   Vector3D::multiplyScalar(1.0/length,collisionNormal,collisionNormal);
 
-  Real radiusA = A.getRadius();
-  Real radiusB = B.getRadius();
+  Real radiusA = A.radius();
+  Real radiusB = B.radius();
 
   //add radii of the spheres
   Real combinedRadii = radiusA+radiusB;

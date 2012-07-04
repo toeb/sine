@@ -12,14 +12,15 @@ namespace IBDS {
 	private:
 		// pointer to the associated particle
 		Particle & _particle;
-  public:
-		~ParticleConnector(void);
-
 		/**
 		 * Create an instance of this class associated with p
 		 * \param p pointer to the particle to associate this object with.
 		 */
 		ParticleConnector(Particle &p);
+  public:
+    friend class ConnectorFactory;
+		~ParticleConnector(void);
+
 
 		const Vector3D &  getObjectCoordinatePosition()const;
 		void addExternalForceToBody(const Vector3D &f);		

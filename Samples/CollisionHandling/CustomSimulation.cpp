@@ -174,8 +174,8 @@ void CustomSimulation::buildModel(){
     {
       Quaternion orientation;
       orientation.setFromAxisAngle(Vector3D(1,0,0),PI /2);
-      int clothDim = 30;
-      TextileModel * cloth = TextileModel::createTextileModel(Vector3D(10,0,12),orientation.getMatrix3x3(),200,8,8,clothDim,clothDim);
+      int clothDim = 20;
+      TextileModel * cloth = TextileModel::createTextileModel(Vector3D(10,0,12),orientation.getMatrix3x3(),clothDim*clothDim,clothDim/5,clothDim/5,clothDim,clothDim);
       cloth->setElongationSpringConstant(80);
       cloth->setFlexionSpringConstant(80);
       cloth->setShearSpringConstant(80);

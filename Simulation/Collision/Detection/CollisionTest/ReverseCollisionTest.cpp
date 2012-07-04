@@ -4,16 +4,10 @@
 using namespace IBDS;
 using namespace std;
 
-ReverseCollisionTest::ReverseCollisionTest(CollisionTest & test):forwardTest(test){
+ReverseCollisionTest::ReverseCollisionTest(CollisionTest & test):CollisionTest(test.getTypeB(),test.getTypeA()),forwardTest(test){
 
 }
 
-const TypeId ReverseCollisionTest::getTypeA()const{
-  return forwardTest.getTypeB();
-}
-const TypeId ReverseCollisionTest::getTypeB()const{
-  return forwardTest.getTypeA();
-}
 bool ReverseCollisionTest::testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const{
   if(!collision) {
     return forwardTest.testCollision(b,a,0);

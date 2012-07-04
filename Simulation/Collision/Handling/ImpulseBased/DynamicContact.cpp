@@ -15,13 +15,12 @@ void DynamicContact::getRelativeVelocityVector (Vector3D & out) {
 	connectorB().calculateCachedValues();
 	const Vector3D &v1 = connectorA().getWorldVelocity();
 	const Vector3D &v2 = connectorB().getWorldVelocity();
-
-	Vector3D::subtract(v2, v1, out);
+  Vector3D::subtract(v2, v1, out);
 }
 
 DynamicContact::~DynamicContact(){
-  delete _cA;
-  delete _cB;
+  ConnectorFactory::instance().freeConnector(_cA);
+  ConnectorFactory::instance().freeConnector(_cB);
   _cA = 0;
   _cB = 0;
 }
@@ -91,9 +90,10 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 		connectorB().applyImpulse(_accumulatedImpulse);
 		_accumulatedImpulse.setZero();
 	}
-	}
+}
+
 void DynamicContact::applyTangentialImpulse(Vector3D &p) {
 	connectorA().applyImpulse(p);
-	connectorB().applyImpulse(-p);
-	}
+  connectorB().applyImpulse(-p);
+}
 

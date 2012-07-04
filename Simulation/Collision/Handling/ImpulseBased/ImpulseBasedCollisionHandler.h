@@ -13,11 +13,12 @@ class ImpulseBasedCollisionHandler : public SimulationModuleBase<DynamicCollidab
 private:
   CollisionDetector & _detector;
   ImpulseBasedDynamicsAlgorithm & _ibdsAlgorithm;
-  void addContactJoint(DynamicContact & contact);
   int _collisionsCount;	// keeps track of the handled collisions
+  void addContactJoint(DynamicContact & contact);
+  void handleContact(DynamicContact & contact);
 public:
   ImpulseBasedCollisionHandler(CollisionDetector & detector, ImpulseBasedDynamicsAlgorithm & dynamics);
-  void handleContact(DynamicContact & contact);
+
   void handleCollisions();
   void reset();
   

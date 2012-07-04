@@ -43,7 +43,7 @@ void OctreeRenderer::render(){
     
     BoundingSphere * bs = dynamic_cast<BoundingSphere*>(volume);
     if(bs){
-      MiniGL::drawSphere(&(bs->getPositionPCS()),bs->getRadius(),color,14U);
+      MiniGL::drawSphere(&(bs->getPositionPCS()),bs->radius(),color,14U);
     }
     //MiniGL::drawCube(&center,&((Matrix3x3::Identity())),aabb.getWidth(), aabb.getHeight(), aabb.getDepth(),color);
     

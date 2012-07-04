@@ -10,7 +10,7 @@ const TypeId Sphere::getType()const{
 }
 
 Classification classifyBoundingBox(const BoundingBox & aabb_ocs, const Sphere & sphere){
-  Real radius = sphere.getRadius();
+  Real radius = sphere.radius();
 
   Vector3D center;
   aabb_ocs.getCenter(center);
@@ -85,9 +85,6 @@ Real Sphere::calculateBoundingSphereRadius()const{
 }
 
 
-Real Sphere::getRadius()const{
-  return _radius;
-}
 void Sphere::setRadius(Real radius){
   if(radius < 0){
     cout<<"Sphere radius was smaller than zero";

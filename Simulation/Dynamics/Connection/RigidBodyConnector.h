@@ -20,12 +20,13 @@ namespace IBDS {
 		 * \param r pointer to the position of the connector in object coordinates
 		 */
 		RigidBodyConnector(RigidBody & b, const Vector3D & r);
-	public:
-		~RigidBodyConnector(void);
-
 
     static RigidBodyConnector * createWithLocalConnectionPoint(RigidBody & body, const Vector3D & r_ocs);
     static RigidBodyConnector * createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs);
+	public:    
+    friend class ConnectorFactory;
+		~RigidBodyConnector(void);
+
 
     /**
      * \brief Gets the position of the connector in object coordinates

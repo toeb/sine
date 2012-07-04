@@ -19,4 +19,10 @@ public:
     _delegate(t,h);
   }
 };
+class CommandModule{
+
+};
+class ICommand : ISimulationObject{
+
+};
 }

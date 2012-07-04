@@ -25,6 +25,6 @@ const Vector3D & BoundingSphere::getPositionPCS()const{
 }
 void BoundingSphere::projectPCS(const Axis & axis, Interval & result)const{
   Real val = axis.projectOnAxis(_p_pcs);
-  result.a = val-getRadius();
-  result.b = val+getRadius();
+  result.a = val-radius();
+  result.b = val+radius();
 }

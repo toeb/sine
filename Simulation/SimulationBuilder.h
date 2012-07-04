@@ -205,31 +205,7 @@ class SimulationBuilder{
      */
     Connector* createConnector(std::string bodyName, const Vector3D & position, std::string connectsTo="Unknown");
 
-    /**
-     * \brief Creates a particle connector.
-     *
-     * \author Tobi
-     * \date 09.05.2012
-     *
-     * \param [in,out] body If non-null, the body.
-     * \param position      The position.
-     *
-     * \return null if it fails, else.
-     */
-    ParticleConnector * createParticleConnector(DynamicBody* body, const Vector3D & position);
 
-    /**
-     * \brief Creates a rigid body connector.
-     *
-     * \author Tobi
-     * \date 09.05.2012
-     *
-     * \param [in,out] body If non-null, the body.
-     * \param position      The position.
-     *
-     * \return null if it fails, else.
-     */
-    RigidBodyConnector * createRigidBodyConnector(DynamicBody* body, const Vector3D &position);  
 
     /**
      * \brief Adds a simulation object. 

@@ -11,7 +11,7 @@ public:
 
   Real calculateBoundingSphereRadius()const;
 
-  Real getRadius()const;
+  inline Real radius()const{return _radius;};
   void setRadius(Real radius);
 
   

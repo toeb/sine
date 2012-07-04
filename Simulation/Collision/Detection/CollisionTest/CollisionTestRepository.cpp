@@ -12,9 +12,9 @@
 using namespace IBDS;
 
 CollisionTestRepository::CollisionTestRepository(){
-  addTest(new OctreeOctree());
   addTest(new SphereSphere());
   addTest(new SpherePlane());
+  addTest(new OctreeOctree());
   addTest(new ReverseCollisionTest(*(new SpherePlane())));
   addTest(new OctreePlane());  
   addTest(new ReverseCollisionTest(*(new OctreePlane())));
