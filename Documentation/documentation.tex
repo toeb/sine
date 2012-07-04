@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage[ngerman]{babel}
 \usepackage{enumerate}
+\usepackage{wrapfig}
 
 \title{Praktikum: Dynamische Simulation von Mehrkörpersystemen}
 \subtitle{Dokumentation}
@@ -38,6 +39,15 @@ In den folgenden Abschnitten wird jeder Bereich der Implementation besprochen. D
 
 \section{Framework}
 Das Simulationsframework basiert insbesondere auf zwei Klassen: ISimulationObject und ISimulationModule.  Der Zusammenhang wird in Grafik \ref{} verdeutlicht:  ISimulationObject ist die Basisklasse für alle grundlegenden Simulationsklassen.  Die Klasse ISimulationObject kapselt die Namen der Objekte und bietet Initialisierungs- und Aufräumfunktionalität, die über einfache Konstruktoren / Destruktoren nicht möglich ist. ISimulationObject schützt seinen eigenen Zustand: Es wird sichergestellt, dass das Objekt nur einmal initialisiert und nur aufgeräumt werden kann, falls es initialisiert ist.  Dies ist praktisch für größere Vorausberechnungen oder das Laden von Daten.
+
+\begin{wrapfigure}{r}{0.75\textwidth}
+\vspace{-20pt}\begin{center}	 
+\includegraphics[width=0.75\textwidth]{Architektur.png}
+\end{center}
+\caption{Zentrale Architektur des Frameworks}
+\label{fig:coreArchitecture}
+\vspace{-20pt}
+\end{wrapfigure}
 
 ISimulationModule ist eine Subklasse von ISimulationObject und wird in verschiedenen Bereichen der Simulation verwendet um ISimulationObject-Instanzen, für die sie zuständig ist, zu gruppieren und während des Simulationschrittes korrekt zu verarbeiten. So kümmert sich z.B. der Dynamikalgorithmus um alle Gelenke der Simulation. ISimulationModules machen im Endeffekt die Simulation aus, weil sie die wesentliche Funktionalität beinhalten. 
 
@@ -74,26 +84,32 @@ Das DynamicBodyModule ist das Simulationmodul welches die dynamischen Körper sam
 
 \section{Verbindung - simulation/dynamics/connection}
 
-Um Dynamische Körper zu verbinden mit Federn, Gelenken oder anderem wurde die Klasse Connector erstellt. Diese bietet die Möglichkeit
+Um Dynamische Körper zu verbinden mit Federn, Gelenken oder anderem wurde das Verbindungstück entwickelt, dieses ist in der Klasse Connector modelliert. Diese bietet die Möglichkeit einen beliebige Punkt im lokalen Koordinatensystem eines Dynamischen Körpers zu speichern und als Angriffspunkt für Kräfte, Impulse oder Ähnlichem zu verwenden.  Für Festkörper und Partikel wurden eigene Implementierungen des Connectors entwickelt welche in RigidBodyConnector und ParticleConnector zu finden sind.  Ein ParticleConnector ist eine degenerierte Version des RigidBodyConnectors, da ein Particle mangels Trägheitstensor und Ausdehnung nur an dem Lokalen Ursprung verbunden werden kann.
 
-\begin{itemize}
+Da häufig Verbindungsstücke erstellt und gelöscht werden, für die verschiedenen dynamischen Körpertypen, wurde die Klasse ConnectorFactory erstellt welche sich um die Speicherverwaltung der Connectorobjekte kümmert. 
 
-\end{itemize}
+\section{Kräfte und Federn- simulation/force}
 
-\section{Kräfte}
+Das Kräftemodell ist relativ einfach gestalltet.  Das Kräftemodul ForceModule filtert sich alle Force Objekte sowie DynamicBody Objekte heraus.  In jedem
+Dynamischen Körper ist ein Kraftakkumulator welcher über DynamicBody::addExternalForce/Torque externe Krüfte hinzugefügt bekommt.  Dieser wird am anfang des
+Simulationsschrittes zurückgesetzt auf null. Danach wird jede einzelne Kraft angewendetet.  Jede Kraft kann dabei eine Funktion sein die auf alle, einige oder
+einzelne Dynamischen Körper wirkt.  Dies ermöglicht beispielsweise die Modellierung von Schwerkraft - in der Lösung in der Klasse Gravity - oder Federn. Die zentrale
+Methode bei den Kräften ist Force::act(vector<DynamicBody*> \& bodies, Real time, Real stepSize)  Es ist also möglich beliebige Zeitabhängige Kraftfelder auf
+alle Körper wirken zu lassen 
+
+Das Federmodell, gefunden in der Klasse DampenedSpring, modelliert eine Feder mit Federkonstante $F_C$ und Dämpfungskonstante $F_d$.  Um die Federkräfte auf
+Partikel und Starrkörper anzuwenden wird hier jedoch der Umweg über die Verbindungstücke gegangen. 
+
+\section{Mehrkörperdynamik - simulation/multibody}
 
 
+\section{Textilsimulation - simulation/textile}
 
-\section{Geometrie}
+\section{Geometrie - simulation/geometry}
 
+\section{Kollisionserkennung - simulation/collision/detection}
 
-
-
-
-
-
-
-
+\section{Kollisionsbehandlung - simulation/collision/handling/impulsebased}
 
 \chapter{Optimierung}
 vermeiden von virtuellen methoden
