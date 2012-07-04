@@ -19,24 +19,93 @@ void ContactJoint::calculateDistancePreview(Real h, Vector3D & d)const{
 	d.assign(b-a);
 }
 
+void ContactJoint::applyNormalImpulses(Matrix3x3 &K, Vector3D &v_n, Vector3D &p_a_n) {
+	// do not enforce contact if there is no interpenetration
+	if (_positionError_n < 0) {
+		Real denominator_n;
+		Vector3D::dotProduct(_normal, K * _normal, denominator_n);
+		Vector3D::multiplyScalar(1 / denominator_n, v_n, p_a_n);
+		contact().applyNormalImpulse(p_a_n);
+		}
+	}
+
+void ContactJoint::simulateStaticFriction(Real h, Vector3D& d, Vector3D& v_n, Matrix3x3 &K_gc) {
+	// approximation of tangential velocity based on a distance preview:
+	Vector3D v_t = (1/h) * d - v_n;		
+	Vector3D tangent(v_t);
+	if (tangent.length() != 0) {
+		tangent.normalize();
+
+		Real denominator_t;
+		Vector3D p_a_t;
+		Vector3D::dotProduct(tangent, K_gc * tangent, denominator_t);
+		Vector3D::multiplyScalar(1 / denominator_t, v_t, p_a_t);
+		contact().applyTangentialImpulse(p_a_t);
+		}
+	}
+
+void ContactJoint::simulateDynamicFriction(Vector3D &p_a_n, Vector3D &u_rel_t, Matrix3x3 &K_gc) {
+	Vector3D tangent(u_rel_t);
+	tangent.normalize();
+
+	Real denominator_t;
+	Vector3D p_a_t_max;
+	Vector3D::dotProduct(tangent, K_gc * tangent, denominator_t);
+	Vector3D::multiplyScalar(1 / denominator_t, u_rel_t, p_a_t_max);
+
+	Real combinedFrictionCoefficient = contact().collidableA().getDynamicFrictionCoefficient() + contact().collidableB().getDynamicFrictionCoefficient();
+	Vector3D p_a_t;
+	Vector3D::multiplyScalar(combinedFrictionCoefficient * p_a_n.length(), tangent, p_a_t);	// insert friction coefficient here
+
+	Real dotProduct1, dotProduct2;
+	Vector3D::dotProduct(tangent,p_a_t_max,dotProduct1);
+	Vector3D::dotProduct(tangent,p_a_t,dotProduct2);
+
+	// apply either p_a_t or p_a_t_max, whichever is weaker 
+	// this ensures that the movement is slowed down but does not have its direction inverted
+	if (dotProduct1 > dotProduct2) 
+		contact().applyTangentialImpulse(p_a_t);
+	else 
+		contact().applyTangentialImpulse(p_a_t_max);
+	}
+
+void ContactJoint::applyTangentialImpulses(Real h, Vector3D& d, Vector3D& v_n, Vector3D& p_a_n) {
+	const Vector3D & a_wcs = connectorA().getCachedWorldPosition();
+	const Vector3D & b_wcs = connectorB().getCachedWorldPosition();
+
+	Vector3D u_rel, u_rel_t, u_rel_n;
+	contact().getRelativeVelocityVector(u_rel);
+	contact().getNormalRelativeVelocityVector(u_rel_n);
+	Vector3D::subtract(u_rel, u_rel_n, u_rel_t);
+
+	// K matrix for impulses applied at the center of gravity of the first body to achieve a desired velocity change in the point a
+	Matrix3x3 K_agc_a(0);	
+	// K matrix for impulses applied at the center of gravity of the second body to achieve a desired velocity change in the point b
+	Matrix3x3 K_bgc_b(0);	
+	connectorA().getKMatrix(K_agc_a,contact().connectorA().getBody().getCenterOfGravity(),a_wcs);
+	connectorB().getKMatrix(K_bgc_b,contact().connectorB().getBody().getCenterOfGravity(),b_wcs);
+	Matrix3x3 K_gc = K_agc_a + K_bgc_b;
+
+	if (u_rel_t.length() == 0) {
+		simulateStaticFriction(h, d, v_n, K_gc);
+		}
+	else {
+		simulateDynamicFriction(p_a_n, u_rel_t, K_gc);
+		}
+	}
+
 void ContactJoint::correctPosition(Real h) {
 	// get approximation of next distance
 	Vector3D d;
 	calculateDistancePreview(h,d);  
 	// store length of distance vector
-	_positionError = d.length();
+	_positionError_n = d.length();
 
 	/* Actually, a normal for t+h (preview) should be used! */
-	Vector3D::dotProduct(d, _normal, _positionError);
-
-	// do not enforce contact if there is no interpenetration
-	if (_positionError >= 0) return;
-
-	// abort if positions are within tolerance
-	if(arePositionsCorrect())return;
+	Vector3D::dotProduct(d, _normal, _positionError_n);
 
 	//approximate velocity
-	Vector3D v = (1/h) * _positionError * _normal;
+	Vector3D v_n = (1/h) * _positionError_n * _normal;
 
 	// calculate impulse correction
 	Matrix3x3  K_aa(0);
@@ -48,27 +117,22 @@ void ContactJoint::correctPosition(Real h) {
 
 	connectorA().getKMatrix(K_aa,a_wcs,a_wcs);
 	connectorB().getKMatrix(K_bb,b_wcs,b_wcs);
-
 	Matrix3x3 K = K_aa + K_bb;
 
-	Vector3D p_a;
-	// if the sum of the matrices is 0, do not invert it: use 0 for the inverse matrix, too, instead
-	if (K.isZero()) {
-    p_a.setZero();
-	}
-	else {
-		Real denominator;
-		Vector3D::dotProduct(_normal, K * _normal, denominator);
-		Vector3D::multiplyScalar(1 / denominator, v, p_a); 
-		}
-	Vector3D p_b = -p_a;
+	// if the sum of the matrices is 0, impulses must be infinite and hence cannot be applied
+	if (!K.isZero()) {
 
-	//apply correction impulse
-	contact().applyNormalImpulse(p_a);
-}
+		Vector3D p_a_n;
+		if(!arePositionsCorrect())
+			applyNormalImpulses(K, v_n, p_a_n);
+
+		applyTangentialImpulses(h, d, v_n, p_a_n);
+		}
+	}
+
 
 bool ContactJoint::arePositionsCorrect(){
-	return abs(_positionError) < _positionTolerance;
+	return abs(_positionError_n) < _positionTolerance;
 	}
 
 void ContactJoint::correctVelocity() {	/* not used	*/ }

@@ -26,12 +26,13 @@ IIntegrable & DynamicsAlgorithm::getIntegrable(){
 void DynamicsAlgorithm::preIntegration(Real t, Real h){
   dynamicBodyModule.calculateCachedValues(); 
   connectorModule.calculateConnectorPositions();
-  updatablesModule.update(t,h);  
+  updatablesModule.update(t,h);
+  collisionHandler.reset();
   if(detectCollisions){
 	  collisionDetector.reset();
 	  collisionDetector.update();
 	  collisionDetector.detectCollisions(t,h);
-    collisionHandler.handleCollisions();
+	collisionHandler.handleCollisions();
 	}
   if(doMultiBody)multiBodyDynamics.correctPositions(h);
 }

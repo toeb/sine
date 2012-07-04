@@ -60,7 +60,10 @@ ContactType DynamicContact::classify() {
   Real v_rel_n;
   getNormalRelativeVelocity(v_rel_n);
 
-  Real threshold = .16;//.16;//*10e-5;
+  Real tolerance = 10e-3;
+  Real gravity = 9.81;
+  Real threshold = sqrt(2*gravity*tolerance);
+
   if (v_rel_n >= threshold)
 	  return DRIFTING_APART;
   else if (v_rel_n > -threshold)
