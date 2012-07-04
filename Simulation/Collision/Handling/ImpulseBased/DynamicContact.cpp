@@ -15,12 +15,15 @@ void DynamicContact::getRelativeVelocityVector (Vector3D & out) {
 	connectorB().calculateCachedValues();
 	const Vector3D &v1 = connectorA().getWorldVelocity();
 	const Vector3D &v2 = connectorB().getWorldVelocity();
-  Vector3D::subtract(v2, v1, out);
+
+	Vector3D::subtract(v2, v1, out);
 }
 
 DynamicContact::~DynamicContact(){
   ConnectorFactory::instance().freeConnector(_cA);
   ConnectorFactory::instance().freeConnector(_cB);
+  /*delete _cA;
+  delete _cB;*/
   _cA = 0;
   _cB = 0;
 }
@@ -60,7 +63,7 @@ ContactType DynamicContact::classify() {
   getNormalRelativeVelocity(v_rel_n);
 
   Real tolerance = 10e-3;
-  Real gravity = 9.81;
+  Real gravity = 0.1;//9.81;
   Real threshold = sqrt(2*gravity*tolerance);
 
   if (v_rel_n >= threshold)
@@ -79,9 +82,10 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 	Vector3D::dotProduct(newAccumulatedImpulse, contact().normal, dotProduct);
 
 	if (dotProduct <= 0) {
-    connectorA().applyImpulse(p);
+		connectorA().applyImpulse(p);
 		connectorB().applyImpulse(-p);
 		Vector3D::add(_accumulatedImpulse, p, _accumulatedImpulse); 
+		
 	}
 
 	// anti-sticking:
@@ -90,10 +94,13 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 		connectorB().applyImpulse(_accumulatedImpulse);
 		_accumulatedImpulse.setZero();
 	}
-}
-
+	}
 void DynamicContact::applyTangentialImpulse(Vector3D &p) {
-	connectorA().applyImpulse(p);
-  connectorB().applyImpulse(-p);
-}
+	// tangential impulses are applied to the center of gravity of the bodies, 
+	// because applying them to the contact points produces ugly glitches for some reason...
+	DynamicBody &body1 = connectorA().getBody();
+	DynamicBody &body2 = connectorB().getBody();
+	body1.applyImpulse(body1.getCenterOfGravity(),p);
+	body2.applyImpulse(body2.getCenterOfGravity(),-p);
+	}
 

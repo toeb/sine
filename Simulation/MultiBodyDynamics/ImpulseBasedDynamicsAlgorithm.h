@@ -18,7 +18,7 @@ private:
   std::vector<Joint *> _temporaryJoints;
 public:
   int getLastNumberOfIterations()const;
-  ImpulseBasedDynamicsAlgorithm(int maxIterations=10, Real normalisation=100, Real positionTolerance=10e-3, Real velocityTolerance=10e-4);
+  ImpulseBasedDynamicsAlgorithm(int maxIterations=20, Real normalisation=100, Real positionTolerance=10e-3, Real velocityTolerance=10e-4);
   
   void foreachJoint(std::function<void(Joint *)> f){
     foreach(f);

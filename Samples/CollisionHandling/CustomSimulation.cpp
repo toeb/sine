@@ -74,8 +74,22 @@ void CustomSimulation::buildModel(){
 		auto renderer = new PlaneRenderer(plane->geometry());
 		addSimulationObject(renderer);
 		addSimulationObject(new RealValue("plane extent",renderer->extent()));
-		addSimulationObject(DynamicCollidable::create(plane->geometry(),plane->body()));
+		addSimulationObject(DynamicCollidable::create(plane->geometry(),plane->body(),0.5,0.01,0.01));
 		}
+
+		
+		DynamicBox *body = new DynamicBox(1,1,1,1);
+		Real planeAngle = -0.2;
+		body->coordinates().position().set(0+5*cos(planeAngle)-0.5*sin(planeAngle),-3.99+5*sin(planeAngle)+0.5*cos(planeAngle),0);
+		body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
+		addSimulationObject(new BoxRenderer(body->geometry()));
+		addSimulationObject(DynamicCollidable::create(*new Octree(body->geometry(),5,* new BoundingSphereFactory()),body->body(),0.5,0.01,0.02));
+
+		body = new DynamicBox(1,1,1,1);
+		body->coordinates().position().set(0+10*cos(planeAngle)-0.5*sin(planeAngle),-3.99+10*sin(planeAngle)+0.5*cos(planeAngle),0);
+		body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
+		addSimulationObject(new BoxRenderer(body->geometry()));
+		addSimulationObject(DynamicCollidable::create(*new Octree(body->geometry(),5,* new BoundingSphereFactory()),body->body(),0.5,0.01,10));
 
 		{
 		auto sphere = new DynamicSphere(1,1);
@@ -95,14 +109,14 @@ void CustomSimulation::buildModel(){
 		addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,* new BoundingSphereFactory()),box->body(),0.3,100,50));
 		}
 
-		{
-		auto pyramid = new DynamicGeometry<Pyramid>(*new Pyramid(),1,Matrix3x3::Identity());
-		addSimulationObject(pyramid);
-		addSimulationObject(new Vector3DValue("pyramid",pyramid->coordinates().position()));
-		addSimulationObject(new PolygonRenderer(pyramid->geometry()));
-		pyramid->coordinates().position().set(3,1,0);
-		addSimulationObject(DynamicCollidable::create(*new Octree(pyramid->geometry(),3,* new BoundingSphereFactory()),pyramid->body(),0.3));
-		}
+		//{
+		//auto pyramid = new DynamicGeometry<Pyramid>(*new Pyramid(),1,Matrix3x3::Identity());
+		//addSimulationObject(pyramid);
+		//addSimulationObject(new Vector3DValue("pyramid",pyramid->coordinates().position()));
+		//addSimulationObject(new PolygonRenderer(pyramid->geometry()));
+		//pyramid->coordinates().position().set(3,1,0);
+		//addSimulationObject(DynamicCollidable::create(*new Octree(pyramid->geometry(),3,* new BoundingSphereFactory()),pyramid->body(),0.3));
+		//}
 
 		{
 		DynamicSphere * sphere = 0;
@@ -150,32 +164,34 @@ void CustomSimulation::buildModel(){
 		collidable = DynamicCollidable::create(sphere->geometry(),sphere->body());
 		addSimulationObject(collidable);
 		}
-		{
-		for(int i= 0; i < 2; i++){
-			Particle * p = new Particle();
 
-			Sphere * sphere = new Sphere(0.1);
-			p->position << sphere->coordinates().position;
+		//{
+		//for(int i= 0; i < 2; i++){
+		//	Particle * p = new Particle();
 
-			Vector3D randVector((rand()%1000)/1000.0,(rand()%1000)/1000.0,(rand()%1000)/1000.0);
-			p->position() = randVector*5+Vector3D(7,0,0);
-			p->velocity() = randVector*5 - Vector3D(2.5,2.5,2.5);
+		//	Sphere * sphere = new Sphere(0.1);
+		//	p->position << sphere->coordinates().position;
+
+		//	Vector3D randVector((rand()%1000)/1000.0,(rand()%1000)/1000.0,(rand()%1000)/1000.0);
+		//	p->position() = randVector*5+Vector3D(7,0,0);
+		//	p->velocity() = randVector*5 - Vector3D(2.5,2.5,2.5);
 
 
-			DynamicCollidable * collidable = DynamicCollidable::create(*sphere,*p);
+		//	DynamicCollidable * collidable = DynamicCollidable::create(*sphere,*p);
 
-			addSimulationObject(p);
-			addSimulationObject(sphere);
-			addSimulationObject(collidable);
-			addSimulationObject(new SphereRenderer(*sphere));
-			}
-		}
+		//	addSimulationObject(p);
+		//	addSimulationObject(sphere);
+		//	addSimulationObject(collidable);
+		//	addSimulationObject(new SphereRenderer(*sphere));
+		//	}
+		//}
 
     {
       Quaternion orientation;
       orientation.setFromAxisAngle(Vector3D(1,0,0),PI /2);
       int clothDim = 20;
-      TextileModel * cloth = TextileModel::createTextileModel(Vector3D(10,0,12),orientation.getMatrix3x3(),clothDim*clothDim,clothDim/5,clothDim/5,clothDim,clothDim);
+      //TextileModel * cloth = TextileModel::createTextileModel(Vector3D(10,0,12),orientation.getMatrix3x3(),200,8,8,clothDim,clothDim);
+	  TextileModel * cloth = TextileModel::createTextileModel(Vector3D(10,0,12),orientation.getMatrix3x3(),clothDim*clothDim,clothDim/5,clothDim/5,clothDim,clothDim);
       cloth->setElongationSpringConstant(80);
       cloth->setFlexionSpringConstant(80);
       cloth->setShearSpringConstant(80);
@@ -207,6 +223,7 @@ void CustomSimulation::buildModel(){
        addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,*new BoundingSphereFactory()),box->body()));
 
     }
+		
 	}
 
 
