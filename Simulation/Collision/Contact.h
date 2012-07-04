@@ -21,7 +21,7 @@ public:
     return *_instance;
   }
   
-  inline Contact * create(){
+  inline Contact * createContact(){
     if(_pool.empty()){
       return new Contact();
     }
@@ -29,7 +29,7 @@ public:
     _pool.pop_back();
     return result;
   }
-  inline void free(Contact * contact){
+  inline void freeContact(Contact * contact){
     _pool.push_back(contact);
   }
 };

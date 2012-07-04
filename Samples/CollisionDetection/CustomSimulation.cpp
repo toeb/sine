@@ -112,7 +112,7 @@ void CustomSimulation::buildModel(){
   Gravity & g = *(b.setGravity(Vector3D(0,-1,0)));
 
   //add collision renderer first so that transparent objects render correctly
-  addSimulationObject(reinterpret_cast<IUpdatable*>(new CollisionRenderer(dynamicsAlgorithm.collisionDetector)));
+  addSimulationObject(new CollisionRenderer(dynamicsAlgorithm.collisionDetector));
   
 
   addSimulationObject(new IntValue("Number of Collision",[this](){return dynamicsAlgorithm.collisionDetector.getCollisionCount();},[](int val){}));

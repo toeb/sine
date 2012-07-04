@@ -11,7 +11,7 @@ using namespace std;
 Collision::~Collision(){
 
   foreachContact([](Contact * c){
-    ContactPool::instance().free(c);
+    ContactPool::instance().freeContact(c);
   });
   _contacts.clear();
 }
