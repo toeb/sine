@@ -3,7 +3,9 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{amsmath}
-\usepackage[ngerman]{babel}
+%\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ngerman}
 \usepackage{enumerate}
 \usepackage{wrapfig}
 
@@ -14,6 +16,9 @@
 \begin{document}
 \maketitle
 
+\tableofcontents
+\newpage
+
 \chapter{Einführung}
 
 Das entwickelte Projekt ist entstanden im Sommersemester 2012 an der TU Darmstadt. Der Kurs wurde geleitet von Prof. Jan Bender.
@@ -22,15 +27,14 @@ Das Ziel des Praktikums war ein funktionierendes System für die Simulation von d
 \begin{enumerate}
 \item Modellierung von Starrkörpern und gedämpften Federn, Einbezug von externen Kräften.
 \item Impulsbasierte Simulation von Kugelgelenken.
-\item Erstellen eines Textilmodells und Implementierung des Normalisierungsalgorithmuss nach Provot \cite{}.
-\item Kollisionserkunnung für Kugeln, Ebenen und Quader.
+\item Erstellen eines Textilmodells und Implementierung des Normalisierungsalgorithmuss nach Provot \cite{Provot95deformationconstraints}.
+\item Kollisionserkennung für Kugeln, Ebenen und Quader.
 \item Impulsbasierte Kollisionsauflösung mittels Impulse.
 \end{enumerate}
 
 Es wurde ein programmatisches Grundgerüst von Prof. Bender zur Verfügung gestellt. Dieses beinhaltete grundlegende Simulationslogik, Benutzerinteraktion mit Visualisierung sowie eine mathematische Bibliothek.
-\end{enumerate}
 
-\chapter{Architektur}
+\chapter{Systembeschreibung}
 Die Programmarchitektur legt besonderen Wert auf Trennung der Interessen und klare Struktur.
 
 Die mathematischen Klassen, die zur Verfügung gestellt wurden, wurden im Laufe des Projekts immer wieder um Funktionalität und Laufzeitoptimierungen erweitert. Es ist jedoch nichts Grundlegendes geändert worden, weshalb in dieser Dokumentation nicht darauf eingegangen wird.
@@ -38,86 +42,93 @@ Die mathematischen Klassen, die zur Verfügung gestellt wurden, wurden im Laufe d
 In den folgenden Abschnitten wird jeder Bereich der Implementation besprochen. Diese Bereiche korrespondieren sehr gut mit den gestellten Aufgaben des Praktikums.
 
 \section{Framework}
-Das Simulationsframework basiert insbesondere auf zwei Klassen: ISimulationObject und ISimulationModule.  Der Zusammenhang wird in Grafik \ref{} verdeutlicht:  ISimulationObject ist die Basisklasse für alle grundlegenden Simulationsklassen.  Die Klasse ISimulationObject kapselt die Namen der Objekte und bietet Initialisierungs- und Aufräumfunktionalität, die über einfache Konstruktoren / Destruktoren nicht möglich ist. ISimulationObject schützt seinen eigenen Zustand: Es wird sichergestellt, dass das Objekt nur einmal initialisiert und nur aufgeräumt werden kann, falls es initialisiert ist.  Dies ist praktisch für größere Vorausberechnungen oder das Laden von Daten.
+Das Simulationsframework basiert insbesondere auf zwei Klassen: ISimulationObject und ISimulationModule.  Der Zusammenhang wird in Grafik \ref{fig:coreArchitecture} verdeutlicht:  ISimulationObject ist die Basisklasse für alle grundlegenden Simulationsklassen.  Die Klasse ISimulationObject kapselt die Namen der Objekte und bietet Initialisierungs- und Aufräumfunktionalität, die über einfache Konstruktoren / Destruktoren nicht möglich ist. ISimulationObject schützt seinen eigenen Zustand: Es wird sichergestellt, dass das Objekt nur einmal initialisiert und nur aufgeräumt werden kann, falls es initialisiert ist.  Dies ist praktisch für größere Vorausberechnungen oder das Laden von Daten.
 
 \begin{wrapfigure}{r}{0.75\textwidth}
-\vspace{-20pt}\begin{center}	 
-\includegraphics[width=0.75\textwidth]{Architektur.png}
+\vspace{20pt}\begin{center}	 
+%\includegraphics[width=0.75\textwidth]{Architektur.png}
 \end{center}
 \caption{Zentrale Architektur des Frameworks}
 \label{fig:coreArchitecture}
-\vspace{-20pt}
+\vspace{20pt}
 \end{wrapfigure}
 
 ISimulationModule ist eine Subklasse von ISimulationObject und wird in verschiedenen Bereichen der Simulation verwendet um ISimulationObject-Instanzen, für die sie zuständig ist, zu gruppieren und während des Simulationschrittes korrekt zu verarbeiten. So kümmert sich z.B. der Dynamikalgorithmus um alle Gelenke der Simulation. ISimulationModules machen im Endeffekt die Simulation aus, weil sie die wesentliche Funktionalität beinhalten. 
 
 \section{Kinematik - simulation/kinematics}
 
-Die erste Aufgabe bestand darin im 3D frei bewegliche Körper zu Simulieren.  Hierzu wurde als erste Abstraktionsstufe das CoordinateSystem sowie KinematicBody gewählt.  Ein Koordinatensystem besteht aus einer Position und einer Orientierung. Der KinematicBody erbt davon und stellt zudem noch die ersten zwei Ableitungen der Position sowie Orientierung zur Verfügung:  Die Lineare- bzw. Angulare-geschwindigkeit bzw. -beschleunigung.  Ein KinematicBody besitzt also alle kinetischen Parameter.  
+Die erste Aufgabe bestand darin im 3D frei bewegliche Körper zu Simulieren.  Hierzu wurde als erste Abstraktionsstufe das CoordinateSystem sowie KinematicBody gewählt.  Ein Koordinatensystem besteht aus einer Position und einer Orientierung. Der KinematicBody erbt davon und stellt zudem noch die ersten zwei Ableitungen der Position und der Orientierung zur Verfügung:  Die lineare bzw. angulare Geschwindigkeit bzw. Beschleunigung.  Ein KinematicBody besitzt also alle kinetischen Parameter.  
 
 \section{Integration - simulation/integration}
 
-Um tatsächlich Bewegung ins spiel zu bringen müssen die Differentialgleichungen des KinematicBody gelöst werden.  Hierzu implementiert der KinematicBody das Interface IIntegrable.  Welches über die Methoden getState(), setState(), getDerivedState() auf den kompletten Zustand des KinematicBody zurückgreifen kann in der Form eines einfachen Real arrays.  Dieses Generische Array wird verwendet für die Integration.  
-Da es sich bei der Simualtion nicht nur um einen Körper handelt musste eine Möglichkeit erstellt werden wie man den Zustand sowie die erste Ableitung des Zustandes des kompletten Simulationssystems bekommt.  Hier kommt die Klasse CompositeIntegrable ins Spiel.  Sie erbt von ISimulationModule und nimmt alle Simulationsobjekte an welche das IIntegrable Interface implementieren.  Es verwaltet ein großes Array aus gleitkommazahlen in dem für jeden Körper der Zustand gespeichert wird.
+Um tatsächlich Bewegung ins Spiel zu bringen, müssen die Differentialgleichungen des KinematicBody gelöst werden.  Hierzu implementiert der KinematicBody das Interface IIntegrable, welches über die Methoden getState(), setState(), getDerivedState() auf den kompletten Zustand des KinematicBody in der Form eines Gleitkommazahl-Arrays zurückgreifen kann.  Dieses generische Array wird verwendet für die Integration.  
+Da es in der Simulation nicht nur einen Körper gibt, musste eine Möglichkeit geschaffen werden, auf den Zustand sowie die erste Ableitung des Zustandes des kompletten Simulationssystems zuzugreifen.  Hier kommt die Klasse CompositeIntegrable ins Spiel. Sie erbt von ISimulationModule und aggregiert alle Simulationsobjekte, welche das IIntegrable Interface implementieren.  Sie verwaltet ein großes Array aus Gleitkommazahlen, in dem für jeden Körper der Zustand gespeichert wird.
 
-Neben des Systemzustandes und der Ableitung dessen muss auch die Möglichkeit gegeben  werden den Abgeleiteten Systemzustand aus einem gegebenen Zustand zu berechnen. Dafür wurde die Klasse ISystemFunction erstellt. Diese Klasse stellt die Methoden evaluate(...), preIntegration(...), sowie postIntegration(...) zur Verfügung die von den verschiedenen Algorithmen verwendet werden um in der Korrekten Phase (vor, während und nach der Integration) Berechnungen aus zu führen.  Die einzige Implmentation der ISystemFunction ist zum Ende des Praktikums die Klasse DynamicsAlgorithm welche alle verschiedenen Berechnungen/Algorithmen vereint und in der Korrekten reihenfolge ausführt.
+Neben dem Systemzustand und seiner Ableitung muss auch die Möglichkeit gegeben werden, den abgeleiteten Systemzustand aus einem gegebenen Zustand zu berechnen. Dafür wurde die Klasse ISystemFunction erstellt. Diese Klasse stellt die Methoden evaluate(...), preIntegration(...), sowie postIntegration(...) zur Verfügung, die von den verschiedenen Algorithmen verwendet werden, um in der korrekten Phase (vor, während und nach der Integration) Berechnungen auszuführen.  Die einzige Implementierung der ISystemFunction ist zum Ende des Praktikums die Klasse DynamicsAlgorithm, welche alle verschiedenen Berechnungen/Algorithmen vereint und in der korrekten Reihenfolge ausführt.
 
-Das Zustandsarray und die Ableitung wird an den Integrator gefüttert welcher über ein Interval [a,b] integrieren kann (mit entsprechenden Startzustand).  
+Das Zustandsarray und die Ableitung wird an den Integrator übergeben, welcher über ein Interval [a,b] integrieren kann (mit entsprechendem Startzustand).  
 
-In der ersten Aufgabe wurde gefordert, dass die zwei Einschrittverfahren "`Expliziter Euler"' sowie "`Runge Kutta der Fehlerordnung 5"' implementiert werden.  Neben diesen beiden Verfahren wurde noch der "`Implizite Euler"' (verwendet simpele Fixpunktiteration für das auflösen des NL Gleichungsproblem) sowie der "`RungeKuttaFehlberg45"' (mit dynamischer Schrittweitensteuerung) implementiert.  Die Implementationen dieser Verfahren sind im Ordner simulation/integration/implementations zu finden.
+In der ersten Aufgabe wurde gefordert, dass die zwei Einschrittverfahren ''Expliziter Euler'' sowie ''Runge Kutta der Fehlerordnung 5'' implementiert werden.  Neben diesen beiden Verfahren wurde noch der ''Implizite Euler'' (verwendet simple Fixpunktiteration für das Auflösen des nichtlinearen Gleichungssystems) sowie der ''RungeKuttaFehlberg45'' (mit dynamischer Schrittweitensteuerung) implementiert.  Die Implementierungen dieser Verfahren sind im Ordner simulation/integration/implementations zu finden.
 
 \section{Dynamik - simulation/dynamics}
 
-Von der Kinematik hebt die Dynamik folgende Eigenschaft ab: Masse. Die Aufspaltung der beiden bereiche ist Software Designtechnisch Sinnvoll, da der Kinematischekörper sowie das Koordinatessystem noch an anderen Stellen des Simulationssystems verwendet werden (Geometrie und Visualisierung).  Die Dynamik bzw. der DynamicBody und dessen beiden Subklassen RigidBody und Particle verkörpern die kinematischen Eigenschaften des KinematicBody sowie die Masseeigeneschaften aus welchen zusammen die Möglichkeit folgt externe Kräfte an zu bringen und die Bewegungsgleichung zu lösen.  Aus den Extern wirkenden Kräften und unter Berücksichtigung des Körperzustandens (momentane Geschwindigkeit und Position) kann die neue Beschleunigung berechnet werden.  Hierzu besitzt der DynamicBody die Methode calculateDynamics().
+Masse hebt die Dynamik von der Kinematik ab. Die Aufspaltung der beiden Bereiche ist Software-Design-technisch sinnvoll, da der kinematische Körper sowie das Koordinatessystem noch an anderen Stellen des Simulationssystems verwendet werden (Geometrie und Visualisierung).  Die Dynamik bzw. der DynamicBody und seine beiden Subklassen RigidBody und Particle besitzen die kinematischen Eigenschaften des KinematicBody sowie die Masseeigeneschaften, aus welchen zusammen die Möglichkeit folgt, externe Kräfte anzubringen und die Bewegungsgleichung zu lösen.  Aus den extern wirkenden Kräften und unter Berücksichtigung des Körperzustandes (momentane Geschwindigkeit und Position) kann die neue Beschleunigung berechnet werden.  Hierzu besitzt der DynamicBody die Methode calculateDynamics().
 Neben dieser zentralen Funktionalität bietet der DynamicBody noch folgende Möglichkeiten:
 
 \begin{itemize}
 \item Setzen der Masse
 \item Setzen/Hinzufügen/Zurücksetzen von externen Kräften und Drehmomenten
 \item Das Anbringen eines Impulses an einer beliebigen Stelle
-\item Das Berechnen der K Matrix für die spätere Berechnung von Impulsen.
+\item Das Berechnen der Matrix K für die spätere Berechnung von Impulsen.
 \end{itemize}
 
-Der Unterschied der beiden Subklassen besteht in der Orientierung. Partikel sind 3DOF Objekte während der RigidBody alle 6 Freiheitsgrade des Raumes beherrscht und somit Physikalisch Korrekt ist.
+Der Unterschied zwischen den Klassen Particle und RigidBody besteht in der Orientierung. Partikel sind Objekte mit 3 translatorischen Freiheitsgraden, während der RigidBody alle 6 Freiheitsgrade (translatorisch und rotatorisch) des Raumes beherrscht und somit physikalisch korrekt ist.
 
-Das DynamicBodyModule ist das Simulationmodul welches die dynamischen Körper sammelt und deren Berechnung anstößt.  
+Das DynamicBodyModule ist das Simulationmodul, welches die dynamischen Körper sammelt und deren Berechnung anstößt.  
 
 \section{Verbindung - simulation/dynamics/connection}
+\label{sec:connectors}
+Um dynamische Körper mit Federn, Gelenken oder anderem zu verbinden, wurde das Verbindungstück entwickelt (Klasse Connector). Dieses bietet die Möglichkeit einen beliebigen Punkt im lokalen Koordinatensystem eines dynamischen Körpers zu speichern und als Angriffspunkt für Kräfte, Impulse oder Ähnliches zu verwenden.  Für Starrkörper und Partikel wurden eigene Implementierungen des Connectors entwickelt, welche in RigidBodyConnector und ParticleConnector zu finden sind.  Ein ParticleConnector ist eine degenerierte Version des RigidBodyConnectors, da ein ParticleConnector mangels Ausdehnung nur an den Lokalen Ursprung verbunden werden kann.
 
-Um Dynamische Körper zu verbinden mit Federn, Gelenken oder anderem wurde das Verbindungstück entwickelt, dieses ist in der Klasse Connector modelliert. Diese bietet die Möglichkeit einen beliebige Punkt im lokalen Koordinatensystem eines Dynamischen Körpers zu speichern und als Angriffspunkt für Kräfte, Impulse oder Ähnlichem zu verwenden.  Für Festkörper und Partikel wurden eigene Implementierungen des Connectors entwickelt welche in RigidBodyConnector und ParticleConnector zu finden sind.  Ein ParticleConnector ist eine degenerierte Version des RigidBodyConnectors, da ein Particle mangels Trägheitstensor und Ausdehnung nur an dem Lokalen Ursprung verbunden werden kann.
-
-Da häufig Verbindungsstücke erstellt und gelöscht werden, für die verschiedenen dynamischen Körpertypen, wurde die Klasse ConnectorFactory erstellt welche sich um die Speicherverwaltung der Connectorobjekte kümmert. 
+Da häufig Verbindungsstücke für die verschiedenen dynamischen Körpertypen erstellt und gelöscht werden, wurde die Klasse ConnectorFactory erstellt, welche sich um die Speicherverwaltung der Connectorobjekte kümmert. 
 
 \section{Kräfte und Federn- simulation/force}
 
-Das Kräftemodell ist relativ einfach gestalltet.  Das Kräftemodul ForceModule filtert sich alle Force Objekte sowie DynamicBody Objekte heraus.  In jedem
-Dynamischen Körper ist ein Kraftakkumulator welcher über DynamicBody::addExternalForce/Torque externe Krüfte hinzugefügt bekommt.  Dieser wird am anfang des
-Simulationsschrittes zurückgesetzt auf null. Danach wird jede einzelne Kraft angewendetet.  Jede Kraft kann dabei eine Funktion sein die auf alle, einige oder
-einzelne Dynamischen Körper wirkt.  Dies ermöglicht beispielsweise die Modellierung von Schwerkraft - in der Lösung in der Klasse Gravity - oder Federn. Die zentrale
-Methode bei den Kräften ist Force::act(vector<DynamicBody*> \& bodies, Real time, Real stepSize)  Es ist also möglich beliebige Zeitabhängige Kraftfelder auf
-alle Körper wirken zu lassen 
+Das Kräftemodell ist relativ einfach gestalltet.  Das Kräftemodul ForceModule filtert sich alle Force-Objekte sowie DynamicBody-Objekte heraus.  In jedem dynamischen Körper ist ein Kraftakkumulator, welcher über DynamicBody::addExternalForce/Torque externe Kräfte bzw. Drehmomente hinzugefügt bekommt.  Dieser wird am Anfang des Simulationsschrittes zurückgesetzt auf Null. Danach wird jede einzelne Kraft angewendetet.  Jede Kraft kann dabei eine Funktion sein, die auf alle, einige oder
+einzelne Dynamischen Körper wirkt.  Dies ermöglicht beispielsweise die Modellierung von Schwerkraft - in der Lösung in der Klasse Gravity - oder Federn. Die zentrale Methode bei den Kräften ist Force::act(vector<DynamicBody*> \& bodies, Real time, Real stepSize).  Es ist also möglich beliebige Zeitabhängige Kraftfelder auf alle Körper wirken zu lassen 
 
 Das Federmodell, gefunden in der Klasse DampenedSpring, modelliert eine Feder mit Federkonstante $F_C$ und Dämpfungskonstante $F_d$.  Um die Federkräfte auf
 Partikel und Starrkörper anzuwenden wird hier jedoch der Umweg über die Verbindungstücke gegangen. 
 
 \section{Mehrkörperdynamik - simulation/multibody}
 
+Körper interagieren miteinander unter anderem über Gelenke. Ein Gelenk in einem impulsbasierten Simulationssystem definiert einen Positions- und einen Geschwindigkeits-Constraint, die mit Impulsen realisiert werden müssen. Deshalb definiert die Schnittstelle der Klasse Joint die entsprechenden Methoden: correctPosition() und correctVelocity(). Die Klasse, die den impulsbasierten Mehrkörperdynamikalgorithmus enthält, ImpulseBasedDynamicsAlgorithm, ruft correctPosition vor jedem Simulationsschritt auf und correctVelocity nach jedem Simulationsschritt. correctPosition wird dabei in einer Schleife aufgerufen, da man den erforderlichen Impuls nicht direkt exakt berechnen kann. 
+
+In diesem Praktikum wurden Kugelgelenke (Klasse BallJoint) implementiert. Sie halten zwei dynamische Körper in bestimmten Punkten (Connectors, vgl. \ref{sec:connectors}) zusammen.
 
 \section{Textilsimulation - simulation/textile}
+Textilien werden in der Klasse TextileModel als Partikelmengen modelliert, zwischen denen ein Netz aus gedämpften Federn aufgespannt ist. Es gibt dabei 3 Arten von Federn: Federn, die der Ausdehnung, der Scherung und der Beugung des simulierten Stoffes entgegenwirken (vgl. \cite{Provot95deformationconstraints})
+
+Nach jedem Simulationsschritt wird in der Methode normalize() Normalisierung durchgeführt: entstandene Überdehnungen werden aufgelöst, indem die Partikel an den Enden einer Feder entlang dieser Feder aufeinander zu bewegt werden, damit die Maximalüberdehnung nicht überschritten wird. Auf diese Weise wirken die Textilien nicht unnatürlich elastisch.
 
 \section{Geometrie - simulation/geometry}
 
 \section{Kollisionserkennung - simulation/collision/detection}
 
 \section{Kollisionsbehandlung - simulation/collision/handling/impulsebased}
+Die Kollisionsbehandlung wird im Anschluss an die Kollisionserkennung  vor dem Simulationsschritt durchgeführt. In der Klasse ImpulseBasedCollisionHandler werden in der Methode handleCollisions() alle erkannten Kollisionen in einer Schleife behandelt, bis keine Kollisionen mehr auftreten. Bei der Behandlung einer Kollision werden die Kontakte, aus denen sie besteht, zu einem Kontakt zusammengefasst und in der Methode handleContact behandelt.
 
+Bewegen sich die Kontaktpunkte aufeinander zu, wird ein Rückstoß mittels eines Impulses simuliert. Handelt es sich um einen bleibenden Kontakt, wird ein künstliches Gelenk (Instanz der Klasse ContactJoint) erzeugt, welches dafür sorgt, dass die Körper sich nicht durchdringen und welches dynamische und statische Reibung simulieren kann. Die entsprechenden Constraints werden durch Impulse in Richtung der Kontaktnormalen (Nichtdurchdringung) bzw. -tangente (Reibung) realisiert.
 \chapter{Optimierung}
 vermeiden von virtuellen methoden
 Typen
 wiederverwenden von objekten
 inline
-valueholder
-cache
+valueholdercache
 \chapter{Fazit und Ausblick}
 
+\newpage
+\bibliographystyle{abbrv}
+\addcontentsline{toc}{section}{\textbf{Literaturverzeichnis}}
+\bibliography{bibdatabase}
 \end{document}
