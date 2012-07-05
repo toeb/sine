@@ -3,9 +3,9 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{amsmath}
-%\usepackage[ngerman]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage{ngerman}
+\usepackage[ngerman]{babel}
+\usepackage[ansinew]{inputenc}
+%\usepackage{german}
 \usepackage{enumerate}
 \usepackage{wrapfig}
 
@@ -44,9 +44,9 @@ In den folgenden Abschnitten wird jeder Bereich der Implementation besprochen. D
 \section{Framework}
 Das Simulationsframework basiert insbesondere auf zwei Klassen: ISimulationObject und ISimulationModule.  Der Zusammenhang wird in Grafik \ref{fig:coreArchitecture} verdeutlicht:  ISimulationObject ist die Basisklasse für alle grundlegenden Simulationsklassen.  Die Klasse ISimulationObject kapselt die Namen der Objekte und bietet Initialisierungs- und Aufräumfunktionalität, die über einfache Konstruktoren / Destruktoren nicht möglich ist. ISimulationObject schützt seinen eigenen Zustand: Es wird sichergestellt, dass das Objekt nur einmal initialisiert und nur aufgeräumt werden kann, falls es initialisiert ist.  Dies ist praktisch für größere Vorausberechnungen oder das Laden von Daten.
 
-\begin{wrapfigure}{r}{0.75\textwidth}
+\begin{wrapfigure}{r}{0.5\textwidth}
 \vspace{20pt}\begin{center}	 
-%\includegraphics[width=0.75\textwidth]{Architektur.png}
+\includegraphics[width=0.5\textwidth]{Architektur.png}
 \end{center}
 \caption{Zentrale Architektur des Frameworks}
 \label{fig:coreArchitecture}
@@ -113,20 +113,50 @@ Nach jedem Simulationsschritt wird in der Methode normalize() Normalisierung dur
 
 \section{Geometrie - simulation/geometry}
 
+Um die folgenden Abschnitte über Kollisionen zu ermöglichen mussten Geometrische Objekte erstellt werden.  Hierzu wurde die Klasse Geometry eingeführt welche zum einen ein CoordinateSystem besitzt das die Position und Orientierung eines geometrischen Gebildes beschreibt.  Nebst dieser Hauptfunktionalität hat Geometrie einige virtuelle Methoden um einen Körper auf eine Achse zu projezieren diese werden verwednet um beispielsweise die Größe eines Hüllkörpers zu berechnen.
+
+Ein weitere wichtiger Punkt der später wichtig ist, ist dass man Kugeln und Quader klassifizieren kann als Innerhalb, Außerhalb oder auf dem Rand der Geometrie.
+
+Die eigentliche Geometrie wird jedoch in den Subklassen von Geometry definiert.  Es gibt
+
+\begin{itemize}
+\item Die Kugel (Klasse Sphere)
+\item Die Ebene (Klasse Plane)
+\item Das Polygon (Klasse Polygon)
+\end{itemize}
+
+Die Kugel und die Ebene sind einfache Gebilde.  Das Polygon verwendet eine Half-Edge Datenstrukture für die Interne Rerpäsentation.  Es durch die Polygonklasse möglihc beliebige Geometrien zu erstellen.  Zum Beispiel wurden Subklassen von Polygon erstellt:  Hexahedron, Pyramid, Triangle, Rectangle, und PlyMesh.  Wobei das letztere beliebige Gitter aus dem Ply Format von Stanford laden kann.
+
+Weiterhin wurde eine Hüllgeometrie erstellt namens BoundingOctree.  Diese nähert beliebige Geometrien an.  Das Bottom-Up Verfahren zum Aufbau der Octreehierarchy geschieht durch das Überziehen der Geometrie mit einem Gitternetz(mit beliebiger Auflösung) und anschließender geometrischer Klassifizierung der einzelnen Zellen als innerhalb, außerhalb oder auf dem Rand der Geometrie. Im darauffolgenden Schritt werden jeweils 8 Zellen die nur Innerhalb oder nur Außerhalb des Octrees sind rekursiv zusammengefasst zu einer 8 mal so großen Zelle bis die oberste Ebene erreicht ist.
+
 \section{Kollisionserkennung - simulation/collision/detection}
+
+Die Basisklasse für die heist CollisionDetector diese nimmt Objekte vom Typ Collidable entgegen.  Collidable Objekte wiederum hat eine Referenz auf ein beliebiges ISimulationObjekt welches dann auf Kollisionen getestet wird.  Weiterhin wird dem Collidable mitgeteilt ob es an Kollisionen teilnimmt.  Die Kollision selbst besteht aus den beiden beteiligten Simulationsobjekten sowie einer beliebigen Zahl an Kontakten (da ein Körper an mehreren Stellen gleichzeitig kollidieren kann). Ein Kontakt ist in der Klasse Contact modelliert. Er besteht aus den beiden Kollisionspunkten, der Kontaktnormalen und der Durchdringungstiefe der beiden beteiligten Objekten. 
+
+CollisionDetector arbeitet noch unoptimiert.  Dies  bedeutet, dass jede potentielle Kollision überprüft wird was eine quadratische Anzahl an Testaufrufen resultiert.  Hier besteht auf jeden fall noch großes Optimierungspotential und diese änderung ist vorgesehen in dem Klassendesign.
+
+Für jedes Kombination von Collidableobjekten wird ein Kollisionstest gesucht (abhängig von den Klassentypen).  Es gibt folgende Kollisionstests:
+
+\begin{itemize}
+\item SphereSphere - Kugel gegen Kugel
+\item SpherePlane - Kugel gegen Ebene
+\item OctreeOctree - Zwei Octree Hüllkörper gegeneinander
+\item SphereOctree
+\item PlaneOctree 
+\item ReverseTest - dreht einen Test herum
+\end{itemize}
+
+Diese sind abrufbar über die Klasse CollisionTestRepository. 
+
+Fall einer diese Tests Kollisionen erkennt erzeugt er für jeden Kontaktpunkt ein Contact Objekt und speichert diese in dem Kollisionobjekt.  
+
+Nach jedem Simulationsschritt werden die gefundenen Kollisionen gelöscht.  Hierbei wurde darauf geachtet, dass die gelöschten Objekte wieder verwendet werden, da die Initialisierung sehr lange dauert.
+
 
 \section{Kollisionsbehandlung - simulation/collision/handling/impulsebased}
 Die Kollisionsbehandlung wird im Anschluss an die Kollisionserkennung  vor dem Simulationsschritt durchgeführt. In der Klasse ImpulseBasedCollisionHandler werden in der Methode handleCollisions() alle erkannten Kollisionen in einer Schleife behandelt, bis keine Kollisionen mehr auftreten. Bei der Behandlung einer Kollision werden die Kontakte, aus denen sie besteht, zu einem Kontakt zusammengefasst und in der Methode handleContact behandelt.
 
 Bewegen sich die Kontaktpunkte aufeinander zu, wird ein Rückstoß mittels eines Impulses simuliert. Handelt es sich um einen bleibenden Kontakt, wird ein künstliches Gelenk (Instanz der Klasse ContactJoint) erzeugt, welches dafür sorgt, dass die Körper sich nicht durchdringen und welches dynamische und statische Reibung simulieren kann. Die entsprechenden Constraints werden durch Impulse in Richtung der Kontaktnormalen (Nichtdurchdringung) bzw. -tangente (Reibung) realisiert.
-\chapter{Optimierung}
-vermeiden von virtuellen methoden
-Typen
-wiederverwenden von objekten
-inline
-valueholdercache
-\chapter{Fazit und Ausblick}
-
 \newpage
 \bibliographystyle{abbrv}
 \addcontentsline{toc}{section}{\textbf{Literaturverzeichnis}}
