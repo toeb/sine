@@ -99,10 +99,7 @@ public:
    */
   virtual void run()=0;
 
-  /**
-   * \brief Resets the simulation. bringing it back to its initial state
-   */
-  void resetSimulation();
+
 
   
 protected:

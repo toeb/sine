@@ -1,8 +1,10 @@
-#ifndef __Integrator_h__
-#define __Integrator_h__
+#pragma once
+
 #include "IIntegrable.h"
 #include <Simulation/Core/ISimulationModule.h>
 #include <Simulation/Integration/ISystemFunction.h>
+#include <Simulation/Core/Timing/Timeable.h>
+
 namespace IBDS{
   
 /**
@@ -10,7 +12,7 @@ namespace IBDS{
  *
  * <remarks> Tobias Becker, 13.04.2012.</remarks>
  */
-class Integrator : public ISimulationObject{
+class Integrator : public Timeable{
 private:
   /// <summary> The integratable </summary>
   IIntegrable * _integratable;
@@ -109,4 +111,3 @@ protected:
 }
 
 
-#endif

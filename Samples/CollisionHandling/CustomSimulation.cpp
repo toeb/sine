@@ -35,13 +35,26 @@
 #include <Visualization/Renderers/PolygonRenderer.h>
 #include <Visualization/UserInterface/Vector3DValue.h>
 #include <Simulation/Geometry/Mesh/Ply/PlyMesh.h>
+#include <Simulation/Core/Timing/Timer.h>
 using namespace IBDS;
 using namespace std;
 
 int integratorIndex=0;
 vector<SingleStepIntegrator*> integrators;
 
+class DelegateTimer : public Timer{
+private:
+  std::function<void(Real,Real)> _f;
+public:
+  DelegateTimer(Time timeoutTime, bool repeat,std::function<void(Real,Real)> f):Timer(timeoutTime,repeat),_f(f)
+  {
+  }
 
+  void timeout(Time systemTime, Time simulationTime)
+  {   
+    _f(systemTime,simulationTime);
+  }
+};
 
 void CustomSimulation::buildModel(){ 
 	setName("Collision Handling Example");
@@ -51,6 +64,17 @@ void CustomSimulation::buildModel(){
 	SimulationBuilder b(*this);  
 	Gravity & g = *(b.setGravity(Vector3D(0,-1,0)));
 	g.setGravityMagnitude(0.1);
+  
+  DelegateTimer * timer = new DelegateTimer(1,true,[this](Real sysTime, Real simTime){
+    dynamicsAlgorithm.timingModule.printInfo(cout);
+    dynamicsAlgorithm.timingModule.resetAccumulatedTimes();
+  });
+ addSimulationObject(new DelegateAction("activate timer", [timer](){timer->repeat() = !timer->repeat();}));
+ addSimulationObject(timer);
+
+
+  addSimulationObject(&dynamicsAlgorithm.dynamicBodyModule);
+  addSimulationObject(&dynamicsAlgorithm.collisionDetector);
 
   addSimulationObject(new DelegateAction("Render Collisions", [collisionRenderer](){collisionRenderer->renderCollisions()=!collisionRenderer->renderCollisions();}));
 	addSimulationObject(new RealValue("Collisiontrace Timeout",collisionRenderer->timeout()));
@@ -313,6 +337,10 @@ void CustomSimulation::buildAlgorithms(){
 	integrators.push_back(new ImplicitEuler(0.02));
 	integrators.push_back(new RungeKutta4(0.01));
 
+  
+  addSimulationObject(integrators.at(0));
+  addSimulationObject(integrators.at(1));
+  addSimulationObject(integrators.at(2));
 
 	addSimulationObject(&dynamicsAlgorithm);
 

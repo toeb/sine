@@ -9,12 +9,16 @@ using namespace IBDS;
   
   ISystemFunction  * systemFunction = getSystemFunction();
   while(t < b){
+    tock();
     systemFunction->preIntegration(t,_h);
+    tick();
     getIntegratable()->getState(x_i.v);
     doStep(t,x_i,_h);
     t +=_h;
     getIntegratable()->setState(x_i.v);
+    tock();
     systemFunction->postIntegration(t,_h);
+    tick();
   }
   return t;
 }

@@ -12,10 +12,6 @@ Simulation::Simulation():
 {
 }
 
-void Simulation::reset(){
-
-}
-
 void Simulation::setIntegrator(Integrator & integrator){
   _integrator = &integrator;
 }
@@ -38,9 +34,7 @@ bool Simulation::addSimulationModule(ISimulationModule * module){
   return true;
 }
 
-bool Simulation::removeSimulationModule(ISimulationModule * module){
- 
-  
+bool Simulation::removeSimulationModule(ISimulationModule * module){  
   auto pos = find(_simulationModules.begin(), _simulationModules.end(), module);
   if(pos==_simulationModules.end())return false;
 
@@ -50,6 +44,13 @@ bool Simulation::removeSimulationModule(ISimulationModule * module){
   }
 
   return true;
+}
+
+void Simulation::foreachModule(std::function<void(ISimulationModule*)> f){
+  for_each(_simulationModules.begin(), _simulationModules.end(),f);
+}
+void Simulation::foreachObject(std::function<void(ISimulationObject*)> f){
+  for_each(_simulationObjects.begin(), _simulationObjects.end(),f);
 }
 
 bool Simulation::addSimulationObject(ISimulationObject * object){

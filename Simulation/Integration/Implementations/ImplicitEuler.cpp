@@ -5,7 +5,7 @@ using namespace IBDS;
 
 ImplicitEuler::ImplicitEuler(Real stepLength, int maxIterations, Real tolerance ):_tolerance (tolerance),_maxIterations(maxIterations){
   setStepSize(stepLength);
-  setName("Explicit Euler");
+  setName("ImplicitEuler");
 }
 
 void ImplicitEuler::doStep(Real t_i,VectorND & x_i, Real h){

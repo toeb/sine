@@ -1,27 +1,25 @@
 #pragma once
-
+#include <Simulation/Core/CompositeSimulationObject.h>
 #include <Simulation/Core/ISimulationModule.h>
+
+#include <functional>
 #include <vector>
 
 namespace IBDS{
-
 /**
  * \brief Composite simulation module. 
  * 				combines multiple simulation modules into one
  *
- * \author Tobi
- * \date 20.05.2012
  */
-class CompositeSimulationModule:public ISimulationModule{
+class CompositeSimulationModule:public virtual ISimulationModule, public virtual CompositeSimulationObject{
 private:
   std::vector<ISimulationModule*> _modules;
 public:
-  void addSimulationModule(ISimulationModule * module);
-  void removeSimulationModule(ISimulationModule * module);
+  const std::vector<ISimulationModule*> & modules()const{return _modules;}
 
-  bool addSimulationObject(ISimulationObject * object);
-  bool removeSimulationObject(ISimulationObject * object);
-  
-  bool isCompatibleWith(ISimulationModule * module);
+  void foreachModule(std::function<void (ISimulationModule*)> f);
+
+  void addChild(ISimulationModule * module);
+  void removeChild(ISimulationModule * module);
 };
 }

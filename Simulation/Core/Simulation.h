@@ -2,7 +2,8 @@
 
 #include <Simulation/Integration/Integrator.h>
 #include <Simulation/Core/ISimulationModule.h>
-
+#include <Simulation/Core/Time.h>
+#include <functional>
 #include <set>
 
 namespace IBDS{
@@ -14,24 +15,20 @@ private:
   std::set<ISimulationObject*> _simulationObjects;
   ///< The simulation modules
   std::set<ISimulationModule*> _simulationModules;  
-  ///< The time
-  Real _time;
+  ///< The current time
+  Time _time;
   ///< The target time 
-  Real _targetTime;
+  Time _targetTime;
 public:
 
   /**
    * \brief Simulates until target time is reached.
    *
-   * \author Tobi
-   * \date 12.05.2012
-   *
    * \param targetTime Time of the target.
    */
-  void simulate(Real targetTime);
-  virtual void reset();
-  const Real & getTargetTime();
-  const Real & getTime();
+  void simulate(Time targetTime);
+  const Time & getTargetTime();
+  const Time & getTime();
 
 
   void setIntegrator(Integrator & integrator);
@@ -42,6 +39,9 @@ public:
   
   bool addSimulationObject(ISimulationObject * simulationObject);
   bool removeSimulationObject(ISimulationObject * simulationObject);
+  
+  void foreachModule(std::function<void(ISimulationModule*)> f);
+  void foreachObject(std::function<void(ISimulationObject*)> f);
 
 protected:
   bool initializeObject();

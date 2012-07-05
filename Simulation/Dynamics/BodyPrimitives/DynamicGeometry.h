@@ -20,8 +20,8 @@ public:
     geom.coordinates().position << kinematics().position;
     geom.coordinates().orientation<< kinematics().orientation;
 
-    addSimulationObject(&_geometry);
-    addSimulationObject(&_body);
+    addChild(&_geometry);
+    addChild(&_body);
   }
   
   inline RigidBody & body(){return _body;}

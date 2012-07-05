@@ -16,8 +16,8 @@ DynamicCollidable::DynamicCollidable(
 _staticFrictionCoefficient(staticFriction),
 _dynamicFrictionCoefficient(dynamicFriction),
 _dynamicBody(&body){
-  addSimulationObject(&collisionObject);
-  addSimulationObject(&body);
+  addChild(&collisionObject);
+  addChild(&body);
 }
 
 

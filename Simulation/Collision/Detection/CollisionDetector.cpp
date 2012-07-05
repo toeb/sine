@@ -4,11 +4,14 @@ using namespace std;
 using namespace IBDS;
 
 CollisionDetector::CollisionDetector(){
+  setName("CollisionDetector");
 }
 
 void CollisionDetector::detectCollisions(Real t, Real h){
+  tick();
   resetCollisions();
   doCollisionDetection(t,h);
+  tock();
 }
 
 int CollisionDetector::getContactCount(){

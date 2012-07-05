@@ -6,11 +6,11 @@ using namespace std;
 CompositeSimulationObject::CompositeSimulationObject(){}
 CompositeSimulationObject::~CompositeSimulationObject(){}
 
-void CompositeSimulationObject::addSimulationObject(ISimulationObject* object){
+void CompositeSimulationObject::addChild(ISimulationObject* object){
   if(!object)return;
   _children.push_back(object);
 }
-bool CompositeSimulationObject::removeSimulationObject(ISimulationObject * object){
+bool CompositeSimulationObject::removeChild(ISimulationObject * object){
   if(!object)return false;
   auto it = find(_children.begin(),_children.end(),object);
   if(it == _children.end())return false;

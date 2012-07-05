@@ -1,30 +1,25 @@
 #pragma once
-#include "IRenderer.h"
 #include "CompositeRenderer.h"
-#include <Simulation/Core/ISimulationObject.h>
 
 #include <Simulation/Core/SimulationModuleBase.h>
+#include <Simulation/Core/Timing/Timeable.h>
+
+#include <Visualization/IRenderer.h>
+#include <Visualization/Camera.h>
+
 #include <functional>
 
 namespace IBDS{
-class Camera : virtual public ISimulationObject{
-public:
-  virtual void camera()=0;
-};
-
-
-
 /**
  * \brief Render engine.
  *
  */
-class RenderEngine:public SimulationModuleBase<IRenderer>{
+class RenderEngine:public SimulationModuleBase<IRenderer>,public virtual Timeable {
 private:
   Camera * _camera;
   int _desiredFramerate;
 public:  
-  void reset();
-    
+
   void setDesiredFramerate(int hz);
   int getDesiredFramerate()const;
   int getSceneWidth(){return 800;}

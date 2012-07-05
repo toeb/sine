@@ -11,8 +11,8 @@ public:
   CompositeSimulationObject();
   ~CompositeSimulationObject();
 
-  void addSimulationObject(ISimulationObject* object);
-  bool removeSimulationObject(ISimulationObject * object);
+  void addChild(ISimulationObject* object);
+  bool removeChild(ISimulationObject * object);
 
   const std::vector<ISimulationObject*> & children()const;
   void forEachChild(SimulationObjectAction action) ;

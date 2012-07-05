@@ -19,13 +19,15 @@ void Integrator::updateStateSize(){
   _xNext.resize(_dimension);
 }
 Real Integrator::integrate(Real a, Real b){
-  if(_integratable->hasStateDimensionChanged())updateStateSize();
+  tick();
 
- // if(_systemFunction)_systemFunction->preIntegration(a,b-a);
+  if(_integratable->hasStateDimensionChanged())updateStateSize();
+ 
   _integratable->getState(_x.v);
    Real result = doIntegration(_x,_xNext,a,b);
   _integratable->setState(_xNext.v);
- // if(_systemFunction)_systemFunction->postIntegration(b,b-a);
+ 
+  tock();
   return result;
 }
 void Integrator::setIntegratable(IIntegrable * integratable){
@@ -39,8 +41,11 @@ IIntegrable *  Integrator::getIntegratable(){
 }
 const VectorND & Integrator::f(Real t, const VectorND& x, Real h){
   _integratable->setState(x.v);
+  tock();
   if(_systemFunction)_systemFunction->evaluate(t,h);
+  tick();
   _integratable->getDerivedState(_xDot.v);
+  
   return _xDot;
 }
 

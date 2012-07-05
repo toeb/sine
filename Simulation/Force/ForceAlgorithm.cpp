@@ -1,5 +1,7 @@
 #include "ForceAlgorithm.h"
+
 #include <algorithm>
+
 using namespace std;
 using namespace IBDS;
 
@@ -33,13 +35,20 @@ void ForceAlgorithm::resetForces(){
   for_each(_forceAccumulators.begin(),_forceAccumulators.end(),[](DynamicBody * b){b->resetForce();});
 }
 void ForceAlgorithm::setForces(Real time){
+  tick();
+
   resetForces();
   applyForces(time);
+  
+  tock();
 }
 void ForceAlgorithm::applyForces(Real time){
+  tick();
+
   for_each(_forces.begin(),_forces.end(),
     [&time, this](Force * force){
       force->act(_forceAccumulators,time);
   });
  
+  tock();
 }

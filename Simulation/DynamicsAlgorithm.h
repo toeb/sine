@@ -10,7 +10,7 @@
 #include <Simulation/Textiles/TextileAlgorithm.h>
 #include <Simulation/Core/UpdateablesModule.h>
 #include <Simulation/Collision/Detection/CompositeCollisionDetector.h>
-
+#include <Simulation/Core/Timing/TimingModule.h>
 namespace IBDS{
 
 
@@ -23,25 +23,24 @@ namespace IBDS{
    * 				* ImpulseBasedDynamicsAlgorithm  
    * 				* Force (Spring)  
    * 				* Connectors  
-   * 				* Rigid Body Dynamics
-   *
-   * \author Tobi
-   * \date 20.05.2012
+   * 				* Rigid Body Dynamics  
+   * 				* 
    */
   class DynamicsAlgorithm  :  
   public virtual ISystemFunction, 
-  public virtual CompositeSimulationModule
+  public virtual CompositeSimulationObject
 {
 public:
-  ImpulseBasedDynamicsAlgorithm multiBodyDynamics;
+  ImpulseBasedMultiBodyModule multiBodyDynamics;
   ForceAlgorithm forceModule;
   DynamicBodyModule dynamicBodyModule;
   CompositeIntegratable integrables;
   ConnectorModule connectorModule;
-  TextileAlgorithm textilesModule;
+  TextileModule textilesModule;
   UpdatablesModule updatablesModule;
   CompositeCollisionDetector collisionDetector;
   ImpulseBasedCollisionHandler collisionHandler;
+  TimingModule timingModule;
   DynamicsAlgorithm();
 
   IIntegrable & getIntegrable();

@@ -4,7 +4,7 @@
 using namespace std;
 using namespace IBDS;
 
-ImpulseBasedDynamicsAlgorithm::ImpulseBasedDynamicsAlgorithm(int maxIterations, Real normalisation, Real positionTolerance, Real velocityTolerance){
+ImpulseBasedMultiBodyModule::ImpulseBasedMultiBodyModule(int maxIterations, Real normalisation, Real positionTolerance, Real velocityTolerance){
   setName("Impulse Based Dynamics Algorithm");
   _eps_p=positionTolerance;
   _eps_v=velocityTolerance;
@@ -12,7 +12,9 @@ ImpulseBasedDynamicsAlgorithm::ImpulseBasedDynamicsAlgorithm(int maxIterations, 
   _normalisation=normalisation;
 }
 
-void ImpulseBasedDynamicsAlgorithm::correctPositions(Real h){
+void ImpulseBasedMultiBodyModule::correctPositions(Real h){
+   tick();
+
    bool toleranceSatisfied;  
   _iterations  = 0;
   // do steps before correction
@@ -30,13 +32,18 @@ void ImpulseBasedDynamicsAlgorithm::correctPositions(Real h){
     _iterations++;
   } while (!toleranceSatisfied && _iterations < _maxIterations);	// the loop is repeated until correctPosition returns true for all joints
 
+  tock();
 }
-void ImpulseBasedDynamicsAlgorithm::correctVelocities(){
+void ImpulseBasedMultiBodyModule::correctVelocities(){
+  tick();
+
   foreachJoint([](Joint* joint){
     joint->correctVelocity();
   });
+
+  tock();
 }
 
-int ImpulseBasedDynamicsAlgorithm::getLastNumberOfIterations()const{
+int ImpulseBasedMultiBodyModule::getLastNumberOfIterations()const{
   return _iterations;
 }

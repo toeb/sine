@@ -1,10 +1,11 @@
 #pragma once
 #include <Simulation/MultiBodyDynamics/Joint.h>
 #include <Simulation/Core/SimulationModuleBase.h>
+#include <Simulation/Core/Timing/Timeable.h>
 #include <vector>
 namespace IBDS{
   
-class ImpulseBasedDynamicsAlgorithm : public SimulationModuleBase<Joint>{
+class ImpulseBasedMultiBodyModule : public SimulationModuleBase<Joint>,public virtual Timeable{
 private:
   Real _normalisation;
   ///< The position tolerance
@@ -17,8 +18,16 @@ private:
   int _iterations;
   std::vector<Joint *> _temporaryJoints;
 public:
+   
+  void correctPositions(Real h);
+  void correctVelocities();
+
+  ImpulseBasedMultiBodyModule(){
+    setName("ImpulseBasedMultiBodyModule");
+  }
+
   int getLastNumberOfIterations()const;
-  ImpulseBasedDynamicsAlgorithm(int maxIterations=20, Real normalisation=100, Real positionTolerance=10e-3, Real velocityTolerance=10e-4);
+  ImpulseBasedMultiBodyModule(int maxIterations=20, Real normalisation=100, Real positionTolerance=10e-3, Real velocityTolerance=10e-4);
   
   void foreachJoint(std::function<void(Joint *)> f){
     foreach(f);
@@ -30,9 +39,6 @@ public:
   void addTemporaryJoint(Joint & j){
     _temporaryJoints.push_back(&j);
   }
-
-  void correctPositions(Real h);
-  void correctVelocities();
   
 
 };

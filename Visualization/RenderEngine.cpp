@@ -11,16 +11,16 @@ int RenderEngine::getDesiredFramerate()const{
 }
 
 RenderEngine::RenderEngine():_desiredFramerate(60),_camera(0){
+  setName("OpenGL RenderEngine");
 }
 RenderEngine::~RenderEngine(){
 }
 
 
-void RenderEngine::reset(){
-  objects().clear();
-}
 
 void RenderEngine::render(){
+  tick();
+
   onBeforeRender();
   //do camera transforms
   if(_camera)_camera->camera();
@@ -28,8 +28,9 @@ void RenderEngine::render(){
   foreach([](IRenderer * renderer){
     renderer->render();
   });
-
   onAfterRender();
+  
+  tock();
 }
 void RenderEngine::onBeforeSimulationObjectAdd(ISimulationObject * object){
   auto camera = dynamic_cast<Camera *>(object);
@@ -38,16 +39,20 @@ void RenderEngine::onBeforeSimulationObjectAdd(ISimulationObject * object){
   }
 }
 void RenderEngine::resizeScene(int newWidth, int newHeight){ 
-    foreach([&newWidth,newHeight](IRenderer * renderer){
+  tick();
+
+  //resize all renderers
+  foreach([&newWidth,newHeight](IRenderer * renderer){
     renderer->sceneResized(newWidth,newHeight);
   });
-
-   onSceneResized(newWidth,newHeight);
+  onSceneResized(newWidth,newHeight);
+  
+  tock();
 }
 
 bool RenderEngine::initializeObject(){
   if(!initializeRenderEngine())return false;
-
+  
   foreach([](IRenderer * renderer){
     renderer->onBeforeRenderering();
   });

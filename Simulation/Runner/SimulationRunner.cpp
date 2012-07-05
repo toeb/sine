@@ -66,8 +66,3 @@ void SimulationRunner::togglePause(){
   setPaused(!isPaused());
 }
 
-void SimulationRunner::resetSimulation(){
-  if(!getSimulation())return;
-  getSimulation()->reset();
-}
-

@@ -10,6 +10,7 @@ bool CompositeIntegratable::hasStateDimensionChanged(){
   return _dimensionChanged;
 }
 bool  CompositeIntegratable::addSimulationObject(ISimulationObject  * object){
+  if(object==this)return false;
   auto integrable = dynamic_cast<IIntegrable*>(object);
   if(!integrable)return false;
 
@@ -63,19 +64,3 @@ int CompositeIntegratable::getStateDimension()const{
   }
   return result;
 }
-//
-//void CompositeIntegratable::setDerivedStateDataArray(Real * dState){
-//  int currentOffset = 0;
-//  for_each(_children.begin(), _children.end(), [&currentOffset, &dState](IIntegrable* integrable){
-//    integrable->setDerivedStateDataArray(dState+currentOffset);
-//    currentOffset += integrable->getStateDimension();
-//  });
-//}
-//void CompositeIntegratable::setStateDataArray(Real * state){
-//  int currentOffset = 0;
-//
-//  for_each(_children.begin(), _children.end(), [&currentOffset, &state](IIntegrable* integrable){
-//    integrable->setStateDataArray(state+currentOffset);
-//    currentOffset += integrable->getStateDimension();
-//  });
-//}
