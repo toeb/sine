@@ -22,7 +22,15 @@ bool Edge::sharesVertex(const Edge * edge)const{
   if(B== edge->B)return true;
   return false;
 }
-
+HalfEdge * Edge::getUnconnectedHalfEdge()const{
+  if(!forward->isConnected()){
+    return forward;
+  }
+  if(!backward->isConnected()){
+    return backward;
+  }
+  return 0;
+}
 HalfEdge * Edge::getHalfEdgeTo(const Vertex * v)const{
   if(forward->getEndVertex()==v)return forward;
   if(backward->getEndVertex()==v)return backward;

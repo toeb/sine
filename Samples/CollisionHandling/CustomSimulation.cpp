@@ -223,6 +223,18 @@ void CustomSimulation::buildModel(){
        addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,*new BoundingSphereFactory()),box->body()));
 
     }
+
+    {
+      /*
+      PlyMesh * mesh = new PlyMesh("cube.ply");
+      mesh->initialize();
+     // mesh->scale(60,60,60);
+      addSimulationObject(mesh);
+      PolygonRenderer * r = new PolygonRenderer(*mesh);
+     r->drawLabels = false;
+     r->drawNormals = false;
+      addSimulationObject(r);//*/
+    }
 		
 	}
 

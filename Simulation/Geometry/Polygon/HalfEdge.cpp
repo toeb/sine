@@ -24,6 +24,7 @@ HalfEdge * HalfEdge::getPrevious()const{
 }
 
 
+
 Vertex * HalfEdge::getStartVertex()const{
   if(isForwardHalfEdge()){
     return edge->A;

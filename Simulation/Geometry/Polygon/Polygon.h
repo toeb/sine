@@ -19,6 +19,9 @@ private:
   std::vector<HalfEdge*> _halfEdges;
   std::vector<Vertex*> _vertices;
 public:
+
+  void scale(Real x, Real y, Real z);
+
   static const TypeId type;
   const TypeId getType()const;
   Classification classify(const BoundingVolume & volume)const;
@@ -53,14 +56,19 @@ public:
 
   void projectOCS(const Axis & axis_ocs, Interval & result)const; 
 protected:
-  virtual Vertex * createVertex();
+  
+  bool correctEdgeDirections();
 
+  virtual Vertex * createVertex();
+  
+  
   // some utility methods
   HalfEdge * getHalfEdge(const Vertex * a, const Vertex  *b)const;
+  Edge * getEdge(const Vertex * a, const Vertex * b)const;
   Vertex * addVertex(const Vector3D & p_ocs);
   Edge * addEdge(Index v_i, Index v_j);
 
-
+  void connect(HalfEdge * e1, HalfEdge * e2);
   Face *  addFace(HalfEdge * listHead );
   Face * addFace(Index v_1, Index v_2, Index v_3);
   Face * addFace(Index v_1, Index v_2, Index v_3, Index v_4);
@@ -73,7 +81,7 @@ protected:
   virtual bool initializeObject();
   virtual void cleanupObject();
 private:
-
+  bool correctEdge(HalfEdge * edge);
 
 };
 }

@@ -43,13 +43,7 @@ void Hexahedron::createGeometry(){
   addFace(0,3,7,4);
   addFace(2,6,7,3);
   addFace(0,4,5,1);
-
-
 }
-
-
-
-
 
 Real Hexahedron::getXExtent()const{return _xExtent;};
 Real Hexahedron::getYExtent()const{return _yExtent;};

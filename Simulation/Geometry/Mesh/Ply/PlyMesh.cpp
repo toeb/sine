@@ -55,7 +55,7 @@ static int faceIndex(p_ply_argument argument) {
   //when third index is stored create face
   if(valueIndex==2){    
     PlyMesh * mesh = getMesh(argument);  
-   // mesh->createFace(faceIndices[0],faceIndices[0],faceIndices[0]);
+    mesh->createFace(faceIndices[0],faceIndices[1],faceIndices[2]);
   }
   return 1;
 }
@@ -64,7 +64,28 @@ Vertex * PlyMesh::createVertex(){
   return new PlyVertex();
 }
 void PlyMesh::createFace(Index a, Index b, Index c){
-  addFace(a,b,c);
+  Vertex * v1 = vertex(a);
+  Vertex * v2 = vertex(b);
+  Vertex * v3 = vertex(c);
+
+  Edge * e1 = getEdge(v1,v2);
+  if(!e1)e1 = addEdge(a,b);
+  Edge * e2 = getEdge(v2,v3);
+  if(!e2)e2 = addEdge(b,c);
+  Edge * e3 = getEdge(v3,v1);
+  if(!e3)e3 = addEdge(c,a);
+  
+  HalfEdge * he1 = e1->getUnconnectedHalfEdge();
+  HalfEdge * he2 = e2->getUnconnectedHalfEdge();
+  HalfEdge * he3 = e3->getUnconnectedHalfEdge();
+
+  if(! (he1 && he2 && he3))return;
+
+  connect(he1,he2);
+  connect(he2,he3);
+  connect(he3,he1);
+  
+  addFace(he1);
 }
 PlyVertex * PlyMesh::addPlyVertex(){
   return static_cast<PlyVertex*>( addVertex(Vector3D::Zero()) );

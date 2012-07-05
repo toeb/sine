@@ -7,7 +7,8 @@
 namespace IBDS{
 
 struct Face: public Element{
-  Face():first(0){}
+  Face():first(0),valid(false){}
+  bool valid;
   Vector3D n_ocs;
   int vertexCount;
   HalfEdge * first;

@@ -5,6 +5,7 @@
 namespace IBDS{
  
 struct Edge: public Element{
+  HalfEdge * getUnconnectedHalfEdge()const;
   void getDirection(Vector3D & dir);
   bool isInFrontOf(const Edge * edge)const;
   bool isInBackOf(const Edge * edge)const;
