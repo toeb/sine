@@ -221,6 +221,61 @@ void CustomSimulation::buildModel(){
        addSimulationObject(box);
        addSimulationObject(new PolygonRenderer(box->geometry()));
        addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,*new BoundingSphereFactory()),box->body()));
+       addSimulationObject(new DelegateAction("box mass",[box](){
+         if(box->body().getMass()){
+           box->body().setMass(0);
+         }else{
+           box->body().setMass(1);
+         }
+       }));
+    }
+
+    {
+      DynamicGeometry<Rectangle> * rectangle;
+      PolygonRenderer * renderer; 
+      Real spacing=3;
+      DynamicCollidable * collidable;
+      Vector3D offset(0,0,-3);
+      Vector3D left(-1,0,0);
+      Vector3D right(1,0,0);
+      Real angle = PI/6;
+      Vector3D axis(0,0,1);
+      Vector2D rectangleDim(3,2);
+      Quaternion q;
+      Vector3D pos;
+      q.setFromAxisAngle(Vector3D(1,0,0),PI/2);
+      for(int i=0; i< 4; i++){
+        rectangle =   new DynamicGeometry<Rectangle>(
+          *new Rectangle(rectangleDim),
+          0,
+          Matrix3x3::Zero());
+        renderer = new PolygonRenderer(rectangle->geometry());
+        collidable = DynamicCollidable::create(*new Octree(rectangle->geometry(),4,*new BoundingSphereFactory()),rectangle->body(),0.1);
+        
+
+         pos = offset + Vector3D(0,spacing * i,0);
+        Quaternion ori;
+        if(i%2){
+          pos = pos + right;
+          ori.setFromAxisAngle(axis,angle);
+        }else{
+          pos = pos + left;
+          ori.setFromAxisAngle(axis,-angle);
+        }
+
+        rectangle->coordinates().position() = pos;
+        rectangle->coordinates().orientation() =ori*q;
+
+        addSimulationObject(rectangle);
+        addSimulationObject(renderer);
+        addSimulationObject(collidable);
+      }
+
+      DynamicSphere * sphere = new DynamicSphere(0.1,0.6);
+      addSimulationObject(sphere);
+      addSimulationObject(new SphereRenderer(sphere->geometry()));
+      addSimulationObject(DynamicCollidable::create(sphere->geometry(), sphere->body(),0.4,10,6));
+      sphere->coordinates().position() = pos+Vector3D(0,1,0);
 
     }
 
