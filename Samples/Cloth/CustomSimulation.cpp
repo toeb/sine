@@ -73,52 +73,52 @@ TextileModel *  createCloth(Simulation & s, Real massPerSqrMeter=2.0, Real width
  // m->getNode((rows+1)/2,cols-1)->particle->setMass(0);
  
   for_each(m->getSimulationObjects().begin(), m->getSimulationObjects().end(), [&s](ISimulationObject * obj){
-    s.addSimulationObject(obj);
+    s.add(obj);
   });
 
   m->setElongationSpringConstant(50);
   m->setFlexionSpringConstant(50);
   m->setShearSpringConstant(50);
 
-  s.addSimulationObject(m);
+  s.add(m);
   // tweak bar entries
   TextileModel & cloth=*m;
 
-  s.addSimulationObject(new DelegateAction("Toggle Cloth Normalization", [&cloth](){
+  s.add(new DelegateAction("Toggle Cloth Normalization", [&cloth](){
     cloth.setNormalizing(!cloth.isNormalizing());
   }));
-  s.addSimulationObject( new RealValue("Maximum Cloth Spring Elongation",
+  s.add( new RealValue("Maximum Cloth Spring Elongation",
     [&cloth](){return cloth.getMaximumElongation();},
     [&cloth](Real value){cloth.setMaximumElongation(value);}));
 
   
-  s.addSimulationObject( new RealValue("Cloth mass",
+  s.add( new RealValue("Cloth mass",
     [&cloth](){return cloth.getMass();},
     [&cloth](Real value){cloth.setMass(value);}));
 
 
-  s.addSimulationObject( new RealValue("Flex Stiffness Constant",
+  s.add( new RealValue("Flex Stiffness Constant",
     [&cloth](){return cloth.getFlexionSpringConstant();},
     [&cloth](Real value){cloth.setFlexionSpringConstant(value);}));
 
-  s.addSimulationObject( new RealValue("Flex Dampening Constant",
+  s.add( new RealValue("Flex Dampening Constant",
     [&cloth](){return cloth.getFlexionDampeningConstant();},
     [&cloth](Real value){cloth.setFlexionDampeningConstant(value);}));
 
-  s.addSimulationObject( new RealValue("Elongator Stiffness Constant",
+  s.add( new RealValue("Elongator Stiffness Constant",
     [&cloth](){return cloth.getElongationSpringConstant();},
     [&cloth](Real value){cloth.setElongationSpringConstant(value);}));
 
-  s.addSimulationObject( new RealValue("Elongator Dampening Constant",
+  s.add( new RealValue("Elongator Dampening Constant",
     [&cloth](){return cloth.getElongationDampeningConstant();},
     [&cloth](Real value){cloth.setElongationDampeningConstant(value);}));
 
 
-  s.addSimulationObject( new RealValue("Shearer Stiffness Constant",
+  s.add( new RealValue("Shearer Stiffness Constant",
     [&cloth](){return cloth.getShearSpringConstant();},
     [&cloth](Real value){cloth.setShearSpringConstant(value);}));
 
-  s.addSimulationObject( new RealValue("Shearer Dampening Constant",
+  s.add( new RealValue("Shearer Dampening Constant",
     [&cloth](){return cloth.getShearDampeningConstant();},
     [&cloth](Real value){cloth.setShearDampeningConstant(value);}));
 
@@ -180,7 +180,7 @@ void CustomSimulation::buildAlgorithms(){
   integrators.push_back(new RungeKutta4(0.01));
 
   
-  addSimulationObject(&dynamicsAlgorithm);
+  add(&dynamicsAlgorithm);
 
   integrator = integrators.at(0);
 
@@ -190,7 +190,7 @@ void CustomSimulation::buildAlgorithms(){
   setIntegrator(*integrator);
   
 
-  addSimulationObject(new IntValue("Integrator 0-2 (0=ee, 1=ie,2=rk4)", 
+  add(new IntValue("Integrator 0-2 (0=ee, 1=ie,2=rk4)", 
     [this](){
       return integratorIndex;
   },
@@ -204,7 +204,7 @@ void CustomSimulation::buildAlgorithms(){
 
 
 
-  addSimulationObject( new RealValue("Integrator Step Size",
+  add( new RealValue("Integrator Step Size",
     [this](){return integrator->getStepSize();},
     [this](Real value){integrator->setStepSize(value);}));
 
@@ -212,10 +212,10 @@ void CustomSimulation::buildAlgorithms(){
 
 
   
-  addSimulationObject(new LightRenderer());
-  addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
-  addSimulationObject(static_cast<ISimulationObject*>(static_cast<IRenderer*>(new TweakBarRenderer())));
-  addSimulationObject(static_cast<ISimulationObject*>(static_cast<IRenderer*>(new CameraRenderer())));
+  add(new LightRenderer());
+  add(new CoordinateSystemRenderer());// renders coordinate system at world origin
+  add(static_cast<ISimulationObject*>(static_cast<IRenderer*>(new TweakBarRenderer())));
+  add(static_cast<ISimulationObject*>(static_cast<IRenderer*>(new CameraRenderer())));
 }
 
 void CustomSimulation::buildModel(){ 
@@ -230,7 +230,7 @@ void CustomSimulation::buildModel(){
     [&g](){return g.getGravityMagnitude();},
     [&g](Real val){g.setGravityMagnitude(val);});
 
-  addSimulationObject(r);
+  add(r);
 
   //createDoublePendulum(b,Vector3D::Zero());
 
@@ -263,13 +263,13 @@ void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObj
 
   DynamicBox * box = dynamic_cast<DynamicBox*>(simulationObject);
   if(box){
-    addSimulationObject(new BoxRenderer(*box));
+    add(new BoxRenderer(*box));
   }
 
   DampedSpring * spring = dynamic_cast<DampedSpring*>(simulationObject);
 
   if(spring){
-    addSimulationObject(new SpringRenderer(*spring));
+    add(new SpringRenderer(*spring));
   }//*/
 
   

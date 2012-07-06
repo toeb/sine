@@ -49,7 +49,7 @@ int main( int argc, char **argv )
   IAction * action = new DelegateAction("TogglePause", [&runner](){runner.togglePause();});
   
   
-  simulation->addSimulationObject(action);
+  simulation->add(action);
 
   runner.setCommandLineArguments(argc,argv);
 
@@ -67,7 +67,7 @@ int main( int argc, char **argv )
   action = new DelegateAction("Reset",[initialState, integrable](){
     integrable->setState(initialState);
   });
-  simulation->addSimulationObject(action);
+  simulation->add(action);
 
   
   runner.run();

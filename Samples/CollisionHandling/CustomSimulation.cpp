@@ -60,7 +60,7 @@ void CustomSimulation::buildModel(){
 	setName("Collision Handling Example");
 
 	CollisionRenderer *  collisionRenderer =new CollisionRenderer(dynamicsAlgorithm.collisionDetector);
-	addSimulationObject(collisionRenderer);
+	add(collisionRenderer);
 	SimulationBuilder b(*this);  
 	Gravity & g = *(b.setGravity(Vector3D(0,-1,0)));
 	g.setGravityMagnitude(0.1);
@@ -69,22 +69,22 @@ void CustomSimulation::buildModel(){
     dynamicsAlgorithm.timingModule.printInfo(cout);
     dynamicsAlgorithm.timingModule.resetAccumulatedTimes();
   });
- addSimulationObject(new DelegateAction("activate timer", [timer](){timer->repeat() = !timer->repeat();}));
- addSimulationObject(timer);
+ add(new DelegateAction("activate timer", [timer](){timer->repeat() = !timer->repeat();}));
+ add(timer);
 
 
-  addSimulationObject(&dynamicsAlgorithm.dynamicBodyModule);
-  addSimulationObject(&dynamicsAlgorithm.collisionDetector);
+  add(&dynamicsAlgorithm.dynamicBodyModule);
+  add(&dynamicsAlgorithm.collisionDetector);
 
-  addSimulationObject(new DelegateAction("Render Collisions", [collisionRenderer](){collisionRenderer->renderCollisions()=!collisionRenderer->renderCollisions();}));
-	addSimulationObject(new RealValue("Collisiontrace Timeout",collisionRenderer->timeout()));
-	addSimulationObject(new DelegateAction("Collisiontrace", [collisionRenderer](){
+  add(new DelegateAction("Render Collisions", [collisionRenderer](){collisionRenderer->renderCollisions()=!collisionRenderer->renderCollisions();}));
+	add(new RealValue("Collisiontrace Timeout",collisionRenderer->timeout()));
+	add(new DelegateAction("Collisiontrace", [collisionRenderer](){
 		collisionRenderer->renderCollisionTrace() = !collisionRenderer->renderCollisionTrace();
 
 		}));
 
 	g.setGravityMagnitude(0.1);
-	addSimulationObject( new RealValue("Gravity Magnitude",
+	add( new RealValue("Gravity Magnitude",
 		[&g](){return g.getGravityMagnitude();},
 		[&g](Real val){g.setGravityMagnitude(val);}));
 
@@ -92,13 +92,13 @@ void CustomSimulation::buildModel(){
 		auto plane = new DynamicGeometry<Plane>(*new Plane(),0,Matrix3x3::Identity());
 		plane->coordinates().position() = Vector3D(0,-4,0);
 		plane->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),-0.2);
-		addSimulationObject(new Vector3DValue("plane ",plane->coordinates().position()));
+		add(new Vector3DValue("plane ",plane->coordinates().position()));
 
-		addSimulationObject(plane);
+		add(plane);
 		auto renderer = new PlaneRenderer(plane->geometry());
-		addSimulationObject(renderer);
-		addSimulationObject(new RealValue("plane extent",renderer->extent()));
-		addSimulationObject(DynamicCollidable::create(plane->geometry(),plane->body(),0.5,0.01,0.01));
+		add(renderer);
+		add(new RealValue("plane extent",renderer->extent()));
+		add(DynamicCollidable::create(plane->geometry(),plane->body(),0.5,0.01,0.01));
 		}
 
 		
@@ -106,40 +106,40 @@ void CustomSimulation::buildModel(){
 		Real planeAngle = -0.2;
 		body->coordinates().position().set(0+5*cos(planeAngle)-0.5*sin(planeAngle),-3.99+5*sin(planeAngle)+0.5*cos(planeAngle),0);
 		body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
-		addSimulationObject(new BoxRenderer(body->geometry()));
-		addSimulationObject(DynamicCollidable::create(*new Octree(body->geometry(),5,* new BoundingSphereFactory()),body->body(),0.5,0.01,0.02));
+		add(new BoxRenderer(body->geometry()));
+		add(DynamicCollidable::create(*new Octree(body->geometry(),3,* new BoundingSphereFactory()),body->body(),0.5,0.01,0.02));
 
 		body = new DynamicBox(1,1,1,1);
 		body->coordinates().position().set(0+10*cos(planeAngle)-0.5*sin(planeAngle),-3.99+10*sin(planeAngle)+0.5*cos(planeAngle),0);
 		body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
-		addSimulationObject(new BoxRenderer(body->geometry()));
-		addSimulationObject(DynamicCollidable::create(*new Octree(body->geometry(),5,* new BoundingSphereFactory()),body->body(),0.5,0.01,10));
+		add(new BoxRenderer(body->geometry()));
+		add(DynamicCollidable::create(*new Octree(body->geometry(),3,* new BoundingSphereFactory()),body->body(),0.5,0.01,10));
 
 		{
 		auto sphere = new DynamicSphere(1,1);
-		addSimulationObject(sphere);
-		addSimulationObject(new Vector3DValue("sphere",sphere->coordinates().position()));
-		addSimulationObject(new SphereRenderer(sphere->geometry()));
+		add(sphere);
+		add(new Vector3DValue("sphere",sphere->coordinates().position()));
+		add(new SphereRenderer(sphere->geometry()));
 		sphere->coordinates().position() = Vector3D(1,-2,0);
-		addSimulationObject(DynamicCollidable::create(sphere->geometry(),sphere->body(),0.1,100,50));
+		add(DynamicCollidable::create(sphere->geometry(),sphere->body(),0.1,100,50));
 		}
 
 		{
 		auto box = new DynamicBox();
-		addSimulationObject(box);
-		addSimulationObject(new Vector3DValue("box", box->coordinates().position()));
-		addSimulationObject(new BoxRenderer(box->geometry()));
+		add(box);
+		add(new Vector3DValue("box", box->coordinates().position()));
+		add(new BoxRenderer(box->geometry()));
 		box->coordinates().position().set(3,2,0);
-		addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,* new BoundingSphereFactory()),box->body(),0.3,100,50));
+		add(DynamicCollidable::create(*new Octree(box->geometry(),3,* new BoundingSphereFactory()),box->body(),0.3,100,50));
 		}
 
 		//{
 		//auto pyramid = new DynamicGeometry<Pyramid>(*new Pyramid(),1,Matrix3x3::Identity());
-		//addSimulationObject(pyramid);
-		//addSimulationObject(new Vector3DValue("pyramid",pyramid->coordinates().position()));
-		//addSimulationObject(new PolygonRenderer(pyramid->geometry()));
+		//add(pyramid);
+		//add(new Vector3DValue("pyramid",pyramid->coordinates().position()));
+		//add(new PolygonRenderer(pyramid->geometry()));
 		//pyramid->coordinates().position().set(3,1,0);
-		//addSimulationObject(DynamicCollidable::create(*new Octree(pyramid->geometry(),3,* new BoundingSphereFactory()),pyramid->body(),0.3));
+		//add(DynamicCollidable::create(*new Octree(pyramid->geometry(),3,* new BoundingSphereFactory()),pyramid->body(),0.3));
 		//}
 
 		{
@@ -155,38 +155,38 @@ void CustomSimulation::buildModel(){
 		sphere = b.createSphere("s6",Vector3D(-2,-1,0),1,radius);
 		b.createBallJoint("j6","s6","p6",Vector3D(-2,-1,0));
 
-		addSimulationObject(new SphereRenderer(sphere->geometry()));
+		add(new SphereRenderer(sphere->geometry()));
 		collidable = DynamicCollidable::create(sphere->geometry(),sphere->body());
-		addSimulationObject(collidable); 
+		add(collidable); 
 
 		particle = b.createParticle("p5",Vector3D(-2,0,0),0);
 		sphere = b.createSphere("s5",Vector3D(-2,-2,0),2,radius);
 		b.createBallJoint("j5","s5","p5",Vector3D(-2,0,0));
-		addSimulationObject(new SphereRenderer(sphere->geometry()));
+		add(new SphereRenderer(sphere->geometry()));
 		collidable = DynamicCollidable::create(sphere->geometry(),sphere->body());
-		addSimulationObject(collidable);
+		add(collidable);
 
 		particle = b.createParticle("p4",Vector3D(-1,0,0),0);
 		sphere = b.createSphere("s4",Vector3D(-1,-2,0),2,radius);
 		b.createBallJoint("j4","s4","p4",Vector3D(-1,0,0));
-		addSimulationObject(new SphereRenderer(sphere->geometry()));
+		add(new SphereRenderer(sphere->geometry()));
 		collidable = DynamicCollidable::create(sphere->geometry(),sphere->body());
-		addSimulationObject(collidable);
+		add(collidable);
 
 		particle = b.createParticle("p1",Vector3D(0,0,0),0);
 		//sphere = b.createSphere("s1",Vector3D(-3,-0.3,0),1,radius);
 		sphere = b.createSphere("s1",Vector3D(0,-2,0),2,radius);
 		b.createBallJoint("j1","s1","p1",Vector3D(0,0,0));
-		addSimulationObject(new SphereRenderer(sphere->geometry()));
+		add(new SphereRenderer(sphere->geometry()));
 		collidable = DynamicCollidable::create(sphere->geometry(),sphere->body());
-		addSimulationObject(collidable);
+		add(collidable);
 
 		particle = b.createParticle("p2",Vector3D(1,0,0),0);
 		sphere= b.createSphere("s2",Vector3D(3,0,0),1,radius);
 		b.createBallJoint("j2","s2","p2",Vector3D(1,0,0));
-		addSimulationObject(new SphereRenderer(sphere->geometry()));
+		add(new SphereRenderer(sphere->geometry()));
 		collidable = DynamicCollidable::create(sphere->geometry(),sphere->body());
-		addSimulationObject(collidable);
+		add(collidable);
 		}
 
 		//{
@@ -203,10 +203,10 @@ void CustomSimulation::buildModel(){
 
 		//	DynamicCollidable * collidable = DynamicCollidable::create(*sphere,*p);
 
-		//	addSimulationObject(p);
-		//	addSimulationObject(sphere);
-		//	addSimulationObject(collidable);
-		//	addSimulationObject(new SphereRenderer(*sphere));
+		//	add(p);
+		//	add(sphere);
+		//	add(collidable);
+		//	add(new SphereRenderer(*sphere));
 		//	}
 		//}
 
@@ -225,27 +225,27 @@ void CustomSimulation::buildModel(){
       cloth->getNode(0,clothDim-1)->particle->setMass(0);
       cloth->getNode(clothDim-1,0)->particle->setMass(0);
 
-      addSimulationObject(cloth);
+      add(cloth);
        for_each(cloth->getSimulationObjects().begin(), cloth->getSimulationObjects().end(), [this](ISimulationObject * obj){
-        addSimulationObject(obj);
+        add(obj);
       });
 
        cloth->foreachNode([this](TextileNode * node){
          Sphere * sphere = new Sphere(0.1);
          DynamicCollidable * collidable = DynamicCollidable::create(*sphere,*node->particle);
          sphere->coordinates().position.mirror(node->particle->position);
-         addSimulationObject(sphere);
-         //addSimulationObject(new SphereRenderer(*sphere));
-         addSimulationObject(collidable);
+         add(sphere);
+         //add(new SphereRenderer(*sphere));
+         add(collidable);
        });
 
 
        DynamicBox * box = new DynamicBox(90);
        box->kinematics().position() = Vector3D(10,2,12);
-       addSimulationObject(box);
-       addSimulationObject(new PolygonRenderer(box->geometry()));
-       addSimulationObject(DynamicCollidable::create(*new Octree(box->geometry(),3,*new BoundingSphereFactory()),box->body()));
-       addSimulationObject(new DelegateAction("box mass",[box](){
+       add(box);
+       add(new PolygonRenderer(box->geometry()));
+       add(DynamicCollidable::create(*new Octree(box->geometry(),3,*new BoundingSphereFactory()),box->body()));
+       add(new DelegateAction("box mass",[box](){
          if(box->body().getMass()){
            box->body().setMass(0);
          }else{
@@ -274,7 +274,7 @@ void CustomSimulation::buildModel(){
           0,
           Matrix3x3::Zero());
         renderer = new PolygonRenderer(rectangle->geometry());
-        collidable = DynamicCollidable::create(*new Octree(rectangle->geometry(),4,*new BoundingSphereFactory()),rectangle->body(),0.1);
+        collidable = DynamicCollidable::create(*new Octree(rectangle->geometry(),3,*new BoundingSphereFactory()),rectangle->body(),0.1);
         
 
          pos = offset + Vector3D(0,spacing * i,0);
@@ -290,15 +290,15 @@ void CustomSimulation::buildModel(){
         rectangle->coordinates().position() = pos;
         rectangle->coordinates().orientation() =ori*q;
 
-        addSimulationObject(rectangle);
-        addSimulationObject(renderer);
-        addSimulationObject(collidable);
+        add(rectangle);
+        add(renderer);
+        add(collidable);
       }
 
       DynamicSphere * sphere = new DynamicSphere(0.1,0.6);
-      addSimulationObject(sphere);
-      addSimulationObject(new SphereRenderer(sphere->geometry()));
-      addSimulationObject(DynamicCollidable::create(sphere->geometry(), sphere->body(),0.4,10,6));
+      add(sphere);
+      add(new SphereRenderer(sphere->geometry()));
+      add(DynamicCollidable::create(sphere->geometry(), sphere->body(),0.4,10,6));
       sphere->coordinates().position() = pos+Vector3D(0,1,0);
 
     }
@@ -308,11 +308,11 @@ void CustomSimulation::buildModel(){
       PlyMesh * mesh = new PlyMesh("cube.ply");
       mesh->initialize();
      // mesh->scale(60,60,60);
-      addSimulationObject(mesh);
+      add(mesh);
       PolygonRenderer * r = new PolygonRenderer(*mesh);
      r->drawLabels = false;
      r->drawNormals = false;
-      addSimulationObject(r);//*/
+      add(r);//*/
     }
 		
 	}
@@ -321,12 +321,12 @@ void CustomSimulation::buildModel(){
 void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObject){
 	Connector * connector = dynamic_cast<Connector*>(simulationObject);
 	if(connector){
-		addSimulationObject(new ConnectorRenderer(*connector));
+		add(new ConnectorRenderer(*connector));
 		}
 
 	Particle * particle = dynamic_cast<Particle*>(simulationObject);
 	if(particle){
-		addSimulationObject(new ParticleRenderer(*particle));
+		add(new ParticleRenderer(*particle));
 		}
 	}
 
@@ -338,11 +338,11 @@ void CustomSimulation::buildAlgorithms(){
 	integrators.push_back(new RungeKutta4(0.01));
 
   
-  addSimulationObject(integrators.at(0));
-  addSimulationObject(integrators.at(1));
-  addSimulationObject(integrators.at(2));
+  add(integrators.at(0));
+  add(integrators.at(1));
+  add(integrators.at(2));
 
-	addSimulationObject(&dynamicsAlgorithm);
+	add(&dynamicsAlgorithm);
 
 	integrator = integrators.at(0);
 
@@ -351,18 +351,18 @@ void CustomSimulation::buildAlgorithms(){
 
 	setIntegrator(*integrator);
 
-	addSimulationObject(new DelegateAction("toggle collision detection",[this](){
+	add(new DelegateAction("toggle collision detection",[this](){
 		dynamicsAlgorithm.detectCollisions = ! dynamicsAlgorithm.detectCollisions;
 		dynamicsAlgorithm.collisionDetector.resetCollisions();
 		}));
 
-	addSimulationObject(new DelegateAction("toggle multibody",[this](){
+	add(new DelegateAction("toggle multibody",[this](){
 		dynamicsAlgorithm.doMultiBody = ! dynamicsAlgorithm.doMultiBody;
 		}));
 
-	addSimulationObject(new RealValue("time", [this](){return getTime();}, [](Real r){}));
-
-	addSimulationObject(new IntValue("Integrator 0-2 (0=ee, 1=ie,2=rk4)", 
+	add(new RealValue("time", [this](){return time();}, [](Real r){}));
+  add(new RealValue("elapsed system time", [this](){return elapsedSystemTime();}, [](Real r){}));
+	add(new IntValue("Integrator 0-2 (0=ee, 1=ie,2=rk4)", 
 		[this](){
 			return integratorIndex;
 		},
@@ -376,7 +376,7 @@ void CustomSimulation::buildAlgorithms(){
 
 
 
-		addSimulationObject( new RealValue("Integrator Step Size",
+		add( new RealValue("Integrator Step Size",
 			[this](){return integrator->getStepSize();},
 			[this](Real value){integrator->setStepSize(value);}));
 
@@ -384,16 +384,16 @@ void CustomSimulation::buildAlgorithms(){
 
 
 
-		addSimulationObject(new LightRenderer());
-		addSimulationObject(new CoordinateSystemRenderer());// renders coordinate system at world origin
+		add(new LightRenderer());
+		add(new CoordinateSystemRenderer());// renders coordinate system at world origin
 
 
 		auto cam = new CameraRenderer();
 		cam->position() =Vector3D(8,0,30);
 		cam->orientation().setFromAxisAngle(Vector3D(0,1,0),PI/2);
-		addSimulationObject(cam);
+		add(cam);
 
-		addSimulationObject(new Vector3DValue("camera position", cam->position()));
+		add(new Vector3DValue("camera position", cam->position()));
 
 
 	}

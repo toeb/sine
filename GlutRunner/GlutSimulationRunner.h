@@ -13,6 +13,7 @@ private:
 public:
   char ** getCommandLineArguments(int & argc);
   void setCommandLineArguments(int argc, char ** argv);
+
   /**
    * \brief Gets the instance of the Singleton GlutSimulationRunner.
    *

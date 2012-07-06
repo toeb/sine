@@ -16,7 +16,6 @@ GlutSimulationRunner& GlutSimulationRunner::instance(){
   return *runnerInstance;
 }
 
-
 GlutSimulationRunner::GlutSimulationRunner(): _commandlineArgumentArray(0), _commandlineArgumentCount(0){
 
 }
@@ -25,12 +24,13 @@ void timeStepGlutCallback ()
 {
   GlutSimulationRunner::instance().simulateCallback();
 }
+
 void GlutSimulationRunner::run(){
   initialize();
-  START_TIMING(glutTimerName);
 	glutMainLoop();	
   cleanup();
 }
+
 void GlutSimulationRunner::onDesiredTimeStepChanged(){
   int hz = 1000;
 	Real dt = getDesiredTimeStepSize();
@@ -48,6 +48,7 @@ char ** GlutSimulationRunner::getCommandLineArguments(int & argc){
   argc = _commandlineArgumentCount;
   return _commandlineArgumentArray;
 }
+
 void GlutSimulationRunner::setCommandLineArguments(int argc, char ** argv){
   _commandlineArgumentCount = argc;
   _commandlineArgumentArray= argv;
@@ -59,33 +60,25 @@ void GlutSimulationRunner::cleanupObject(){
   GlutRenderer::instance().cleanup();
 }
 
-
 bool GlutSimulationRunner::initializeRunner(){  
-  
   Simulation * simulation = getSimulation(); 
   const char * simulationName = getSimulationName(simulation);
-
-
+  
   MiniGL::init (_commandlineArgumentCount, _commandlineArgumentArray, 800, 600, 0, 0, simulationName);
 
   onDesiredTimeStepChanged(); //sets the simulationcallback
   
-  simulation->addSimulationObject(&(GlutInputHandler::instance()));
-  simulation->addSimulationObject(&(GlutRenderer::instance()));
+  simulation->add(&(GlutInputHandler::instance()));
+  simulation->add(&(GlutRenderer::instance()));
 
-  
-  //if(!GlutInputHandler::instance().initialize())return false;
   if(!GlutRenderer::instance().initialize())return false;
-
- 
  return true;
 }
 
 void GlutSimulationRunner::onSimulationSet(){
 
 }
-void GlutSimulationRunner::simulateCallback(){
- 
-  doTimestep(getDesiredTimeStepSize());
 
+void GlutSimulationRunner::simulateCallback(){
+  doTimestep(getDesiredTimeStepSize());
 }
