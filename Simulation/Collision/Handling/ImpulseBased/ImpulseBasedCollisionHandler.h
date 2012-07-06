@@ -14,12 +14,22 @@ private:
   CollisionDetector & _detector;
   ImpulseBasedMultiBodyModule & _ibdsAlgorithm;
   int _collisionsCount;	// keeps track of the handled collisions
+
   void addContactJoint(DynamicContact & contact);
   void handleContact(DynamicContact & contact);
 public:
   ImpulseBasedCollisionHandler(CollisionDetector & detector, ImpulseBasedMultiBodyModule & dynamics);
 
+  /**
+   * \brief Handle collisions. Main Method of Collision Handler
+   * 				
+   */
   void handleCollisions();
+
+  /**
+   * \brief Resets this object. (Cleanup after step e.g. Removing Collisions)
+   *
+   */
   void reset();
   
   inline CollisionDetector & detector(){

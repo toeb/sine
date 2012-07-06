@@ -9,10 +9,10 @@ Connector::Connector(DynamicBody & body):_body(body){
       
 }
 
-DynamicBody & Connector::getBody(){
+DynamicBody & Connector::body(){
   return _body;
 }
-const DynamicBody & Connector::getBody()const{
+const DynamicBody & Connector::body()const{
   return _body;
 }
 

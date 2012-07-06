@@ -24,7 +24,6 @@ public:
 
 	BallJoint(Connector & a, Connector &b,Real positionTolerance=3e-10, Real velocityTolerance=3e-10);
 	  
-
 	inline bool arePositionsCorrect();
     
   inline void correctPosition(Real h);

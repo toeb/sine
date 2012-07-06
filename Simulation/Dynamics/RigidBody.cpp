@@ -29,6 +29,7 @@ int RigidBody::getStateDimension()const{return _kinematics.getStateDimension();}
 
 void RigidBody::calculateDynamics()
 {
+  //if mass is zero all movement is stopped
   if(_m==0){
     _kinematics.angularAcceleration().setZero();
     _kinematics.angularVelocity().setZero();
@@ -36,6 +37,8 @@ void RigidBody::calculateDynamics()
     _kinematics.velocity().setZero();
     return;
   }
+
+  //evaluate motion equation
   _kinematics.acceleration() = _f*(1/_m);    
   const Matrix3x3 & J_inverted_wcs = getInvertedInertiaTensorInWorldCoordinates();
   _kinematics.angularAcceleration() = ( J_inverted_wcs *(_tau - (_kinematics.angularVelocity() ^ (J_inverted_wcs*_kinematics.angularVelocity()))) );

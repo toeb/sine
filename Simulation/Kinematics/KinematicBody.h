@@ -16,15 +16,17 @@ namespace IBDS{
 
 
 /**
- * \brief Rigid body class.  
- * 				Describes a Rigid Body.  Is an extension of Particle
+ * \brief Kinematic body class.  
+ * 				Describes a kinematic Body.  
  * 				 
+ * 				 is a  coordinate system extended by the first two derivatives of the position and oirientation
  *
  * \author Tobias Becker
  * \date 10.04.2012
  */
 class KinematicBody : public IIntegrable, public virtual CoordinateSystem{
 public:
+
   LinearVelocity velocity;
   LinearAcceleration acceleration;
   AngularVelocity angularVelocity;
@@ -32,8 +34,7 @@ public:
 
   void setZero();
   void setMovementToZero();
-
-  KinematicBody();
+    KinematicBody();
   ~KinematicBody();
 
 

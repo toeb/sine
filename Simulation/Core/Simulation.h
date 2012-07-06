@@ -23,6 +23,23 @@ private:
   ///< The system time at time of initialization
   Time _initialSystemTime;
 public:
+
+  /**
+   * \brief Adds simulationObject / simulation module to the simulation.
+   * 				
+   * \return true if it succeeds, false if it fails.
+   */
+  bool add(ISimulationObject * simulationObject);
+
+  /**
+   * \brief Removes the given simulationObject from the simulation.
+   * 				
+   * 				the effects might be unintended consequences depending on the modules added
+   *
+   * \return true if it succeeds, false if it fails.
+   */
+  bool remove(ISimulationObject * simulationObject);
+
   /**
    * \brief adds a object to the simulation
    */
@@ -65,8 +82,6 @@ public:
   Simulation();
   ~Simulation();
   
-  bool add(ISimulationObject * simulationObject);
-  bool remove(ISimulationObject * simulationObject);
   
   void foreachModule(std::function<void(ISimulationModule*)> f);
   void foreachObject(std::function<void(ISimulationObject*)> f);

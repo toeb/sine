@@ -12,6 +12,8 @@ namespace IBDS{
 /**
  * \brief Coordinate system. 
  * 				A Coordinate system consists of a position in and an orientation
+ * 				
+ * 				it is shareable
  *
  * \author Tobi
  * \date 24.05.2012

@@ -11,6 +11,11 @@
 
 namespace IBDS{
 
+/**
+ * \brief a Textile node has links to the north south east and west node as well as to the 12 connected springs. 
+ *
+ * 
+ */
 struct TextileNode{
   TextileNode():
     connector(0),
@@ -48,6 +53,11 @@ struct TextileNode{
   DampedSpring * westFlexor;
 };
 
+/**
+ * \brief Textile model. 
+ *
+ * 
+ */
 class TextileModel : public ISimulationObject{
 private:
   int _rows;
@@ -116,6 +126,7 @@ public:
 
 private:
   void normalizeEachSpring(Real maxElongationRate);
+
   void for_each_spring(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
   void for_each_elongator(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
   void for_each_flexor(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);

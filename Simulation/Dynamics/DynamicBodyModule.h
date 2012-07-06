@@ -10,7 +10,7 @@ public:
     setName("DynamicBodyModule");
   }
   void calculateCachedValues(){
-    tick();
+    tick();//measure time
     foreach([](DynamicBody* b){b->calculateCachedValues();});
     tock();
   }

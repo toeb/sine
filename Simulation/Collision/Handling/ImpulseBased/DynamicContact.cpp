@@ -98,8 +98,8 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 void DynamicContact::applyTangentialImpulse(Vector3D &p) {
 	// tangential impulses are applied to the center of gravity of the bodies, 
 	// because applying them to the contact points produces ugly glitches for some reason...
-	DynamicBody &body1 = connectorA().getBody();
-	DynamicBody &body2 = connectorB().getBody();
+	DynamicBody &body1 = connectorA().body();
+	DynamicBody &body2 = connectorB().body();
 	body1.applyImpulse(body1.getCenterOfGravity(),p);
 	body2.applyImpulse(body2.getCenterOfGravity(),-p);
 	}

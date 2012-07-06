@@ -4,6 +4,11 @@
 #include <functional>
 namespace IBDS{
 typedef std::function<void(ISimulationObject*)> SimulationObjectAction;
+
+/**
+ * \brief Composite simulation object. (Subobjects are automatically added to the simulation)
+ *
+ */
 class CompositeSimulationObject : public virtual ISimulationObject{
 private:
   std::vector<ISimulationObject*> _children;

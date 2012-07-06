@@ -82,8 +82,8 @@ void ContactJoint::applyTangentialImpulses(Real h, Vector3D& d, Vector3D& v_n, V
 	Matrix3x3 K_agc_a(0);	
 	// K matrix for impulses applied at the center of gravity of the second body to achieve a desired velocity change in the point b
 	Matrix3x3 K_bgc_b(0);	
-	connectorA().getKMatrix(K_agc_a,contact().connectorA().getBody().getCenterOfGravity(),a_wcs);
-	connectorB().getKMatrix(K_bgc_b,contact().connectorB().getBody().getCenterOfGravity(),b_wcs);
+	connectorA().getKMatrix(K_agc_a,contact().connectorA().body().getCenterOfGravity(),a_wcs);
+	connectorB().getKMatrix(K_bgc_b,contact().connectorB().body().getCenterOfGravity(),b_wcs);
 	Matrix3x3 K_gc = K_agc_a + K_bgc_b;
 
 	if (u_rel_t.length() == 0) {

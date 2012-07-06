@@ -21,8 +21,7 @@ public:
   const TypeId getType()const{return type;}
 
   /**
-   * \brief Gets the type of the collision. returns the type of the geometry as default.  may be overridden
-   *
+   * \brief Gets the type of the collision object.
    * \return The type.
    */
   const TypeId getCollisionType()const;
@@ -37,7 +36,13 @@ public:
    */
   Collidable(ISimulationObject & collisionObject);
 
-  virtual ISimulationObject & collisionObject()const{return _collisionObject;}
+  /**
+   * \brief Gets the collision object which is actually used in collision tests
+   * 				
+   *
+   * \return .
+   */
+  inline virtual ISimulationObject & collisionObject()const{return _collisionObject;}
 
 
   /**
@@ -50,8 +55,6 @@ public:
   /**
    * \brief Resets this object. removing all collisions an calling the virtual resetCollidable method
    *
-   * \author Tobi
-   * \date 05.06.2012
    */
   void reset();    
 
@@ -68,7 +71,7 @@ public:
    *
    * \return the collisions.
    */
-  const std::vector<Collision*> & getCollisions()const;
+  const std::vector<Collision*> & collisions()const;
 
   /**
    * \brief Foreach collision iterator.

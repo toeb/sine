@@ -89,6 +89,8 @@ void CustomSimulation::buildModel(){
 		[&g](Real val){g.setGravityMagnitude(val);}));
 
 		{
+
+		// boden ebene
 		auto plane = new DynamicGeometry<Plane>(*new Plane(),0,Matrix3x3::Identity());
 		plane->coordinates().position() = Vector3D(0,-4,0);
 		plane->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),-0.2);
@@ -101,36 +103,40 @@ void CustomSimulation::buildModel(){
 		add(DynamicCollidable::create(plane->geometry(),plane->body(),0.5,0.01,0.01));
 		}
 
+    //rutschende würfel
+    {
+		  DynamicBox *body = new DynamicBox(1,1,1,1);
+		  Real planeAngle = -0.2;
+		  body->coordinates().position().set(0+5*cos(planeAngle)-0.5*sin(planeAngle),-3.99+5*sin(planeAngle)+0.5*cos(planeAngle),0);
+		  body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
+		  add(new BoxRenderer(body->geometry()));
+		  add(DynamicCollidable::create(*new Octree(body->geometry(),6,* new BoundingSphereFactory()),body->body(),0.5,0.01,0.02));
+
+		  body = new DynamicBox(1,1,1,1);
+		  body->coordinates().position().set(0+10*cos(planeAngle)-0.5*sin(planeAngle),-3.99+10*sin(planeAngle)+0.5*cos(planeAngle),0);
+		  body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
+		  add(new BoxRenderer(body->geometry()));
+		  add(DynamicCollidable::create(*new Octree(body->geometry(),6,* new BoundingSphereFactory()),body->body(),0.5,0.01,10));
+      }
 		
-		DynamicBox *body = new DynamicBox(1,1,1,1);
-		Real planeAngle = -0.2;
-		body->coordinates().position().set(0+5*cos(planeAngle)-0.5*sin(planeAngle),-3.99+5*sin(planeAngle)+0.5*cos(planeAngle),0);
-		body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
-		add(new BoxRenderer(body->geometry()));
-		add(DynamicCollidable::create(*new Octree(body->geometry(),3,* new BoundingSphereFactory()),body->body(),0.5,0.01,0.02));
-
-		body = new DynamicBox(1,1,1,1);
-		body->coordinates().position().set(0+10*cos(planeAngle)-0.5*sin(planeAngle),-3.99+10*sin(planeAngle)+0.5*cos(planeAngle),0);
-		body->coordinates().orientation().setFromAxisAngle(Vector3D(0,0,1),planeAngle);
-		add(new BoxRenderer(body->geometry()));
-		add(DynamicCollidable::create(*new Octree(body->geometry(),3,* new BoundingSphereFactory()),body->body(),0.5,0.01,10));
-
-		{
-		auto sphere = new DynamicSphere(1,1);
-		add(sphere);
-		add(new Vector3DValue("sphere",sphere->coordinates().position()));
-		add(new SphereRenderer(sphere->geometry()));
-		sphere->coordinates().position() = Vector3D(1,-2,0);
-		add(DynamicCollidable::create(sphere->geometry(),sphere->body(),0.1,100,50));
+    // freie Kugel
+    {
+		  auto sphere = new DynamicSphere(1,1);
+		  add(sphere);
+		  add(new Vector3DValue("sphere",sphere->coordinates().position()));
+		  add(new SphereRenderer(sphere->geometry()));
+		  sphere->coordinates().position() = Vector3D(1,-2,0);
+		  add(DynamicCollidable::create(sphere->geometry(),sphere->body(),0.1,100,50));
 		}
 
+    //freier Würfel
 		{
-		auto box = new DynamicBox();
-		add(box);
-		add(new Vector3DValue("box", box->coordinates().position()));
-		add(new BoxRenderer(box->geometry()));
-		box->coordinates().position().set(3,2,0);
-		add(DynamicCollidable::create(*new Octree(box->geometry(),3,* new BoundingSphereFactory()),box->body(),0.3,100,50));
+		  auto box = new DynamicBox();
+		  add(box);
+		  add(new Vector3DValue("box", box->coordinates().position()));
+		  add(new BoxRenderer(box->geometry()));
+		  box->coordinates().position().set(3,2,0);
+		  add(DynamicCollidable::create(*new Octree(box->geometry(),3,* new BoundingSphereFactory()),box->body(),0.3,100,50));
 		}
 
 		//{
@@ -142,6 +148,8 @@ void CustomSimulation::buildModel(){
 		//add(DynamicCollidable::create(*new Octree(pyramid->geometry(),3,* new BoundingSphereFactory()),pyramid->body(),0.3));
 		//}
 
+
+		// 4 PEndel
 		{
 		DynamicSphere * sphere = 0;
 		DynamicCollidable * collidable;
@@ -189,6 +197,7 @@ void CustomSimulation::buildModel(){
 		add(collidable);
 		}
 
+    //partikel
 		//{
 		//for(int i= 0; i < 2; i++){
 		//	Particle * p = new Particle();
@@ -210,6 +219,7 @@ void CustomSimulation::buildModel(){
 		//	}
 		//}
 
+    //tuch und würfel der auf das tuch fällt
     {
       Quaternion orientation;
       orientation.setFromAxisAngle(Vector3D(1,0,0),PI /2);
@@ -254,6 +264,7 @@ void CustomSimulation::buildModel(){
        }));
     }
 
+    //"wasserfall"
     {
       DynamicGeometry<Rectangle> * rectangle;
       PolygonRenderer * renderer; 
@@ -303,6 +314,7 @@ void CustomSimulation::buildModel(){
 
     }
 
+    //mesh loadeder
     {
       /*
       PlyMesh * mesh = new PlyMesh("cube.ply");
@@ -319,16 +331,16 @@ void CustomSimulation::buildModel(){
 
 
 void CustomSimulation::onSimulationObjectAdded(ISimulationObject * simulationObject){
-	Connector * connector = dynamic_cast<Connector*>(simulationObject);
-	if(connector){
-		add(new ConnectorRenderer(*connector));
-		}
+  Connector * connector = dynamic_cast<Connector*>(simulationObject);
+  if(connector){
+    add(new ConnectorRenderer(*connector));
+  }
 
-	Particle * particle = dynamic_cast<Particle*>(simulationObject);
-	if(particle){
-		add(new ParticleRenderer(*particle));
-		}
-	}
+  Particle * particle = dynamic_cast<Particle*>(simulationObject);
+  if(particle){
+    add(new ParticleRenderer(*particle));
+  }
+}
 
 
 

@@ -30,7 +30,7 @@ void Collidable::reset(){
   //do not delete collisions because this is done by collisiondetector
   _collisions.clear();
 }
-const std::vector<Collision*> & Collidable::getCollisions()const{
+const std::vector<Collision*> & Collidable::collisions()const{
   return _collisions;
 }
 

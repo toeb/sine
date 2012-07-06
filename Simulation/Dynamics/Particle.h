@@ -34,6 +34,7 @@ class Particle : public DynamicBody, public virtual IIntegrable
     Vector3D _f;
     Real _m;
   public:
+    //value holders to kinematic properties
     Position position;
     LinearVelocity velocity;
     LinearAcceleration acceleration;

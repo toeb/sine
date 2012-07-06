@@ -35,6 +35,14 @@ class Connector : public ISimulationObject
 		* \param the force vector in world coordinates
 		*/
 		virtual void addExternalForce(const Vector3D &f);
+
+    /**
+     * \brief actually adds the external force to body. 
+     *      
+     *      subclasses must implement
+     * 
+     * \param f The f.
+     */
 		virtual void addExternalForceToBody(const Vector3D & f)=0;
 
 		const Vector3D & getLastForce()const{
@@ -47,23 +55,14 @@ class Connector : public ISimulationObject
 		virtual void previewPosition(Real h, Vector3D & p_next_wcs)  = 0;
 
 		virtual void applyImpulse(const Vector3D & p) = 0;
-		/**
-		* \brief calculates the world position.
-		*
-		* \return  The world position.
-		*/
 
-		/**
-		* \brief Calculates the world velocity.
-		*
-		* \return  The calculated world velocity.
-		*/
 
 		virtual void calculateWorldPosition(Vector3D & worldPosition)const=0;
 		virtual void calculateWorldVelocity(Vector3D & worldVelocity)const=0;
 		virtual void calculateWorldAcceleration(Vector3D & worldPosition)const=0;
 
 		void calculateCachedValues();
+
 		/**
 		* \brief Gets the k matrix. K_{a,b} is the matrix that maps the impulse applied at point a to the impulse
 		* 				result at point b of  a rigid body.  
@@ -71,6 +70,7 @@ class Connector : public ISimulationObject
 		* \return  The k matrix.
 		*/
 		void getKMatrix(Matrix3x3 & K, const Vector3D & a_wcs, const Vector3D& b_wcs) const;
+
 
 		const Vector3D & getCachedWorldPosition()const;
 		const Vector3D & getWorldPosition();
@@ -91,9 +91,9 @@ class Connector : public ISimulationObject
 		*
 		* \return The body.
 		*/
-		DynamicBody & getBody();
+		DynamicBody & body();
 
-		const DynamicBody & Connector::getBody()const;
+		const DynamicBody & Connector::body()const;
 
 	protected:
 		///< The world position (cached)

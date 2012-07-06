@@ -5,25 +5,45 @@
 #include <algorithm>
 
 namespace IBDS{
+
+/**
+ * \brief A base class for Simulationmodules which only use one type of ISimulationObjects.
+ * 				everything is protected so only sublclasses can decide wether to make internal information public
+ *
+ * \author Tobi
+ * \date 06.07.2012
+ */
 template<class T>
 class SimulationModuleBase : public virtual ISimulationModule{
 private:
   std::vector<T*> _objects;
 public:
+
+protected:
+  //access to the objects
+  void foreach(std::function<void(T*)> action);
+  std::vector<T*> & objects();
+    /**
+   * \brief Accept object if this method returns true then the object is added.
+   * 				
+   * 				subclasses may override this
+   * 				
+   * \return true if it succeeds, false if it fails.
+   */
+  virtual bool acceptObject(T * object){return true;}
+
+  //SimulationModule impl.
   bool addSimulationObject(ISimulationObject * object);
   bool removeSimulationObject(ISimulationObject * object);
 
-protected:
+  //extension points
   virtual void onBeforeSimulationObjectAdd(ISimulationObject * object){}
   virtual void onBeforeSimulationObjectRemove(ISimulationObject * object){}
   virtual void onObjectAdded(T * object){ }
   virtual void onObjectRemoved(T * object){ }
-  virtual bool acceptObject(T * object){return true;}
-
-  void foreach(std::function<void(T*)> action);
-  std::vector<T*> & objects();
 };
 
+// Implementation
 template<class T>
 bool SimulationModuleBase<T>::addSimulationObject(ISimulationObject * object){
   onBeforeSimulationObjectAdd(object);

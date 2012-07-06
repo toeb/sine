@@ -29,33 +29,51 @@ void TextileModel::setMass(Real mass){
 Real TextileModel::getMass()const{
   return _mass;
 }
+
+/**
+ * \brief Normalizes a spring.
+ *
+ * 
+ *
+ * \param [in,out] n1       the first TextileNode *.
+ * \param [in,out] n2       the second TextileNode *.
+ * \param [in,out] spring   the spring to be normalized.
+ * \param maxElongationRate The maximum elongation rate.
+ */
 inline void normalizeSpring(TextileNode * n1, TextileNode * n2, DampedSpring * spring, Real maxElongationRate){
-  
-		Real maxElongation = maxElongationRate * (spring->getRestLength());
-		Real currentElongation = spring->getCurrentLength();
+  //calculate maximum elongation
+	Real maxElongation = maxElongationRate * (spring->getRestLength());
+	//calculate current elongation
+  Real currentElongation = spring->getCurrentLength();
 
-		if (currentElongation > maxElongation) {
-			Particle *particle1 = n1->particle;
-			Particle *particle2 = n2->particle;
+  //nothing to do if current elongation is smaller than maximum elongation
+  if(currentElongation <= maxElongation)return;
 
-			Vector3D pos1 = particle1->position();
-			Vector3D pos2 = particle2->position();
-			Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
-			Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
+      
+	Particle *particle1 = n1->particle;
+	Particle *particle2 = n2->particle;
 
-			Real mass1 = particle1->getMass();
-			Real mass2 = particle2->getMass();
-			if (mass1 == 0 && mass2 != 0) {
-        particle2->position().assign(pos2 - offsetVector); 
-				}
-			else if (mass1 != 0 && mass2 == 0) {
-				particle1->position().assign(pos1 + offsetVector);
-				}
-			else if (mass1 != 0 && mass2 != 0) {
-				particle1->position().assign(pos1 + 0.5 * offsetVector);
-				particle2->position().assign(pos2 - 0.5 * offsetVector);
-				}
-			}
+	Vector3D pos1 = particle1->position();
+	Vector3D pos2 = particle2->position();
+	Vector3D normalizedElongationVector = (1 / currentElongation) * (pos2 - pos1);
+    
+	Vector3D offsetVector = (currentElongation - maxElongation) * normalizedElongationVector;
+
+
+	Real mass1 = particle1->getMass();
+	Real mass2 = particle2->getMass();
+		
+  //cases if particles are fixed / not fixed , not fixed / fixed and not fixed not fixed
+  if (mass1 == 0 && mass2 != 0) {
+    particle2->position().assign(pos2 - offsetVector); 
+	}
+	else if (mass1 != 0 && mass2 == 0) {
+		particle1->position().assign(pos1 + offsetVector);
+	}
+	else if (mass1 != 0 && mass2 != 0) {
+		particle1->position().assign(pos1 + 0.5 * offsetVector);
+		particle2->position().assign(pos2 - 0.5 * offsetVector);
+	}	
 }
 void TextileModel::normalize(){
   if(!isNormalizing())return;
@@ -100,9 +118,11 @@ void TextileModel::buildModel(
 }
 
 void TextileModel::normalizeEachSpring(Real maxElongationRate){
+  //iterate through all springs 
   for(int i =0; i < _rows; i++){
     for(int j =0; j < _rows; j++){
       TextileNode * n = getNode(i,j);
+      //normalize each elongator and flexor if it is not null
       if(n->eastElongator){
         normalizeSpring(n,n->east,n->eastElongator,maxElongationRate);
       }

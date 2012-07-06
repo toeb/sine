@@ -27,22 +27,29 @@ private:
   ///< The torque accumulator
   Vector3D _tau;
   
-  
+
+  ///< The kinematic body
   KinematicBody _kinematics;
 public:
+
   inline CoordinateSystem & coordinates(){return kinematics();}
   inline const CoordinateSystem & coordinates()const {return kinematics();}
+
   inline KinematicBody & kinematics(){return _kinematics;};
   inline const KinematicBody & kinematics()const{return _kinematics;};
 
   RigidBody(Real mass):_m(mass){
 
   }
+
   RigidBody(Real mass, const Matrix3x3 inertia):_m(mass){
     setInertiaTensor(inertia);
   }
+
   RigidBody();
+
   ~RigidBody();
+
   static const TypeId type;
   const TypeId getBodyType()const;
   
@@ -50,6 +57,7 @@ public:
 
   void calculateDynamics();
   void calculateCachedValues();
+
   Real getMass()const{return _m;}
   void setMass(Real m){_m = m;}
 
@@ -69,21 +77,18 @@ public:
   void calculateInvertedInertiaTensor();
   
   const Matrix3x3 & getInvertedInertiaTensorInWorldCoordinates()const;
-  void calculateInvertedInertiaTensorInWorldCoordinates();
-  
+  void calculateInvertedInertiaTensorInWorldCoordinates();  
 
   void applyImpulse(const Vector3D & a_wcs, const Vector3D& p_wcs);
  
   void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const; 
 
 
-  //shorthands for kinematic body access
+  //integragble impl.
   void getDerivedState(Real * xDot)const;
   void setState(const Real * state);
   void getState(Real * state)const;
   int getStateDimension()const;
-
-
 
 };// RigidBody
 }// namespace IBDS
