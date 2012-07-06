@@ -12,6 +12,14 @@ Simulation::Simulation():
 {
 }
 
+ISimulationObject * Simulation::find(const std::string & name){
+  for(auto it = _simulationObjects.begin(); it != _simulationObjects.end(); it++){
+    ISimulationObject * object = *it;
+    if(*object->getName() == name)return object;
+  }
+  return 0;
+}
+
 void Simulation::setIntegrator(Integrator & integrator){
   _integrator = &integrator;
 }
@@ -35,7 +43,7 @@ bool Simulation::addSimulationModule(ISimulationModule * module){
 }
 
 bool Simulation::removeSimulationModule(ISimulationModule * module){  
-  auto pos = find(_simulationModules.begin(), _simulationModules.end(), module);
+  auto pos = std::find(_simulationModules.begin(), _simulationModules.end(), module);
   if(pos==_simulationModules.end())return false;
 
 
@@ -53,16 +61,17 @@ void Simulation::foreachObject(std::function<void(ISimulationObject*)> f){
   for_each(_simulationObjects.begin(), _simulationObjects.end(),f);
 }
 
-bool Simulation::addSimulationObject(ISimulationObject * object){
+bool Simulation::add(ISimulationObject * object){
   bool objectWasAdded = false;
   
 
   if(!_simulationObjects.insert(object).second)return false;
 
+
   auto composite = dynamic_cast<CompositeSimulationObject*>(object);
   if(composite){
     composite->forEachChild([this](ISimulationObject* child){
-      addSimulationObject(child);
+      add(child);
     });
   }
 
@@ -81,9 +90,9 @@ bool Simulation::addSimulationObject(ISimulationObject * object){
   onSimulationObjectAdded(object);
   return objectWasAdded;
 }
-bool Simulation::removeSimulationObject(ISimulationObject * object){
+bool Simulation::remove(ISimulationObject * object){
 
-  auto pos = find(_simulationObjects.begin(), _simulationObjects.end(), object);
+  auto pos = std::find(_simulationObjects.begin(), _simulationObjects.end(), object);
   if(pos==_simulationObjects.end())return false;
 
   
@@ -100,8 +109,9 @@ bool Simulation::removeSimulationObject(ISimulationObject * object){
 
 
 const Real & Simulation::getTargetTime(){return _targetTime;}
-const Real & Simulation::getTime(){return _time;}
+const Real & Simulation::time(){return _time;}
 
+Real Simulation::elapsedSystemTime()const{return currentTime()-_initialSystemTime;}
 
 void Simulation::simulate(Real targetTime){
   
@@ -116,6 +126,7 @@ void Simulation::simulate(Real targetTime){
 
 bool Simulation::initializeObject(){
   bool success = true;
-  for_each(_simulationObjects.begin(), _simulationObjects.end(), [&success](ISimulationObject * o){success &= o->initialize();});
+  foreachObject([&success](ISimulationObject * o){success &= o->initialize();});
+  _initialSystemTime = currentTime();
   return success;
 }

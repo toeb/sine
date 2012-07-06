@@ -4,7 +4,7 @@
 #include <Simulation/Core/Timing/Timeable.h>
 #include <Simulation/Core/SimulationModuleBase.h>
 
-#include <Simulation/MultiBodyDynamics/ImpulseBasedDynamicsAlgorithm.h>
+#include <Simulation/MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.h>
 #include <Simulation/Collision/Detection/CollisionDetector.h>
 
 namespace IBDS{

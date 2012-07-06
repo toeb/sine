@@ -170,7 +170,7 @@ bool SimulationBuilder::addSimulationObject(ISimulationObject * obj){
   if(!obj->getName())return false;
   if(nameExists(*(obj->getName())))return false;
   _simulationObjects[*(obj->getName())] = obj;
-_simulation.addSimulationObject(obj);
+_simulation.add(obj);
 
   return true;
 }

@@ -7,14 +7,12 @@ class SimulationRunner : public virtual ISimulationObject{
 private:
   
   ///< Size of the desired time step
-  Real _desiredTimeStepSize;
+  Time _desiredTimeStepSize;
   ///< The simulation
   Simulation* _simulation;
   ///< true if paused
   bool _paused;
 public:
-
-  
   const char * getSimulationName(const Simulation * simulation) const;
 
   /**
@@ -79,7 +77,7 @@ public:
    *
    * \return The desired time step size.
    */
-  const Real & getDesiredTimeStepSize()const;
+  const Time & getDesiredTimeStepSize()const;
 
   /**
    * \brief Sets a desired time step size.
@@ -89,19 +87,16 @@ public:
    *
    * \param h The h.
    */
-  void setDesiredTimeStepSize(Real h);
+  void setDesiredTimeStepSize(Time h);
 
   /**
-   * \brief Runs this object.
+   * \brief Runs the simulation.
    *
    * \author Tobi
    * \date 07.05.2012
    */
   virtual void run()=0;
 
-
-
-  
 protected:
 
   /**
@@ -137,10 +132,7 @@ protected:
   /**
    * \brief Cleans up this object.
    *
-   * \author Tobi
-   * \date 07.05.2012
    */
   void cleanup();
-  
 };
 };

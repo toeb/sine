@@ -6,14 +6,33 @@ namespace IBDS{
 class CollisionTestRepository{
 private:
   std::vector<const CollisionTest*> _tests;
-
   CollisionTestRepository();
 public:
+
+  /**
+   * \brief Singleton Access to the CollisionTestRepository
+   *
+   * \return .
+   */
   static CollisionTestRepository & instance();
 
+  /**
+   * \brief Adds a Collisiontest to the repository. 
+   *
+   *
+   * \param test The test.
+   */
   void addTest(const CollisionTest* test);
 
-  
+  /**
+   * \brief gets the Collisiontest.
+   *
+   *
+   * \param a type of collidable a.
+   * \param b type of collidable b.
+   *
+   * \return null if it fails, else the test.
+   */
   const inline CollisionTest* CollisionTestRepository::getTest(const TypeId a,const TypeId b)const{
     const CollisionTest * current=0;
     for(int i=0; i < _tests.size(); i++){
@@ -23,15 +42,6 @@ public:
       }
     }
     return 0;
-
-    /*
-      const CollisionTest * current=0;
-    auto result = std::find_if(_tests.begin(), _tests.end(), [&a,&b](const CollisionTest* test){
-      return test->getTypeA()==a && test->getTypeB()==b;
-    });
-    if(_tests.end() == result)return 0;
-    return *result;
-    */
   }
 
   const CollisionTest* getTest(const ISimulationObject & a,const ISimulationObject & b)const;

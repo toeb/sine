@@ -6,6 +6,7 @@
 #include <functional>
 #include <set>
 
+
 namespace IBDS{
 
 class Simulation : public ISimulationObject{
@@ -19,7 +20,33 @@ private:
   Time _time;
   ///< The target time 
   Time _targetTime;
+  ///< The system time at time of initialization
+  Time _initialSystemTime;
 public:
+  /**
+   * \brief adds a object to the simulation
+   */
+  Simulation & operator <<(ISimulationObject * object){
+    add(object);
+  }
+
+  /**
+   * \brief remove the simulationobject from the simulation
+   */
+  Simulation & operator >>(ISimulationObject * object){
+    remove(object);
+  }
+
+  /**
+   * \brief indexer operator returns the simulation object with the name.
+   *
+   * \param name The name.
+   *
+   * \return The indexed value.
+   */
+  ISimulationObject * operator[](const std::string & name){
+    return find(name);
+  }
 
   /**
    * \brief Simulates until target time is reached.
@@ -27,9 +54,10 @@ public:
    * \param targetTime Time of the target.
    */
   void simulate(Time targetTime);
-  const Time & getTargetTime();
-  const Time & getTime();
 
+  const Time & getTargetTime();
+  const Time & time();
+  Time elapsedSystemTime()const;
 
   void setIntegrator(Integrator & integrator);
   Integrator * getIntegrator();
@@ -37,16 +65,19 @@ public:
   Simulation();
   ~Simulation();
   
-  bool addSimulationObject(ISimulationObject * simulationObject);
-  bool removeSimulationObject(ISimulationObject * simulationObject);
+  bool add(ISimulationObject * simulationObject);
+  bool remove(ISimulationObject * simulationObject);
   
   void foreachModule(std::function<void(ISimulationModule*)> f);
   void foreachObject(std::function<void(ISimulationObject*)> f);
 
+  ISimulationObject * find(const std::string & name);
 protected:
   bool initializeObject();
+
   bool addSimulationModule(ISimulationModule * module);
   bool removeSimulationModule(ISimulationModule * module);
+
   /**
    * \brief may be overridden.  gets called when a simulation object was added
    *
@@ -58,4 +89,4 @@ protected:
   virtual void onSimulationObjectAdded(ISimulationObject * object){};
   virtual void onSimulationObjectRemoved(ISimulationObject * object){};
 };
-};
+}

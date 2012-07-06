@@ -39,7 +39,7 @@ void SimulationRunner::doTimestep(Real dt){
    return;
   }
   if(isPaused())return;
-  Real targetTime = _simulation->getTime()+dt;
+  Real targetTime = _simulation->time()+dt;
   _simulation->simulate(targetTime);
 }
 void SimulationRunner::cleanup(){

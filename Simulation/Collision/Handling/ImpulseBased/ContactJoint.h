@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/MultiBodyDynamics/Joint.h>
+#include <Simulation/MultiBodyDynamics/ImpulseBased/Joint.h>
 #include <Simulation/Collision/Handling/ImpulseBased/DynamicContact.h>
 
 namespace IBDS {

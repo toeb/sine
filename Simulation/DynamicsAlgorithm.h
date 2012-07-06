@@ -1,5 +1,5 @@
 #pragma once
-#include <Simulation/MultiBodyDynamics/ImpulseBasedDynamicsAlgorithm.h>
+#include <Simulation/MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.h>
 #include <Simulation/Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.h>
 #include <Simulation/Force/ForceAlgorithm.h>
 #include <Simulation/Dynamics/DynamicBodyModule.h>
