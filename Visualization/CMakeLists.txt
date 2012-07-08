@@ -7,8 +7,6 @@ SET(visualisation_SRC
 ./RenderEngine.cpp
 ./CompositeRenderer.h
 ./CompositeRenderer.cpp
-./RenderManager.h
-./RenderManager.cpp
 ./InputHandler.h
 ./InputHandler.cpp
 ./Camera.h

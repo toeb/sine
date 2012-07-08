@@ -93,7 +93,6 @@ namespace IBDS{
         
     virtual void onMouseMove(int x, int y, int dx, int dy){};
     virtual void onMouseWheelMove(int amount){};
-
   };
 
 #define MAX_KEYS 256
