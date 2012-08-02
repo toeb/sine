@@ -9,7 +9,7 @@
 #include <math/types/Matrix4x4.h>
 #include <math/types/VectorND.h>
 #include <math/types/Matrix4x3.h>
-
+#include <math/types/Vector2D.h>
 #else
 
 typedef int MatrixNxM;

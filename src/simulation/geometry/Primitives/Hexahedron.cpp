@@ -1,6 +1,6 @@
 #include "Hexahedron.h"
 
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 Hexahedron::Hexahedron(Real x, Real y , Real z):_xExtent(x),_yExtent(y),_zExtent(z){

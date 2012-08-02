@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Simulation/Geometry/Polygon/Element.h>
+#include <simulation/geometry/polygon/Element.h>
 
 
-namespace IBDS{
+namespace nspace{
 struct Edge;
 struct HalfEdge;
 struct Vertex : public Element{

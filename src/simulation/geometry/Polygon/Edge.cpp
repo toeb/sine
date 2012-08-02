@@ -1,6 +1,6 @@
 #include "Edge.h"
 
-using namespace IBDS;
+using namespace nspace;
 
 
 void Edge::getDirection(Vector3D & dir){

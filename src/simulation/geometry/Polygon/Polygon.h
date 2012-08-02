@@ -1,15 +1,15 @@
 #pragma once
 
-#include <Simulation/Geometry/Geometry.h>
-#include <Simulation/Geometry/Polygon/Vertex.h>
-#include <Simulation/Geometry/Polygon/HalfEdge.h>
-#include <Simulation/Geometry/Polygon/Edge.h>
-#include <Simulation/Geometry/Polygon/Face.h>
+#include <simulation/geometry/Geometry.h>
+#include <simulation/geometry/polygon/Vertex.h>
+#include <simulation/geometry/polygon/HalfEdge.h>
+#include <simulation/geometry/polygon/Edge.h>
+#include <simulation/geometry/polygon/Face.h>
 
 #include <vector>
 
 
-namespace IBDS{
+namespace nspace{
 
 class Polygon : public Geometry{
 private:

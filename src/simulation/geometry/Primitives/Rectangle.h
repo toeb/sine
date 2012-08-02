@@ -1,7 +1,7 @@
 #pragma once
 #include <Simulation/Geometry/Polygon/Polygon.h>
-#include <Math/Vector2D.h>
-namespace IBDS{
+#include <math/definitions.h>
+namespace nspace{
 class Rectangle : public virtual Polygon{
 private:
   Vector2D _dimension;

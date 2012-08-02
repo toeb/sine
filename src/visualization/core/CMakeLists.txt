@@ -3,6 +3,10 @@ set(source
  ./IRenderer.h
  ./RenderModule.h
  ./RenderModule.cpp  
+ ./Color.h
+ ./Color.cpp
+ ./Material.h
+ ./Material.cpp 
 )
 source_group("src" FILES ${source})
 set(compositeSource

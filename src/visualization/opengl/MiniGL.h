@@ -201,6 +201,10 @@ namespace nspace
 		static void breakPointMainLoop();
 		
 	public:
+
+
+    static void multQuaternion(const Quaternion & q);
+    static void multQuaternionT(const Quaternion & q);
     static void pushMatrix();
     static void popMatrix();
     static void translate(const Vector3D & t);
@@ -233,7 +237,6 @@ namespace nspace
 		static void rotateY (float y);
 		static void rotate(float x, float y, float z);
 		static void setProjectionMatrix (int width, int height);
-
 		static float m_time;
 		static float m_quat[4];
 

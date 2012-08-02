@@ -1,7 +1,7 @@
 #include "Rectangle.h"
 
 using namespace std;
-using namespace IBDS;
+using namespace nspace;
 
 Rectangle::Rectangle( const Vector2D & dimension):
  _dimension(dimension){

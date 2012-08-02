@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Simulation/Kinematics/CoordinateSystem.h>
+#include <simulation/kinematics/CoordinateSystem.h>
 #include <vector>
 
 
-namespace IBDS{
+namespace nspace{
   typedef unsigned int Index;
 struct Element{
   

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Simulation/Kinematics/CoordinateSystem.h>
-#include <Simulation/Geometry/BoundingVolumes/BoundingBox.h>
-namespace IBDS{
+#include <simulation/kinematics/CoordinateSystem.h>
+#include <simulation/geometry/boundingVolumes/BoundingBox.h>
+namespace nspace{
 
 class Geometry : public ISimulationObject{
 private:

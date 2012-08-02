@@ -1,6 +1,6 @@
 #include "BoundingOctree.h"
 #include <algorithm>
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 const TypeId Octree::type = "Octree";

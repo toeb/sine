@@ -2,7 +2,7 @@
 #include "Edge.h"
 #include "Face.h"
 
-using namespace IBDS;
+using namespace nspace;
 
 
 bool HalfEdge::isForwardHalfEdge()const{

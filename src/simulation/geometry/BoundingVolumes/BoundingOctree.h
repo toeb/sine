@@ -1,11 +1,11 @@
 #pragma once
-#include <Simulation/Core/IUpdateable.h>
-#include <Simulation/Geometry/Geometry.h>
-#include <Simulation/Geometry/BoundingVolumes/BoundingVolume.h>
+//#include <simulation/core/IUpdateable.h>
+#include <simulation/geometry/Geometry.h>
+#include <simulation/geometry/boundingVolumes/BoundingVolume.h>
 #include <map>
 #include <functional>
 
-namespace IBDS{
+namespace nspace{
   
 enum OctreeNodeId{
   //   xyz  when x==0 => x = width/2 ...
@@ -21,7 +21,7 @@ enum OctreeNodeId{
 };
 
 
-class Octree : public IUpdatable{
+class Octree : public ISimulationObject{
 private:
   Geometry & _geometry;
   ///< The id of the node

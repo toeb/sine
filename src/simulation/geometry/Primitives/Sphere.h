@@ -1,6 +1,6 @@
 #pragma once
-#include <Simulation/Geometry/Geometry.h>
-namespace IBDS{
+#include <simulation/geometry/Geometry.h>
+namespace nspace{
 class Sphere : public Geometry{
 private:
   Real _radius;

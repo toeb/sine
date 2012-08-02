@@ -1,6 +1,6 @@
 #pragma once
-#include <Simulation/Kinematics/CoordinateSystem.h>
-namespace IBDS{
+#include <simulation/kinematics/CoordinateSystem.h>
+namespace nspace{
   
 enum Classification{
   UNCLASSIFIED=0,

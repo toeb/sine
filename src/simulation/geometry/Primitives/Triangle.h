@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Simulation/Geometry/Polygon/Polygon.h>
-namespace IBDS{
+#include <simulation/geometry/polygon/Polygon.h>
+namespace nspace{
   
 class Triangle : public Polygon{
 public:

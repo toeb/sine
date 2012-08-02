@@ -1,5 +1,5 @@
 /*
- * IBDS - Impulse-Based Dynamic Simulation Library
+ * nspace - Impulse-Based Dynamic Simulation Library
  * Copyright (c) 2003-2008 Jan Bender http://www.impulse-based.de
  *
  * This software is provided 'as-is', without any express or implied
@@ -201,7 +201,8 @@ namespace nspace
 
 		virtual int getRows () const;
 		virtual int getCols () const;
-
+    int rows()const{return getRows();}
+    int cols()const{return getCols();}
 		friend class Matrix3x3;
 	};
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include <Simulation/Geometry/Geometry.h>
-#include <Math/Vector2D.h>
-#include <Simulation/Geometry/Axis.h>
-namespace IBDS{
+#include <simulation/geometry/geometry.h>
+#include <math/definitions.h>
+#include <simulation/geometry/Axis.h>
+namespace nspace{
 class Plane:public Geometry{
   
 public:

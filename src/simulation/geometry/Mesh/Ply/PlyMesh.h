@@ -1,7 +1,7 @@
 #pragma once
-#include <Simulation/Geometry/Polygon/Polygon.h>
-#include <Math/Vector2D.h>
-namespace IBDS{
+#include <simulation/geometry/polygon/Polygon.h>
+#include <math/definitions.h>
+namespace nspace{
 
 /**
 * \brief Ply mesh. Represents a Mesh loaded from a ply file.

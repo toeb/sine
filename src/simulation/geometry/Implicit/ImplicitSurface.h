@@ -1,6 +1,6 @@
 #pragma once
 #include <Simulation/Geometry/Geometry.h>
-namespace IBDS{
+namespace nspace{
 
 class ImplicitSurface: public Geometry{
 private:

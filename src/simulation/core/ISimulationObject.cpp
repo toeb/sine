@@ -60,3 +60,8 @@ void ISimulationObject::cleanup(){
   _initialized = false;
 };
 
+
+bool ISimulationObject::hasName() const
+{
+  return _name!=0;
+}

@@ -1,5 +1,5 @@
 #include "BoundingVolume.h"
-using namespace IBDS;
+using namespace nspace;
 
 BoundingVolume::BoundingVolume(const CoordinateSystem & parent):
 _colliding(false),

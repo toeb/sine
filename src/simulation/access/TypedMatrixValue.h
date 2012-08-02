@@ -22,7 +22,11 @@ public:
   {
     return _matrix.cols();
   }
+  Derived & value(){return _matrix;}
 
+  const Derived & value()const{
+    return _matrix;
+  }
   virtual Real & value( int i, int j ) 
   {
     return  _matrix(i,j);
@@ -32,6 +36,5 @@ public:
   {
    return _matrix(i,j);
   }
-
 };
 }

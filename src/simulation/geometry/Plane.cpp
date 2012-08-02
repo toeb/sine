@@ -1,7 +1,7 @@
 #include "Plane.h"
 #include <Simulation/Geometry/Axis.h>
 
-using namespace IBDS;
+using namespace nspace;
 
 const TypeId Plane::type="Plane";
 const TypeId Plane::getType()const{

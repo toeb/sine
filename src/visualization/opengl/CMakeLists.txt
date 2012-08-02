@@ -45,6 +45,10 @@ if(OPENGL_FOUND)
    ./Utility.cpp
    ./FpsCamera.h
    ./FpsCamera.cpp
+   ./GlMaterial.h
+   ./GlMaterial.cpp
+   ./GlColor.h
+   ./GlColor.cpp
   )
   
   source_group("src\\general" FILES ${renderers_General_SRC})
@@ -52,7 +56,7 @@ if(OPENGL_FOUND)
   source_group("src\\mesh" FILES ${meshrenderers_SRC})
   
   add_library(opengl   ${opengl_SRC} ${meshrenderers_SRC} ${renderers_General_SRC} ${renderers_Simple_SRC})
-  project_folder("visualization" opengl)
+  project_folder("visualization/gl" opengl)
   
   target_link_libraries(opengl kinematics freeglut ${OPENGL_LIBRARIES} ${GLEW_LIBRARY})
   

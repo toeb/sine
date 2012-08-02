@@ -1,86 +1,91 @@
 
 set(implicitGeometry_SRC
-	./Geometry/Implicit/ImplicitSurface.h
-	./Geometry/Implicit/ImplicitSurface.cpp
+	./implicit/ImplicitSurface.h
+	./implicit/ImplicitSurface.cpp
 )
-source_group("simulation\\geometry\\implicit" FILES ${implicitGeometry_SRC})
-set(simulationSource ${simulationSource} ${implicitGeometry_SRC}  )
+source_group("implicit" FILES ${implicitGeometry_SRC})
+set(source ${source} ${implicitGeometry_SRC}  )
 
 set(geometry_SRC
- ./Geometry/Geometry.h
- ./Geometry/Geometry.cpp
- ./Geometry/Plane.h
- ./Geometry/Plane.cpp
- ./Geometry/Interval.h
- ./Geometry/Interval.cpp
- ./Geometry/Axis.h
- ./Geometry/Axis.cpp
+ ./Geometry.h
+ ./Geometry.cpp
+ ./Plane.h
+ ./Plane.cpp
+ ./Interval.h
+ ./Interval.cpp
+ ./Axis.h
+ ./Axis.cpp
 )
 
 set(mesh_SRC
- ./Geometry/Mesh/Mesh.h
- ./Geometry/Mesh/Mesh.cpp
+ ./mesh/Mesh.h
+ ./mesh/Mesh.cpp
  
 )
-source_group("simulation\\geometry\\mesh" FILES ${mesh_SRC})
+source_group("mesh" FILES ${mesh_SRC})
 set(meshPly_SRC
-./Geometry/Mesh/Ply/PlyMesh.h
-./Geometry/Mesh/Ply/PlyMesh.cpp
-./Geometry/Mesh/Ply/rply.h
-./Geometry/Mesh/Ply/rply.c
+./mesh/Ply/PlyMesh.h
+./mesh/Ply/PlyMesh.cpp
+./mesh/Ply/rply.h
+./mesh/Ply/rply.c
 )
-source_group("simulation\\geometry\\mesh\\ply" FILES ${meshPly_SRC})
+source_group("mesh\\ply" FILES ${meshPly_SRC})
 
 
-source_group("simulation\\geometry" FILES ${geometry_SRC})
-set(simulationSource ${simulationSource} ${geometry_SRC}  )
+source_group("" FILES ${geometry_SRC})
+set(source ${source} ${geometry_SRC}  )
 
 set(boundingVolumes_SRC
- ./Geometry/BoundingVolumes/BoundingSphere.h
- ./Geometry/BoundingVolumes/BoundingSphere.cpp
- ./Geometry/BoundingVolumes/BoundingVolume.h
- ./Geometry/BoundingVolumes/BoundingVolume.cpp
- ./Geometry/BoundingVolumes/BoundingBox.h
- ./Geometry/BoundingVolumes/BoundingBox.cpp 
- ./Geometry/BoundingVolumes/BoundingOctree.h
- ./Geometry/BoundingVolumes/BoundingOctree.cpp 
+ ./boundingVolumes/BoundingSphere.h
+ ./boundingVolumes/BoundingSphere.cpp
+ ./boundingVolumes/BoundingVolume.h
+ ./boundingVolumes/BoundingVolume.cpp
+ ./boundingVolumes/BoundingBox.h
+ ./boundingVolumes/BoundingBox.cpp 
+ ./boundingVolumes/BoundingOctree.h
+ ./boundingVolumes/BoundingOctree.cpp 
 )
-source_group("simulation\\geometry\\boundingvolumes" FILES ${boundingVolumes_SRC})
-set(simulationSource ${simulationSource} ${boundingVolumes_SRC}  )
+source_group("boundingvolumes" FILES ${boundingVolumes_SRC})
+set(source ${source} ${boundingVolumes_SRC}  )
 
 set(geometryPrimitives_SRC
- ./Geometry/Primitives/Cylinder.h
- ./Geometry/Primitives/Cylinder.cpp
- ./Geometry/Primitives/Hexahedron.h
- ./Geometry/Primitives/Hexahedron.cpp
- ./Geometry/Primitives/Sphere.h
- ./Geometry/Primitives/Sphere.cpp
- ./Geometry/Primitives/Rectangle.h
- ./Geometry/Primitives/Rectangle.cpp
- ./Geometry/Primitives/Pyramid.h
- ./Geometry/Primitives/Pyramid.cpp
- ./Geometry/Primitives/Triangle.h
- ./Geometry/Primitives/Triangle.cpp
+ ./primitives/Cylinder.h
+ ./primitives/Cylinder.cpp
+ ./primitives/Hexahedron.h
+ ./primitives/Hexahedron.cpp
+ ./primitives/Sphere.h
+ ./primitives/Sphere.cpp
+ ./primitives/Rectangle.h
+ ./primitives/Rectangle.cpp
+ ./primitives/Pyramid.h
+ ./primitives/Pyramid.cpp
+ ./primitives/Triangle.h
+ ./primitives/Triangle.cpp
 )
 
-source_group("simulation\\geometry\\primitives" FILES ${geometryPrimitives_SRC})
-set(simulationSource ${simulationSource} ${geometryPrimitives_SRC}  )
+source_group("primitives" FILES ${geometryPrimitives_SRC})
+set(source ${source} ${geometryPrimitives_SRC}  )
 
 set(polygon_SRC
- ./Geometry/Polygon/Polygon.h
- ./Geometry/Polygon/Polygon.cpp
- ./Geometry/Polygon/Vertex.h
- ./Geometry/Polygon/Vertex.cpp
- ./Geometry/Polygon/HalfEdge.h
- ./Geometry/Polygon/HalfEdge.cpp
- ./Geometry/Polygon/Edge.h
- ./Geometry/Polygon/Edge.cpp
- ./Geometry/Polygon/Face.h
- ./Geometry/Polygon/Face.cpp
- ./Geometry/Polygon/Element.h
- ./Geometry/Polygon/Element.cpp
+ ./polygon/Polygon.h
+ ./polygon/Polygon.cpp
+ ./polygon/Vertex.h
+ ./polygon/Vertex.cpp
+ ./polygon/HalfEdge.h
+ ./polygon/HalfEdge.cpp
+ ./polygon/Edge.h
+ ./polygon/Edge.cpp
+ ./polygon/Face.h
+ ./polygon/Face.cpp
+ ./polygon/Element.h
+ ./polygon/Element.cpp
 )
-source_group("simulation\\geometry\\polygon" FILES ${polygon_SRC})
-set(simulationSource ${simulationSource} ${polygon_SRC} ${meshPly_SRC} ${mesh_SRC})
+source_group("polygon" FILES ${polygon_SRC})
+set(source ${source} ${polygon_SRC} ${meshPly_SRC} ${mesh_SRC})
+
+
+add_library(geometry ${source} CMakeLists.txt)
+project_folder("simulation/modules" geometry)
+target_link_libraries(geometry common core math)
 
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Simulation/Geometry/Polygon/Polygon.h>
+#include <simulation/geometry/polygon/Polygon.h>
 
-namespace IBDS{
+namespace nspace{
 class Hexahedron : public Polygon{
 private:
   Real _xExtent;

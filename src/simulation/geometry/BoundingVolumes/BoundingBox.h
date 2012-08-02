@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Simulation/Geometry/Interval.h>
-#include <Simulation/Geometry/Axis.h>
-#include <Simulation/Geometry/BoundingVolumes/BoundingVolume.h>
-namespace IBDS{
+#include <simulation/geometry/Interval.h>
+#include <simulation/geometry/Axis.h>
+#include <simulation/geometry/BoundingVolumes/BoundingVolume.h>
+namespace nspace{
   
 class BoundingBox : public BoundingVolume{
 public:

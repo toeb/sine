@@ -1,8 +1,8 @@
 #include "Polygon.h"
 #include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 #include <algorithm>
-
-using namespace IBDS;
+#include <math/MathDefs.h>
+using namespace nspace;
 using namespace std;
 
 const TypeId Polygon::type = "Polygon";
@@ -65,24 +65,24 @@ Classification classifySphere(const BoundingSphere & sphere, const Polygon & pol
 }
 Classification classifyBoundingBox(const BoundingBox & aabb, const Polygon & polygon){
   vector<Axis> axes;
-  axes.push_back(Axis(Vector3D::e1()));
-  axes.push_back(Axis(Vector3D::e2()));
-  axes.push_back(Axis(Vector3D::e3()));
+  axes.push_back(Axis(Vector3D::UnitX()));
+  axes.push_back(Axis(Vector3D::UnitY()));
+  axes.push_back(Axis(Vector3D::UnitZ()));
   for(int i = 0; i < polygon.faces().size(); i++){
     axes.push_back(polygon.face(i)->n_ocs);
   }
   for(int i = 0; i < polygon.edges().size(); i++){
     Vector3D edgeDir,e_n;
     polygon.edge(i)->getDirection(edgeDir);
-    Vector3D::crossProduct(edgeDir,Vector3D::e1(),e_n);
+    Vector3D::crossProduct(edgeDir,Vector3D::UnitX(),e_n);
     e_n.normalize();
     axes.push_back(Axis(e_n));
     
-    Vector3D::crossProduct(edgeDir,Vector3D::e2(),e_n);
+    Vector3D::crossProduct(edgeDir,Vector3D::UnitY(),e_n);
     e_n.normalize();
     axes.push_back(Axis(e_n));
     
-    Vector3D::crossProduct(edgeDir,Vector3D::e3(),e_n);
+    Vector3D::crossProduct(edgeDir,Vector3D::UnitZ(),e_n);
     e_n.normalize();
     axes.push_back(Axis(e_n));
   }

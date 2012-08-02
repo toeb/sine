@@ -29,33 +29,29 @@
 #include <math/definitions.h>
 using namespace nspace;
 
-void GlViewport::viewport(){
-			 
+void GlViewport::viewport(){			 
 	//glRenderMode (GL_RENDER);
 	glViewport (0, 0, width(), height());
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
-	
+
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity(); 
 	gluPerspective (fieldOfViewAngle()/M_PI*180, aspectRatio(), nearCutOffPlane(), farCutOffPlane()); 
-	
+
 	glMatrixMode (GL_MODELVIEW);
 
-  glLoadIdentity();
-  MiniGL::multMatrix( Matrix3x3::Identity()* zoomFactor());
-  MiniGL::multMatrix(coordinates().orientation().getMatrix3x3());
-  MiniGL::translate(coordinates().position());
-	
-
+	glLoadIdentity();
+	MiniGL::multMatrix( Matrix3x3::Identity()* zoomFactor());
+	MiniGL::multMatrix(coordinates().orientation().getMatrix3x3());
+	MiniGL::translate(coordinates().position());
 }
 
 bool GlViewport::initializeObject(){
-  glEnable (GL_DEPTH_TEST);
+	glEnable (GL_DEPTH_TEST);
 	glEnable (GL_NORMALIZE);
 	glShadeModel (GL_SMOOTH);
 	glEnable (GL_BLEND); 
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  return true;
+	return true;
 }

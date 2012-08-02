@@ -56,7 +56,7 @@ void RenderModule::resizeScene(int newWidth, int newHeight){
   });
 
   onSceneResized(newWidth,newHeight);
-  
+  logInfo("Scene was resized to " << newWidth << "x" << newHeight );
   tock();
 }
 
@@ -66,6 +66,8 @@ void RenderModule::initializeRendering(){
   foreachObject([](IRenderer * renderer){
     renderer->onBeforeRendering();
   });
+
+  logInfo("RenderModule:: rendering initialized");
 
 
 }

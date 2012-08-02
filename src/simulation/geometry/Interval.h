@@ -1,7 +1,8 @@
 #pragma once
 
+#include <common/Config.h>
 
-namespace IBDS{
+namespace nspace{
   
 struct Interval{
   // set the interval to the invalid values (+inf, -inf) 

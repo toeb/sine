@@ -1,1 +1,1 @@
-subdirs(core opengl) #opengl
+subdirs(core opengl glrenderers)

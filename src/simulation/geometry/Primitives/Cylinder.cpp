@@ -1,6 +1,6 @@
 #include "Cylinder.h"
 
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 Cylinder::Cylinder(Real radius, Real height):_radius(radius),_height(height){

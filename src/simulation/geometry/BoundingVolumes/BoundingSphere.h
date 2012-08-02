@@ -1,8 +1,8 @@
 #pragma once
-#include <Simulation/Geometry/BoundingVolumes/BoundingVolume.h>
-#include <Math/Vector3D.h>
-#include <Simulation/Geometry/Primitives/Sphere.h>
-namespace IBDS {
+#include <simulation/geometry/boundingVolumes/BoundingVolume.h>
+#include <math/definitions.h>
+#include <simulation/geometry/primitives/Sphere.h>
+namespace nspace {
 
 class BoundingSphere : public BoundingVolume, public virtual Sphere {
 private:

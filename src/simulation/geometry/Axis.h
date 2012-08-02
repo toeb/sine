@@ -1,6 +1,6 @@
 #pragma once
-#include <Math/Vector3D.h>
-namespace IBDS{
+#include <math/definitions.h>
+namespace nspace{
   
 class Axis{
 public:

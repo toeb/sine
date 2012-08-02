@@ -1,7 +1,7 @@
 #pragma once
 #include <Simulation/Geometry/Geometry.h>
 
-namespace IBDS{
+namespace nspace{
 class Cylinder:public virtual Geometry{
 private:
   Real _radius;

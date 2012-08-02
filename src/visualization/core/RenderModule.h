@@ -6,6 +6,8 @@
 #include <visualization/core/IRenderer.h>
 #include <visualization/core/Viewport.h>
 
+#include <simulation/logging/LoggingObject.h>
+
 #include <functional>
 
 namespace nspace{
@@ -13,7 +15,7 @@ namespace nspace{
  * \brief Render Module.
  *
  */
-class RenderModule:public virtual SimulationModuleBase<IRenderer>,public virtual Timeable {
+class RenderModule:public virtual SimulationModuleBase<IRenderer>,public virtual Timeable, public virtual LoggingObject {
 private:
   bool _renderingInitialized;
   Viewport * _viewport;
@@ -21,7 +23,6 @@ private:
   int _sceneWidth;
   int _sceneHeight;
 public:  
-
   void setDesiredFramerate(int hz);
   int getDesiredFramerate()const;
 

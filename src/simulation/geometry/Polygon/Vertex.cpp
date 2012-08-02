@@ -1,7 +1,7 @@
 #include "Vertex.h"
 #include "Edge.h"
 #include "HalfEdge.h"
-using namespace IBDS;
+using namespace nspace;
 
 HalfEdge * Vertex::getHalfEdgeTo(const Vertex * b)const{
   HalfEdge * first = edge->getHalfEdgeTo(this);

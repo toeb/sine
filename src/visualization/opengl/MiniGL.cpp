@@ -87,6 +87,16 @@ const float nspace::MiniGL::darkYellow[4] = {0.5f, 0.5f, 0.0f, 1.0f};
 const float nspace::MiniGL::darkGray[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
 
+void MiniGL::multQuaternion(const Quaternion & q){
+  Matrix3x3 R = q.getMatrix3x3();
+  multMatrix(R);
+}
+void MiniGL::multQuaternionT(const Quaternion & q){
+  Matrix3x3 R = q.getMatrix3x3();
+  R.transpose();
+  multMatrix(R);
+}
+
 
 
 

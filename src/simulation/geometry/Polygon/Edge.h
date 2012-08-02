@@ -1,8 +1,8 @@
 #pragma once
-#include <Simulation/Geometry/Polygon/Element.h>
-#include <Simulation/Geometry/Polygon/Vertex.h>
-#include <Simulation/Geometry/Polygon/HalfEdge.h>
-namespace IBDS{
+#include <simulation/geometry/polygon/Element.h>
+#include <simulation/geometry/polygon/Vertex.h>
+#include <simulation/geometry/polygon/HalfEdge.h>
+namespace nspace{
  
 struct Edge: public Element{
   HalfEdge * getUnconnectedHalfEdge()const;

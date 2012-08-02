@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Simulation/Geometry/Polygon/Polygon.h>
-namespace IBDS{
+namespace nspace{
 
 
 class Pyramid : public Polygon{

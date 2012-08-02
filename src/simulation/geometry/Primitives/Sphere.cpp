@@ -1,7 +1,7 @@
 #include "Sphere.h"
 #include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
 using namespace std;
-using namespace IBDS;
+using namespace nspace;
 
 const TypeId Sphere::type = "Sphere";
 
@@ -15,7 +15,7 @@ Classification classifyBoundingBox(const BoundingBox & aabb_ocs, const Sphere & 
   Vector3D center;
   aabb_ocs.getCenter(center);
   Axis axis;
-  if(center.length2()==0)center.assign(Vector3D::e1());
+  if(center.length2()==0)center.assign(Vector3D::UnitX());
   axis.n = center;
   axis.n.normalize();
   // axis of separation is the center of aabb to center of sphere

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Simulation/Geometry/Polygon/Element.h>
-#include <Simulation/Geometry/Polygon/HalfEdge.h>
-#include <Math/MathDefs.h>
+#include <simulation/geometry/polygon/Element.h>
+#include <simulation/geometry/polygon/HalfEdge.h>
+#include <math/definitions.h>
 
-namespace IBDS{
+namespace nspace{
 
 struct Face: public Element{
   Face():first(0),valid(false){}

@@ -1,7 +1,7 @@
 #include "PlyMesh.h"
 #include "rply.h"
 #include <vector>
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 

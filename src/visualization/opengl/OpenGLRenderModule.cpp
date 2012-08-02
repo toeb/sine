@@ -56,6 +56,5 @@ void OpenGLRenderModule::cleanupRenderEngine(){
 
 void OpenGLRenderModule::clear(){
 	glClearColor (_clearColor[0],_clearColor[1],_clearColor[2],_clearColor[3]);
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glRenderMode (GL_RENDER);
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

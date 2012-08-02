@@ -40,6 +40,8 @@ public:
    */
   const std::string& getName()const;
 
+  bool hasName()const;
+
   /**
    * \brief Initializes this object.
    *

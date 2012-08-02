@@ -1,6 +1,6 @@
 #include "Face.h"
 #include "Edge.h"
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 void Face::getVertices(vector<Vertex *> & vertices)const{

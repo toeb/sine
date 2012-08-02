@@ -1,7 +1,7 @@
 #include "BoundingSphere.h"
 
 
-using namespace IBDS;
+using namespace nspace;
 
 
 BoundingSphere::BoundingSphere(const Vector3D & min, const Vector3D & max, const CoordinateSystem & coordinateSystem):BoundingVolume(coordinateSystem){

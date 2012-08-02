@@ -1,5 +1,5 @@
 /*
- * IBDS - Impulse-Based Dynamic Simulation Library
+ * nspace - Impulse-Based Dynamic Simulation Library
  * Copyright (c) 2003-2008 Jan Bender http://www.impulse-based.de
  *
  * This software is provided 'as-is', without any express or implied
@@ -21,7 +21,6 @@
  * Jan Bender - Jan.Bender@impulse-based.de
  */
 #pragma once
-
 #include <common/Config.h>
 #include <math/types/Vector3D.h>
 #include <math/types/Matrix3x3.h>
@@ -45,6 +44,8 @@ namespace nspace
 		Real z;
 
 	public:
+    int rows()const{return 4;}
+    int cols()const{return 1;}
 	
     inline static Matrix4x3 Q(const Quaternion & q){
       Matrix4x3 ret;
@@ -181,6 +182,14 @@ namespace nspace
       case 3: return z;
       }
       return w;
+    }
+
+
+    Real operator()(int i, int j)const{
+       return this->operator()(i);
+    }
+    Real & operator()(int i, int k){
+      return this->operator()(i);
     }
 
     FORCE_INLINE const Real& Quaternion::operator () (const int i) const
