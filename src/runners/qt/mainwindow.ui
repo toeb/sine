@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSaveSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuRendering">
+    <property name="title">
+     <string>Rendering</string>
+    </property>
+    <addaction name="actionWireframe"/>
+    <addaction name="actionSet_Framerate"/>
+    <addaction name="separator"/>
+    <addaction name="actionGrabFrame"/>
+    <addaction name="actionToggleCapture"/>
+    <addaction name="actionStoreSequence"/>
+    <addaction name="actionClearSequence"/>
+    <addaction name="actionSet_Capture_Rate"/>
+   </widget>
+   <widget class="QMenu" name="menuSimulation">
+    <property name="title">
+     <string>Simulation</string>
+    </property>
+    <addaction name="actionTogglePause"/>
+    <addaction name="actionStep"/>
+   </widget>
+   <widget class="QMenu" name="menuInteraction">
+    <property name="title">
+     <string>Interaction</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuRendering"/>
+   <addaction name="menuSimulation"/>
+   <addaction name="menuInteraction"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionWireframe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Wireframe</string>
+   </property>
+  </action>
+  <action name="actionSaveSettings">
+   <property name="text">
+    <string>Save Settings</string>
+   </property>
+  </action>
+  <action name="actionTogglePause">
+   <property name="text">
+    <string>Pause / Run</string>
+   </property>
+   <property name="shortcut">
+    <string>Enter</string>
+   </property>
+  </action>
+  <action name="actionStep">
+   <property name="text">
+    <string>Step</string>
+   </property>
+   <property name="shortcut">
+    <string>Right</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="text">
+    <string>Run</string>
+   </property>
+  </action>
+  <action name="actionSetTimestep">
+   <property name="text">
+    <string>Set Timestep</string>
+   </property>
+  </action>
+  <action name="actionGrabFrame">
+   <property name="text">
+    <string>Grab Frame</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionToggleCapture">
+   <property name="text">
+    <string>Toggle Capturing</string>
+   </property>
+   <property name="shortcut">
+    <string>F5, Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionStoreSequence">
+   <property name="text">
+    <string>Store Sequence</string>
+   </property>
+  </action>
+  <action name="actionClearSequence">
+   <property name="text">
+    <string>Clear Current Sequence</string>
+   </property>
+  </action>
+  <action name="actionSet_Capture_Rate">
+   <property name="text">
+    <string>Set Capture Rate</string>
+   </property>
+  </action>
+  <action name="actionSet_Framerate">
+   <property name="text">
+    <string>Set Framerate</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

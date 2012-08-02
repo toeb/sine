@@ -1,4 +1,4 @@
-OPTION(USE_DOUBLE_PRECISION "Use double precision"	ON)
+option(USE_DOUBLE_PRECISION "Use double precision"	ON)
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../lib)
@@ -22,6 +22,19 @@ ENDIF (USE_DOUBLE_PRECISION)
 
 ADD_DEFINITIONS(-D_CRT_SECURE_NO_DEPRECATE)
 
-#INCLUDE(${PROJECT_PATH}/Visualization/CMakeLists.txt)
+#macro for setting project folders (only for visual studio)
+macro(project_folder folder projects)
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
+foreach(proj ${projects}) 
+	SET_PROPERTY(TARGET ${proj} PROPERTY FOLDER ${folder})
+endforeach(proj)
+endmacro()
 
-INCLUDE_DIRECTORIES(${PROJECT_PATH}/freeglut/include)
+#macro for copyng resources to a target
+macro (resources targetName )    
+add_custom_command(TARGET ${targetName} POST_BUILD        	# Adds a post-build event to resources
+ COMMAND ${CMAKE_COMMAND} -E copy_directory    		  
+ "${RESOURCE_DIR}"      								# <--this is in-path
+  $<TARGET_FILE_DIR:${targetName}>)                 		# <--this is out-file path
+endmacro()
+
