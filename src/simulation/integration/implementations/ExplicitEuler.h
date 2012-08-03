@@ -55,7 +55,7 @@ public:
    */
  void doStep(Real t_i,  Real h){
     x = x + h * f(t_i, x,h);
-  };
+ };
 
   int getErrorOrder()const{return 2;}
 };//class ExplicitEulerIntegrator

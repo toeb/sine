@@ -23,9 +23,9 @@
 /**
  * \file src/vis/opengl/Utility.h
  */
-#include "opengl.h"
 #include <math/definitions.h>
-
+#include <visualization/opengl/opengl.h>
+#include <simulation/kinematics/CoordinateSystem.h>
 
 
 namespace nspace{
@@ -108,13 +108,16 @@ void glVertex(const Vector3D& v);
 
 void glNormal(const Vector3D& v);
 
+void glRotate(const Matrix3x3 & R);
+void glScale(const Vector3D & s);
+void glScale(Real s);
 void glRotate(const Real u, const Real x, const Real y, const Real z);
-
+void glRotate(const Quaternion & q);
 void glScale(const Real x, const Real y, const Real z);
 
 void glTranslate(const Real x, const Real y, const Real z);
 void glTranslate(const Vector3D& v);
-
+void glTransformation(const CoordinateSystem & coordinates);
 void glMultMatrix(const Matrix3x3& R, const Vector3D& r);
 
 void glLight(int light, 

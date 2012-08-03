@@ -240,52 +240,16 @@ Vector2D nspace::operator * (const Matrix2x3& m, const Vector3D& v)
 }
 
 
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-Real& Vector2D::operator [] ( int i)
-{
-	return v[i];
-}
-
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-const Real& Vector2D::operator [] ( int i) const
-{
-	return v[i];
-}
-
-
-/** Berechnet die Länge des Vektors.
-  */
-Real Vector2D::length () const
-{  
-	return (Real) sqrt (v[0]*v[0] + v[1]*v[1]); 
-}
-
-/** Berechnet die Länge des Vektors im Quadrat. 
-  */ 
-Real Vector2D::length2() const
-{  
-	return v[0]*v[0] + v[1]*v[1]; 
-}
-
-/** Normiert den Vektor (Division durch 0 bei Länge 0 des Vektors wird nicht abgefangen!!!)
-  */
-void Vector2D::normalize() 
-{ 
-	*this /= length(); 
-}
-
 /** Berechnet die Länge des Vektors vom aktuellen Punkt zu Punkt a.
   */
-Real Vector2D::distance (Vector2D a) const
+Real Vector2D::distance (const Vector2D & a) const
 {
 	return (*this - a).length ();
 }
 
 /** Berechnet die quadratische Länge des Vektors vom aktuellen Punkt zu Punkt a.
   */
-Real Vector2D::distance2 (Vector2D a) const
+Real Vector2D::distance2 (const Vector2D & a) const
 {
 	return (*this - a).length2 ();
 }
@@ -297,32 +261,3 @@ std::ostream& nspace::operator << (std::ostream& s, const Vector2D& v)
 	return s << "( " << v.v[0] << ", " << v.v[1]  << " )"; 
 }
    
-/** Gibt die Anzahl der Spalten zurück.
-*/
-int Vector2D::getCols() const
-{
-	return 1;
-}
-
-/** Gibt die Anzahl der Zeilen zurück.
-*/
-int Vector2D::getRows() const
-{
-	return 2;
-}
-
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  * Der Index j wird beim Vektor ignoriert.
-  */
-Real& Vector2D::operator () (int i, int j) 
-{
-	return v[i];
-}
-
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  * Der Index j wird beim Vektor ignoriert.
-  */
-const Real& Vector2D::operator () (int i, int j) const
-{
-	return v[i];
-}

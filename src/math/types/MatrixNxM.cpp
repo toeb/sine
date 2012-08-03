@@ -28,32 +28,26 @@
 
 using namespace nspace;
 MatrixNxM::MatrixNxM(){
-  for (int i=0; i < _rows; i++)
-  {
-    v[i].n = 0;
-  }
+  resize(0,0);
+
 }
 /** Standard-Konstruktor: erstellt die Einheitsmatrix
 */
-MatrixNxM::MatrixNxM(const int r, const int c):_rows(r),_cols(c)
+MatrixNxM::MatrixNxM(const int r, const int c):v(0),_rows(0),_cols(0)
 {
-	for (int i=0; i < _rows; i++)
-	{
-		v[i].n = c;
-	}
+  resize(r,c);
 }
 
 /** Copy-Konstruktor
   */
-MatrixNxM::MatrixNxM (const MatrixNxM& copy)
+MatrixNxM::MatrixNxM (const MatrixNxM& copy):v(0),_rows(0),_cols(0)
 {
-	_rows = copy._rows;
-	_cols = copy._cols;
+  resize(copy._rows, copy._cols);
 	for (int i=0; i < _rows; i++)
 	{
-		v[i].n = _cols;
-		for (int j=0; j < _cols; j++)
-			v[i].v[j] = copy.v[i].v[j];
+		for (int j=0; j < _cols; j++){
+			(*this)(i,j)=copy(i,j);
+    }
 	}
 }
 
@@ -61,6 +55,8 @@ MatrixNxM::MatrixNxM (const MatrixNxM& copy)
 */
 MatrixNxM::~MatrixNxM ()
 { 
+  delete[] v;
+  v=0;
 	_rows = 0;
 	_cols = 0;
 }
@@ -71,10 +67,13 @@ MatrixNxM::~MatrixNxM ()
 */
 MatrixNxM nspace::operator - (const MatrixNxM& a)
 { 
-	MatrixNxM m = MatrixNxM(a._rows, a._cols);
-	for (int i=0; i < a._rows; i++)
-		m.v[i] = -a.v[i];
-	return m;
+  MatrixNxM m = MatrixNxM(a._rows, a._cols);
+  for (int i=0; i < a.rows(); i++){
+    for(int j=0; j < a.cols();j++){
+      m(i,j)=-a(i,j);
+    }
+  }
+  return m; 
 }
 
 /** Addition: m1 + m2\n
@@ -83,9 +82,12 @@ MatrixNxM nspace::operator - (const MatrixNxM& a)
 MatrixNxM nspace::operator + (const MatrixNxM& a, const MatrixNxM& b)
 { 
 	MatrixNxM m = MatrixNxM(a._rows, a._cols);
-	for (int i=0; i < a._rows; i++)
-		m.v[i] = a.v[i] + b.v[i];
-	return m; 
+	for (int i=0; i < a.rows(); i++){
+    for(int j=0; j < a.cols();j++){
+      m(i,j)=a(i,j)+b(i,j);
+    }
+  }
+  return m; 
 }
 
 /** Subtraktion: m1 - m2\n
@@ -93,10 +95,13 @@ MatrixNxM nspace::operator + (const MatrixNxM& a, const MatrixNxM& b)
 */
 MatrixNxM nspace::operator - (const MatrixNxM& a, const MatrixNxM& b)
 { 
-	MatrixNxM m = MatrixNxM(a._rows, a._cols);
-	for (int i=0; i < a._rows; i++)
-		m.v[i] = a.v[i] - b.v[i];
-	return m; 
+  MatrixNxM m = MatrixNxM(a._rows, a._cols);
+  for (int i=0; i < a.rows(); i++){
+    for(int j=0; j < a.cols();j++){
+      m(i,j)=a(i,j)-b(i,j);
+    }
+  }
+  return m; 
 }
 
 /** Multiplikation: m1 * m2\n
@@ -109,9 +114,10 @@ MatrixNxM nspace::operator * (const MatrixNxM& a, const MatrixNxM& b)
 	{
 		for (int j=0; j < b._cols; j++)
 		{
-			c.v[i].v[j] = 0.0;
+			Real & cij = c(i,j);
+      cij= 0.0;
 			for (int k=0; k < a._cols; k++)
-				c.v[i].v[j] += a.v[i].v[k]*b.v[k].v[j];
+				cij += a(i,k)*b(k,j);
 		}
 	}
 	return c;
@@ -124,8 +130,11 @@ MatrixNxM nspace::operator * (const MatrixNxM& a, const MatrixNxM& b)
 MatrixNxM nspace::operator * (const Real d, const MatrixNxM& a)
 {
 	MatrixNxM m = MatrixNxM(a._rows, a._cols);
-	for (int i=0; i < a._rows; i++)
-		m.v[i] = d*a.v[i];
+	for (int i=0; i < a._rows; i++){
+    for(int j=0; j < a._cols; j++){
+		  m(i,j) = d*a(i,j);
+    }
+  }
 	return m; 
 }
 
@@ -137,7 +146,7 @@ MatrixNxM MatrixNxM::transpose () const
 	MatrixNxM m = MatrixNxM(_cols, _rows);
 	for (int i=0; i < _rows; i++)
 		for (int j=0; j < _cols; j++)
-			m.v[j].v[i] = v[i].v[j];
+			m(j,i)= (*this)(i,j);
 	return m;
 }
 
@@ -169,29 +178,17 @@ std::ostream& nspace::operator << (std::ostream& s, const MatrixNxM& m)
   */
 Real& MatrixNxM::operator () (int i, int j) 
 {
-	return v[i][j];
+	return v[i](j);
 }
 
 /** Zugriff per Index auf die einzelnen Komponenten der Matrix.
   */
 const Real& MatrixNxM::operator () (int i, int j) const
 {
-	return v[i][j];
+	return v[i](j);
 }
 
-/** Gibt die Anzahl der Spalten zurück.
-  */
-int MatrixNxM::getCols() const
-{
-	return _cols;
-}
 
-/** Gibt die Anzahl der Zeilen zurück.
-*/
-int MatrixNxM::getRows() const
-{
-	return _rows;
-}
 
 /** Setzt alle Elemente auf Null. 
 */
@@ -199,7 +196,7 @@ void MatrixNxM::zero()
 {
 	for (int i=0; i < _rows; i++)
 		for (int j=0; j < _cols; j++)
-			v[i][j] = 0.0;
+			(*this)(i,j)= 0.0;
 }
 
 /** Zuweisung: m1 = m2\n
@@ -207,23 +204,10 @@ void MatrixNxM::zero()
   */
 MatrixNxM& MatrixNxM::operator = (const MatrixNxM& m)
 { 
-	if (v == NULL)
-	{
-		_rows = m._rows;
-		_cols = m._cols;
-		for (int i=0; i < _rows; i++)
-		{
-			v[i].n = _cols;
-			for (int j=0; j < _cols; j++)
-				v[i].v[j] = m.v[i].v[j];
-		}
-	}
-	else
-	{
-		for (int i=0; i < _rows; i++)
-			for (int j=0; j < _cols; j++)
-				v[i].v[j] = m.v[i].v[j];
-	}
+  resize(m.rows(), m.cols());
+	for (int i=0; i < _rows; i++)
+		for (int j=0; j < _cols; j++)
+			(*this)(i,j) = m(i,j);	
 	return *this; 
 }
 
@@ -251,7 +235,7 @@ bool MatrixNxM::inverse ()
 				{
 					if (!pivot[k]) 
 					{
-						double val = fabs (v[j][k]);
+						double val = fabs (operator()(j,k));
 						if (val > maxVal) 
 						{
 							maxVal = val;
@@ -281,19 +265,19 @@ bool MatrixNxM::inverse ()
 		rowIndex[i] = row;
 		colIndex[i] = col;
 
-		double scale = 1.0 / v[col][col];
-		v[col][col] = 1.0;
+		double scale = 1.0 / operator()(col,col);
+		v[col](col) = 1.0;
 		for (int k = 0; k < _rows; k++)
-			v[col][k] *= scale;
+			v[col](k) *= scale;
 
 		for (int j = 0; j < _rows; j++) 
 		{
 			if (j != col) 
 			{
-				scale = v[j][col];
-				v[j][col] = 0.0;
+				scale = operator()(j,col);
+				operator()(j,col)= 0.0;
 				for (int k = 0; k < _rows; k++ )
-					v[j][k] -= v[col][k] * scale;
+					operator()(j,k) -= operator()(col,k) * scale;
 			}
 		}
 	}
@@ -304,9 +288,9 @@ bool MatrixNxM::inverse ()
 		{
 			for (int k = 0; k < _rows; k++) 
 			{
-				double val = v[k][rowIndex[j]];
-				v[k][rowIndex[j]] = v[k][colIndex[j]];
-				v[k][colIndex[j]] = val;
+				double val = v[k](rowIndex[j]);
+        v[k](rowIndex[j]) = v[k](colIndex[j]);
+        v[k](colIndex[j]) = val;
 			}
 		}
 	}

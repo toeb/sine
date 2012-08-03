@@ -98,8 +98,8 @@ namespace nspace
     virtual Real& operator () (int i, int j){return m[i][j];}
 		const virtual Real& operator () (int i, int j) const{return m[i][j];}
 
-		int getRows () const{return 4;}
-		int getCols () const{return 3;}
+		inline int rows () const{return 4;}
+		inline int cols () const{return 3;}
 
 
 

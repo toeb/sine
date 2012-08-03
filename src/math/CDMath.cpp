@@ -64,8 +64,8 @@ Real CDMath::intersectionEdgeTriangle (const Vector3D &e1, const Vector3D &e2, c
 									   const Vector3D &b, const Vector3D &c, HesseNormalForm *hnf, Vector3D &iPoint)
 {
 	// Distanz der Punkte e1, e2 zur Dreiecksebene berechnen: a*x+b*y+c*z+d
-	Real d1 = hnf->a*e1[0] + hnf->b*e1[1] + hnf->c*e1[2] + hnf->d;
-	Real d2 = hnf->a*e2[0] + hnf->b*e2[1] + hnf->c*e2[2] + hnf->d;
+	Real d1 = hnf->a*e1(0) + hnf->b*e1(1) + hnf->c*e1(2) + hnf->d;
+	Real d2 = hnf->a*e2(0) + hnf->b*e2(1) + hnf->c*e2(2) + hnf->d;
 
 	// Nur bei unterschiedlichen Vorzeichen ist Schnitt möglich.
 	if (((d1 < 0) && (d2 < 0)) || ((d1 > 0) && (d2 > 0)))
@@ -91,7 +91,7 @@ Real CDMath::intersectionEdgeTriangle (const Vector3D &e1, const Vector3D &e2, c
 
 	// Schnittpunkt der Geraden mit der Ebene bestimmen
 	Vector3D v = e2 - e1;			// Richtungsvektor der Geraden, als Aufpunkt dient e1
-	Real div = hnf->a*v[0] + hnf->b*v[1] + hnf->c*v[2];
+	Real div = hnf->a*v(0) + hnf->b*v(1) + hnf->c*v(2);
 
 	// Division durch 0 verhindern: In diesem Fall wäre die Gerade
 	// parallel zur Ebene und würde diese damit nicht schneiden.
@@ -283,10 +283,10 @@ int CDMath::lineSegmentIntersection2D (Vector2D *a, Vector2D *b, Vector2D *c, Ve
 	Vector2D v2 = *d-*c;
 	Vector2D delta = *c-*a;
 
-	Real denom = v1[0]*v2[1] - v1[1]*v2[0];
+	Real denom = v1(0)*v2(1) - v1(1)*v2(0);
 
-	Real num1 = delta[0]*v2[1] - delta[1]*v2[0];
-	Real num2 = delta[0]*v1[1] - delta[1]*v1[0];
+  Real num1 = delta(0)*v2(1) - delta(1)*v2(0);
+  Real num2 = delta(0)*v1(1) - delta(1)*v1(0);
 
 	// Linien parallel
 	if (fabs(denom) < 1.0e-6)

@@ -45,17 +45,7 @@ namespace nspace
 		Real v[3];
 
 	public:
-
-    Real & operator()(int i){
-      return v[i];
-    }
-    const Real & operator()(int i)const{
-      return v[i];
-    }
-
     static const Vector3D & Ones();
-
-
     static const Vector3D & UnitX();
     static const Vector3D & UnitY();
     static const Vector3D & UnitZ();
@@ -123,9 +113,9 @@ namespace nspace
     //inline mehtods for performance critical sections
     //b = s*a
     inline static void multiplyScalar(Real s, const Vector3D & a, Vector3D & b){
-      b.v[0] = s*a[0];
-      b.v[1] = s*a[1];
-      b.v[2] = s*a[2];
+      b.v[0] = s*a.v[0];
+      b.v[1] = s*a.v[1];
+      b.v[2] = s*a.v[2];
     }
     inline static void dotProduct(const Vector3D & a, const Vector3D & b, Real & c){
       c= a.v[0]*b.v[0]+a.v[1]*b.v[1]+a.v[2]*b.v[2];
@@ -148,13 +138,13 @@ namespace nspace
       c.v[2] = a.v[0]*b.v[1]-a.v[1]*b.v[0];
     }
     inline static void signum(const Vector3D& a, Vector3D & b){
-      b[0]=1;
-      b[1]=1;
-      b[2]=1;
+      b.v[0]=1;
+      b.v[1]=1;
+      b.v[2]=1;
       
-      if(a[0]<0)b[0]=-1;
-      if(a[1]<0)b[1]=-1;
-      if(a[2]<0)b[2]=-1;
+      if(a.v[0]<0)b.v[0]=-1;
+      if(a.v[1]<0)b.v[1]=-1;
+      if(a.v[2]<0)b.v[2]=-1;
 
     }
 
@@ -186,8 +176,16 @@ namespace nspace
 		Vector3D& operator += (const Vector3D& v);					// Addition
 		Vector3D& operator *= ( const Real d );					    // Multiplikation mit einer Konstanten 
 		Vector3D& operator /= ( const Real d );					    // Division mit einer Konstanten
-		virtual Real& operator [] (int i);						// Zugriff per Index
-		virtual const Real& operator [] (int i) const;
+  
+    //vector members
+    virtual inline Real & operator()(int i){
+      return v[i];
+    }
+    virtual inline const Real & operator()(int i)const{
+      return v[i];
+    }
+
+		
 		virtual Real& operator () (int i, int j);					// Zugriff per Index
 		virtual const Real& operator () (int i, int j) const;
 
@@ -199,10 +197,9 @@ namespace nspace
 		Real distance (const Vector3D &a) const;   // Abstand zum Punkt a
 		Real distance2 (const Vector3D &a) const;  // Quadratischer Abstand zum Punkt a
 
-		virtual int getRows () const;
-		virtual int getCols () const;
-    int rows()const{return getRows();}
-    int cols()const{return getCols();}
+    inline int size()const{return 3;}
+    inline int rows()const{return 3;}
+    inline int cols()const{return 1;}
 		friend class Matrix3x3;
 	};
 }

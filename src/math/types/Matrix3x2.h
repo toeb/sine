@@ -62,8 +62,8 @@ namespace nspace
 		virtual Real& operator () (int i, int j);					// Zugriff per Index
 		virtual const Real& operator () (int i, int j) const;
 
-		virtual int getRows () const;
-		virtual int getCols () const;
+    inline int rows () const{return 3;}
+    inline int cols () const{return 2;}
 
 		Matrix2x3 transpose () const;										// Invertiert die Matrix
 	};

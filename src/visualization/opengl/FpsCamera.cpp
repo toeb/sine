@@ -35,7 +35,6 @@ void FpsCamera::timeout(Time timePassed){
   if(_handler->isKeyDown(KEY_D))body.velocity() -= binormal * speed;
   if(_handler->isKeyDown(KEY_CTRL))body.velocity() += normal * speed;
   if(_handler->isKeyDown(KEY_SPACE))body.velocity() -= normal * speed;
-
   eulerIntegrator.setUpperBound(eulerIntegrator.upperBound()+timePassed);
   eulerIntegrator.integrate();
 }
@@ -47,7 +46,7 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
 	Real speed = 0.1;
   Real length =dx+dy;// sqrt((Real)dx*dx+dy*dy);
 
-   Matrix3x3 R = body.orientation().getMatrix3x3();
+  Matrix3x3 R = body.orientation().getMatrix3x3();
   
   
   Vector3D direction;

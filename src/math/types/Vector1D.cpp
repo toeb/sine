@@ -197,21 +197,6 @@ Real nspace::operator * (const Vector1D& a, const Vector1D& b)
 
 
 
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-Real& Vector1D::operator [] ( int i)
-{
-	return v;
-}
-
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-const Real& Vector1D::operator [] ( int i) const
-{
-    return v;
-}
-
-
 /** Berechnet die L�nge des Vektors.
   */
 Real Vector1D::length () const
@@ -254,19 +239,6 @@ std::ostream& nspace::operator << (std::ostream& s, const Vector1D& v)
 	return s << "( " << v.v << " )"; 
 }
    
-/** Gibt die Anzahl der Spalten zur�ck.
-*/
-int Vector1D::getCols() const
-{
-	return 1;
-}
-
-/** Gibt die Anzahl der Zeilen zur�ck.
-*/ 
-int Vector1D::getRows() const
-{
-	return 1;
-}
 
 /** Zugriff per Index auf die einzelnen Komponenten des Vektors.
   * Der Index j wird beim Vektor ignoriert.

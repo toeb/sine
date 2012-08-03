@@ -74,20 +74,19 @@ void Matrix4x4::get(Real *matrix)
   */
 void Matrix4x4::setTransformation (const Vector3D &translation, const Matrix3x3 &rotation, const Vector3D &scale)
 {
-	m[0][0] = scale[0] * rotation[0][0];
-	m[0][1] = rotation[0][1];
-	m[0][2] = rotation[0][2];
-	m[1][0] = rotation[1][0];
-	m[1][1] = scale[1] * rotation[1][1];
-	m[1][2] = rotation[1][2];
-	m[2][0] = rotation[2][0];
-	m[2][1] = rotation[2][1];
-	m[2][2] = scale[2] * rotation[2][2];
-
-	m[3][0] = translation[0];
-	m[3][1] = translation[1];
-	m[3][2] = translation[2];
-	m[3][3] = (Real) 1.0;
+  operator()(0,0) = scale(0) * rotation(0,0);
+  operator()(0,1) = rotation(0,1);
+  operator()(0,2) = rotation(0,2);
+  operator()(1,0) = rotation(1,0);
+  operator()(1,1) = scale(1) * rotation(1,1);
+  operator()(1,2) = rotation(1,2);
+  operator()(2,0) = rotation(2,0);
+  operator()(2,1) = rotation(2,1);
+  operator()(2,2) = scale(2) * rotation(2,2);
+  operator()(3,0) = translation(0);
+  operator()(3,1) = translation(1);
+  operator()(3,2) = translation(2);
+  operator()(3,3) = (Real) 1.0;
 }
 
 /** Negation: -m\n
@@ -284,19 +283,6 @@ const Real& Matrix4x4::operator () (int i, int j) const
 }
 
 
-/** Gibt die Anzahl der Spalten zurück.
-*/
-int Matrix4x4::getCols() const
-{
-	return 4;
-}
-
-/** Gibt die Anzahl der Zeilen zurück.
-*/
-int Matrix4x4::getRows() const
-{
-	return 4;
-}
 
 /** Gibt die Transformation als Verschiebung, Rotationsmatrix und Skalierungsvektor zurück.
   */
@@ -306,14 +292,14 @@ void Matrix4x4::getTransformation (Vector3D &translation, Matrix3x3 &rotation, V
 	rotation = Matrix3x3 (	Vector3D (m[0][0], m[0][1], m[0][2]), 
 							Vector3D (m[1][0], m[1][1], m[1][2]),
 							Vector3D (m[2][0], m[2][1], m[2][2]));
-	scale[0] = rotation[0].length ();
-	scale[1] = rotation[1].length ();
-	scale[2] = rotation[2].length ();
+  scale(0) = rotation[0].length ();
+  scale(1) = rotation[1].length ();
+  scale(2) = rotation[2].length ();
 
 	// Skalierung aus Rotationsmatrix entfernen
-	rotation[0] = 1.0/scale[0] * rotation[0];
-	rotation[1] = 1.0/scale[1] * rotation[1];
-	rotation[2] = 1.0/scale[2] * rotation[2];
+  rotation[0] = 1.0/scale(0) * rotation[0];
+  rotation[1] = 1.0/scale(1) * rotation[1];
+  rotation[2] = 1.0/scale(2) * rotation[2];
 
 	translation = Vector3D (m[3][0], m[3][1], m[3][2]);
 }

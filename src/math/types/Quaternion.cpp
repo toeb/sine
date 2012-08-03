@@ -58,9 +58,9 @@ void Quaternion::setFromAxisAngle (const Vector3D &axis, const Real angle)
 	w = cos (a);
 
 	Real sinus = sin (a);
-	x = sinus * axis[0];
-	y = sinus * axis[1];
-	z = sinus * axis[2];
+  x = sinus * axis(0);
+  y = sinus * axis(1);
+  z = sinus * axis(2);
 }
 
 /** Gibt das Quaternion als Drehachse mit zugehörigen Drehwinkel zurück. 
@@ -76,16 +76,16 @@ void Quaternion::getAxisAngle (Vector3D &axis, Real &angle)
 			w = -1.0;
 		angle = (Real) 2.0 * acos (w);
 		Real l = sqrt (l2);
-        axis[0] = x / l;
-        axis[1] = y / l;
-        axis[2] = z / l;
+    axis(0) = x / l;
+    axis(1) = y / l;
+    axis(2) = z / l;
     }
     else
     {
         angle = 0.0;
-        axis[0] = 1.0;
-        axis[1] = 0.0;
-        axis[2] = 0.0;
+        axis(0) = 1.0;
+        axis(1) = 0.0;
+        axis(2) = 0.0;
     }
 }
 
@@ -93,9 +93,9 @@ void Quaternion::getAxisAngle (Vector3D &axis, Real &angle)
   * in ein Quaternion um. \n
   * (Algorithmus: siehe Ken Shoemake (SIGGRAPH))
   */
-void Quaternion::setFromMatrix3x3 (Matrix3x3 *m)
+void Quaternion::setFromMatrix3x3 (const Matrix3x3  &m)
 {
-	Real tr = 1.0 + (*m)[0][0] + (*m)[1][1] + (*m)[2][2];
+	Real tr = 1.0 + m(0,0) +m(1,1) + m(2,2);
 	Real s;
 
     if (tr > 1.0e-9)
@@ -103,43 +103,43 @@ void Quaternion::setFromMatrix3x3 (Matrix3x3 *m)
 		s = sqrt (tr);
 		w = 0.5*s;
 		s = 0.5 /s;
-        x = ((*m)[2][1] - (*m)[1][2]) * s;
-        y = ((*m)[0][2] - (*m)[2][0]) * s;
-		z = ((*m)[1][0] - (*m)[0][1]) * s;
+        x = (m(2,1) - m(1,2)) * s;
+        y = (m(0,2) -m(2,0)) * s;
+		z = (m(1,0) - m(0,1)) * s;
     }
     else
     {
         int i = 0;
-		if ((*m)[1][1] > (*m)[0][0])
+		if (m(1,1) > m(0,0))
 			i = 1;
-		if ((*m)[2][2] > (*m)[i][i])
+		if (m(2,2) >m(i,i))
 			i = 2;
 		
 		switch (i)
 		{
 			case 0: 
-					s = sqrt (((*m)[0][0] - ((*m)[1][1] + (*m)[2][2])) + 1);
+					s = sqrt (m(0,0)- (m(1,1) + m(2,2)) + 1);
 					x = 0.5 * s;
 					s = 0.5 / s;
-					y = ((*m)[0][1] + (*m)[1][0]) * s;
-					z = ((*m)[2][0] + (*m)[0][2]) * s;
-					w = ((*m)[2][1] - (*m)[1][2]) * s;
+					y = (m(0,1) + m(1,0)) * s;
+					z = (m(2,0) + m(0,2)) * s;
+					w = (m(2,1) - m(1,2)) * s;
 					break;
 			case 1:
-					s = sqrt (((*m)[1][1] - ((*m)[2][2] + (*m)[0][0])) + 1);
+					s = sqrt (m(1,1) - (m(2,2) + m(0,0)) + 1);
 					y = 0.5 * s;
 					s = 0.5 / s;
-					z = ((*m)[1][2] + (*m)[2][1]) * s;
-					x = ((*m)[0][1] + (*m)[1][0]) * s;
-					w = ((*m)[0][2] - (*m)[2][0]) * s;
+          z = (m(1,2) + m(2,1)) * s;
+          x = (m(0,1) + m(1,0)) * s;
+          w = (m(0,2) - m(2,0)) * s;
 					break;
 			case 2:
-					s = sqrt (((*m)[2][2] - ((*m)[0][0] + (*m)[1][1])) + 1);
+					s = sqrt (m(2,2) - (m(0,0) + m(1,1)) + 1);
 					z = 0.5 * s;
 					s = 0.5 / s;
-					x= ((*m)[2][0] + (*m)[0][2]) * s;
-					y = ((*m)[1][2] + (*m)[2][1]) * s;
-					w = ((*m)[1][0] - (*m)[0][1]) * s;
+          x =(m(2,0) + m(0,2)) * s;
+          y =(m(1,2) + m(2,1)) * s;
+          w =(m(1,0) - m(0,1)) * s;
 					break;
 		}
     }
@@ -150,56 +150,9 @@ void Quaternion::setFromMatrix3x3 (Matrix3x3 *m)
   * in ein Quaternion um. Dabei wird die transponierte Matrix verwendet. \n
   * (Algorithmus: siehe Ken Shoemake (SIGGRAPH))
   */
-void Quaternion::setFromMatrix3x3T (Matrix3x3 *m)
+void Quaternion::setFromMatrix3x3T (const Matrix3x3  &m)
 {
-	Real tr = 1.0 + (*m)[0][0] + (*m)[1][1] + (*m)[2][2];
-	Real s;
-
-    if (tr > 1.0e-9)
-    {
-		s = sqrt (tr);
-		w = 0.5*s;
-		s = 0.5 /s;
-        x = ((*m)[1][2] - (*m)[2][1]) * s;
-        y = ((*m)[2][0] - (*m)[0][2]) * s;
-		z = ((*m)[0][1] - (*m)[1][0]) * s;
-    }
-    else
-    {
-        int i = 0;
-		if ((*m)[1][1] > (*m)[0][0])
-			i = 1;
-		if ((*m)[2][2] > (*m)[i][i])
-			i = 2;
-		
-		switch (i)
-		{
-			case 0: 
-					s = sqrt (((*m)[0][0] - ((*m)[1][1] + (*m)[2][2])) + 1);
-					x = 0.5 * s;
-					s = 0.5 / s;
-					y = ((*m)[1][0] + (*m)[0][1]) * s;
-					z = ((*m)[0][2] + (*m)[2][0]) * s;
-					w = ((*m)[1][2] - (*m)[2][1]) * s;
-					break;
-			case 1:
-					s = sqrt (((*m)[1][1] - ((*m)[2][2] + (*m)[0][0])) + 1);
-					y = 0.5 * s;
-					s = 0.5 / s;
-					z = ((*m)[2][1] + (*m)[1][2]) * s;
-					x = ((*m)[1][0] + (*m)[0][1]) * s;
-					w = ((*m)[2][0] - (*m)[0][2]) * s;
-					break;
-			case 2:
-					s = sqrt (((*m)[2][2] - ((*m)[0][0] + (*m)[1][1])) + 1);
-					z = 0.5 * s;
-					s = 0.5 / s;
-					x= ((*m)[0][2] + (*m)[2][0]) * s;
-					y = ((*m)[2][1] + (*m)[1][2]) * s;
-					w = ((*m)[0][1] - (*m)[1][0]) * s;
-					break;
-		}
-    }
+  setFromMatrix3x3(m.transpose());
 }
 Quaternion zeroRot(1,0,0,0);
 const Quaternion & Quaternion::zeroRotation(){
@@ -220,25 +173,29 @@ void Quaternion::getMatrix3x3 (Matrix3x3 &m)const
 	Real wx = w*x;
 	
 
-	//m[0][0] = 1.0 - 2.0*(yy + zz);
-	m[0][1] = 2.0*(xy-wz);
-	m[0][2] = 2.0*(xz+wy);
+	//m(0,0) = 1.0 - 2.0*(yy + zz);
+	m(0,1) = 2.0*(xy-wz);
+	m(0,2) = 2.0*(xz+wy);
 
-	m[1][0] = 2.0*(xy+wz);
-	//m[1][1] = 1.0 - 2.0*(xx+zz);
-	m[1][2] = 2.0*(yz-wx);
+	m(1,0) = 2.0*(xy+wz);
+	//m(1,1) = 1.0 - 2.0*(xx+zz);
+	m(1,2) = 2.0*(yz-wx);
 
-	m[2][0] = 2.0*(xz-wy);
-	m[2][1] = 2.0*(yz+wx);
-	//m[2][2] = 1.0 - 2.0*(xx+yy);
+	m(2,0) = 2.0*(xz-wy);
+	m(2,1) = 2.0*(yz+wx);
+	//m(2,2) = 1.0 - 2.0*(xx+yy);
 
-	// [Besl, McKay 1992]
+	// (Besl, McKay 1992)
 	Real ww = w*w;
-	m[0][0] = ww+xx-yy-zz;
-	m[1][1] = ww+yy-xx-zz;
-	m[2][2] = ww+zz-xx-yy;
+	m(0,0) = ww+xx-yy-zz;
+	m(1,1) = ww+yy-xx-zz;
+	m(2,2) = ww+zz-xx-yy;
 }
-
+ Matrix3x3 Quaternion::getMatrix3x3T()const{
+  Matrix3x3 RT;
+  getMatrix3x3T(RT);
+  return RT;
+}
 /** Gibt das Quaternion als transponierte 3x3 Rotationsmatrix zurück. 
   */
 void Quaternion::getMatrix3x3T (Matrix3x3 &m)const
@@ -246,36 +203,7 @@ void Quaternion::getMatrix3x3T (Matrix3x3 &m)const
   getMatrix3x3(m);
   m.transposeInPlace();
 
-  /*
-	Real xx = x*x;
-	Real yy = y*y;
-	Real zz = z*z;
-	Real xy = x*y;
-	Real wz = w*z;
-	Real xz = x*z;
-	Real wy = w*y;
-	Real yz = y*z;
-	Real wx = w*x;
-	
 
-	//m[0][0] = 1.0 - 2.0*(yy + zz);
-	m[1][0] = 2.0*(xy-wz);
-	m[2][0] = 2.0*(xz+wy);
-
-	m[0][1] = 2.0*(xy+wz);
-	//m[1][1] = 1.0 - 2.0*(xx+zz);
-	m[2][1] = 2.0*(yz-wx);
-
-	m[0][2] = 2.0*(xz-wy);
-	m[1][2] = 2.0*(yz+wx);
-	//m[2][2] = 1.0 - 2.0*(xx+yy);
-
-	// [Besl, McKay 1992]
-	Real ww = w*w;
-	m[0][0] = ww+xx-yy-zz;
-	m[1][1] = ww+yy-xx-zz;
-	m[2][2] = ww+zz-xx-yy;
-  */
 }
 	
 /** Berechnet die Länge des Quaternions.

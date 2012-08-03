@@ -70,9 +70,9 @@ namespace nspace
 	inline static Quaternion transformAngularVelocity(const Vector3D & omega, const Quaternion & orientation){
       Quaternion qDot;
       qDot.w=0;
-      qDot.x=omega[0];
-      qDot.y=omega[1];
-      qDot.z=omega[2];  
+      qDot.x=omega(0);
+      qDot.y=omega(1);
+      qDot.z=omega(2);  
       qDot = 0.5*qDot*orientation;
       return qDot;
     }
@@ -111,10 +111,11 @@ namespace nspace
 		Quaternion(const Real pw, const Real px, const Real py, const Real pz);
 		void setFromAxisAngle (const Vector3D &axis, const Real angle);
 		void getAxisAngle (Vector3D &axis, Real &angle);
-		void setFromMatrix3x3 (Matrix3x3 *m);
+		void setFromMatrix3x3 (const Matrix3x3  & m);
 		void getMatrix3x3 (Matrix3x3 &m)const;
-		void setFromMatrix3x3T (Matrix3x3 *m);
+		void setFromMatrix3x3T (const Matrix3x3  & m);
 		void getMatrix3x3T (Matrix3x3 &m)const;
+    Matrix3x3 getMatrix3x3T()const;
 		void normalize ();
 		Real length ();
 		Real length2 ();

@@ -142,26 +142,12 @@ std::ostream& nspace::operator << (std::ostream& s, const Matrix3x2& m)
 */
 Real& Matrix3x2::operator () (int i, int j) 
 {
-	return v[i][j];
+	return v[i](j);
 }
 
 /** Zugriff per Index auf die einzelnen Komponenten der Matrix.
 */
 const Real& Matrix3x2::operator () (int i, int j) const
 {
-	return v[i][j];
-}
-
-/** Gibt die Anzahl der Spalten zurück.
-*/
-int Matrix3x2::getCols() const
-{
-	return 2;
-}
-
-/** Gibt die Anzahl der Zeilen zurück.
-*/
-int Matrix3x2::getRows() const
-{
-	return 3;
+	return v[i](j);
 }

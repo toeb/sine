@@ -25,7 +25,7 @@
  */
 #include "GlViewport.h"
 #include <visualization/opengl/opengl.h>
-#include <visualization/opengl/MiniGL.h>
+#include <visualization/opengl/Utility.h>
 #include <math/definitions.h>
 using namespace nspace;
 
@@ -42,9 +42,11 @@ void GlViewport::viewport(){
 	glMatrixMode (GL_MODELVIEW);
 
 	glLoadIdentity();
-	MiniGL::multMatrix( Matrix3x3::Identity()* zoomFactor());
-	MiniGL::multMatrix(coordinates().orientation().getMatrix3x3());
-	MiniGL::translate(coordinates().position());
+
+  glScale(zoomFactor());
+  glTransformation(coordinates());
+  //logInfo("Camera position: " << coordinates().position());
+  //logInfo("Camera orientation: " << coordinates().orientation());
 }
 
 bool GlViewport::initializeObject(){

@@ -62,8 +62,7 @@ namespace nspace
 		Vector1D& operator += (const Vector1D& v);					// Addition
 		Vector1D& operator *= ( const Real d );					// Multiplikation mit einer Konstanten 
 		Vector1D& operator /= ( const Real d );					// Division mit einer Konstanten
-		virtual Real& operator [] (int i);						// Zugriff per Index
-		virtual const Real& operator [] (int i) const;
+
 		virtual Real& operator () (int i, int j);					// Zugriff per Index
 		virtual const Real& operator () (int i, int j) const;
 
@@ -75,9 +74,13 @@ namespace nspace
 		Real distance (Vector1D a) const;   // Abstand zum Punkt a
 		Real distance2 (Vector1D a) const;  // Quadratischer Abstand zum Punkt a
 
-		virtual int getRows () const;
-		virtual int getCols () const;
+    inline int rows () const{return 1;}
+    inline int cols () const{return 1;}
+    inline int size()const{return 1;}
 
+    inline Real& operator () (int i){return v;}
+    inline const Real& operator () (int i)const{return v;};
+   
 		friend class Matrix2x2;
 	};
 }

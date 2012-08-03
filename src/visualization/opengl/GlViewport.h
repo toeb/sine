@@ -24,11 +24,11 @@
  * \file src/vis/opengl/GlViewport.h
  */
 #pragma once
-
+#include <simulation/logging/LoggingObject.h>
 #include <visualization/core/Viewport.h>
 
 namespace nspace{
-class GlViewport:public virtual ViewportBase{
+class GlViewport:public virtual ViewportBase, public virtual LoggingObject{
 public:
 	
   void viewport();

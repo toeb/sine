@@ -32,7 +32,7 @@
 #include "GL/freeglut_ext.h"
 #include <math/definitions.h>
 //#include "Utilities/StringTools.h"
-
+#include <visualization/opengl/Utility.h>
 #define _USE_MATH_DEFINES
 
 #include "math.h"
@@ -118,8 +118,8 @@ void MiniGL::coordinateSystem()
 	glLineWidth (2);
 
 	glBegin (GL_LINES);
-		glVertex3v (&a[0]);
-		glVertex3v (&b[0]);
+		glVertex3v (&a(0));
+		glVertex3v (&b(0));
 	glEnd ();
 
 	float diffcolor2 [4] = {0,1,0,1};
@@ -127,8 +127,8 @@ void MiniGL::coordinateSystem()
 	glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, diffcolor2);
 
 	glBegin (GL_LINES);
-		glVertex3v (&a[0]);
-		glVertex3v (&c[0]);
+		glVertex3v (&a(0));
+		glVertex3v (&c(0));
 	glEnd ();
 
 	float diffcolor3 [4] = {0,0,1,1};
@@ -136,8 +136,8 @@ void MiniGL::coordinateSystem()
 	glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, diffcolor3);
 
 	glBegin (GL_LINES);
-		glVertex3v (&a[0]);
-		glVertex3v (&d[0]);
+		glVertex3v (&a(0));
+		glVertex3v (&d(0));
 	glEnd ();
 	glLineWidth (1);
 }
@@ -156,8 +156,8 @@ void MiniGL::drawVector (const Vector3D &a, const Vector3D &b, const float w,con
 	glLineWidth (w);
 
 	glBegin (GL_LINES);
-		glVertex3v(&a[0]);
-		glVertex3v(&b[0]);
+  glVertex3v(&a(0));
+  glVertex3v(&b(0));
 	glEnd ();
 
   
@@ -188,7 +188,7 @@ void MiniGL::drawVector (const Real x1, const Real y1, const Real z1, const Real
 /** Zeichnet eine Kugel an der Stelle translation mit dem übergebenen Radius
 * und in der übergebenen Farbe.
 */
-void MiniGL::drawSphere (const Vector3D *translation, float radius, const float *color, const unsigned int subDivision)
+void MiniGL::drawSphere (const Vector3D  &translation, float radius, const float *color, const unsigned int subDivision)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);
@@ -198,7 +198,8 @@ void MiniGL::drawSphere (const Vector3D *translation, float radius, const float 
 	glColor3fv(color);
 
 	glPushMatrix ();
-	glTranslated ((*translation)[0], (*translation)[1], (*translation)[2]);
+  
+	glTranslate(translation);
 	glutSolidSphere(radius, subDivision, subDivision);
 	glPopMatrix ();
 }
@@ -218,39 +219,20 @@ void MiniGL::drawPoint (const Vector3D &translation, const float pointSize, cons
 	glPointSize(pointSize);
 
 	glBegin (GL_POINTS);
-	glVertex3v(&translation[0]);
+  glVertex(translation);
 	glEnd ();
 
 	glPointSize(1);
 }
 
 void MiniGL::multMatrix(const Matrix3x3  & R){
-  Real val[16];
-	val[0] = R[0][0];
-  val[1] = R[0][1];
-  val[2] = R[0][2];
-  val[3] = 0;
-	val[4] = R[1][0];
-  val[5] = R[1][1];
-  val[6] = R[1][2];
-  val[7] = 0;
-	val[8] =R[2][0];
-  val[9] = R[2][1];
-  val[10] = R[2][2];
-  val[11] = 0;
-	val[12] = 0;
-  val[13] = 0; 
-  val[14] =0; 
-  val[15] = 1;
-
-
-	glMultMatrix (val);
+  glMultMatrix(R,Vector3D::Zero());
 }
 
 /** Zeichnet einen Quader an der Stelle translation 
   * in der übergebenen Farbe.
   */
-void MiniGL::drawCube (const Vector3D *translation, const Matrix3x3 *rotation, float width, float height, float depth, const float *color)
+void MiniGL::drawCube(const Vector3D &translation, const Matrix3x3 &rotation, float width, float height, float depth, const float *color)
 {
 	float speccolor [4] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, color);
@@ -258,14 +240,10 @@ void MiniGL::drawCube (const Vector3D *translation, const Matrix3x3 *rotation, f
 	glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, speccolor);
 	glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, 100.0);
 
-	Real val[16];
-	val[0] = width*(*rotation)[0][0]; val[1] = width*(*rotation)[0][1]; val[2] = width*(*rotation)[0][2]; val[3] = 0;
-	val[4] = height*(*rotation)[1][0]; val[5] = height*(*rotation)[1][1]; val[6] = height*(*rotation)[1][2]; val[7] = 0;
-	val[8] = depth*(*rotation)[2][0]; val[9] = depth*(*rotation)[2][1]; val[10] = depth*(*rotation)[2][2]; val[11] = 0;
-	val[12] = (*translation)[0]; val[13] = (*translation)[1]; val[14] = (*translation)[2]; val[15] = 1;
-
 	glPushMatrix ();
-	glMultMatrix (val);
+  glTranslate(translation);
+  glRotate(rotation);
+  glScale(width,height,depth);
 	glutSolidCube(1.0);
 	glPopMatrix ();
 }
@@ -322,7 +300,7 @@ void MiniGL::drawStrokeText (const Real x, const Real y, const Real z, float sca
   */
 void MiniGL::drawStrokeText (const Vector3D &pos, float scale, const char *str, int strLength, const float *color)
 {
-	drawStrokeText(pos[0], pos[1], pos[2], scale, str, strLength, color);
+	drawStrokeText(pos(0), pos(1), pos(2), scale, str, strLength, color);
 }
 
 
@@ -338,11 +316,11 @@ void MiniGL::drawQuad (const Vector3D &a, const Vector3D &b, const Vector3D &c, 
 	glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, 100.0);
 
 	glBegin (GL_QUADS);
-		glNormal3v(&norm[0]);
-		glVertex3v(&a[0]);
-		glVertex3v(&b[0]);
-		glVertex3v(&c[0]);
-		glVertex3v(&d[0]);
+    glNormal(norm);
+    glVertex(a);
+    glVertex(b);
+    glVertex(c);
+    glVertex(d);
 	glEnd ();
 }
 
@@ -358,10 +336,10 @@ void MiniGL::drawTriangle (const Vector3D &a, const Vector3D &b, const Vector3D 
 	glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, 100.0);
 
 	glBegin (GL_TRIANGLES);
-		glNormal3v(&norm[0]);
-		glVertex3v(&a[0]);
-		glVertex3v(&b[0]);
-		glVertex3v(&c[0]);
+		glNormal(norm);
+		glVertex(a);
+		glVertex(b);
+		glVertex(c);
 	glEnd ();
 }
 
@@ -389,7 +367,7 @@ void MiniGL::setViewport (float pfovy, float pznear, float pzfar, const Vector3D
 	zfar = pzfar;
 
 	glLoadIdentity ();
-	gluLookAt (peyepoint [0], peyepoint [1], peyepoint [2], plookat[0], plookat[1], plookat[2], 0, 1, 0);
+	gluLookAt (peyepoint(0), peyepoint (1), peyepoint (2), plookat(0), plookat(1), plookat(2), 0, 1, 0);
 
 
 	Real lookAtMatrix[16];
@@ -400,8 +378,8 @@ void MiniGL::setViewport (float pfovy, float pznear, float pzfar, const Vector3D
 	Vector3D scale;
 	transformation.set(lookAtMatrix);
 	transformation.getTransformation(m_translation, rot, scale);
-	m_zoom = scale[0];
-	m_rotation.setFromMatrix3x3(&rot);
+	m_zoom = scale(0);
+	m_rotation.setFromMatrix3x3(rot);
 
 	glLoadIdentity ();
 }
@@ -519,7 +497,7 @@ void MiniGL::destroy ()
 }
 
 void MiniGL::translate(const Vector3D & t){
-  glTranslated(t[0],t[1],t[2]);
+  glTranslate(t);
 }
 
 void MiniGL::pushMatrix(){
@@ -706,7 +684,7 @@ void MiniGL::viewport ()
 	setProjectionMatrix (width, height);
 	glMatrixMode (GL_MODELVIEW);
 
-	glTranslatef((float) m_translation[0], (float) m_translation[1], (float) m_translation[2]);
+	glTranslate(m_translation);
 	Matrix3x3 rot;
 	m_rotation.getMatrix3x3(rot);
 	Matrix4x4 transform;
@@ -765,9 +743,9 @@ void MiniGL::initLights ()
   */
 void MiniGL::move (float x, float y, float z)
 {
-	m_translation[0] += x;
-	m_translation[1] += y;
-	m_translation[2] += z;
+  m_translation(0) += x;
+  m_translation(1) += y;
+  m_translation(2) += z;
 }
 
 /** Bewegt die Kamera im lokalen Koordinatensystem um den Mittelpunkt der Szene.

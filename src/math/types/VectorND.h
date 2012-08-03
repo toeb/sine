@@ -48,6 +48,13 @@ namespace nspace
     }
 	public:
 		VectorND();
+    //copy constructor
+    VectorND(const VectorND & vec):n(0),v(0){
+      resize(vec.n);
+      for(int i=0; i < n; i++){
+        v[i] = vec(i);
+      }
+    }
 		VectorND(const int dim);
 		~VectorND();
 
@@ -70,21 +77,28 @@ namespace nspace
 		VectorND& operator += (const VectorND& v);					// Addition
 		VectorND& operator *= ( const Real d );					// Multiplikation mit einer Konstanten 
 		VectorND& operator /= ( const Real d );					// Division mit einer Konstanten
-		virtual Real& operator [] (int i);						// Zugriff per Index
-		virtual const Real& operator [] (int i) const;
-		virtual Real& operator () (int i, int j);					// Zugriff per Index
-		virtual const Real& operator () (int i, int j) const;
+	
+    virtual Real& operator () (int i, int j);					// Zugriff per Index
+    virtual const Real& operator () (int i, int j) const;
 
 		friend std::ostream& operator << (std::ostream& s, const VectorND& v);	    // Streamausgabe
+
+
+    inline int rows () const{return n;}
+    inline int cols () const{return 1;}
+    inline int size()const{return n;}
+    inline Real& operator () (int i){return v[i];}
+    inline const Real& operator () (int i) const{return v[i];}
+
 
 		virtual Real length() const;			    // Länge
 		virtual Real length2() const;			    // Quadratische Länge
 		virtual void normalize();				// Normierung 
+
+
 		Real distance (VectorND a) const;   // Abstand zum Punkt a
 		Real distance2 (VectorND a) const;  // Quadratischer Abstand zum Punkt a
 
-		virtual int getRows () const;
-		virtual int getCols () const;
 
 		friend class Matrix2x2;
 	};

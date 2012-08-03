@@ -52,10 +52,7 @@ Matrix3x3::Matrix3x3()
 	v[2] = Vector3D (0,0,1);  
   INC
 }
-Matrix3x3::Matrix3x3(Real fillValue){
-  setTo(fillValue);
-  INC
-}
+
 /** Konstruktor: Erstellt die Matrix mit den Zeilenvektoren v0, v1, v2
   */
 Matrix3x3::Matrix3x3 (const Vector3D& v0, const Vector3D& v1, const Vector3D& v2)
@@ -202,14 +199,14 @@ const Vector3D& Matrix3x3::operator [] ( int i) const
   */
 Real& Matrix3x3::operator () (int i, int j) 
 {
-	return v[i][j];
+	return v[i](j);
 }
 
 /** Zugriff per Index auf die einzelnen Komponenten der Matrix.
   */
 const Real& Matrix3x3::operator () (int i, int j) const
 {
-	return v[i][j];
+	return v[i](j);
 }
 
 /** Transponiert die 3x3-Matrix 
@@ -284,18 +281,4 @@ Matrix3x3 Matrix3x3::symmInverse () const
 std::ostream& nspace::operator << (std::ostream& s, const Matrix3x3& m)
 { 
 	return s << m.v[0] << '\n' << m.v[1] << '\n' << m.v[2];
-}
-
-/** Gibt die Anzahl der Spalten zurück.
-*/
-int Matrix3x3::getCols() const
-{
-	return 3;
-}
-
-/** Gibt die Anzahl der Zeilen zurück.
-*/
-int Matrix3x3::getRows() const
-{
-	return 3;
 }

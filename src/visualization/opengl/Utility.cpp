@@ -3,6 +3,7 @@
 #include <math/definitions.h>
 
 
+
 using namespace nspace;
 GlMaterial * nspace::GlMaterial::jade=new GlMaterial(0.14,0.22,0.16,0.54,0.89,0.63,0.32,0.32,0.32,0.9,12.8);
 GlMaterial * nspace::GlMaterial::rubber= new GlMaterial(0.02,0.02,0.02,0.01,0.01,0.01,0.4,0.4,0.4,1.0,10.0);
@@ -40,6 +41,22 @@ void nspace::glRotate(const Real u, const Real x, const Real y, const Real z)
   glRotated(u, x, y, z);
 }
 
+void nspace::glRotate(const Matrix3x3 & R){
+  glMultMatrix(R,Vector3D::Zero());
+}
+void nspace::glTransformation(const CoordinateSystem & coordinates){
+  glRotate(coordinates.orientation().getMatrix3x3T());
+  glTranslate(coordinates.position());
+}
+void nspace::glRotate(const Quaternion & q){
+  glRotate(q.getMatrix3x3());
+}
+void nspace::glScale(const Vector3D & s){
+  glScale(s(0),s(1),s(2));
+}
+void nspace::glScale(Real s){
+  glScale(s,s,s);
+}
 void nspace::glScale(const Real x, const Real y, const Real z)
 {
   glScaled(x, y, z);

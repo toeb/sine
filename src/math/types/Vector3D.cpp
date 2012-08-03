@@ -355,20 +355,6 @@ Matrix3x3 nspace::operator , (const Vector3D& v, const Matrix3x3& m)
 	return V*m;
 }
 
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-Real& Vector3D::operator [] ( int i)
-{
-	return v[i];
-}
-
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-const Real& Vector3D::operator [] ( int i) const
-{
-	return v[i];
-}
-
 
 /** Berechnet die Länge des Vektors.
   */
@@ -412,20 +398,6 @@ std::ostream& nspace::operator << (std::ostream& s, const Vector3D& v)
 	return s << "( " << v.v[0] << ", " << v.v[1] << ", " << v.v[2] << " )"; 
 }
    
-/** Gibt die Anzahl der Spalten zurück.
-*/
-int Vector3D::getCols() const
-{
-	return 1;
-}
-
-/** Gibt die Anzahl der Zeilen zurück.
-*/
-int Vector3D::getRows() const
-{
-	return 3;
-}
-
 /** Zugriff per Index auf die einzelnen Komponenten des Vektors.
   * Der Index j wird beim Vektor ignoriert.
   */

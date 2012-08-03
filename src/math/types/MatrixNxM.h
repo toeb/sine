@@ -22,9 +22,9 @@
  */
 #pragma once
 
-#include "Common/Config.h"
-#include "Matrix.h"
-#include "VectorND.h"
+#include <common/Config.h>
+#include <math/types/Matrix.h>
+#include <math/types/VectorND.h>
 
 namespace nspace
 {
@@ -48,11 +48,16 @@ namespace nspace
       }
     }
     void resize(int n, int m){
+      if(_rows==n && _cols==m)return;
       v = new VectorND[n];
-      for(int i=0; i < _rows; i++){
+      for(int i=0; i < n; i++){
         v[i].resize(m);
       }
+      _rows = n;
+      _cols =m;
+      setZero();
     }
+
     //returns the frobenius norm
     Real norm(){
 
@@ -81,15 +86,18 @@ namespace nspace
 
 		VectorND& operator [] ( int i);							// Zugriff per Index
 		const VectorND& operator [] ( int i) const;
-		virtual Real& operator () (int i, int j);				// Zugriff per Index
-		virtual const Real& operator () (int i, int j) const;
+		
 
 		friend std::ostream& operator << (std::ostream& s, const MatrixNxM& m);	// Streamausgabe
 
-		virtual int getRows () const;
-		virtual int getCols () const;
-    virtual int rows()const{return getRows();}
-    virtual int cols()const{return getCols();}
+
+    //matrix members
+    inline int rows()const{return _rows;}
+    inline int cols()const{return _cols;}
+    virtual Real& operator () (int i, int j);				// Zugriff per Index
+    virtual const Real& operator () (int i, int j) const;
+
+
 		MatrixNxM transpose() const;									
 		void zero ();
 		bool inverse ();

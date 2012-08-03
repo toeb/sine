@@ -36,7 +36,7 @@ Vector3D Plane::getPositionFromUV(const Vector2D & uv)const{
   getUAxis(u);
   getVAxis(v);  
   
-  p = coordinates().position()+u.n*uv[0]+v.n*uv[1];
+  p = coordinates().position()+u.n*uv(0)+v.n*uv(1);
 }
  Vector3D Plane::getNormal()const{
   Vector3D result;
@@ -56,8 +56,8 @@ Vector3D Plane::getPositionFromUV(const Vector2D & uv)const{
   getUAxis(uAxis);
   getVAxis(vAxis);
 
-  result[0] = uAxis.projectOnAxis(p);
-  result[1] = vAxis.projectOnAxis(p);
+  result(0) = uAxis.projectOnAxis(p);
+  result(1) = vAxis.projectOnAxis(p);
 
 }
 

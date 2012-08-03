@@ -30,25 +30,20 @@ using namespace nspace;
 
 /** Konstruktor: Erzeugt einen Vektor mit der Dimension 0. 
   */
-VectorND::VectorND()
+VectorND::VectorND():n(0),v(0)
 {
-  n = 0;
-  v = new Real[0];
 }
 
 /** Konstruktor: Erzeugt einen Vektor mit der übergebenen Dimension. 
   */
-VectorND::VectorND(const int dim)
+VectorND::VectorND(const int dim):n(dim),v(new Real[dim])
 {
-  n = dim;
-  v = new Real[dim];
 }
 
 void VectorND::resize(int dim){
   if(dim==n)return;
-  delete v;
+  if(v)delete[] v;
   n=dim;
-  v=0;
   v = new Real[dim];
 
 }
@@ -58,7 +53,7 @@ void VectorND::resize(int dim){
 VectorND::~VectorND()
 {
   n = 0;
-  delete v;
+  delete []v;
   v =0;
 }
 
@@ -145,7 +140,6 @@ bool nspace::operator == (const VectorND &a, const VectorND &b)
 bool nspace::operator != (const VectorND &a, const VectorND &b)
 {
   bool bl = false;
-  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     bl = bl || (a.v[i] != b.v[i]);
   return bl;
@@ -158,10 +152,9 @@ bool nspace::operator != (const VectorND &a, const VectorND &b)
   */
 VectorND nspace::operator - (const VectorND& a)
 {  
-  VectorND & vn = *(new VectorND (a.n));
-  #pragma omp parallel for
+  VectorND vn(a.n);
   for (int i=0; i < a.n; i++)
-    vn[i] = -a.v[i];
+    vn.v[i] = -a.v[i];
   return vn; 
 }
 
@@ -170,10 +163,10 @@ VectorND nspace::operator - (const VectorND& a)
   */
 VectorND nspace::operator + (const VectorND& a, const VectorND& b)
 { 
-  VectorND & vn = *(new VectorND (a.n));
-  #pragma omp parallel for
+  VectorND  vn(a.n);
+
   for (int i=0; i < a.n; i++)
-    vn[i] = a.v[i] + b.v[i];
+    vn.v[i] = a.v[i] + b.v[i];
   return vn; 
 }
 
@@ -182,10 +175,9 @@ VectorND nspace::operator + (const VectorND& a, const VectorND& b)
   */
 VectorND nspace::operator - (const VectorND& a, const VectorND& b)
 { 
-  VectorND & vn = *(new VectorND (a.n));
-  #pragma omp parallel for
+  VectorND vn(a.n);
   for (int i=0; i < a.n; i++)
-    vn[i] = a.v[i] - b.v[i];
+    vn.v[i] = a.v[i] - b.v[i];
   return vn; 
 }
 
@@ -194,10 +186,10 @@ VectorND nspace::operator - (const VectorND& a, const VectorND& b)
   */
 VectorND  nspace::operator * (const VectorND& a, const Real d)
 { 
-#pragma omp parallel for
-  VectorND & vn = *(new VectorND (a.n));
-  for (int i=0; i < a.n; i++)
-    vn[i] = d*a.v[i];
+  VectorND vn(a.n);
+  for (int i=0; i < a.n; i++){
+    vn.v[i] = d*a.v[i];
+  }
   return vn; 
 }
 
@@ -206,7 +198,8 @@ VectorND  nspace::operator * (const VectorND& a, const Real d)
   */
 VectorND nspace::operator * (const Real d, const VectorND& a)
 { 
-  return a*d; 
+  VectorND ret = a*d;
+  return ret; 
 }
 
     
@@ -217,7 +210,6 @@ VectorND nspace::operator * (const Real d, const VectorND& a)
 Real nspace::operator * (const VectorND& a, const VectorND& b)
 { 
   Real s = 0.0;
-  #pragma omp parallel for
   for (int i=0; i < a.n; i++)
     s += a.v[i]*b.v[i];
   return s; 
@@ -234,9 +226,9 @@ VectorND nspace::operator * (const VectorND& v, const MatrixNxM& m)
  
   for (int i=0; i < vn.n; i++)
   {
-    vn[i] = 0.0;
+    vn.v[i] = 0.0;
     for (int j=0; j < v.n; j++)
-      vn[i] += v.v[j]*m.v[j].v[i];
+      vn.v[i] += v.v[j]*m.v[j].v[i];
   }
   return vn;
 }
@@ -268,20 +260,6 @@ std::ostream& nspace::operator << (std::ostream& s, const VectorND& v)
   return s; 
 }
 
-
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-Real& VectorND::operator [] ( int i)
-{
-  return v[i];
-}
-
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-  */
-const Real& VectorND::operator [] ( int i) const
-{
-  return v[i];
-}
 
 
 /** Berechnet die Länge des Vektors.
@@ -317,20 +295,6 @@ Real VectorND::distance (VectorND a) const
 Real VectorND::distance2 (VectorND a) const
 {
   return (*this - a).length2 ();
-}
-
-/** Gibt die Anzahl der Spalten zurück.
-*/
-int VectorND::getCols() const
-{
-  return 1;
-}
-
-/** Gibt die Anzahl der Zeilen zurück.
-*/
-int VectorND::getRows() const
-{
-  return n;
 }
 
 /** Zugriff per Index auf die einzelnen Komponenten des Vektors.

@@ -65,8 +65,8 @@ namespace nspace
 
 		friend std::ostream& operator << (std::ostream& s, const Matrix2x2& m);		// Streamausgabe
 
-		virtual int getRows () const;
-		virtual int getCols () const;
+		inline int rows () const{return 2;}
+    inline int cols () const{return 2;}
 
 		Matrix2x2 transpose() const;								// Transponiert die 3x3-Matrix
 		Matrix2x2 inverse () const;								// Invertiert die Matrix

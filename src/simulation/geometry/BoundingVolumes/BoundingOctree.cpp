@@ -40,7 +40,7 @@ Octree::~Octree(){
   
 }
 void Octree::createBoundingVolume(){
-  _boundingVolume = _boundingVolumeFactory.create(getBoundingBox().min, getBoundingBox().max,getGeometry().coordinates());
+  _boundingVolume = _boundingVolumeFactory.create(getBoundingBox().minValue(), getBoundingBox().maxValue(),getGeometry().coordinates());
 }
 
 Octree *  Octree::createChild( OctreeNodeId id){
@@ -49,23 +49,23 @@ Octree *  Octree::createChild( OctreeNodeId id){
     child->_depth =  _depth -1;
 
     // calculate the node's bounding box
-    child->_aabb.min = _aabb.min;
-    child->_aabb.max = _aabb.max;
-    Vector3D delta = 0.5*(_aabb.max - _aabb.min);
+    child->_aabb.minValue() = _aabb.minValue();
+    child->_aabb.maxValue() = _aabb.maxValue();
+    Vector3D delta = 0.5*(_aabb.maxValue() - _aabb.minValue());
     if((id/4)%2==1){ //left half volume
-      child->_aabb.min[0] += delta[0];
+      child->_aabb.minValue()(0) += delta(0);
     }else{
-      child->_aabb.max[0] -= delta[0];
+      child->_aabb.maxValue()(0) -= delta(0);
     }
     if((id/2)%2==1){//bottom half volume
-      child->_aabb.min[1] += delta[1];
+      child->_aabb.minValue()(1) += delta(1);
     }else{
-      child->_aabb.max[1] -= delta[1];
+      child->_aabb.maxValue()(1) -= delta(1);
     }
     if((id/1)%2==1){//back half volume
-      child->_aabb.min[2] += delta[2];
+      child->_aabb.minValue()(2) += delta(2);
     }else{
-      child->_aabb.max[2] -= delta[2];
+      child->_aabb.maxValue()(2) -= delta(2);
     }
     
     child->createBoundingVolume();
@@ -158,7 +158,7 @@ bool Octree::isLeaf()const {
 }
 
 void Octree::getCenter(Vector3D & c_ocs)const{
-  c_ocs.assign(_aabb.min+0.5*(_aabb.max - _aabb.min));
+  c_ocs.assign(_aabb.minValue()+0.5*(_aabb.maxValue() - _aabb.minValue()));
 }
 Classification Octree::classifyGeometrically()const{
   return _geometry.classify(*_boundingVolume);

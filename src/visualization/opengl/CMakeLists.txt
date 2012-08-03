@@ -58,7 +58,7 @@ if(OPENGL_FOUND)
   add_library(opengl   ${opengl_SRC} ${meshrenderers_SRC} ${renderers_General_SRC} ${renderers_Simple_SRC})
   project_folder("visualization/gl" opengl)
   
-  target_link_libraries(opengl kinematics freeglut ${OPENGL_LIBRARIES} ${GLEW_LIBRARY})
+  target_link_libraries(opengl kinematics integration freeglut ${OPENGL_LIBRARIES} ${GLEW_LIBRARY})
   
 else(OPENGL_FOUND)
   message("cannot find opengl")

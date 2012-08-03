@@ -46,8 +46,25 @@ namespace nspace
     inline Vector3D row(int index)const{
       return v[index];
     }
-   Matrix3x3(Real fillValue);
-
+   static Matrix3x3 create(Real fillValue){
+    Matrix3x3 ret;
+    ret.setTo(fillValue);
+    return ret;
+   }
+   static Matrix3x3 Diagonal(Real value){
+      Matrix3x3 ret;
+      ret.setIdentity();
+      ret(0,0)=value;
+      ret(1,1)=value;
+      ret(2,2)=value;
+   }
+   static Matrix3x3 Diagonal(const Vector3D & value){
+     Matrix3x3 ret;
+     ret.setIdentity();
+     ret(0,0)=value(0);
+     ret(1,1)=value(1);
+     ret(2,2)=value(2);
+   }
     Matrix3x3(Real a11, Real a22, Real a33);
     Matrix3x3(const Matrix3x3 & rhs);
 		Matrix3x3();
@@ -150,6 +167,9 @@ namespace nspace
     
 
 		friend Matrix3x3 operator * (const Real d, const Matrix3x3& a);			// d * a
+    friend Matrix3x3 operator * (const Matrix3x3 & a, const Real d){
+      return d*a;
+    }
 
 		friend Vector3D operator * (const Vector3D& v, const Matrix3x3& m);
 
@@ -160,8 +180,9 @@ namespace nspace
 		virtual Real& operator () (int i, int j);				// Zugriff per Index
 		virtual const Real& operator () (int i, int j) const;
 
-		virtual int getRows () const;
-		virtual int getCols () const;
+    inline int rows () const{return 3;}
+    inline int cols () const{return 3;}
+
 
     /**
      * \brief Assigns this matrix the values of m

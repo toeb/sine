@@ -12,8 +12,8 @@ Rectangle::Rectangle( const Vector2D & dimension):
 
 void Rectangle::createGeometry(){
   deleteGeometry();
-  Real x = _dimension[0]/2;
-  Real y= _dimension[1]/2;
+  Real x = _dimension(0)/2;
+  Real y= _dimension(1)/2;
   
   addVertex(Vector3D(-x,-y,0));
   addVertex(Vector3D(-x,y,0));

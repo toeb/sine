@@ -1,14 +1,28 @@
 #pragma once
-
+#include <math/definitions.h>
 #include <simulation/geometry/Interval.h>
 #include <simulation/geometry/Axis.h>
 #include <simulation/geometry/BoundingVolumes/BoundingVolume.h>
 namespace nspace{
   
 class BoundingBox : public BoundingVolume{
+private:
+  Vector3D _min;
+  Vector3D _max;
 public:
-  Vector3D min;
-  Vector3D max;
+  Vector3D & minValue(){
+    return _min;
+  }
+  Vector3D & maxValue(){
+    return _max;
+  }
+  const Vector3D & minValue()const{
+    return _min;
+  }
+  const Vector3D & maxValue()const{
+    return _max;
+  }
+
 
   BoundingBox():BoundingVolume(CoordinateSystem::identity()){
 
@@ -23,27 +37,27 @@ public:
   }
 
   Real getWidth()const{
-    return max[0]-min[0];
+    return _max(0) - _min(0);
   }
   Real getHeight()const{
-    return max[1]-min[1];
+    return _max(1)-_min(1);
   }
   Real getDepth()const{
-    return max[2]-min[2];
+    return _max(2)-_min(2);
   }
   void getCenter(Vector3D & c)const{
-    //todo ist das richtig
-    Vector3D::subtract(max,min,c);
-    Vector3D::add(min,c,c);
+    //todo ist das richtig?
+    Vector3D::subtract(_max,_min,c);
+    Vector3D::add(_min,c,c);
   }
   bool isInside(const Vector3D & p)const{
     // todo ist das richtig?
-    if(p[0] < min[0])return false;
-    if(p[1] < min[1])return false;
-    if(p[2] < min[2])return false;
-    if(p[0] > max[0])return false;
-    if(p[1] > max[1])return false;
-    if(p[2] > max[2])return false;
+    if(p(0) < _min(0))return false;
+    if(p(1) < _min(1))return false;
+    if(p(2) < _min(2))return false;
+    if(p(0) > _max(0))return false;
+    if(p(1) > _max(1))return false;
+    if(p(2) > _max(2))return false;
 
 
     return true;
@@ -53,14 +67,14 @@ public:
     for(int i=0; i < 8; i++){
       Vector3D corner;
 
-      if((i/4)%2)corner[0] = min[0];
-      else corner[0] = max[0];
+      if((i/4)%2)corner(0) = _min(0);
+      else corner(0) = _max(0);
 
-      if((i/2)%2)corner[1] = min[1];
-      else corner[1] = max[1];
+      if((i/2)%2)corner(1) = _min(1);
+      else corner(1) = _max(1);
 
-      if((i/1)%2)corner[2] = min[2];
-      else corner[2] = max[2];
+      if((i/1)%2)corner(2) = _min(2);
+      else corner(2) = _max(2);
 
       Real val = axis_ocs.projectOnAxis(corner);
       if(interval.a>val)interval.a = val;

@@ -15,22 +15,23 @@ void Geometry::getBoundingBoxOCS(BoundingBox & aabb)const{
   projectOCS(y,iy);
   projectOCS(z,iz);
   
-  aabb.min[0]= ix.a;
-  aabb.min[1]= iy.a;
-  aabb.min[2]= iz.a;
+  aabb.minValue()(0)= ix.a;
+  aabb.minValue()(1)= iy.a;
+  aabb.minValue()(2)= iz.a;
   
-  aabb.max[0]= ix.b;
-  aabb.max[1]= iy.b;
-  aabb.max[2]= iz.b;
+  aabb.maxValue()(0)= ix.b;
+  aabb.maxValue()(1)= iy.b;
+  aabb.maxValue()(2)= iz.b;
+
 
   Real min =DBL_MAX;
   Real max=-DBL_MAX;
   for(int i = 0; i < 3; i++){
-    if(min > aabb.min[i])min = aabb.min[i];
-    if(max < aabb.max[i])max = aabb.max[i];
+    if(min > aabb.minValue()(i))min = aabb.minValue()(i);
+    if(max < aabb.maxValue()(i))max = aabb.maxValue()(i);
   }
-  aabb.min.set(min,min,min);
-  aabb.max.set(max,max,max);
+  aabb.minValue().set(min,min,min);
+  aabb.maxValue().set(max,max,max);
 }
 
 
@@ -45,13 +46,13 @@ void Geometry::getBoundingBox(BoundingBox & aabb)const{
   project(y,iy);
   project(z,iz);
   
-  aabb.min[0]= ix.a;
-  aabb.min[1]= iy.a;
-  aabb.min[2]= iz.a;
+  aabb.minValue()(0)= ix.a;
+  aabb.minValue()(1)= iy.a;
+  aabb.minValue()(2)= iz.a;
   
-  aabb.max[0]= ix.b;
-  aabb.max[1]= iy.b;
-  aabb.max[2]= iz.b;
+  aabb.maxValue()(0)= ix.b;
+  aabb.maxValue()(1)= iy.b;
+  aabb.maxValue()(2)= iz.b;
 }
 
 void Geometry::project(const Axis & axis_wcs, Interval & interval)const{
@@ -66,6 +67,6 @@ void Geometry::project(const Axis & axis_wcs, Interval & interval)const{
 Real Geometry::calculateBoundingSphereRadius()const{
   BoundingBox bb;
   getBoundingBoxOCS(bb);
-  Vector3D delta = bb.max-bb.min;
+  Vector3D delta = bb.maxValue()-bb.minValue();
   return delta.length()/2;
 }

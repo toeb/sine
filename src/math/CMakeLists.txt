@@ -1,30 +1,30 @@
 set(typesSource
-      ./types/Matrix.h
-      ./types/Matrix2x2.cpp
-      ./types/Matrix2x2.h
-      ./types/Matrix2x3.cpp
-      ./types/Matrix2x3.h
-      ./types/Matrix3x2.cpp
-      ./types/Matrix3x2.h
-      ./types/Matrix3x3.cpp
-      ./types/Matrix3x3.h
-      ./types/Matrix4x4.cpp
-      ./types/Matrix4x4.h
-      ./types/Matrix4x3.cpp
-      ./types/Matrix4x3.h
-      ./types/MatrixNxM.cpp
-      ./types/MatrixNxM.h
+	./types/Matrix.h
+	./types/Matrix2x2.cpp
+	./types/Matrix2x2.h
+	./types/Matrix2x3.cpp
+	./types/Matrix2x3.h
+	./types/Matrix3x2.cpp
+	./types/Matrix3x2.h
+	./types/Matrix3x3.cpp
+	./types/Matrix3x3.h
+	./types/Matrix4x4.cpp
+	./types/Matrix4x4.h
+	./types/Matrix4x3.cpp
+	./types/Matrix4x3.h
+	./types/MatrixNxM.cpp
+	./types/MatrixNxM.h
 	./types/Quaternion.cpp
 	./types/Quaternion.h
-      ./types/Vector.h
-      ./types/Vector1D.cpp
-      ./types/Vector1D.h
-      ./types/Vector2D.cpp
-      ./types/Vector2D.h
-      ./types/Vector3D.cpp
-      ./types/Vector3D.h
-      ./types/VectorND.cpp
-      ./types/VectorND.h
+	./types/Vector.h
+	./types/Vector1D.cpp
+	./types/Vector1D.h
+	./types/Vector2D.cpp
+	./types/Vector2D.h
+	./types/Vector3D.cpp
+	./types/Vector3D.h
+	./types/VectorND.cpp
+	./types/VectorND.h
 )
 set(source
 	./definitions.h
@@ -41,6 +41,8 @@ set(source
 	./AverageRate.cpp
 	./AverageOverTime.h
 	./AverageOverTime.cpp
+	./Statistics.h
+	./Statistics.cpp
 )
 source_group("src" FILES ${source})
 source_group("src\\types" FILES ${typesSource})

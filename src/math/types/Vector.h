@@ -32,11 +32,10 @@ namespace nspace
 	  */
 	class Vector : public Matrix
 	{
-	public:
-    
-
-		virtual Real& operator [] (int i) = 0;				// Zugriff per Index
-		virtual const Real& operator [] (int i) const = 0;
+	public:    
+    virtual Real & operator()(int i)=0;
+    virtual const Real & operator()(int i)const=0;
+    virtual int size()const=0;
 
 		virtual Real length() const = 0;			    // Länge
 		virtual Real length2() const = 0;			    // Quadratische Länge

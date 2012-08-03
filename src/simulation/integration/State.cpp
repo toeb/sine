@@ -66,7 +66,7 @@ void State::resize( uint dimension, uint derivatives )
   _data.resize(dimension,derivatives);
 	_data.setZero();
 }
-namespace mbslib{
+namespace nspace{
 std::ostream& operator<<(std::ostream & out, const IState & state){
   
   int width = 16;

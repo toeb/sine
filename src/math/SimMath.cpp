@@ -88,9 +88,9 @@ Vector3D SimMath::lotpunkt(const Vector3D &p, const Vector3D &v, const Vector3D 
   */
 Matrix3x3 SimMath::rotationsmatrix (const Vector3D &a, const Real phi)
 {
-	Real x = a[0];
-	Real y = a[1];
-	Real z = a[2];
+  Real x = a(0);
+  Real y = a(1);
+  Real z = a(2);
 	Real d = sqrt (x*x + y*y + z*z);
 	if (d < eps)
         std::cout << "Vector of rotation matrix is zero!\n";
@@ -125,9 +125,9 @@ Matrix3x3 SimMath::rotationsmatrix (const Vector3D &a, const Real phi)
   */
 Matrix3x3 SimMath::crossProductMatrix (const Vector3D &r)
 {
-	return Matrix3x3 (Vector3D (0, -r[2], r[1]),
-			 Vector3D (r[2],0,-r[0]),
-			 Vector3D (-r[1],r[0], 0));
+	return Matrix3x3 (Vector3D (0, -r(2), r(1)),
+			 Vector3D (r(2),0,-r(0)),
+			 Vector3D (-r(1),r(0), 0));
 }
 
 
@@ -215,26 +215,26 @@ int SimMath::n_over_k (int n, int k)
 /** Berechnet aus einer 3x3 Rotationsmatrix die Eulerwinkel 
   * und gibt sie als Vektor zurück.
   */
-Vector3D SimMath::getEulerAngles (Matrix3x3 *m)
+Vector3D SimMath::getEulerAngles (const Matrix3x3 & m)
 {
 	Vector3D angles;
   
 	/* Now, get the rotations out, as described in the gem. */
-	Real v = -(*m)[0][2];
+	Real v = -m(0,2);
 	if (v > 1.0)
 		v = 1.0;
 	else if (v < -1.0)
 		v = -1.0;
-	angles[1] = asin(v);
-	if ( cos(angles[1]) != 0 ) 
+	angles(1) = asin(v);
+	if ( cos(angles(1)) != 0 ) 
 	{
-		angles[0] = atan2((*m)[1][2], (*m)[2][2]);
-		angles[2] = atan2((*m)[0][1], (*m)[0][0]);
+		angles(0) = atan2(m(1,2), m(2,2));
+		angles(2) = atan2(m(0,1), m(0,0));
 	} 
 	else 
 	{
-		angles[0] = atan2(-(*m)[2][0], (*m)[1][1]);
-		angles[2] = 0;
+		angles(0) = atan2(-m(2,0), m(1,1));
+		angles(2) = 0;
 	}
 	return angles;
 }

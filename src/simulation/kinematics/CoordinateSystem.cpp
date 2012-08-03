@@ -81,8 +81,8 @@ void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vecto
   
 void CoordinateSystem::calculateRotationMatrices(){
   if(!_R){
-    _R = new Matrix3x3(0);
-    _RT = new Matrix3x3(0);
+    _R = new Matrix3x3;
+    _RT = new Matrix3x3;
   }
   orientation().getMatrix3x3(*_R);
   _RT->assign(*_R);
