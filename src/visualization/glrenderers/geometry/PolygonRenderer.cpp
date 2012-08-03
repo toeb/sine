@@ -7,12 +7,15 @@ using namespace std;
 
 
 
-PolygonRenderer::PolygonRenderer(Polygon & poly):_polygon(poly){
+PolygonRenderer::PolygonRenderer(Polygon & poly):_polygon(poly),
+  faceColor("gray"),
+  vertexColor("navy"),edgeColor("yellow"),normalColor("blue"){
   drawEdges = true;
   drawHalfEdges = true;
   drawLabels = true;
   drawNormals = true;
   drawFaces = true;
+  
 }
 
 void PolygonRenderer::render(){
@@ -33,7 +36,7 @@ void PolygonRenderer::render(){
 
   if(drawVertices){
     for_each(_polygon.vertices().begin(), _polygon.vertices().end(),[this](Vertex * v){
-      MiniGL::drawPoint(v->p_ocs,6,MiniGL::magenta);
+      MiniGL::drawPoint(v->p_ocs,6,vertexColor);
       if(drawLabels){
         Vector3D pnew = v->p_ocs * 1.3;
         stringstream ss;
@@ -47,7 +50,7 @@ void PolygonRenderer::render(){
       if(drawNormals){
         Vector3D p;
         f->getCenter(p);
-        MiniGL::drawVector(p,p+(0.5*f->n_ocs),2,MiniGL::blue);
+        MiniGL::drawVector(p,p+(0.5*f->n_ocs),2,normalColor);
       }
       if(drawFaces){
         vector<Vertex * > vertices;
@@ -67,7 +70,7 @@ void PolygonRenderer::render(){
             vertices.at(1)->p_ocs+f->n_ocs*0.001,
             vertices.at(2)->p_ocs+f->n_ocs*0.001,
             vertices.at(3)->p_ocs+f->n_ocs*0.001,
-            f->n_ocs,MiniGL::gray);
+            f->n_ocs,faceColor);
           break;
         }
       }

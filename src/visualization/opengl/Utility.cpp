@@ -82,6 +82,9 @@ void nspace::glVertex(const Vector3D& v)
 
   glVertex3d(v(0), v(1), v(2));
 }
+void nspace::glColor(const Color & color){
+  glColor4d(color.r(),color.g(),color.b(),color.a());
+}
 
 void nspace::glMultMatrix(const Matrix3x3& R, const Vector3D& r)
 {
@@ -200,63 +203,6 @@ void nspace::glMaterial(nspace::GlMaterial & material){
 };
     
 
-void GlMaterial
-  ::set(){
-    //GlMaterial::setup();
-    glMaterial(*this);
-}
-void nspace::renderCube(){
-  //http://www.morrowland.com/apron/tutorials/gl/gl_rotating_cube.php
-   glBegin(GL_QUADS);		// Draw The Cube Using quads
-    glVertex3f( 1.0f, 1.0f,-1.0f);	// Top Right Of The Quad (Top)
-    glNormal3f(0.0f,1.0f,0.0f);
-    glVertex3f(-1.0f, 1.0f,-1.0f);	// Top Left Of The Quad (Top)
-    glNormal3f(0.0f,1.0f,0.0f);
-    glVertex3f(-1.0f, 1.0f, 1.0f);	// Bottom Left Of The Quad (Top)
-    glNormal3f(0.0f,1.0f,0.0f);
-    glVertex3f( 1.0f, 1.0f, 1.0f);	// Bottom Right Of The Quad (Top)
-    glNormal3f(0.0f,1.0f,0.0f);
-    glVertex3f( 1.0f,-1.0f, 1.0f);	// Top Right Of The Quad (Bottom)
-    glNormal3f(0.0f,-1.0f,0.0f);
-    glVertex3f(-1.0f,-1.0f, 1.0f);	// Top Left Of The Quad (Bottom)
-    glNormal3f(0.0f,-1.0f,0.0f);
-    glVertex3f(-1.0f,-1.0f,-1.0f);	// Bottom Left Of The Quad (Bottom)
-    glNormal3f(0.0f,-1.0f,0.0f);
-    glVertex3f( 1.0f,-1.0f,-1.0f);	// Bottom Right Of The Quad (Bottom)
-    glNormal3f(0.0f,-1.0f,0.0f);
-    glVertex3f( 1.0f, 1.0f, 1.0f);	// Top Right Of The Quad (Front)
-    glNormal3f(0.0f,0.0f,1.0f);
-    glVertex3f(-1.0f, 1.0f, 1.0f);	// Top Left Of The Quad (Front)
-    glNormal3f(0.0f,0.0f,1.0f);
-    glVertex3f(-1.0f,-1.0f, 1.0f);	// Bottom Left Of The Quad (Front)
-    glNormal3f(0.0f,0.0f,1.0f);
-    glVertex3f( 1.0f,-1.0f, 1.0f);	// Bottom Right Of The Quad (Front)
-    glNormal3f(0.0f,0.0f,1.0f);
-    glVertex3f( 1.0f,-1.0f,-1.0f);	// Top Right Of The Quad (Back)
-    glNormal3f(0.0f,0.0f,-1.0f);
-    glVertex3f(-1.0f,-1.0f,-1.0f);	// Top Left Of The Quad (Back)
-    glNormal3f(0.0f,0.0f,-1.0f);
-    glVertex3f(-1.0f, 1.0f,-1.0f);	// Bottom Left Of The Quad (Back)
-    glNormal3f(0.0f,0.0f,-1.0f);
-    glVertex3f( 1.0f, 1.0f,-1.0f);	// Bottom Right Of The Quad (Back)
-    glNormal3f(0.0f,0.0f,-1.0f);
-    glVertex3f(-1.0f, 1.0f, 1.0f);	// Top Right Of The Quad (Left)
-    glNormal3f(-1.0f,0.0f,0.0f);
-    glVertex3f(-1.0f, 1.0f,-1.0f);	// Top Left Of The Quad (Left)
-    glNormal3f(-1.0f,0.0f,0.0f);
-    glVertex3f(-1.0f,-1.0f,-1.0f);	// Bottom Left Of The Quad (Left)
-    glNormal3f(-1.0f,0.0f,0.0f);
-    glVertex3f(-1.0f,-1.0f, 1.0f);	// Bottom Right Of The Quad (Left)
-    glNormal3f(-1.0f,0.0f,0.0f);
-    glVertex3f( 1.0f, 1.0f,-1.0f);	// Top Right Of The Quad (Right)
-    glNormal3f(1.0f,0.0f,0.0f);
-    glVertex3f( 1.0f, 1.0f, 1.0f);	// Top Left Of The Quad (Right)
-    glNormal3f(1.0f,0.0f,0.0f);
-    glVertex3f( 1.0f,-1.0f, 1.0f);	// Bottom Left Of The Quad (Right)
-    glNormal3f(1.0f,0.0f,0.0f);
-    glVertex3f( 1.0f,-1.0f,-1.0f);	// Bottom Right Of The Quad (Right)
-    glNormal3f(1.0f,0.0f,0.0f);
-  glEnd();			// End Drawing The Cube
 
-}
+
 

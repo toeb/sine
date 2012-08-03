@@ -49,7 +49,13 @@ namespace nspace
     static const Vector3D & UnitX();
     static const Vector3D & UnitY();
     static const Vector3D & UnitZ();
+    inline Real maxValue()const{
+      Real m=x();
+      if(m < y())m=y();
+      if(m< z())m=z();
+      return m;
 
+    }
     inline const Real & x()const{
       return v[0];
     }
