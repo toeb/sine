@@ -13,7 +13,7 @@ namespace nspace{
     Q_OBJECT;
   public:
     QtSnapshotControl(QWidget * parent);
-   
+    bool isRecording()const{return _isRecording;}
   protected:
     void onObjectAdded(HistoryModule * historyModule);
     void onObjectRemoved(HistoryModule * historyModule);
@@ -28,10 +28,12 @@ namespace nspace{
     void setRecording(bool value);
     void snapshotDoubleClicked(const QModelIndex & index );
     void restoreSnapshot(const QModelIndex &);
+
   protected:
     bool initializeObject();
   private:
     void recordCallback(Time actualTime);
+
     void addSnapshot(StateSnapshot & snapshot);
     QStandardItemModel * _itemModel;
     Ui_SnapshotControl * _ui;

@@ -76,8 +76,12 @@ namespace nspace{
     uint dimension()const{return _length;}
 		uint derivatives()const{return _state.derivatives();}
   protected:
-    Real & value( uint index, uint derivative );
-    Real value( uint index, uint derivative ) const;
+    inline Real & value( uint index, uint derivative ){
+      return _state(index+_start, derivative);
+    }
+    inline Real value( uint index, uint derivative ) const{
+      return _state(index+_start, derivative);      
+    }
   };
 
  

@@ -33,29 +33,36 @@ namespace nspace
 	  */
 	class MatrixNxM : public Matrix
 	{
-	public:
-		/** Zeilenvektoren der 2x2 Matrix */
-		VectorND * v;
-		/* Anzahl Zeilen */
-		int _rows;
-		/* Anzahl Spalten */
-		int _cols;
+  private:
+    Real * _data;
+    /** Zeilenvektoren der 2x2 Matrix */
 
-    int size()const{return _rows*_cols;}
+    /* Anzahl Zeilen */
+    int _rows;
+    /* Anzahl Spalten */
+    int _cols;
+
+	public:
+    inline int size()const{return _rows*_cols;}
     void setZero(){
-      for(int i=0; i < _rows; i++){
-        v[i].setZero();
-      }
+      memset(_data,0,sizeof(Real)*size());
+      /*for(int i=0; i < rows(); i++){
+        for(int j=0; j < cols(); j++){
+          value(i,j)=0.0;
+        }
+      }*/
     }
-    void resize(int n, int m){
+    void resize(int n, int m, bool setToZero=true){
       if(_rows==n && _cols==m)return;
-      v = new VectorND[n];
-      for(int i=0; i < n; i++){
-        v[i].resize(m);
-      }
+
+      ArrayPool<Real>::freeArray(&_data,size());
+      _rows = n;
+      _cols=m;
+      ArrayPool<Real>::createArray(&_data,size());
+   
       _rows = n;
       _cols =m;
-      setZero();
+      if(setToZero)setZero();
     }
 
     //returns the frobenius norm
@@ -63,7 +70,9 @@ namespace nspace
 
       Real sum=0;
       for(int i=0;i<_rows;i++){
-        sum+=v[i].length2();
+        for(int j=0; j < _cols; j++){
+          sum+=value(i,j)*value(i,j);
+        }
       }
       return sqrt(sum);
     }
@@ -83,7 +92,13 @@ namespace nspace
 		MatrixNxM& operator = (const MatrixNxM& m);
 
 		friend VectorND operator * (const VectorND& v, const MatrixNxM& m);
-
+    inline Real & value(int i, int j){
+      return _data[i*_cols+j];
+    }
+    inline const Real & value(int i, int j)const{
+      return _data[i*_cols+j];
+    }
+    
 		VectorND& operator [] ( int i);							// Zugriff per Index
 		const VectorND& operator [] ( int i) const;
 		
@@ -94,8 +109,8 @@ namespace nspace
     //matrix members
     inline int rows()const{return _rows;}
     inline int cols()const{return _cols;}
-    virtual Real& operator () (int i, int j);				// Zugriff per Index
-    virtual const Real& operator () (int i, int j) const;
+    inline Real& operator () (int i, int j){return value(i,j);}				// Zugriff per Index
+    inline const Real& operator () (int i, int j) const{return value(i,j);}
 
 
 		MatrixNxM transpose() const;									

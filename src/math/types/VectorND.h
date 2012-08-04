@@ -25,7 +25,8 @@
 #include "Common/Config.h"
 #include "Vector.h"
 #include <iostream>
-
+#include <queue>
+#include <map>
 namespace nspace
 {
 	class MatrixNxM;
@@ -34,8 +35,39 @@ namespace nspace
 	  * Wegen der Geschwindigkeit werden keine Dimensionen überprüft.
 	  \author Jan Bender
 	  */
+  template<typename T>
+  class ArrayPool{
+  private:
+    
+    static std::map<int,std::queue<T*>* > _arrays;
+  public:
+    static inline void createArray(T** arr, int dim){
+      std::queue<T*> * item =  _arrays[dim];
+      if(!item || item->empty()){
+        *arr = new Real[dim];
+        return;
+      }
+      *arr = item->front();
+      item->pop();
+    }
+    
+    static inline void freeArray(T** arr, int dim){
+      if(!*arr)return;
+      std::queue<T*> * item =  _arrays[dim];
+      if(!item){
+        item = new std::queue<Real*>();
+        _arrays[dim]=item;
+      }
+      item->push(*arr);
+      *arr =0;
+    }
+  };
+  template<typename T>
+  std::map<int,std::queue<T*> *> ArrayPool<T>::_arrays = *new std::map<int, std::queue<T*> *>();
 	class VectorND : public Vector
 	{
+  private:
+    
 	public:
 		/** Komponenten des Vektors */
 		Real * v;

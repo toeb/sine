@@ -34,17 +34,21 @@ VectorND::VectorND():n(0),v(0)
 {
 }
 
+
+
+
 /** Konstruktor: Erzeugt einen Vektor mit der übergebenen Dimension. 
   */
-VectorND::VectorND(const int dim):n(dim),v(new Real[dim])
+VectorND::VectorND(const int dim):n(0),v(0)
 {
+  resize(dim);
 }
 
 void VectorND::resize(int dim){
   if(dim==n)return;
-  if(v)delete[] v;
+  if(v)ArrayPool<Real>::freeArray(&v,dim);
   n=dim;
-  v = new Real[dim];
+  ArrayPool<Real>::createArray(&v,dim);
 
 }
 
@@ -52,8 +56,8 @@ void VectorND::resize(int dim){
   */
 VectorND::~VectorND()
 {
+  if(v)ArrayPool<Real>::freeArray(&v,n);
   n = 0;
-  delete []v;
   v =0;
 }
 
@@ -65,7 +69,7 @@ VectorND& VectorND::operator = (const VectorND& vn)
   if(n !=vn.n){
     resize(vn.n);
   }
-  #pragma omp parallel for
+ 
   for (int i=0; i < n; i++)
     v[i] = vn.v[i]; 
   return *this; 
@@ -228,7 +232,7 @@ VectorND nspace::operator * (const VectorND& v, const MatrixNxM& m)
   {
     vn.v[i] = 0.0;
     for (int j=0; j < v.n; j++)
-      vn.v[i] += v.v[j]*m.v[j].v[i];
+      vn.v[i] += v.v[j]*m(j,i);
   }
   return vn;
 }
@@ -244,7 +248,7 @@ VectorND nspace::operator * (const MatrixNxM& m, const VectorND& v)
   {
     vn.v[i] = 0.0;
     for (int j=0; j < m.cols(); j++)
-      vn.v[i] += m.v[i].v[j]*v.v[j];
+      vn.v[i] += m(i,j)*v.v[j];
   }
   return vn;
 }

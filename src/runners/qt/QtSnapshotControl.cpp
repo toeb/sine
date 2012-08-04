@@ -3,14 +3,24 @@
 
 using namespace nspace;
 using namespace std;
+class RecordTask:public virtual PeriodicTask{
+private:
+  QtSnapshotControl * _snapshotControl;
+  
+public:
+  RecordTask(QtSnapshotControl * snapshotControl):PeriodicTask(10),_snapshotControl(snapshotControl){
 
+  }
+  virtual void timeout( Time timePassed ) 
+  {
+    if(_snapshotControl->isRecording())_snapshotControl->captureNow();
+  }
+
+};
 QtSnapshotControl::QtSnapshotControl(QWidget * parent):
 _currentHistoryModule(0),
   _isRecording(false),
-  _recordingTask(*new PeriodicTaskDelegate(
-  [this](Time time){
-    recordCallback(time);
-},10))
+  _recordingTask(*new RecordTask(this))
 {
   _ui = new Ui_SnapshotControl();
   _itemModel = new QStandardItemModel(0,5);

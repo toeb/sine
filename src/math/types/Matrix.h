@@ -35,7 +35,9 @@ namespace nspace
 		virtual int cols () const = 0;
     virtual Real& operator () (int i, int j) = 0;             // Zugriff per Index
     virtual const Real& operator () (int i, int j) const = 0;
-
+    virtual inline int size(){
+      return rows()*cols();
+    }
   };
 }
 

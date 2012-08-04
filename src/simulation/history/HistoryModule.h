@@ -27,10 +27,11 @@ namespace nspace{
     void snapshotAt(Time t_sim){
       
       Time timeout = t_sim-_simulationTime.time();
-
-      CallbackTaskDelegate * del = new CallbackTaskDelegate([this](Time timePassed){
+      std::function<void (Time)> f = [this](Time timePassed){
         snapshot();        
-      },t_sim,_simulationTime);
+      };
+
+      CallbackTaskDelegate * del = new CallbackTaskDelegate(f,t_sim,_simulationTime);
 
       *simulation()<<del;
     }

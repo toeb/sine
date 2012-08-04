@@ -33,31 +33,31 @@ MatrixNxM::MatrixNxM(){
 }
 /** Standard-Konstruktor: erstellt die Einheitsmatrix
 */
-MatrixNxM::MatrixNxM(const int r, const int c):v(0),_rows(0),_cols(0)
+MatrixNxM::MatrixNxM(const int r, const int c):_data(0),_rows(0),_cols(0)
 {
   resize(r,c);
 }
 
 /** Copy-Konstruktor
   */
-MatrixNxM::MatrixNxM (const MatrixNxM& copy):v(0),_rows(0),_cols(0)
+MatrixNxM::MatrixNxM (const MatrixNxM& copy):_data(0),_rows(0),_cols(0)
 {
   resize(copy._rows, copy._cols);
-	for (int i=0; i < _rows; i++)
+  memcpy(_data,copy._data,size()*sizeof(Real));
+	/*for (int i=0; i < _rows; i++)
 	{
 		for (int j=0; j < _cols; j++){
-			(*this)(i,j)=copy(i,j);
+			value(i,j)=copy(i,j);
     }
-	}
+	}*/
 }
 
 /** Destruktor
 */
 MatrixNxM::~MatrixNxM ()
 { 
-  delete[] v;
-  v=0;
-	_rows = 0;
+ ArrayPool<Real>::freeArray(&_data,size());
+  _rows = 0;
 	_cols = 0;
 }
 
@@ -68,11 +68,15 @@ MatrixNxM::~MatrixNxM ()
 MatrixNxM nspace::operator - (const MatrixNxM& a)
 { 
   MatrixNxM m = MatrixNxM(a._rows, a._cols);
-  for (int i=0; i < a.rows(); i++){
-    for(int j=0; j < a.cols();j++){
-      m(i,j)=-a(i,j);
-    }
+  int  sz = a.size();
+  for(int i=0; i < sz; i++){
+    m._data[i]=-a._data[i];
   }
+//   for (int i=0; i < a.rows(); i++){
+//     for(int j=0; j < a.cols();j++){
+//       m(i,j)=-a(i,j);
+//     }
+//   }
   return m; 
 }
 
@@ -82,11 +86,16 @@ MatrixNxM nspace::operator - (const MatrixNxM& a)
 MatrixNxM nspace::operator + (const MatrixNxM& a, const MatrixNxM& b)
 { 
 	MatrixNxM m = MatrixNxM(a._rows, a._cols);
+  int  sz = a.size();
+  for(int i=0; i < sz; i++){
+    m._data[i]=a._data[i]+b._data[i];
+  }
+  /*
 	for (int i=0; i < a.rows(); i++){
     for(int j=0; j < a.cols();j++){
       m(i,j)=a(i,j)+b(i,j);
     }
-  }
+  }*/
   return m; 
 }
 
@@ -96,11 +105,16 @@ MatrixNxM nspace::operator + (const MatrixNxM& a, const MatrixNxM& b)
 MatrixNxM nspace::operator - (const MatrixNxM& a, const MatrixNxM& b)
 { 
   MatrixNxM m = MatrixNxM(a._rows, a._cols);
+  int  sz = a.size();
+  for(int i=0; i < sz; i++){
+    m._data[i]=a._data[i]-b._data[i];
+  }
+  /*
   for (int i=0; i < a.rows(); i++){
     for(int j=0; j < a.cols();j++){
       m(i,j)=a(i,j)-b(i,j);
     }
-  }
+  }*/
   return m; 
 }
 
@@ -130,12 +144,19 @@ MatrixNxM nspace::operator * (const MatrixNxM& a, const MatrixNxM& b)
 MatrixNxM nspace::operator * (const Real d, const MatrixNxM& a)
 {
 	MatrixNxM m = MatrixNxM(a._rows, a._cols);
-	for (int i=0; i < a._rows; i++){
+	int  sz = a.size();
+  for(int i=0; i < sz; i++){
+    m._data[i]=d*a._data[i];
+  }
+  return m;
+  /*
+  for (int i=0; i < a._rows; i++){
     for(int j=0; j < a._cols; j++){
 		  m(i,j) = d*a(i,j);
     }
   }
-	return m; 
+	return m;
+  */
 }
 
 
@@ -150,43 +171,23 @@ MatrixNxM MatrixNxM::transpose () const
 	return m;
 }
 
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-*/
-VectorND& MatrixNxM::operator [] ( int i) 
-{
-	return v[i];
-}
 
-/** Zugriff per Index auf die einzelnen Komponenten des Vektors.
-*/
-const VectorND& MatrixNxM::operator [] ( int i) const
-{
-	return v[i];
-}
+
 
 
 /** Stream-Ausgabe der Matrix
   */
 std::ostream& nspace::operator << (std::ostream& s, const MatrixNxM& m)
 { 
-	for (int i=0; i < m._rows; i++)
-		s << m.v[i] << '\n';
+	for (int i=0; i < m.rows(); i++){
+    for(int j = 0; j < m.cols(); j++){
+      s << m(i,j);
+    }
+    s << std::endl;
+  }
 	return s;
 }
 
-/** Zugriff per Index auf die einzelnen Komponenten der Matrix.
-  */
-Real& MatrixNxM::operator () (int i, int j) 
-{
-	return v[i](j);
-}
-
-/** Zugriff per Index auf die einzelnen Komponenten der Matrix.
-  */
-const Real& MatrixNxM::operator () (int i, int j) const
-{
-	return v[i](j);
-}
 
 
 
@@ -196,7 +197,7 @@ void MatrixNxM::zero()
 {
 	for (int i=0; i < _rows; i++)
 		for (int j=0; j < _cols; j++)
-			(*this)(i,j)= 0.0;
+			value(i,j)= 0.0;
 }
 
 /** Zuweisung: m1 = m2\n
@@ -204,10 +205,13 @@ void MatrixNxM::zero()
   */
 MatrixNxM& MatrixNxM::operator = (const MatrixNxM& m)
 { 
+
   resize(m.rows(), m.cols());
-	for (int i=0; i < _rows; i++)
+
+  memcpy(_data,m._data,size()*sizeof(Real));
+ /* for (int i=0; i < _rows; i++)
 		for (int j=0; j < _cols; j++)
-			(*this)(i,j) = m(i,j);	
+			value(i,j) = m(i,j);*/	
 	return *this; 
 }
 
@@ -235,7 +239,7 @@ bool MatrixNxM::inverse ()
 				{
 					if (!pivot[k]) 
 					{
-						double val = fabs (operator()(j,k));
+						double val = fabs (value(j,k));
 						if (val > maxVal) 
 						{
 							maxVal = val;
@@ -254,30 +258,30 @@ bool MatrixNxM::inverse ()
 
 		if (row != col) 
 		{
-			double *ptr;
-			ptr = new double [_cols];
-			memcpy (ptr, v[row].v, _cols * sizeof (double));
-			memcpy (v[row].v, v[col].v, _cols * sizeof (double));
-			memcpy (v[col].v, ptr, _cols * sizeof(double));
-			delete [] ptr;
+			Real *ptr;
+			ArrayPool<Real>::createArray(&ptr,cols());
+			memcpy (ptr, &_data[row*cols()], cols() * sizeof (Real));
+			memcpy (&_data[row*cols()], &_data[col*cols()], cols() * sizeof (Real));
+			memcpy (&_data[col*cols()], ptr, cols() * sizeof(Real));
+			ArrayPool<Real>::freeArray(&ptr,cols());
 		}
 
 		rowIndex[i] = row;
 		colIndex[i] = col;
 
-		double scale = 1.0 / operator()(col,col);
-		v[col](col) = 1.0;
+		double scale = 1.0 /value(col,col);
+		value(col,col) = 1.0;
 		for (int k = 0; k < _rows; k++)
-			v[col](k) *= scale;
+			value(col,k) *= scale;
 
 		for (int j = 0; j < _rows; j++) 
 		{
 			if (j != col) 
 			{
-				scale = operator()(j,col);
-				operator()(j,col)= 0.0;
+				scale = value(j,col);
+				value(j,col)= 0.0;
 				for (int k = 0; k < _rows; k++ )
-					operator()(j,k) -= operator()(col,k) * scale;
+					value(j,k) -=value(col,k) * scale;
 			}
 		}
 	}
@@ -288,9 +292,9 @@ bool MatrixNxM::inverse ()
 		{
 			for (int k = 0; k < _rows; k++) 
 			{
-				double val = v[k](rowIndex[j]);
-        v[k](rowIndex[j]) = v[k](colIndex[j]);
-        v[k](colIndex[j]) = val;
+				double val =value(k,rowIndex[j]);
+        value(k,rowIndex[j]) = value(k,colIndex[j]);
+        value(k,colIndex[j]) = val;
 			}
 		}
 	}

@@ -22,7 +22,7 @@ private:
 public:
   void toString(std::ostream & out)const;
   Simulation();
-
+  
   /**
    * \brief Adds simulationObject / simulation module to the simulation.
    * 				

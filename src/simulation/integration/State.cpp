@@ -17,15 +17,6 @@ _start(start),_length(length),_state(const_cast<IState&>(state)){
 
 }
 
-Real & nspace::StateRange::value( uint index, uint derivative )
-{
-	return _state(index+_start,derivative);
-}
-
-Real StateRange::value( uint index, uint derivative ) const
-{
-	return _state(index+_start, derivative);
-}
 
 void StateRange::resize( uint dimension, uint derivatives )
 {
