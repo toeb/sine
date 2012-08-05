@@ -15,6 +15,9 @@ set(patternsSource
 	./patterns/ValueHolder.h
 	./patterns/Composite.h
 	./patterns/ArrayPool.h
+	./patterns/Visitor.h
+	./patterns/Singleton.h
+	./patterns/Decorator.h
 )
 source_group("src\\patterns" FILES ${patternsSource})
 add_library(common ${source} ${patternsSource} CMakeLists.txt)

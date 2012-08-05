@@ -1,13 +1,22 @@
 #include "PolygonRenderer.h"
+#include <visualization/opengl/opengl.h>
 #include <visualization/opengl/MiniGL.h>
 #include <algorithm>
 #include <sstream>
+#include <simulation/core/Simulation.h>
+#include <visualization/opengl/Utility.h>
+
 using namespace nspace;
 using namespace std;
 
+bool PolygonRenderer::initializeObject(){
+  *simulation()<<texture;
+  return true;
+}
 
-
-PolygonRenderer::PolygonRenderer(Polygon & poly):_polygon(poly),
+PolygonRenderer::PolygonRenderer(ds::Polygon & poly):
+texture(*new PngImage("resources/images/testimage.png")),
+_polygon(poly),
   faceColor("gray"),
   vertexColor("navy"),edgeColor("yellow"),normalColor("blue"){
   drawEdges = true;
@@ -65,12 +74,18 @@ void PolygonRenderer::render(){
             f->n_ocs,MiniGL::gray);
           break;
         case 4:
-          MiniGL::drawQuad(
+          texture.bind();
+          glQuad(vertices.at(0)->p_ocs+f->n_ocs*0.001,
+            vertices.at(1)->p_ocs+f->n_ocs*0.001,
+            vertices.at(2)->p_ocs+f->n_ocs*0.001,
+            vertices.at(3)->p_ocs+f->n_ocs*0.001,f->n_ocs);
+          texture.unbind();
+          /*MiniGL::drawQuad(
             vertices.at(0)->p_ocs+f->n_ocs*0.001,
             vertices.at(1)->p_ocs+f->n_ocs*0.001,
             vertices.at(2)->p_ocs+f->n_ocs*0.001,
             vertices.at(3)->p_ocs+f->n_ocs*0.001,
-            f->n_ocs,faceColor);
+            f->n_ocs,faceColor);*/
           break;
         }
       }

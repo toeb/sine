@@ -1,9 +1,11 @@
 #include "BoxRenderer.h"
 #include <visualization/opengl/MiniGL.h>
+#include <visualization/core/Image.h>
+#include <simulation/core/Simulation.h>
 using namespace std;
 using namespace nspace;
 
-BoxRenderer::BoxRenderer(const Hexahedron & box):
+BoxRenderer::BoxRenderer(const Hexahedron & box):texture(* new PngImage("resources/images/testimage.png")),
 _box(box),
 _textRenderer(0), 
 _p(box.coordinates().position()){
@@ -14,7 +16,7 @@ _p(box.coordinates().position()){
 void BoxRenderer::render(){  
   Matrix3x3 RT;
   _box.coordinates().orientation().getMatrix3x3T(RT);
-
+  texture.bind();
   MiniGL::drawCube(
     _p,
     RT,
@@ -23,11 +25,13 @@ void BoxRenderer::render(){
     (float)boxExtent(2),
     MiniGL::gray);
   _textPosition = _p + Vector3D(boxExtent(0)+0.1,0.1,0.1);
+  texture.unbind();
   //if(_textRenderer) _textRenderer->render();
 }
 
 
 bool BoxRenderer::initializeObject(){
+  *simulation()<<texture;
   if(!_box.hasName())return true;
   const string & name =_box.getName();
   _textRenderer = new TextRenderer(name,_textPosition);

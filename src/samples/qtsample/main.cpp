@@ -10,6 +10,7 @@
 #include <visualization/glrenderers/general/BillboardRenderer.h>
 #include <lodepng.h>
 #include <simulation/geometry/Plane.h>
+#include <simulation/history/HistoryModule.h>
 using namespace nspace;
 using namespace std;
 class GlutObject : public IRenderer{
@@ -33,8 +34,8 @@ public:
 
 
 int main(int argc, char** argv){
-    
   DefaultSimulationSetup setup;
+  
   cout << DefaultSimulationSetup::Type<<endl;
   cout << Simulation::Type << endl;
   cout << Plane::Type<<endl;
@@ -54,10 +55,11 @@ int main(int argc, char** argv){
       box->coordinates().mirror(*body);
       simulation << body;
       simulation << box;
-      simulation << new BoxRenderer(*box);
+      simulation << new PolygonRenderer(*box);
     }
   }
   simulation << new BillboardRenderer();
+  simulation << new HistoryModule (setup.defaultSystem.statefulObject(), setup.simulationTimeProvider);
 
   simulation << new GlutObject(argc,argv);
   

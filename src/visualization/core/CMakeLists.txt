@@ -11,6 +11,13 @@ set(source
  ./Image.cpp 
  ./Pixel.h
  ./Pixel.cpp 
+ ./Texture.h
+ ./Texture.cpp 
+ ./ViewportController.h
+ ./ViewportController.cpp 
+ ./SceneObject.h
+ ./SceneObject.cpp 
+ 
 )
 source_group("src" FILES ${source})
 set(compositeSource

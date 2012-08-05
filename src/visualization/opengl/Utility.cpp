@@ -11,7 +11,30 @@ GlMaterial * nspace::GlMaterial::plastic=new GlMaterial(0,0,0,0.01,0.01,0.01,0.5
 GlMaterial * nspace::GlMaterial::sinn=new GlMaterial(0.14,0.22,0.16,0.54,0.89,0.63,0.32,0.32,0.32,0.9,12.8);
 GlMaterial * nspace::GlMaterial::bronze=new GlMaterial(0.21,0.13,0.05,0.71,0.43,0.18,0.39,0.27,0.17,1,25.6);
 
-
+void nspace::glTriangle(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & n){
+  glBegin(GL_TRIANGLES);
+  glNormal(n);
+  glTexCoord2f (0.0, 0.0);
+  glVertex(a);
+  glTexCoord2f (1.0, 0.0);
+  glVertex(b);
+  glTexCoord2f (0.0,1.0);
+  glVertex(c);
+  glEnd();
+}
+void nspace::glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d,const Vector3D & n){
+  glBegin(GL_TRIANGLES);
+  glNormal(n);
+  glTexCoord2f (0.0, 0.0);
+  glVertex(a);
+  glTexCoord2f (1.0, 0.0);
+  glVertex(b);
+  glTexCoord2f (1.0,1.0);
+  glVertex(c);
+  glTexCoord2f (0.0,1.0);
+  glVertex(c);
+  glEnd();
+}
 
 void nspace::convert(const nspace::Matrix3x3 &from, double* to){
   

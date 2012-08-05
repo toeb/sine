@@ -32,7 +32,8 @@
 
 namespace nspace{
 void convert(const Matrix3x3 & from,  double * to);
-
+void glTriangle(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & n);
+void glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d,const Vector3D & n);
 void glVertex(const Vector3D& v);
 void glNormal(const Vector3D& v);
 void glRotate(const Matrix3x3 & R);

@@ -2,10 +2,12 @@
 #include <visualization/core/IRenderer.h>
 #include <simulation/geometry/polygon/Polygon.h>
 #include <visualization/core/Color.h>
+#include <visualization/opengl/GlTexture.h>
 namespace nspace{
 
 class PolygonRenderer : public IRenderer{
 public:
+  Texture texture;
   Color faceColor;
   Color forwardHalfEdgeColor;
   Color backwardHalfEdgeColor;
@@ -26,6 +28,7 @@ public:
   Polygon & _polygon;
 public:
   PolygonRenderer( Polygon & polygon);
+  bool initializeObject();
   void render();    
 };
 
