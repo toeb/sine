@@ -4,10 +4,9 @@
 #include <simulation/geometry/Axis.h>
 namespace nspace{
 class Plane:public Geometry{
-  
+  TYPED_OBJECT;
 public:
-  static const TypeId type;
-  const TypeId getType()const;
+
   void getNormal(Vector3D & n)const;
   void getNormalAxis(Axis & nAxis)const;
   void getUAxis(Axis & a)const;

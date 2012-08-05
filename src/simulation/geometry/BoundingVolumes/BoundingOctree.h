@@ -22,6 +22,7 @@ enum OctreeNodeId{
 
 
 class Octree : public ISimulationObject{
+  TYPED_OBJECT;
 private:
   Geometry & _geometry;
   ///< The id of the node
@@ -122,13 +123,7 @@ public:
    */
   const TypeId getCollisionType()const;
 
-  /**
-   * \brief Gets the type.
-   *
-   *
-   * \return The type.
-   */
-  const TypeId getType()const;
+
 
   void update();
   void reset();

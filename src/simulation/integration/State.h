@@ -6,7 +6,7 @@
 #include <math/definitions.h>
 
 namespace nspace{
-  typedef unsigned int uint; 
+
   typedef MatrixNxM StateMatrix;
 
 

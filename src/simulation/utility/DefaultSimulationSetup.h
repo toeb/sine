@@ -6,6 +6,7 @@ namespace nspace{
 
 
 class DefaultSimulationSetup : public ISimulationObject{
+  TYPED_OBJECT;
 public:  
   SystemModule defaultSystem;
   SimulationTimeProvider simulationTimeProvider;

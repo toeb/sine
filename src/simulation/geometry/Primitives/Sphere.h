@@ -2,11 +2,11 @@
 #include <simulation/geometry/Geometry.h>
 namespace nspace{
 class Sphere : public Geometry{
+  TYPED_OBJECT;
 private:
   Real _radius;
 public:
-  static const TypeId type;
-  const TypeId getType()const;
+
   Sphere(Real radius=1.0);
 
   Real calculateBoundingSphereRadius()const;

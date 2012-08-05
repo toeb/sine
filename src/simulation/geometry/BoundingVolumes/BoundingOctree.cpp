@@ -3,11 +3,8 @@
 using namespace nspace;
 using namespace std;
 
-const TypeId Octree::type = "Octree";
 
-const TypeId Octree::getType()const{
-  return type;
-}
+
 const TypeId Octree::getCollisionType()const{
   return type;
 }

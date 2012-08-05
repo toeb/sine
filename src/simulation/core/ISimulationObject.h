@@ -1,27 +1,29 @@
 #pragma once
 #include <common/Config.h>
+#include <common/Object.h>
 #include <string>
 #include <map>
 #include <vector>
 namespace nspace{
 
-typedef const char * TypeId;
+
 
 class Simulation;
 
-class ISimulationObject{
+class ISimulationObject : virtual Object{
+  TYPED_OBJECT;
 private:
   Simulation * _simulation;
   const std::string * _name;
   bool _initialized;
 public:
+  virtual void toString(std:: ostream & out )const;
   /**
    * \brief Gets the type (sublasses may implement if needed else it returns "ISimulationObject".  
    *
    * \return The type.
    */
-  virtual const TypeId getType()const;
-  virtual void toString(std::ostream & out)const;
+ 
   ISimulationObject();
   ISimulationObject(const std::string & name);
   ~ISimulationObject();

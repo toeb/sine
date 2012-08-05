@@ -11,6 +11,7 @@
 namespace nspace{
 
 class Simulation : public ISimulationObject{
+  TYPED_OBJECT;
 private:  
   ///< true if currently processing objects
   bool _processing;

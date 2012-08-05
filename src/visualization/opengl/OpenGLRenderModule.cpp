@@ -25,7 +25,7 @@
  */
 #include "OpenGLRenderModule.h"
 #include <visualization/opengl/opengl.h>
-#include <visualization/opengl/MiniGL.h>
+#include <visualization/opengl/Utility.h>
 using namespace nspace;
 using namespace std;
 
@@ -45,7 +45,7 @@ bool OpenGLRenderModule::initializeRenderEngine(){
 
 	if(!initializeGlRenderEngine())return false;
 
-    return true;
+  return true;
 }
 
 void OpenGLRenderModule::cleanupRenderEngine(){
@@ -55,6 +55,6 @@ void OpenGLRenderModule::cleanupRenderEngine(){
 
 
 void OpenGLRenderModule::clear(){
-	glClearColor (_clearColor[0],_clearColor[1],_clearColor[2],_clearColor[3]);
+	glSetClearColor(_clearColor);
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

@@ -3,10 +3,8 @@
 
 using namespace nspace;
 
-const TypeId Plane::type="Plane";
-const TypeId Plane::getType()const{
-  return type;
-}
+
+
 
  void  Plane::getNormal(Vector3D & n)const{
   Matrix3x3 RT;

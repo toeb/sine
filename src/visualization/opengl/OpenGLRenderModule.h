@@ -27,25 +27,28 @@
 #include <visualization/core/RenderModule.h>
 #include <visualization/core/IRenderer.h>
 #include <visualization/core/composite/CompositeRenderer.h>
-
+#include <visualization/core/Color.h>
 namespace nspace{
 /**
  * \brief Open gl renderer.
  */
 class OpenGLRenderModule : public RenderModule {
 private:
-	double _clearColor[4];
+	Color _clearColor;
 public:
-
-	void setClearColor(double r, double g, double b, double a){_clearColor[0] = r;_clearColor[1] = g;_clearColor[2] = b;_clearColor[3] = a;};
-	const double * getClearColor()const{return _clearColor;}
+  Color & clearColor(){
+    return _clearColor;
+  }
+  const Color & clearColor()const{
+    return _clearColor;
+  }
 
   /**
    * \brief Default constructor.
    */
   OpenGLRenderModule(){
 		setName("OpenGL RenderEngine");
-		setClearColor(0.95f, 0.95f, 1.0f, 1.0f);
+		clearColor().setTo("LightGreen");
 	};
 
   /**

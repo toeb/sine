@@ -25,6 +25,7 @@
 #include <common/Config.h>
 #include <math/types/Matrix.h>
 #include <math/types/VectorND.h>
+#include <common/patterns/ArrayPool.h>
 
 namespace nspace
 {

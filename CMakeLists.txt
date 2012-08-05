@@ -10,6 +10,7 @@ set(EXECUTABLE_OUTPUT_PATH ${projectPath}/build/bin)
 set(sourceDirectory ${projectPath}/src)
 set(externalsDirectory ${projectPath}/externals)
 set(cmakeScriptsDirectory ${projectPath}/cmake)
+set(resourceDirectory ${projectPath}/resources)
 
 set(includeDirectories ${sourceDirectory})
 

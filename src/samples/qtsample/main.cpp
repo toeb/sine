@@ -7,10 +7,13 @@
 #include <visualization/glrenderers/geometry/BoxRenderer.h>
 #include <gl/glut.h>
 #include <visualization/core/Color.h>
+#include <visualization/glrenderers/general/BillboardRenderer.h>
 #include <lodepng.h>
+#include <simulation/geometry/Plane.h>
 using namespace nspace;
 using namespace std;
 class GlutObject : public IRenderer{
+  TYPED_OBJECT;
 private:
   int _argc;
   char ** _argv;  
@@ -27,27 +30,17 @@ public:
   }
 };
 
-class Image : public virtual ISimulationObject{
-private:
-  vector<unsigned char> _imageBuffer;
-  vector<unsigned char> _image;
-  lodepng::State _state;
-  unsigned int _width;
-  unsigned int _height;
-protected:
-  bool initializeObject(){
-    lodepng::load_file(_imageBuffer,"resources/images/testimage.png");
-    unsigned int error = lodepng::decode(_image,_width,_height,_state,_imageBuffer);
-    
-    return true;
-  }
-  void cleanupObject(){
 
-  }
-};
 
 int main(int argc, char** argv){
+    
   DefaultSimulationSetup setup;
+  cout << DefaultSimulationSetup::Type<<endl;
+  cout << Simulation::Type << endl;
+  cout << Plane::Type<<endl;
+  cout << GlutObject::Type<<endl;
+  cout << GridRenderer::Type<<endl;
+  cout << IRenderer::Type<<endl;
   QtSimulationRunner runner;
   Simulation simulation;
   int n(5), m(5);
@@ -64,8 +57,8 @@ int main(int argc, char** argv){
       simulation << new BoxRenderer(*box);
     }
   }
+  simulation << new BillboardRenderer();
 
-  simulation << new Image();
   simulation << new GlutObject(argc,argv);
   
   simulation << setup;

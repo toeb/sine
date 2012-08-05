@@ -12,6 +12,7 @@
 namespace nspace{
 
 class Polygon : public Geometry{
+  TYPED_OBJECT;
 private:
   // a polygon consist of faces, edges, half edges and vertices
   std::vector<Face*> _faces;
@@ -31,8 +32,6 @@ public:
    */
   void scale(Real x, Real y, Real z);
 
-  static const TypeId type;
-  const TypeId getType()const;
 
 
   Classification classify(const BoundingVolume & volume)const;

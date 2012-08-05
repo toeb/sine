@@ -62,4 +62,5 @@ void glMaterial(
 void glMaterial(nspace::GlMaterial & material);
 
 void glColor(const Color & color);
+void glSetClearColor(const Color & color);
 }

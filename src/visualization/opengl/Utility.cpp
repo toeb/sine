@@ -85,6 +85,9 @@ void nspace::glVertex(const Vector3D& v)
 void nspace::glColor(const Color & color){
   glColor4d(color.r(),color.g(),color.b(),color.a());
 }
+void nspace::glSetClearColor(const Color & color){
+  glClearColor(color.r(),color.g(),color.b(),color.a());
+}
 
 void nspace::glMultMatrix(const Matrix3x3& R, const Vector3D& r)
 {

@@ -47,8 +47,8 @@ if(OPENGL_FOUND)
    ./FpsCamera.cpp
    ./GlMaterial.h
    ./GlMaterial.cpp
-   ./GlColor.h
-   ./GlColor.cpp
+   ./GlTexture.h
+   ./GlTexture.cpp
   )
   
   source_group("src\\general" FILES ${renderers_General_SRC})

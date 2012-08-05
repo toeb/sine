@@ -6,10 +6,7 @@ using namespace std;
 
 
 
-const TypeId ISimulationObject::getType()const{
-  static const TypeId type="ISimulationObject";
-  return type;
-}
+
 
 void ISimulationObject::toString(ostream & out)const{
   out << "<object>"<<endl;

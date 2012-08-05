@@ -40,6 +40,8 @@
 
 #define nspace ds
 
+typedef unsigned int uint;
+typedef unsigned char byte;
 
 
 // define the floating point type Real

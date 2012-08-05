@@ -3,11 +3,7 @@
 using namespace std;
 using namespace nspace;
 
-const TypeId Sphere::type = "Sphere";
 
-const TypeId Sphere::getType()const{
-  return type;
-}
 
 Classification classifyBoundingBox(const BoundingBox & aabb_ocs, const Sphere & sphere){
   Real radius = sphere.radius();

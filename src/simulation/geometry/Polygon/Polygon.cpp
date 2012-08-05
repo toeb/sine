@@ -5,10 +5,6 @@
 using namespace nspace;
 using namespace std;
 
-const TypeId Polygon::type = "Polygon";
-const TypeId Polygon::getType()const{
-  return type;
-}
 
 Classification classifySphere(const BoundingSphere & sphere, const Polygon & polygon){
   const Vector3D & c = sphere.getPositionPCS();

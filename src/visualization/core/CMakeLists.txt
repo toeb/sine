@@ -7,6 +7,10 @@ set(source
  ./Color.cpp
  ./Material.h
  ./Material.cpp 
+ ./Image.h
+ ./Image.cpp 
+ ./Pixel.h
+ ./Pixel.cpp 
 )
 source_group("src" FILES ${source})
 set(compositeSource

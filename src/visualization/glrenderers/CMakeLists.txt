@@ -1,6 +1,8 @@
 set(generalSource
  ./general/VectorRenderer.h
  ./general/VectorRenderer.cpp
+ ./general/BillboardRenderer.h
+ ./general/BillboardRenderer.cpp
  ./general/TextRenderer.h
  ./general/TextRenderer.cpp
  ./general/OffsetRenderer.h
