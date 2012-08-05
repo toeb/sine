@@ -138,7 +138,7 @@ bool Octree::initializeObject(){
   return true;
 }
 void Octree::cleanupObject(){
-  if( NODE_ROOT != _id)return;
+  if( NODE_ROOT != _id)return ;
   deleteChildren();
 }
 

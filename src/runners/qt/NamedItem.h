@@ -1,12 +1,12 @@
 #include <QStandardItem>
-#include <simulation/core/ISimulationObject.h>
+#include <common/Object.h>
 namespace nspace{
 
  class NamedItem : public QStandardItem{
  private:
-    ISimulationObject & _object;
+    NamedObject & _object;
  public:
-   NamedItem(ISimulationObject & object):_object(object){
+   NamedItem(NamedObject & object):_object(object){
      setText(QString::fromStdString(object.getName()));
      setEditable(false);
    }

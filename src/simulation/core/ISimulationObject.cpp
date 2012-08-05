@@ -10,36 +10,18 @@ using namespace std;
 
 void ISimulationObject::toString(ostream & out)const{
   out << "<object>"<<endl;
-  out << "  <name>" << this->getName() << "</name>"<<endl;
+  out << "  <name>" << this->getName().c_str() << "</name>"<<endl;
   out << "  <type>" << this->getType() << "</type>"<<endl;
   out << "</object>" <<endl;
 }
 
 
-ISimulationObject::ISimulationObject(const std::string & name): _initialized(false),_simulation(0){
+ISimulationObject::ISimulationObject(const std::string & name): _simulation(0){
   setName(name);
 }
 
-ISimulationObject::ISimulationObject():_name(0), _initialized(false),_simulation(0){}
-ISimulationObject::~ISimulationObject(){delete _name;}
-void ISimulationObject::setName(const std::string & name ){
-  if(!name.compare("")){
-    _name=0;
-    return;
-  }
-  _name = new std::string(name);
-}
-  
-const std::string& ISimulationObject::getName()const{
-  static const std::string defaultName = "<NONAME>";
-  if(!_name){
-    return defaultName;
-  }
-  return *_name;
-
-}
-
-bool ISimulationObject::initialize(){
+ISimulationObject::ISimulationObject():_simulation(0){}
+bool Initializable::initialize(){
   if(_initialized){
     return true;
   } 
@@ -48,17 +30,10 @@ bool ISimulationObject::initialize(){
   return _initialized;
 };
 
-bool ISimulationObject::isInitialized()const{
-  return _initialized;
-}
-
-void ISimulationObject::cleanup(){
+bool Initializable::cleanup(){
   cleanupObject();
   _initialized = false;
+  return true;
 };
 
 
-bool ISimulationObject::hasName() const
-{
-  return _name!=0;
-}

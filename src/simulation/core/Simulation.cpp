@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <simulation/core/composites/CompositeSimulationObject.h>
+#include <string>
 using namespace nspace;
 using namespace std;
 

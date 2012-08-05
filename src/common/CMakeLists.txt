@@ -5,6 +5,7 @@ set(source
 	./Time.cpp
 	./Config.h
 	./Object.h
+	./Object.cpp
 )
 source_group("src" FILES ${source})
 
