@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Simulation/Geometry/Primitives/Sphere.h>
-#include <Simulation/Dynamics/BodyPrimitives/DynamicGeometry.h>
+#include <simulation/geometry/primitives/Sphere.h>
+#include <simulation/dynamics/primitives/DynamicGeometry.h>
 
-namespace IBDS{
+namespace nspace{
 
 class DynamicSphere: public DynamicGeometry<Sphere>
 {

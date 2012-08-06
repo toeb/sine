@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Simulation/Dynamics/Connection/Connector.h>
-#include <Simulation/Force/Force.h>
+#include <simulation/dynamics/connection/Connector.h>
+#include <simulation/force/Force.h>
 
-namespace IBDS{
+namespace nspace{
 	class DampedSpring : public Force
 		{
 		private:

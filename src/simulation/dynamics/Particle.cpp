@@ -1,11 +1,8 @@
 #include "Particle.h"
-#include <Math/Matrix3x3.h>
+#include <math/definitions.h>
 
-using namespace IBDS;
-const TypeId Particle::type ="Particle";
-const TypeId Particle::getBodyType()const{
-  return type;
-}
+using namespace nspace;
+
 void Particle::setForce(const Vector3D & f){
   _f.assign( f);
 }
@@ -14,7 +11,7 @@ void Particle::addExternalForce(const Vector3D & f){
  // _f += f;
 }
 void Particle::resetForce(){
-  _f[0]=0;_f[1]=0;_f[2]=0;
+  _f.setZero();
 }
 const Vector3D & Particle::getForce()const{
   return _f;
@@ -30,28 +27,45 @@ void Particle::calculateDynamics(){
   acceleration() = _f*(1/m);
 }
 
+ unsigned int Particle::stateDimension()const{return 3;}
+ unsigned int Particle::availableDerivatives()const{return 2;}
+ void Particle::importState(const IState & x){
+   const Real * data = x.data(0);
+   const Real * dataDeriv = x.data(1);
+   position().assign(data);
+   velocity().assign(dataDeriv);/*
+   position()(0)=x(0,0);
+   position()(1)=x(1,0);
+   position()(2)=x(2,0);
+   velocity()(0)=x(0,1);
+   velocity()(1)=x(1,1);
+   velocity()(2)=x(2,1);*/
 
-
-
-void Particle::getDerivedState(Real * xDot)const{
-  velocity().copyTo(&(xDot[0]));
-  acceleration().copyTo(&(xDot[3]));
-}
-void Particle::setState(const Real * state){
-  position().assign(&(state[0]));
-  velocity().assign(&(state[3]));
-}
- void Particle::getState(Real * state)const{
-   position().copyTo(&(state[0]));
-   velocity().copyTo(&(state[3]));
-}
- int Particle::getStateDimension()const{
-  static int dim = 6;
-  return dim;
-}
-
-
-
+ }
+ void Particle::exportState(IState & x)const{
+   Real * data = x.data(0);
+   Real * dataDeriv = x.data(1);
+   position().copyTo(data);
+   velocity().copyTo(dataDeriv);
+   /*x(0,0)=position()(0);
+   x(1,0)=position()(1);
+   x(2,0)=position()(2);
+   x(0,1)=velocity()(0);
+   x(1,1)=velocity()(1);
+   x(2,1)=velocity()(2);*/
+ }
+ void Particle::exportDerivedState(IState & xDot)const{
+   Real * data = xDot.data(0);
+ Real * dataDeriv = xDot.data(1);
+ velocity().copyTo(data);
+ acceleration().copyTo(dataDeriv);
+   /*xDot(0,0)=velocity()(0);
+   xDot(1,0)=velocity()(1);
+   xDot(2,0)=velocity()(2);
+   xDot(0,1)=acceleration()(0);
+   xDot(1,1)=acceleration()(1);
+   xDot(2,1)=acceleration()(2);*/
+ }
 
 
 

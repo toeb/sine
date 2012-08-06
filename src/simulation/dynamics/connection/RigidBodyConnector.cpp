@@ -1,5 +1,5 @@
 #include "RigidBodyConnector.h"
-using namespace IBDS;
+using namespace nspace;
 
 RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
   :Connector(b),_rigidBody(b), _r(r)

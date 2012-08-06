@@ -1,11 +1,16 @@
 set(source
-	./Force/Gravity.h
-	./Force/Gravity.cpp
-	./Force/DampedSpring.h
-	./Force/DampedSpring.cpp 
-	./Force/Force.h
-	./Force/ForceAlgorithm.h	
-	./Force/ForceAlgorithm.cpp
+	./Gravity.h
+	./Gravity.cpp
+	./DampedSpring.h
+	./DampedSpring.cpp 
+	./Force.h
+	./ForceModule.h	
+	./ForceModule.cpp
+	./ForceField.h	
+	./ForceField.cpp
 )
-set(simulationSource ${simulationSource} ${source}  )
-source_group("simulation\\force" FILES ${source})
+
+source_group("src" FILES ${source})
+add_library(force ${source})
+project_folder("simulation/force" force)
+target_link_libraries(force core dynamics)

@@ -55,8 +55,10 @@ public:
   virtual void exportDerivedState(IState & xDot)const=0;
 
 	void resizeState(IState & x)const{
-		if(x.dimension() == stateDimension() && x.derivatives() >= availableDerivatives())return;
-		x.resize(stateDimension(),availableDerivatives());
+    uint dim = stateDimension();
+    uint derivs =availableDerivatives();
+		if(x.dimension() == dim && x.derivatives() >= derivs)return;
+		x.resize(dim,derivs);
 	}
 private:
 protected:

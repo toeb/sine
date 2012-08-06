@@ -1,10 +1,10 @@
 #pragma once
 
 
-#include <Math/Matrix3x3.h>
-#include <Simulation/Geometry/Primitives/Hexahedron.h>
-#include <Simulation/Dynamics/BodyPrimitives/DynamicGeometry.h>
-namespace IBDS{
+#include <math/definitions.h>
+#include <simulation/geometry/primitives/Hexahedron.h>
+#include <simulation/dynamics/primitives/DynamicGeometry.h>
+namespace nspace{
 class DynamicBox: public DynamicGeometry<Hexahedron>
 {
   Hexahedron _hexahedron;

@@ -1,8 +1,8 @@
 
 #include "Connector.h"
-#include <Math/Matrix3x3.h>
+#include <math/definitions.h>
 
-using namespace IBDS;
+using namespace nspace;
 
 
 Connector::Connector(DynamicBody & body):_body(body){

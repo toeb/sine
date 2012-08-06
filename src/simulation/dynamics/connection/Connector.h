@@ -1,9 +1,9 @@
 #pragma once
-#include <Math/Vector3D.h>
-#include <Simulation/Integration/IIntegrable.h>
-#include <Simulation/Dynamics/DynamicBody.h>
-#include <Visualization/IRenderer.h>
-namespace IBDS {
+#include <math/definitions.h>
+#include <simulation/dynamics/DynamicBody.h>
+
+
+namespace nspace {
 class ConnectorFactory;
 /**
 * A connector is a point on a body. It is used to model the points where a spring is attached.

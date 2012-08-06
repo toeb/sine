@@ -10,7 +10,11 @@ namespace nspace{
  * <remarks> Tobias Becker, 13.04.2012.</remarks>
  */
 class CompositeStatefulObject : public Composite<IStatefulObject>, public virtual IStatefulObject{
+private:
+  const std::vector<IStatefulObject*> & _components;
 public:  
+  CompositeStatefulObject():_components(components()){}
+  ~CompositeStatefulObject(){}
   unsigned int stateDimension()const;
   unsigned int availableDerivatives()const;
 protected:

@@ -1,5 +1,5 @@
 #include "ParticleConnector.h"
-using namespace IBDS;
+using namespace nspace;
 
 ParticleConnector::ParticleConnector(Particle & p):Connector(p), _particle(p){
 

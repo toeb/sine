@@ -1,8 +1,8 @@
 #pragma once
-#include <Simulation/Dynamics/DynamicBody.h>
-#include <Math/Vector3D.h>
-#include <Simulation/Dynamics/Connection/Connector.h>
-namespace IBDS{
+#include <simulation/dynamics/DynamicBody.h>
+#include <math/definitions.h>
+#include <simulation/dynamics/connection/Connector.h>
+namespace nspace{
   class ConnectorFactory{
   private:
   static ConnectorFactory * _instance;

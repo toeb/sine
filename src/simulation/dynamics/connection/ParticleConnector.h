@@ -1,9 +1,9 @@
 #pragma once
-#include <Math/Vector3D.h>
-#include <Simulation/Dynamics/Particle.h>
-#include <Simulation/Dynamics/Connection/Connector.h>
+#include <math/definitions.h>
+#include <simulation/dynamics/Particle.h>
+#include <simulation/dynamics/connection/Connector.h>
 
-namespace IBDS {
+namespace nspace {
 	/**
 	 * Subclass of Connector. Used when a connection point lies on a particle.
 	 */
@@ -44,6 +44,6 @@ namespace IBDS {
     inline void calculateWorldVelocity(Vector3D & b_wcs)const;
     void calculateWorldAcceleration(Vector3D & a_wcs)const;
 
-	void setWorldPosition(Vector3D &position);
+	  void setWorldPosition(Vector3D &position);
 	};
 }

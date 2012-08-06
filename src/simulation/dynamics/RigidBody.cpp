@@ -1,14 +1,9 @@
 #include "RigidBody.h"
-#include <Math/Quaternion.h>
-#include <Math/SimMath.h>
+#include <math/definitions.h>
 
-using namespace IBDS;
+using namespace nspace;
 
-const TypeId RigidBody::type = "RigidBody";
 
-const TypeId RigidBody::getBodyType()const{
-  return type;
-}
 
 RigidBody::RigidBody(){
 
@@ -19,13 +14,11 @@ RigidBody::~RigidBody() {
 }
 
 
-
-
-void RigidBody::getDerivedState(Real * xDot)const{_kinematics.getDerivedState(xDot);}
-void RigidBody::setState(const Real * state){_kinematics.setState(state);}
-void RigidBody::getState(Real * state)const{_kinematics.getState(state);}
-int RigidBody::getStateDimension()const{return _kinematics.getStateDimension();}
-
+unsigned int RigidBody::stateDimension()const{return _kinematics.stateDimension();}
+unsigned int RigidBody::availableDerivatives()const{return _kinematics.availableDerivatives();}
+void RigidBody::importState(const IState & x){_kinematics.importState(x);};
+void RigidBody::exportState(IState & x)const{_kinematics.exportState(x);};
+void RigidBody::exportDerivedState(IState & xDot)const{_kinematics.exportDerivedState(xDot);};
 
 void RigidBody::calculateDynamics()
 {
@@ -51,7 +44,7 @@ void RigidBody::calculateCachedValues()
 }
 
 
-void RigidBody::addExternalForce(const IBDS::Vector3D & position, const IBDS::Vector3D & f){
+void RigidBody::addExternalForce(const Vector3D & position, const Vector3D & f){
   //_forceAccumulator
   Vector3D r = position - _kinematics.position();
   // calculate torque
@@ -61,7 +54,7 @@ void RigidBody::addExternalForce(const IBDS::Vector3D & position, const IBDS::Ve
   _tau += torque;
 }
 
-void RigidBody::addExternalForce(const IBDS::Vector3D & f){
+void RigidBody::addExternalForce(const Vector3D & f){
   _f+= f;
 }
 
@@ -71,7 +64,7 @@ void RigidBody::resetForce() {
 }
 
 
-void RigidBody::addExternalTorque(const IBDS::Vector3D & torque){
+void RigidBody::addExternalTorque(const Vector3D & torque){
   _tau += torque;
 }
 
@@ -159,15 +152,16 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   //SimMath::crossProductMatrix(r_b_wcs,r_b_star);
   
   const Matrix3x3 & J_inv_wcs = getInvertedInertiaTensorInWorldCoordinates();
-  Matrix3x3 tmpA(0);
-  Matrix3x3 tmpB(0);
+  Matrix3x3 tmpA;
+  Matrix3x3 tmpB;
   
   //optimized code. uses inline functions
-  SimMath::crossProductMatrix(r_b_wcs,tmpA);
+  
+  crossProductMatrix(tmpA,r_b_wcs);
   //tmpA = r_b_star
   Matrix3x3::multiply(J_inv_wcs,tmpA,tmpB);
   //tmpB = J_inv_wcs * r_b_star
-  SimMath::crossProductMatrix(r_a_wcs,tmpA);
+  crossProductMatrix(tmpA,r_a_wcs);
   //tmpA = r_a_star
   Matrix3x3::multiply(tmpA,tmpB,K);
   // K = r_a_star * J_inv_wcs * r_b_star

@@ -1,5 +1,5 @@
 #include "DampedSpring.h"
-using namespace IBDS;
+using namespace nspace;
 
 
 const Vector3D & DampedSpring::getForce()const{

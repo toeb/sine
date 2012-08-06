@@ -21,7 +21,7 @@
  */
 #include <visualization/opengl/GlViewport.h>
 #include <simulation/interaction/IInputListener.h>
-#include <simulation/kinematics/KinematicBody.h>
+#include <simulation/kinematics/KinematicCoordinates.h>
 #include <simulation/time/PeriodicTask.h>
 #include <simulation/integration/implementations/ExplicitEuler.h>
 /**

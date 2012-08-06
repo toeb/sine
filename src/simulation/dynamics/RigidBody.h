@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Simulation/Dynamics/DynamicBody.h>
-#include <Simulation/Kinematics/KinematicBody.h>
+#include <simulation/dynamics/DynamicBody.h>
+#include <simulation/kinematics/KinematicCoordinates.h>
 
-namespace IBDS{
+namespace nspace{
 /**
  * \brief Rigid body class.  
  * 				Describes a Rigid Body.  Is an extension of Particle
@@ -12,7 +12,8 @@ namespace IBDS{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-class RigidBody : public DynamicBody, public virtual IIntegrable {
+class RigidBody : public DynamicBody, public virtual IStatefulObject {
+  TYPED_OBJECT;
 private:  
   Real _m;
   ///< The inertia tensor
@@ -50,8 +51,8 @@ public:
 
   ~RigidBody();
 
-  static const TypeId type;
-  const TypeId getBodyType()const;
+
+  const TypeId getBodyType()const{return Type;}
   
   const Vector3D &  getCenterOfGravity()const {return kinematics().position();};
 
@@ -61,16 +62,16 @@ public:
   Real getMass()const{return _m;}
   void setMass(Real m){_m = m;}
 
-  void addExternalForce(const IBDS::Vector3D & f);
-  void addExternalForce(const IBDS::Vector3D & position, const IBDS::Vector3D & f);
-  void addExternalTorque(const IBDS::Vector3D & torque);
+  void addExternalForce(const Vector3D & f);
+  void addExternalForce(const Vector3D & position, const Vector3D & f);
+  void addExternalTorque(const Vector3D & torque);
 
   const Vector3D & getTorque()const;
   const Vector3D & getForce()const;
 
   void resetForce();
   
-  void setInertiaTensor(const IBDS::Matrix3x3 & inertia);
+  void setInertiaTensor(const Matrix3x3 & inertia);
   const Matrix3x3 & getInertiaTensor() const;
 
   const Matrix3x3 & getInvertedInertiaTensor() const;
@@ -84,11 +85,12 @@ public:
   void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const; 
 
 
-  //integragble impl.
-  void getDerivedState(Real * xDot)const;
-  void setState(const Real * state);
-  void getState(Real * state)const;
-  int getStateDimension()const;
+
+  unsigned int stateDimension()const;
+  unsigned int availableDerivatives()const;
+  void importState(const IState & x);
+  void exportState(IState & x)const;
+  void exportDerivedState(IState & xDot)const;
 
 };// RigidBody
 }// namespace IBDS

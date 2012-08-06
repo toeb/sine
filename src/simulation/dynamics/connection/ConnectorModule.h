@@ -1,12 +1,12 @@
 #pragma once
-#include <Simulation/Dynamics/Connection/Connector.h>
-#include <Simulation/Core/SimulationModuleBase.h>
-namespace IBDS{
+#include <simulation/dynamics/connection/Connector.h>
+#include <simulation/core/SimulationModuleBase.h>
+namespace nspace{
   
 class ConnectorModule  :public SimulationModuleBase<Connector>{
 public:
   void calculateConnectorPositions(){
-    foreach([](Connector * b){b->calculateCachedValues();});
+    foreachObject([](Connector * b){b->calculateCachedValues();});
   }
 };
 }

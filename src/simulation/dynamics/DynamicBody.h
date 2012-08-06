@@ -1,19 +1,17 @@
 #pragma once
-#include "Simulation/Core/ISimulationObject.h"
-#include <Simulation/Integration/IIntegrable.h>
-#include <Math/Vector3D.h>
+#include <simulation/core/ISimulationObject.h>
+#include <math/definitions.h>
 
-namespace IBDS {
+namespace nspace {
 
 /**
  * \brief Dynamic body. Interface for Bodies which have mass and thus allow the application of impulses or forces 
  *
- * \author Tobi
- * \date 06.07.2012
+ * 
  */
 class DynamicBody : public virtual ISimulationObject{
 public:
-
+   
     /**
      * \brief Calculates the dynamics equation.
      *

@@ -34,11 +34,8 @@ namespace nspace{
       
      
     }
-    virtual void copyRange(int derivative, int start, int end, Real * valuePtr){
-      for(int i= start; i < end; i++){
-        value(i,derivative)=valuePtr[i];
-      }
-    }
+    virtual Real * data(int derivative)=0;
+    virtual const Real * data(int derivative)const=0;
     friend std::ostream & operator<<(std::ostream & out, const IState & state);
   protected:
     virtual Real & value(uint index, uint derivative)=0;
@@ -60,6 +57,12 @@ namespace nspace{
     IState* range(uint start, uint length);
     virtual uint dimension()const{return _data.rows();}
     virtual uint derivatives()const{return _data.cols();}
+    Real * data(int derivative){
+      return _data.rowData(derivative);
+    };
+    const Real * data(int derivative)const{
+      return _data.rowData(derivative);
+    }
 
   protected:
     Real & value( uint index, uint derivative );
@@ -79,6 +82,16 @@ namespace nspace{
     void resize(uint dimension, uint derivatives);
     uint dimension()const{return _length;}
 		uint derivatives()const{return _state.derivatives();}
+    Real * data(int derivative){
+      Real * data = _state.data(derivative);
+      if(!data)return 0;
+      return data + _start;
+    };
+    const Real * data(int derivative)const{
+      Real * data = _state.data(derivative);
+      if(!data)return 0;
+      return data + _start;
+    }
   protected:
     inline Real & value( uint index, uint derivative ){
       return _state(index+_start, derivative);

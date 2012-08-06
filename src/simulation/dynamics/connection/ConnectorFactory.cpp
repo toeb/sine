@@ -1,7 +1,7 @@
 #include "ConnectorFactory.h"
-#include <Simulation/Dynamics/Connection/RigidBodyConnector.h>
-#include <Simulation/Dynamics/Connection/ParticleConnector.h>
-using namespace IBDS;
+#include <simulation/dynamics/connection/RigidBodyConnector.h>
+#include <simulation/dynamics/connection/ParticleConnector.h>
+using namespace nspace;
 
 
 ConnectorFactory * ConnectorFactory::_instance = new ConnectorFactory();
@@ -25,13 +25,13 @@ Connector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody & body,
 
 Connector * ConnectorFactory::createWithWorldConnectionPoint(DynamicBody & body, const Vector3D & p_wcs){
   
-  if(body.getBodyType()==RigidBody::type){
+  if(body.getBodyType()==RigidBody::Type){
    RigidBody * rigidBody = static_cast<RigidBody*>(&body);
    return  RigidBodyConnector::createWithWorldConnectionPoint(*rigidBody,p_wcs);
 
   
   }
-  if(body.getBodyType()==Particle::type){
+  if(body.getBodyType()==Particle::Type){
     Particle * particle = static_cast<Particle*>(&body);
     return new ParticleConnector(*particle);
   }  

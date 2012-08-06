@@ -22,105 +22,19 @@
  */
 #pragma once
 
-#include <common/Config.h>
-#include <math/types/Matrix.h>
+#include <math/types/DynamicMatrix.h>
 #include <math/types/VectorND.h>
-#include <common/patterns/ArrayPool.h>
-
 namespace nspace
 {
-  template<typename T, int RowCount, int ColumnCount>
-  class StaticMatrix : public Matrix<T>{
-  protected:
-    T _data[RowCount*ColumnCount];
-    inline Real & value(int i, int j){
-      return _data[index(i,j)];
-    }
-    inline const Real & value(int i, int j)const{
-      return _data[index(i,j)];
-    }
-  public:
-    //rule of three
-    StaticMatrix(const StaticMatrix<T,RowCount,ColumnCount> & orig){
-      *this=orig;
-    }
-    StaticMatrix<T,RowCount,ColumnCount> & operator=(const StaticMatrix<T,RowCount,ColumnCount> & orig ){
-      memcpy(data(),orig.data(),dataByteSize());
-        return *this;
-    }
-    StaticMatrix(){}
-    ~StaticMatrix(){}
-    inline size_t dataByteSize()const{
-      return RowCount*ColumnCount*sizeof(T);
-    }
-    inline int index(int i, int j)const{return i* ColumnCount+j;}
-    inline T & operator()(int i, int j){return _data[index(i,j)]; }
-    inline const T & operator()(int i, int j)const{return _data[index(i,j)]; }
-    inline int rows()const{return RowCount;}
-    inline int cols()const{return ColumnCount;}
-    T * data(){return &_data[0];}
-    const T * data()const{return &_data[0];}    
-  };
+  
 
 
-  template<typename T>
-  class DynamicMatrix  : public Matrix<T>{
-  protected:
-    T * _data;
-    int _rows;
-    int _cols;
-    inline Real & value(int i, int j){
-      return _data[index(i,j)];
-    }
-    inline const Real & value(int i, int j)const{
-      return _data[index(i,j)];
-    }
-  public:
-
-    DynamicMatrix(const DynamicMatrix<T> & orig):_data(0),_rows(0),_cols(0){
-      resize(orig.rows(),orig.cols(),false);
-      memcpy(data(),orig.data(),dataByteSize());
-    }
-
-    ~DynamicMatrix(){
-      ArrayPool<T>::freeArray(&_data,size());
-      _rows = 0;
-      _cols = 0;
-    }
-    DynamicMatrix():_rows(0),_cols(0),_data(0){resize(0,0);};
-    inline size_t dataByteSize()const{
-      return _rows*_cols*sizeof(T);
-    }
-    DynamicMatrix<T> & operator=(const DynamicMatrix<T> & orig ){
-      memcpy(data(),orig.data(),dataByteSize());
-      return *this;
-    }
-    void resize(int n, int m, bool setToZero=true){
-      if(_rows==n && _cols==m)return;
-
-      ArrayPool<T>::freeArray(&_data,size());
-      _rows = n;
-      _cols=m;
-      ArrayPool<T>::createArray(&_data,size());
-
-      _rows = n;
-      _cols =m;
-      if(setToZero) memset(_data,0,dataByteSize());
-    }
-  inline int index(int i, int j)const{return i* _cols+j;}
-  inline T & operator()(int i, int j){return _data[i* _cols+j]; }
-  inline const T & operator()(int i, int j)const{return _data[i* _cols+j]; }
-
-  inline int rows()const{return _rows;}
-  inline int cols()const{return _cols;}
-  T * data(){return _data;}
-  const T * data()const{return _data;}
-  };
+  
   
 	/** MatrixNxM ist eine Klasse für Berechnungen mit einer nxm Matrix, wie z.B. Addition, Multiplikation,...
 	  \author Jan Bender
 	  */
-	class MatrixNxM : public DynamicMatrix<Real>
+	class MatrixNxM : public nspace::DynamicMatrix<Real>
 	{
   private:
 //     Real * _data;
@@ -167,7 +81,8 @@ namespace nspace
 		friend MatrixNxM operator * (const Real d, const MatrixNxM& a);		// d * a
     friend MatrixNxM operator * (const MatrixNxM & a, const Real d){return d*a;}
     friend MatrixNxM operator / (const MatrixNxM & a, const Real d){return (1.0/d)*a;}
-		MatrixNxM& operator = (const MatrixNxM& m);
+		
+
 
 		friend VectorND operator * (const VectorND& v, const MatrixNxM& m);
     

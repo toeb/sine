@@ -200,20 +200,6 @@ void MatrixNxM::zero()
 			value(i,j)= 0.0;
 }
 
-/** Zuweisung: m1 = m2\n
-  * Kopiert die Werte von Matrix m2 in Matrix m1.
-  */
-MatrixNxM& MatrixNxM::operator = (const MatrixNxM& m)
-{ 
-
-  resize(m.rows(), m.cols());
-
-  memcpy(_data,m._data,size()*sizeof(Real));
- /* for (int i=0; i < _rows; i++)
-		for (int j=0; j < _cols; j++)
-			value(i,j) = m(i,j);*/	
-	return *this; 
-}
 
 /** Berechnet die Inverse einer Matrix nach Gauss-Jordan. 
   */

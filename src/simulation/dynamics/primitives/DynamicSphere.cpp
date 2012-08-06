@@ -1,13 +1,11 @@
 #include "DynamicSphere.h"
-using namespace IBDS;
+using namespace nspace;
 
 
 
 
 DynamicSphere::DynamicSphere(Real m, Real r):
   DynamicGeometry(*new Sphere(r),m, DynamicSphere::calculateInertia(m,r)){
-
-	
 }
  Matrix3x3 DynamicSphere::calculateInertia(Real m, Real r){
   Matrix3x3 inertia;

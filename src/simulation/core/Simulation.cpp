@@ -99,6 +99,7 @@ bool Simulation::processObject(ISimulationObject * object){
  
   //call extension point method
   onSimulationObjectAdded(object);
+ object->accepted();
   return true;
 }
 

@@ -1,1 +1,16 @@
-subdirs(core time integration access runner interaction history kinematics utility logging geometry)
+subdirs(
+core 
+time 
+integration 
+access 
+runner 
+interaction 
+history 
+kinematics 
+utility 
+logging 
+geometry
+dynamics
+force
+textile
+)

@@ -3,8 +3,8 @@ set(source
 ./DefaultSimulationSetup.cpp
 #./SimulationBuilder.h
 #./SimulationBuilder.cpp
-#./DynamicsAlgorithm.h
-#./DynamicsAlgorithm.cpp
+./DynamicsAlgorithm.h
+./DynamicsAlgorithm.cpp
 
 )
 source_group("src" FILES ${source})

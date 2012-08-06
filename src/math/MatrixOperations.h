@@ -1,3 +1,4 @@
+#pragma once 
 #include <common/Config.h>
 
 #include <math/ScalarOperations.h>
@@ -75,12 +76,14 @@ namespace nspace{
         }
       }
     };
-    
-
-    
   };
-
   
+  template<typename Vector3Type, typename Matrix3x3Type>
+  inline void crossProductMatrix(Matrix3x3Type & r_star, const Vector3Type & r){
+    r_star(0,0)=0; r_star(0,1)=-r(2); r_star(0,2)=r(1);
+    r_star(1,0)=r(2); r_star(1,1)=0; r_star(1,2)=-r(0);
+    r_star(2,0)=-r(1); r_star(2,1)=r(0); r_star(2,2)= 0;
+  }
 
   
   template<typename T, typename MatrixType>

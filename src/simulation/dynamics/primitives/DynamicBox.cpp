@@ -1,5 +1,5 @@
 #include "DynamicBox.h"
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 DynamicBox::DynamicBox(Real m, Real x, Real y, Real z):

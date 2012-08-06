@@ -1,6 +1,8 @@
 SET(source
-./KinematicBody.h
-./KinematicBody.cpp
+./KinematicCoordinates.h
+./KinematicCoordinates.cpp
+./KinematicPoint.h
+./KinematicPoint.cpp
 ./CoordinateSystem.h
 ./CoordinateSystem.cpp
 ./Position.h

@@ -1,8 +1,8 @@
 #pragma once
-#include <Simulation/Dynamics/DynamicBody.h>
-#include <Simulation/Core/SimulationModuleBase.h>
-#include <Simulation/Core/Timing/Timeable.h>
-namespace IBDS{
+#include <simulation/dynamics/DynamicBody.h>
+#include <simulation/core/SimulationModuleBase.h>
+#include <simulation/timing/Timeable.h>
+namespace nspace{
  
 class DynamicBodyModule : public SimulationModuleBase<DynamicBody>, public virtual Timeable{
 public:
@@ -11,12 +11,12 @@ public:
   }
   void calculateCachedValues(){
     tick();//measure time
-    foreach([](DynamicBody* b){b->calculateCachedValues();});
+    foreachObject([](DynamicBody* b){b->calculateCachedValues();});
     tock();
   }
   void calculateDynamics(){
     tick();
-    foreach([](DynamicBody * b){b->calculateDynamics();});
+    foreachObject([](DynamicBody * b){b->calculateDynamics();});
     tock();
   }
 };

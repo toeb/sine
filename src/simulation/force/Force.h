@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Simulation/Dynamics/DynamicBody.h>
+#include <simulation/dynamics/DynamicBody.h>
 #include <vector>
 
-namespace IBDS {
+namespace nspace {
 	class Force: public virtual ISimulationObject
 	{
 	public:

@@ -19,17 +19,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  * Jan Bender - Jan.Bender@impulse-based.de
- */
+ */  //modified!!
 #pragma once
-
-#include <Simulation/Dynamics/DynamicBody.h>
-#include <Simulation/Kinematics/CoordinateSystem.h>
-#include <Simulation/Kinematics/Velocity.h>
-#include <Simulation/Kinematics/Acceleration.h>
-namespace IBDS
+#include <simulation/kinematics/KinematicPoint.h>
+#include <simulation/dynamics/DynamicBody.h>
+#include <simulation/kinematics/CoordinateSystem.h>
+#include <simulation/kinematics/Velocity.h>
+#include <simulation/kinematics/Acceleration.h>
+#include <simulation/integration/IStatefulObject.h>
+namespace nspace
 {
-class Particle : public DynamicBody, public virtual IIntegrable
+class Particle : public DynamicBody, public virtual IStatefulObject
   {  
+    TYPED_OBJECT;
   private:
     Vector3D _f;
     Real _m;
@@ -49,7 +51,7 @@ class Particle : public DynamicBody, public virtual IIntegrable
     }
 
     static const TypeId type;
-    const TypeId getBodyType()const;
+    const TypeId getBodyType()const{return Particle::Type;}
 
 
    
@@ -60,11 +62,6 @@ class Particle : public DynamicBody, public virtual IIntegrable
 
     void applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs);
     
-    void getDerivedState(Real * xDot)const;
-    void setState(const Real * state);
-    void getState(Real * state)const;
-    int getStateDimension()const;
-
     void resetForce();
     void addExternalForce(const Vector3D & f);
     void addExternalTorque(const Vector3D & tau){};
@@ -79,6 +76,14 @@ class Particle : public DynamicBody, public virtual IIntegrable
 
   
     void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const;
+
+
+
+    unsigned int stateDimension()const;
+    unsigned int availableDerivatives()const;
+    void importState(const IState & x);
+    void exportState(IState & x)const;
+    void exportDerivedState(IState & xDot)const;
 
   };
 }

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Math/Vector3D.h>
-#include <Simulation/Force/Force.h>
-#include <Vector>
+#include <math/definitions.h>
+#include <simulation/force/Force.h>
+#include <vector>
 
-namespace IBDS{
+namespace nspace{
 	class Gravity : public Force
 		{
 		private:

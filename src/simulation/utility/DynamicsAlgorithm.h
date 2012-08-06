@@ -1,17 +1,17 @@
 #pragma once
-#include <Simulation/MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.h>
-#include <Simulation/Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.h>
-#include <Simulation/Force/ForceAlgorithm.h>
-#include <Simulation/Dynamics/DynamicBodyModule.h>
-#include <Simulation/Dynamics/Connection/ConnectorModule.h>
-#include <Simulation/Integration/CompositeIntegratable.h>
-#include <Simulation/Integration/ISystemFunction.h>
-#include <Simulation/Core/CompositeSimulationModule.h>
-#include <Simulation/Textiles/TextileAlgorithm.h>
-#include <Simulation/Core/UpdateablesModule.h>
-#include <Simulation/Collision/Detection/CompositeCollisionDetector.h>
-#include <Simulation/Core/Timing/TimingModule.h>
-namespace IBDS{
+//#include <simulation/MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.h>
+//#include <simulation/Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.h>
+#include <simulation/force/ForceModule.h>
+#include <simulation/dynamics/DynamicBodyModule.h>
+#include <simulation/dynamics/Connection/ConnectorModule.h>
+#include <simulation/integration/composites/CompositeStatefulObject.h>
+#include <simulation/integration/ISystemFunction.h>
+#include <simulation/core/composites/CompositeSimulationObject.h>
+//#include <simulation/Textiles/TextileAlgorithm.h>
+//#include <simulation/Core/UpdateablesModule.h>
+//#include <simulation/Collision/Detection/CompositeCollisionDetector.h>
+#include <simulation/timing/TimingModule.h>
+namespace nspace{
 
 
 
@@ -31,19 +31,17 @@ namespace IBDS{
   public virtual CompositeSimulationObject
 {
 public:
-  ImpulseBasedMultiBodyModule multiBodyDynamics;
+  //ImpulseBasedMultiBodyModule multiBodyDynamics;
   ForceAlgorithm forceModule;
   DynamicBodyModule dynamicBodyModule;
-  CompositeIntegratable integrables;
   ConnectorModule connectorModule;
-  TextileModule textilesModule;
-  UpdatablesModule updatablesModule;
-  CompositeCollisionDetector collisionDetector;
-  ImpulseBasedCollisionHandler collisionHandler;
+  //TextileModule textilesModule;
+  //UpdatablesModule updatablesModule;
+  //CompositeCollisionDetector collisionDetector;
+  //ImpulseBasedCollisionHandler collisionHandler;
   TimingModule timingModule;
   DynamicsAlgorithm();
 
-  IIntegrable & getIntegrable();
 
   bool detectCollisions;
   bool handleCollisions;
@@ -52,5 +50,6 @@ public:
   void evaluate(Real t, Real h);
   void postIntegration(Real t, Real h);
   void preIntegration(Real t, Real h);
+
 };
 }

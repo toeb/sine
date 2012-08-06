@@ -1,8 +1,8 @@
 #pragma once
-#include <Math/Vector3D.h>
-#include <Simulation/Dynamics/RigidBody.h>
-#include <Simulation/Dynamics/Connection/Connector.h>
-namespace IBDS {
+#include <math/definitions.h>
+#include <simulation/dynamics/RigidBody.h>
+#include <simulation/dynamics/connection/Connector.h>
+namespace nspace {
 	/**
 	 * Subclass of Connector. Used when a connection point lies on a rigid body.
 	 */
@@ -46,11 +46,6 @@ namespace IBDS {
 		void applyImpulse(const Vector3D & p);
 
 
-		void evaluate();
-		void setState(const Real * state);
-		void getState(Real * state)const;
-		void getDerivedState(Real * xDot)const;
-		int getStateDimension()const;
 
 };
 }

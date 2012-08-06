@@ -29,6 +29,7 @@ template<class T>
 class Composite : public virtual IComposite<T>{
 private:
   std::vector<T*>  _components;
+ 
 public:
   Composite(){
     
@@ -38,7 +39,7 @@ public:
 
   bool isEmpty()const {return _components.empty();}
 
-  const std::vector<T*> & components()const{return _components;}
+  inline const std::vector<T*> & components()const{return _components;}
   void foreachComponent(std::function<void(T*)> action){
     for_each(_components.begin(), _components.end(), action);
   }

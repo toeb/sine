@@ -1,3 +1,5 @@
+#pragma once
+namespace nspace{
 template<typename T>
 class ScalarOperations{
 public:
@@ -29,3 +31,4 @@ public:
     divide(unitElement, a,b);
   }
 };
+}

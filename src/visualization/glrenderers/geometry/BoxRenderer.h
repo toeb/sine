@@ -9,7 +9,7 @@ namespace nspace{
   
 class BoxRenderer : public IRenderer{
 private:  
-  Texture texture;
+  //Texture texture;
   TextRenderer * _textRenderer;
   const Hexahedron & _box;
   const Vector3D & _p;

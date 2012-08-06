@@ -1,30 +1,30 @@
-#include "ForceAlgorithm.h"
+#include "ForceModule.h"
 
 #include <algorithm>
 
 using namespace std;
-using namespace IBDS;
+using namespace nspace;
 
 ForceAlgorithm::ForceAlgorithm(){
   setName("Forces Algorithm");
 }
 
-bool ForceAlgorithm::addSimulationObject(ISimulationObject *object){
+void ForceAlgorithm::announce(ISimulationObject *object){
   Force * force  = dynamic_cast<Force*>(object);
-  bool added = false;
+
   if(force){
     _forces.push_back(force);
-    added = true;
+
   }
   DynamicBody * body = dynamic_cast<DynamicBody*>(object);
   if(body){
     _forceAccumulators.push_back(body);
-    added = true;
+
   }
-  return added;
+
 }
-bool ForceAlgorithm::removeSimulationObject(ISimulationObject * object){
-  return false;
+void ForceAlgorithm::renounce(ISimulationObject * object){
+ 
 }
 
 void ForceAlgorithm::resetForces(){  

@@ -1,5 +1,5 @@
 #include "DynamicGeometry.h"
-using namespace IBDS;
+using namespace nspace;
 
 
 

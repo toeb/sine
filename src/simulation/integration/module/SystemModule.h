@@ -19,7 +19,8 @@ namespace nspace{
  * \author Tobi
  * \date 13.07.2012
  */
-class SystemModule : public virtual SimulationTask,
+class SystemModule : 
+  public virtual SimulationTask,
   public virtual ISimulationModule{
 private:
   CompositeStatefulObject _integrable;

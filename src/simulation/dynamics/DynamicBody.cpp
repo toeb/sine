@@ -1,5 +1,5 @@
 #include "DynamicBody.h"
-using namespace IBDS;
+using namespace nspace;
 
 
 

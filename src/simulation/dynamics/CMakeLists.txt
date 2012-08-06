@@ -1,39 +1,41 @@
 SET (source
-	./Dynamics/DynamicBodyModule.h
-	./Dynamics/DynamicBodyModule.cpp
-	./Dynamics/Particle.cpp
-	./Dynamics/Particle.h   
-	./Dynamics/RigidBody.h
-	./Dynamics/RigidBody.cpp
-	./Dynamics/DynamicBody.h
-	./Dynamics/DynamicBody.cpp
+	./DynamicBodyModule.h
+	./DynamicBodyModule.cpp
+	./Particle.cpp
+	./Particle.h   
+	./RigidBody.h
+	./RigidBody.cpp
+	./DynamicBody.h
+	./DynamicBody.cpp
 )
 
-source_group("simulation\\dynamics" FILES ${source})
+source_group("src" FILES ${source})
 set(connectionSource
 	
-	./Dynamics/connection/ParticleConnector.h
-	./Dynamics/connection/ParticleConnector.cpp
-	./Dynamics/connection/RigidBodyConnector.h
-	./Dynamics/connection/RigidBodyConnector.cpp
-	./Dynamics/connection/Connector.h
-	./Dynamics/connection/Connector.cpp
-	./Dynamics/connection/ConnectorModule.h
-	./Dynamics/connection/ConnectorModule.cpp
-	./Dynamics/connection/ConnectorFactory.h
-	./Dynamics/connection/ConnectorFactory.cpp
+	./connection/ParticleConnector.h
+	./connection/ParticleConnector.cpp
+	./connection/RigidBodyConnector.h
+	./connection/RigidBodyConnector.cpp
+	./connection/Connector.h
+	./connection/Connector.cpp
+	./connection/ConnectorModule.h
+	./connection/ConnectorModule.cpp
+	./connection/ConnectorFactory.h
+	./connection/ConnectorFactory.cpp
 
 )
-source_group("simulation\\dynamics\\connection" FILES ${connectionSource})
-set (bodyprimitives_SRC
-	./Dynamics/primitives/DynamicBox.h
-	./Dynamics/primitives/DynamicBox.cpp
-	./Dynamics/primitives/DynamicSphere.h
-	./Dynamics/primitives/DynamicSphere.cpp
-	./Dynamics/primitives/DynamicGeometry.h
-	./Dynamics/primitives/DynamicGeometry.cpp
+source_group("src\\connection" FILES ${connectionSource})
+set (bodyprimitivesSource
+	./primitives/DynamicBox.h
+	./primitives/DynamicBox.cpp
+	./primitives/DynamicSphere.h
+	./primitives/DynamicSphere.cpp
+	./primitives/DynamicGeometry.h
+	./primitives/DynamicGeometry.cpp
 )
-source_group("simulation\\dynamics\\bodyprimitives" FILES ${bodyprimitives_SRC})
+source_group("src\\bodyprimitives" FILES ${bodyprimitivesSource})
 
-set(simulationSource ${simulationSource} ${source} ${bodyprimitives_SRC} ${connectionSource})
+add_library(dynamics ${source} ${connectionSource} ${bodyprimitivesSource})
+project_folder("simulation/modules" dynamics)
+target_link_libraries(dynamics common kinematics core)
 

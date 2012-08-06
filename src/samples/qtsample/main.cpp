@@ -3,7 +3,7 @@
 #include <visualization/glrenderers/general/LightRenderer.h>
 #include <visualization/glrenderers/geometry/PolygonRenderer.h>
 #include <simulation/geometry/Primitives/Hexahedron.h>
-#include <simulation/kinematics/KinematicBody.h>
+#include <simulation/kinematics/KinematicCoordinates.h>
 #include <visualization/glrenderers/geometry/BoxRenderer.h>
 #include <gl/glut.h>
 #include <visualization/core/Color.h>
@@ -13,6 +13,15 @@
 #include <simulation/history/HistoryModule.h>
 #include <common/patterns/Singleton.h>
 #include <math/MatrixOperations.h>
+#include <simulation/force/ForceField.h>
+#include <simulation/dynamics/Particle.h>
+#include <visualization/glrenderers/geometry/PointRenderer.h>
+#include <simulation/dynamics/DynamicBodyModule.h>
+#include <simulation/force/ForceModule.h>
+#include <simulation/utility/DynamicsAlgorithm.h>
+#include <simulation/force/Gravity.h>
+#include <simulation/dynamics/RigidBody.h>
+#include <simulation/dynamics/primitives/DynamicBox.h>
 using namespace nspace;
 using namespace std;
 class GlutObject : public virtual IRenderer{
@@ -36,58 +45,106 @@ public:
 
 
 int main(int argc, char** argv){
-  StaticMatrix<Real,2,4> a;
-  StaticMatrix<Real,4,2> b;
-  StaticMatrix<Real,2,2> c;
-  //setMatrixFunction(a,[](Real &  val, int i, int j){val =  (i+1)*(j+1);});
-  //setMatrixFunction(b,[](Real & val, int i, int j){val = (i+1)*(j+1);});
-  setMatrixConstant(a, 2);
-  setMatrixConstant(b,1);
-
-
-  MatrixOperations<Real>::MatrixProduct<StaticMatrix<Real,2,2>, StaticMatrix<Real,2,4>,StaticMatrix<Real,4,2> >::multiply(c,a,b);
   
-  a.toStream(cout);
-  cout << endl;
-  b.toStream(cout);
-  cout << endl;
-  c.toStream(cout);
-  cout << endl;
 
   //return 0;
   DefaultSimulationSetup setup;
-  
-  cout << DefaultSimulationSetup::Type<<endl;
-  cout << Simulation::Type << endl;
-  cout << Plane::Type<<endl;
-  cout << GlutObject::Type<<endl;
-  cout << GridRenderer::Type<<endl;
-  cout << IRenderer::Type<<endl;
+
   QtSimulationRunner runner;
   Simulation simulation;
-  int n(40), m(40);
+  {
+
+  int n(0), m(0), l(0);
   for(int j=0; j < n; j++){
     for(int i=0; i< m; i++){
-      Hexahedron * box = new Hexahedron(2,2,2);
-      KinematicBody * body=new KinematicBody();
-      body->position()(0) = i*3-m/2*3;
-      body->position()(1) = j* 3-n/2*3;
-      body->angularVelocity() = Vector3D(0.3,0,0);
-      box->coordinates().mirror(*body);
-      simulation << body;
-      simulation << box;
-      simulation << new BoxRenderer(*box);
+      for(int k=0; k < l; k++){
+        Hexahedron * box = new Hexahedron(2,2,2);
+        KinematicBody * body=new KinematicBody();
+        body->position()(0) = i*3-m/2*3;
+        body->position()(1) = j* 3-n/2*3;
+        body->position()(2) = k* 3-n/2*3;
+        body->angularVelocity() = Vector3D(0.3,0,0);
+        box->coordinates().mirror(*body);
+        simulation << body;
+        simulation << box;
+        simulation << new BoxRenderer(*box);
+      }
     }
   }
-  simulation << new BillboardRenderer();
-  simulation << new HistoryModule (setup.defaultSystem.statefulObject(), setup.simulationTimeProvider);
+  }
+  DynamicsAlgorithm da;
+  // simulation << new Gravity(1);
+  simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
+    torque = -cog;
+    force =-cog;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
+  });
+  simulation << da;
+  {
+   // simulation << new Gravity(1);
+    simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
+      //torque = -cog*0.001;
+      force =-cog*0.001;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
+    });
+    int n(0), m(0), l(0);
+    for(int j=0; j < n; j++){
+      for(int i=0; i< m; i++){
+        for(int k=0; k < l; k++){
+          Particle * p = new Particle();
+          p->setMass(1);
+          p->velocity()(0) = (rand()%1000)/1000.0*1;
+          p->velocity()(1) = (rand()%1000)/1000.0*1;
+          p->velocity()(2) = (rand()%1000)/1000.0*1;
+          p->position()(0) = i*3-m/2*3;
+          p->position()(1) = j* 3-n/2*3;
+          p->position()(2) = k* 3-n/2*3;
+          
+          PointRenderer * pr = new PointRenderer(p->position());
+
+          simulation<<p;
+          simulation<<pr;
+        }
+      }
+    }
+  }
+  {
+
+
+    int n(10), m(10), l(10);
+    for(int j=0; j < n; j++){
+      for(int i=0; i< m; i++){
+        for(int k=0; k < l; k++){
+          DynamicBox * p = new DynamicBox();
+          
+          p->kinematics().velocity()(0) = (rand()%1000)/1000.0*1;
+          p->kinematics().velocity()(1) = (rand()%1000)/1000.0*1;
+          p->kinematics().velocity()(2) = (rand()%1000)/1000.0*1;
+          p->kinematics().angularVelocity()(0) = (rand()%1000)/1000.0*1;
+          p->kinematics().angularVelocity()(1) = (rand()%1000)/1000.0*1;
+          p->kinematics().angularVelocity()(2) = (rand()%1000)/1000.0*1;
+          p->kinematics().position()(0) = i*3-m/2*3;
+          p->kinematics().position()(1) = j* 3-n/2*3;
+          p->kinematics().position()(2) = k* 3-n/2*3;
+
+          // PointRenderer * pr = new PointRenderer(p->position());
+          BoxRenderer * br = new BoxRenderer(p->geometry());
+          simulation<<p;
+          simulation<<br;
+        }
+      }
+    }
+  }
+  //simulation << new BillboardRenderer();
+ simulation << new HistoryModule (setup.defaultSystem.statefulObject(), setup.simulationTimeProvider);
 
   simulation << new GlutObject(argc,argv);
   
-  simulation << setup;
-  simulation << new GridRenderer(0);
+ simulation << setup;
+ simulation << new GridRenderer(0);
   simulation << new LightRenderer();
   simulation<<runner;
+
+  
+  simulation.initialize();
   runner.run();
   simulation.cleanup();
 }

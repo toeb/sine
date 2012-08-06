@@ -17,7 +17,7 @@ void CompositeSimulationObject::foreachSuccessor(std::function<void (ISimulation
     }
   });
 }
-
+/*
 
 bool CompositeSimulationObject::isEmpty()const{
   return _components.empty();
@@ -39,3 +39,4 @@ void CompositeSimulationObject::removeComponent(ISimulationObject* component){
   std::remove(_components.begin(), _components.end(), component);
 }
 
+*/

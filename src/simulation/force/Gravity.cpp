@@ -2,7 +2,7 @@
 #include <algorithm>
 
 using namespace std;
-using namespace IBDS;
+using namespace nspace;
 
 Gravity::Gravity(void) {
 	setGravity(Vector3D(0,-9.81,0));

@@ -44,17 +44,17 @@ State::State( StateMatrix & data ) :_data(data)
 
 Real & State::value( uint index, uint derivative )
 {
-  return _data(index,derivative);
+  return _data(derivative,index);
 }
 
 Real State::value( uint index, uint derivative ) const
 {
-  return _data(index,derivative);
+  return _data(derivative,index);
 }
 
 void State::resize( uint dimension, uint derivatives )
 {
-  _data.resize(dimension,derivatives);
+  _data.resize(derivatives,dimension);
 	_data.setZero();
 }
 namespace nspace{

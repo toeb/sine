@@ -1,9 +1,9 @@
 #pragma once
-#include <Simulation/Core/ISimulationModule.h>
-#include <Simulation/Force/Force.h>
-#include <Simulation/Core/Timing/Timeable.h>
+#include <simulation/core/ISimulationModule.h>
+#include <simulation/force/Force.h>
+#include <simulation/timing/Timeable.h>
 
-namespace IBDS{
+namespace nspace{
 
 class ForceAlgorithm: public ISimulationModule,public virtual Timeable{
   std::vector<Force *> _forces;
@@ -15,7 +15,7 @@ public:
 
   ForceAlgorithm();
 
-  bool addSimulationObject(ISimulationObject * object);
-  bool removeSimulationObject(ISimulationObject * object);
+  void announce(ISimulationObject * object);
+  void renounce(ISimulationObject * object);
 };
 }

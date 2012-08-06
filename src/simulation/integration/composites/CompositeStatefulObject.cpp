@@ -42,19 +42,32 @@ void CompositeStatefulObject::importState(const IState &  x){
 }
 unsigned int CompositeStatefulObject::stateDimension()const{
   unsigned int result =0U;
+  int sz = _components.size();
+  for(int i=0; i < sz; i++){
+    result += _components[i]->stateDimension();
+  }/*
   foreachComponent( [&result](IStatefulObject * integrable){
     result += integrable->stateDimension();
-  });
+  });*/
   return result;
 }
 
 unsigned int CompositeStatefulObject::availableDerivatives()const{
+  unsigned int result =0U;
+  int sz = _components.size();
+  for(int i=0; i < sz; i++){
+    unsigned int currentDerivatives =_components[i]->availableDerivatives();
+    if(result < currentDerivatives){
+      result = currentDerivatives;
+    }
+  }
+  /*
   unsigned int result = 0U;
   foreachComponent( [&result](IStatefulObject * integrable){
     unsigned int currentDerivatives =integrable->availableDerivatives();
     if(result < currentDerivatives){
       result = currentDerivatives;
     }
-  });
+  });*/
   return result;
 }

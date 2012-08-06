@@ -20,7 +20,7 @@ void Image::load(uint width, uint height, const void * dataPtr){
   loadData(dataPtr);
 }
 
-Image::Image():_data(0),_width(0),_height(0){}
+Image::Image():_data(0),_width(0),_height(0){resize(0,0);}
 Image::Image(uint width, uint height):_data(0),_width(0),_height(0){resize(width,height);}
 Image::Image(uint width, uint height,Pixel * data):_data(0),_width(0),_height(0){load(width,height,data);}
 

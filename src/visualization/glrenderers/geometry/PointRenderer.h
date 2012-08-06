@@ -2,7 +2,7 @@
 #include <visualization/core/IRenderer.h>
 #include <math/definitions.h>
 namespace nspace{
-class PointRenderer :public IRenderer{
+class PointRenderer :public virtual IRenderer{
 private:
   const Vector3D & _pointCoordinates;
 public:

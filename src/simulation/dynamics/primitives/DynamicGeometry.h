@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Simulation/Dynamics/RigidBody.h>
-#include <Simulation/Core/CompositeSimulationObject.h>
-namespace IBDS{
+#include <simulation/dynamics/RigidBody.h>
+#include <simulation/core/composites/CompositeSimulationObject.h>
+namespace nspace{
 template<class T>
 class DynamicGeometry :public CompositeSimulationObject{
 private:
@@ -20,8 +20,8 @@ public:
     geom.coordinates().position << kinematics().position;
     geom.coordinates().orientation<< kinematics().orientation;
 
-    addChild(&_geometry);
-    addChild(&_body);
+    addComponent(&_geometry);
+    addComponent(&_body);
   }
   
   inline RigidBody & body(){return _body;}

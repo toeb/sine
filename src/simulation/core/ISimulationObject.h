@@ -37,6 +37,7 @@ public:
   ISimulationObject(const std::string & name);
 
   inline void setParent(ISimulationModule * parent){_parent=parent;}
+  inline virtual void accepted(){};
   inline ISimulationModule * parent(){return _parent;}
   inline void setSimulation(Simulation * simulation){_simulation = simulation;}
   inline Simulation * simulation(){return _simulation;}

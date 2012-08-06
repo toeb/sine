@@ -25,6 +25,8 @@ set(typesSource
 	./types/Vector3D.h
 	./types/VectorND.cpp
 	./types/VectorND.h
+	./types/StaticMatrix.h
+	./types/DynamicMatrix.h
 )
 set(source
 	./definitions.h
