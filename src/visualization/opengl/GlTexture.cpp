@@ -30,4 +30,4 @@ bool Texture::initializeObject(){
   return true;
 }
 
-uint Texture::_nextId=0;
+uint Texture::_nextId=13;

@@ -21,25 +21,35 @@
  * Jan Bender - Jan.Bender@impulse-based.de
  */
 
-#ifndef __MATRIX_H__
-#define __MATRIX_H__
+#pragma once
+#include <common/Config.h>
 
-#include "Common/Config.h"
+#include <iostream>
+
 
 namespace nspace
 {
+  template<typename T>
 	class Matrix
 	{
 	public:
+    virtual void toStream(std::ostream & s){
+      for(int i=0; i < rows(); i++){
+        for(int j=0; j < cols(); j++){
+          s << (*this)(i,j) << ", ";
+        }
+        s << std::endl;
+
+      }
+    
+    }
 		virtual int rows () const = 0;
 		virtual int cols () const = 0;
-    virtual Real& operator () (int i, int j) = 0;             // Zugriff per Index
-    virtual const Real& operator () (int i, int j) const = 0;
+    virtual T& operator () (int i, int j) = 0;             // Zugriff per Index
+    virtual const T& operator () (int i, int j) const = 0;
     virtual inline int size(){
       return rows()*cols();
     }
+
   };
 }
-
-#endif
-

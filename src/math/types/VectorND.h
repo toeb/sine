@@ -22,13 +22,22 @@
  */
 #pragma once
 
-#include "Common/Config.h"
-#include "Vector.h"
+#include <common/Config.h>
+#include <math/types/Vector.h>
 #include <iostream>
 #include <queue>
 #include <map>
 namespace nspace
 {
+
+  template<typename T, uint dim>
+  class StaticVector : public Vector<T>{
+  private:
+    T _data[dim];
+  public:
+    
+  };
+
 	class MatrixNxM;
 
 	/** VectorND ist eine Klasse für Vektorberechnungen, wie z.B. Addition, Multiplikation,...
@@ -36,7 +45,7 @@ namespace nspace
 	  \author Jan Bender
 	  */
   
-	class VectorND : public Vector
+	class VectorND : public Vector<Real>
 	{
   private:
     

@@ -30,15 +30,16 @@ namespace nspace
 	/** Vector ist die Oberklasse aller Vektorklassen
 	  \author Jan Bender
 	  */
-	class Vector : public Matrix
+  template<typename T>
+	class Vector : public Matrix<T >
 	{
 	public:    
-    virtual Real & operator()(int i)=0;
-    virtual const Real & operator()(int i)const=0;
+    virtual T & operator()(int i)=0;
+    virtual const T & operator()(int i)const=0;
     virtual int size()const=0;
 
-		virtual Real length() const = 0;			    // Länge
-		virtual Real length2() const = 0;			    // Quadratische Länge
+		virtual T length() const = 0;			    // Länge
+		virtual T length2() const = 0;			    // Quadratische Länge
 		virtual void normalize() = 0;				// Normierung 
 
 	};

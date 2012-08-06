@@ -33,7 +33,7 @@ namespace nspace
 	/** Matrix3x3 ist eine Klasse für Berechnungen mit einer 3x3 Matrix, wie z.B. Addition, Multiplikation,...
 	  \author Jan Bender
 	  */
-	class Matrix3x3 : public Matrix
+	class Matrix3x3 : public Matrix<Real>
 	{
 	public:
 		/** Zeilenvektoren der 3x3 Matrix */

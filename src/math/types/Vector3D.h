@@ -38,7 +38,8 @@ namespace nspace
 	/** Vector3D ist eine Klasse für Vektorberechnungen, wie z.B. Addition, Kreuzprodukt,...
 	  \author Jan Bender
 	  */
-	class Vector3D : public Vector
+  
+	class Vector3D : public Vector<Real>
 	{
 	public:
 		/** Komponenten des Vektors */

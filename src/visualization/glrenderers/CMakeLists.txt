@@ -9,6 +9,10 @@ set(generalSource
  ./general/OffsetRenderer.cpp
  ./general/LightRenderer.h
  ./general/LightRenderer.cpp
+ ./general/DefaultLightSetup.h
+ ./general/DefaultLightSetup.cpp
+ ./general/CameraRenderer.h
+ ./general/CameraRenderer.cpp
  ./general/GridRenderer.h
  ./general/GridRenderer.cpp
  ./general/CoordinateSystemRenderer.h

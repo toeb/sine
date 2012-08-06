@@ -38,7 +38,7 @@ namespace nspace
 	/** Matrix2x2 ist eine Klasse für Berechnungen mit einer 2x2 Matrix, wie z.B. Addition, Multiplikation,...
 	  \author Jan Bender
 	  */
-	class Matrix2x2 : public Matrix
+	class Matrix2x2 : public Matrix<Real>
 	{
 	public:
 		/** Zeilenvektoren der 2x2 Matrix */

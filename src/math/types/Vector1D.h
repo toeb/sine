@@ -32,7 +32,7 @@ namespace nspace
 	/** Vector1D ist eine Klasse für Vektorberechnungen, wie z.B. Addition, Kreuzprodukt,...
 	  \author Jan Bender
 	  */
-	class Vector1D : public Vector
+	class Vector1D : public Vector<Real>
 	{
 	public:
 		/** Komponenten des Vektors */

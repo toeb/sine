@@ -1,6 +1,8 @@
+#pragma once
 #include <common/Config.h>
 
 namespace nspace{
+
   union Pixel{
     struct{
       byte r;
@@ -9,5 +11,15 @@ namespace nspace{
       byte a;
     }color;
     byte value[4];
+    byte toGrayscale()const{
+      return (byte) (0.2126 * color.r + 0.7152 * color.r + 0.0722 * color.b);
+    }
+    void fromGrayscale(byte grayscale){
+      color.r = grayscale;
+      color.g = grayscale;
+      color.b = grayscale;
+      color.a = 255;
+    }
   };
+
 }

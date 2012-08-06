@@ -33,7 +33,7 @@ namespace nspace
 	/** Matrix4x4 ist eine Klasse für Berechnungen mit einer 4x4 Matrix, wie z.B. Addition, Multiplikation,...
 	  \author Jan Bender
 	  */
-	class Matrix4x4 : public Matrix
+	class Matrix4x4 : public Matrix<Real>
 	{
 	public:
 		/** Zeilenvektoren der 4x4 Matrix */

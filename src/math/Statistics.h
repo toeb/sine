@@ -2,30 +2,7 @@
 #include <math/definitions.h>
 
 namespace nspace{
-  template<typename ScalarType=Real, ScalarType unitElement=1.0, ScalarType zeroElement=0.0>
-  class ScalarOperations{
-    static inline void add(const ScalarType a, const ScalarType b, ScalarType & sum){
-      sum = a+b;
-    }
-    static inline void subtract(const ScalarType a, const ScalarType b, ScalarType & difference){
-      difference = a-b;
-    }
-    static inline void negative(const ScalarType a, ScalarType & b){
-      b = -a;
-    }
-    static inline void multiply(const ScalarType a, const ScalarType b; ScalarType & c){
-      c = a*b;
-    }
-    static inline void divide(const ScalarType a, const ScalarType b, ScalarType & c){
-      c = a / b;
-    }
-    static inline void sqrt(const ScalarType a, ScalarType & b){
-      b = std::sqrt(a);
-    }
-    static inline void reciprocal(const ScalarType a, ScalarType & b){
-      divide(unitElement, a,b);
-    }
-  };
+  
 template<typename ScalarType = Real, typename VectorType = VectorND, typename MatrixType = MatrixNxM>
 class VectorOperations{
 public:

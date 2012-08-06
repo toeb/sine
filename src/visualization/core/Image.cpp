@@ -32,7 +32,7 @@ bool PngImage::load(const std::string & filename){
   unsigned int width;
   unsigned int height;
 
-  lodepng::load_file(imageBuffer,"resources/images/testimage2.png");
+  lodepng::load_file(imageBuffer,filename);
   unsigned int error = lodepng::decode(image,width,height,state,imageBuffer);
   if(error)return false;
   Image::load(width,height,image.data());

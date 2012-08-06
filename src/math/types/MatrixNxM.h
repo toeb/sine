@@ -29,19 +29,107 @@
 
 namespace nspace
 {
+  template<typename T, int RowCount, int ColumnCount>
+  class StaticMatrix : public Matrix<T>{
+  protected:
+    T _data[RowCount*ColumnCount];
+    inline Real & value(int i, int j){
+      return _data[index(i,j)];
+    }
+    inline const Real & value(int i, int j)const{
+      return _data[index(i,j)];
+    }
+  public:
+    //rule of three
+    StaticMatrix(const StaticMatrix<T,RowCount,ColumnCount> & orig){
+      *this=orig;
+    }
+    StaticMatrix<T,RowCount,ColumnCount> & operator=(const StaticMatrix<T,RowCount,ColumnCount> & orig ){
+      memcpy(data(),orig.data(),dataByteSize());
+        return *this;
+    }
+    StaticMatrix(){}
+    ~StaticMatrix(){}
+    inline size_t dataByteSize()const{
+      return RowCount*ColumnCount*sizeof(T);
+    }
+    inline int index(int i, int j)const{return i* ColumnCount+j;}
+    inline T & operator()(int i, int j){return _data[index(i,j)]; }
+    inline const T & operator()(int i, int j)const{return _data[index(i,j)]; }
+    inline int rows()const{return RowCount;}
+    inline int cols()const{return ColumnCount;}
+    T * data(){return &_data[0];}
+    const T * data()const{return &_data[0];}    
+  };
+
+
+  template<typename T>
+  class DynamicMatrix  : public Matrix<T>{
+  protected:
+    T * _data;
+    int _rows;
+    int _cols;
+    inline Real & value(int i, int j){
+      return _data[index(i,j)];
+    }
+    inline const Real & value(int i, int j)const{
+      return _data[index(i,j)];
+    }
+  public:
+
+    DynamicMatrix(const DynamicMatrix<T> & orig):_data(0),_rows(0),_cols(0){
+      resize(orig.rows(),orig.cols(),false);
+      memcpy(data(),orig.data(),dataByteSize());
+    }
+
+    ~DynamicMatrix(){
+      ArrayPool<T>::freeArray(&_data,size());
+      _rows = 0;
+      _cols = 0;
+    }
+    DynamicMatrix():_rows(0),_cols(0),_data(0){resize(0,0);};
+    inline size_t dataByteSize()const{
+      return _rows*_cols*sizeof(T);
+    }
+    DynamicMatrix<T> & operator=(const DynamicMatrix<T> & orig ){
+      memcpy(data(),orig.data(),dataByteSize());
+      return *this;
+    }
+    void resize(int n, int m, bool setToZero=true){
+      if(_rows==n && _cols==m)return;
+
+      ArrayPool<T>::freeArray(&_data,size());
+      _rows = n;
+      _cols=m;
+      ArrayPool<T>::createArray(&_data,size());
+
+      _rows = n;
+      _cols =m;
+      if(setToZero) memset(_data,0,dataByteSize());
+    }
+  inline int index(int i, int j)const{return i* _cols+j;}
+  inline T & operator()(int i, int j){return _data[i* _cols+j]; }
+  inline const T & operator()(int i, int j)const{return _data[i* _cols+j]; }
+
+  inline int rows()const{return _rows;}
+  inline int cols()const{return _cols;}
+  T * data(){return _data;}
+  const T * data()const{return _data;}
+  };
+  
 	/** MatrixNxM ist eine Klasse für Berechnungen mit einer nxm Matrix, wie z.B. Addition, Multiplikation,...
 	  \author Jan Bender
 	  */
-	class MatrixNxM : public Matrix
+	class MatrixNxM : public DynamicMatrix<Real>
 	{
   private:
-    Real * _data;
-    /** Zeilenvektoren der 2x2 Matrix */
-
-    /* Anzahl Zeilen */
-    int _rows;
-    /* Anzahl Spalten */
-    int _cols;
+//     Real * _data;
+//     /** Zeilenvektoren der 2x2 Matrix */
+// 
+//     /* Anzahl Zeilen */
+//     int _rows;
+//     /* Anzahl Spalten */
+//     int _cols;
 
 	public:
     inline int size()const{return _rows*_cols;}
@@ -53,18 +141,7 @@ namespace nspace
         }
       }*/
     }
-    void resize(int n, int m, bool setToZero=true){
-      if(_rows==n && _cols==m)return;
-
-      ArrayPool<Real>::freeArray(&_data,size());
-      _rows = n;
-      _cols=m;
-      ArrayPool<Real>::createArray(&_data,size());
-   
-      _rows = n;
-      _cols =m;
-      if(setToZero)setZero();
-    }
+    
 
     //returns the frobenius norm
     Real norm(){
@@ -78,10 +155,10 @@ namespace nspace
       return sqrt(sum);
     }
 	public:
-		MatrixNxM();    
+    MatrixNxM(){}    
     MatrixNxM(const int rows, const int cols);
-		MatrixNxM (const MatrixNxM& copy);
-		~MatrixNxM();
+// 		MatrixNxM (const MatrixNxM& copy);
+// 		~MatrixNxM();
 
 		friend MatrixNxM operator - (const MatrixNxM& a);						// -m1
 		friend MatrixNxM operator + (const MatrixNxM& a, const MatrixNxM& b);	// m1 + m2
@@ -93,12 +170,7 @@ namespace nspace
 		MatrixNxM& operator = (const MatrixNxM& m);
 
 		friend VectorND operator * (const VectorND& v, const MatrixNxM& m);
-    inline Real & value(int i, int j){
-      return _data[i*_cols+j];
-    }
-    inline const Real & value(int i, int j)const{
-      return _data[i*_cols+j];
-    }
+    
     
 		VectorND& operator [] ( int i);							// Zugriff per Index
 		const VectorND& operator [] ( int i) const;
@@ -106,12 +178,6 @@ namespace nspace
 
 		friend std::ostream& operator << (std::ostream& s, const MatrixNxM& m);	// Streamausgabe
 
-
-    //matrix members
-    inline int rows()const{return _rows;}
-    inline int cols()const{return _cols;}
-    inline Real& operator () (int i, int j){return value(i,j);}				// Zugriff per Index
-    inline const Real& operator () (int i, int j) const{return value(i,j);}
 
 
 		MatrixNxM transpose() const;									

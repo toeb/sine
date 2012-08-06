@@ -43,6 +43,10 @@ set(source
 	./AverageOverTime.cpp
 	./Statistics.h
 	./Statistics.cpp
+	./MatrixOperations.h
+	./VectorOperations.h
+	./ScalarOperations.h
+	
 )
 source_group("src" FILES ${source})
 source_group("src\\types" FILES ${typesSource})

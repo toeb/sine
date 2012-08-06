@@ -10,6 +10,9 @@
 #include <math/types/VectorND.h>
 #include <math/types/Matrix4x3.h>
 #include <math/types/Vector2D.h>
+//#include <math/types/Vector4D.h>
+//#include <math/types/Matrix4x3.h>
+//#include <math/types/Matrix3x4.h>
 #else
 
 typedef int MatrixNxM;

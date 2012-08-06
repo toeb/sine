@@ -17,6 +17,8 @@ set(source
  ./ViewportController.cpp 
  ./SceneObject.h
  ./SceneObject.cpp 
+ ./Camera.h
+ ./Camera.cpp 
  
 )
 source_group("src" FILES ${source})

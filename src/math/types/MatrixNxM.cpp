@@ -27,39 +27,39 @@
 #include "math.h"
 
 using namespace nspace;
-MatrixNxM::MatrixNxM(){
-  resize(0,0);
-
-}
+// MatrixNxM::MatrixNxM(){
+//   resize(0,0);
+// 
+// }
 /** Standard-Konstruktor: erstellt die Einheitsmatrix
 */
-MatrixNxM::MatrixNxM(const int r, const int c):_data(0),_rows(0),_cols(0)
+MatrixNxM::MatrixNxM(const int r, const int c)
 {
   resize(r,c);
 }
-
-/** Copy-Konstruktor
-  */
-MatrixNxM::MatrixNxM (const MatrixNxM& copy):_data(0),_rows(0),_cols(0)
-{
-  resize(copy._rows, copy._cols);
-  memcpy(_data,copy._data,size()*sizeof(Real));
-	/*for (int i=0; i < _rows; i++)
-	{
-		for (int j=0; j < _cols; j++){
-			value(i,j)=copy(i,j);
-    }
-	}*/
-}
+// 
+// /** Copy-Konstruktor
+//   */
+// MatrixNxM::MatrixNxM (const MatrixNxM& copy):_data(0),_rows(0),_cols(0)
+// {
+//   resize(copy._rows, copy._cols);
+//   memcpy(_data,copy._data,size()*sizeof(Real));
+// 	/*for (int i=0; i < _rows; i++)
+// 	{
+// 		for (int j=0; j < _cols; j++){
+// 			value(i,j)=copy(i,j);
+//     }
+// 	}*/
+// }
 
 /** Destruktor
 */
-MatrixNxM::~MatrixNxM ()
-{ 
- ArrayPool<Real>::freeArray(&_data,size());
-  _rows = 0;
-	_cols = 0;
-}
+// MatrixNxM::~MatrixNxM ()
+// { 
+//  ArrayPool<Real>::freeArray(&_data,size());
+//   _rows = 0;
+// 	_cols = 0;
+// }
 
 
 /** Negation: -m\n

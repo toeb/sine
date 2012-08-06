@@ -34,7 +34,7 @@ namespace nspace
 	/** Vector2D ist eine Klasse für Vektorberechnungen, wie z.B. Addition, Kreuzprodukt,...
 	  \author Jan Bender
 	  */
-	class Vector2D : public Vector
+	class Vector2D : public Vector<Real>
 	{
 	public:
 		/** Komponenten des Vektors */

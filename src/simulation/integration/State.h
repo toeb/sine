@@ -34,7 +34,11 @@ namespace nspace{
       
      
     }
-
+    virtual void copyRange(int derivative, int start, int end, Real * valuePtr){
+      for(int i= start; i < end; i++){
+        value(i,derivative)=valuePtr[i];
+      }
+    }
     friend std::ostream & operator<<(std::ostream & out, const IState & state);
   protected:
     virtual Real & value(uint index, uint derivative)=0;
