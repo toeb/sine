@@ -23,8 +23,7 @@
 #pragma once
 
 #include <common/Config.h>
-#include <math/types/Vector3D.h>
-#include <math/types/Vector2D.h>
+#include <math/definitions.h>
 #include <math/MathDefs.h>
 namespace nspace
 {

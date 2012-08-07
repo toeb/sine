@@ -12,7 +12,7 @@
 #include <simulation/geometry/Plane.h>
 #include <simulation/history/HistoryModule.h>
 #include <common/patterns/Singleton.h>
-#include <math/MatrixOperations.h>
+//#include <math/MatrixOperations.h>
 #include <simulation/force/ForceField.h>
 #include <simulation/dynamics/Particle.h>
 #include <visualization/glrenderers/geometry/PointRenderer.h>
@@ -22,6 +22,9 @@
 #include <simulation/force/Gravity.h>
 #include <simulation/dynamics/RigidBody.h>
 #include <simulation/dynamics/primitives/DynamicBox.h>
+#include <math/matrix2/StaticMatrix.h>
+#include <math/MatrixOperations.h>
+#include <math/matrix2/StaticMatrixOperators.h>
 using namespace nspace;
 using namespace std;
 class GlutObject : public virtual IRenderer{
@@ -43,11 +46,87 @@ public:
 };
 
 
-
-int main(int argc, char** argv){
+template<typename T, int n1=10000000>
+class MatrixPerformanceTests{
+public:
+  void runSuite(){
+    std::cout << "StackInit " << stackInitializePerformance() << " s" <<endl;
+    std::cout << "HeapInit " << stackInitializePerformance() << " s" <<endl;
+    std::cout << "HeapInitDelete " << stackInitializePerformance() << " s" <<endl;
+    std::cout << "MatrixMult " << stackInitializePerformance() << " s" <<endl;
+  }
+Time stackInitializePerformance(){
+  Time start= systemTime();
+  for(int i=0; i < n1; i++)
+    T t;  
+  Time end=systemTime();
+  return end-start;
+};
+Time heapInitializePerformance(){
+  Time start= systemTime();
+  for(int i=0; i < n1; i++)
+    new T;  
+  Time end=systemTime();
+  return end-start;
+};
+Time heapDeletePerformance(){
   
+  Time start= systemTime();
+  for(int i=0; i < n1; i++)
+  {delete new T;}  
 
-  //return 0;
+  Time end=systemTime();
+  return end-start;
+};
+Time matrixMultTest(){
+  T a;
+  a.setZero();
+  T b;
+  b.setZero();
+  Time start= systemTime();
+  for(int i=0; i < n1; i++)
+  {a*b;}  
+
+  Time end=systemTime();
+  return end-start;
+};
+};
+using namespace matrix2;
+int main(int argc, char** argv){
+ /* MatrixPerformanceTests<Matrix3x3> suiteA;
+  suiteA.runSuite();
+  MatrixPerformanceTests<StaticMatrix<Real,3,3> >suiteB;
+  suiteB.runSuite();
+  return 0;
+  matrix2::StaticMatrix<Real,3,3> mat33;
+  matrix2::StaticMatrix<Real,3,4> mat34;
+  mat34.setZero();
+  mat33.setZero();
+  cout << mat34;
+  cout <<mat33;
+
+  MatrixOperations<Real>::setConstant(mat34,1);
+  cout << mat34;
+  MatrixOperations<Real>::setFunction(mat33,[](Real & a,int i, int k){a=i==k;});
+  cout <<mat33;
+
+  MatrixOperations<Real>::addition(mat33,mat33,mat33);
+  cout <<mat33;
+
+  mat33 = mat33+mat33;
+  cout <<mat33;
+
+  mat33 = mat33*mat33;
+  cout <<mat33;
+
+  auto a =mat33*mat34;
+  cout <<a;
+
+  auto d = a * 0.3;
+  cout <<d;
+  return 0;
+
+  //return 0;*/
   DefaultSimulationSetup setup;
 
   QtSimulationRunner runner;
@@ -75,16 +154,12 @@ int main(int argc, char** argv){
   DynamicsAlgorithm da;
   // simulation << new Gravity(1);
   simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
-    torque = -cog;
-    force =-cog;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
+    Vector3D rando ((rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5);
+    force = rando -0.001*cog;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
   });
   simulation << da;
   {
-   // simulation << new Gravity(1);
-    simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
-      //torque = -cog*0.001;
-      force =-cog*0.001;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
-    });
+
     int n(0), m(0), l(0);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
@@ -109,7 +184,7 @@ int main(int argc, char** argv){
   {
 
 
-    int n(10), m(10), l(10);
+    int n(25), m(25), l(25);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){

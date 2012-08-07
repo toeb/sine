@@ -34,7 +34,7 @@ namespace nspace{
     template<typename MatrixType>
     static inline void addition(MatrixType & sum, const MatrixType & a, const MatrixType & b){
       for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols; j++){
+        for(int j=0; j < a.cols(); j++){
           sum(i,j)=a(i,j)+b(i,j);
         }
       }
@@ -42,42 +42,105 @@ namespace nspace{
     template<typename MatrixType>
     static inline void subtraction(MatrixType & difference, const MatrixType & a, const MatrixType & b){
       for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols; j++){
+        for(int j=0; j < a.cols(); j++){
           sum(i,j)=a(i,j)+b(i,j);
         }
       }
     }
     template<typename MatrixType>
-    static inline void multiply(MatrixType & product, const MatrixType & a, const T & d){
+    static inline void multiplyScalar(MatrixType & product, const MatrixType & a, const T & d){
       for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols; j++){
+        for(int j=0; j < a.cols(); j++){
           product(i,j)=a(i,j)*d;
         }
       }
     }
-    template<typename ProductType, typename FactorAType, typename FactorBType>
-    class MatrixProduct{
+   
+    
+  };
+   template<typename T, typename ProductType, typename FactorAType, typename FactorBType>
+    class MatrixMultiplication{
     public:
-      static inline void multiply(ProductType & product, const FactorAType & a, const FactorBType & b){
-        T sum;
-        T scalarProduct;
-        const int RowCount = product.rows();
-        const int ColumnCount = product.cols();
-        const int InnerDimension = a.cols();
-        for(int i=0; i < RowCount; i++){
-          for(int j=0; j < ColumnCount; j++){
-            ScalarOperations<T>::Zero(sum);
-            for(int k=0; k < InnerDimension;k++){
-              ScalarOperations<T>::multiply(scalarProduct,a(i,k),b(k,j));
-              ScalarOperations<T>::add(sum,sum,scalarProduct);
-            }
-            product(i,j)=sum;
+    static inline void multiply(ProductType & product, const FactorAType & a, const FactorBType & b){
+      T sum;
+      const int RowCount = product.rows();
+      const int ColumnCount = product.cols();
+      const int InnerDimension = a.cols();
+      for(int i=0; i < RowCount; i++){
+        for(int j=0; j < ColumnCount; j++){
+          sum=0;
+          //ScalarOperations<T>::Zero(sum);
+          for(int k=0; k < InnerDimension;k++){
+            sum+=a(i,k)*b(k,j);
+            /*ScalarOperations<T>::multiply(scalarProduct,a(i,k),b(k,j));
+            ScalarOperations<T>::add(sum,sum,scalarProduct);*/
           }
+          product(i,j)=sum;
         }
       }
+    }
     };
-  };
-  
+  /*
+  template<typename T>
+  inline void symmInverse(const StaticMatrix<T,3,3> & m, StaticMatrix<T,3,3> & m_inverted){
+    Real e2_df = m(1,2)*m(1,2) - m(1,1)*m(2,2);  // e^2 - d*f
+    Real bf = m(0,1)*m(2,2);
+    Real ce = m(0,2)*m(1,2);
+    Real c2 = m(0,2)*m(0,2);
+    Real cd = m(0,2)*m(1,1);
+    Real be = m(0,1)*m(1,2);
+    Real af = m(0,0)*m(2,2);
+    Real ae = m(0,0)*m(1,2);
+    Real bc = m(0,1)*m(0,2);
+    Real b2 = m(0,1)*m(0,1);
+    Real ad = m(0,0)*m(1,1);
+
+    Real Div = 1.0 / (c2*m(1,1) + m(0,1) * (bf - 2 * ce) +m(0,0)* e2_df  );
+
+    Real a = e2_df * Div;
+    Real b = (bf - ce) * Div;
+    Real c = (cd - be) * Div;
+    Real d = (c2 - af) * Div;
+    Real e = (ae - bc) * Div;
+    Real f = (b2 - ad) * Div;
+    m_inverted(0,0)=a;
+    m_inverted(0,1)=b;
+    m_inverted(0,2)=c;
+
+    m_inverted(1,0)=b;
+    m_inverted(1,1)=d;
+    m_inverted(1,2)=e;
+
+    m_inverted(2,0)=c;
+    m_inverted(2,1)=e;
+    m_inverted(2,2)=f;
+  }
+
+  void inverse (StaticMatrix<T,3,3> inv, const StaticMatrix<T,3,3> m) const
+  {
+    const Matrix3x3 m=*this;
+    Real a = m(0,0);
+    Real b = m(0,1);
+    Real c = m(0,2);
+    Real d = m(1,0);
+    Real e = m(1,1);
+    Real f = m(1,2);
+    Real g = m(2,0);
+    Real h = m(2,1);
+    Real i = m(2,2);
+    Real Div = -c*e*g+b*f*g+c*d*h-a*f*h-b*d*i+a*e*i;
+    if (fabs(Div) < EPSILON)
+    {
+      std::cout << "matrix inversion failed\n";
+      return Matrix3x3 (Vector3D (), Vector3D (), Vector3D ());
+    }
+    Div = (1.0/Div);
+    inv =  Matrix3x3 (	(Vector3D(-f*h+e*i,c*h-b*i,-c*e+b*f)*Div),
+      (Vector3D(f*g-d*i,-c*g+a*i,c*d-a*f)*Div),
+      (Vector3D(-e*g+d*h,b*g-a*h,-b*d+a*e)*Div));
+    // hat Mathematica so ermittelt
+  }
+  */
   template<typename Vector3Type, typename Matrix3x3Type>
   inline void crossProductMatrix(Matrix3x3Type & r_star, const Vector3Type & r){
     r_star(0,0)=0; r_star(0,1)=-r(2); r_star(0,2)=r(1);

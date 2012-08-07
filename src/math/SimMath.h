@@ -27,9 +27,10 @@
 #include <common/Config.h>
 #include <math/definitions.h>
 
+
 namespace nspace
 {
-	typedef Vector3D (*rungeKuttaFct)(const Real x, const Vector3D &y, void *obj);
+//	typedef Vector3D (*rungeKuttaFct)(const Real x, const Vector3D &y, void *obj);
 
 	/** Klasse für Mathematik-Hilfsfunktionen, die für 
 	  * die Simulation benötigt werden.
@@ -45,7 +46,7 @@ namespace nspace
 		static Real	a2, a3, a4, a5, a6,
 				b21, b31, b32, b41, b42, b43, b51, b52, b53, b54, b61, b62, b63, b64, b65,
 				c1, c3, c4, c6, dc1, dc3, dc4, dc5, dc6;
-
+/*
 		static Vector3D lotpunkt(const Vector3D &p, const Vector3D &v, const Vector3D &s);
 		static Matrix3x3 rotationsmatrix (const Vector3D &a, const Real phi);
 		static Matrix3x3 orthonormalize (const Matrix3x3 &M);
@@ -55,6 +56,7 @@ namespace nspace
 		static Vector3D *localCoordinates (Matrix3x3 *rotationMatrix, Vector3D *centerOfMass, Vector3D *point);
 		static Matrix3x3 crossProductMatrix (const Vector3D &r);
     static inline void crossProductMatrix(const Vector3D & r, Matrix3x3 & r_star){
+      
       r_star(0,0)=0; r_star(0,1)=-r(2); r_star(0,2)=r(1);
       r_star(1,0)=r(2); r_star(1,1)=0; r_star(1,2)=-r(0);
       r_star(2,0)=-r(1); r_star(2,1)=r(0); r_star(2,2)= 0;
@@ -65,6 +67,6 @@ namespace nspace
 		static Vector3D embeddedRungeKutta (rungeKuttaFct f, const Real h, const Real xn, const Vector3D &yn, Real &error, void *obj, bool &result);
 		static Vector3D embeddedRungeKutta (rungeKuttaFct f, const Real h, const Vector3D &yn, Real &error, void *obj, bool &result);
 		static Real computeVolume(const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d);
-		static Real computeVolumeOriented(const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d);
+		static Real computeVolumeOriented(const Vector3D &a, const Vector3D &b, const Vector3D &c, const Vector3D &d);*/
 	};
 }
