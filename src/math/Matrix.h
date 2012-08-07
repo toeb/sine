@@ -46,7 +46,7 @@ namespace nspace
 	virtual int cols () const = 0;
     virtual T& operator () (int i, int j) = 0;             // Zugriff per Index
     virtual const T& operator () (int i, int j) const = 0;
-    virtual inline int size(){
+    virtual inline int size()const{
       return rows()*cols();
     }
   };

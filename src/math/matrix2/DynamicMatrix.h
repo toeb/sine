@@ -1,11 +1,11 @@
 #pragma once
-#include <math/types/Matrix.h>
+#include <math/Matrix.h>
 #include <common/patterns/ArrayPool.h>
 
 namespace nspace{
   namespace matrix2{
 template<typename T>
-class DynamicMatrix  : public Matrix<T>{
+class DynamicMatrix  : public nspace::Matrix<T>{
 protected:
   T * _data;
   int _rows;
@@ -17,7 +17,9 @@ protected:
     return _data[index(i,j)];
   }
 public:
-
+  inline void setZero(){
+    memset(_data,0,dataByteSize());
+  }
   DynamicMatrix(const DynamicMatrix<T> & orig):_data(0),_rows(0),_cols(0){
     *this=orig;
   }

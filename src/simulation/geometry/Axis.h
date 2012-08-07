@@ -9,17 +9,21 @@ Vector3D n;
 
   Axis(const Vector3D & normal){
     p.setZero();
-    n.assign(normal);
+    n=normal;
   }
   Axis(){
     p.setZero();
-    n.set(1,0,0);
+    n = Vector3D::UnitX();
+    Vector3D p;
   }
   inline Real projectOnAxis(const Vector3D & a) const{
-    Vector3D diff;
-    Real result;
+   // Vector3D diff;
+    Vector3D diff = a-p;
+    Real result = n*diff;
+
+    /*
     Vector3D::subtract(a, p,diff);
-    Vector3D::dotProduct(n,diff,result);
+    Vector3D::dotProduct(n,diff,result);*/
     return result;  
   }
 };

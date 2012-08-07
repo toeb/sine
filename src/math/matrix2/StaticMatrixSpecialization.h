@@ -1,6 +1,7 @@
 #pragma once
 
-#include <math/MatrixOperations.h>
+
+#include <math/matrix2/StaticMatrix.h>
 namespace nspace{
   /**
  * \brief specialization for the 3x3 Matrix Product
@@ -40,5 +41,6 @@ inline void MatrixMultiplication<Real, matrix2::StaticMatrix<Real,3,1> ,matrix2:
     c[0]= a[0]*b[0]+a[3]*b[1]+a[6]*b[2];
     c[1]= a[1]*b[0]+a[4]*b[1]+a[7]*b[2];
     c[2]= a[2]*b[0]+a[5]*b[1]+a[8]*b[2];    
-}
+};
+
 }

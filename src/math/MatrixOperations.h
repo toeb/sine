@@ -28,8 +28,7 @@ namespace nspace{
           result(i,j)=val;
         }
       }
-    }
-    
+    }   
 
     template<typename MatrixType>
     static inline void addition(MatrixType & sum, const MatrixType & a, const MatrixType & b){

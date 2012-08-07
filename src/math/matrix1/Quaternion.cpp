@@ -23,7 +23,7 @@
 
 #include "Quaternion.h"
 #include <math.h>
-#include <math/SimMath.h>
+
 
 using namespace nspace;
 
@@ -69,7 +69,7 @@ void Quaternion::setFromAxisAngle (const Vector3D &axis, const Real angle)
 void Quaternion::getAxisAngle (Vector3D &axis, Real &angle)
 {
   	Real l2 = x*x + y*y + z*z;
-	if (l2 > SimMath::eps2)
+	if (l2 > EPSILON)
     {
 		if (w > 1.0)
 			w = 1.0;
@@ -255,7 +255,7 @@ Quaternion nspace::operator * (const Quaternion& a, const Quaternion& b)
 	c.w = a.w*b.w - a.x*b.x - a.y*b.y - a.z*b.z;
 	c.x = b.w*a.x + a.w*b.x - b.y*a.z + a.y*b.z;
 	c.y = b.w*a.y + a.w*b.y + b.x*a.z - a.x*b.z;
-    c.z = -b.x*a.y + a.x*b.y + b.w*a.z + a.w*b.z;
+  c.z = -b.x*a.y + a.x*b.y + b.w*a.z + a.w*b.z;
 
 	return c;
 }

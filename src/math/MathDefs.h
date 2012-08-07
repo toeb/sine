@@ -28,8 +28,6 @@
 
 /** Epsilon wird für Tests gegen 0 verwendet (=> Rundungsfehler)
   */
-#define EPSILON 1.0E-9
-#define PI 3.14159
 
 namespace nspace
 {

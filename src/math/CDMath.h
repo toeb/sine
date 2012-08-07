@@ -27,21 +27,21 @@
 #include <math/MathDefs.h>
 namespace nspace
 {
-	/** CDMath enthält einige wichtige mathematischen Funktionen,
-	  * die bei der Kollisionserkennung benötigt werden.
-	  \author Jan Bender
-	  */
-	class CDMath
-	{
-	public:
-		static bool sameSide (const Vector3D &p1, const Vector3D &p2, const Vector3D &a, const Vector3D &b);  
-		static bool pointInTriangle(const Vector3D &p, const Vector3D &a, const Vector3D &b, const Vector3D &c);
-		static Real intersectionEdgeTriangle (const Vector3D &e1, const Vector3D &e2, const Vector3D &a, const Vector3D &b, const Vector3D &c, HesseNormalForm *hnf, Vector3D &iPoint);
-		static bool distancePointEdge (const Vector3D &p, const Vector3D &e1, const Vector3D &e2, Real & dist, Vector3D &l);
-		static bool distancePointEdge2 (const Vector3D &p, const Vector3D &e1, const Vector3D &e2, Real & dist, Vector3D &l);
-		static Real distanceEdgeEdge (Vector3D *a1, Vector3D *b1, Vector3D *a2, Vector3D *b2, Vector3D &np1, Vector3D &np2, bool &vv);
-		static int lineSegmentIntersection2D (Vector2D *a, Vector2D *b, Vector2D *c, Vector2D *d, Vector2D &intersection);
-	};
+// 	/** CDMath enthält einige wichtige mathematischen Funktionen,
+// 	  * die bei der Kollisionserkennung benötigt werden.
+// 	  \author Jan Bender
+// 	  */
+// 	class CDMath
+// 	{
+// 	public:
+// 		static bool sameSide (const Vector3D &p1, const Vector3D &p2, const Vector3D &a, const Vector3D &b);  
+// 		static bool pointInTriangle(const Vector3D &p, const Vector3D &a, const Vector3D &b, const Vector3D &c);
+// 		static Real intersectionEdgeTriangle (const Vector3D &e1, const Vector3D &e2, const Vector3D &a, const Vector3D &b, const Vector3D &c, HesseNormalForm *hnf, Vector3D &iPoint);
+// 		static bool distancePointEdge (const Vector3D &p, const Vector3D &e1, const Vector3D &e2, Real & dist, Vector3D &l);
+// 		static bool distancePointEdge2 (const Vector3D &p, const Vector3D &e1, const Vector3D &e2, Real & dist, Vector3D &l);
+// 		static Real distanceEdgeEdge (Vector3D *a1, Vector3D *b1, Vector3D *a2, Vector3D *b2, Vector3D &np1, Vector3D &np2, bool &vv);
+// 		static int lineSegmentIntersection2D (Vector2D *a, Vector2D *b, Vector2D *c, Vector2D *d, Vector2D &intersection);
+// 	};
 }
 
 

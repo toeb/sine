@@ -6,9 +6,9 @@ using namespace nspace;
 
 void Geometry::getBoundingBoxOCS(BoundingBox & aabb)const{
   Axis x,y,z;
-  x.n = Matrix3x3::Identity().v[0];
-  y.n = Matrix3x3::Identity().v[1];
-  z.n = Matrix3x3::Identity().v[2];
+  x.n = Vector3D::UnitX();
+  y.n =Vector3D::UnitY();
+  z.n = Vector3D::UnitZ();
   Interval ix,iy,iz;
 
   projectOCS(x,ix);
@@ -30,16 +30,16 @@ void Geometry::getBoundingBoxOCS(BoundingBox & aabb)const{
     if(min > aabb.minValue()(i))min = aabb.minValue()(i);
     if(max < aabb.maxValue()(i))max = aabb.maxValue()(i);
   }
-  aabb.minValue().set(min,min,min);
-  aabb.maxValue().set(max,max,max);
+  aabb.minValue() = Vector3D::Ones()*min;
+  aabb.maxValue() = Vector3D::Ones()*max;
 }
 
 
 void Geometry::getBoundingBox(BoundingBox & aabb)const{
   Axis x,y,z;
-  x.n = Matrix3x3::Identity().v[0];
-  y.n = Matrix3x3::Identity().v[1];
-  z.n = Matrix3x3::Identity().v[2];
+  x.n = Vector3D::UnitX();
+  y.n =Vector3D::UnitY();
+  z.n = Vector3D::UnitZ();
   Interval ix,iy,iz;
 
   project(x,ix);
@@ -68,5 +68,7 @@ Real Geometry::calculateBoundingSphereRadius()const{
   BoundingBox bb;
   getBoundingBoxOCS(bb);
   Vector3D delta = bb.maxValue()-bb.minValue();
-  return delta.length()/2;
+  Real l=  delta.length();
+  
+  return l/2;
 }

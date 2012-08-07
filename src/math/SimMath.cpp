@@ -20,48 +20,48 @@
  *
  * Jan Bender - Jan.Bender@impulse-based.de
  */
-
-#include "SimMath.h"
-#include "math.h"
-
-using namespace nspace;
-
-Real SimMath::eps = 1.0E-8;
-Real SimMath::eps2 = 1.0E-16;
-
-// Cash-Karp-Parameter für Embedded Runge-Kutta initialisieren
-Real SimMath::a2=0.2;
-Real SimMath::a3=0.3;
-Real SimMath::a4=0.6;
-Real SimMath::a5=1.0;
-Real SimMath::a6=0.875;
-	
-Real SimMath::b21=0.2;
-Real SimMath::b31=3.0/40.0;
-Real SimMath::b32=9.0/40.0;
-Real SimMath::b41=0.3;
-Real SimMath::b42=-0.9;
-Real SimMath::b43=1.2;
-Real SimMath::b51=-11.0/54.0;
-Real SimMath::b52=2.5;
-Real SimMath::b53=-70.0/27.0;
-Real SimMath::b54=35.0/27.0;
-Real SimMath::b61=1631.0/55296.0;
-Real SimMath::b62=175.0/512.0;
-Real SimMath::b63=575.0/13824;
-Real SimMath::b64=44275.0/110592.0;
-Real SimMath::b65=253.0/4096.0;
-
-Real SimMath::c1=37.0/378.0;
-Real SimMath::c3=250.0/621.0;
-Real SimMath::c4=125.0/594.0;
-Real SimMath::c6=512.0/1771.0;
-	
-Real SimMath::dc1 = c1 - 2825.0/27648.0;
-Real SimMath::dc3 = c3 - 18575.0/48384.0;
-Real SimMath::dc4 = c4 - 13525.0/55296.0;
-Real SimMath::dc5 = -277.0/14336.0;
-Real SimMath::dc6 = c6 - 0.25;
+// 
+// #include "SimMath.h"
+// #include "math.h"
+// 
+// using namespace nspace;
+// 
+// Real SimMath::eps = 1.0E-8;
+// Real SimMath::eps2 = 1.0E-16;
+// 
+// // Cash-Karp-Parameter für Embedded Runge-Kutta initialisieren
+// Real SimMath::a2=0.2;
+// Real SimMath::a3=0.3;
+// Real SimMath::a4=0.6;
+// Real SimMath::a5=1.0;
+// Real SimMath::a6=0.875;
+// 	
+// Real SimMath::b21=0.2;
+// Real SimMath::b31=3.0/40.0;
+// Real SimMath::b32=9.0/40.0;
+// Real SimMath::b41=0.3;
+// Real SimMath::b42=-0.9;
+// Real SimMath::b43=1.2;
+// Real SimMath::b51=-11.0/54.0;
+// Real SimMath::b52=2.5;
+// Real SimMath::b53=-70.0/27.0;
+// Real SimMath::b54=35.0/27.0;
+// Real SimMath::b61=1631.0/55296.0;
+// Real SimMath::b62=175.0/512.0;
+// Real SimMath::b63=575.0/13824;
+// Real SimMath::b64=44275.0/110592.0;
+// Real SimMath::b65=253.0/4096.0;
+// 
+// Real SimMath::c1=37.0/378.0;
+// Real SimMath::c3=250.0/621.0;
+// Real SimMath::c4=125.0/594.0;
+// Real SimMath::c6=512.0/1771.0;
+// 	
+// Real SimMath::dc1 = c1 - 2825.0/27648.0;
+// Real SimMath::dc3 = c3 - 18575.0/48384.0;
+// Real SimMath::dc4 = c4 - 13525.0/55296.0;
+// Real SimMath::dc5 = -277.0/14336.0;
+// Real SimMath::dc6 = c6 - 0.25;
 
 // 
 // /** Auf der Geraden P+lambda*V, lambda=Parameter, wird der

@@ -47,8 +47,9 @@ public:
   }
   void getCenter(Vector3D & c)const{
     //todo ist das richtig?
-    Vector3D::subtract(_max,_min,c);
-    Vector3D::add(_min,c,c);
+    //Vector3D::subtract(_max,_min,c);
+    //Vector3D::add(_min,c,c);
+    c=(_max-_min)*0.5;
   }
   bool isInside(const Vector3D & p)const{
     // todo ist das richtig?

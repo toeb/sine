@@ -4,8 +4,8 @@ using namespace nspace;
 using namespace std;
 
 
-CoordinateSystem::CoordinateSystem(): _R(0),_RT(0),position(&Vector3D::Zero()),orientation(&Quaternion::zeroRotation()){
-  orientation() = Quaternion::zeroRotation();
+CoordinateSystem::CoordinateSystem(): _R(0),_RT(0),position(&Vector3D::Zero()),orientation(&Quaternion::ZeroRotation()){
+  orientation() = Quaternion::ZeroRotation();
 }
 
 CoordinateSystem::CoordinateSystem(const Vector3D & p, const Quaternion & q):
@@ -22,7 +22,7 @@ CoordinateSystem::~CoordinateSystem(){
 }
 
 const CoordinateSystem & CoordinateSystem::identity(){
-  static CoordinateSystem system(Vector3D::Zero(),Quaternion::zeroRotation());
+  static CoordinateSystem system(Vector3D::Zero(),Quaternion::ZeroRotation());
   return system;
 }
 

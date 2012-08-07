@@ -10,7 +10,7 @@ void KinematicBody::setMovementToZero(){
 }
 void KinematicBody::setZero(){
   position().setZero();
-  orientation() = Quaternion::zeroRotation();
+  orientation() = Quaternion::ZeroRotation();
   setMovementToZero();
 }
 KinematicBody::KinematicBody():
@@ -26,23 +26,25 @@ KinematicBody::~KinematicBody() {
 }
 
 Quaternion qOmega(const Quaternion & orientation, const Vector3D & omega){
+  Quaternion result;
+
   //return Quaternion::zeroRotation();
- Matrix4x3 Q =Quaternion::Q(orientation); 
+/* Matrix4x3 Q =Quaternion::Q(orientation); 
  Quaternion result;
  Quaternion::multiply(0.5*Q, omega,result);
-
+ */
  return result;
 }
 
 Quaternion qOmegaDot(const Quaternion & orientation, const Vector3D & omega, const Vector3D & omegaDot){
-  Matrix4x3 Q =Quaternion::Q(orientation); 
+/*  Matrix4x3 Q =Quaternion::Q(orientation); 
   Matrix4x3 Qdot = Quaternion::Q(qOmega(orientation,omega));
 
   Quaternion a;
   Quaternion::multiply(0.5*Qdot, omega,a);
   Quaternion b;
-  Quaternion::multiply(0.5*Q, omegaDot,b);
-  Quaternion result = a+b;
+  Quaternion::multiply(0.5*Q, omegaDot,b);*/
+  Quaternion result;// = a+b;
   return result;
 }
 void KinematicBody::exportDerivedState(IState & xDot)const{
@@ -60,7 +62,7 @@ void KinematicBody::exportDerivedState(IState & xDot)const{
   omegaTilde(2)=angularVelocity()(1);
   omegaTilde(3)=angularVelocity()(2);
 
-  Quaternion qDot =0.5*orientation()*omegaTilde;
+  Quaternion qDot =orientation()*omegaTilde;//*0.5
 
   xDot(6,0) = qDot(0);
   xDot(7,0) = qDot(1);

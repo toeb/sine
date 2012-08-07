@@ -67,3 +67,5 @@ typedef unsigned char byte;
 
 #define FORCE_INLINE __forceinline
 
+#define EPSILON 1.0E-9
+#define PI 3.14159
