@@ -8,11 +8,9 @@
 #include <gl/glut.h>
 #include <visualization/core/Color.h>
 #include <visualization/glrenderers/general/BillboardRenderer.h>
-#include <lodepng.h>
 #include <simulation/geometry/Plane.h>
 #include <simulation/history/HistoryModule.h>
 #include <common/patterns/Singleton.h>
-//#include <math/MatrixOperations.h>
 #include <simulation/force/ForceField.h>
 #include <simulation/dynamics/Particle.h>
 #include <visualization/glrenderers/geometry/PointRenderer.h>
@@ -22,9 +20,6 @@
 #include <simulation/force/Gravity.h>
 #include <simulation/dynamics/RigidBody.h>
 #include <simulation/dynamics/primitives/DynamicBox.h>
-#include <math/matrix2/StaticMatrix.h>
-#include <math/MatrixOperations.h>
-#include <math/matrix2/StaticMatrixOperators.h>
 using namespace nspace;
 using namespace std;
 class GlutObject : public virtual IRenderer{
@@ -45,72 +40,9 @@ public:
   }
 };
 
-template<typename T, int n1=10000000>
-class MatrixPerformanceTests{
-private:
-
-public:
-
-  void runSuite(){
-    std::cout << "StackInit " << stackInitializePerformance() << " s" <<endl;
-    std::cout << "HeapInit " << stackInitializePerformance() << " s" <<endl;
-    std::cout << "HeapInitDelete " << stackInitializePerformance() << " s" <<endl;
-    std::cout << "MatrixMult " << stackInitializePerformance() << " s" <<endl;
-  }
-Time stackInitializePerformance(){
-  Time start= systemTime();
-  for(int i=0; i < n1; i++)
-    T t;  
-  Time end=systemTime();
-  return end-start;
-};
-Time heapInitializePerformance(){
-  Time start= systemTime();
-  for(int i=0; i < n1; i++)
-    new T;  
-  Time end=systemTime();
-  return end-start;
-};
-Time heapDeletePerformance(){
-  
-  Time start= systemTime();
-  for(int i=0; i < n1; i++)
-  {delete new T;}  
-
-  Time end=systemTime();
-  return end-start;
-};
-Time matrixMultTest(){
-  T a;
-  a.setZero();
-  T b;
-  b.setZero();
-  Time start= systemTime();
-  for(int i=0; i < n1; i++)
-  {a*b;}  
-
-  Time end=systemTime();
-  return end-start;
-};
-};
-
-void quat2RotMatrix(){
-  int n=100000000;
-  std::cout<< "quat2rot n="<<n;
-  Time start = systemTime();
-  
-  Quaternion q;
-  Matrix3x3 m;
-  for(int i=0; i < n; i++){
-    q.toRotationMatrix(m);
-  }
-
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds";
-};
 int main(int argc, char** argv){
-    quat2RotMatrix();
-  return 0;
+   // quat2RotMatrix();
+ // return 0;
  /* MatrixPerformanceTests<Matrix3x3> suiteA;
   suiteA.runSuite();
   MatrixPerformanceTests<StaticMatrix<Real,3,3> >suiteB;
@@ -202,7 +134,7 @@ int main(int argc, char** argv){
   {
 
 
-    int n(25), m(25), l(25);
+    int n(10), m(10), l(10);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){

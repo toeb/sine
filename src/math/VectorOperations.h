@@ -30,7 +30,7 @@ namespace nspace{
       v(0)=1;
       return;
     }
-    MatrixOperations<T>::multiplyScalar(v,v,1.0/length);
+    MatrixMultiplyScalar<Vec,Vec,T>::operation(v,v,1.0/length);
    
   }
   template< typename Vec>

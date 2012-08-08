@@ -45,6 +45,9 @@ namespace nspace{
     inline Vector3D row(int index)const{
       return v[index];
     }
+    const Real * getRow(int index)const{
+      return v[index].v;
+    }
    static Matrix3x3 create(Real fillValue){
     Matrix3x3 ret;
     ret.setTo(fillValue);

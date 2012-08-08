@@ -76,16 +76,55 @@ void dynamicAddMat(){
   m2.resize(rows,cols);
   Mat m3;
   Time start = systemTime();
-
-
   for(int i=0; i < n; i++){
     m3= m1 + m2;
   }
-
   Time end = systemTime();
   cout << " took: "<<(end-start)<<" seconds"<<endl;
 };
-#define N 100
+template<typename Mat,int n, int rows, int cols>
+void dynamicMultScalarMat(){
+  std::cout<< "dynamicMultScalarMat n="<<n;
+  Mat m1;
+  m1.resize(rows,cols);
+  Mat m2;
+  Time start = systemTime();
+  for(int i=0; i < n; i++){
+    m2= 0.5*m1;
+  }
+  Time end = systemTime();
+  cout << " took: "<<(end-start)<<" seconds"<<endl;
+};
+template<typename Mat,int n, int rows, int cols>
+void dynamicSetConstant(){
+  std::cout<< "dynamicSetConstant n="<<n;
+  Mat m1;
+  m1.resize(rows,cols);
+  
+  Time start = systemTime();
+  for(int i=0; i < n; i++){
+    m1.setConstant((double)i);
+  }
+  Time end = systemTime();
+  cout << " took: "<<(end-start)<<" seconds"<<endl;
+};
+
+template<typename Mat,int n, int rows, int cols>
+void dynamicSetFunction(){
+  std::cout<< "dynamicSetFunction n="<<n;
+  Mat m1;
+  m1.resize(rows,cols);
+
+  Time start = systemTime();
+  for(int i=0; i < n; i++){
+    m1.setFunction([](Real & val, int i, int j){val = i+j;});
+  }
+  Time end = systemTime();
+  cout << " took: "<<(end-start)<<" seconds"<<endl;
+};
+
+
+#define N 10000000
 
 int main(int argc, char ** argv){
   //quat2RotMatrix<Quat2,Mat332,N>();
@@ -94,8 +133,17 @@ int main(int argc, char ** argv){
   //quatGetRot<Quat1,Mat331,N>();
   //dynamicCopyMat<MatMN2,N,1000,1000>();
   //dynamicCopyMat<MatMN1,N,1000,1000>();
-  dynamicAddMat<MatMN2,N,1000,1000>();
-  dynamicAddMat<MatMN1,N,1000,1000>();
-
+  //dynamicAddMat<MatMN2,N,1000,1000>();
+  //dynamicAddMat<MatMN1,N,1000,1000>();
+//   dynamicSetConstant<MatMN2,N,1,1>();
+//   dynamicSetConstant<MatMN1,N,1,1>();
+  dynamicSetFunction<MatMN2,N,20,1>();
+   dynamicSetFunction<MatMN1,N,20,1>();
+//   dynamicMultScalarMat<MatMN2,N,2000000,1>();
+//   dynamicMultScalarMat<MatMN2,N,2000000,1>();
+//   dynamicMultScalarMat<MatMN2,N,2000000,1>();
+//   dynamicMultScalarMat<MatMN1,N,2000000,1>();
+//   dynamicMultScalarMat<MatMN1,N,2000000,1>();
+//   dynamicMultScalarMat<MatMN1,N,2000000,1>();
   return 0;
 }

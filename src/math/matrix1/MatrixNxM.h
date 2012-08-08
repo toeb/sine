@@ -24,6 +24,7 @@
 
 #include <math/matrix1/DynamicMatrix.h>
 #include <math/matrix1/VectorND.h>
+#include <functional>
 namespace nspace
 {
 	/** MatrixNxM ist eine Klasse für Berechnungen mit einer nxm Matrix, wie z.B. Addition, Multiplikation,...
@@ -50,7 +51,18 @@ namespace nspace
         }
       }*/
     }
-    
+    void setFunction(std::function<void (Real & ,int,int) > f){
+      int size = _rows*_cols;
+      for(int i=0; i < size; ++i){
+        f(_data[i],i/_cols, i%_cols);
+      }
+    }
+    void setConstant(const Real & value){
+      int size = _rows*_cols;
+      for(int i=0; i < size; ++i){
+        _data[i]=value;
+      }
+    }
 
     //returns the frobenius norm
     Real norm(){

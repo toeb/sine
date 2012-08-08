@@ -54,6 +54,9 @@ namespace nspace{
       return m;
 
     }
+    inline Real maximum()const{
+      return maxValue();
+    }
     inline const Real & x()const{
       return v[0];
     }

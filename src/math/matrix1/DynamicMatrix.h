@@ -35,8 +35,8 @@ public:
     memcpy(data(),orig.data(),dataByteSize());
     return *this;
   }
-  void resize(int n, int m, bool setToZero=true){
-    if(_rows==n && _cols==m)return;
+  bool resize(int n, int m, bool setToZero=true){
+    if(_rows==n && _cols==m)return true;
 
     nspace::ArrayPool<T>::freeArray(&_data,size());
     _rows = n;
@@ -46,6 +46,7 @@ public:
     _rows = n;
     _cols =m;
     if(setToZero) memset(_data,0,dataByteSize());
+    return true;
   }
   inline Real * rowData(int i){
     return _data +(i*_cols);

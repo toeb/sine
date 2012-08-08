@@ -177,7 +177,9 @@ public:
   inline void normalize(){
     VectorOperations<T>::normalize(*this);
   }
-
+  bool resize(int rows, int cols, bool setToZero){
+    return false;
+  }
   inline StaticMatrix<T,RowCount,ColumnCount> operator -(){
     StaticMatrix<T,RowCount,ColumnCount> result;
     MatrixOperations<T>::negate(result, *this);

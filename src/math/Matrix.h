@@ -42,8 +42,14 @@ namespace nspace
       }
     
     }
-	virtual int rows () const = 0;
-	virtual int cols () const = 0;
+    virtual bool resize(int r, int c, bool setToZero){
+      if(r==rows()&&c==cols())return true;
+      return false;
+    };
+
+
+    virtual int rows () const = 0;
+    virtual int cols () const = 0;
     virtual T& operator () (int i, int j) = 0;             // Zugriff per Index
     virtual const T& operator () (int i, int j) const = 0;
     virtual inline int size()const{

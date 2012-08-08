@@ -5,8 +5,68 @@
 #include <functional>
 
 namespace nspace{
+  template<typename MatA, typename MatB>
+  class MatrixAssign{
+  public:
+    static inline void operation(MatA &  result, const MatB & val){
+      if(!result.resize(val.rows(), val.cols())){
+        std::cout << "MatrixAssign: could not resize result matrix "<<endl;
+        return;
+      }
+      for(int i=0; i < result.rows(); i++){
+        for(int j=0; j < result.cols(); j++){
+          result(i,j)=val(i,j);
+        }
+      }
+    }
+  };
+  template<typename T, typename Mat>
+  class MatrixSetConstant{
+  public:
+    static inline void operation(Mat &  result, const T & val){
+      for(int i=0; i < result.rows(); i++){
+        for(int j=0; j < result.cols(); j++){
+          result(i,j)=val;
+        }
+      }
+    }
+  };
+  template<typename Mat, typename Func>
+  class MatrixSetFunction{
+  public:
+    static inline void operation(Mat &  result, Func f){
+      for(int i=0; i < result.rows(); i++){
+        for(int j=0; j < result.cols(); j++){
+          result(i,j)=f(i,j);
+        }
+      }
+    }
+  };
 
+  template<typename Sum, typename Summand1, typename Summand2>
+  class MatrixAddition{
+  public:
+  static inline void operation(Sum & sum, const Summand1 & a, const Summand2 & b){
+    for(int i=0; i < a.rows(); i++){
+      for(int j=0; j < a.cols(); j++){
+        sum(i,j)=a(i,j)+b(i,j);
+      }
+    }
+  }
+  };
   
+  template<typename Product, typename MatrixFactor, typename ScalarFactor>
+  class MatrixMultiplyScalar{
+  public:
+    static inline void operation(Product & product, const MatrixFactor & a, const ScalarFactor & d){
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          product(i,j)=a(i,j)*d;
+        }
+      }
+    }
+  };
+
   template<typename T>
   class MatrixOperations{
   public:
@@ -40,7 +100,7 @@ namespace nspace{
  
 
 
-    template<typename MatrixType>
+   /* template<typename MatrixType>
     static inline void setFunction(MatrixType & result, std::function<void (T& , int i, int j) > f ){
       for(int i=0; i < result.rows(); i++){
         for(int j=0; j < result.cols(); j++){
@@ -55,7 +115,7 @@ namespace nspace{
           result(i,j)=val;
         }
       }
-    }   
+    }   */
     template<typename MatrixType>
     static inline void negate(MatrixType & result,const MatrixType & m){
       for(int i=0; i < result.rows(); i++){
@@ -64,14 +124,7 @@ namespace nspace{
         }
       }
     }   
-    template<typename MatrixType>
-    static inline void addition(MatrixType & sum, const MatrixType & a, const MatrixType & b){
-      for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols(); j++){
-          sum(i,j)=a(i,j)+b(i,j);
-        }
-      }
-    }
+    
     template<typename MatrixType>
     static inline void subtraction(MatrixType & difference, const MatrixType & a, const MatrixType & b){
       for(int i=0; i < a.rows(); i++){
@@ -80,14 +133,7 @@ namespace nspace{
         }
       }
     }
-    template<typename MatrixType>
-    static inline void multiplyScalar(MatrixType & product, const MatrixType & a, const T & d){
-      for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols(); j++){
-          product(i,j)=a(i,j)*d;
-        }
-      }
-    }
+    
     template<typename MatrixType>
     static inline void divideScalar(MatrixType & product, const MatrixType & a, const T & d){
       T reciproc;
