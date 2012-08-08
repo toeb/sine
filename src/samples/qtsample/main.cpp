@@ -45,10 +45,12 @@ public:
   }
 };
 
-
 template<typename T, int n1=10000000>
 class MatrixPerformanceTests{
+private:
+
 public:
+
   void runSuite(){
     std::cout << "StackInit " << stackInitializePerformance() << " s" <<endl;
     std::cout << "HeapInit " << stackInitializePerformance() << " s" <<endl;
@@ -91,8 +93,24 @@ Time matrixMultTest(){
   return end-start;
 };
 };
-using namespace matrix2;
+
+void quat2RotMatrix(){
+  int n=100000000;
+  std::cout<< "quat2rot n="<<n;
+  Time start = systemTime();
+  
+  Quaternion q;
+  Matrix3x3 m;
+  for(int i=0; i < n; i++){
+    q.toRotationMatrix(m);
+  }
+
+  Time end = systemTime();
+  cout << " took: "<<(end-start)<<" seconds";
+};
 int main(int argc, char** argv){
+    quat2RotMatrix();
+  return 0;
  /* MatrixPerformanceTests<Matrix3x3> suiteA;
   suiteA.runSuite();
   MatrixPerformanceTests<StaticMatrix<Real,3,3> >suiteB;

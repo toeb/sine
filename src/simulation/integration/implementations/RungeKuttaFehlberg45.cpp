@@ -11,14 +11,14 @@ using namespace std;
 #define c41 1932.0/2197.0
 #define c42 -7200.0/2197.0
 #define c43 7296.0/2197.0
-#define c50 1
+#define c50 1.0
 #define c51 439.0/216.0
-#define c52 -8
+#define c52 -8.0
 #define c53 3680.0/513
 #define c54 -845.0/4104.0
 #define c60 1.0/2.0
 #define c61 -8.0/27.0
-#define c62 2
+#define c62 2.0
 #define c63 -3544.0/2565.0
 #define c64 1859.0/4104.0
 #define c65 -11.0/40.0

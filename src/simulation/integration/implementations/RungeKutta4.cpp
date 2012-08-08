@@ -4,11 +4,11 @@ using namespace nspace;
 
 
 void RungeKutta4::doStep(Real t_i, Real h){ 
-  k1 = h * f(t_i,x,h);
+  k1 =h*f(t_i,x,h);
   k2 = h * f(t_i,x+0.5*k1,h);
   k3 = h * f(t_i,x+0.5*k2,h);
   k4 = h * f(t_i,x+k3,h);
-  x = x +(k1+2*k2+2*k3+k4)/6;
+  x = x +(k1+2.0*k2+2.0*k3+k4)/6.0;
 
 };
 

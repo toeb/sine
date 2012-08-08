@@ -1,10 +1,10 @@
 #pragma once
 #include <math/Matrix.h>
-#include <queue>
 #include <math/VectorOperations.h>
 #include <math/MatrixOperations.h>
+#include <queue>
 namespace nspace{
-  namespace matrix2{
+namespace matrix2{
 template<typename T, int RowCount, int ColumnCount>
 class StaticMatrix : public Matrix<T>{
 protected:
@@ -17,13 +17,21 @@ protected:
   }
 
 public:
-  inline static const StaticMatrix<T,RowCount,ColumnCount> & Zero(){
-    
-    return _zeroMatrix;
+  inline static StaticMatrix<T,RowCount,ColumnCount>  Zero(){    
+    StaticMatrix<T,RowCount,ColumnCount>  matrix;    
+    matrix.setZero();          
+    return matrix;
   }
   //rule of three
   StaticMatrix(const StaticMatrix<T,RowCount,ColumnCount> & orig){
     *this=orig;
+  }
+  StaticMatrix(const T& x, const T& y){
+    _data[0]=x;
+    _data[1]=y;
+  }
+  StaticMatrix(const Real * dataPtr){
+    assign(dataPtr);
   }
   StaticMatrix<T,RowCount,ColumnCount> & operator=(const StaticMatrix<T,RowCount,ColumnCount> & orig ){
     memcpy(data(),orig.data(),dataByteSize());
@@ -35,6 +43,23 @@ public:
     return RowCount*ColumnCount*sizeof(T);
   }
   inline int index(int i, int j)const{return i* ColumnCount+j;}
+
+  
+  StaticMatrix<T,ColumnCount,1> row(int i)const{
+    StaticMatrix<T,ColumnCount,1> result;
+    result.assign(getRow(i));
+  }
+  StaticMatrix<T,RowCount,1>col(int j)const{
+    StaticMatrix<T,RowCount,1> result;
+    for(int i=0; i < RowCount;i++ ){
+      result(i)=value(i,j);
+    }
+    return result;
+  }
+
+  inline const T * getRow(int index)const{
+    return _data+index*ColumnCount;
+  }
 
   inline T & operator()(int i, int j){return _data[i* ColumnCount+j]; }
   inline T & operator()(int i){return _data[i];}
@@ -72,9 +97,13 @@ public:
     static StaticMatrix<T,3,1> _unitZVector(0,0,1);
     return _unitZVector;
   }
-  static const StaticMatrix<T,RowCount,ColumnCount> & Ones(){
-    static StaticMatrix<T,RowCount,ColumnCount> _unitZVector(0,0,1);
-    return _unitZVector;
+  static StaticMatrix<T,RowCount,ColumnCount> Ones(){
+    StaticMatrix<T,RowCount,ColumnCount> matrix;
+    matrix.setZero();
+    for(int i=0; i < RowCount; i++)
+      for(int j=0; j < ColumnCount; j++)
+        matrix(i,j)=1;
+    return matrix;    
   }
   
 
@@ -86,19 +115,35 @@ public:
   inline const T & z()const{return _data[2];} 
   inline T & w(){return _data[3];}
   inline const T & w()const{return _data[3];} 
-  StaticMatrix(const T& w,const T& x,const T& y,const T& z){
+  StaticMatrix(const T& x,const T& y,const T& z,const T& w){
     _data[0]=x;
     _data[1]=y;
     _data[2]=z;
     _data[3]=w;
-
   }
-  static const StaticMatrix<T,4,1> & ZeroRotation(){
-    static StaticMatrix<T,4,1> _zeroRotationVector(1,0,0,0);
-    return _zeroRotationVector;
+  static StaticMatrix<T,RowCount,ColumnCount> Identity(){
+    StaticMatrix<T,RowCount,ColumnCount> matrix;    
+    matrix.setZero();
+    for(int i=0; i < RowCount && i < ColumnCount; i++){
+      matrix(i,i)=1;
+    }    
+    return matrix;
   }
 
-
+  inline void transpose(){
+    if(RowCount!=ColumnCount){
+      std::cerr << "cannot transpose non square StaticMatrix in place" << std::endl;
+    }
+    MatrixOperations<T>::transposeInPlace(*this);
+  }
+  inline void toTransposed(StaticMatrix<T,ColumnCount,RowCount> & AT)const{
+    MatrixOperations<T>::transpose(AT,*this);
+  }
+  inline StaticMatrix<T,ColumnCount,RowCount> transposed()const{
+    StaticMatrix<T,ColumnCount,RowCount> AT;
+    MatrixOperations<T>::transpose(AT,*this);
+    return AT;
+  }
 
   inline T length()const{
     T result;
@@ -112,7 +157,7 @@ public:
   }
   inline T length2()const{
     T result;
-    VectorOperations<T>::normSquared(T,*this);
+    VectorOperations<T>::normSquared(result,*this);
     return result;
   }
   inline T norm2()const{
@@ -133,18 +178,11 @@ public:
     VectorOperations<T>::normalize(*this);
   }
 
-private :
-
-  class Initializer{
-  public:
-    Initializer(){
-      _zeroMatrix.setZero();
-      for(int i=0; i <_onesMatrix.size(); i++)_onesMatrix._data[i]=1;
-    }
-  };
-  Initializer init;
-  static StaticMatrix<T,RowCount,ColumnCount> _zeroMatrix;
-  static StaticMatrix<T,RowCount,ColumnCount> _onesMatrix;
-};
+  inline StaticMatrix<T,RowCount,ColumnCount> operator -(){
+    StaticMatrix<T,RowCount,ColumnCount> result;
+    MatrixOperations<T>::negate(result, *this);
+    return result;
   }
-}
+};
+}                                                                                                                      
+}                                                                                                                        

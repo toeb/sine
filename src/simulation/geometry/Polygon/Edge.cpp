@@ -4,7 +4,7 @@ using namespace nspace;
 
 
 void Edge::getDirection(Vector3D & dir){
-  dir.assign(B->p_ocs - A->p_ocs);
+  dir= B->p_ocs - A->p_ocs;
 }
 
 bool Edge::isInFrontOf(const Edge * edge)const{

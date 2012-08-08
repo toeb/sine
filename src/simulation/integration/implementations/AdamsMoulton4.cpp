@@ -21,12 +21,12 @@ void AdamsMoulton4::doStep(Real t_i,  Real h_i){
   StateMatrix x_i = f(t_i,x,h_i);  
   
   //predictor
-  StateMatrix p =  x + (h_i/24)*(-9*f_3+37*f_2-59*f_1+55*f_i);
+  StateMatrix p =  x + (h_i/24)*(-9.0*f_3+37.0*f_2-59.0*f_1+55.0*f_i);
   
   //corrector uses predictor result approximation for f_i+1
   // alternatively  a fixpoint iteration has to be solved for corrector step
 
-  StateMatrix x_next = x + (h_i/24)*(f_2-5*f_1+19*f_i+9*f(t_i+h_i,p,h_i));
+  StateMatrix x_next = x + (h_i/24)*(f_2-5.0*f_1+19.0*f_i+9.0*f(t_i+h_i,p,h_i));
 
   //local truncation error estimate
 /*  TVectorX localTruncationErrorEstimateVector = (x_next-p);
@@ -64,8 +64,8 @@ void AdamsMoulton4::updateHistory(){
 void AdamsMoulton4::halveStepSize(){
   h() = h()/2.0;
   //interpolate to get new history
-  StateMatrix new_f_3 = (1/128)* (-5*f_4+28*f_3-70*f_2+140*f_1+35*f_i);
-  StateMatrix new_f_1= (1/128)* (3*f_4-20*f_3+90*f_2+60*f_1-5*f_i);
+  StateMatrix new_f_3 = (1/128.0)* (-5.0*f_4+28.0*f_3-70.0*f_2+140.0*f_1+35.0*f_i);
+  StateMatrix new_f_1= (1/128.0)* (3.0*f_4-20.0*f_3+90.0*f_2+60.0*f_1-5.0*f_i);
   f_2 =f_1;
   f_3 = new_f_3;
   f_1=new_f_1;

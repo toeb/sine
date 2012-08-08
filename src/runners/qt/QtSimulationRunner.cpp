@@ -103,10 +103,10 @@ void QtSimulationRunner::saveWindowState()
     ss<<viewport->coordinates().position()(0);
     ss<<viewport->coordinates().position()(1);
     ss<<viewport->coordinates().position()(2);
-    ss<<viewport->coordinates().orientation().x;
-    ss<<viewport->coordinates().orientation().y;
-    ss<<viewport->coordinates().orientation().z;
-    ss<<viewport->coordinates().orientation().w;
+    ss<<viewport->coordinates().orientation().x();
+    ss<<viewport->coordinates().orientation().y();
+    ss<<viewport->coordinates().orientation().z();
+    ss<<viewport->coordinates().orientation().w();
     settings.setValue("camera", QString::fromStdString(ss.str()));
   }
   settings.endGroup();
@@ -132,10 +132,10 @@ void QtSimulationRunner::loadWindowState()
       ss>>viewport->coordinates().position()(0);
       ss>>viewport->coordinates().position()(1);
       ss>>viewport->coordinates().position()(2);
-      ss>>viewport->coordinates().orientation().x;
-      ss>>viewport->coordinates().orientation().y;
-      ss>>viewport->coordinates().orientation().z;
-      ss>>viewport->coordinates().orientation().w;
+      ss>>viewport->coordinates().orientation().x();
+      ss>>viewport->coordinates().orientation().y();
+      ss>>viewport->coordinates().orientation().z();
+      ss>>viewport->coordinates().orientation().w();
     }
   }
 

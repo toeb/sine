@@ -155,7 +155,7 @@ bool Octree::isLeaf()const {
 }
 
 void Octree::getCenter(Vector3D & c_ocs)const{
-  c_ocs.assign(_aabb.minValue()+0.5*(_aabb.maxValue() - _aabb.minValue()));
+  c_ocs = 0.5*(_aabb.maxValue() + _aabb.minValue());
 }
 Classification Octree::classifyGeometrically()const{
   return _geometry.classify(*_boundingVolume);

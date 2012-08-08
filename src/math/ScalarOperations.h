@@ -23,12 +23,33 @@ public:
   static inline void sqrt(T & b, const T& a){
     b = std::sqrt(a);
   }
+  static inline void acos(T & b, const T& a){
+    b = std::acos(a);
+  }
+  static inline void sin(T & b, const T& a){
+    b = std::sin(a);
+  }
+  static inline void asin(T & b, const T& a){
+    b = std::asin(a);
+  }
+  static inline void atan2(T & b, const T& a){
+    b = std::atan2(a);
+  }
+  static inline void atan(T & b, const T& a){
+    b = std::atan(a);
+  }
+  static inline void tan(T & b, const T& a){
+    b = std::tan(a);
+  }
+  static inline void cos(T & b, const T& a){
+    b = std::cos(a);
+  }
   static inline void abs(T & result, const T & a){
     result = std::abs(a);
   }
 
-  static inline void reciprocal(const T a, T & b){
-    divide(unitElement, a,b);
+  static inline void reciprocal( T & b,const T &a){
+    divide(b, 1.0,a);
   }
 };
 }

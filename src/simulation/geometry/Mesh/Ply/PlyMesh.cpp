@@ -19,27 +19,27 @@ PlyMesh * getMesh(p_ply_argument argument){
 static int vertexX(p_ply_argument argument) {
   PlyMesh * mesh = getMesh(argument);  
   currentVertex = mesh->addPlyVertex();
-  currentVertex->p_ocs.v[0] =  ply_get_argument_value(argument);  
+  currentVertex->p_ocs(0) =  ply_get_argument_value(argument);  
   return 1;
 }
 static int vertexY(p_ply_argument argument) {
-  currentVertex->p_ocs.v[1] =  ply_get_argument_value(argument);  
+  currentVertex->p_ocs(1) =  ply_get_argument_value(argument);  
   return 1;
 }
 static int vertexZ(p_ply_argument argument) {
-  currentVertex->p_ocs.v[2] =  ply_get_argument_value(argument);
+  currentVertex->p_ocs(2) =  ply_get_argument_value(argument);
   return 1;
 }
 static int normalX(p_ply_argument argument) {
-  currentVertex->normal.v[0] = ply_get_argument_value(argument);
+  currentVertex->normal(0) = ply_get_argument_value(argument);
   return 1;
 }
 static int normalY(p_ply_argument argument) {  
-  currentVertex->normal.v[1] = ply_get_argument_value(argument);
+  currentVertex->normal(1) = ply_get_argument_value(argument);
   return 1;
 }
 static int normalZ(p_ply_argument argument) {
-  currentVertex->normal.v[2] = ply_get_argument_value(argument);
+  currentVertex->normal(2) = ply_get_argument_value(argument);
   return 1;
 }
 

@@ -23,12 +23,15 @@ void Face::getVertices(vector<Vertex *> & vertices)const{
       count++;
       current = current->next;
       if(current->isForwardHalfEdge()){
-        Vector3D::add(c_ocs,current->edge->A->p_ocs,c_ocs);
+        c_ocs = c_ocs+current->edge->A->p_ocs;
+        //Vector3D::add(c_ocs,current->edge->A->p_ocs,c_ocs);
       }else{
-        Vector3D::add(c_ocs,current->edge->B->p_ocs,c_ocs);
-      
+        //Vector3D::add(c_ocs,current->edge->B->p_ocs,c_ocs);
+
+        c_ocs = c_ocs+current->edge->B->p_ocs;
       }
       if(current == first)break;
     }
-    Vector3D::multiplyScalar(1.0/count,c_ocs,c_ocs);
+    c_ocs /= (Real)count;
+    //Vector3D::multiplyScalar(1.0/count,c_ocs,c_ocs);
   }

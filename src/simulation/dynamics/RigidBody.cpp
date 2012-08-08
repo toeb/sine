@@ -104,8 +104,9 @@ void RigidBody::calculateInvertedInertiaTensorInWorldCoordinates(){
   const Matrix3x3 & J_inv_ocs = getInvertedInertiaTensor();
   const Matrix3x3 & R = _kinematics.getRotationMatrix();
   const Matrix3x3 & RT = _kinematics.getTransposedRotationMatrix();
-  Matrix3x3::multiply(tmp,RT,_J_inv_wcs);
-  Matrix3x3::multiply(R,tmp,_J_inv_wcs);
+  _J_inv_wcs = R*J_inv_ocs*RT;
+  //Matrix3x3::multiply(tmp,RT,_J_inv_wcs);
+  //Matrix3x3::multiply(R,tmp,_J_inv_wcs);
 }
 
 void RigidBody::applyImpulse(const Vector3D& a_wcs, const Vector3D & p_wcs){
@@ -138,7 +139,7 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
  void RigidBody::calculateK(Matrix3x3 & K, const Vector3D & a_wcs, const Vector3D & b_wcs)const{
   Real m = getMass();
   if (m == 0) { 
-    K.assign(Matrix3x3::Zero());
+    K = Matrix3x3::Zero();
     return;
   }
   const Vector3D & s_wcs = _kinematics.position();
@@ -159,11 +160,11 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   
   crossProductMatrix(tmpA,r_b_wcs);
   //tmpA = r_b_star
-  Matrix3x3::multiply(J_inv_wcs,tmpA,tmpB);
+  tmpB = J_inv_wcs *tmpA;
   //tmpB = J_inv_wcs * r_b_star
   crossProductMatrix(tmpA,r_a_wcs);
   //tmpA = r_a_star
-  Matrix3x3::multiply(tmpA,tmpB,K);
+  K = tmpA*tmpB;
   // K = r_a_star * J_inv_wcs * r_b_star
   tmpA.setZero();
   Real m_inv=1/m;
@@ -171,7 +172,7 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   tmpA(1,1)=m_inv;
   tmpA(2,2)=m_inv;
   //tmpA = 1/m * E_3
-  Matrix3x3::subtract(tmpA,K,K);
+  K = tmpA-K;
 //original:   K.assign((1/m)*E_3 - r_a_star * J_inv_wcs * r_b_star);
 };
   

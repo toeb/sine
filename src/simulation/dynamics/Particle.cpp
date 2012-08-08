@@ -4,10 +4,10 @@
 using namespace nspace;
 
 void Particle::setForce(const Vector3D & f){
-  _f.assign( f);
+  _f=f;
 }
 void Particle::addExternalForce(const Vector3D & f){
-  Vector3D::add(_f,f,_f);
+  _f += f;
  // _f += f;
 }
 void Particle::resetForce(){
@@ -79,9 +79,9 @@ void Particle::calculateDynamics(){
 void Particle::calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const{
   Real m = getMass();
   if (m == 0){
-    K.assign(Matrix3x3::Zero());
+    K = Matrix3x3::Zero();
     return;
   }
   const Matrix3x3 & E_3 = Matrix3x3::Identity();
-  K.assign((1 / m) * E_3);
+  K = (1 / m) * E_3;
 }

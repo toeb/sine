@@ -114,6 +114,12 @@ namespace nspace
 		void setFromMatrix3x3 (const Matrix3x3  & m);
 		void getMatrix3x3 (Matrix3x3 &m)const;
 		void setFromMatrix3x3T (const Matrix3x3  & m);
+    void toRotationMatrix (Matrix3x3 & R)const{getMatrix3x3(R);}
+    Matrix3x3 rotationMatrix()const{
+      Matrix3x3 m;
+      toRotationMatrix(m);
+      return m;    
+    }
 		void getMatrix3x3T (Matrix3x3 &m)const;
     Matrix3x3 getMatrix3x3T()const;
 		void normalize ();

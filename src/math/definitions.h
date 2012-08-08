@@ -20,7 +20,7 @@
 #include <math/matrix2/DynamicMatrix.h>
 #include <math/matrix2/StaticMatrixOperators.h>
 #include <math/matrix2/StaticMatrixSpecialization.h>
-
+#include <math/matrix2/Quaternion.h>
 
 namespace nspace{
   
@@ -31,7 +31,7 @@ namespace nspace{
   typedef matrix2::StaticMatrix<Real, 4,4> Matrix4x4;
   typedef matrix2::StaticMatrix<Real, 4,3> Matrix4x3;
   typedef matrix2::StaticMatrix<Real, 3,4> Matrix3x4;
-  typedef matrix2::StaticMatrix<Real, 4,1> Quaternion;
+  typedef matrix2::Quaternion<Real> Quaternion;
   typedef matrix2::DynamicMatrix<Real> VectorND;
   typedef matrix2::DynamicMatrix<Real> MatrixNxM;
 }

@@ -32,7 +32,7 @@ void PolygonRenderer::render(){
   
   
   Matrix3x3  R;
-  _polygon.coordinates().orientation().getMatrix3x3T(R);
+  _polygon.coordinates().orientation().toTransposedRotationMatrix(R);
 
   //cout << _polygon.coordinates().position() <<endl;
 

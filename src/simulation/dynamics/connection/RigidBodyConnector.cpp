@@ -32,7 +32,7 @@ void RigidBodyConnector::previewPosition(Real h,Vector3D & p_next_wcs)  {
   const Vector3D & v_wcs = getWorldVelocity(); // recalculates
   const Vector3D & a_wcs = getWorldAcceleration(); // recalculates acceleration
   Vector3D p = p_wcs + h*v_wcs + 0.5*h*h*a_wcs;
-  p_next_wcs.assign(p);
+  p_next_wcs = p;
 }
 
 void RigidBodyConnector::applyImpulse(const Vector3D & p_wcs){
@@ -53,7 +53,7 @@ void RigidBodyConnector::calculateWorldVelocity(Vector3D & v_wcs)const{
   const Vector3D & omega_wcs = _rigidBody.kinematics().angularVelocity();  
   Vector3D r_wcs = p_wcs - s_wcs;
   Vector3D v = v_s_wcs + (omega_wcs ^ r_wcs); // + r' which is 0
-  v_wcs.assign(v);
+  v_wcs =v;
 }
 
 
@@ -70,5 +70,5 @@ void RigidBodyConnector::calculateWorldAcceleration(Vector3D & a_wcs)const{
   Vector3D r_wcs = p_wcs - s_wcs;
   Vector3D a = a_s_wcs;
   a += (omega_wcs ^ (omega_wcs ^ r_wcs))+ (omega_dot_wcs ^r_wcs); // + values dependent on r' and r'' which are always 0
-  a_wcs.assign(a);
+  a_wcs=a;
 }

@@ -15,7 +15,7 @@ _p(box.coordinates().position()){
 }
 void BoxRenderer::render(){  
   Matrix3x3 RT;
-  _box.coordinates().orientation().getMatrix3x3T(RT);
+  _box.coordinates().orientation().toTransposedRotationMatrix(RT);
   //texture.bind();
   MiniGL::drawCube(
     _p,

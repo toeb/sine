@@ -88,13 +88,12 @@ const float nspace::MiniGL::darkGray[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
 
 void MiniGL::multQuaternion(const Quaternion & q){
-  Matrix3x3 R = q.getMatrix3x3();
+  Matrix3x3 R = q.rotationMatrix();
   multMatrix(R);
 }
 void MiniGL::multQuaternionT(const Quaternion & q){
-  Matrix3x3 R = q.getMatrix3x3();
-  R.transpose();
-  multMatrix(R);
+  Matrix3x3 RT = q.transposedRotationMatrix();  
+  multMatrix(RT);
 }
 
 
@@ -376,11 +375,11 @@ void MiniGL::setViewport (float pfovy, float pznear, float pzfar, const Vector3D
 	Matrix4x4 transformation;
 	Matrix3x3 rot;
 	Vector3D scale;
-	transformation.set(lookAtMatrix);
+/*	transformation.set(lookAtMatrix);
 	transformation.getTransformation(m_translation, rot, scale);
 	m_zoom = scale(0);
 	m_rotation.setFromMatrix3x3(rot);
-
+*/
 	glLoadIdentity ();
 }
 
@@ -684,7 +683,7 @@ void MiniGL::viewport ()
 	setProjectionMatrix (width, height);
 	glMatrixMode (GL_MODELVIEW);
 
-	glTranslate(m_translation);
+	/*glTranslate(m_translation);
 	Matrix3x3 rot;
 	m_rotation.getMatrix3x3(rot);
 	Matrix4x4 transform;
@@ -692,7 +691,7 @@ void MiniGL::viewport ()
 	transform.setTransformation(m_translation, rot, scale);
 	Real transformMatrix[16];
 	transform.get(&transformMatrix[0]);
-	glLoadMatrix(&transformMatrix[0]);
+	glLoadMatrix(&transformMatrix[0]);*/
 }
 
 /** Initialisiert die Lichtquellen für OpenGL.
@@ -752,9 +751,9 @@ void MiniGL::move (float x, float y, float z)
   */
 void MiniGL::rotateY (float y)
 {
-	Quaternion quat;
-	quat.setFromAxisAngle(Vector3D(0,1,0), -y);
-	m_rotation = m_rotation*quat;
+// 	Quaternion quat;
+// 	//quat.fromAxisAngle(Vector3D(0,1,0), -y);
+// 	m_rotation = m_rotation*quat;
 }
 
 /** Bewegt die Kamera im lokalen Koordinatensystem um den Mittelpunkt der Szene.
@@ -762,7 +761,7 @@ void MiniGL::rotateY (float y)
 void MiniGL::rotateX (float x)
 {
 	Quaternion quat;
-	quat.setFromAxisAngle(Vector3D(1,0,0), -x);
+	quat.fromAxisAngle(Vector3D(1,0,0), -x);
 	m_rotation = m_rotation*quat;
 }
 
@@ -835,7 +834,7 @@ void MiniGL::mouseMove (int x, int y)
 
 void MiniGL::rotate( float x, float y, float z )
 {
-	//float DEG_TO_RAD = (float) (M_PI / 180.0);
+/*	//float DEG_TO_RAD = (float) (M_PI / 180.0);
 	Quaternion quatX;
 	quatX.setFromAxisAngle(Vector3D(1,0,0), x);
 	Quaternion quatY;
@@ -843,7 +842,7 @@ void MiniGL::rotate( float x, float y, float z )
 	Quaternion quatZ;
 	quatZ.setFromAxisAngle(Vector3D(0,0,1), z);
 	
-	m_rotation = m_rotation*quatX*quatY*quatZ;
+	m_rotation = m_rotation*quatX*quatY*quatZ;*/
 }
 /*
 void MiniGL::setIntegratorsManager(IntegratorsManager *integratorsManager) {

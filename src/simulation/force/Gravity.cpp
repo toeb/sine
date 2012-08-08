@@ -27,7 +27,7 @@ void Gravity::setGravityMagnitude(Real amount){
   calculateGravity();
 }
 void Gravity::setDirection(const Vector3D & dir){
-  _direction.assign(dir);
+  _direction= dir;
   _direction.normalize();
   calculateGravity();
 }

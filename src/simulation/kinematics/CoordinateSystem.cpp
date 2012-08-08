@@ -45,35 +45,35 @@ const Matrix3x3 & CoordinateSystem::getTransposedRotationMatrix(){
 void CoordinateSystem::toObjectCoordinates(const Vector3D & r_wcs, Vector3D & r_ocs){
   Vector3D r = r_wcs - position();
   const Matrix3x3 & RT = getTransposedRotationMatrix();  
-  r_ocs.assign(RT*r);
+  r_ocs=RT*r;
 }
 void CoordinateSystem::fromObjectCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs){
   const Matrix3x3 & R = getRotationMatrix();
-  r_wcs.assign(position() + R* r_ocs);
+  r_wcs =position() + R* r_ocs;
 }
 
 void CoordinateSystem::toObjectCoordinates(const Vector3D & r_wcs, Vector3D & r_ocs)const{
   Vector3D r = r_wcs - position();
   Matrix3x3 RT;
-  orientation().getMatrix3x3T(RT);
-  r_ocs.assign(RT*r);
+  orientation().toTransposedRotationMatrix(RT);
+  r_ocs =RT*r;
 }
 void CoordinateSystem::fromObjectCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs)const{
   Matrix3x3 R;
-  orientation().getMatrix3x3(R);
-  r_wcs.assign(position() + R* r_ocs);
+  orientation().toRotationMatrix(R);
+  r_wcs = position() + R* r_ocs;
 }
 
 void CoordinateSystem::toObjectCoordinatesCached(const Vector3D & r_wcs, Vector3D & r_ocs)const{
   Vector3D r = r_wcs - position();
   const Matrix3x3 * RT = getCachedTransposedRotationMatrix();  
   if(!RT)cout<<"RT not cached"<<endl;
-  r_ocs.assign(*RT*r);
+  r_ocs = *RT*r;
 }
 void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vector3D & r_wcs)const{
   const Matrix3x3 * R = getCachedRotationMatrix();
   if(!R)cout<<"R not cached"<<endl;
-  r_wcs.assign(position() + *R* r_ocs);
+  r_wcs= position() + *R* r_ocs;
 }
 
 
@@ -84,8 +84,8 @@ void CoordinateSystem::calculateRotationMatrices(){
     _R = new Matrix3x3;
     _RT = new Matrix3x3;
   }
-  orientation().getMatrix3x3(*_R);
-  _RT->assign(*_R);
-  _RT->transposeInPlace();
+  orientation().toRotationMatrix(*_R);
+  *_RT=*_R;
+  _RT->transpose();
 }
 

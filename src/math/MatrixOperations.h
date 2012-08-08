@@ -1,8 +1,6 @@
 #pragma once 
 #include <common/Config.h>
-
 #include <math/ScalarOperations.h>
-#include <math/definitions.h>
 #include <iostream>
 #include <functional>
 
@@ -12,7 +10,36 @@ namespace nspace{
   template<typename T>
   class MatrixOperations{
   public:
-  
+  template<typename MatrixType>
+  static inline void transposeInPlace(MatrixType & A){
+    if(A.rows()!=A.cols()){
+      std::cerr << "transpose in place only works with Square Matrices"<<std::endl;
+    }
+    for(int i=0; i < A.rows(); i++){
+      for(int j=i+1; j < A.cols(); j++){
+        T tmp;
+        tmp = A(i,j);
+        A(i,j)=A(j,i);
+        A(j,i)=tmp;
+      }
+    }
+
+  }
+  template<typename MatrixType>
+  static inline void transpose(MatrixType & AT, const MatrixType & A){
+    for(int i=0; i < A.rows(); i++){
+      for(int j=0; j < A.cols(); j++){
+        // the tmp var is need if AT == A
+        T tmp;
+        tmp = A(i,j);
+        A(i,j)=A(j,i);
+        A(j,i)=tmp;
+      }
+    }
+  }
+ 
+
+
     template<typename MatrixType>
     static inline void setFunction(MatrixType & result, std::function<void (T& , int i, int j) > f ){
       for(int i=0; i < result.rows(); i++){
@@ -29,7 +56,14 @@ namespace nspace{
         }
       }
     }   
-
+    template<typename MatrixType>
+    static inline void negate(MatrixType & result,const MatrixType & m){
+      for(int i=0; i < result.rows(); i++){
+        for(int j=0; j < result.cols(); j++){
+          result(i,j)=-m(i,j);
+        }
+      }
+    }   
     template<typename MatrixType>
     static inline void addition(MatrixType & sum, const MatrixType & a, const MatrixType & b){
       for(int i=0; i < a.rows(); i++){
@@ -42,7 +76,7 @@ namespace nspace{
     static inline void subtraction(MatrixType & difference, const MatrixType & a, const MatrixType & b){
       for(int i=0; i < a.rows(); i++){
         for(int j=0; j < a.cols(); j++){
-          sum(i,j)=a(i,j)+b(i,j);
+          difference(i,j)=a(i,j)-b(i,j);
         }
       }
     }
@@ -54,7 +88,16 @@ namespace nspace{
         }
       }
     }
-   
+    template<typename MatrixType>
+    static inline void divideScalar(MatrixType & product, const MatrixType & a, const T & d){
+      T reciproc;
+      ScalarOperations<T>::reciprocal(reciproc,d);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          product(i,j)=a(i,j)*d;
+        }
+      }
+    }
     
   };
    template<typename T, typename ProductType, typename FactorAType, typename FactorBType>

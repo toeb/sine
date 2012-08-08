@@ -62,7 +62,7 @@ void KinematicBody::exportDerivedState(IState & xDot)const{
   omegaTilde(2)=angularVelocity()(1);
   omegaTilde(3)=angularVelocity()(2);
 
-  Quaternion qDot =orientation()*omegaTilde;//*0.5
+  Quaternion qDot =0.5*(orientation()*omegaTilde);
 
   xDot(6,0) = qDot(0);
   xDot(7,0) = qDot(1);

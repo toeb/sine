@@ -70,15 +70,18 @@ Classification classifyBoundingBox(const BoundingBox & aabb, const Polygon & pol
   for(int i = 0; i < polygon.edges().size(); i++){
     Vector3D edgeDir,e_n;
     polygon.edge(i)->getDirection(edgeDir);
-    Vector3D::crossProduct(edgeDir,Vector3D::UnitX(),e_n);
+    e_n = edgeDir ^Vector3D::UnitX();
+    //Vector3D::crossProduct(edgeDir,Vector3D::UnitX(),e_n);
     e_n.normalize();
     axes.push_back(Axis(e_n));
     
-    Vector3D::crossProduct(edgeDir,Vector3D::UnitY(),e_n);
+    e_n = edgeDir ^Vector3D::UnitY();
+    //Vector3D::crossProduct(edgeDir,Vector3D::UnitY(),e_n);
     e_n.normalize();
     axes.push_back(Axis(e_n));
     
-    Vector3D::crossProduct(edgeDir,Vector3D::UnitZ(),e_n);
+    //Vector3D::crossProduct(edgeDir,Vector3D::UnitZ(),e_n);
+    e_n =edgeDir^Vector3D::UnitZ();
     e_n.normalize();
     axes.push_back(Axis(e_n));
   }
@@ -123,7 +126,8 @@ void Polygon::projectOCS(const Axis & axis_ocs, Interval & interval)const{
 
   Vector3D difference;
   for(int i =0; i < vertices().size(); i++){
-    Vector3D::subtract(vertex(i)->p_ocs,axis_ocs.p,difference);
+    //Vector3D::subtract(vertex(i)->p_ocs,axis_ocs.p,difference);
+    difference = vertex(i)->p_ocs-axis_ocs.p;
     Real val = axis_ocs.projectOnAxis(difference);
     interval.extendTo(val);
 
@@ -139,7 +143,9 @@ bool Polygon::isInsideOCS(const Vector3D & p_ocs)const{
     f->getCenter(f_c);
     Vector3D p = p_ocs - f_c;
     Real val =1;
-    Vector3D::dotProduct(f->n_ocs,p,val);
+    val = f->n_ocs*p;
+    //Vector3D::dotProduct(f->n_ocs,p,val);
+
     if(val-EPSILON > 0 )return false;
   }
   return true;
@@ -165,7 +171,7 @@ void Polygon::cleanupObject(){
  Vertex * Polygon::addVertex(const Vector3D & p_ocs){
     Vertex * v = createVertex();
     v->index = vertices().size();
-    v->p_ocs.assign(p_ocs);
+    v->p_ocs=p_ocs;
     vertices().push_back(v);
     return v;
   }
@@ -391,7 +397,8 @@ void Polygon::scale(Real x, Real y, Real z){
     Vector3D a,b;    
     e1->getDirection(a);
     e2->getDirection(b);        
-    Vector3D::crossProduct(a,b,f->n_ocs);
+    //Vector3D::crossProduct(a,b,f->n_ocs);
+    f->n_ocs = a^b;
     f->n_ocs.normalize();
 
     //add edge

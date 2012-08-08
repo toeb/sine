@@ -1,6 +1,6 @@
 #pragma once
 #include <ostream>
-#include <valarray>
+
 
 
 #include <math/definitions.h>

@@ -19,7 +19,7 @@ void FpsCamera::timeout(Time timePassed){
   body.velocity().setZero();
   body.angularVelocity().setZero();  
   
-  Matrix3x3 R = body.orientation().getMatrix3x3();
+  Matrix3x3 R = body.orientation().rotationMatrix();
   
   
   Vector3D direction;
@@ -45,8 +45,10 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
 	}
 	Real speed = 0.1;
   Real length =dx+dy;// sqrt((Real)dx*dx+dy*dy);
+  Real xSpeed = speed*dx;
+  Real ySpeed = speed*dy;
 
-  Matrix3x3 R = body.orientation().getMatrix3x3();
+  Matrix3x3 R = body.orientation().rotationMatrix();
   
   
   Vector3D direction;
@@ -58,12 +60,12 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
   
   if(!_handler)return;
   if(_handler->isMouseButtonDown(BUTTON_RIGHT)||_handler->isKeyDown(KEY_SHIFT)){
-    coordinates().position() += -direction*dy*speed;
-    coordinates().position() += -binormal*dx*speed;
+    coordinates().position() += -direction*ySpeed;
+    coordinates().position() += -binormal*xSpeed;
   }
   if(_handler->isMouseButtonDown(BUTTON_MIDDLE)||_handler->isKeyDown(KEY_ALT)){
-    coordinates().position() += -normal*dy*speed;
-    coordinates().position() += -binormal*dx*speed;
+    coordinates().position() += -normal*ySpeed;
+    coordinates().position() += -binormal*xSpeed;
   }
 
   if(_handler->isKeyDown(KEY_1)){    
@@ -81,8 +83,8 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
     pitch += -dy*speed*0.1;
     Quaternion qx;
     Quaternion qy;
-    qx.setFromAxisAngle(Vector3D::UnitX(),pitch);
-    qy.setFromAxisAngle(Vector3D::UnitY(),yaw);
+    qx.fromAxisAngle(Vector3D::UnitX(),pitch);
+    qy.fromAxisAngle(Vector3D::UnitY(),yaw);
     qx.normalize();
     qy.normalize();
     body.orientation() = qy*qx;
