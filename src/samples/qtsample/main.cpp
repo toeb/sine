@@ -41,42 +41,7 @@ public:
 };
 
 int main(int argc, char** argv){
-   // quat2RotMatrix();
- // return 0;
- /* MatrixPerformanceTests<Matrix3x3> suiteA;
-  suiteA.runSuite();
-  MatrixPerformanceTests<StaticMatrix<Real,3,3> >suiteB;
-  suiteB.runSuite();
-  return 0;
-  matrix2::StaticMatrix<Real,3,3> mat33;
-  matrix2::StaticMatrix<Real,3,4> mat34;
-  mat34.setZero();
-  mat33.setZero();
-  cout << mat34;
-  cout <<mat33;
 
-  MatrixOperations<Real>::setConstant(mat34,1);
-  cout << mat34;
-  MatrixOperations<Real>::setFunction(mat33,[](Real & a,int i, int k){a=i==k;});
-  cout <<mat33;
-
-  MatrixOperations<Real>::addition(mat33,mat33,mat33);
-  cout <<mat33;
-
-  mat33 = mat33+mat33;
-  cout <<mat33;
-
-  mat33 = mat33*mat33;
-  cout <<mat33;
-
-  auto a =mat33*mat34;
-  cout <<a;
-
-  auto d = a * 0.3;
-  cout <<d;
-  return 0;
-
-  //return 0;*/
   DefaultSimulationSetup setup;
 
   QtSimulationRunner runner;
@@ -110,7 +75,7 @@ int main(int argc, char** argv){
   simulation << da;
   {
 
-    int n(0), m(0), l(0);
+    int n(500), m(5), l(5);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){
@@ -134,7 +99,7 @@ int main(int argc, char** argv){
   {
 
 
-    int n(10), m(10), l(10);
+    int n(0), m(0), l(0);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){

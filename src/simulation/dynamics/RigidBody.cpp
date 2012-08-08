@@ -102,8 +102,9 @@ const Matrix3x3 & RigidBody::getInvertedInertiaTensorInWorldCoordinates()const{
 Matrix3x3 tmp;
 void RigidBody::calculateInvertedInertiaTensorInWorldCoordinates(){
   const Matrix3x3 & J_inv_ocs = getInvertedInertiaTensor();
-  const Matrix3x3 & R = _kinematics.getRotationMatrix();
-  const Matrix3x3 & RT = _kinematics.getTransposedRotationMatrix();
+  //_kinematics.calculateRotationMatrices();
+  const Matrix3x3 & R = *_kinematics.getCachedRotationMatrix();//getRotationMatrix();
+  const Matrix3x3 & RT = *_kinematics.getCachedTransposedRotationMatrix();//
   _J_inv_wcs = R*J_inv_ocs*RT;
   //Matrix3x3::multiply(tmp,RT,_J_inv_wcs);
   //Matrix3x3::multiply(R,tmp,_J_inv_wcs);

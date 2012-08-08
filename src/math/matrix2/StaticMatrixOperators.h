@@ -40,7 +40,7 @@ namespace nspace{
   template<typename T,int rows, int cols>
   inline  matrix2::StaticMatrix<T,rows,cols> operator-(const matrix2::StaticMatrix<T,rows,cols> & a,const matrix2::StaticMatrix<T,rows,cols> & b){
     matrix2::StaticMatrix<T,rows,cols> c;
-    MatrixOperations<T>::subtraction(c,a,b);
+    MatrixSubtraction<matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>>::operation(c,a,b);
     return c;
   }
   template<typename T,int rows, int cols>
@@ -64,7 +64,7 @@ namespace nspace{
   template<typename T, int outerRows, int outerCols, int innerDimension>
   inline matrix2::StaticMatrix<T,outerRows,outerCols> operator * (const matrix2::StaticMatrix<T,outerRows,innerDimension> & a,const matrix2::StaticMatrix<T,innerDimension,outerCols> & b){
     matrix2::StaticMatrix<T,outerRows,outerCols> c;
-    MatrixMultiplication<T, matrix2::StaticMatrix<T,outerRows,outerCols>,matrix2::StaticMatrix<T,outerRows,innerDimension>,matrix2::StaticMatrix<T,innerDimension,outerCols>>::multiply(c,a,b);
+    MatrixMultiplication<T, matrix2::StaticMatrix<T,outerRows,outerCols>,matrix2::StaticMatrix<T,outerRows,innerDimension>,matrix2::StaticMatrix<T,innerDimension,outerCols>>::operation(c,a,b);
     return c;
   };
 
@@ -75,7 +75,7 @@ namespace nspace{
   }
   template<typename T, int rows, int cols> 
   inline StaticMatrix<T,rows,cols> & operator -=(StaticMatrix<T,rows,cols> & a, const StaticMatrix<T,rows,cols> & b ){
-    MatrixOperations<T>::subtraction(a,a,b);
+    MatrixSubtraction<matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>>::operation(a,a,b);
     return a;
   }
   template<typename T, int rows, int cols> 

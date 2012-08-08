@@ -9,8 +9,8 @@ namespace nspace{
   class MatrixAssign{
   public:
     static inline void operation(MatA &  result, const MatB & val){
-      if(!result.resize(val.rows(), val.cols())){
-        std::cout << "MatrixAssign: could not resize result matrix "<<endl;
+      if(!result.resize(val.rows(), val.cols(),false)){
+        std::cout << "MatrixAssign: could not resize result matrix "<<std::endl;
         return;
       }
       for(int i=0; i < result.rows(); i++){
@@ -55,6 +55,20 @@ namespace nspace{
   }
   };
   
+  template<typename C, typename A, typename B>
+  class MatrixSubtraction{
+  public:
+    static inline void operation(C & c, const A & a, const B & b){
+      c.resize(a.rows(),a.cols(),false);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          c(i,j)=a(i,j)-b(i,j);
+        }
+      }
+    }
+  };
+
+
   template<typename Product, typename MatrixFactor, typename ScalarFactor>
   class MatrixMultiplyScalar{
   public:
@@ -125,14 +139,14 @@ namespace nspace{
       }
     }   
     
-    template<typename MatrixType>
+   /* template<typename MatrixType>
     static inline void subtraction(MatrixType & difference, const MatrixType & a, const MatrixType & b){
       for(int i=0; i < a.rows(); i++){
         for(int j=0; j < a.cols(); j++){
           difference(i,j)=a(i,j)-b(i,j);
         }
       }
-    }
+    }*/
     
     template<typename MatrixType>
     static inline void divideScalar(MatrixType & product, const MatrixType & a, const T & d){
@@ -149,14 +163,14 @@ namespace nspace{
    template<typename T, typename ProductType, typename FactorAType, typename FactorBType>
     class MatrixMultiplication{
     public:
-    static inline void multiply(ProductType & product, const FactorAType & a, const FactorBType & b){
+    static inline void operation(ProductType & product, const FactorAType & a, const FactorBType & b){
       T sum;
       const int RowCount = product.rows();
       const int ColumnCount = product.cols();
       const int InnerDimension = a.cols();
       for(int i=0; i < RowCount; i++){
         for(int j=0; j < ColumnCount; j++){
-          sum=0;
+          sum=0.0;
           //ScalarOperations<T>::Zero(sum);
           for(int k=0; k < InnerDimension;k++){
             sum+=a(i,k)*b(k,j);
@@ -168,6 +182,28 @@ namespace nspace{
       }
     }
     };
+
+  namespace MatrixOps{
+  template<typename C, typename A, typename B>
+  void add(C & c, const A& a, const B & b){
+    MatrixAddition<C,A,B>::operation(c,a,b);
+  }
+  template<typename C, typename A, typename B>
+  void subtract(C & c, const A& a, const B & b){
+    MatrixSubtraction<C,A,B>::operation(c,a,b);
+  }
+  template<typename C, typename A, typename B>
+  void multiplyMatrix(C & c, const A& a, const B & b){
+    MatrixMultiplication<Real,C,A,B>::operation(c,a,b);
+  }
+  template<typename C, typename A, typename B>
+  void multiplyScalar(C & c, const A& a, const B & s){
+    MatrixMultiplyScalar<C,A,B>::operation(c,a,s);
+  }
+
+  };
+
+
   /*
   template<typename T>
   inline void symmInverse(const StaticMatrix<T,3,3> & m, StaticMatrix<T,3,3> & m_inverted){

@@ -33,8 +33,9 @@ public:
   StaticMatrix(const Real * dataPtr){
     assign(dataPtr);
   }
-  StaticMatrix<T,RowCount,ColumnCount> & operator=(const StaticMatrix<T,RowCount,ColumnCount> & orig ){
-    memcpy(data(),orig.data(),dataByteSize());
+  inline StaticMatrix<T,RowCount,ColumnCount> & operator=(const StaticMatrix<T,RowCount,ColumnCount> & orig ){
+    MatrixAssign<StaticMatrix<T,RowCount,ColumnCount>,StaticMatrix<T,RowCount,ColumnCount> >::operation(*this,orig);
+    //memcpy(_data,orig._data,dataByteSize());
     return *this;
   }
   StaticMatrix(){}
@@ -177,7 +178,8 @@ public:
   inline void normalize(){
     VectorOperations<T>::normalize(*this);
   }
-  bool resize(int rows, int cols, bool setToZero){
+  inline bool resize(int rows, int cols, bool setToZero){
+    if(rows==RowCount && cols == ColumnCount)return true;
     return false;
   }
   inline StaticMatrix<T,RowCount,ColumnCount> operator -(){

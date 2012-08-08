@@ -42,7 +42,7 @@ namespace nspace
       }
     
     }
-    virtual bool resize(int r, int c, bool setToZero){
+    virtual bool resize(int r, int c, bool setToZero=true){
       if(r==rows()&&c==cols())return true;
       return false;
     };

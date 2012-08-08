@@ -259,22 +259,16 @@ namespace matrix2{
       T wx = w*x;
       T ww =  w*w;
 
-      //m(0,0) = 1.0 - 2.0*(yy + zz);
+      R[0] = ww+xx-yy-zz;
       R[1] = 2.0*(xy-wz);
       R[2] = 2.0*(xz+wy);
-
       R[3] = 2.0*(xy+wz);
-      //m(1,1) = 1.0 - 2.0*(xx+zz);
+      R[4] = ww+yy-xx-zz;
       R[5] = 2.0*(yz-wx);
-
       R[6] = 2.0*(xz-wy);
       R[7] = 2.0*(yz+wx);
-      //m(2,2) = 1.0 - 2.0*(xx+yy);
-
-      // (Besl, McKay 1992)
-      R[0] = ww+xx-yy-zz;
-      R[4] = ww+yy-xx-zz;
       R[8] = ww+zz-xx-yy;
+      
     }
 
   };  

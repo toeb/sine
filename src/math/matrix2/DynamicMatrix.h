@@ -48,6 +48,10 @@ public:
     _cols = 0;
   }
   DynamicMatrix():_rows(0),_cols(0),_data(0){resize(0,0);};
+  DynamicMatrix(int rows, int cols):_rows(0),_cols(0),_data(0){
+    resize(rows,cols);
+  }
+
   inline size_t dataByteSize()const{
     return _rows*_cols*sizeof(T);
   }
@@ -129,14 +133,14 @@ inline DynamicMatrix<T>  operator + (const DynamicMatrix<T> & a, const DynamicMa
 template<typename T>
 inline DynamicMatrix<T>  operator - (const DynamicMatrix<T> & a, const DynamicMatrix<T> & b){
   DynamicMatrix<T> result;
-  result.resize(a.rows(),a.cols());
-  MatrixOperations<T>::subtraction(result,a,b);
+  //result.resize(a.rows(),a.cols());
+  MatrixSubtraction<DynamicMatrix<T>,DynamicMatrix<T>,DynamicMatrix<T> >::operation(result,a,b);
   return result;
 }
 
 template<typename T>
 inline DynamicMatrix<T> & operator -= (DynamicMatrix<T> & a, const DynamicMatrix<T> & b){
-  MatrixOperations<T>::subtraction(a,a,b);
+  MatrixSubtraction<DynamicMatrix<T>,DynamicMatrix<T>,DynamicMatrix<T> >::operation(a,a,b);
 }
 
 
@@ -170,9 +174,38 @@ inline DynamicMatrix<T> & operator -= (DynamicMatrix<T> & a, const DynamicMatrix
     }
   } ;
   template<typename T>
+  class MatrixSubtraction<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
+  public: 
+    static inline void operation(matrix2::DynamicMatrix<T> & sumMat,const matrix2::DynamicMatrix<T> & aMat, const matrix2::DynamicMatrix<T> & bMat){
+      int rows = aMat.rows();
+      int cols = bMat.cols();
+      if(bMat.rows()!=rows ||bMat.cols()!=cols){
+        std::cerr << "matrix addition failed. dimension mismatch"<<std::endl;
+        return;
+      }
+      int size = rows*cols;
+      sumMat.resize(rows,cols,false);
+      // get data arrays
+      const T* a=aMat.data();
+      const T* b = bMat.data();
+      T* c=sumMat.data();
+
+
+#pragma omp parallel for
+      for(int i=0; i < size; ++i){
+        c[i]=a[i]-b[i];
+      }
+    }
+  } ;
+
+  template<typename T>
   class MatrixSetConstant<T,matrix2::DynamicMatrix<T> >{
   public:
     static inline void operation(matrix2::DynamicMatrix<T> & target, const T & value){
+      if(value==0.0){
+        memset(target.data(),0,target.dataByteSize());
+        return;
+      }
       Real * t =target.data();
       const int s = target.size();
       //go serial if size is smaller than sum trehshold
