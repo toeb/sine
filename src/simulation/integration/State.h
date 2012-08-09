@@ -1,8 +1,5 @@
 #pragma once
 #include <ostream>
-
-
-
 #include <math/definitions.h>
 
 namespace nspace{

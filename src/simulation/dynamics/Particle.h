@@ -57,7 +57,7 @@ class Particle : public DynamicBody, public virtual IStatefulObject
    
     const Vector3D &  getCenterOfGravity()const {return position();};
 
-    Real getMass()const{return _m;}
+    inline Real getMass()const{return _m;}
     void setMass(Real m){_m = m;}
 
     void applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs);

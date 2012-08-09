@@ -15,19 +15,19 @@ void Integrator::integrate(Real a, Real b){
   tock();
 }
 
-StateMatrix Integrator::f(Real t, const StateMatrix & x, Real h){
+const StateMatrix& Integrator::f(Real t, const StateMatrix & x, Real h){
   
   _statefulObject->importState(State(x));
 	//cout << State(x)<<endl;
   if(_systemFunction)_systemFunction->evaluate(t,h);
-  StateMatrix xDot;
-	State state(xDot);
-  if(!x.size())return xDot;
+ // StateMatrix xDot;
+	State state(_derivedState);
+  if(!x.size())return _derivedState;
 	_statefulObject->resizeState(state);
-	xDot.setZero();
+	_derivedState.setZero();
   _statefulObject->exportDerivedState(state);
   _evaluationCount++;
-  return xDot;
+  return _derivedState;
 }
 
 

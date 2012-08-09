@@ -68,22 +68,25 @@ int main(int argc, char** argv){
   }
   DynamicsAlgorithm da;
   // simulation << new Gravity(1);
-  simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
-    Vector3D rando ((rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5);
-    force = rando -0.001*cog;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
-  });
+  
+  /*simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
+    //Vector3D rando ((rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5);
+    //MatrixOps::multiplyScalar(force,cog,-0.0001);
+    //MatrixOps::add(force,force,rando);
+    //force = rando -0.001*cog;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
+  });*/
   simulation << da;
   {
 
-    int n(500), m(5), l(5);
+    int n(100), m(10), l(50);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){
           Particle * p = new Particle();
           p->setMass(1);
-          p->velocity()(0) = (rand()%1000)/1000.0*1;
-          p->velocity()(1) = (rand()%1000)/1000.0*1;
-          p->velocity()(2) = (rand()%1000)/1000.0*1;
+          p->velocity()(0) = (rand()%1000)/1000.0*1-0.5;
+          p->velocity()(1) = (rand()%1000)/1000.0*1-0.5;
+          p->velocity()(2) = (rand()%1000)/1000.0*1-0.5;
           p->position()(0) = i*3-m/2*3;
           p->position()(1) = j* 3-n/2*3;
           p->position()(2) = k* 3-n/2*3;
@@ -105,16 +108,20 @@ int main(int argc, char** argv){
         for(int k=0; k < l; k++){
           DynamicBox * p = new DynamicBox();
           
-          p->kinematics().velocity()(0) = (rand()%1000)/1000.0*1;
-          p->kinematics().velocity()(1) = (rand()%1000)/1000.0*1;
-          p->kinematics().velocity()(2) = (rand()%1000)/1000.0*1;
-          p->kinematics().angularVelocity()(0) = (rand()%1000)/1000.0*1;
-          p->kinematics().angularVelocity()(1) = (rand()%1000)/1000.0*1;
-          p->kinematics().angularVelocity()(2) = (rand()%1000)/1000.0*1;
+          p->kinematics().velocity()(0) = (rand()%1000)/1000.0*1-0.5;
+          p->kinematics().velocity()(1) = (rand()%1000)/1000.0*1-0.5;
+          p->kinematics().velocity()(2) = (rand()%1000)/1000.0*1-0.5;
+          p->kinematics().angularVelocity()(0) = (rand()%1000)/1000.0*1-0.5;
+          p->kinematics().angularVelocity()(1) = (rand()%1000)/1000.0*1-0.5;
+          p->kinematics().angularVelocity()(2) = (rand()%1000)/1000.0*1-0.5;
           p->kinematics().position()(0) = i*3-m/2*3;
           p->kinematics().position()(1) = j* 3-n/2*3;
           p->kinematics().position()(2) = k* 3-n/2*3;
-
+          p->kinematics().orientation()(0) = (rand()%1000)/1000.0*1;
+          p->kinematics().orientation()(1) = (rand()%1000)/1000.0*1;
+          p->kinematics().orientation()(2) = (rand()%1000)/1000.0*1;
+          p->kinematics().orientation()(3) = (rand()%1000)/1000.0*1;
+          p->kinematics().orientation().normalize();
           // PointRenderer * pr = new PointRenderer(p->position());
           BoxRenderer * br = new BoxRenderer(p->geometry());
           simulation<<p;

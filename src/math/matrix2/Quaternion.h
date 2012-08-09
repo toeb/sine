@@ -203,7 +203,7 @@ namespace matrix2{
     Quaternion(const T & x, const T & y, const T & z, const T & w):StaticMatrix(x,y,z,w){}
 
     static const Quaternion & ZeroRotation(){
-      static Quaternion _zeroRotationVector(1,0,0,0);
+      static Quaternion _zeroRotationVector(0,0,0,1);
       return _zeroRotationVector;
     }
 

@@ -4,83 +4,45 @@
 #include <iostream>
 #include <functional>
 
+#include <math/operations/MatrixAdditionInPlace.h>
+#include <math/operations/MatrixAddition.h>
+#include <math/operations/MatrixAssignment.h>
+#include <math/operations/MatrixConvolution.h>
+#include <math/operations/MatrixFilter.h>
+#include <math/operations/MatrixFrobeniusNorm.h>
+#include <math/operations/MatrixInversion.h>
+#include <math/operations/MatrixMinimumElement.h>
+#include <math/operations/MatrixMaximumElement.h>
+#include <math/operations/MatrixMultiplicationInPlace.h>
+#include <math/operations/MatrixMultiplication.h>
+#include <math/operations/MatrixNegationInPlace.h>
+#include <math/operations/MatrixNegation.h>
+#include <math/operations/MatrixNormalization.h>
+#include <math/operations/MatrixMultiplication.h>
+#include <math/operations/MatrixAllocate.h>
+#include <math/operations/MatrixDeallocate.h>
+#include <math/operations/MatrixAccessElement.h>
+#include <math/operations/MatrixScalarDivisionInPlace.h>
+#include <math/operations/MatrixScalarDivision.h>
+#include <math/operations/MatrixScalarMultiplicationInPlace.h>
+#include <math/operations/MatrixScalarMultiplication.h>
+#include <math/operations/MatrixSetConstant.h>
+#include <math/operations/MatrixSetFunction.h>
+#include <math/operations/MatrixSubtractionInPlace.h>
+#include <math/operations/MatrixSubtraction.h>
+#include <math/operations/MatrixInversionSymmetric.h>
+#include <math/operations/MatrixTranspositionInPlace.h>
+#include <math/operations/MatrixTransposition.h>
+#include <math/operations/VectorCrossProduct.h>
+#include <math/operations/VectorInnerProduct.h>
+#include <math/operations/VectorOuterProduct.h>
+#include <math/operations/VectorToCrossProductMatrix.h>
+#include <math/operations/QuaternionMultiplication.h>
+#include <math/operations/QuaternionConjugation.h>
+#include <math/operations/QuaternionToRotationMatrix.h>
+
+
 namespace nspace{
-  template<typename MatA, typename MatB>
-  class MatrixAssign{
-  public:
-    static inline void operation(MatA &  result, const MatB & val){
-      if(!result.resize(val.rows(), val.cols(),false)){
-        std::cout << "MatrixAssign: could not resize result matrix "<<std::endl;
-        return;
-      }
-      for(int i=0; i < result.rows(); i++){
-        for(int j=0; j < result.cols(); j++){
-          result(i,j)=val(i,j);
-        }
-      }
-    }
-  };
-  template<typename T, typename Mat>
-  class MatrixSetConstant{
-  public:
-    static inline void operation(Mat &  result, const T & val){
-      for(int i=0; i < result.rows(); i++){
-        for(int j=0; j < result.cols(); j++){
-          result(i,j)=val;
-        }
-      }
-    }
-  };
-  template<typename Mat, typename Func>
-  class MatrixSetFunction{
-  public:
-    static inline void operation(Mat &  result, Func f){
-      for(int i=0; i < result.rows(); i++){
-        for(int j=0; j < result.cols(); j++){
-          result(i,j)=f(i,j);
-        }
-      }
-    }
-  };
-
-  template<typename Sum, typename Summand1, typename Summand2>
-  class MatrixAddition{
-  public:
-  static inline void operation(Sum & sum, const Summand1 & a, const Summand2 & b){
-    for(int i=0; i < a.rows(); i++){
-      for(int j=0; j < a.cols(); j++){
-        sum(i,j)=a(i,j)+b(i,j);
-      }
-    }
-  }
-  };
-  
-  template<typename C, typename A, typename B>
-  class MatrixSubtraction{
-  public:
-    static inline void operation(C & c, const A & a, const B & b){
-      c.resize(a.rows(),a.cols(),false);
-      for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols(); j++){
-          c(i,j)=a(i,j)-b(i,j);
-        }
-      }
-    }
-  };
-
-
-  template<typename Product, typename MatrixFactor, typename ScalarFactor>
-  class MatrixMultiplyScalar{
-  public:
-    static inline void operation(Product & product, const MatrixFactor & a, const ScalarFactor & d){
-      for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols(); j++){
-          product(i,j)=a(i,j)*d;
-        }
-      }
-    }
-  };
-
   template<typename T>
   class MatrixOperations{
   public:
@@ -160,28 +122,7 @@ namespace nspace{
     }
     
   };
-   template<typename T, typename ProductType, typename FactorAType, typename FactorBType>
-    class MatrixMultiplication{
-    public:
-    static inline void operation(ProductType & product, const FactorAType & a, const FactorBType & b){
-      T sum;
-      const int RowCount = product.rows();
-      const int ColumnCount = product.cols();
-      const int InnerDimension = a.cols();
-      for(int i=0; i < RowCount; i++){
-        for(int j=0; j < ColumnCount; j++){
-          sum=0.0;
-          //ScalarOperations<T>::Zero(sum);
-          for(int k=0; k < InnerDimension;k++){
-            sum+=a(i,k)*b(k,j);
-            /*ScalarOperations<T>::multiply(scalarProduct,a(i,k),b(k,j));
-            ScalarOperations<T>::add(sum,sum,scalarProduct);*/
-          }
-          product(i,j)=sum;
-        }
-      }
-    }
-    };
+  
 
   namespace MatrixOps{
   template<typename C, typename A, typename B>

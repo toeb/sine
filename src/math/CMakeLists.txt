@@ -1,3 +1,42 @@
+set(operationsSource
+./operations/MatrixAdditionInPlace.h
+./operations/MatrixAddition.h
+./operations/MatrixAssignment.h
+./operations/MatrixConvolution.h
+./operations/MatrixFilter.h
+./operations/MatrixFrobeniusNorm.h
+./operations/MatrixInversion.h
+./operations/MatrixMinimumElement.h
+./operations/MatrixMaximumElement.h
+./operations/MatrixMultiplicationInPlace.h
+./operations/MatrixMultiplication.h
+./operations/MatrixNegationInPlace.h
+./operations/MatrixNegation.h
+./operations/MatrixNormalization.h
+./operations/MatrixMultiplication.h
+./operations/MatrixAllocate.h
+./operations/MatrixDeallocate.h
+./operations/MatrixAccessElement.h
+./operations/MatrixScalarDivisionInPlace.h
+./operations/MatrixScalarDivision.h
+./operations/MatrixScalarMultiplicationInPlace.h
+./operations/MatrixScalarMultiplication.h
+./operations/MatrixSetConstant.h
+./operations/MatrixSetFunction.h
+./operations/MatrixSubtractionInPlace.h
+./operations/MatrixSubtraction.h
+./operations/MatrixInversionSymmetric.h
+./operations/MatrixTranspositionInPlace.h
+./operations/MatrixTransposition.h
+./operations/VectorCrossProduct.h
+./operations/VectorInnerProduct.h
+./operations/VectorOuterProduct.h
+./operations/VectorToCrossProductMatrix.h
+./operations/QuaternionMultiplication.h
+./operations/QuaternionConjugation.h
+./operations/QuaternionToRotationMatrix.h
+)
+source_group("operations" FILES ${operationsSource})
 set(matrix1Source
 	./matrix1/Matrix2x2.cpp
 	./matrix1/Matrix2x2.h
@@ -29,10 +68,8 @@ set(matrix1Source
 source_group("matrix1" FILES ${matrix1Source})
 set(matrix2Source
  ./matrix2/DynamicMatrix.h
- ./matrix2/DynamicVector.h
  ./matrix2/Quaternion.h
  ./matrix2/StaticMatrix.h
- ./matrix2/StaticVector.h
  ./matrix2/StaticMatrixOperators.h
  ./matrix2/StaticMatrixSpecialization.h
 )
@@ -69,7 +106,7 @@ set(source
 )
 source_group("src" FILES ${source})
 
-add_library(math ${source} ${matrix1Source} ${matrix2Source} ${matrix3Source} CMakeLists.txt )
+add_library(math ${source} ${matrix1Source} ${matrix2Source} ${matrix3Source} ${operationsSource} CMakeLists.txt )
 target_link_libraries(math common)
 project_folder("" math)
 #SET_TARGET_PROPERTIES(math PROPERTIES STATIC_LIBRARY_FLAGS_RELEASE ${IBDS_STATIC_LIBRARY_FLAGS_RELEASE})   

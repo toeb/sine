@@ -17,6 +17,7 @@ protected:
   }
 
 public:
+
   inline static StaticMatrix<T,RowCount,ColumnCount>  Zero(){    
     StaticMatrix<T,RowCount,ColumnCount>  matrix;    
     matrix.setZero();          
@@ -64,7 +65,9 @@ public:
 
   inline T & operator()(int i, int j){return _data[i* ColumnCount+j]; }
   inline T & operator()(int i){return _data[i];}
-  inline const T & operator()(int i)const{return _data[i];}
+  inline const T & operator()(int i)const{
+    return _data[i];
+  }
   inline const T & operator()(int i, int j)const{return _data[i* ColumnCount+j]; }
   inline int rows()const{return RowCount;}
   inline int cols()const{return ColumnCount;}

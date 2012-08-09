@@ -12,6 +12,7 @@ namespace nspace{
  */
 class IStatefulObject : public virtual ISimulationObject{
 public:
+ // void assignDataArea(uint derivative, Real * dataArray);
   
   void operator>>(IState & x)const{
     exportState(x);

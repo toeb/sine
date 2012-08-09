@@ -44,6 +44,7 @@ private:
   
   int _dimension;
 
+  StateMatrix _derivedState;
 
   long _evaluationCount;
   std::ostream * _log;
@@ -114,7 +115,7 @@ protected:
    * \param x The state.
    * \param h The timestep size.
    */
-  StateMatrix f(Real t, const StateMatrix & x, Real h);
+  const StateMatrix & f(Real t, const StateMatrix & x, Real h);
 };
 
 

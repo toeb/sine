@@ -181,6 +181,8 @@ namespace nspace{
 		const Vector3D& operator [] ( int i) const;
 		virtual Real& operator () (int i, int j);				// Zugriff per Index
 		virtual const Real& operator () (int i, int j) const;
+    Real& operator () (int i){return v[i/3](i%3);};				// Zugriff per Index
+    const Real& operator () (int i) const{return v[i/3](i%3);};
 
     inline int rows () const{return 3;}
     inline int cols () const{return 3;}

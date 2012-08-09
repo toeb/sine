@@ -37,7 +37,7 @@ private:
 public:
   static void runAll(int n){
     std::for_each(tests.begin(), tests.end(), [n](PerformanceTest * t){
-      t->n() =n / t->normalization();
+      t->n() =(int) n / t->normalization();
       t->run();
      t->toString(std::cout);
       cout << endl;
@@ -53,7 +53,7 @@ public:
 
     tests.push_back(this);
   }
-  virtual int normalization(){return 1;}
+  virtual Real normalization(){return 1;}
   Time duration(){return _duration;}
   void tick(){start = systemTime();}
   void tock(){_duration += systemTime()-start;};
@@ -212,6 +212,92 @@ public:
     tick();
     for(int i=0; i < n(); i++)MatrixOps::multiplyScalar(c,a,b);
     tock();
+  }
+};
+template<typename Mat, typename T>
+class ReadElementIJTest: public PerformanceTest{
+private:
+  const Mat & m;
+  T v;
+public:
+  ReadElementIJTest(const Mat & m):m(m){
+    nameStream << "ReadElementIJTest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
+  }
+  void run(){
+    int rows =m.rows();
+    int cols = m.cols();
+    for(int k=0; k < n(); k++) {
+      for(int i = 0; i < rows; i++){
+        for(int j=0; j < cols; j++){
+          tick();
+          v=m(i,j);
+          tock();
+        }
+      }
+    }
+  }
+};
+template<typename Mat, typename T>
+class ReadElementITest: public PerformanceTest{
+private:
+  const Mat & m;
+  T v;
+public:
+  ReadElementITest(const Mat & m):m(m){
+    nameStream << "ReadElementITest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
+  }
+  void run(){
+    int size = m.size();
+    for(int i=0; i < n(); i++){
+      for(int j=0; j < size; j++){
+        tick();
+        v=m(j);
+        tock();
+      }
+    }
+  }
+};
+template<typename Mat, typename T>
+class WriteElementIJTest: public PerformanceTest{
+private:
+  Mat m;
+  T  v;
+public:
+  WriteElementIJTest(const T & v):v(v){
+    nameStream << "WriteElementIJTest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
+  }
+  void run(){
+    int rows =m.rows();
+    int cols = m.cols();
+    for(int k=0; k < n(); k++) {
+      for(int i=0; i < rows; i++){
+        for(int j=0; j < cols; j++){
+          tick();
+          m(i,j)=v;
+          tock();
+        }
+      }
+    }
+  }
+};
+template<typename Mat, typename T>
+class WriteElementITest: public PerformanceTest{
+private:
+  Mat  m;
+  T v;
+public:
+  WriteElementITest(T v):v(v){
+    nameStream << "WriteElementITest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
+  }
+  void run(){
+    int size = m.size();
+    for(int i=0; i < n(); i++){
+     for(int j=0; j < size ;j++){
+       tick();
+       m(j) = v;
+       tock();
+     }
+    }
   }
 };
 template<typename Quat, typename Rot>
@@ -385,18 +471,31 @@ int main(int argc, char ** argv){
   new SubtractTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(50,2),*new nspace::matrix2::DynamicMatrix<Real>(50,2));
   new SubtractInPlaceTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(50,2),*new nspace::matrix2::DynamicMatrix<Real>(50,2));
   
+  int nHigh=1001;
   
-  new MultScalarTest<nspace::MatrixNxM,Real>(*new nspace::MatrixNxM(10000,2),5.0);
-  new MultScalarTest<nspace::matrix2::DynamicMatrix<Real>,Real>(*new nspace::matrix2::DynamicMatrix<Real>(10000,2),5.0);
-  new MultScalarInPlaceTest<nspace::matrix2::DynamicMatrix<Real>,Real>(*new nspace::matrix2::DynamicMatrix<Real>(10000,2),5.0);
+  new MultScalarTest<nspace::MatrixNxM,Real>(*new nspace::MatrixNxM(nHigh,2),5.0);
+  new MultScalarTest<nspace::matrix2::DynamicMatrix<Real>,Real>(*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2),5.0);
+  new MultScalarInPlaceTest<nspace::matrix2::DynamicMatrix<Real>,Real>(*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2),5.0);
 
-  new AddTest<nspace::MatrixNxM>(*new nspace::MatrixNxM(10000,2),*new nspace::MatrixNxM(10000,2));
-  new AddTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(10000,2),*new nspace::matrix2::DynamicMatrix<Real>(10000,2));
-  new AddInPlaceTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(10000,2),*new nspace::matrix2::DynamicMatrix<Real>(10000,2));
+  new AddTest<nspace::MatrixNxM>(*new nspace::MatrixNxM(nHigh,2),*new nspace::MatrixNxM(nHigh,2));
+  new AddTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2),*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2));
+  new AddInPlaceTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2),*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2));
 
-  new SubtractTest<nspace::MatrixNxM>(*new nspace::MatrixNxM(10000,2),*new nspace::MatrixNxM(10000,2));
-  new SubtractTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(10000,2),*new nspace::matrix2::DynamicMatrix<Real>(10000,2));
-  new SubtractInPlaceTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(10000,2),*new nspace::matrix2::DynamicMatrix<Real>(10000,2));
+  new SubtractTest<nspace::MatrixNxM>(*new nspace::MatrixNxM(nHigh,2),*new nspace::MatrixNxM(nHigh,2));
+  new SubtractTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2),*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2));
+  new SubtractInPlaceTest<nspace::matrix2::DynamicMatrix<Real>>(*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2),*new nspace::matrix2::DynamicMatrix<Real>(nHigh,2));
+  
+  new WriteElementIJTest<Mat332,Real>(3.0);
+  new WriteElementIJTest<Mat331,Real>(3.0);
+
+  new WriteElementITest<Mat332,Real>(3.0);
+  new WriteElementITest<Mat331,Real>(3.0);
+
+  new ReadElementIJTest<Mat332,Real>(Mat332::Identity());
+  new ReadElementIJTest<Mat331,Real>(Mat331::Identity());
+
+  new ReadElementITest<Mat332,Real>(Mat332::Identity());
+  new ReadElementITest<Mat331,Real>(Mat331::Identity());
 
 
 
