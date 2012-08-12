@@ -243,6 +243,19 @@ public:
 
 
 int main(int argc, char ** argv){
+  /*
+  DynamicMatrix<Real> I(4,4);
+  DynamicMatrix<Real> k(2,2);
+  I.setFunction([](Real & v, int i, int j){v=i==j;});
+  k.setConstant(1.0);
+  DynamicMatrix<Real> res;
+  MatrixOps::convolveSame(res, I,k);
+
+  I.toStream(cout);
+  k.toStream(cout);
+  res.toStream(cout);
+
+  *///*
   PngLoader pngLoader;
   Image img;
   pngLoader.loadFromFile(img,"resources/images/testHuge.png");

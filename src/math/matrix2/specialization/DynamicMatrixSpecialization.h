@@ -189,9 +189,9 @@ namespace nspace{
       uint fy = kernel.rows();
       uint rx = gMat.cols()-fx+1;
       uint ry = gMat.rows()-fy+1;
+      rMat.resize(ry,rx);
       uint rCols = rMat.cols();
       uint gCols = gMat.cols();
-      rMat.resize(ry,rx);
       Real * r = rMat.data();
       const Real* g =gMat.data();
 
@@ -200,11 +200,11 @@ namespace nspace{
       for(int i=0; i< kernel.size(); i++)f[i]=kernel(i);
       const Real * gOffset;
       const Real * fOffset;
-//#pragma omp parallel for
+      
+      T  sum=0.0;          
       for(int i=0; i < ry; i++){
-        for(int j=0; j < rx; j++){
-          T  sum=0.0;          
-          
+        for(int j=0; j < rx; j++){          
+          sum = 0.0;
           for(int l = 0; l < fy; ++l){
             gOffset = g+(i+l)*gCols+j;
             fOffset = f+ l*fx;
