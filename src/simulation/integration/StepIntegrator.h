@@ -1,25 +1,3 @@
-/*
- * Copyright (C) 2011
- * Simulation, Systems Optimization and Robotics Group (SIM)
- * Technische Universitaet Darmstadt
- * Hochschulstr. 10
- * 64289 Darmstadt, Germany
- * www.sim.tu-darmstadt.de
- *
- * This file is part of the mbslib.
- * All rights are reserved by the copyright holder.
- *
- * The mbslib is distributed WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * You may use the mbslib or parts of it only with the written permission of the copyright holder.
- * You may NOT modify or redistribute any part of the mbslib without the prior written
- * permission by the copyright holder.
- *
- * Any violation of the rights and restrictions mentioned above will be prosecuted by civil and penal law.
- * Any expenses associated with the prosecution will be charged against the violator.
- */
-
 #pragma once
 
 #include <ostream>
@@ -38,15 +16,14 @@ private:
   Time _h;
   ///< The initial step size
   Time _h0;
+
+  StateMatrix x_next;
 protected:
   /**
    * <summary> Executes an integration step.</summary>
-   *
-   * <remarks> Tobias Becker, 13.04.2012.</remarks>
    */
-  virtual void  doStep(Real t_i, Real h)=0;
+  virtual void  doStep(StateMatrix & x_next, const StateMatrix & x_i, Real t_i, Real h)=0;
   
-
   /**
    * \brief Accessor for the initial step size h0
    *
@@ -91,11 +68,12 @@ public:
   inline const Time & upperBound()const{return _b;}
 
   Time step(){
-    if(!needsIntegration())return _t;  
-    loadState(_t);
-    doStep(_t,_h);
+    if(!needsIntegration())return _t; 
+    const StateMatrix & x = evaluator()->x();
+    x_next.resize(x.rows(),x.cols(),false);
+    doStep(x_next, evaluator()->x(),_t,_h);
+    evaluator()->setX(x_next);
     _t += _h;
-    storeState(_t);
     return _t;
   }
 
@@ -112,20 +90,7 @@ public:
    
 protected:
 
-  //void log(const VectorND & x_i,  TTime t, TTime h, int step)const;
-  virtual void logParameters(std::ostream & o)const;
-  /**
-   * <summary> Integrates.</summary>
-   *
-   * <remarks> Tobias Becker, 13.04.2012.</remarks>
-   *
-   * <param name="initialValue"> The initial value.</param>
-   * <param name="a">            a.</param>
-   * <param name="b">            The b.</param>
-   *
-   * <returns> .</returns>
-   */
-  void doIntegration(Real a, Real b);
+  void integrate(Real a, Real b);
 
 };
 

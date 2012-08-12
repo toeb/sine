@@ -24,47 +24,28 @@ void Particle::calculateDynamics(){
     return;
   }
   // acceleration is force / mass
-  acceleration() = _f*(1/m);
+  MatrixOps::multiplyScalar(acceleration(),_f,1/m);
+  //acceleration() = _f*(1/m);
 }
 
- unsigned int Particle::stateDimension()const{return 3;}
- unsigned int Particle::availableDerivatives()const{return 2;}
- void Particle::importState(const IState & x){
-   const Real * data = x.data(0);
-   const Real * dataDeriv = x.data(1);
-   position().assign(data);
-   velocity().assign(dataDeriv);/*
-   position()(0)=x(0,0);
-   position()(1)=x(1,0);
-   position()(2)=x(2,0);
-   velocity()(0)=x(0,1);
-   velocity()(1)=x(1,1);
-   velocity()(2)=x(2,1);*/
+void Particle::notifyStateChanged(){
+//    Real * x = state().stateVector(0);
+//    Real * xDot = state().stateVector(1);  
+   
+   position().assign(_x);
+   velocity().assign(_xDot);
 
  }
- void Particle::exportState(IState & x)const{
-   Real * data = x.data(0);
-   Real * dataDeriv = x.data(1);
-   position().copyTo(data);
-   velocity().copyTo(dataDeriv);
-   /*x(0,0)=position()(0);
-   x(1,0)=position()(1);
-   x(2,0)=position()(2);
-   x(0,1)=velocity()(0);
-   x(1,1)=velocity()(1);
-   x(2,1)=velocity()(2);*/
- }
- void Particle::exportDerivedState(IState & xDot)const{
-   Real * data = xDot.data(0);
- Real * dataDeriv = xDot.data(1);
- velocity().copyTo(data);
- acceleration().copyTo(dataDeriv);
-   /*xDot(0,0)=velocity()(0);
-   xDot(1,0)=velocity()(1);
-   xDot(2,0)=velocity()(2);
-   xDot(0,1)=acceleration()(0);
-   xDot(1,1)=acceleration()(1);
-   xDot(2,1)=acceleration()(2);*/
+ void Particle::notifyStateNeeded(){
+//    Real * x = state().stateVector(0);
+//    Real * xDot = state().stateVector(1);  
+//    Real * xDotDot = state().stateVector(2);  
+
+
+   position().copyTo(_x);
+   velocity().copyTo(_xDot);
+   acceleration().copyTo(_xDotDot);
+
  }
 
 

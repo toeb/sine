@@ -27,7 +27,7 @@ Real SimulationTimeController::actualSpeedAverage(){
   return _meanSpeed.calculate();
 }
 
-void SimulationTimeController::timeout(Time dt){
+void SimulationTimeController::timeout(Time dt,Time t){
   if(_paused)return; 
   _simulationTimeProvider.advanceBy(dt*_desiredSpeed);
 }

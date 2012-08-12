@@ -38,7 +38,7 @@ void QtTimeControl::refresh(){
   _ui->actualSimulationTimeEdit->setTime(actualTime);
 
 
-  QTime targetTime = QTime().addMSecs(int(_realTimeModule->simulationTimeProvider().time()*1000));
+  QTime targetTime = QTime().addMSecs(int(_realTimeModule->simulationTimeProvider().targetTime()*1000));
   if(!_ui->targetSimulationTimeEdit->hasFocus()){
   _ui->targetSimulationTimeEdit->blockSignals(true);
   _ui->targetSimulationTimeEdit->setTime(targetTime);

@@ -63,7 +63,7 @@ public:
   Real desiredFrequency()const{
     return 1.0/interval();
   }
-  virtual void timeout(Time timePassed)=0;
+  virtual void timeout(Time timePassed, Time time)=0;
   
   void run(){
     Time t = timeProvider().time();
@@ -73,7 +73,7 @@ public:
     _callFrequencyAverage.addSample(f_call);
     Time dt_run = t-_lastRunTime;
     if(interval() > dt_run)return;
-    timeout(dt_run); 
+    timeout(dt_run,t); 
     _lastRunTime = t;
     _actualFrequency = 1.0/dt_run;
     _actualFrequencyAverage.addSample(_actualFrequency);
@@ -82,7 +82,7 @@ public:
 
 class PeriodicTaskDelegate : public PeriodicTask{
 private:
-  std::function<void (Time)> _callback;
+  std::function<void (Time,Time)> _callback;
   bool _repeat;
   bool _executed;
 public:
@@ -95,7 +95,7 @@ public:
    * \param timeProvider    (optional) the time provider.
    */
   PeriodicTaskDelegate(
-    std::function<void (Time)> callback,  
+    std::function<void (Time,Time)> callback,  
     Time timeoutInterval=0,
     bool repeat = true,
     const ITimeProvider & timeProvider=RealTimeProvider::defaultInstance()
@@ -107,9 +107,9 @@ public:
     _callback(callback){
   }
 
-  void timeout( Time timePassed ){
+  void timeout( Time timePassed , Time time ){
     if(_executed && !_repeat)return;      
-    _callback(timePassed);    
+    _callback(timePassed,time);    
     _executed = true;
   }
 

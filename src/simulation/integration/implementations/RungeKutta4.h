@@ -47,7 +47,7 @@ public:
    *
    * \return the new system state t_i+1 .
    */
-  void doStep(Real t_i, Real h);
+  void doStep(StateMatrix & x_next, const StateMatrix & x_i, Real t_i, Real h);
   
   
   

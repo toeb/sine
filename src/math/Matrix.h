@@ -32,7 +32,7 @@ namespace nspace
 	class Matrix
 	{
 	public:
-    virtual void toStream(std::ostream & s){
+    virtual void toStream(std::ostream & s)const{
       for(int i=0; i < rows(); i++){
         for(int j=0; j < cols(); j++){
           s << (*this)(i,j) << ", ";

@@ -5,60 +5,8 @@ using namespace nspace;
 using namespace std;
 
 
-StateRange::StateRange( IState &data, uint start, uint length ) :
-_start(start),
-  _length(length),
-  _state(data)
-{
-
-}
-StateRange::StateRange(const IState & state, uint start, uint length):
-_start(start),_length(length),_state(const_cast<IState&>(state)){
-
-}
-
-
-void StateRange::resize( uint dimension, uint derivatives )
-{
-	if(derivatives < _state.derivatives()){
-		derivatives = _state.derivatives();
-	}
-	_state.resize(_state.dimension() + dimension - _length,derivatives);
-}
-
-State::State( const StateMatrix & data ) :_data(const_cast<StateMatrix&>(data))
-{
-
-}
-
-State::State() :_data(*new StateMatrix())
-{
-
-}
-
-State::State( StateMatrix & data ) :_data(data)
-{
-
-}
-
-
-Real & State::value( uint index, uint derivative )
-{
-  return _data(derivative,index);
-}
-
-Real State::value( uint index, uint derivative ) const
-{
-  return _data(derivative,index);
-}
-
-void State::resize( uint dimension, uint derivatives )
-{
-  _data.resize(derivatives,dimension);
-	_data.setZero();
-}
 namespace nspace{
-std::ostream& operator<<(std::ostream & out, const IState & state){
+std::ostream& operator<<(std::ostream & out, const State & state){
   
   int width = 16;
   out << std::setw(20)<<"index\\derivative";

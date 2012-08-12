@@ -21,7 +21,7 @@ namespace nspace{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-class KinematicBody : public IStatefulObject, public virtual CoordinateSystem{
+class KinematicBody : public StatefulObject, public virtual CoordinateSystem{
 public:
 
   LinearVelocity velocity;
@@ -31,19 +31,12 @@ public:
 
   void setZero();
   void setMovementToZero();
-    KinematicBody();
+  KinematicBody();
   ~KinematicBody();
 
-
+  void notifyStateNeeded();
+  void notifyStateChanged();
   
-
   
-  /** Members of IIntegrable
-  */
-  void exportDerivedState(IState & xDot)const;
-  void importState(const IState & state);
-  void exportState(IState & state)const;
-  unsigned int stateDimension()const;
-  unsigned int availableDerivatives()const;
 };
 }

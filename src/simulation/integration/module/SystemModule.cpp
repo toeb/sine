@@ -5,13 +5,18 @@ using namespace std;
 
 SystemModule::SystemModule(SimulationTimeProvider & timeProvider):
 _timeProvider(timeProvider),
+_evaluator(0),
 _integrator(0){
   
 }
 
 void SystemModule:: run(){
+  if(!_evaluator){
+    _evaluator = new Evaluator(_statefulObjects,&_systemFunction);
+    _integrator->setEvaluator(_evaluator);
+  }
   _integrator->setLowerBound(_timeProvider.initialTime());
-  _integrator->setUpperBound(_timeProvider.time());
+  _integrator->setUpperBound(_timeProvider.targetTime());
   _timeProvider.notifyTimeReached(_integrator->step());
 }
 
@@ -22,22 +27,18 @@ void SystemModule:: run(){
     if(_integrator){
       lower = _integrator->lowerBound();
       upper = _integrator->upperBound();
-      _integrator->setStatefulObject(0);
-      _integrator->setSystemFunction(0);
     }
     _integrator = integrator;
     if(_integrator){
-      _integrator->setStatefulObject(&_integrable);
-      _integrator->setSystemFunction(&_systemFunction);
       _integrator->setLowerBound(lower);
       _integrator->setUpperBound(upper);
     }
   }
 
   void  SystemModule::announce(ISimulationObject * object){
-    auto integrable = dynamic_cast<IStatefulObject*>(object);
-    if(integrable){
-      _integrable.addComponent(integrable);
+    auto stateful = dynamic_cast<StatefulObject*>(object);
+    if(stateful){
+      _statefulObjects.addComponent(stateful);
     }
     auto systemFunction = dynamic_cast<ISystemFunction*>(object);
     if(systemFunction){
@@ -46,8 +47,7 @@ void SystemModule:: run(){
     auto integrator = dynamic_cast<StepIntegrator*>(object);
     if(integrator){
       // if integrator isn't being used
-      if(integrator->statefulObject())return;
-      if(integrator->getSystemFunction())return ;
+      if(integrator->evaluator())return;
       setIntegrator(integrator);
     }
   }

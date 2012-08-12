@@ -17,6 +17,15 @@ protected:
     return _data[index(i,j)];
   }
 public:
+
+  inline void toUnitInterval(){
+    Real mini = minimum();
+    *this -= mini;
+    Real maxim = maximum();
+    *this /= maxim;
+
+  }
+
   inline void setConstant(const T & val){
     MatrixSetConstant<T, DynamicMatrix<T> >::operation(*this,val);
   }
@@ -27,8 +36,82 @@ public:
     MatrixSetConstant<T, DynamicMatrix<T> >::operation(*this,0.0);
     //memset(_data,0,dataByteSize());
   }
-  inline void assign(const DynamicMatrix & mat){
+  inline void assign(const DynamicMatrix<T> & mat){
     MatrixAssign<DynamicMatrix<T>,DynamicMatrix<T> >::operation(*this,mat);
+  }
+  template<typename SourceType>
+  inline void assign(const DynamicMatrix<SourceType> & mat){
+    MatrixAssign<DynamicMatrix<T>,DynamicMatrix<SourceType> >::operation(*this,mat);
+  }
+  template<typename TargetType>
+  inline void copyTo(DynamicMatrix<TargetType> & target)const{
+    target.assign(*this);
+  }
+  template<typename TSource>
+  inline void assign(const TSource * data){
+    for(int i=0; i< size();i++){
+      _data[i]=data[i];
+    }
+  }
+  template<typename Converter, typename TSource>
+  inline void assign(const TSource * data){
+    for(int i=0; i< size();i++){
+      _data[i]=(T)(Converter)data[i];
+    }
+  }
+
+  inline void filter(DynamicMatrix<T> &out,std::function<void (T & ,DynamicMatrix<T> & ) >f, uint filterWidth, uint filterHeight )const{
+    MatrixFilter<DynamicMatrix<T>,DynamicMatrix<T>,std::function<void (T & ,DynamicMatrix<T> & ) >,DynamicMatrix<T>>::operation(out,*this,f,filterWidth,filterHeight);
+  }
+  inline DynamicMatrix<T>  filter(std::function<void (T & ,DynamicMatrix<T> & ) >f,uint filterWidth,uint filterHeight){
+    DynamicMatrix<T> result;
+    filter(result, f,filterWidth,filterHeight);
+    return result;
+  }
+
+  inline void assign(const T * valuesRowMajor){
+    memcpy(_data,valuesRowMajor,dataByteSize());
+  }
+  inline void getBlock(DynamicMatrix<T> & block, uint i, uint j)const{
+    // do eome safety checks here
+    if(i+block.rows() > _rows){
+      std::cerr << "getBlock error"<<std::endl;
+      return;
+    }
+    if(j+block.cols()>_cols){
+      std::cerr << "getBlock error" << std::endl;
+      return;
+    }
+    for(int k=0; k < block.rows();k++){
+      T * rowPtr = block.rowData(k);
+      memcpy(rowPtr,_data+(i+k)*cols(),block.cols()*sizeof(T));
+    }
+  }
+  template<typename OutputMatrix>
+  inline void block(OutputMatrix & r, uint i, uint j)const{
+    MatrixExtractBlock<OutputMatrix,DynamicMatrix<T> >::operation(r,*this,i,j,r.rows(),r.cols());
+  }
+  template<typename OutputMatrix>
+  inline void block(OutputMatrix & r, uint i, uint j, uint rows, uint cols)const{
+    MatrixExtractBlock<OutputMatrix,DynamicMatrix<T> >::operation(r,*this,i,j,rows,cols);
+  }
+  inline void setBlock(uint i,uint j, const DynamicMatrix<T> & block){
+    // do eome safety checks here
+    if(i+block.rows() > _rows){
+      std::cerr << "getBlock error"<<std::endl;
+      return;
+    }
+    if(j+block.cols()>_cols){
+      std::cerr << "getBlock error" << std::endl;
+      return;
+    }
+    for(int k=0; k < block.rows();k++){
+      const T * rowPtr = block.rowData(k);
+      memcpy(_data+(i+k)*cols(),rowPtr,block.cols()*sizeof(T));
+    }
+  }
+  inline void assignRows(uint rowCount, const DynamicMatrix<T> & mat ){
+    memcpy(_data,mat._data,sizeof(T)*rowCount*_cols);
   }
   inline T norm()const{
     T result;
@@ -47,6 +130,16 @@ public:
     _rows = 0;
     _cols = 0;
   }
+  inline  T maximum()const{
+    T t;
+    MatrixMaximumElement<T,DynamicMatrix<T> >::operation(t,*this);
+    return t;
+  }
+  inline  T minimum()const{
+    T t;
+    MatrixMinimumElement<T,DynamicMatrix<T> >::operation(t,*this);
+    return t;
+  }
   DynamicMatrix():_rows(0),_cols(0),_data(0){resize(0,0);};
   DynamicMatrix(int rows, int cols):_rows(0),_cols(0),_data(0){
     resize(rows,cols);
@@ -60,8 +153,9 @@ public:
     return *this;
   }
   inline bool resize(int n, int m, bool setToZero=true){
-    if(_rows==n && _cols==m)return true; 
-
+    if(_rows==n && _cols==m){
+      return true; 
+    }
     ArrayPool<T>::freeArray(&_data,size());
     _rows = n;
     _cols=m;
@@ -74,6 +168,15 @@ public:
   }
   inline Real * rowData(int i){
     return _data +(i*_cols);
+  }
+  inline const Real * rowData(int i)const{
+    return _data+(i*_cols);
+  }
+  template<typename T2>
+  inline void copyTo(T2 * valuePtr){
+    for(int i=0; i < size();i++){
+      valuePtr[i]=_data[i];
+    }
   }
   inline int index(int i, int j)const{return i* _cols+j;}
   inline T & operator()(int i, int j){return _data[i* _cols+j]; }
@@ -90,33 +193,33 @@ template<typename T>
 inline DynamicMatrix<T>  operator * (const DynamicMatrix<T> & a, const DynamicMatrix<T> & b){
   DynamicMatrix<T> result;
   result.resize(a.rows(),b.cols());
-  MatrixMultiplication<T,DynamicMatrix<T>,DynamicMatrix<T>,DynamicMatrix<T>>::multiply(result,a,b);
+  MatrixMultiplication<T,DynamicMatrix<T>,DynamicMatrix<T>,DynamicMatrix<T>>::operation(result,a,b);
   return result;
 }
 template<typename T>
 inline DynamicMatrix<T>  operator *= (DynamicMatrix<T> & a, const T & b){
-  MatrixOperations<T>::multiplyScalar(a,a,b);
+  MatrixScalarMultiplication<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(a,a,b);
   return a;
 }
 template<typename T>
 inline DynamicMatrix<T>  operator * (const DynamicMatrix<T> & a, const T & b){
   DynamicMatrix<T> result;
   result.resize(a.rows(),a.cols());
-  MatrixMultiplyScalar<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(result,a,b);
+  MatrixScalarMultiplication<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(result,a,b);
   return result;
 }
 template<typename T>
 inline DynamicMatrix<T>  operator / (const DynamicMatrix<T> & a, const T & b){
   DynamicMatrix<T> result;
   result.resize(a.rows(),a.cols());
-  MatrixOperations<T>::divideScalar(result,a,b);
+  MatrixScalarDivisionInPlace<DynamicMatrix<T>,DynamicMatrix<T>, T>::operation(result,a,b);
   return result;
 }
 template<typename T>
 inline DynamicMatrix<T>  operator * (const T & b,const DynamicMatrix<T> & a){
   DynamicMatrix<T> result;
   result.resize(a.rows(),a.cols());
-  MatrixMultiplyScalar<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(result,a,b);
+  MatrixScalarMultiplication<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(result,a,b);
   return result;
 }
 template<typename T>
@@ -144,6 +247,36 @@ inline DynamicMatrix<T> & operator -= (DynamicMatrix<T> & a, const DynamicMatrix
 }
 
 
+template<typename T>
+inline DynamicMatrix<T> & operator += (DynamicMatrix<T> & a, const T& b){
+  MatrixAdditionConstant<DynamicMatrix<T>,DynamicMatrix<T>, T>::operation(a,a,b);
+  return a;
+}
+template<typename T>
+inline DynamicMatrix<T> operator +(const DynamicMatrix<T> & a, const T & b){
+  DynamicMatrix<T> result;
+  MatrixAdditionConstant<DynamicMatrix<T>,DynamicMatrix<T>, T>::operation(result,a,b);
+  return result;
+}
+
+template<typename T>
+inline DynamicMatrix<T> & operator /= (DynamicMatrix<T> & a,const T & d){
+  MatrixScalarDivisionInPlace<DynamicMatrix<T>, DynamicMatrix<T>,T>::operation(a,a,d);
+  return a;
+}
+template<typename T>
+inline DynamicMatrix<T> & operator -=(DynamicMatrix<T> & a, const T & b){
+  MatrixSubtractionConstant<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(a,a,b);
+  return a;
+}
+
+
+template<typename T>
+inline DynamicMatrix<T>  operator -(const DynamicMatrix<T> & a, const T & b){
+  DynamicMatrix<T> c; 
+  MatrixSubtractionConstant<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(c,a,b);
+  return c;
+}
 
 
 
@@ -206,7 +339,7 @@ inline DynamicMatrix<T> & operator -= (DynamicMatrix<T> & a, const DynamicMatrix
         memset(target.data(),0,target.dataByteSize());
         return;
       }
-      Real * t =target.data();
+      T * t =target.data();
       const int s = target.size();
       //go serial if size is smaller than sum trehshold
       if(s < 1000){
@@ -249,7 +382,7 @@ inline DynamicMatrix<T> & operator -= (DynamicMatrix<T> & a, const DynamicMatrix
   };
 
   template<typename T>
-  class MatrixMultiplyScalar<matrix2::DynamicMatrix<T>,matrix2::DynamicMatrix<T>,T>{
+  class MatrixScalarMultiplication<matrix2::DynamicMatrix<T>,matrix2::DynamicMatrix<T>,T>{
   public:
     static inline void operation(matrix2::DynamicMatrix<T> & cMat, const matrix2::DynamicMatrix<T> & aMat, const T & b){
       const int s = aMat.size();
@@ -293,5 +426,31 @@ inline DynamicMatrix<T> & operator -= (DynamicMatrix<T> & a, const DynamicMatrix
       }
     }
   };
+  
+
+  template<typename T>
+  class MatrixExtractBlock<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
+  public:
+    static inline void operation(matrix2::DynamicMatrix<T> & result, const matrix2::DynamicMatrix<T> & original, uint startRow, uint startCol, uint rows, uint cols){
+      if(startRow + rows > original.rows()){
+
+        std::cerr << __FUNCSIG__ << " rows out of range"<<std::endl;
+        return;
+      }
+      if(startCol+ cols> original.cols()){
+        std::cerr << __FUNCSIG__ << " cols out of range"<<std::endl;
+        return;
+      }
+      uint srcCols = original.cols();
+      result.resize(rows,cols,false);
+      const Real * src = original.data();
+      Real * dst = result.data();
+      for(uint i=0; i < rows; i++){
+        memcpy(dst+i*cols,src+(startRow+i)*(srcCols),sizeof(T)*cols);
+      }
+    }
+  };
+  
+
 
 }

@@ -2,7 +2,8 @@
 
 #include <simulation/dynamics/DynamicBody.h>
 #include <simulation/kinematics/KinematicCoordinates.h>
-
+#include <simulation/core/composites/CompositeSimulationObject.h>
+#include <simulation/core/Simulation.h>
 namespace nspace{
 /**
  * \brief Rigid body class.  
@@ -12,7 +13,7 @@ namespace nspace{
  * \author Tobias Becker
  * \date 10.04.2012
  */
-class RigidBody : public DynamicBody, public virtual IStatefulObject {
+class RigidBody : public DynamicBody, public virtual CompositeSimulationObject {
   TYPED_OBJECT;
 private:  
   Real _m;
@@ -85,12 +86,10 @@ public:
   void calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const; 
 
 
-
-  unsigned int stateDimension()const;
-  unsigned int availableDerivatives()const;
-  void importState(const IState & x);
-  void exportState(IState & x)const;
-  void exportDerivedState(IState & xDot)const;
+  bool initializeObject(){
+    simulation()->add(&_kinematics);
+    return true;
+  }
 
 };// RigidBody
 }// namespace IBDS

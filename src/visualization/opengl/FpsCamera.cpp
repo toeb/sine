@@ -6,12 +6,11 @@ using namespace std;
 FpsCamera::FpsCamera():_handler(0),roll(0),pitch(0),yaw(0){
   coordinates().mirror(body);
   eulerIntegrator.setLowerBound(0.0);
-  eulerIntegrator.setStatefulObject(&body);
-  eulerIntegrator.setSystemFunction(0);
-  interval()=0.02;
+  eulerIntegrator.setEvaluator(new Evaluator(kinematicBody()));
+  interval()=0.01;
 }
 
-void FpsCamera::timeout(Time timePassed){
+void FpsCamera::timeout(Time timePassed,Time time){
   if(!_handler)return;
   
   Real speed = 4;

@@ -3,7 +3,7 @@
 
 namespace nspace{
   template<typename Product, typename MatrixFactor, typename ScalarFactor>
-  class MatrixMultiplyScalar{
+  class MatrixScalarMultiplication{
   public:
     static inline void operation(Product & product, const MatrixFactor & a, const ScalarFactor & d){
       for(int i=0; i < a.rows(); i++){

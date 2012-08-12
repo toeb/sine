@@ -43,6 +43,34 @@
 
 
 namespace nspace{
+
+  
+
+  template<typename MatrixResult, typename MatrixSummandA, typename ScalarSummandB>
+  class MatrixAdditionConstant{
+  public:
+    static inline void operation(MatrixResult & c, const MatrixSummandA & a, const ScalarSummandB & b){
+      c.resize(a.rows(),a.cols(),false);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          c(i,j)=a(i,j)+b;
+        }
+      }
+    }
+  };
+  template<typename MatrixResult, typename Matrix, typename Scalar>
+  class MatrixSubtractionConstant{
+  public:
+    static inline void operation(MatrixResult & c, const Matrix & a, const Scalar & b){
+      c.resize(a.rows(),a.cols(),false);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          c(i,j)=a(i,j)-b;
+        }
+      }
+    }
+  };
+
   template<typename T>
   class MatrixOperations{
   public:
@@ -110,16 +138,7 @@ namespace nspace{
       }
     }*/
     
-    template<typename MatrixType>
-    static inline void divideScalar(MatrixType & product, const MatrixType & a, const T & d){
-      T reciproc;
-      ScalarOperations<T>::reciprocal(reciproc,d);
-      for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols(); j++){
-          product(i,j)=a(i,j)*d;
-        }
-      }
-    }
+    
     
   };
   
@@ -139,9 +158,9 @@ namespace nspace{
   }
   template<typename C, typename A, typename B>
   void multiplyScalar(C & c, const A& a, const B & s){
-    MatrixMultiplyScalar<C,A,B>::operation(c,a,s);
+    MatrixScalarMultiplication<C,A,B>::operation(c,a,s);
   }
-
+  
   };
 
 

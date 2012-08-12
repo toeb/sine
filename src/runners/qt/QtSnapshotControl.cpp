@@ -11,7 +11,7 @@ public:
   RecordTask(QtSnapshotControl * snapshotControl):PeriodicTask(10),_snapshotControl(snapshotControl){
 
   }
-  virtual void timeout( Time timePassed ) 
+  virtual void timeout( Time timePassed,Time time ) 
   {
     if(_snapshotControl->isRecording())_snapshotControl->captureNow();
   }

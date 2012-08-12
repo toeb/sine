@@ -17,6 +17,9 @@ private:
 public:
   SimulationTimeProvider():_averageActualSpeed(* new AverageOverTime(3)),_t_initial(0),_lastTargetAdvance(0),_lastActualAdvance(0),_t_target(0),_t_actual(0),_averageTargetSpeed(*new AverageOverTime(1)){setName("SimulationTimeProvider");}
   inline Time time()const{
+    return actualTime();//return _t_target;
+  }
+  inline Time targetTime()const{
     return _t_target;
   }
   inline Time initialTime()const{
@@ -37,7 +40,7 @@ public:
 
   }
   inline void advanceBy(Time dt){
-    advanceTo(time()+dt);
+    advanceTo(targetTime()+dt);
   }
   inline void notifyTimeReached(Time t){
     Time dt=t-_t_actual;

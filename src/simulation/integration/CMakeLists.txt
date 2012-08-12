@@ -10,6 +10,7 @@ set(integrationSource
  ./StepIntegrator.h
  ./StepIntegrator.cpp
  ./ISystemFunction.h 
+ ./Evaluator.h
 )
 source_group("" FILES ${integrationSource})
 set(implementationSource

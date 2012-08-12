@@ -38,7 +38,7 @@ namespace nspace{
 			_handler = handler;
 		}
 		void onMouseMove(int x , int y, int dx, int dy);
-    void timeout(Time timePassed);
+    void timeout(Time timePassed,Time time);
     KinematicBody & kinematicBody(){return body;}
 	private:
 		InputHandler * _handler;

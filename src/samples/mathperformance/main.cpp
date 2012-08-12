@@ -14,6 +14,7 @@
 #include <math/matrix1/Matrix3x3.h>
 #include <typeinfo>
 #include <sstream>
+#include <functional>
 // //#include <math/definitions.h>
 using namespace nspace;
 using namespace std;
@@ -63,6 +64,26 @@ public:
   }
 };
 std::vector<PerformanceTest*> PerformanceTest::tests = std::vector<PerformanceTest*>();
+
+
+template<typename Mat, typename FilterFunction>
+class FilterMatrixTest:public PerformanceTest{
+private:
+  const Mat & a;
+  Mat b;
+  uint filterWidth;
+  uint filterHeight;
+  FilterFunction f;
+public:
+FilterMatrixTest(const Mat & a, FilterFunction f, uint filterWidth, uint filterHeight ):f(f),a(a),filterWidth(filterWidth),filterHeight(filterHeight){
+  nameStream<< "FilterMatrixTest "<<" b = f * b "<< typeid(Mat).name();
+}
+void run(){
+  tick();
+  for(int i=0; i< n(); i++)a.filter(b,f,filterWidth,filterHeight);
+  tock();
+}
+};
 
 template<typename Mat>
 class AssignTest : public PerformanceTest{
@@ -422,6 +443,7 @@ void dynamicSetFunction(){
 #define N 100000//10000000
 
 int main(int argc, char ** argv){
+  /*
   new AssignTest<nspace::Matrix3x3>(Matrix3x3::Identity());
   new AssignTest<nspace::matrix2::StaticMatrix<Real,3,3>>(nspace::matrix2::StaticMatrix<Real,3,3>::Identity());
   new AssignTest<nspace::Vector3D>(Vector3D::Zero());
@@ -496,10 +518,13 @@ int main(int argc, char ** argv){
 
   new ReadElementITest<Mat332,Real>(Mat332::Identity());
   new ReadElementITest<Mat331,Real>(Mat331::Identity());
+  */
+  new FilterMatrixTest<MatMN2,std::function<void (Real &, MatMN2 & ) > >(*new MatMN2(4096,4096),
+    [](Real & v, MatMN2 & window){
+     v=0.0;
+},3,3);
 
-
-
-  PerformanceTest::runAll(N);
+  PerformanceTest::runAll(10);
   //quat2RotMatrix<Quat2,Mat332,N>();
   //quat2RotMatrix<Quat1,Mat331,N>();
   //quatGetRot<Quat2,Mat332,N>();

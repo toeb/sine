@@ -29,20 +29,24 @@
 #include <simulation/integration/IStatefulObject.h>
 namespace nspace
 {
-class Particle : public DynamicBody, public virtual IStatefulObject
+class Particle : public DynamicBody, public virtual StatefulObject
   {  
     TYPED_OBJECT;
   private:
     Vector3D _f;
     Real _m;
+    Real * _x;
+    Real* _xDot;
+    Real * _xDotDot;
   public:
     //value holders to kinematic properties
     Position position;
     LinearVelocity velocity;
     LinearAcceleration acceleration;
 
-    Particle(){
+    Particle():StatefulObject(3,3){
       setMass(1);
+      _f.setZero();
       position().setZero();
       velocity().setZero();
       acceleration().setZero();
@@ -79,11 +83,13 @@ class Particle : public DynamicBody, public virtual IStatefulObject
 
 
 
-    unsigned int stateDimension()const;
-    unsigned int availableDerivatives()const;
-    void importState(const IState & x);
-    void exportState(IState & x)const;
-    void exportDerivedState(IState & xDot)const;
+    void onStateAssigned(){
+      _x=state().stateVector(0);
+      _xDot=state().stateVector(1);
+      _xDotDot=state().stateVector(2);
+    };
+    void notifyStateChanged();
+    void notifyStateNeeded();
 
   };
 }

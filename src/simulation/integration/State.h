@@ -6,97 +6,76 @@ namespace nspace{
 
   typedef MatrixNxM StateMatrix;
 
+  class State{
+    State * _parent;
+    StateMatrix *_stateMatrix;
+    uint _offset;
+    uint _dimension;
+    uint _derivatives;
 
-  class IState{
-  public:    
-    inline Real & operator()(uint index, uint derivative){
-      return value(index,derivative);
+    State(uint offset, uint dimension, uint derivatives, State & parent):_parent(&parent),_offset(offset),_derivatives(derivatives),_stateMatrix(parent._stateMatrix),_dimension(dimension){
+
     }
-    inline Real operator()(uint index, uint derivative)const{
-      return value(index,derivative);
+  public:
+
+    State():_parent(0),_derivatives(0),_offset(0),_dimension(0),_stateMatrix(0){
+
     }
-    virtual void resize(uint dimension, uint derivative)=0;
-    virtual uint dimension()const=0;
-    virtual uint derivatives()const=0;
 
+    ~State(){
+      //if(!_parent)delete &_stateMatrix;
+    }
+    inline uint derivatives()const{return _derivatives;}
+    inline uint dimension()const{return _dimension;}
+    inline Real & operator()(uint stateIndex, uint derivative){
+      return _stateMatrix->operator()(_offset+stateIndex,derivative);
+    }
+    inline const Real & operator()(uint stateIndex, uint derivative)const{
+      return _stateMatrix->operator()(_offset+stateIndex,derivative);
+    }
 
-    void assign(const IState & b){
-      IState & a = *this;
-      a.resize(b.dimension(),b.derivatives());
-      for(uint i = 0; i < a.dimension(); i++){
-        for(uint j=0; j < a.derivatives(); j++){
-          a(i,j) = b(i,j);
-        }
+    Real * stateVector(uint derivative){
+      return _stateMatrix->rowData(derivative)+_offset;
+    }
+    void getState(StateMatrix & state){
+      state.resize(_derivatives,_dimension,false);
+      _stateMatrix->getBlock(state,0,_offset);
+    }
+    void setState(StateMatrix & state){
+      if(state.rows()!=derivatives() || state.cols()!=dimension()){
+        std::cerr << "State::Could not set state " << std::endl;
+        return;
       }
-      
-     
+      _stateMatrix->setBlock(0,_offset,state);
     }
-    virtual Real * data(int derivative)=0;
-    virtual const Real * data(int derivative)const=0;
-    friend std::ostream & operator<<(std::ostream & out, const IState & state);
-  protected:
-    virtual Real & value(uint index, uint derivative)=0;
-    virtual Real value(uint index, uint derivative)const=0;
-  };
-
-  
-  class State: public IState{
-  private:
-    StateMatrix & _data;
-  public:
-    StateMatrix & data(){return _data;}
-		const StateMatrix & data()const{return _data;}
-    State(const StateMatrix & data);
-    State(StateMatrix & data);
-    State();
-
-    virtual void resize(uint dimension, uint derivatives);
-    IState* range(uint start, uint length);
-    virtual uint dimension()const{return _data.rows();}
-    virtual uint derivatives()const{return _data.cols();}
-    Real * data(int derivative){
-      return _data.rowData(derivative);
-    };
-    const Real * data(int derivative)const{
-      return _data.rowData(derivative);
+    void getX(StateMatrix & x)const{
+      x.resize(_derivatives-1,_dimension,false);
+      _stateMatrix->getBlock(x,0,_offset);
+    }
+    void getXDot(StateMatrix & xDot)const{
+      xDot.resize(_derivatives-1,_dimension,false);
+      _stateMatrix->getBlock(xDot,1,_offset);
+    }
+    void setX(const StateMatrix & x){
+      if(x.rows()!=derivatives()-1 || x.cols()!=dimension()){
+        std::cerr << "State::Could not set state " << std::endl;
+        return;
+      }
+      _stateMatrix->setBlock(0,_offset,x);
     }
 
-  protected:
-    Real & value( uint index, uint derivative );
-    Real value( uint index, uint derivative ) const;
-  };
-
-
-
-  class StateRange : public IState{
-  private:
-    uint _start;
-    uint _length;
-		IState & _state;
-  public:
-    StateRange(IState & state, uint start, uint length);
-		StateRange(const IState & state, uint start, uint length);
-    void resize(uint dimension, uint derivatives);
-    uint dimension()const{return _length;}
-		uint derivatives()const{return _state.derivatives();}
-    Real * data(int derivative){
-      Real * data = _state.data(derivative);
-      if(!data)return 0;
-      return data + _start;
-    };
-    const Real * data(int derivative)const{
-      Real * data = _state.data(derivative);
-      if(!data)return 0;
-      return data + _start;
+    void resize(uint newDim, uint newDerivs){
+      if(!_stateMatrix )_stateMatrix = new StateMatrix();
+      if(_parent)return;
+      _derivatives = newDerivs;
+      _dimension = newDim;
+      _stateMatrix->resize(newDerivs,newDim,false);
     }
-  protected:
-    inline Real & value( uint index, uint derivative ){
-      return _state(index+_start, derivative);
-    }
-    inline Real value( uint index, uint derivative ) const{
-      return _state(index+_start, derivative);      
+    State * range(uint offset, uint dim ,uint derivatives){
+      State * result = new State(offset,dim,derivatives,*this);
+      return result;
     }
   };
 
- 
+  std::ostream & operator << (std::ostream & o, const State & state);
 }

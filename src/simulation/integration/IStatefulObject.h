@@ -6,68 +6,38 @@
 
 namespace nspace{
 
-/**
- * \brief Super class of integrable objects. Allows access to the state and its derivative.
- *
- */
-class IStatefulObject : public virtual ISimulationObject{
-public:
- // void assignDataArea(uint derivative, Real * dataArray);
-  
-  void operator>>(IState & x)const{
-    exportState(x);
-    
-  }
-  void operator<<(const IState & state){
-    importState(state);
-  }
+  class StatefulObject : public virtual ISimulationObject{
+  private:
+    State * _state;
+    uint _stateDimension;
+    uint _stateDerivatives;
+  public:
 
-   /**
-    * \brief Gets the dimension of the state of this IIntegrable
-    * 			 
-    * \return The state dimension.
-    */
-   virtual unsigned int stateDimension()const=0;
+    virtual void notifyStateChanged()=0;
+    virtual void notifyStateNeeded()=0;
+    virtual void onStateAssigned(){}
 
-   /**
-    * \brief Gets the available number of derivatives.
-    *
-    * \return The available derivatives.
-    */
-   virtual unsigned int availableDerivatives()const=0;
- /**
-   * \brief Sets the state this integratable.
-   * 				
-   * \param x The state.
-   */
-  virtual void importState(const IState & x)=0;
+  public:
+    StatefulObject(uint dimension, uint derivatives):_stateDimension(dimension),_stateDerivatives(derivatives),_state(0){}
+    StatefulObject():_stateDimension(0),_stateDerivatives(0),_state(0){}
 
-  /**
-   * \brief Gets the state of this integrable.
-   * \param [out] x the state.
-   */
-  virtual void exportState(IState & x)const=0;
+    void assignState(State & state){
+      _state = &state;
+      state.resize(dimension(),derivatives());
+      onStateAssigned();
+    }
+    void resizeState(uint dimension, uint derivatives){
+      if(_stateDimension==dimension && _stateDerivatives ==derivatives)return;
+      _stateDimension = dimension;
+      _stateDerivatives = derivatives;
+      if(!_state)return;
+      state().resize(dimension,derivatives);
+      assignState(state());
+    }
 
-  /**
-   * \brief Gets the last derived state.
-   * 				
-   * 				xDot is the derivative of the state
-   */
-  virtual void exportDerivedState(IState & xDot)const=0;
-
-	void resizeState(IState & x)const{
-    uint dim = stateDimension();
-    uint derivs =availableDerivatives();
-		if(x.dimension() == dim && x.derivatives() >= derivs)return;
-		x.resize(dim,derivs);
-	}
-private:
-protected:
-	
-  
-
-
-};
-
+    inline State & state(){return *_state;}
+    inline uint derivatives(){return _stateDerivatives;}
+    inline uint dimension(){return _stateDimension;}
+  };
 
 }

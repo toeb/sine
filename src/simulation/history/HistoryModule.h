@@ -11,15 +11,15 @@
 namespace nspace{
   class HistoryModule:public ISimulationObject, public virtual Composite<StateSnapshot>{
   private:
-    IStatefulObject & _statefulObject;
+    StatefulObject & _statefulObject;
     SimulationTimeProvider & _simulationTime;
   public:
-    IStatefulObject & statefulObject(){return _statefulObject;}
-    HistoryModule(IStatefulObject & stateobject, SimulationTimeProvider & simulationTime):_statefulObject(stateobject),_simulationTime(simulationTime){
+    StatefulObject & statefulObject(){return _statefulObject;}
+    HistoryModule(StatefulObject & stateobject, SimulationTimeProvider & simulationTime):_statefulObject(stateobject),_simulationTime(simulationTime){
 
     }
     StateSnapshot * snapshot(){
-      auto snapshot = StateSnapshot::create(_simulationTime.time(),applicationTime(),systemTime(),_statefulObject);
+      auto snapshot = StateSnapshot::create(_simulationTime.actualTime(),applicationTime(),systemTime(),_statefulObject);
       addComponent(snapshot);
       simulation()->add(snapshot);
       return snapshot;

@@ -20,7 +20,7 @@ bool DefaultSimulationSetup::initializeObject(){
     // the real time simulation module is used for advancing the simulation in real time
     *simulation() << new SimulationTimeController(simulationTimeProvider);
     // the timing module is used to measure how much time is needed by various objects
-    *simulation() << new TimingModule();
+    *simulation() << timings;
     // the integrable system module connects the integrables, system functions and the integrator.
     *simulation() << defaultSystem;
 

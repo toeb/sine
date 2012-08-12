@@ -5,6 +5,7 @@
 #include <simulation/integration/StepIntegrator.h>
 #include <simulation/time/SimulationTimeProvider.h>
 #include <simulation/core/SimulationTask.h>
+#include <simulation/integration/Evaluator.h>
 
 namespace nspace{	
 
@@ -23,14 +24,15 @@ class SystemModule :
   public virtual SimulationTask,
   public virtual ISimulationModule{
 private:
-  CompositeStatefulObject _integrable;
+  CompositeStatefulObject _statefulObjects;
   CompositeSystemFunction _systemFunction;
   StepIntegrator * _integrator;
   SimulationTimeProvider & _timeProvider;
+  Evaluator * _evaluator;
 public:  
   SystemModule(SimulationTimeProvider & timeProvider);
   void setIntegrator(StepIntegrator * integrator);
-  IStatefulObject & statefulObject(){return _integrable;}
+  StatefulObject & statefulObject(){return _statefulObjects;}
   ISystemFunction & systemFunction(){return _systemFunction;}
   ITimeProvider & timeProvider(){return _timeProvider;}
 protected:

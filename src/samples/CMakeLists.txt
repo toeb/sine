@@ -1,2 +1,2 @@
 
-subdirs( qtsample glutsample mathperformance)#cloth collisionDetection collisionHandling multibody
+subdirs( qtsample imaging glutsample mathperformance simulationperformance)#cloth collisionDetection collisionHandling multibody

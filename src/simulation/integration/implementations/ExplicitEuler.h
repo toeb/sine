@@ -53,8 +53,8 @@ public:
    *
    * \return  .
    */
- void doStep(Real t_i,  Real h){
-    x = x + h * f(t_i, x,h);
+ void doStep(StateMatrix & x_next, const StateMatrix & x_i, Real t_i, Real h){
+    x_next = x_i + h * f(x_i,t_i,h);
  };
 
   int getErrorOrder()const{return 2;}

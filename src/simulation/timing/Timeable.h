@@ -15,7 +15,7 @@ namespace nspace{
   public:
     Timeable():_accumulatedTime(0), _start(0){}
     
-    void resetAccumulatedTime(){_accumulatedTime = 0;}
+    Time resetAccumulatedTime(){Time tmp = _accumulatedTime; _accumulatedTime = 0; return tmp;}
 
     const Time & accumulatedTime(){
       return _accumulatedTime;
@@ -32,7 +32,7 @@ namespace nspace{
      * \brief ends time measurement
      */
     inline void tock(){
-      _accumulatedTime += _start - applicationTime();
+      _accumulatedTime +=  applicationTime()-_start;
     }
     
   };

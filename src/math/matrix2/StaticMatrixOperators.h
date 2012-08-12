@@ -46,7 +46,7 @@ namespace nspace{
   template<typename T,int rows, int cols>
   inline  matrix2::StaticMatrix<T,rows,cols> operator*(const matrix2::StaticMatrix<T,rows,cols> & a, const T & d){
     matrix2::StaticMatrix<T,rows,cols> c;
-    MatrixMultiplyScalar<matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>,T>::operation(c,a,d);
+    MatrixScalarMultiplication<matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>,T>::operation(c,a,d);
     return c;
   }
   template<typename T,int rows, int cols>
@@ -58,7 +58,7 @@ namespace nspace{
   template<typename T,int rows, int cols>
   inline  matrix2::StaticMatrix<T,rows,cols> operator*(const T & d,const matrix2::StaticMatrix<T,rows,cols> & a){
     matrix2::StaticMatrix<T,rows,cols> c;
-    MatrixMultiplyScalar<matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>,T>::operation(c,a,d);
+    MatrixScalarMultiplication<matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols>,T>::operation(c,a,d);
     return c;
   }
   template<typename T, int outerRows, int outerCols, int innerDimension>
@@ -80,12 +80,12 @@ namespace nspace{
   }
   template<typename T, int rows, int cols> 
   inline StaticMatrix<T,rows,cols> & operator *=(StaticMatrix<T,rows,cols> & a, const T & d){
-    MatrixOperations<T>::multiplyScalar(a,a,d);
+    MatrixScalarMultiplication<StaticMatrix<T,rows,cols>,StaticMatrix<T,rows,cols>, T>::operation(a,a,d);
     return a;
   }
   template<typename T, int rows, int cols>
   inline StaticMatrix<T,rows,cols> & operator /=(StaticMatrix<T,rows,cols> & a, const T & d){
-    MatrixOperations<T>::divideScalar(a,a,d);
+    MatrixScalarDivisionInPlace<StaticMatrix<T,rows,cols>,StaticMatrix<T,rows,cols>, T>::operation(a,a,d);
     return a;
   }
 

@@ -29,93 +29,39 @@
 #include <simulation/integration/IStatefulObject.h>
 #include <simulation/integration/ISystemFunction.h>
 #include <simulation/timing/Timeable.h>
-
+#include <simulation/integration/Evaluator.h>
 namespace nspace{
+
+  
+
   /**
  * <summary> Abstract Integrator class.</summary>
  *
  * <remarks> Tobias Becker, 13.04.2012.</remarks>
  */
-class Integrator : public Timeable{
+class Integrator : public virtual ISimulationObject{
 private:
-  /// <summary> The integrable </summary>
-  IStatefulObject * _statefulObject;
-  ISystemFunction * _systemFunction;
-  
-  int _dimension;
-
-  StateMatrix _derivedState;
-
-  long _evaluationCount;
-  std::ostream * _log;
-
-protected:
-  virtual void doIntegration(Real a, Real b)=0;
-
-  inline void loadState(Real t){
-    if(!_statefulObject)return;
-		State state(x);
-		_statefulObject->resizeState(state);
-    _statefulObject->exportState(state);
-  }
-  inline void storeState(Real t){
-    if(!_statefulObject)return;   
-    _statefulObject->importState(State(x));
-  }
+  Evaluator * _evaluator;
 public:
-  /**
-   * \brief allows access to the state
-   * 				subclasses use this to set the integrated state.
-   *
-   * \return .
-   */
-  
-  StateMatrix x;
-
-  Integrator();
-
-
-  /**
-   * \brief Integrates the stateful object over the interval [a,b]. the initial value is managed
-   *        by the integrable.
-   *
-   * \param a beginning of the interval.
-   * \param b end of the interval.
-   * 					
-   */
-  void integrate(Real a, Real b);
-  
-  IStatefulObject * statefulObject();
-  void setStatefulObject(IStatefulObject * stateful);
-  void setSystemFunction(ISystemFunction * systemFunction);
-  ISystemFunction * getSystemFunction();  
-
-
-  void setLog(std::ostream * logStream){_log = logStream;}
-  std::ostream * getLog()const{return _log;}
-
-
-  
-  //metadata functions
-  //returns a value between zero and one depending on the progress
-  virtual Real progress()const {return 0;};
-  virtual Real getErrorEstimation()const{return -1;}  
-  virtual int getErrorOrder()const{return 0;} 
-  long getEvaluationCount()const;   
-  void resetEvaluationCount(); 
-  virtual void logIntegratorInfo(std::ostream & o)const;
-  virtual void logParameters(std::ostream & o)const{  }
-
+  Integrator():_evaluator(0){
+    setName("Integrator");
+  }
+  virtual void integrate(Real a, Real b)=0;
+  inline Evaluator * evaluator(){
+    return _evaluator;
+  }
+  void setEvaluator(Evaluator * evaluator){
+    _evaluator = evaluator;
+  }
 protected:
+  inline const StateMatrix & f(const StateMatrix & x, Real t, Real h){
+    if(!evaluator()){
+      std::cerr << " No evaluator set.  cannot call f!!"<<std::endl;
+      return *reinterpret_cast<StateMatrix*>(0);
+    }    
+    return evaluator()->f(x,t,h);
 
-  /**
-   * \brief evaluates the function at state x.
-   *
-   * \param t The integration variable.
-   * \param x The state.
-   * \param h The timestep size.
-   */
-  const StateMatrix & f(Real t, const StateMatrix & x, Real h);
+  }
 };
 
 

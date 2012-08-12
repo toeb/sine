@@ -47,7 +47,7 @@ private:
 
     Real actualSpeedAverage();
     // overridden member of simulation task
-    void timeout(Time dt);
+    void timeout(Time dt,Time t);
 
   };
 

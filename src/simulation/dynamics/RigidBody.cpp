@@ -13,13 +13,6 @@ RigidBody::~RigidBody() {
 
 }
 
-
-unsigned int RigidBody::stateDimension()const{return _kinematics.stateDimension();}
-unsigned int RigidBody::availableDerivatives()const{return _kinematics.availableDerivatives();}
-void RigidBody::importState(const IState & x){_kinematics.importState(x);};
-void RigidBody::exportState(IState & x)const{_kinematics.exportState(x);};
-void RigidBody::exportDerivedState(IState & xDot)const{_kinematics.exportDerivedState(xDot);};
-
 void RigidBody::calculateDynamics()
 {
   //if mass is zero all movement is stopped

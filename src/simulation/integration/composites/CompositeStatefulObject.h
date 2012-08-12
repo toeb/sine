@@ -3,24 +3,51 @@
 #include <simulation/integration/IStatefulObject.h>
 namespace nspace{
 
-/**
- * <summary> Composite stateful object. A class which contains multiple IIntegrables as
- * 					 Children.  (Composite Pattern)</summary>
- *
- * <remarks> Tobias Becker, 13.04.2012.</remarks>
- */
-class CompositeStatefulObject : public Composite<IStatefulObject>, public virtual IStatefulObject{
-private:
-  const std::vector<IStatefulObject*> & _components;
-public:  
-  CompositeStatefulObject():_components(components()){}
-  ~CompositeStatefulObject(){}
-  unsigned int stateDimension()const;
-  unsigned int availableDerivatives()const;
-protected:
-  void exportDerivedState(IState & xDot)const;
-  void importState(const IState & state);
-  void exportState(IState & state)const;
 
-};
+
+  class CompositeStatefulObject : public virtual StatefulObject, public virtual Composite<StatefulObject>{
+  public:
+
+    void onStateAssigned(){
+      uint currentOffset=0;
+      foreachComponent([&currentOffset,this](StatefulObject* obj){
+        uint currentDimension = obj->dimension();
+        uint currentDerivatives = obj->derivatives();
+        State * currentState = state().range(currentOffset,currentDimension,currentDerivatives);
+        obj->assignState(*currentState);
+        currentOffset+=currentDimension;
+      });
+    }
+    void notifyStateChanged(){
+      foreachComponent([](StatefulObject* obj){
+        obj->notifyStateChanged();
+      });
+    }
+    void notifyStateNeeded(){
+      foreachComponent([](StatefulObject* obj){
+        obj->notifyStateNeeded();
+      });
+    }
+    void onAfterComponentAdded( StatefulObject* component ) 
+    {
+      uint d = derivatives();
+      if(component->derivatives()>d)d= component->derivatives();
+      resizeState(component->dimension()+dimension(),d);
+      //component->assignState(*state().range(dimension()-component->dimension(),component->dimension(),component->derivatives()));
+    }
+    uint getMaximumDerivative(){
+      uint result=0;
+      foreachComponent([&result](StatefulObject* obj){
+        if(result < obj->derivatives()){
+          result = obj->derivatives();
+        }
+      });
+      return result;
+    }
+    void onBeforeComponentRemoved( StatefulObject* component ) 
+    {
+      resizeState(getMaximumDerivative(),component->dimension()-dimension());
+    }
+
+  };
 }

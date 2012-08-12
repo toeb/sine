@@ -20,6 +20,8 @@
 #include <simulation/force/Gravity.h>
 #include <simulation/dynamics/RigidBody.h>
 #include <simulation/dynamics/primitives/DynamicBox.h>
+#include <simulation/geometry/Primitives/Sphere.h>
+#include <visualization/glrenderers/geometry/SphereRenderer.h>
 using namespace nspace;
 using namespace std;
 class GlutObject : public virtual IRenderer{
@@ -67,18 +69,21 @@ int main(int argc, char** argv){
   }
   }
   DynamicsAlgorithm da;
-  // simulation << new Gravity(1);
+  simulation << new Gravity(1);
   
-  /*simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
+  simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
+    if(cog.length2()<1){
+     force = Vector3D(0,2,0);// - Vector3D::UnitX()*cog.x()*0.01 - Vector3D::UnitZ()*cog.z()*0.01;
+    }
     //Vector3D rando ((rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5);
     //MatrixOps::multiplyScalar(force,cog,-0.0001);
     //MatrixOps::add(force,force,rando);
     //force = rando -0.001*cog;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
-  });*/
+  });
   simulation << da;
   {
 
-    int n(100), m(10), l(50);
+    int n(20), m(20), l(20);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){
@@ -90,11 +95,12 @@ int main(int argc, char** argv){
           p->position()(0) = i*3-m/2*3;
           p->position()(1) = j* 3-n/2*3;
           p->position()(2) = k* 3-n/2*3;
-          
-          PointRenderer * pr = new PointRenderer(p->position());
-
+          Sphere * sphere = new Sphere();
+          sphere->coordinates().position.mirror(p->position);
+          //PointRenderer * pr = new PointRenderer(p->position());
+          simulation<< new  SphereRenderer(*sphere);
           simulation<<p;
-          simulation<<pr;
+          //simulation<<pr;
         }
       }
     }

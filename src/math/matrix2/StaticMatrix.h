@@ -76,6 +76,7 @@ public:
   inline void assign(const T * dataPtr){
     memcpy(_data, dataPtr,dataByteSize());
   }
+  
   inline void copyTo(T * dataPtr)const{
     memcpy(dataPtr,_data,dataByteSize());
   }
