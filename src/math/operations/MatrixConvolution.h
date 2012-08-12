@@ -3,24 +3,6 @@
 
 namespace nspace{
 
-//   template<typename OutputMatrix, typename MatrixFactorA, typename MatrixFactorB,typename Operation>
-//   class MatrixElementWise{
-// 
-//   };
-
-template<typename OutputMatrix, typename MatrixFactorA, typename MatrixFactorB>
-class MatrixMultiplyElementWise{
-public:
-  static inline void operation(OutputMatrix & c, const MatrixFactorA & a, const MatrixFactorB &  b){
-    if(a.rows()!=b.rows()||a.cols()!=b.cols())return;
-    c.resize(a.rows(), a.cols(),false);
-    for(int i=0; i < a.rows();i++){
-      for(int j=0; j < a.cols();j++){
-        c(i,j)=a(i,j)*b(i,j);
-      }
-    }
-  }
-};
 
   template<typename OutputMatrix, typename InputMatrix>
   class MatrixExtractBlock{
@@ -38,39 +20,61 @@ public:
   };
 
 
-  template<typename FilteredMatrix, typename InputMatrix, typename FilterFunction, typename FilterFunctionArgument>
-  class MatrixFilter{
+  
+
+  template<typename T,typename Mat>
+  class MatrixSum{
   public:
-    static inline void operation(FilteredMatrix & result, const InputMatrix & g, FilterFunction f, uint filterWidth, uint filterHeight){
-      uint gx = g.cols();
-      uint gy = g.rows();
-      uint fx2 = filterWidth/2;
-      uint fy2 = filterHeight/2;
-      uint rx = gx-filterWidth+1;
-      uint ry = gy-filterHeight+1;
-      FilterFunctionArgument current;
-      result.resize(ry,rx,false);
-      current.resize(filterHeight,filterWidth,false);
-      for(int i= 0; i < ry; i++){
-        for(int j=0; j < rx; j++){
-          g.block(current,i,j);
-         // MatrixExtractBlock<FilterFunctionArgument, InputMatrix>::operation(current,g,i,j,filterHeight,filterWidth);
-          f(result(i,j),current);
+    static inline void operation(T & result, const Mat & mat){
+      result =0;
+      for(int i=0; i < mat.rows(); i++){
+        for(int j=0; j < mat.cols(); j++){
+          result = result + mat(i,j);
         }
       }
     }
   };
-  template< typename OutputMatrix, typename InputMatrix, typename FilterMatrix,typename T>
+
+  template<typename OutputMat, typename InputMat>
+  class MatrixPad{
+  public: 
+    static inline void operation(OutputMat & out, const InputMat & input, uint rowsTop, uint rowsBottom, uint colsLeft, uint colsRight){
+      out.resize(input.rows()+rowsTop+rowsBottom,input.cols()+colsLeft+colsRight,true);
+      for(int i=0; i< input.rows(); i++){
+        for(int j=0; j < input.cols(); j++){
+          out(i+rowsTop,j+colsLeft) = input(i,j);
+        }
+      }
+    }
+  };
+
+
+
+  template< typename OutputMatrix, typename InputMatrix, typename KernelMatrix,typename T>
   class MatrixConvolution{
   public:
-    static inline void operation(OutputMatrix & r, const InputMatrix & g, const FilterMatrix & f  ){
-      uint fx = f.cols();
-      uint fy = f.rows();
-      MatrixFilter<OutputMatrix,InputMatrix,std::function<void (T & , FilterMatrix&) >,FilterMatrix>::operation(
-        OutputMatrix, g, [&f](T & val, FilterMatrix & window){
-        MatrixMultiplyElementWise<FilterMatrix,FilterMatrix,FilterMatrix>::operation(window,window,f);
+    static inline void operation(OutputMatrix & r, const InputMatrix & g, const KernelMatrix & kernel  ){
+      uint fx = kernel.cols();
+      uint fy = kernel.rows();
+      uint rx = g.cols()-fx+1;
+      uint ry = g.rows()-fy+1;
 
-      },fx,fy);
+      KernelMatrix window;
+      window.resize(fy,fx);
+      r.resize(ry,rx);
+      for(int i=0; i < ry; i++){
+        for(int j=0; j < rx; j++){
+          T sum=0.0;
+          for(int l = 0; l < fy; l++){
+            for(int k =0; k < fx; k++){
+              sum = sum + g(i+l,j+k)*kernel(l,k);
+            }
+          }
+          r(i,j)=sum;
+
+        }
+      }
+
     }
   };
 }

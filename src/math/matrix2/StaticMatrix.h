@@ -134,22 +134,23 @@ public:
     }    
     return matrix;
   }
-
+  
   inline void transpose(){
     if(RowCount!=ColumnCount){
       std::cerr << "cannot transpose non square StaticMatrix in place" << std::endl;
     }
-    MatrixOperations<T>::transposeInPlace(*this);
+    MatrixTransposeInPlace<StaticMatrix<T,RowCount,ColumnCount> >::operation(*this);
   }
   inline void toTransposed(StaticMatrix<T,ColumnCount,RowCount> & AT)const{
+    MatrixTranspose<StaticMatrix<T,ColumnCount,RowCount>, StaticMatrix<T,RowCount,ColumnCount> >::operation(AT,*this);
     MatrixOperations<T>::transpose(AT,*this);
   }
   inline StaticMatrix<T,ColumnCount,RowCount> transposed()const{
     StaticMatrix<T,ColumnCount,RowCount> AT;
-    MatrixOperations<T>::transpose(AT,*this);
+     MatrixTranspose<StaticMatrix<T,ColumnCount,RowCount>, StaticMatrix<T,RowCount,ColumnCount> >::operation(AT,*this);
     return AT;
   }
-
+  
   inline T length()const{
     T result;
     VectorOperations<T>::norm(result,*this);

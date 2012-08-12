@@ -6,8 +6,8 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-#include "simulation/timing/Timeable.h"
-#include "simulation/logging/LoggingObject.h"
+#include <simulation/timing/Timeable.h>
+#include <simulation/logging/LoggingObject.h>
 using namespace nspace;
 using namespace nspace::matrix2;
 using namespace std;
@@ -248,6 +248,60 @@ int main(int argc, char ** argv){
   pngLoader.loadFromFile(img,"resources/images/testHuge.png");
 
 
+  DynamicMatrix<Real> I;
+  img.toGrayscale(I);
+
+  //I.setFunction([](Real & v, int i, int j){v = i==j;});
+  
+  DynamicMatrix<Real> Ix,Iy,IxIy,IxIx, IyIy;
+  DynamicMatrix<Real> dx(1,3);
+  dx(0)=-0.5;
+  dx(1)=0;
+  dx(2)=0.5;
+  DynamicMatrix<Real> dy = dx.transpose(); 
+  
+  MatrixOps::convolveSame(Ix,I,dx);
+  MatrixOps::convolveSame(Iy,I,dy);
+
+
+  MatrixOps::elementWiseMultiply(IxIy, Ix,Iy);
+  MatrixOps::elementWiseMultiply(IxIx, Ix,Ix);
+  MatrixOps::elementWiseMultiply(IyIy, Iy,Iy);
+
+  I.toUnitInterval();
+  I *= 255.0;
+  img.fromGrayscale(I);
+  pngLoader.storeToFile("I.png",img);
+  Ix.toUnitInterval();
+  Ix *= 255.0;
+  img.fromGrayscale(Ix);
+  pngLoader.storeToFile("Ix.png",img);
+  Iy.toUnitInterval();
+  Iy *= 255.0;
+  img.fromGrayscale(Iy);
+  pngLoader.storeToFile("Iy.png",img);
+
+  IxIx.toUnitInterval();
+  IxIx *= 255.0;
+  img.fromGrayscale(IxIx);
+  pngLoader.storeToFile("IxIx.png",img);
+
+  IyIy.toUnitInterval();
+  IyIy *= 255.0;
+  img.fromGrayscale(IyIy);
+  pngLoader.storeToFile("IyIy.png",img);
+
+  IxIy.toUnitInterval();
+  IxIy *= 255.0;
+  img.fromGrayscale(IxIy);
+  pngLoader.storeToFile("IxIy.png",img);
+
+  /*
+  PngLoader pngLoader;
+  Image img;
+  pngLoader.loadFromFile(img,"resources/images/testHuge.png");
+
+
   DynamicMatrix<Real> gray;
   img.toGrayscale(gray);
   char tmp;
@@ -255,7 +309,8 @@ int main(int argc, char ** argv){
   
 
 
-  DynamicMatrix<Real> dx = gray.filter([](Real & val, DynamicMatrix<Real> & window){
+
+/*  DynamicMatrix<Real> dx = gray.filter([](Real & val, DynamicMatrix<Real> & window){
     val=window(2)-window(0);
   },3,1);
   DynamicMatrix<Real> dy = gray.filter([](Real & val, DynamicMatrix<Real> & window){

@@ -16,12 +16,21 @@
 
 #elif MATRIX_CLASSES == 2
 
-#include <math/matrix2/StaticMatrix.h>
 #include <math/matrix2/DynamicMatrix.h>
-#include <math/matrix2/StaticMatrixOperators.h>
-#include <math/matrix2/StaticMatrixSpecialization.h>
-#include <math/matrix2/Quaternion.h>
+#include <math/matrix2/specialization/DynamicMatrixSpecialization.h>
+#include <math/matrix2/DynamicMatrixOperators.h>
 
+
+#include <math/matrix2/StaticMatrix.h>
+#include <math/matrix2/specialization/StaticMatrixNxNSpecialization.h>
+#include <math/matrix2/specialization/StaticMatrix3x3Specialization.h>
+#include <math/matrix2/specialization/StaticMatrix3x1Specialization.h>
+#include <math/matrix2/StaticMatrixOperators.h>
+
+
+#include <math/matrix2/Quaternion.h>
+#include <math/matrix2/specialization/QuaternionSpecialization.h>
+#include <math/matrix2/QuaternionOperators.h>
 namespace nspace{
   
   typedef matrix2::StaticMatrix<Real,2,1> Vector2D;

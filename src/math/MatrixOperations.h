@@ -40,6 +40,17 @@
 #include <math/operations/QuaternionMultiplication.h>
 #include <math/operations/QuaternionConjugation.h>
 #include <math/operations/QuaternionToRotationMatrix.h>
+#include <math/operations/MatrixBlockAssign.h>
+#include <math/operations/MatrixBlockExtract.h>
+#include <math/operations/MatrixElementWiseBinaryOperation.h>
+#include <math/operations/MatrixElementWiseUnaryOperation.h>
+#include <math/operations/MatrixElementWiseMultiplication.h>
+#include <math/operations/MatrixElementWiseDivision.h>
+#include <math/operations/MatrixReduce.h>
+#include <math/operations/MatrixReduceSum.h>
+#include <math/operations/MatrixScalarAddition.h>
+#include <math/operations/MatrixScalarSubtraction.h>
+
 
 
 namespace nspace{
@@ -71,55 +82,15 @@ namespace nspace{
     }
   };
 
+  
+
   template<typename T>
   class MatrixOperations{
   public:
-  template<typename MatrixType>
-  static inline void transposeInPlace(MatrixType & A){
-    if(A.rows()!=A.cols()){
-      std::cerr << "transpose in place only works with Square Matrices"<<std::endl;
-    }
-    for(int i=0; i < A.rows(); i++){
-      for(int j=i+1; j < A.cols(); j++){
-        T tmp;
-        tmp = A(i,j);
-        A(i,j)=A(j,i);
-        A(j,i)=tmp;
-      }
-    }
-
-  }
-  template<typename MatrixType>
-  static inline void transpose(MatrixType & AT, const MatrixType & A){
-    for(int i=0; i < A.rows(); i++){
-      for(int j=0; j < A.cols(); j++){
-        // the tmp var is need if AT == A
-        T tmp;
-        tmp = A(i,j);
-        A(i,j)=A(j,i);
-        A(j,i)=tmp;
-      }
-    }
-  }
+  
  
 
 
-   /* template<typename MatrixType>
-    static inline void setFunction(MatrixType & result, std::function<void (T& , int i, int j) > f ){
-      for(int i=0; i < result.rows(); i++){
-        for(int j=0; j < result.cols(); j++){
-          f(result(i,j),i,j);
-        }
-      }
-    }
-    template<typename MatrixType>
-    static inline void setConstant(MatrixType & result, const T &val){
-      for(int i=0; i < result.rows(); i++){
-        for(int j=0; j < result.cols(); j++){
-          result(i,j)=val;
-        }
-      }
-    }   */
     template<typename MatrixType>
     static inline void negate(MatrixType & result,const MatrixType & m){
       for(int i=0; i < result.rows(); i++){
@@ -129,21 +100,132 @@ namespace nspace{
       }
     }   
     
-   /* template<typename MatrixType>
-    static inline void subtraction(MatrixType & difference, const MatrixType & a, const MatrixType & b){
-      for(int i=0; i < a.rows(); i++){
-        for(int j=0; j < a.cols(); j++){
-          difference(i,j)=a(i,j)-b(i,j);
-        }
-      }
-    }*/
-    
     
     
   };
   
+  template<typename C,typename A, typename B>
+  class MatrixElementWiseMultiply{
+  public:
+    static inline void operation(C & c, const A &  a, const B & b){
+      if(a.rows() != b.rows() ||a.cols()!=b.cols()){
+        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<endl;
+        return;
+      }
+      c.resize(a.rows(),a.cols(),false);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          c(i,j)=a(i,j)*b(i,j);
+        }
+      }
+    }
+  };
+
+  template<typename OutputMatrix, typename MatrixFactorA, typename MatrixFactorB>
+  class MatrixMultiplyElementWise{
+  public:
+    static inline void operation(OutputMatrix & c, const MatrixFactorA & a, const MatrixFactorB &  b){
+      if(a.rows()!=b.rows()||a.cols()!=b.cols())return;
+      c.resize(a.rows(), a.cols(),false);
+      for(int i=0; i < a.rows();i++){
+        for(int j=0; j < a.cols();j++){
+          c(i,j)=a(i,j)*b(i,j);
+        }
+      }
+    }
+  };
+
+  template<typename C,typename A, typename B>
+  class MatrixElementWiseDivide{
+  public:
+    static inline void operation(C & c, const A &  a, const B & b){
+      if(a.rows() != b.rows() ||a.cols()!=b.cols()){
+        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<endl;
+        return;
+      }
+      c.resize(a.rows(),a.cols(),false);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          c(i,j)=a(i,j)/b(i,j);
+        }
+      }
+    }
+  };
+
+  template<typename T>
+  class ScalarArcusTangens{
+  public:
+    static inline void operation(T & c, const T & a){
+      c = atan(a);
+    }
+  };
+
+  template<typename C,typename A, typename B, typename OP>
+  class MatrixElementWiseBinary{
+  public:
+    static inline void operation(C & c, const A &  a, const B & b){
+      if(a.rows() != b.rows() ||a.cols()!=b.cols()){
+        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<endl;
+        return;
+      }
+      c.resize(a.rows(),a.cols(),false);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          OP::operation(c(i,j), a(i,j),b(i,j));
+        }
+      }
+    }
+  };
+  template<typename C,typename A,typename OP>
+  class MatrixElementWiseUnary{
+  public:
+    static inline void operation(C & c, const A &  a){      
+      c.resize(a.rows(),a.cols(),false);
+      for(int i=0; i < a.rows(); i++){
+        for(int j=0; j < a.cols(); j++){
+          OP::operation(c(i,j), a(i,j));
+        }
+      }
+    }
+  };
 
   namespace MatrixOps{
+    template<typename C, typename A, typename B>
+    inline void elementWiseMultiply(C & result, const A & a, const B& b ){
+      MatrixElementWiseMultiply<C,A,B>::operation(result,a,b);
+    }
+    template<typename C, typename A, typename B>
+    inline void elementWiseDivide(C & result, const A & a, const B& b ){
+      MatrixElementWiseDivide<C,A,B>::operation(result,a,b);
+    }
+    template<typename OutputMatrix, typename InputMatrix>
+    void padMatrix(OutputMatrix & out, const InputMatrix & inputMatrix,uint rowsTop, uint rowsBottom, uint colsLeft, uint colsRight){
+      MatrixPad<OutputMatrix,InputMatrix>::operation(out,inputMatrix, rowsTop,  rowsBottom,  colsLeft,  colsRight);
+    }
+
+  template<typename OutputMatrix, typename InputMatrix, typename KernelMatrix>
+  void convolve(OutputMatrix & result, const InputMatrix & original, const KernelMatrix & kernel){
+    MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,original,kernel);
+  }
+
+
+
+  template<typename OutputMatrix, typename InputMatrix, typename KernelMatrix>
+  void convolveSame(OutputMatrix & result, const InputMatrix & original, const KernelMatrix & kernel, int borderStrategy=0){
+    uint rowsTop = kernel.rows()/2-1+kernel.rows()%2;
+    uint rowsBottom = kernel.rows()/2;
+    uint colsLeft = kernel.cols()/2-1+kernel.cols()%2;
+    uint colsRight = kernel.cols()/2;
+    DynamicMatrix<Real> padded;
+    padMatrix(padded,original,rowsTop,rowsBottom,colsLeft,colsRight);
+    MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,padded,kernel);
+  }
+
+  template<typename OutputMatrix, typename InputMatrix, typename FilterFunction, typename FilterArgument>
+  void filter(OutputMatrix & result, const InputMatrix & original, FilterFunction filter,uint width, uint height){
+    MatrixFilter<OutputMatrix,InputMatrix,FilterFunction,FilterArgument>::operation(result,original,filter,width,height);
+  }
+
   template<typename C, typename A, typename B>
   void add(C & c, const A& a, const B & b){
     MatrixAddition<C,A,B>::operation(c,a,b);
@@ -160,7 +242,6 @@ namespace nspace{
   void multiplyScalar(C & c, const A& a, const B & s){
     MatrixScalarMultiplication<C,A,B>::operation(c,a,s);
   }
-  
   };
 
 

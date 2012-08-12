@@ -3,9 +3,14 @@
 #include <iostream>
 #include <math/matrix2/StaticMatrix.h>
 #include <math/matrix2/Quaternion.h>
-#include <math/matrix2/StaticMatrixSpecialization.h>
+#include <math/matrix2/specialization/StaticMatrixNxNSpecialization.h>
+#include <math/matrix2/specialization/StaticMatrix3x3Specialization.h>
+#include <math/matrix2/specialization/StaticMatrix3x1Specialization.h>
 #include <math/matrix2/StaticMatrixOperators.h>
+
 #include <math/matrix2/DynamicMatrix.h>
+#include <math/matrix2/specialization/DynamicMatrixSpecialization.h>
+#include <math/matrix2/DynamicMatrixOperators.h>
 #include <string>
 
 #include <algorithm>
@@ -59,7 +64,18 @@ public:
   void tick(){start = systemTime();}
   void tock(){_duration += systemTime()-start;};
   void reset(){tock();_duration =0;}
-  virtual void run(){
+  void run(){
+    for(int i=0; i < n(); i++){
+      initTest();
+      performTest();
+      cleanupTest();
+    }
+  } 
+  virtual void performTest()=0;
+  virtual void cleanupTest(){
+
+  } 
+  virtual void initTest(){
 
   }
 };
@@ -78,9 +94,9 @@ public:
 FilterMatrixTest(const Mat & a, FilterFunction f, uint filterWidth, uint filterHeight ):f(f),a(a),filterWidth(filterWidth),filterHeight(filterHeight){
   nameStream<< "FilterMatrixTest "<<" b = f * b "<< typeid(Mat).name();
 }
-void run(){
+void performTest(){
   tick();
-  for(int i=0; i< n(); i++)a.filter(b,f,filterWidth,filterHeight);
+  a.filter(b,f,filterWidth,filterHeight);
   tock();
 }
 };
@@ -93,9 +109,9 @@ private:
 public:
   AssignTest(const Mat& b):a(a),b(b){nameStream<< "AssignTest "<<" a = b "<< typeid(Mat).name();}
   
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i< n(); i++) a = b;
+    a = b;
     tock();
   }
 };
@@ -109,9 +125,9 @@ public:
   AddTest(const Mat& a, const Mat&b):a(a),b(b){
     nameStream << "AddTest c=a+b "<<typeid(Mat).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)c=a+b;
+   c=a+b;
     tock();
   }
 };
@@ -125,9 +141,9 @@ public:
   AddInPlaceTest(const Mat& a, const Mat&b):a(a),b(b){
     nameStream << "AddInPlaceTest c=a+b "<<typeid(Mat).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)MatrixOps::add(c,a,b);
+    MatrixOps::add(c,a,b);
     tock();
   }
 };
@@ -141,9 +157,9 @@ public:
   SubtractTest(const Mat& a, const Mat&b):a(a),b(b){
     nameStream << "SubtractTest c=a-b "<<typeid(Mat).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)c=a-b;
+    c=a-b;
     tock();
   }
 };
@@ -157,9 +173,9 @@ public:
   SubtractInPlaceTest(const Mat& a, const Mat&b):a(a),b(b){
     nameStream << "SubtractInPlaceTest c=a-b "<<typeid(Mat).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)MatrixOps::subtract(c,a,b);
+    MatrixOps::subtract(c,a,b);
     tock();
   }
 };
@@ -174,9 +190,9 @@ public:
   MultMatrixTest(const A& a, const B&b):a(a),b(b){
     nameStream << "MultMatrixTest c=a x b "<<typeid(Product).name()<<" = " <<typeid(A).name()<< " * "<<typeid(B).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)c=a*b;
+    c=a*b;
     tock();
   }
 };
@@ -193,9 +209,9 @@ public:
   MultMatrixInPlaceTest(const A& a, const B&b):a(a),b(b){
     nameStream << "MultMatrixInPlaceTest c=a x b "<<typeid(Product).name()<<" = " <<typeid(A).name()<< " * "<<typeid(B).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)MatrixOps::multiplyMatrix(c,a,b);
+    MatrixOps::multiplyMatrix(c,a,b);
     tock();
   }
 };
@@ -213,9 +229,9 @@ public:
   MultScalarTest(const Mat & a, const T&b):a(a),b(b){
     nameStream << "MultScalarTest c=a*b "<<typeid(Mat).name()<<" = " <<typeid(Mat).name()<< " * "<<typeid(T).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)c=a*b;
+    c=a*b;
     tock();
   }
 };
@@ -229,9 +245,9 @@ public:
   MultScalarInPlaceTest(const Mat & a, const T&b):a(a),b(b){
     nameStream << "MultScalarInPlaceTest c=a*b "<<typeid(Mat).name()<<" = " <<typeid(Mat).name()<< " * "<<typeid(T).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++)MatrixOps::multiplyScalar(c,a,b);
+    MatrixOps::multiplyScalar(c,a,b);
     tock();
   }
 };
@@ -244,18 +260,18 @@ public:
   ReadElementIJTest(const Mat & m):m(m){
     nameStream << "ReadElementIJTest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
   }
-  void run(){
+  void performTest(){
     int rows =m.rows();
     int cols = m.cols();
-    for(int k=0; k < n(); k++) {
-      for(int i = 0; i < rows; i++){
-        for(int j=0; j < cols; j++){
-          tick();
-          v=m(i,j);
-          tock();
-        }
+    
+    for(int i = 0; i < rows; i++){
+      for(int j=0; j < cols; j++){
+        tick();
+        v=m(i,j);
+        tock();
       }
     }
+    
   }
 };
 template<typename Mat, typename T>
@@ -267,15 +283,15 @@ public:
   ReadElementITest(const Mat & m):m(m){
     nameStream << "ReadElementITest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
   }
-  void run(){
+  void performTest(){
     int size = m.size();
-    for(int i=0; i < n(); i++){
-      for(int j=0; j < size; j++){
-        tick();
-        v=m(j);
-        tock();
-      }
+    
+    for(int j=0; j < size; j++){
+      tick();
+      v=m(j);
+      tock();
     }
+    
   }
 };
 template<typename Mat, typename T>
@@ -287,18 +303,17 @@ public:
   WriteElementIJTest(const T & v):v(v){
     nameStream << "WriteElementIJTest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
   }
-  void run(){
+  void performTest(){
     int rows =m.rows();
     int cols = m.cols();
-    for(int k=0; k < n(); k++) {
-      for(int i=0; i < rows; i++){
-        for(int j=0; j < cols; j++){
-          tick();
-          m(i,j)=v;
-          tock();
-        }
+    for(int i=0; i < rows; i++){
+      for(int j=0; j < cols; j++){
+        tick();
+        m(i,j)=v;
+        tock();
       }
     }
+    
   }
 };
 template<typename Mat, typename T>
@@ -310,15 +325,13 @@ public:
   WriteElementITest(T v):v(v){
     nameStream << "WriteElementITest t=m(i,j) "<<typeid(T).name()<<" = " <<typeid(Mat).name()<< "(i,j)";
   }
-  void run(){
+  void performTest(){
     int size = m.size();
-    for(int i=0; i < n(); i++){
      for(int j=0; j < size ;j++){
        tick();
        m(j) = v;
        tock();
      }
-    }
   }
 };
 template<typename Quat, typename Rot>
@@ -330,115 +343,29 @@ public:
   Quat2RotTest(const Quat & q):q(q){
      nameStream << "Quat2RotTest q->R "<<typeid(Quat).name()<<" -> " <<typeid(Rot).name();
   }
-  void run(){
+  void performTest(){
     tick();
-    for(int i=0; i < n(); i++) q.toRotationMatrix(R);
+    q.toRotationMatrix(R);
     tock();
   }
 };
 
-
-template<typename Quat, typename Mat, int n>
-void quat2RotMatrix(){
-  std::cout<< "quat2rot n="<<n;
-  Time start = systemTime();
-
-  Quat q;
-  Mat m;
-  for(int i=0; i < n; i++){
-    q.toRotationMatrix(m);
+template<typename Mat, typename Kernel>
+class MatrixConvolutionTest:public PerformanceTest{
+private:
+  const Mat & a;
+  Mat b;
+  const Kernel & k;
+public:
+  MatrixConvolutionTest(const Mat & a, const Kernel & k):k(k),a(a){
+    nameStream<< "ConvolveMatrixTest "<<" b = f * b "<< typeid(Mat).name();
   }
-
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds"<<endl;
-};
-template<typename Quat, typename Mat,int n>
-void quatGetRot(){
-  std::cout<< "quatgetrot n="<<n;
-  Time start = systemTime();
-
-  Quat q;
-  Mat m;
-  for(int i=0; i < n; i++){
-    m = q.rotationMatrix();
+  void performTest(){
+    tick();
+    MatrixOps::convolve(b,a,k);
+    tock();
   }
-
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds"<<endl;
 };
-template<typename Mat,int n, int rows, int cols>
-void dynamicCopyMat(){
-  std::cout<< "dynamicCopyMat n="<<n;
-  Mat m1;
-  m1.resize(rows,cols);
-  Mat m2;
-  m2.resize(rows,cols);
-  Time start = systemTime();
-
-  
-  for(int i=0; i < n; i++){
-   m1 = m2;
-  }
-
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds"<<endl;
-};
-template<typename Mat,int n, int rows, int cols>
-void dynamicAddMat(){
-  std::cout<< "dynamicAddMat n="<<n;
-  Mat m1;
-  m1.resize(rows,cols);
-  Mat m2;
-  m2.resize(rows,cols);
-  Mat m3;
-  Time start = systemTime();
-  for(int i=0; i < n; i++){
-    m3= m1 + m2;
-  }
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds"<<endl;
-};
-template<typename Mat,int n, int rows, int cols>
-void dynamicMultScalarMat(){
-  std::cout<< "dynamicMultScalarMat n="<<n;
-  Mat m1;
-  m1.resize(rows,cols);
-  Mat m2;
-  Time start = systemTime();
-  for(int i=0; i < n; i++){
-    m2= 0.5*m1;
-  }
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds"<<endl;
-};
-template<typename Mat,int n, int rows, int cols>
-void dynamicSetConstant(){
-  std::cout<< "dynamicSetConstant n="<<n;
-  Mat m1;
-  m1.resize(rows,cols);
-  
-  Time start = systemTime();
-  for(int i=0; i < n; i++){
-    m1.setConstant((double)i);
-  }
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds"<<endl;
-};
-
-template<typename Mat,int n, int rows, int cols>
-void dynamicSetFunction(){
-  std::cout<< "dynamicSetFunction n="<<n;
-  Mat m1;
-  m1.resize(rows,cols);
-
-  Time start = systemTime();
-  for(int i=0; i < n; i++){
-    m1.setFunction([](Real & val, int i, int j){val = i+j;});
-  }
-  Time end = systemTime();
-  cout << " took: "<<(end-start)<<" seconds"<<endl;
-};
-
 
 #define N 100000//10000000
 
@@ -518,12 +445,14 @@ int main(int argc, char ** argv){
 
   new ReadElementITest<Mat332,Real>(Mat332::Identity());
   new ReadElementITest<Mat331,Real>(Mat331::Identity());
-  */
-  new FilterMatrixTest<MatMN2,std::function<void (Real &, MatMN2 & ) > >(*new MatMN2(4096,4096),
+
+  new FilterMatrixTest<MatMN2,std::function<void (Real &, MatMN2 & ) > >(*new MatMN2(512,512),
     [](Real & v, MatMN2 & window){
      v=0.0;
 },3,3);
+ //*/
 
+  new MatrixConvolutionTest<MatMN2,MatMN2>(*new MatMN2(4096,4096),*new MatMN2(7,7));
   PerformanceTest::runAll(10);
   //quat2RotMatrix<Quat2,Mat332,N>();
   //quat2RotMatrix<Quat1,Mat331,N>();

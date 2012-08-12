@@ -19,6 +19,8 @@ set(operationsSource
 ./operations/MatrixAccessElement.h
 ./operations/MatrixScalarDivisionInPlace.h
 ./operations/MatrixScalarDivision.h
+./operations/MatrixScalarAddition.h
+./operations/MatrixScalarSubtraction.h
 ./operations/MatrixScalarMultiplicationInPlace.h
 ./operations/MatrixScalarMultiplication.h
 ./operations/MatrixSetConstant.h
@@ -35,6 +37,15 @@ set(operationsSource
 ./operations/QuaternionMultiplication.h
 ./operations/QuaternionConjugation.h
 ./operations/QuaternionToRotationMatrix.h
+./operations/MatrixElementWiseMultiplication.h
+./operations/MatrixElementWiseDivision.h
+./operations/MatrixElementWiseBinaryOperation.h
+./operations/MatrixElementWiseUnaryOperation.h
+./operations/MatrixBlockExtract.h
+./operations/MatrixBlockAssign.h
+./operations/MatrixReduce.h
+./operations/MatrixReduceSum.h
+
 )
 source_group("operations" FILES ${operationsSource})
 set(matrix1Source
@@ -68,12 +79,23 @@ set(matrix1Source
 source_group("matrix1" FILES ${matrix1Source})
 set(matrix2Source
  ./matrix2/DynamicMatrix.h
+ ./matrix2/DynamicMatrixOperators.h
  ./matrix2/Quaternion.h
+ ./matrix2/QuaternionOperators.h
  ./matrix2/StaticMatrix.h
  ./matrix2/StaticMatrixOperators.h
- ./matrix2/StaticMatrixSpecialization.h
-)
+
+ )
 source_group("matrix2" FILES ${matrix2Source})
+
+set(matrix2Specialization
+ ./matrix2/specialization/StaticMatrixNxNSpecialization.h
+ ./matrix2/specialization/StaticMatrix3x3Specialization.h
+ ./matrix2/specialization/StaticMatrix3x1Specialization.h
+ ./matrix2/specialization/DynamicMatrixSpecialization.h
+ ./matrix2/specialization/QuaternionSpecialization.h
+)
+source_group("matrix2\\specialization" FILES ${matrix2Specialization})
 set(matrix3Source 
 	./matrix3/DynamicMatrix.h
 	
@@ -106,7 +128,7 @@ set(source
 )
 source_group("src" FILES ${source})
 
-add_library(math ${source} ${matrix1Source} ${matrix2Source} ${matrix3Source} ${operationsSource} CMakeLists.txt )
+add_library(math ${source} ${matrix1Source} ${matrix2Source} ${matrix2Specialization} ${matrix3Source} ${operationsSource} CMakeLists.txt )
 target_link_libraries(math common)
 project_folder("" math)
 #SET_TARGET_PROPERTIES(math PROPERTIES STATIC_LIBRARY_FLAGS_RELEASE ${IBDS_STATIC_LIBRARY_FLAGS_RELEASE})   

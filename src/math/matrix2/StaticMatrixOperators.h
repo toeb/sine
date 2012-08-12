@@ -1,7 +1,6 @@
 #pragma once
 #include <math/MatrixOperations.h>
 #include <math/VectorOperations.h>
-#include <math/matrix2/StaticMatrixSpecialization.h>
 namespace nspace{
   namespace matrix2{
 

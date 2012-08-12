@@ -190,7 +190,7 @@ namespace matrix2{
   public:
     static inline void operation(RotationMatrixType  & RT, const Quat & q){
       QuaternionToRotationMatrix<T,Quat,RotationMatrixType>::operation(RT,q);
-      MatrixOperations<T>::transposeInPlace(RT);
+      MatrixTransposeInPlace<RotationMatrixType>::operation(RT);
     }
   };
   template<typename T>

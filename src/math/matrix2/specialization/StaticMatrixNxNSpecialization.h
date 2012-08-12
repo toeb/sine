@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math/MatrixOperations.h>
+
 #include <math/matrix2/StaticMatrix.h>
 namespace nspace{
 #define USE_SPECIALIZATION
@@ -46,7 +46,7 @@ inline void MatrixMultiplication<Real,matrix2::StaticMatrix<Real,3,1> ,matrix2::
 };
 
 template<typename T>
-class MatrixMultiplyScalar<matrix2::StaticMatrix<T,3,3>,matrix2::StaticMatrix<T,3,3>, T >{
+class MatrixScalarMultiplication<matrix2::StaticMatrix<T,3,3>,matrix2::StaticMatrix<T,3,3>, T >{
 public:
   static inline void operation(matrix2::StaticMatrix<T,3,3> & product, const matrix2::StaticMatrix<T,3,3>  & aMat, const T & d){
     const Real * a = aMat.data();
@@ -64,7 +64,7 @@ public:
 };
 
 template<typename T>
-class MatrixMultiplyScalar<matrix2::StaticMatrix<T,3,1>,matrix2::StaticMatrix<T,3,1>, T >{
+class MatrixScalarMultiplication<matrix2::StaticMatrix<T,3,1>,matrix2::StaticMatrix<T,3,1>, T >{
 public:
   static inline void operation(matrix2::StaticMatrix<T,3,1> & product, const matrix2::StaticMatrix<T,3,1>  & aMat, const T & d){
     const Real * a = aMat.data();
