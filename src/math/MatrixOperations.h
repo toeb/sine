@@ -81,8 +81,36 @@ namespace nspace{
       }
     }
   };
-
   
+
+  template<typename MatHom,typename MatCart>
+  class MatrixCartesianToHomogenousCoordinates{
+  public:
+    static inline void operation(MatHom & h, const MatCart & c){
+      h.resize(c.rows()+1,c.cols(),false);
+      for(int i=0; i < c.rows(); i++){
+        for(int j=0; j <c.cols();j++){
+          h(i,j)=c(i,j);
+        }
+      }
+      for(int j=0;j <h.cols(); j++){
+        h(c.rows(),j)=1;
+      }
+    }
+  };
+  
+  template<typename MatCart,typename MatHom>
+  class MatrixHomogenousToCartesianCoordinates{
+  public:
+    static inline void operation(MatCart & c, const MatHom & h){
+      c.resize(h.rows()-1,h.cols,false);
+      for(int i=0; i < c.rows(); i++){
+        for(int j=0; j < c.cols(); j++){
+          c(i,j) = h(i,j) / h(c.rows(),j);
+        }
+      }
+    }
+  };
 
   template<typename T>
   class MatrixOperations{
@@ -242,6 +270,17 @@ namespace nspace{
   void multiplyScalar(C & c, const A& a, const B & s){
     MatrixScalarMultiplication<C,A,B>::operation(c,a,s);
   }
+
+  template<typename A, typename B>
+  inline void cart2hom(A & hom, const B & car){
+    MatrixCartesianToHomogenousCoordinates<A,B>::operation(hom,car);
+  }
+
+  template<typename A, typename B>
+  inline void hom2car(A & cart, const B & hom){
+    MatrixHomogenousToCartesianCoordinates<A,B>::operation(cart,hom);
+  }
+
   };
 
 

@@ -200,7 +200,6 @@ namespace nspace{
       for(int i=0; i< kernel.size(); i++)f[i]=kernel(i);
       const Real * gOffset;
       const Real * fOffset;
-      
       T  sum=0.0;          
       for(int i=0; i < ry; i++){
         for(int j=0; j < rx; j++){          
