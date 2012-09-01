@@ -1,1 +1,1 @@
-subdirs(core opengl glrenderers imaging)
+subdirs(core opengl glrenderers)

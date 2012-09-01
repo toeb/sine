@@ -130,7 +130,7 @@ source_group("src" FILES ${source})
 
 add_library(math ${source} ${matrix1Source} ${matrix2Source} ${matrix2Specialization} ${matrix3Source} ${operationsSource} CMakeLists.txt )
 target_link_libraries(math common)
-project_folder("" math)
+project_folder("utility" math)
 #SET_TARGET_PROPERTIES(math PROPERTIES STATIC_LIBRARY_FLAGS_RELEASE ${IBDS_STATIC_LIBRARY_FLAGS_RELEASE})   
 
 
