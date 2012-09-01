@@ -11,6 +11,4 @@ utility
 logging 
 geometry
 dynamics
-force
-textile
 )
