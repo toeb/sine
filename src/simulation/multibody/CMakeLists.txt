@@ -1,9 +1,9 @@
 set(source
-	./MultiBodyDynamics/ImpulseBased/Joint.h
-	./MultiBodyDynamics/ImpulseBased/BallJoint.h
-	./MultiBodyDynamics/ImpulseBased/BallJoint.cpp 
-	./MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.h
-	./MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.cpp
+	./impulseBased/Joint.h
+	./impulseBased/BallJoint.h
+	./impulseBased/BallJoint.cpp 
+	./impulseBased/ImpulseBasedDynamicsAlgorithm.h
+	./impulseBased/ImpulseBasedDynamicsAlgorithm.cpp
 )
 
 set(simulationSource ${simulationSource} ${source}  )
