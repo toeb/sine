@@ -1,1 +1,1 @@
-subdirs(urdf)
+subdirs(urdf obj ply)
