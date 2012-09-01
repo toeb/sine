@@ -6,6 +6,18 @@ set(source
 	./Config.h
 	./Object.h
 	./Object.cpp
+	./NamedObject.h
+	./Node.h
+	./Node.cpp
+	./Graph.h
+	./Comparator.h
+	./ObservableCollection.h
+	./Query.h
+	./Set.h
+	./StringTools.h
+	./StringTools.cpp
+	./ValueLookup.h
+	./ValueLookup.cpp
 )
 source_group("src" FILES ${source})
 
