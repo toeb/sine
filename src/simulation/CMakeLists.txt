@@ -11,4 +11,7 @@ utility
 logging 
 geometry
 dynamics
+textile
+multibody
+force
 )
