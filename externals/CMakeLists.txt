@@ -1,1 +1,1 @@
-subdirs(freeglut soil lodepng)
+subdirs(freeglut soil lodepng tinyxml2)
