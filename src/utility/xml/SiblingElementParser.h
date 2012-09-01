@@ -1,7 +1,7 @@
 #pragma once
-#include <urdfreader/parsers/general/ElementParser.h>
+#include <utility/xml/ElementParser.h>
 
-namespace mbslib{
+namespace nspace{
 
 class SiblingElementParser: public ElementParser{
   private:

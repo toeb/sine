@@ -3,10 +3,10 @@
 #include <simulation/core/SimulationModuleBase.h>
 namespace nspace{
   
-class ConnectorModule  :public SimulationModuleBase<Connector>{
+class ConnectorModule  :public SimulationModuleBase<DynamicConnector>{
 public:
   void calculateConnectorPositions(){
-    foreachObject([](Connector * b){b->calculateCachedValues();});
+    foreachObject([](DynamicConnector * b){b->calculateCachedValues();});
   }
 };
 }

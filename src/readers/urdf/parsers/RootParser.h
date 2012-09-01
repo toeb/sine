@@ -1,12 +1,12 @@
 #pragma once
 
-#include <urdfreader/parsers/general/NamedElementParser.h>
-#include <urdfreader/ModelBuilderHolder.h>
+#include <utility/xml/NamedElementParser.h>
+#include <simulation/model/builder/ModelBuilderHolder.h>
 #include <simulation/kinematics/CoordinateSystem.h>
-#include <urdfreader/parsers/general/CompositeChildParser.h>
-#include <urdfreader/parsers/urdf/OriginParser.h>
+#include <utility/xml/CompositeChildParser.h>
+#include <readers/urdf/parsers/OriginParser.h>
 
-namespace mbslib{
+namespace nspace{
   
 class RootLinkParser : public NamedElementParser, public ModelBuilderHolder{
 private:

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <urdfreader/parsers/general/NamedChildParser.h>
-#include <urdfreader/parsers/urdf/structs/Origin.h>
-#include <urdfreader/parsers/urdf/PrimitiveParsers.h>
+#include <utility/xml/NamedChildParser.h>
+#include <readers/urdf/structs/UrdfOrigin.h>
+#include <readers/urdf/parsers/PrimitiveParsers.h>
 
-namespace mbslib{
+namespace nspace{
 
 
 

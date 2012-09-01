@@ -1,10 +1,10 @@
 #pragma once
-#include <urdfreader/parsers/general/NamedElementParser.h>
-#include <urdfreader/parsers/urdf/OriginParser.h>
-#include <urdfreader/parsers/urdf/GeometryParser.h>
-#include <urdfreader/parsers/urdf/MaterialParser.h>
+#include <utility/xml/NamedElementParser.h>
+#include <readers/urdf/parsers/OriginParser.h>
+#include <readers/urdf/parsers/GeometryParser.h>
+#include <readers/urdf/parsers/MaterialParser.h>
 
-namespace mbslib{
+namespace nspace{
 class VisualParser : public NamedElementParser{
 public:
   VisualParser():NamedElementParser("visual"){}

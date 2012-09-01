@@ -10,7 +10,7 @@ using namespace std;
 
 void ISimulationObject::toString(ostream & out)const{
   out << "<object>"<<endl;
-  out << "  <name>" << this->getName().c_str() << "</name>"<<endl;
+  out << "  <name>" << this->name().c_str() << "</name>"<<endl;
   out << "  <type>" << this->getType() << "</type>"<<endl;
   out << "</object>" <<endl;
 }

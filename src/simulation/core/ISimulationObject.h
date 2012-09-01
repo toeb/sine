@@ -1,12 +1,8 @@
 #pragma once
 
-#include <common/Object.h>
-
+#include <common/NamedObject.h>
 
 namespace nspace{
-
-
-
 class Simulation;
 class ISimulationModule;
 

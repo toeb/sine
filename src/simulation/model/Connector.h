@@ -1,12 +1,17 @@
 #pragma once
+#include <simulation/core/ISimulationObject.h>
+#include <math/definitions.h>
+namespace nspace{  
 
-#include <simulation/math/types.h>
-namespace mbslib{
-
-  
-  struct Connector {
-    Vector3D offset;
-
+  class Connector : public ISimulationObject{
+    Vector3D _offset;
+  public:
+    const Vector3D & offset()const{
+      return _offset;
+    }
+    Vector3D & offset(){
+      return _offset;
+    }
 
 
   };

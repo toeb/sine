@@ -1,7 +1,8 @@
 #pragma once
 
+#include <common/Config.h>
 
-namespace mbslib{
+namespace nspace{
 
 template<typename A, typename B>
 class Comparator{

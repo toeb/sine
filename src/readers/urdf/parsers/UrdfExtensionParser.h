@@ -1,11 +1,11 @@
 #pragma once
 
 
-#include <urdfreader/parsers/urdf/RootParser.h>
-#include <urdfreader/parsers/urdf/ConnectionParser.h>
-#include <urdfreader/parsers/urdf/ConnectorParser.h>
+#include <readers/urdf/parsers/RootParser.h>
+#include <readers/urdf/parsers/ConnectionParser.h>
+#include <readers/urdf/parsers/ConnectorParser.h>
 
-namespace mbslib{
+namespace nspace{
 class UrdfExtensionParser:public NamedElementParser, public ModelBuilderHolder{
 private:
   CompositeChildParser _childParser;

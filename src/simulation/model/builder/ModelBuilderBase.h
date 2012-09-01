@@ -1,11 +1,10 @@
 #pragma once
 
-#include <urdfreader/IModelBuilder.h>
-#include <urdfreader/common/Set.h>
+#include <simulation/model/builder/IModelBuilder.h>
 
+#include <common/Set.h>
 
-namespace mbslib{
-  
+namespace nspace{
 
   class ModelBuilderBase : public IModelBuilder, public Set<ModelElement*> {
   private:  
@@ -14,7 +13,7 @@ namespace mbslib{
   protected:
     virtual Node * createNode(){return new Node;};
     virtual Connection * createConnection(){return new Connection;}
-    virtual Connector * createConnecotr(){return new Connector;}
+    virtual Connector * createConnector(){return new Connector;}
   public:    
     virtual void buildModel(Model & model)=0;
   

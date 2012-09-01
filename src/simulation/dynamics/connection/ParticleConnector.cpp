@@ -1,7 +1,7 @@
 #include "ParticleConnector.h"
 using namespace nspace;
 
-ParticleConnector::ParticleConnector(Particle & p):Connector(p), _particle(p){
+ParticleConnector::ParticleConnector(Particle & p):DynamicConnector(p), _particle(p){
 
 }
 

@@ -23,7 +23,7 @@ namespace nspace{
      * 				
      * \return null if it fails, else.
      */
-    Connector * createWithLocalConnectionPoint(DynamicBody& body, const Vector3D & p_ocs = Vector3D::Zero());
+    DynamicConnector * createWithLocalConnectionPoint(DynamicBody& body, const Vector3D & p_ocs = Vector3D::Zero());
 
     /**
      * \brief Creates a connector with connection point in world coordinates.
@@ -33,7 +33,7 @@ namespace nspace{
      *
      * \return null if it fails, else.
      */
-    Connector * createWithWorldConnectionPoint(DynamicBody& body, const Vector3D & p_wcs = Vector3D::Zero());
+    DynamicConnector * createWithWorldConnectionPoint(DynamicBody& body, const Vector3D & p_wcs = Vector3D::Zero());
 
     /**
      * \brief Frees a  connector. (be sure to not use it anymore afterwards because it might be reused elswhere
@@ -42,7 +42,7 @@ namespace nspace{
      *
      * \param [in,out] connector If non-null, the connector.
      */
-    void freeConnector(Connector * connector);
+    void freeConnector(DynamicConnector * connector);
   
   };
 

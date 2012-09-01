@@ -1,11 +1,11 @@
 #pragma once
 
-#include <urdfreader/IModelBuilder.h>
+#include <simulation/model/builder/IModelBuilder.h>
 #include <string>
 #include <istream>
 
-namespace mbslib{
-  class ModelReader{
+namespace nspace{
+class ModelReader{
 private:
 protected:
   std::string readToEnd(std::istream & input)const;

@@ -1,9 +1,10 @@
 #include "ModelReader.h"
 
 #include <fstream>
+#include <sstream>
 
 using namespace std;
-using namespace mbslib;
+using namespace nspace;
 
 
 string ModelReader::readToEnd(istream & instream)const{

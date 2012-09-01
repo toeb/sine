@@ -1,10 +1,15 @@
 #pragma once
 #include <functional>
 #include <algorithm>
+
+#include <common/Config.h>
+
 #include <common/Comparator.h>
 #include <common/Query.h>
 #include <common/ObservableCollection.h>
-namespace mbslib{
+
+
+namespace nspace{
 
 template<typename T>
 class Set : public ObservableCollection<T>{   
@@ -81,7 +86,7 @@ public:
       result.add(t);
     });
   }
-  void selectInto(Set<T> & result, std::function<bool (T) > f){
+  void selectInto(Set<T> & result, std::function<bool (T) > f)const{
     Query<T>::select(result._elements,_elements,[f](bool & predicate, bool & cont, T elem){
       predicate = f(elem);
     });
@@ -89,21 +94,11 @@ public:
   bool contains(T  element)const{
     return selectFirst([element](T e){return e==element;})!=0;
   }
-  std::vector<T> select(std::function<void (bool & ,bool & , T) > f){
-    std::vector<T> result;
-    select(result, _elements,f);
-    return result;
-  }
   
-  std::vector<T> select(std::function< bool (bool &, T)> f){
-    std::vector<T> result;
-    select(result,_elements,f);    
-    return result;
-  }
 
-  std::vector<T> select(std::function<bool (T)> f){
-    std::vector<T> result;
-    select(result,_elements,f);
+  Set<T> select(std::function<bool (T)> f)const{
+    Set<T> result;
+    selectInto(result,f);
     return result;
   }
   

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <urdfreader/parsers/general/ElementParser.h>
+#include <utility/xml/ElementParser.h>
 #include <string>
 
-namespace mbslib{
+namespace nspace{
 
 class NamedChildParser : public ElementParser{
 private:

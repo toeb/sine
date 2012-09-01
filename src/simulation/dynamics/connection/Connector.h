@@ -2,14 +2,13 @@
 #include <math/definitions.h>
 #include <simulation/dynamics/DynamicBody.h>
 
-
 namespace nspace {
 class ConnectorFactory;
 /**
 * A connector is a point on a body. It is used to model the points where a spring is attached.
 */
 
-class Connector : public ISimulationObject
+class DynamicConnector : public ISimulationObject
 {
 	private:			
 		///< The world velocity (cached)
@@ -20,7 +19,7 @@ class Connector : public ISimulationObject
 		Vector3D _f;
 		DynamicBody & _body;
   protected:
-		Connector(DynamicBody & body);
+		DynamicConnector(DynamicBody & body);
 	public:
     friend class ConnectorFactory;
 
@@ -92,8 +91,7 @@ class Connector : public ISimulationObject
 		* \return The body.
 		*/
 		DynamicBody & body();
-
-		const DynamicBody & Connector::body()const;
+		const DynamicBody & body()const;
 
 	protected:
 		///< The world position (cached)

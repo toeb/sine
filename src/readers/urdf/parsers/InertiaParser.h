@@ -1,8 +1,8 @@
 #pragma once
-#include <urdfreader/parsers/general/NamedChildParser.h>
-#include <simulation/math/types.h>
+#include <utility/xml/NamedChildParser.h>
+#include <math/definitions.h>
 
-namespace mbslib{
+namespace nspace{
   
 // parsers the single cild node of given element <inertia> 
 class InertiaParser : public NamedChildParser{

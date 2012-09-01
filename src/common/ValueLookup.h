@@ -1,7 +1,7 @@
 #pragma once
 #include <common/Set.h>
 
-namespace mbslib{
+namespace nspace{
 
   struct Entry{
     Entry():value(0),name(""){}

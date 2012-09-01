@@ -1,15 +1,15 @@
 #pragma once
 
 
-#include <urdfreader/parsers/general/NamedChildParser.h>
-#include <urdfreader/parsers/urdf/MassConfigurationParser.h>
-#include <urdfreader/parsers/urdf/OriginParser.h>
+#include <utility/xml/NamedChildParser.h>
+#include <readers/urdf/parsers/MassConfigurationParser.h>
+#include <readers/urdf/parsers/OriginParser.h>
 
-namespace mbslib{
+namespace nspace{
 
 class InertialFrameParser : public NamedChildParser{
 public:
-  InertialFrameParser(){name() ="inertial";}
+  InertialFrameParser():NamedChildParser("inertial"){}
   MassConfiguration massConfiguration;
   Origin origin;
 protected:

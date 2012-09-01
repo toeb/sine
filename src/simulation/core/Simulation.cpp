@@ -15,7 +15,7 @@ ISimulationObject * Simulation::find(const std::string & name){
   // go through all objects to find the one with the name.
   for(auto it = _objects.begin(); it != _objects.end(); it++){
     ISimulationObject * object = *it;
-    if(object->getName() == name)return object;
+    if(object->name() == name)return object;
   }
   return 0;
 }
@@ -37,7 +37,7 @@ void Simulation::toString(std::ostream & out)const{
   out<< "<simulation>"<<endl;
   out << "  <objects>"<<endl;
   foreachObjectConst([&out](ISimulationObject*  object){
-    out << " <object><name>"<<object->getName()<<"</name></object>"<<endl;
+    out << " <object><name>"<<object->name()<<"</name></object>"<<endl;
   });  
   out << "  </objects>"<<endl;
   out <<"</simulation>"<<endl;
@@ -88,7 +88,7 @@ bool Simulation::processObject(ISimulationObject * object){
 
   //initialize object
     if(!object->initialize()){
-     cerr << "could not initialize object" <<object->getName()<< endl;
+     cerr << "could not initialize object" <<object->name()<< endl;
       // remove object from the valid objects set
       auto it = _objects.find(object);
       _objects.erase(it);
@@ -142,7 +142,7 @@ bool Simulation::processQueuedObjects(){
     _queue.pop();
     //if any object was not processable return false
     if(!processObject(object)){
-        cout << "could not add "<< object->getName()<<" because it was not initializable"<<endl;
+        cout << "could not add "<< object->name()<<" because it was not initializable"<<endl;
         return false;
     }
   }

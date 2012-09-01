@@ -3,8 +3,9 @@
 #include <common/Set.h>
 #include <common/NamedObject.h>
 #include <common/ValueLookup.h>
+#include <common/Comparator.h>
 
-namespace mbslib{
+namespace nspace{
 
 /**
  * \brief Node.forward declaration for comparator

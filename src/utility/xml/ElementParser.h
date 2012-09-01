@@ -1,8 +1,9 @@
 #pragma once
+#include <common/Config.h>
 
-#include <urdfreader/parsers/general/tinyxml2.h>
+#include <tinyxml2/tinyxml2.h>
 
-namespace mbslib{
+namespace nspace{
   //define mbslib::XMLElement
 typedef tinyxml2::XMLElement XMLElement;
 

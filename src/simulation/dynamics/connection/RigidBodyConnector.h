@@ -6,7 +6,7 @@ namespace nspace {
 	/**
 	 * Subclass of Connector. Used when a connection point lies on a rigid body.
 	 */
-	class RigidBodyConnector: public Connector
+	class RigidBodyConnector: public DynamicConnector
 	{
 	private:
 		// reference to the associated rigid body

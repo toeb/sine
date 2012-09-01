@@ -1,8 +1,8 @@
 #pragma once
 
-#include <simulation/math/types.h>
+#include <math/definitions.h>
 
-namespace mbslib{
+namespace nspace{
 class MassConfiguration{
 private:
   Real _mass;

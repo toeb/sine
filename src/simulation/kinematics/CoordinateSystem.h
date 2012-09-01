@@ -55,5 +55,13 @@ public:
 
   void toObjectCoordinatesCached(const Vector3D & p_wcs, Vector3D & p_ocs)const;
   void fromObjectCoordinatesCached(const Vector3D & p_ocs, Vector3D & p_wcs)const;
+
+
+  
+  friend std::ostream & operator << (std::ostream & o, const CoordinateSystem & coordinates);
+
+  void fromObjectCoordinates(const CoordinateSystem & coords_ocs,CoordinateSystem & result)const;
+  void toObjectCoordinates(const CoordinateSystem & coords_wcs,CoordinateSystem & result)const;
+
 };
 }

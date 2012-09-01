@@ -1,12 +1,12 @@
 #pragma once
 
-#include <urdfreader/parsers/general/NamedElementParser.h>
-#include <urdfreader/ModelBuilderHolder.h>
-#include <urdfreader/common/Node.h>
-#include <urdfreader/parsers/urdf/PrimitiveParsers.h>
-#include <urdfreader/parsers/urdf/ConnectParser.h>
+#include <utility/xml/NamedElementParser.h>
+#include <simulation/model/builder/ModelBuilderHolder.h>
+#include <common/Node.h>
+#include <readers/urdf/parsers/PrimitiveParsers.h>
+#include <readers/urdf/parsers/ConnectParser.h>
 
-namespace mbslib{
+namespace nspace{
 
 class ConnectionParser: public NamedElementParser, public ModelBuilderHolder{
 public:

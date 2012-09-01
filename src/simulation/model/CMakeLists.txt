@@ -11,21 +11,21 @@ set(source
 )
 source_group("" FILES ${source})
 set(readerSource
-  ./ModelReader.h
-  ./ModelReader.cpp
+  ./reader/ModelReader.h
+  ./reader/ModelReader.cpp
 )
 set(source ${source} ${readerSource})
 source_group("reader" FILES ${readerSource})
 
 set(builderSource 
-	./IModelBuilder.h
-	./IModelBuilder.cpp
-	./ModelBuilderBase.h
-	./ModelBuilderBase.cpp
-	
+	./builder/IModelBuilder.h
+	./builder/IModelBuilder.cpp
+	./builder/ModelBuilderBase.h
+	./builder/ModelBuilderBase.cpp
+	./builder/ModelBuilderHolder.h	
 )
 set(source ${source} ${builderSource})
-source_group("builder" ${builderSource})
+source_group("builder" FILES ${builderSource})
 
 add_library(model ${source} CMakeLists.txt)
 target_link_libraries(model core common)

@@ -1,14 +1,15 @@
 #pragma once
 
-#include <simulation/math/types.h>
+#include <math/definitions.h>
+#include <simulation/kinematics/CoordinateSystem.h>
 
-namespace mbslib{
+namespace nspace{
   
 struct Origin{
   operator CoordinateSystem(){
     CoordinateSystem result;
     result.position()=xyz;
-    result.orientation().setFromRollPitchYaw(rpy);
+    result.orientation().fromRollPitchYaw(rpy);
     return result;
   }
   Origin():xyz(0,0,0),rpy(0,0,0){

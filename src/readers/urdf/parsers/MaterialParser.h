@@ -1,5 +1,7 @@
 #pragma once
-namespace mbslib{
+#include <utility/xml/NamedElementParser.h>
+
+namespace nspace{
 class MaterialParser : public NamedElementParser{
 public:
   MaterialParser():NamedElementParser("material"){

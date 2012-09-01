@@ -22,6 +22,11 @@
 #include <simulation/dynamics/primitives/DynamicBox.h>
 #include <simulation/geometry/Primitives/Sphere.h>
 #include <visualization/glrenderers/geometry/SphereRenderer.h>
+
+#include <readers/urdf/UrdfModelReader.h>
+#include <simulation/model/builder/ModelBuilderBase.h>
+
+
 using namespace nspace;
 using namespace std;
 class GlutObject : public virtual IRenderer{
@@ -41,13 +46,88 @@ public:
     //glutExit();
   }
 };
+class DSLibModelBuilder : public ModelBuilderBase{
+private:
+  CompositeSimulationObject _objects;
+public:
+  CompositeSimulationObject & simulationObjects(){
+    return _objects;
+  }
 
+protected:
+  
+  void buildModel(Model & model){     
+    model.nodes().foreachElement([this](Node * node){
+      convertBody(node);
+    });
+    model.nodes().foreachElement([this](Node * node){
+      convertConnector(node);
+    });
+    model.nodes().foreachElement([this](Node * node){
+      convertConnection(node);
+    });
+    std::cout << model;
+  }
+    
+private:
+  void convertConnector(Node * node){
+    Connector * connector =0;
+    node->get(connector,"connector");
+    if(!connector)return;
+
+  }
+  void convertConnection(Node * node){
+    Connection * connection=0;
+    node->get(connection,"connection");
+    if(!connection)return;
+
+
+  }
+  void convertBody(Node * node){
+    Body * body=0;
+    node->get(body,"body");
+    if(!body)return;
+
+    RigidBody * rigidBody = new RigidBody();
+    rigidBody->setMass(body->mass);
+    rigidBody->setInertiaTensor(body->inertia);
+    rigidBody->setName(node->name());
+
+
+    CoordinateSystem initialCoordinates;
+    node->get(initialCoordinates,"initialcoordinates");
+
+    rigidBody->coordinates() = initialCoordinates;
+
+    Sphere * sphere = new Sphere();
+    sphere->coordinates().position.mirror(rigidBody->kinematics().position);
+    _objects.addComponent(new  SphereRenderer(*sphere));
+    
+    _objects.addComponent(rigidBody);
+  }
+
+};
 int main(int argc, char** argv){
 
   DefaultSimulationSetup setup;
 
   QtSimulationRunner runner;
   Simulation simulation;
+
+
+  
+
+
+  UrdfModelReader & urdfReader = UrdfModelReader::instance();
+  
+  
+  DSLibModelBuilder builder;
+
+  bool result = urdfReader.parseFile(builder,"resources/models/model1.urdf");
+
+  simulation << builder.simulationObjects();
+  
+
   {
 
   int n(0), m(10), l(10);
@@ -84,7 +164,7 @@ int main(int argc, char** argv){
   simulation << da;
   {
 
-    int n(10), m(10), l(10);
+    int n(0), m(0), l(0);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){

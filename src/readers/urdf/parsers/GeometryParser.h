@@ -1,6 +1,6 @@
 #pragma once
-namespace mbslib{
-
+#include <utility/xml/NamedElementParser.h>
+namespace nspace{
 
 class GeometryParser:public NamedElementParser{
 public:

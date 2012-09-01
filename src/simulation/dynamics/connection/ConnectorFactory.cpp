@@ -6,11 +6,11 @@ using namespace nspace;
 
 ConnectorFactory * ConnectorFactory::_instance = new ConnectorFactory();
 
-void ConnectorFactory::freeConnector(Connector * connector){
+void ConnectorFactory::freeConnector(DynamicConnector * connector){
   delete connector;
 }
 
-Connector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody & body, const Vector3D & p_ocs){
+DynamicConnector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody & body, const Vector3D & p_ocs){
 
   RigidBody * rigidBody = dynamic_cast<RigidBody*>(&body);
   if(rigidBody){
@@ -23,7 +23,7 @@ Connector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody & body,
   }
 }
 
-Connector * ConnectorFactory::createWithWorldConnectionPoint(DynamicBody & body, const Vector3D & p_wcs){
+DynamicConnector * ConnectorFactory::createWithWorldConnectionPoint(DynamicBody & body, const Vector3D & p_wcs){
   
   if(body.getBodyType()==RigidBody::Type){
    RigidBody * rigidBody = static_cast<RigidBody*>(&body);

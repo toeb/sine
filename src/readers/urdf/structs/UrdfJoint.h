@@ -1,10 +1,10 @@
 #pragma once
 
-#include <urdfreader/parsers/urdf/structs/UrdfElement.h>
-#include <simulation/math/types.h>
+#include <readers/urdf/structs/UrdfElement.h>
+#include <math/definitions.h>
 #include <string>
 
-namespace mbslib{
+namespace nspace{
 
 struct UrdfJoint : public UrdfElement{
   Vector3D axis;

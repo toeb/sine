@@ -8,7 +8,7 @@ namespace nspace{
       foreachObject([&out](Timeable * timeable){
         //if(!timeable->getName())return;
 
-          out << timeable->getName() << " time used: " << timeable->accumulatedTime() << " s"<< std::endl ;
+          out << timeable->name() << " time used: " << timeable->accumulatedTime() << " s"<< std::endl ;
       });
       std::cout << std::endl;
     }

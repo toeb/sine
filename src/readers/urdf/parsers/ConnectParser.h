@@ -1,9 +1,9 @@
 #pragma once
-#include <urdfreader/parsers/general/NamedElementParser.h>
-#include <urdfreader/ModelBuilderHolder.h>
-#include <urdfreader/common/Node.h>
+#include <utility/xml/NamedElementParser.h>
+#include <simulation/model/builder/ModelBuilderHolder.h>
+#include <common/Node.h>
 
-namespace mbslib{
+namespace nspace{
 class ConnectParser: public NamedElementParser, public ModelBuilderHolder{
   Node & _connectionNode;
 public:

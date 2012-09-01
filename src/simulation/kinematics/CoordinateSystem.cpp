@@ -77,6 +77,22 @@ void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vecto
 }
 
 
+
+  
+std::ostream & nspace::operator << (std::ostream & o, const CoordinateSystem & coordinates){
+  o << "position: (" <<coordinates.position().x()  <<", "<<coordinates.position().y()  <<", "<<coordinates.position().z()<< ") orientation: "<<coordinates.orientation();
+  return o;
+}
+
+
+void CoordinateSystem::fromObjectCoordinates(const CoordinateSystem & coords_ocs,CoordinateSystem & result)const{
+  fromObjectCoordinates(coords_ocs.position(),result.position());
+  result.orientation() = coords_ocs.orientation()*orientation();  
+}
+void CoordinateSystem::toObjectCoordinates(const CoordinateSystem & coords_wcs,CoordinateSystem & result)const{
+  toObjectCoordinates(coords_wcs.position(),result.position());
+  ERROR("method not implemented completely");
+}
   
   
 void CoordinateSystem::calculateRotationMatrices(){

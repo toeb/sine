@@ -1,8 +1,8 @@
 #pragma once
-#include <urdfreader/parsers/general/NamedChildParser.h>
-#include <urdfreader/ModelBuilderHolder.h>
-#include <urdfreader/common/Node.h>
-namespace mbslib{
+#include <utility/xml/NamedChildParser.h>
+#include <simulation/model/builder/ModelBuilderHolder.h>
+#include <common/Node.h>
+namespace nspace{
 
 class ChildLinkParser : public NamedChildParser, public ModelBuilderHolder{
 public:

@@ -27,11 +27,24 @@ set(parsersSource
 ./parsers/RobotElementParser.h
 ./parsers/UrdfExtensionParser.h
 )
-source_group("parsers\\urdf" FILES ${parsersSource})
+source_group("parsers" FILES ${parsersSource})
 set(source ${source} ${parsersSource})
+
+set(structsSource
+	./structs/MassConfiguration.h
+	./structs/UrdfOrigin.h
+	./structs/UrdfConnection.h
+	./structs/UrdfConnector.h
+	./structs/UrdfElement.h
+	./structs/UrdfJoint.h
+	./structs/UrdfLink.h
+)
+source_group("structs" FILES ${structsSource})
+set(source ${source} ${structsSource})
+
 
 
 add_library(urdf ${source} CMakeLists.txt)
-target_link_libraries(urdf modelreader)
+target_link_libraries(urdf model kinematics xml)
 project_folder("readers" urdf)
 

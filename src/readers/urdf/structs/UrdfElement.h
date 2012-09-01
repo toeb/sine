@@ -1,8 +1,8 @@
 #pragma once
 
-#include <urdfreader/parsers/urdf/structs/Origin.h>
+#include <readers/urdf/structs/UrdfOrigin.h>
 
-namespace mbslib{
+namespace nspace{
 
 struct UrdfElement{
   Origin origin;

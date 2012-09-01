@@ -1,9 +1,9 @@
 #pragma once
 
-#include <urdfreader/common/NamedObject.h>
+#include <common/NamedObject.h>
 #include <sstream>
 
-namespace mbslib{
+namespace nspace{
 
 
 //sets element's name to the value of xml nodes name attribute

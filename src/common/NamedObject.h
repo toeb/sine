@@ -1,34 +1,36 @@
 #pragma once
 
-
+#include <common/Object.h>
 #include <string>
 
-namespace mbslib{
-  
-  class NamedObject{
-  private:
-    std::string _name;
-  public:
-    bool operator == (const std::string & name)const{
-      return _name==name;
+namespace nspace{
+class NamedObject  : public virtual Object{
+  TYPED_OBJECT;
+private:
+  std::string * _name;
+public:
+  static const std::string & DefaultName;
+  NamedObject(const std::string & name);
+  NamedObject();
+  ~NamedObject();
+  const std::string & name()const;
+  bool hasName()const;
+  void setName(const std::string & name);
+  void setName(const std::string * name);
+
+    bool operator == (const std::string & str)const{
+      return name()==str;
     }
 
-    bool operator==(const char * name)const{
-      return *this==std::string(name);
+    bool operator==(const char * str)const{
+      return *this==std::string(str);
     }
 
     bool friend operator==(const NamedObject * obj, const std::string & name){
       return *obj==name;
     }
-
-    const std::string & name()const{
-      return _name;
-    }
-    void setName(const std::string & name){
-      _name = name;
-      nameChanged(_name);
-    }
-  protected:
+protected:
     virtual void nameChanged(const std::string& newName){}
-  };
+};
+
 }

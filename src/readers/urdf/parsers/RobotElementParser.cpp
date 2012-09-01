@@ -1,12 +1,12 @@
 #include "RobotElementParser.h"
 
 
-#include <urdfreader/parsers/urdf/UrdfExtensionParser.h>
-#include <urdfreader/parsers/urdf/LinkParser.h>
-#include <urdfreader/parsers/urdf/JointParser.h>
-#include <urdfreader/parsers/urdf/structs/UrdfConnection.h>
+#include <readers/urdf/parsers/UrdfExtensionParser.h>
+#include <readers/urdf/parsers/LinkParser.h>
+#include <readers/urdf/parsers/JointParser.h>
+#include <readers/urdf/structs/UrdfConnection.h>
 
-using namespace mbslib;
+using namespace nspace;
 using namespace std;
 
 
@@ -78,8 +78,8 @@ void RobotElementParser::convertConnector(Node * node){
   node->set("relativecoordinates",relativeCoordinates);
 
   // "calculate" connectors offset vector in object coordinates
-  connector->offset = relativeCoordinates.position();
-  node->set("offset",connector->offset);
+  connector->offset() = relativeCoordinates.position();
+  node->set("offset",connector->offset());
     
   // calculate initial coordinates of current connector
   CoordinateSystem initialCoordinates;
@@ -138,9 +138,9 @@ void RobotElementParser::convertJoint(Node * node){
   connectorCoordinatesB = connectorCoordinatesA;
     
   // calculate offset of connector in object coordinates
-  bodyCoordinatesA.toObjectCoordinates(connectorCoordinatesA.position(),connectorA->offset);
+  bodyCoordinatesA.toObjectCoordinates(connectorCoordinatesA.position(),connectorA->offset());
     
-  connectorNodeA->set("offset",connectorA->offset);
+  connectorNodeA->set("offset",connectorA->offset());
   connectorNodeA->set("initialcoordinates",connectorCoordinatesA);
   connectorNodeA->set("relativecoordinates",relativeJointCoordinates);
     
@@ -157,7 +157,10 @@ void RobotElementParser::convertJoint(Node * node){
 void RobotElementParser::convert(){
   Node * root = findRoot();
     
-  if(!root)return;
+  if(!root){
+   ERROR("could not find root");
+   return;
+  }
   Origin rootOrigin = model().get<Origin>("origin");
   CoordinateSystem current = rootOrigin;
 

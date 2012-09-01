@@ -1,5 +1,5 @@
 #pragma once
-namespace mbslib{
+namespace nspace{
 
 struct UrdfConnection{
 

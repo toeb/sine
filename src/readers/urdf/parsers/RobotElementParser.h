@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include <urdfreader/parsers/general/NamedElementParser.h>
-#include <urdfreader/parsers/general/CompositeChildParser.h>
-#include <urdfreader/ModelBuilderHolder.h>
-#include <urdfreader/common/Node.h>
+#include <utility/xml/NamedElementParser.h>
+#include <utility/xml/CompositeChildParser.h>
+#include <simulation/model/builder/ModelBuilderHolder.h>
+#include <common/Node.h>
 
-namespace mbslib{
+namespace nspace{
   
 //class for parsing a urdf robot xml node. it builds a model and calls IModelBuilders beginModel and endModel for every robot node ecountered
 class RobotElementParser : public NamedElementParser, public ModelBuilderHolder{

@@ -7,7 +7,7 @@ namespace nspace {
 	/**
 	 * Subclass of Connector. Used when a connection point lies on a particle.
 	 */
-	class ParticleConnector:public Connector
+	class ParticleConnector:public DynamicConnector
 	{
 	private:
 		// pointer to the associated particle

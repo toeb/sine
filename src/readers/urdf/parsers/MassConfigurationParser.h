@@ -1,10 +1,10 @@
 #pragma once
-#include <urdfreader/parsers/general/ElementParser.h>
-#include <urdfreader/parsers/urdf/structs/MassConfiguration.h>
-#include <urdfreader/parsers/urdf/MassParser.h>
-#include <urdfreader/parsers/urdf/InertiaParser.h>
+#include <utility/xml/ElementParser.h>
+#include <readers/urdf/structs/MassConfiguration.h>
+#include <readers/urdf/parsers/MassParser.h>
+#include <readers/urdf/parsers/InertiaParser.h>
 
-namespace mbslib{
+namespace nspace{
 
 
 class MassConfigurationParser : public ElementParser{

@@ -1,0 +1,41 @@
+<robot name="test">
+
+<link name="a">
+<inertial>
+<origin xyz="1 1 1" />
+</inertial>
+<visual />
+</link>
+
+
+<link name="b">
+<inertial>
+<origin xyz="2 2 2" />
+</inertial>
+<visual />
+</link>
+
+
+<extensions>
+<root link="a" type="fixed" >
+</root>
+<connector name="ca">
+ <parent link="a" />
+ <origin xyz="0 0 0" />
+</connector>
+<connector name="cb">
+ <parent link="b" />
+ <origin xyz="0 0 0" />
+</connector>
+
+<connection name="s1">
+<connect connector="ca" />
+<connect connector="cb" />
+<type>
+<dampedspring k="10" d="10" />
+</type>
+</connection>
+
+</extensions>
+
+</robot>

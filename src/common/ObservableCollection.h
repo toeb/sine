@@ -1,6 +1,7 @@
 #pragma once
 #include <common/Query.h>
-namespace mbslib{
+
+namespace nspace{
 
 /**
  * \brief A collection that will notify its observers if elements were added or removed

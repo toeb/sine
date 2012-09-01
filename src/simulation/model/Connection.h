@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ModelElement.h"
-#include <urdfreader/common/Set.h>
+#include <simulation/model/ModelElement.h>
+#include <common/Set.h>
 
-#include <simulation/math/types.h>
+#include <math/definitions.h>
 
-namespace mbslib{
+namespace nspace{
   struct Connection{
     std::string type;
     Vector3D axis;

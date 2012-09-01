@@ -8,8 +8,8 @@ namespace nspace{
 		{
 		private:
 			// the connectors this spring is attached to
-			Connector & _cA;
-			Connector & _cB;
+			DynamicConnector & _cA;
+			DynamicConnector & _cB;
 			// stiffness constant
 			Real _k_s;			
 			// damping constant
@@ -33,11 +33,11 @@ namespace nspace{
 			Real getDampeningConstant()const;
 			void setDampeningConstant(Real k_d);
 
-      inline const Connector & getConnectorA()const{return _cA;};
-      inline const Connector& getConnectorB()const{return _cB;};
+      inline const DynamicConnector & getConnectorA()const{return _cA;};
+      inline const DynamicConnector & getConnectorB()const{return _cB;};
 
-			inline Connector & getConnectorA(){return _cA;};
-			inline Connector & getConnectorB(){return _cB;};
+			inline DynamicConnector & getConnectorA(){return _cA;};
+			inline DynamicConnector & getConnectorB(){return _cB;};
 
 			Real getLastLength()const;
 			Real getCurrentLength()const;
@@ -51,7 +51,7 @@ namespace nspace{
 			/**
 			* Creates a string with the specified stiffness, damping and rest length, which is attached to the specified connectors.
 			*/
-			DampedSpring(Connector & c1, Connector &c2, Real k_s, Real k_d, Real restLength);
+			DampedSpring(DynamicConnector & c1, DynamicConnector &c2, Real k_s, Real k_d, Real restLength);
 
 			inline void act (std::vector<DynamicBody*> & target, Real time);      
 		};

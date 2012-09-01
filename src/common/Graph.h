@@ -1,7 +1,8 @@
 #pragma once
 
+#include <common/Node.h>
 
-namespace mbslib{
+namespace nspace{
     // 
   class Graph{
   private:
@@ -19,6 +20,13 @@ namespace mbslib{
       return _nodes(id);
     }
 
+    
+
+    Set<Node*> leaves()const{
+      return nodes().select([](Node * n){
+        return (bool)!n->predecessors();
+      });
+    }
 
   protected:
    

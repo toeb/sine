@@ -1,5 +1,5 @@
 #include "Node.h"
-using namespace mbslib;
+using namespace nspace;
 using namespace std;
 
 

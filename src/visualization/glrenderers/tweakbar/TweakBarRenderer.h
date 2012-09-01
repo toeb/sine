@@ -28,7 +28,7 @@ class TweakBarRenderer
     std::vector<IValue * > _values;
     void addEntry(ISimulationObject * o);
   public:
-    using IRenderer::getName;
+    using IRenderer::name;
     using IRenderer::setName;
 
     ISimulationObject * toSimulationObject(){return static_cast<ISimulationObject*>(static_cast<IRenderer*>(this));}

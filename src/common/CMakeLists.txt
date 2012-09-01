@@ -7,6 +7,7 @@ set(source
 	./Object.h
 	./Object.cpp
 	./NamedObject.h
+	./NamedObject.cpp
 	./Node.h
 	./Node.cpp
 	./Graph.h

@@ -2,7 +2,7 @@
 using namespace nspace;
 
 RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
-  :Connector(b),_rigidBody(b), _r(r)
+  :DynamicConnector(b),_rigidBody(b), _r(r)
 {
 }
 RigidBodyConnector* RigidBodyConnector::createWithWorldConnectionPoint(RigidBody & body, const Vector3D & r_wcs){

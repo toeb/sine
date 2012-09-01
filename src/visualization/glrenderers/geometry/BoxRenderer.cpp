@@ -33,7 +33,7 @@ void BoxRenderer::render(){
 bool BoxRenderer::initializeObject(){
 //  *simulation()<<texture;
   if(!_box.hasName())return true;
-  const string & name =_box.getName();
+  const string & name =_box.name();
   _textRenderer = new TextRenderer(name,_textPosition);
   return _textRenderer->initialize();
 }

@@ -1,16 +1,14 @@
 #pragma once
 
-#include <urdfreader/parsers/general/SiblingElementParser.h>
+#include <utility/xml/SiblingElementParser.h>
 
-namespace mbslib{
+namespace nspace{
 
 class ChildElementParser : public SiblingElementParser{
 private:
   ElementParser & _childParser;
 public:
   ChildElementParser(ElementParser & parser):_childParser(parser),SiblingElementParser(parser){}
-  virtual bool parse(tinyxml2::XMLElement * node){
-    return SiblingElementParser::parse(node->FirstChildElement());
-  }
+  virtual bool parse(tinyxml2::XMLElement * node);
 };
 }

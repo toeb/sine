@@ -2,7 +2,10 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
-namespace mbslib{
+
+#include <common/Config.h>
+
+namespace nspace{
 
 /**
  * \brief Class contains static methods for common Collection operations.

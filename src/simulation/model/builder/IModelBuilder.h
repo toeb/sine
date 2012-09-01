@@ -2,19 +2,13 @@
 
 #include <string>
 
-#include <urdfreader/common/Node.h>
-#include <urdfreader/ModelElements/Model.h>
-#include <urdfreader/ModelElements/Connector.h>
-#include <urdfreader/ModelElements/Connection.h>
+#include <common/Node.h>
+#include <simulation/model/Model.h>
+#include <simulation/model/Connector.h>
+#include <simulation/model/Connection.h>
 
 
-#define ERRORSTREAM std::cerr
-#ifndef WIN32 
-#define __FUNCSIG__ __PRETTY_FUNCTION__
-#endif
-#define ERROR(x) ERRORSTREAM << "Error '"<<x<<"' in " << __FUNCSIG__ << " at line "<<__LINE__<<std::endl;
-
-namespace mbslib{
+namespace nspace{
   class IModelBuilder{
   public:
     virtual Model* beginModel()=0;

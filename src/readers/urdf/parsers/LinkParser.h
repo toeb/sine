@@ -1,11 +1,11 @@
 #pragma once
 
-#include <urdfreader/parsers/urdf/structs/UrdfLink.h>
-#include <urdfreader/parsers/urdf/InertialFrameParser.h>
-#include <urdfreader/parsers/urdf/VisualParser.h>
+#include <readers/urdf/structs/UrdfLink.h>
+#include <readers/urdf/parsers/InertialFrameParser.h>
+#include <readers/urdf/parsers/VisualParser.h>
 
 
-namespace mbslib{
+namespace nspace{
 
 class LinkParser : public NamedElementParser, public ModelBuilderHolder{
 private:

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <urdfreader/parsers/general/tinyxml2.h>
-#include <urdfreader/parsers/general/ElementParser.h>
+#include <tinyxml2/tinyxml2.h>
+#include <utility/xml/ElementParser.h>
 #include <string>
 
-namespace mbslib{
+namespace nspace{
 
 
 class NamedElementParser : public ElementParser{

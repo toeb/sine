@@ -1,10 +1,10 @@
 #pragma once
 
-#include <urdfreader/parsers/general/ElementParser.h>
-#include <urdfreader/parsers/general/ChildElementParser.h>
-#include <urdfreader/parsers/general/CompositeElementParser.h>
+#include <utility/xml/ElementParser.h>
+#include <utility/xml/ChildElementParser.h>
+#include <utility/xml/CompositeElementParser.h>
 
-namespace mbslib{
+namespace nspace{
 
 class CompositeChildParser : public ElementParser{
 private :

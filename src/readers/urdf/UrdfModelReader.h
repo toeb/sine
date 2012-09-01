@@ -1,17 +1,9 @@
 #pragma once
 
-#include <urdfreader/IModelBuilder.h>
+#include <simulation/model/reader/ModelReader.h>
 #include <iostream>
-namespace mbslib{
-class ModelReader{
-private:
-protected:
-  std::string readToEnd(std::istream & input)const;
-public:
-  virtual bool parse(IModelBuilder & builder, std::istream & input)=0;
-  virtual bool parseFile(IModelBuilder & bulder, const std::string & filename);
-  virtual bool parseString(IModelBuilder & builder, const std::string & textData);
-};
+namespace nspace{
+
 class UrdfModelReader : public ModelReader{
 private:
   static UrdfModelReader * _instance;

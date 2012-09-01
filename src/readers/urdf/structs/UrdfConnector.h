@@ -1,6 +1,6 @@
 #pragma once
-#include <urdfreader/parsers/urdf/structs/UrdfElement.h>
-namespace mbslib{
+#include <readers/urdf/structs/UrdfElement.h>
+namespace nspace{
 struct UrdfConnector : public UrdfElement{
 
 };

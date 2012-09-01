@@ -63,7 +63,7 @@ void GlutSimulationRunner::cleanupObject(){
 
 bool GlutSimulationRunner::initializeRunner(){  
    
-  const char * simulationName = simulation()->getName().c_str();
+  const char * simulationName = simulation()->name().c_str();
   
   MiniGL::init (_commandlineArgumentCount, _commandlineArgumentArray, 800, 600, 0, 0, simulationName);
 

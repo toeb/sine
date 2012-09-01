@@ -25,8 +25,8 @@ void TW_CALL actionCallback(void * clientdata){
 
 void TweakBarRenderer::addAction(IAction * action){
   //assert(action->getName());
-  string name = action->getName();
-  _actions[action->getName()]=action;
+  string name = action->name();
+  _actions[action->name()]=action;
   stringstream ss;
   ss << " label='"<<name<<"' ";
   TwAddButton(_tweakBar,name.c_str(),actionCallback,action,ss.str().c_str());
@@ -49,7 +49,7 @@ void TweakBarRenderer::addValueCallback(IValue * callback){
 
   int r  =TwAddVarCB(
     _tweakBar,
-    callback->getName().c_str(), 
+    callback->name().c_str(), 
     type,
     setValueCallback,
     getValueCallback,
@@ -80,7 +80,7 @@ void TweakBarRenderer::addEntry(ISimulationObject * o){
 
   auto quatval = dynamic_cast<TypedMatrixValue<Quaternion>*>(o);
   if(quatval){
-    TwAddVarCB(_tweakBar,o->getName().c_str(),TW_TYPE_QUAT4F,setValueCallback,getValueCallback,quatval," open ");
+    TwAddVarCB(_tweakBar,o->name().c_str(),TW_TYPE_QUAT4F,setValueCallback,getValueCallback,quatval," open ");
   }
  
 }
@@ -152,12 +152,12 @@ bool TweakBarRenderer::initializeObject(){
   if(!TwInit(TW_OPENGL,NULL))return false;
   
   if(!hasName())setName("TweakBar");
-  _tweakBar = TwNewBar(getName().c_str());
+  _tweakBar = TwNewBar(name().c_str());
   
 
   for(auto it = _actions.begin(); it != _actions.end(); it++){
     auto action = (*it).second;
-    string name = action->getName();
+    string name = action->name();
     TwAddButton(_tweakBar,name.c_str(),actionCallback,action,0);
   }
 

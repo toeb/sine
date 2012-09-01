@@ -57,7 +57,17 @@ namespace matrix2{
       q_conj.z()=q.z();
     }
   
-    
+    template<typename Quat, typename RPYVector>
+    static inline void fromRollPitchYaw(Quat & q, const RPYVector rpy){      
+      Quat roll,pitch,yaw;
+      QuaternionOperations<T>::fromAxisAngle(roll,Vector3D::UnitX(),rpy(0));
+      QuaternionOperations<T>::fromAxisAngle(pitch,Vector3D::UnitY(),rpy(1));
+      QuaternionOperations<T>::fromAxisAngle(yaw,Vector3D::UnitZ(),rpy(2));
+      QuaternionOperations<T>::multiplyQuaternion(q,pitch,roll);
+      QuaternionOperations<T>::multiplyQuaternion(roll,yaw,q);
+      q = roll;
+      //q = yaw*pitch*roll;
+    }
     
     template<typename Quat, typename RotationMatrixType>
     static inline void fromRotationMatrix(Quat & q, const RotationMatrixType  & m){
@@ -230,6 +240,11 @@ namespace matrix2{
     template<typename AxisVector>
     inline void fromAxisAngle(const AxisVector & axis, const T & angle){
       QuaternionOperations<T>::fromAxisAngle(*this,axis,angle);
+    }
+
+    template<typename RPYVector>
+    inline void fromRollPitchYaw(const RPYVector & rpy){
+      QuaternionOperations<T>::fromRollPitchYaw(*this,rpy);
     }
 
 

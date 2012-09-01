@@ -1,11 +1,11 @@
 #pragma once
-#include <urdfreader/parsers/urdf/structs/UrdfJoint.h>
-#include <urdfreader/parsers/general/NamedElementParser.h>
-#include <urdfreader/ModelBuilderHolder.h>
-#include <urdfreader/parsers/urdf/ChildLinkParser.h>
-#include <urdfreader/parsers/urdf/AxisParser.h>
+#include <readers/urdf/structs/UrdfJoint.h>
+#include <utility/xml/NamedElementParser.h>
+#include <simulation/model/builder/ModelBuilderHolder.h>
+#include <readers/urdf/parsers/ChildLinkParser.h>
+#include <readers/urdf/parsers/AxisParser.h>
 
-namespace mbslib{
+namespace nspace{
 
 class JointParser : public NamedElementParser, public ModelBuilderHolder{
 private:

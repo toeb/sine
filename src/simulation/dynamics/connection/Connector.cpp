@@ -5,14 +5,14 @@
 using namespace nspace;
 
 
-Connector::Connector(DynamicBody & body):_body(body){
+DynamicConnector::DynamicConnector(DynamicBody & body):_body(body){
       
 }
 
-DynamicBody & Connector::body(){
+DynamicBody & DynamicConnector::body(){
   return _body;
 }
-const DynamicBody & Connector::body()const{
+const DynamicBody & DynamicConnector::body()const{
   return _body;
 }
 
@@ -22,43 +22,43 @@ const DynamicBody & Connector::body()const{
   *
   * \return  The k matrix.
   */
-void Connector::getKMatrix(Matrix3x3 & K, const Vector3D & a_wcs, const Vector3D& b_wcs) const {
+void DynamicConnector::getKMatrix(Matrix3x3 & K, const Vector3D & a_wcs, const Vector3D& b_wcs) const {
   _body.calculateK(K,a_wcs,b_wcs); 
 };
 
-const Vector3D & Connector::getWorldPosition(){
+const Vector3D & DynamicConnector::getWorldPosition(){
   calculateWorldPosition(_worldPosition);
   return _worldPosition;
 }
    
-const Vector3D & Connector::getCachedWorldPosition()const{
+const Vector3D & DynamicConnector::getCachedWorldPosition()const{
   return _worldPosition;
 }
 
-const Vector3D & Connector::getCachedWorldVelocity()const{
+const Vector3D & DynamicConnector::getCachedWorldVelocity()const{
   return _worldVelocity;
 }
 
-const Vector3D & Connector::getWorldVelocity(){
+const Vector3D & DynamicConnector::getWorldVelocity(){
   calculateWorldVelocity(_worldVelocity);
   return _worldVelocity;
 }
 
-const Vector3D & Connector::getCachedWorldAcceleration()const{
+const Vector3D & DynamicConnector::getCachedWorldAcceleration()const{
   return _worldAcceleration;
 }
-const Vector3D & Connector::getWorldAcceleration(){
+const Vector3D & DynamicConnector::getWorldAcceleration(){
   calculateWorldAcceleration(_worldAcceleration);
   return _worldAcceleration;
 }
 
-void Connector::calculateCachedValues(){
+void DynamicConnector::calculateCachedValues(){
    calculateWorldPosition(_worldPosition);
    calculateWorldVelocity(_worldVelocity);
    calculateWorldAcceleration(_worldAcceleration);
 }
 
-void Connector::addExternalForce(const Vector3D & force){
+void DynamicConnector::addExternalForce(const Vector3D & force){
   addExternalForceToBody(force);
   _f = force;
 }

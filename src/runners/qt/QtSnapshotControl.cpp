@@ -92,7 +92,7 @@ void QtSnapshotControl::addSnapshot(StateSnapshot & snapshot){
 
   QStandardItem * root;
 
-  root = new QStandardItem(QString::fromStdString(snapshot.getName()));
+  root = new QStandardItem(QString::fromStdString(snapshot.name()));
 
    root->setData(qVariantFromValue<void*>(&snapshot));
   
@@ -157,7 +157,7 @@ void QtSnapshotControl::recordCallback(Time actualTime){
 }
 
 void QtSnapshotControl::onObjectAdded(HistoryModule * historyModule){
-  _ui->historyModule->addItem(QString::fromStdString(historyModule->getName()), qVariantFromValue((void*)historyModule));
+  _ui->historyModule->addItem(QString::fromStdString(historyModule->name()), qVariantFromValue((void*)historyModule));
 }
 void QtSnapshotControl::onObjectRemoved(HistoryModule * historyModule){
 }

@@ -26,8 +26,6 @@ source_group("mesh" FILES ${mesh_SRC})
 set(meshPly_SRC
 ./mesh/Ply/PlyMesh.h
 ./mesh/Ply/PlyMesh.cpp
-./mesh/Ply/rply.h
-./mesh/Ply/rply.c
 )
 source_group("mesh\\ply" FILES ${meshPly_SRC})
 

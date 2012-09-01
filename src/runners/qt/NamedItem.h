@@ -7,7 +7,7 @@ namespace nspace{
     NamedObject & _object;
  public:
    NamedItem(NamedObject & object):_object(object){
-     setText(QString::fromStdString(object.getName()));
+     setText(QString::fromStdString(object.name()));
      setEditable(false);
    }
  };

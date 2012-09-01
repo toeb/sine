@@ -1,3 +1,3 @@
 #include "Connector.h"
 using namespace std;
-using namespace mbslib;
+using namespace nspace;

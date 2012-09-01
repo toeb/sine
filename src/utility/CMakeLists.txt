@@ -1,1 +1,1 @@
-subdirs(xml imaging)
+subdirs(xml imaging reader)

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <urdfreader/parsers/urdf/ParentLinkParser.h>
-#include <urdfreader/parsers/urdf/structs/UrdfConnector.h>
+#include <readers/urdf/parsers/ParentLinkParser.h>
+#include <readers/urdf/structs/UrdfConnector.h>
 
-namespace mbslib{
+namespace nspace{
 class ConnectorParser:public NamedElementParser, public ModelBuilderHolder{
 public:
   ConnectorParser(IModelBuilder & builder) : NamedElementParser("connector"), ModelBuilderHolder(builder){

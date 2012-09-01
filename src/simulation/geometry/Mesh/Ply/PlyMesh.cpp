@@ -1,5 +1,5 @@
 #include "PlyMesh.h"
-#include "rply.h"
+#include <rply/rply.h>
 #include <vector>
 using namespace nspace;
 using namespace std;

@@ -16,7 +16,7 @@ DampedSpring::~DampedSpring()
 {
 }
 
-DampedSpring::DampedSpring(Connector &cA, Connector &cB, Real k_s, Real k_d, Real restLength) :
+DampedSpring::DampedSpring(DynamicConnector &cA, DynamicConnector &cB, Real k_s, Real k_d, Real restLength) :
   _cA(cA),_cB(cB){
 	_k_s = k_s;
 	_k_d = k_d;

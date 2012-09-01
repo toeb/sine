@@ -1,13 +1,14 @@
-#include "UrdfParser.h"
+#include "UrdfModelReader.h"
+#include <tinyxml2/tinyxml2.h>
 
 #include <fstream>
-#include <urdfreader/ModelBuilderHolder.h>
-#include <urdfreader/parsers/urdf/RobotElementParser.h>
-
-#include <urdfreader/common/StringTools.h>
+#include <simulation/model/builder/ModelBuilderHolder.h>
+#include <readers/urdf/UrdfModelReader.h>
+#include <readers/urdf/parsers/RobotElementParser.h>
+#include <common/StringTools.h>
 
 using namespace std;
-using namespace mbslib;
+using namespace nspace;
 
 UrdfModelReader * UrdfModelReader::_instance =0;
 UrdfModelReader::UrdfModelReader(){}

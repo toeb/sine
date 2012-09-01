@@ -1,5 +1,6 @@
 #pragma once
-namespace mbslib{
+#include <utility/xml/NamedChildParser.h>
+namespace nspace{
 class AxisParser : public NamedChildParser{
 public:
   Vector3D direction;

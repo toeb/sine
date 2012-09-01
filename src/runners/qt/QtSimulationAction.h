@@ -10,7 +10,7 @@ namespace nspace{
     IAction & _simulationAction;
   public:
     QtSimulationAction(IAction & action, QObject * parent = 0):
-        QAction(QString::fromStdString(action.getName()),parent)
+        QAction(QString::fromStdString(action.name()),parent)
           ,_simulationAction(action){
 
           connect(this,SIGNAL(triggered()),this, SLOT(executeAction()));
