@@ -28,7 +28,8 @@
 #include <readers/urdf/UrdfModelReader.h>
 #include <simulation/model/builder/ModelBuilderBase.h>
 #include <simulation/multibody/impulsebased/joints/BallJoint.h>
-
+#include <simulation/time/CallbackTask.h>
+#include <simulation/time/PeriodicTask.h>
 using namespace nspace;
 using namespace std;
 class GlutObject : public virtual IRenderer{
@@ -115,18 +116,22 @@ int main(int argc, char** argv){
 
   QtSimulationRunner runner;
   Simulation simulation;
-
+  simulation.initialize();
+  
+ simulation << setup;
   
   RigidBody b1;
   RigidBody b2;
 
   b1.setMass(0);
   b2.setMass(2);
+  b2.setInertiaTensor(Matrix3x3::Identity());
   TypeId rb = b1.getBodyType();
-  TypeId rbt = RigidBody::Type;
+  TypeId pt = Particle::ClassType();
+  TypeId rbt = RigidBody::ClassType();
   b2.coordinates().position() = Vector3D(2,0,0);
   DynamicConnector * c1 = ConnectorFactory::instance().createWithWorldConnectionPoint(b1);
-  DynamicConnector * c2 = ConnectorFactory::instance().createWithLocalConnectionPoint(b1,Vector3D(1,0,0));
+  DynamicConnector * c2 = ConnectorFactory::instance().createWithLocalConnectionPoint(b2,Vector3D(1,0,0));
  
    
   BallJoint joint(*c1,*c2);
@@ -138,7 +143,21 @@ int main(int argc, char** argv){
   simulation << joint;
 
 
+  Hexahedron * box = new Hexahedron(0.5,0.5,0.5);
+  box->coordinates().mirror(b1.coordinates());
+  simulation << box;
+  simulation << box;
+  simulation << new BoxRenderer(*box);
 
+  Hexahedron * box2 = new Hexahedron(0.5,0.5,0.5);
+  box2->coordinates().mirror(b2.coordinates());
+  simulation << box2;
+  simulation << box2;
+  simulation << new BoxRenderer(*box2);
+
+  simulation << new PeriodicTaskDelegate([b2](Time t,Time dt){
+    cout << t << ": " << b2.coordinates().position() << endl;
+  },1.0,true);
 
 
 
@@ -251,7 +270,6 @@ int main(int argc, char** argv){
 
   simulation << new GlutObject(argc,argv);
   
- simulation << setup;
  simulation << new GridRenderer(0);
   simulation << new LightRenderer();
   simulation<<runner;

@@ -52,8 +52,8 @@ void BallJoint::correctVelocity() {
 }
 
 void BallJoint::evaluateKInverse() {
-  Matrix3x3  K_aa(0);
-  Matrix3x3  K_bb(0);
+  Matrix3x3  K_aa;
+  Matrix3x3  K_bb;
 
   const Vector3D & a_wcs = _cA.getCachedWorldPosition();
   const Vector3D & b_wcs = _cB.getCachedWorldPosition();

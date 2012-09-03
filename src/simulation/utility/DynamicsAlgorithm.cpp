@@ -13,7 +13,7 @@ DynamicsAlgorithm::DynamicsAlgorithm()//:
 //   collisionHandler(collisionDetector,multiBodyDynamics)
 {
   addComponent(&forceModule);
-//   addComponent(&multiBodyDynamics);
+   addComponent(&multiBodyDynamics);
 //   addComponent(&updatablesModule);
   addComponent(&dynamicBodyModule);
   addComponent(&connectorModule);

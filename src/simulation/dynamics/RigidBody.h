@@ -42,7 +42,7 @@ public:
   inline const KinematicBody & kinematics()const{return _kinematics;};
 
   RigidBody(Real mass):_m(mass){
-    
+    setInertiaTensor(Matrix3x3::Zero());
   }
 
   RigidBody(Real mass, const Matrix3x3 inertia):_m(mass){
@@ -54,7 +54,7 @@ public:
   ~RigidBody();
 
 
-  const TypeId getBodyType()const{return Type;}
+  const TypeId getBodyType()const{return ClassType();}
   
   const Vector3D &  getCenterOfGravity()const {return kinematics().position();};
 

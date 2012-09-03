@@ -5,22 +5,25 @@
 #include <string>
 namespace nspace{
 
-
-
   
 typedef const uint TypeId;
-//typedef const uint ObjectId;
-
-#define TYPED_OBJECT public: static const TypeId Type = __COUNTER__; virtual inline const TypeId getType()const {return Type;}
+struct TypeData{
+  TypeId id;
+  
+  inline operator TypeId ()const{return id;}
+  TypeData();
+  static unsigned int typeCount();
+private:
+  static unsigned int _typeCounter;
+};
+#define TYPED_OBJECT public: static inline TypeData ClassType(){static TypeData typeData; return typeData; }; virtual inline const TypeId getType()const {return ClassType().id;}
 
 class Object{
 TYPED_OBJECT;
 private:
-    
-  virtual void toString(std::ostream & out)const{out << "typeID: "<<getType();};
-  std::ostream & operator<<(std::ostream & out)const{
-    toString(out);
-  }
+public:  
+  virtual void toString(std::ostream & out)const;
+  std::ostream & operator<<(std::ostream & out)const;
   std::string toString()const;
 };
 

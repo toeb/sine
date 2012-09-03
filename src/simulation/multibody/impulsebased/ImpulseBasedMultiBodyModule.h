@@ -19,6 +19,7 @@ private:
   ///< The iterations used in last step
   int _iterations;
   std::vector<Joint *> _temporaryJoints;
+
 public:
 
   /**

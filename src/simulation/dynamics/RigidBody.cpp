@@ -6,7 +6,8 @@ using namespace nspace;
 
 
 RigidBody::RigidBody(){
-
+  setMass(REAL_MIN);
+  setInertiaTensor(REAL_MIN*Matrix3x3::Identity());
 }
 
 RigidBody::~RigidBody() {
@@ -89,7 +90,7 @@ void RigidBody::calculateInvertedInertiaTensor(){
 }
 
 const Matrix3x3 & RigidBody::getInvertedInertiaTensorInWorldCoordinates()const{   
-  return *&_J_inv_wcs;
+  return _J_inv_wcs;
 }
 
 Matrix3x3 tmp;
