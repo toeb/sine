@@ -151,6 +151,9 @@ int main(int argc, char** argv){
   DynamicsAlgorithm da;
   simulation << new Gravity(1);
   
+
+  
+
  /* simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
     if(cog.length2()<1){
  //    force = Vector3D(0,2,0);// - Vector3D::UnitX()*cog.x()*0.01 - Vector3D::UnitZ()*cog.z()*0.01;

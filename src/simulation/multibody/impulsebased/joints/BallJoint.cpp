@@ -1,11 +1,11 @@
 #include "BallJoint.h"
-using namespace IBDS;
+using namespace nspace;
 
 BallJoint::~BallJoint(void)
 {
 }
 
-BallJoint::BallJoint(Connector &c1, Connector &c2, Real pTol, Real vTol):
+BallJoint::BallJoint(DynamicConnector &c1, DynamicConnector &c2, Real pTol, Real vTol):
  _cA(c1),_cB(c2),_positionTolerance(pTol), _velocityTolerance(vTol)
 {}
 
@@ -13,7 +13,7 @@ void BallJoint::calculateDistancePreview(Real h, Vector3D & d)const{
   Vector3D a,b;
   _cA.previewPosition(h,a);
   _cB.previewPosition(h,b);
-  d.assign( b-a);
+  d=b-a;
 }
 void BallJoint::correctPosition(Real h) {
   // get approximation of next distance
@@ -66,7 +66,8 @@ void BallJoint::evaluateKInverse() {
   if (K.isZero())
     _KInverse = Matrix3x3::Zero();
   else 
-    Matrix3x3::symmInverse(K,_KInverse);//_KInverse = K.symmInverse();
+    invertSymmetric(_KInverse,K);
+    //Matrix3x3::symmInverse(K,_KInverse);//_KInverse = K.symmInverse();
 }
 
 void BallJoint::precompute(){

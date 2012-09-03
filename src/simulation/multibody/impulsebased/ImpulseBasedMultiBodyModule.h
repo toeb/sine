@@ -1,9 +1,11 @@
 #pragma once
-#include <Simulation/MultiBodyDynamics/ImpulseBased/Joint.h>
-#include <Simulation/Core/SimulationModuleBase.h>
-#include <Simulation/Core/Timing/Timeable.h>
+#include <simulation/multibody/impulsebased/Joint.h>
+#include <simulation/core/SimulationModuleBase.h>
+#include <simulation/timing/Timeable.h>
+
 #include <vector>
-namespace IBDS{
+
+namespace nspace{
   
 class ImpulseBasedMultiBodyModule : public SimulationModuleBase<Joint>,public virtual Timeable{
 private:
@@ -43,8 +45,8 @@ public:
   ImpulseBasedMultiBodyModule(int maxIterations=20, Real normalisation=100, Real positionTolerance=10e-3, Real velocityTolerance=10e-4);
   
   void foreachJoint(std::function<void(Joint *)> f){
-    foreach(f);
-    for_each(_temporaryJoints.begin(), _temporaryJoints.end(),f);
+    this->foreachObject(f);
+    std::for_each(_temporaryJoints.begin(), _temporaryJoints.end(),f);
   }
 
   void clearTemporaryJoints(){

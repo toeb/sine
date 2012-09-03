@@ -1,8 +1,9 @@
-#include "ImpulseBasedDynamicsAlgorithm.h"
+#include "ImpulseBasedMultiBodyModule.h"
+
 #include <algorithm>
 
 using namespace std;
-using namespace IBDS;
+using namespace nspace;
 
 ImpulseBasedMultiBodyModule::ImpulseBasedMultiBodyModule(int maxIterations, Real normalisation, Real positionTolerance, Real velocityTolerance){
   setName("Impulse Based Dynamics Algorithm");

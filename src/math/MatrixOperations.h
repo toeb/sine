@@ -50,6 +50,9 @@
 #include <math/operations/MatrixReduceSum.h>
 #include <math/operations/MatrixScalarAddition.h>
 #include <math/operations/MatrixScalarSubtraction.h>
+#include <math/operations/MatrixCompare.h>
+#include <math/operations/MatrixInversion.h>
+#include <math/operations/MatrixInversionSymmetric.h>
 
 
 
@@ -280,7 +283,16 @@ namespace nspace{
   inline void hom2car(A & cart, const B & hom){
     MatrixHomogenousToCartesianCoordinates<A,B>::operation(cart,hom);
   }
-
+  
+  template<typename InvertedMatrixType, typename InputMatrixType> 
+  void invertSymmetricMatrix(InvertedMatrixType & inv, const InputMatrixType & symmetricMatrix){
+    MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,symmetricMatrix);
+  }
+  template<typename InvertedMatrixType, typename InputMatrixType>
+  void invertMatrix(InvertedMatrixType & inv, const InputMatrixType & matrix){
+    MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,matrix);
+  }
+  
   };
 
 
@@ -352,7 +364,6 @@ namespace nspace{
     r_star(2,0)=-r(1); r_star(2,1)=r(0); r_star(2,2)= 0;
   }
 
-  
   template<typename T, typename MatrixType>
   inline MatrixType & setMatrixConstant(MatrixType & mat, const T & val){
     MatrixOperations<T>::setConstant<MatrixType>(mat,val);

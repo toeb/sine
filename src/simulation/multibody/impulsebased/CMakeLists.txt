@@ -18,7 +18,7 @@ set(jointsSource
 	./joints/DoubleRotationJoint.cpp 
 )
 source_group("joints" FILES ${jointsSource})
-set(source ${jointsSource})
+set(source ${source} ${jointsSource})
 
 add_library(multibody ${source})
 project_folder("simulation/modules" multibody)

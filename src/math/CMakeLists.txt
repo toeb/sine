@@ -45,6 +45,7 @@ set(operationsSource
 ./operations/MatrixBlockAssign.h
 ./operations/MatrixReduce.h
 ./operations/MatrixReduceSum.h
+./operations/MatrixCompare.h
 
 )
 source_group("operations" FILES ${operationsSource})

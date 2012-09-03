@@ -367,6 +367,22 @@ public:
   }
 };
 
+
+template<typename Mat>
+class MatrixSymmetricInversionTest:public PerformanceTest{
+private:
+  const Mat & a;
+  Mat b;
+public:
+  MatrixSymmetricInversionTest(const Mat & a):a(a){
+  }
+  void performTest(){
+    tick();
+    MatrixOps::invertSymmetricMatrix(b,a);
+    tock();
+  }
+};
+
 #define N 100000//10000000
 
 int main(int argc, char ** argv){
@@ -452,8 +468,10 @@ int main(int argc, char ** argv){
 },3,3);
  //*/
 
-  new MatrixConvolutionTest<MatMN2,MatMN2>(*new MatMN2(4096,4096),*new MatMN2(7,7));
-  PerformanceTest::runAll(10);
+  //new MatrixConvolutionTest<MatMN2,MatMN2>(*new MatMN2(4096,4096),*new MatMN2(7,7));
+  new MatrixSymmetricInversionTest<Mat332>(Mat332::Identity());
+  
+  PerformanceTest::runAll(100000000);
   //quat2RotMatrix<Quat2,Mat332,N>();
   //quat2RotMatrix<Quat1,Mat331,N>();
   //quatGetRot<Quat2,Mat332,N>();

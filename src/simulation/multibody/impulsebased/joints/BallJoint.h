@@ -1,17 +1,16 @@
 #pragma once
-#include <Math/Vector3D.h>
-#include <Math/Matrix3x3.h>
-#include <Simulation/Dynamics/Connection/Connector.h>
-#include <Simulation/MultiBodyDynamics/ImpulseBased/Joint.h>
-namespace IBDS {
+#include <math/definitions.h>
+#include <simulation/dynamics/connection/Connector.h>
+#include <simulation/multibody/impulsebased/Joint.h>
+namespace nspace {
 	/**
 	 * 
 	 */
 class BallJoint : public Joint
 {
 private:
-	Connector & _cA;
-	Connector & _cB;
+	DynamicConnector & _cA;
+	DynamicConnector & _cB;
   // the inverse of the matrix K, cached for reusage across methods
 	Matrix3x3 _KInverse;
   //tolerances
@@ -22,7 +21,7 @@ public:
 	void precompute();
   ~BallJoint();
 
-	BallJoint(Connector & a, Connector &b,Real positionTolerance=3e-10, Real velocityTolerance=3e-10);
+	BallJoint(DynamicConnector & a, DynamicConnector &b,Real positionTolerance=3e-10, Real velocityTolerance=3e-10);
 	  
 	inline bool arePositionsCorrect();
     

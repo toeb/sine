@@ -1,7 +1,7 @@
 #pragma once
 #include <Simulation/Core/ISimulationObject.h>
 #include <Math/MathDefs.h>
-namespace IBDS {
+namespace nspace {
 class Joint : public ISimulationObject
 {
 public:

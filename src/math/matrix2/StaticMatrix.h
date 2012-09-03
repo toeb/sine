@@ -76,7 +76,12 @@ public:
   inline void assign(const T * dataPtr){
     memcpy(_data, dataPtr,dataByteSize());
   }
-  
+  inline bool isZero(const Real epsilon = EPSILON)const{
+    bool result;
+    MatrixIsZero<StaticMatrix<T, RowCount, ColumnCount>::(result, *this, epsilon);
+    return result;
+  }
+
   inline void copyTo(T * dataPtr)const{
     memcpy(dataPtr,_data,dataByteSize());
   }
@@ -192,6 +197,10 @@ public:
     MatrixOperations<T>::negate(result, *this);
     return result;
   }
+
+
+
 };
+
 }                                                                                                                      
 }                                                                                                                        
