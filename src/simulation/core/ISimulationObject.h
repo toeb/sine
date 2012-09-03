@@ -21,6 +21,11 @@ protected:
   virtual void onObjectInitialized(){};
 };
 
+/**
+ * \brief Simulation object. 
+ * 				Base Object used with the Simulation and SimulationModule classes.  Only Simulation objects may be added to a SimulationModule / Simulation.
+ * 				They are distributed accross the simulation tree.
+ */
 class ISimulationObject : public virtual NamedObject, public virtual Initializable{
   TYPED_OBJECT;
 private:
