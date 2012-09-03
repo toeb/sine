@@ -66,7 +66,7 @@ void BallJoint::evaluateKInverse() {
   if (K.isZero())
     _KInverse = Matrix3x3::Zero();
   else 
-    invertSymmetric(_KInverse,K);
+    MatrixOps::invertSymmetricMatrix(_KInverse,K);
     //Matrix3x3::symmInverse(K,_KInverse);//_KInverse = K.symmInverse();
 }
 

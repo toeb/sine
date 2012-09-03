@@ -1,5 +1,5 @@
 #pragma once
-//#include <simulation/MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.h>
+#include <simulation/multibody/impulsebased/ImpulseBasedMultiBodyModule.h>
 //#include <simulation/Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.h>
 #include <simulation/force/ForceModule.h>
 #include <simulation/dynamics/DynamicBodyModule.h>
@@ -31,7 +31,7 @@ namespace nspace{
   public virtual CompositeSimulationObject
 {
 public:
-  //ImpulseBasedMultiBodyModule multiBodyDynamics;
+  ImpulseBasedMultiBodyModule multiBodyDynamics;
   ForceAlgorithm forceModule;
   DynamicBodyModule dynamicBodyModule;
   ConnectorModule connectorModule;

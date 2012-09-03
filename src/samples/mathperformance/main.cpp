@@ -375,10 +375,27 @@ private:
   Mat b;
 public:
   MatrixSymmetricInversionTest(const Mat & a):a(a){
+     nameStream << "MatrixSymmetricInversionTest "<<typeid(Mat).name();
   }
   void performTest(){
     tick();
     MatrixOps::invertSymmetricMatrix(b,a);
+    tock();
+  }
+};
+
+template<typename Mat>
+class MatrixCompareTest:public PerformanceTest{
+  const Mat& a;
+  const Mat& b;
+  bool result;
+public:
+  MatrixCompareTest(const Mat& a, const Mat& b):a(a),b(b){
+     nameStream << "MatrixCompareTest (aij==bij) for all (aij,bij) "<<typeid(Mat).name();
+  }
+  void performTest(){
+    tick();
+    MatrixOps::compareMatrix(result,a,b);
     tock();
   }
 };
@@ -469,8 +486,8 @@ int main(int argc, char ** argv){
  //*/
 
   //new MatrixConvolutionTest<MatMN2,MatMN2>(*new MatMN2(4096,4096),*new MatMN2(7,7));
-  new MatrixSymmetricInversionTest<Mat332>(Mat332::Identity());
-  
+  //new MatrixSymmetricInversionTest<Mat332>(Mat332::Identity());
+  new MatrixCompareTest<Mat332>(Mat332::Identity(),Mat332::Identity());
   PerformanceTest::runAll(100000000);
   //quat2RotMatrix<Quat2,Mat332,N>();
   //quat2RotMatrix<Quat1,Mat331,N>();

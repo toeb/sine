@@ -239,6 +239,10 @@ namespace nspace{
     MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,original,kernel);
   }
 
+  template<typename MatA, typename MatB>
+  void compareMatrix(bool & result, const MatA & a, const MatB & b, Real epsilon = EPSILON){
+    MatrixCompare<MatA,MatB,Real>::operation(result,a,b,epsilon);
+  }
 
 
   template<typename OutputMatrix, typename InputMatrix, typename KernelMatrix>

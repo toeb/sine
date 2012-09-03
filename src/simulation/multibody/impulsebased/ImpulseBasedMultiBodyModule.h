@@ -37,9 +37,6 @@ public:
    */
   void correctVelocities();
 
-  ImpulseBasedMultiBodyModule(){
-    setName("ImpulseBasedMultiBodyModule");
-  }
 
   int getLastNumberOfIterations()const;
   ImpulseBasedMultiBodyModule(int maxIterations=20, Real normalisation=100, Real positionTolerance=10e-3, Real velocityTolerance=10e-4);

@@ -5,12 +5,14 @@
 using namespace std;
 using namespace nspace;
 
-ImpulseBasedMultiBodyModule::ImpulseBasedMultiBodyModule(int maxIterations, Real normalisation, Real positionTolerance, Real velocityTolerance){
-  setName("Impulse Based Dynamics Algorithm");
+ImpulseBasedMultiBodyModule::ImpulseBasedMultiBodyModule(int maxIterations, Real normalisation, Real positionTolerance, Real velocityTolerance)
+{
+  setName("ImpulseBasedMultiBodyModule");
   _eps_p=positionTolerance;
   _eps_v=velocityTolerance;
   _maxIterations=maxIterations;
   _normalisation=normalisation;
+  _iterations=0;
 }
 
 void ImpulseBasedMultiBodyModule::correctPositions(Real h){

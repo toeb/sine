@@ -78,7 +78,7 @@ public:
   }
   inline bool isZero(const Real epsilon = EPSILON)const{
     bool result;
-    MatrixIsZero<StaticMatrix<T, RowCount, ColumnCount>::(result, *this, epsilon);
+    MatrixOps::compareMatrix(result,*this,StaticMatrix<T,RowCount,ColumnCount>::Zero() );
     return result;
   }
 

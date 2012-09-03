@@ -22,10 +22,12 @@
 #include <simulation/dynamics/primitives/DynamicBox.h>
 #include <simulation/geometry/Primitives/Sphere.h>
 #include <visualization/glrenderers/geometry/SphereRenderer.h>
-
+#include <simulation/multibody/impulsebased/ImpulseBasedMultiBodyModule.h>
+#include <simulation/dynamics/connection/RigidBodyConnector.h>
+#include <simulation/dynamics/connection/ConnectorFactory.h>
 #include <readers/urdf/UrdfModelReader.h>
 #include <simulation/model/builder/ModelBuilderBase.h>
-
+#include <simulation/multibody/impulsebased/joints/BallJoint.h>
 
 using namespace nspace;
 using namespace std;
@@ -114,8 +116,31 @@ int main(int argc, char** argv){
   QtSimulationRunner runner;
   Simulation simulation;
 
-
   
+  RigidBody b1;
+  RigidBody b2;
+
+  b1.setMass(0);
+  b2.setMass(2);
+  TypeId rb = b1.getBodyType();
+  TypeId rbt = RigidBody::Type;
+  b2.coordinates().position() = Vector3D(2,0,0);
+  DynamicConnector * c1 = ConnectorFactory::instance().createWithWorldConnectionPoint(b1);
+  DynamicConnector * c2 = ConnectorFactory::instance().createWithLocalConnectionPoint(b1,Vector3D(1,0,0));
+ 
+   
+  BallJoint joint(*c1,*c2);
+
+  simulation << b1;
+  simulation << b2;
+  simulation << c1;
+  simulation << c2;
+  simulation << joint;
+
+
+
+
+
 
 
   UrdfModelReader & urdfReader = UrdfModelReader::instance();

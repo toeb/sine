@@ -32,6 +32,7 @@ private:
 
   ///< The kinematic body
   KinematicBody _kinematics;
+ 
 public:
 
   inline CoordinateSystem & coordinates(){return kinematics();}
@@ -41,7 +42,7 @@ public:
   inline const KinematicBody & kinematics()const{return _kinematics;};
 
   RigidBody(Real mass):_m(mass){
-
+    
   }
 
   RigidBody(Real mass, const Matrix3x3 inertia):_m(mass){
