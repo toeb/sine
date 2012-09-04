@@ -49,6 +49,22 @@ public:
     //glutExit();
   }
 };
+
+
+class ConnectorImpulseRenderer : public IRenderer{
+private:
+  RigidBodyConnector & connector;
+public:
+  ConnectorImpulseRenderer(RigidBodyConnector & connector):connector(connector){
+
+  }
+  void render(){
+    MiniGL::drawVector(connector.getWorldPosition(), connector.lastImpulse*0.1+connector.getWorldPosition(),2,MiniGL::blue);
+    connector.lastImpulse.setZero();
+  }
+
+};
+
 class DSLibModelBuilder : public ModelBuilderBase{
 private:
   CompositeSimulationObject _objects;
@@ -110,8 +126,43 @@ private:
   }
 
 };
+
+class MyDependentValue : public DependentValue<int>{
+private:
+  TypedObservableValue<int> & _original;
+public:
+  MyDependentValue(TypedObservableValue<int> & orig):_original(orig){
+    dependencies().add(&orig);
+  }
+protected:
+  int calculate(){
+    return _original()+5;
+  }
+};
+
 int main(int argc, char** argv){
 
+  TypedObservableValue<int> aValue;
+  aValue.set(0);
+  ValueHistory<int> aHistory(aValue,10);
+  MyDependentValue bValue(aValue);
+  ValueHistory<int> bHistory(bValue,10);
+  
+  /*
+  ValueObserverDelegate del([&aHistory,&bHistory](void * sender){
+    cout <<"a "<< aHistory<<endl;
+    cout <<"b "<< bHistory<<endl;
+  });
+  aValue.addObserver(&del);
+  */
+
+
+
+
+  for(int i=1; i <= 3000000; i++)aValue.set(i);
+
+
+  return 0;
   DefaultSimulationSetup setup;
 
   QtSimulationRunner runner;
@@ -135,15 +186,18 @@ int main(int argc, char** argv){
   TypeId rbt = RigidBody::ClassType();
   b2.coordinates().position() = Vector3D(1,0,0);
   b3.coordinates().position()= Vector3D(2,0,0);
-  DynamicConnector * c1 = ConnectorFactory::instance().createWithWorldConnectionPoint(b1,Vector3D(0,0,0));
-  DynamicConnector * c2 = ConnectorFactory::instance().createWithWorldConnectionPoint(b2,Vector3D(0,0,0));
- 
-  DynamicConnector * c3 = ConnectorFactory::instance().createWithWorldConnectionPoint(b2,Vector3D(1,0,0));
-  DynamicConnector * c4 = ConnectorFactory::instance().createWithWorldConnectionPoint(b3,Vector3D(1,0,0));
+  RigidBodyConnector * c1 = ( RigidBodyConnector*)ConnectorFactory::instance().createWithWorldConnectionPoint(b1,Vector3D(0,0,0));
+  RigidBodyConnector * c2 = ( RigidBodyConnector*)ConnectorFactory::instance().createWithWorldConnectionPoint(b2,Vector3D(0,0,0)); 
+  RigidBodyConnector * c3 = ( RigidBodyConnector*)ConnectorFactory::instance().createWithWorldConnectionPoint(b2,Vector3D(1,0,0));
+  RigidBodyConnector * c4 = ( RigidBodyConnector*)ConnectorFactory::instance().createWithWorldConnectionPoint(b3,Vector3D(1,0,0));
    
   simulation << new BallJoint(*c3,*c4);
   simulation << new BallJoint(*c1,*c2);
-
+  
+  simulation << new ConnectorImpulseRenderer(*c1);
+  simulation << new ConnectorImpulseRenderer(*c2);
+  simulation << new ConnectorImpulseRenderer(*c3);
+  simulation << new ConnectorImpulseRenderer(*c4);
   
   simulation << b1;
   simulation << b2;

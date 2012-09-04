@@ -153,13 +153,13 @@ public:
 
          c <<n->name() <<std::endl;
          
-         for(int i=0; i < n->entries();i++){
+         for(unsigned int i=0; i < n->entries();i++){
            Entry * entry = n->entries()(i);
            for(int j=0; j < level*2+1; j++)c <<" ";
            c << entry->name << std::endl; 
          }
 
-         for(int i=0; i < n->successors(); i++){
+         for(unsigned int i=0; i < n->successors(); i++){
            n->successors()(i)->set("level",level+1);
          }
 
@@ -167,18 +167,38 @@ public:
       return c;
      }
   protected:
-    // callback when an element is added to the node
+    // callback when an element is added to the node. makes sure that the nodes are connected in both directions
     void elementAdded(ObservableCollection<Node*> * sender, Node * node){
-      if(sender == &_predecessors)node->successors().add(this);
-      if(sender==&_successors)node->predecessors().add(this);
+      if(sender == &_predecessors){
+        // makes sure that the new nodes successor is set to this
+        node->successors().add(this);
+        // call extension point
+        onPredecessorAdded(node);
+      }else
+      if(sender==&_successors){
+        // make sure that the new nodes predecessor is set to this
+        node->predecessors().add(this);
+        onSuccessorAdded(node);
+      }
       notifyElementAdded(node);
     }
-    // callback when an element is removed from the node
+    // callback when an element is removed from the node. makes sure the nodes are removed
     void elementRemoved(ObservableCollection<Node*> * sender, Node * node){
-      if(sender == &_predecessors)node->successors().remove(this);
-      if(sender==&_successors)node->predecessors().remove(this);
-      notifyElementAdded(node);
+      if(sender == &_predecessors){
+        node->successors().remove(this);
+        onPredecessorRemoved(node);
+      }else
+      if(sender==&_successors){
+        node->predecessors().remove(this);
+        onSuccessorRemoved(node);
+      }
+      notifyElementRemoved(node);
     }
+    virtual void onPredecessorAdded(Node * predecessor){}
+    virtual void onSuccessorAdded(Node * successor){}
+    virtual void onPredecessorRemoved(Node* predecessor){}
+    virtual void onSuccessorRemoved(Node * predecessor){}
+
   };
 
 

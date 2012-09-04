@@ -28,19 +28,19 @@ public:
   const T  first()const{
     return at(0);
   }
-  T  at(int index){
+  T  at(unsigned int index){
     if(index >= size())return 0;
     return _elements[index];
   }
-  const T at(int index)const{
+  const T at(unsigned  int index)const{
     if(index >= size())return 0;
     return _elements[index];
   }
 
-  T operator()(int index){
+  T operator()(unsigned int index){
     return at(index);
   }
-  const T operator()(int index)const{
+  const T operator()(unsigned int index)const{
     return at(index);
   }
   
@@ -61,7 +61,7 @@ public:
   
   void clear(){
     std::vector<T> elements = _elements;
-    for_each(elements.begin(), elements.end(), [this](T element){
+    std::for_each(elements.begin(), elements.end(), [this](T element){
       this->remove(element);
     });
   }

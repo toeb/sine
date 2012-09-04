@@ -36,6 +36,7 @@ void RigidBodyConnector::previewPosition(Real h,Vector3D & p_next_wcs)  {
 }
 
 void RigidBodyConnector::applyImpulse(const Vector3D & p_wcs){
+  lastImpulse += p_wcs;
   _rigidBody.applyImpulse(getCachedWorldPosition(),p_wcs);
 }
 

@@ -32,6 +32,7 @@ void BallJoint::correctPosition(Real h) {
   //apply correction impulse
   _cA.applyImpulse(p_a);
   _cB.applyImpulse(p_b);
+
 }
 bool BallJoint::arePositionsCorrect(){
   return _positionError < _positionTolerance;

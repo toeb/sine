@@ -8,11 +8,14 @@ namespace nspace {
 	 */
 	class RigidBodyConnector: public DynamicConnector
 	{
+  public:
+    Vector3D lastImpulse;
 	private:
 		// reference to the associated rigid body
 		RigidBody & _rigidBody;
 		///< The connection vector in object coordinates of the associated body
 		Vector3D  _r;
+
     Vector3D _rDot;
     	/**
 		 * Create an instance of this class associated with the rigid body b
