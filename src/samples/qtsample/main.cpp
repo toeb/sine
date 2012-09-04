@@ -142,27 +142,6 @@ protected:
 
 int main(int argc, char** argv){
 
-  TypedObservableValue<int> aValue;
-  aValue.set(0);
-  ValueHistory<int> aHistory(aValue,10);
-  MyDependentValue bValue(aValue);
-  ValueHistory<int> bHistory(bValue,10);
-  
-  /*
-  ValueObserverDelegate del([&aHistory,&bHistory](void * sender){
-    cout <<"a "<< aHistory<<endl;
-    cout <<"b "<< bHistory<<endl;
-  });
-  aValue.addObserver(&del);
-  */
-
-
-
-
-  for(int i=1; i <= 3000000; i++)aValue.set(i);
-
-
-  return 0;
   DefaultSimulationSetup setup;
 
   QtSimulationRunner runner;

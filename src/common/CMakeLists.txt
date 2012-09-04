@@ -22,6 +22,8 @@ set(source
 )
 source_group("src" FILES ${source})
 
+
+
 set(patternsSource
 	./patterns/ITask.h
 	./patterns/TaskRunner.h
@@ -36,3 +38,4 @@ set(patternsSource
 source_group("src\\patterns" FILES ${patternsSource})
 add_library(common ${source} ${patternsSource} CMakeLists.txt)
 project_folder("" common)
+
