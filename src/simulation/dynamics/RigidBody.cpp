@@ -6,6 +6,7 @@ using namespace nspace;
 
 
 RigidBody::RigidBody(){
+  resetForce();
   setMass(REAL_MIN);
   setInertiaTensor(REAL_MIN*Matrix3x3::Identity());
 }
@@ -53,8 +54,8 @@ void RigidBody::addExternalForce(const Vector3D & f){
 }
 
 void RigidBody::resetForce() {
-	_f = Vector3D();
-	_tau = Vector3D();
+  _f.setZero();
+	_tau.setZero();
 }
 
 
@@ -99,12 +100,11 @@ void RigidBody::calculateInvertedInertiaTensorInWorldCoordinates(){
   //_kinematics.calculateRotationMatrices();
   const Matrix3x3 & R = *_kinematics.getCachedRotationMatrix();//getRotationMatrix();
   const Matrix3x3 & RT = *_kinematics.getCachedTransposedRotationMatrix();//
-  //MatrixOps::multiplyMatrix(tmp,J_inv_ocs,R);
-  //MatrixOps::multiplyMatrix(_J_inv_wcs,RT,tmp);
-
+ /* Matrix3x3 R, RT;
+  kinematics().orientation().toRotationMatrix(R);
+  kinematics().orientation().toTransposedRotationMatrix(RT);//*/
+  
   _J_inv_wcs = RT*J_inv_ocs*R;
-  //Matrix3x3::multiply(tmp,RT,_J_inv_wcs);
-  //Matrix3x3::multiply(R,tmp,_J_inv_wcs);
 }
 
 void RigidBody::applyImpulse(const Vector3D& a_wcs, const Vector3D & p_wcs){
@@ -114,7 +114,7 @@ void RigidBody::applyImpulse(const Vector3D& a_wcs, const Vector3D & p_wcs){
   const Matrix3x3 & J_inv_wcs = getInvertedInertiaTensorInWorldCoordinates();  
   const Vector3D & s_wcs = _kinematics.position();
   Vector3D r_a_wcs = a_wcs-s_wcs;
-  Vector3D omegaDelta= J_inv_wcs * ( r_a_wcs ^ p_wcs);
+  Vector3D omegaDelta= J_inv_wcs * (  r_a_wcs^p_wcs);
 
   _kinematics.velocity() = _kinematics.velocity()+vDelta;
   _kinematics.angularVelocity() = _kinematics.angularVelocity() +omegaDelta;

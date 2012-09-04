@@ -28,6 +28,7 @@ void ForceAlgorithm::renounce(ISimulationObject * object){
 }
 
 void ForceAlgorithm::resetForces(){  
+  
   /*
   for(auto it = _forceAccumulators.begin(); it != _forceAccumulators.end(); it++){
     (*it)->resetForce();

@@ -41,6 +41,7 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
 void DynamicsAlgorithm::evaluate(Real t, Real h){
   dynamicBodyModule.calculateCachedValues(); 
   connectorModule.calculateConnectorPositions();
+  
   forceModule.setForces(t);
 
   if(doMultiBody)multiBodyDynamics.correctPositions(h);

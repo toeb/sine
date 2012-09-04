@@ -122,43 +122,59 @@ int main(int argc, char** argv){
   
   RigidBody b1;
   RigidBody b2;
+  RigidBody b3;
 
   b1.setMass(0);
-  b2.setMass(2);
+  b2.setMass(1);
   b2.setInertiaTensor(Matrix3x3::Identity());
+  b3.setMass(1);
+  b3.setInertiaTensor(Matrix3x3::Identity());
+
   TypeId rb = b1.getBodyType();
   TypeId pt = Particle::ClassType();
   TypeId rbt = RigidBody::ClassType();
-  b2.coordinates().position() = Vector3D(2,0,0);
-  DynamicConnector * c1 = ConnectorFactory::instance().createWithWorldConnectionPoint(b1);
-  DynamicConnector * c2 = ConnectorFactory::instance().createWithLocalConnectionPoint(b2,Vector3D(1,0,0));
+  b2.coordinates().position() = Vector3D(1,0,0);
+  b3.coordinates().position()= Vector3D(2,0,0);
+  DynamicConnector * c1 = ConnectorFactory::instance().createWithWorldConnectionPoint(b1,Vector3D(0,0,0));
+  DynamicConnector * c2 = ConnectorFactory::instance().createWithWorldConnectionPoint(b2,Vector3D(0,0,0));
  
+  DynamicConnector * c3 = ConnectorFactory::instance().createWithWorldConnectionPoint(b2,Vector3D(1,0,0));
+  DynamicConnector * c4 = ConnectorFactory::instance().createWithWorldConnectionPoint(b3,Vector3D(1,0,0));
    
-  BallJoint joint(*c1,*c2);
+  simulation << new BallJoint(*c3,*c4);
+  simulation << new BallJoint(*c1,*c2);
 
+  
   simulation << b1;
   simulation << b2;
+  simulation << b3;
+
   simulation << c1;
   simulation << c2;
-  simulation << joint;
+  simulation << c3;
+  simulation << c4;
 
 
   Hexahedron * box = new Hexahedron(0.5,0.5,0.5);
   box->coordinates().mirror(b1.coordinates());
-  simulation << box;
   simulation << box;
   simulation << new BoxRenderer(*box);
 
   Hexahedron * box2 = new Hexahedron(0.5,0.5,0.5);
   box2->coordinates().mirror(b2.coordinates());
   simulation << box2;
-  simulation << box2;
   simulation << new BoxRenderer(*box2);
 
+  Hexahedron * box3 = new Hexahedron(0.5,0.5,0.5);
+  box3->coordinates().mirror(b3.coordinates());
+  simulation << box3;
+  simulation << box3;
+  simulation << new BoxRenderer(*box3);
+/*
   simulation << new PeriodicTaskDelegate([b2](Time t,Time dt){
     cout << t << ": " << b2.coordinates().position() << endl;
   },1.0,true);
-
+*/
 
 
 
@@ -237,7 +253,7 @@ int main(int argc, char** argv){
   {
 
 
-    int n(0), m(0), l(0);
+    int n(0), m(2), l(2);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){
