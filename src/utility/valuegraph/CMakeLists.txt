@@ -13,6 +13,8 @@ set(source
  ./ValueHistory.cpp
  ./ObservableValue.h
  ./ObservableValue.cpp
+ ./ChangeTracker.h
+ ./ChangeTracker.cpp
  ./valuegraph.h 
  ./valuegraph.cpp
  

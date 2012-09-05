@@ -1,23 +1,30 @@
 #pragma once
 
-#include <utility/valuegraph/TypedValue.h>
-
+#include <utility/valuegraph/CachedValue.h>
+#include <utility/valuegraph/TypedObservableValue.h>
 namespace nspace{
+
+
+  
 template<typename T>
-class CachedValue : public TypedValue<T>{
+class CachedValue : private ChangeTracker, public TypedObservableValue<T>{
 private:
-  VersionId _cachedVersion;
   TypedValue<T> & _value;
 public:
-  CachedValue(TypedValue<T> & value):_value(value){
-
-  }
+  CachedValue(TypedValue<T> & value):_value(value),ChangeTracker(value){cache();}
+  
   void cache(){
-    _cachedVersion = _value.version();
+    //sets cache to to current value of underlying var
     set(_value.get());
+    access();
   }
-  bool dirty()const{
-    return _cachedVersion!=_value.version();
+
+  TypedValue<T> & source(){
+    return _value;
+  }
+
+  inline bool dirty()const{    
+    return hasChanged();
   }
 };
 
