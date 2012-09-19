@@ -1,6 +1,7 @@
 #include <utility/valuegraph/valuegraph.h>
 #include <iostream>
 #include <math/definitions.h>
+#include <common/Node.h>
 using namespace nspace;
 using namespace std;
 
@@ -72,15 +73,48 @@ public:
     return _position + R * _relativePosition;
   }
 };
-class Body{
+
+class Coordinates{
+
+};
+class NamedValueHolder{
+
+};
+class PropertyObject{
+public:
+  ValueLookup * _lookup;
+  
+  PropertyObject():_lookup(0){}
+
+  void setData(ValueLookup * lookup){
+
+  }
+  ValueLookup * lookup(){
+    return _lookup;
+  }
+
+  virtual void setupValues()=0;
+
+  void require(NamedValueHolder & valueHolder){
+    
+  }
+
+};
+class Body : public PropertyObject{
 public:
   TypedValue<Quaternion> orientation;
   TypedValue<Vector3D> position;
 
+  void setupValues(ValueLookup & lookup){
+    
+  }
+
+  
+
 };
 class AutoConnector{
 public:
-  AutoConnector(Body & body):p_wcs(p_ocs,body.orientation,body.position);
+  AutoConnector(Body & body):p_wcs(p_ocs,body.orientation,body.position){}
   TypedValue<Vector3D> p_ocs;
   VectorTransform p_wcs;
 

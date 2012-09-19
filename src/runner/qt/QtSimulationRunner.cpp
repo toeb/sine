@@ -34,10 +34,10 @@
 #include <QTreeView>
 #include <QStandardItemModel>
 
-#include <runners/qt/ValueItemFactory.h>
-#include <runners/qt/ValueItemDelegate.h>
+#include <runner/qt/ValueItemFactory.h>
+#include <runner/qt/ValueItemDelegate.h>
 
-#include <runners/qt/QtSimulationAction.h>
+#include <runner/qt/QtSimulationAction.h>
 
 #include <simulation/access/IValue.h>
 

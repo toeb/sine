@@ -4,8 +4,8 @@
 #include <GL/freeglut_ext.h>
 #include <iostream>
 
-#include <runners/glut/GlutInputHandler.h>
-#include <runners/glut/GlutRenderModule.h>
+#include <runner/glut/GlutInputHandler.h>
+#include <runner/glut/GlutRenderModule.h>
 
 using namespace nspace;
 using namespace std;

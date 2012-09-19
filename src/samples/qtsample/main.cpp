@@ -127,18 +127,7 @@ private:
 
 };
 
-class MyDependentValue : public DependentValue<int>{
-private:
-  TypedObservableValue<int> & _original;
-public:
-  MyDependentValue(TypedObservableValue<int> & orig):_original(orig){
-    dependencies().add(&orig);
-  }
-protected:
-  int calculate(){
-    return _original()+5;
-  }
-};
+
 
 int main(int argc, char** argv){
 

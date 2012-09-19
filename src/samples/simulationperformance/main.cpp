@@ -1,5 +1,5 @@
 #include <simulation/utility/DefaultSimulationSetup.h>
-#include <runners/console/ConsoleRunner.h>
+#include <runner/console/ConsoleRunner.h>
 #include <simulation/core/Simulation.h>
 #include <simulation/time/CallbackTask.h>
 #include <simulation/time/PeriodicTask.h>

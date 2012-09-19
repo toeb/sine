@@ -25,8 +25,8 @@
  * 
  */
 #pragma once
-#include <runners/qt/QtTimeControl.h>
-#include <runners/qt/QtSnapshotControl.h>
+#include <runner/qt/QtTimeControl.h>
+#include <runner/qt/QtSnapshotControl.h>
 #include <QApplication>
 #include <QMainWindow>
 #include <QElapsedTimer>
@@ -34,7 +34,7 @@
 #include <QSettings>
 
 #include <simulation/runner/SimulationRunner.h>
-#include <runners/qt/GlWidget.h>
+#include <runner/qt/GlWidget.h>
 #include <simulation/time/SimulationTimeController.h>
 #include <vector>
 

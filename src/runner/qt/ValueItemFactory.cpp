@@ -1,7 +1,7 @@
 #include "ValueItemFactory.h"
-#include <runners/qt/DoubleItem.h>
-#include <runners/qt/NamedItem.h>
-#include <runners/qt/IValueItem.h>
+#include <runner/qt/DoubleItem.h>
+#include <runner/qt/NamedItem.h>
+#include <runner/qt/IValueItem.h>
 #include <simulation/access/MatrixValue.h>
 #include <simulation/access/IValue.h>
 
