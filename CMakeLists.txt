@@ -22,6 +22,15 @@ set(resourceDirectory ${projectPath}/resources)
 set(includeDirectories ${sourceDirectory})
 
 
+
+IF (CMAKE_COMPILER_IS_GNUCC)
+  ##use c++0x flags for gcc (needed for the new integrators)
+  add_definitions(" -std=c++0x ")
+  add_definitions(" -std=gnu++0x ")
+
+ENDIF(CMAKE_COMPILER_IS_GNUCC)
+
+
 include(${cmakeScriptsDirectory}/Common.cmake)
 include(${cmakeScriptsDirectory}/AntTweakBar.cmake)      
 
