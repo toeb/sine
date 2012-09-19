@@ -38,3 +38,14 @@ add_custom_command(TARGET ${targetName} POST_BUILD        	# Adds a post-build e
   $<TARGET_FILE_DIR:${targetName}>)                 		# <--this is out-file path
 endmacro()
 
+
+MACRO(subdirlist result curdir)
+  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  SET(dirlist "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${curdir}/${child})
+        SET(dirlist ${dirlist} ${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${dirlist})
+ENDMACRO()
