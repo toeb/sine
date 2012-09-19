@@ -1,19 +1,23 @@
-subdirs(
-core 
-time 
-integration 
-access 
-runner 
-interaction 
-history 
-kinematics 
-utility 
-logging 
-geometry
-dynamics
-textile
-multibody
-force
-model
-initialization
+set(coreSource
+	./ISimulationModule.h
+	./Simulation.h
+	./Simulation.cpp	
+	./SimulationModuleBase.h
+	./SimulationModuleBase.cpp
+	./ISimulationObject.h
+	./ISimulationObject.cpp
 )
+source_group("src" FILES ${coreSource})
+
+
+set(compositeSource
+ ./composites/CompositeSimulationObject.h
+ ./composites/CompositeSimulationObject.cpp
+ ./composites/CompositeSimulationModule.h
+ ./composites/CompositeSimulationModule.cpp
+)
+
+source_group("src\\composites" FILES ${compositeSource})
+
+add_library(core ${timeSource} ${coreSource} ${compositeSource})
+project_folder("simulation" core common)

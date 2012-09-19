@@ -1,1 +1,0 @@
-subdirs(xml imaging reader valuegraph)

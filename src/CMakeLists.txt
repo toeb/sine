@@ -1,2 +1,2 @@
-
-subdirs(common math simulation runner sample visualization utility reader)
+subdirlist(directories ${CMAKE_CURRENT_SOURCE_DIR})
+subdirs(${directories})

@@ -6,8 +6,8 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-#include <simulation/timing/Timeable.h>
-#include <simulation/logging/LoggingObject.h>
+#include <simulation.timing/Timeable.h>
+#include <simulation.logging/LoggingObject.h>
 using namespace nspace;
 using namespace nspace::matrix2;
 using namespace std;

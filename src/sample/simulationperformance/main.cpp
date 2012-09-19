@@ -1,14 +1,14 @@
-#include <simulation/utility/DefaultSimulationSetup.h>
-#include <runner/console/ConsoleRunner.h>
-#include <simulation/core/Simulation.h>
-#include <simulation/time/CallbackTask.h>
-#include <simulation/time/PeriodicTask.h>
-#include <simulation/utility/DynamicsAlgorithm.h>
-#include <simulation/dynamics/Particle.h>
+#include <simulation.utility/DefaultSimulationSetup.h>
+#include <simulation.runner.console/ConsoleRunner.h>
+#include <simulation/Simulation.h>
+#include <simulation.time/CallbackTask.h>
+#include <simulation.time/PeriodicTask.h>
+#include <simulation.utility/DynamicsAlgorithm.h>
+#include <simulation.dynamics/Particle.h>
 #include <iostream>
-#include <simulation/integration/Evaluator.h>
-#include <simulation/integration/implementations/RungeKutta4.h>
-#include <simulation/integration/implementations/ExplicitEuler.h>
+#include <simulation.integration/Evaluator.h>
+#include <simulation.integration/implementations/RungeKutta4.h>
+#include <simulation.integration/implementations/ExplicitEuler.h>
 using namespace std;
 using namespace nspace;
 
