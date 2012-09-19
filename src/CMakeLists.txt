@@ -1,2 +1,2 @@
 
-subdirs(common math simulation runner samples visualization utility readers)
+subdirs(common math simulation runner sample visualization utility reader)

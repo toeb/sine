@@ -1,6 +1,6 @@
 #pragma once
 
-#include <readers/urdf/structs/UrdfOrigin.h>
+#include <reader/urdf/structs/UrdfOrigin.h>
 
 namespace nspace{
 

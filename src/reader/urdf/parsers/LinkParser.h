@@ -1,8 +1,8 @@
 #pragma once
 
-#include <readers/urdf/structs/UrdfLink.h>
-#include <readers/urdf/parsers/InertialFrameParser.h>
-#include <readers/urdf/parsers/VisualParser.h>
+#include <reader/urdf/structs/UrdfLink.h>
+#include <reader/urdf/parsers/InertialFrameParser.h>
+#include <reader/urdf/parsers/VisualParser.h>
 
 
 namespace nspace{

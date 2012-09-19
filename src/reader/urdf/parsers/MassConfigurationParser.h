@@ -1,8 +1,8 @@
 #pragma once
 #include <utility/xml/ElementParser.h>
-#include <readers/urdf/structs/MassConfiguration.h>
-#include <readers/urdf/parsers/MassParser.h>
-#include <readers/urdf/parsers/InertiaParser.h>
+#include <reader/urdf/structs/MassConfiguration.h>
+#include <reader/urdf/parsers/MassParser.h>
+#include <reader/urdf/parsers/InertiaParser.h>
 
 namespace nspace{
 

@@ -3,8 +3,8 @@
 #include <utility/xml/NamedElementParser.h>
 #include <simulation/model/builder/ModelBuilderHolder.h>
 #include <common/Node.h>
-#include <readers/urdf/parsers/PrimitiveParsers.h>
-#include <readers/urdf/parsers/ConnectParser.h>
+#include <reader/urdf/parsers/PrimitiveParsers.h>
+#include <reader/urdf/parsers/ConnectParser.h>
 
 namespace nspace{
 

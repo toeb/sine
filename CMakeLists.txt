@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 2.4)
 #ds = dynamische simulation
 project(ds)
 
+set(defaultProjectFolder "dslib")
+
+
 set(projectPath ${PROJECT_SOURCE_DIR})
 set(LIBRARY_OUTPUT_PATH ${projectPath}/build/lib)
 set(EXECUTABLE_OUTPUT_PATH ${projectPath}/build/bin)
@@ -21,7 +24,7 @@ include_directories(${externalsDirectory})
 include_directories(${externalsDirectory}/freeglut/include)
 include_directories(${externalsDirectory}/soil/src)
 include_directories(${externalsDirectory}/lodepng)
-
+include_directories(${externalsDirectory}/eigen3)
 
 subdirs(externals)
 find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL qtmain REQUIRED)

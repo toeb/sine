@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include <readers/urdf/parsers/RootParser.h>
-#include <readers/urdf/parsers/ConnectionParser.h>
-#include <readers/urdf/parsers/ConnectorParser.h>
+#include <reader/urdf/parsers/RootParser.h>
+#include <reader/urdf/parsers/ConnectionParser.h>
+#include <reader/urdf/parsers/ConnectorParser.h>
 
 namespace nspace{
 class UrdfExtensionParser:public NamedElementParser, public ModelBuilderHolder{

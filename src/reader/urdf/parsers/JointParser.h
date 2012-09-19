@@ -1,9 +1,9 @@
 #pragma once
-#include <readers/urdf/structs/UrdfJoint.h>
+#include <reader/urdf/structs/UrdfJoint.h>
 #include <utility/xml/NamedElementParser.h>
 #include <simulation/model/builder/ModelBuilderHolder.h>
-#include <readers/urdf/parsers/ChildLinkParser.h>
-#include <readers/urdf/parsers/AxisParser.h>
+#include <reader/urdf/parsers/ChildLinkParser.h>
+#include <reader/urdf/parsers/AxisParser.h>
 
 namespace nspace{
 

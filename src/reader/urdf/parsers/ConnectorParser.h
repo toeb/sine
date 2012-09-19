@@ -1,7 +1,7 @@
 #pragma once
 
-#include <readers/urdf/parsers/ParentLinkParser.h>
-#include <readers/urdf/structs/UrdfConnector.h>
+#include <reader/urdf/parsers/ParentLinkParser.h>
+#include <reader/urdf/structs/UrdfConnector.h>
 
 namespace nspace{
 class ConnectorParser:public NamedElementParser, public ModelBuilderHolder{

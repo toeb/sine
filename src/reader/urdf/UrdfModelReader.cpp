@@ -3,8 +3,8 @@
 
 #include <fstream>
 #include <simulation/model/builder/ModelBuilderHolder.h>
-#include <readers/urdf/UrdfModelReader.h>
-#include <readers/urdf/parsers/RobotElementParser.h>
+#include <reader/urdf/UrdfModelReader.h>
+#include <reader/urdf/parsers/RobotElementParser.h>
 #include <common/StringTools.h>
 
 using namespace std;

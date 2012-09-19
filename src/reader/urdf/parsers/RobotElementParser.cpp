@@ -1,10 +1,10 @@
 #include "RobotElementParser.h"
 
 
-#include <readers/urdf/parsers/UrdfExtensionParser.h>
-#include <readers/urdf/parsers/LinkParser.h>
-#include <readers/urdf/parsers/JointParser.h>
-#include <readers/urdf/structs/UrdfConnection.h>
+#include <reader/urdf/parsers/UrdfExtensionParser.h>
+#include <reader/urdf/parsers/LinkParser.h>
+#include <reader/urdf/parsers/JointParser.h>
+#include <reader/urdf/structs/UrdfConnection.h>
 
 using namespace nspace;
 using namespace std;

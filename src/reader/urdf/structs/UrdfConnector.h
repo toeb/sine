@@ -1,5 +1,5 @@
 #pragma once
-#include <readers/urdf/structs/UrdfElement.h>
+#include <reader/urdf/structs/UrdfElement.h>
 namespace nspace{
 struct UrdfConnector : public UrdfElement{
 

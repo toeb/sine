@@ -1,8 +1,8 @@
 #pragma once
 
 #include <utility/xml/NamedChildParser.h>
-#include <readers/urdf/structs/UrdfOrigin.h>
-#include <readers/urdf/parsers/PrimitiveParsers.h>
+#include <reader/urdf/structs/UrdfOrigin.h>
+#include <reader/urdf/parsers/PrimitiveParsers.h>
 
 namespace nspace{
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <readers/urdf/structs/UrdfElement.h>
+#include <reader/urdf/structs/UrdfElement.h>
 #include <math/definitions.h>
 
 namespace nspace{

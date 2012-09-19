@@ -2,8 +2,8 @@
 
 
 #include <utility/xml/NamedChildParser.h>
-#include <readers/urdf/parsers/MassConfigurationParser.h>
-#include <readers/urdf/parsers/OriginParser.h>
+#include <reader/urdf/parsers/MassConfigurationParser.h>
+#include <reader/urdf/parsers/OriginParser.h>
 
 namespace nspace{
 

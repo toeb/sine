@@ -1,8 +1,8 @@
 #pragma once
 #include <utility/xml/NamedElementParser.h>
-#include <readers/urdf/parsers/OriginParser.h>
-#include <readers/urdf/parsers/GeometryParser.h>
-#include <readers/urdf/parsers/MaterialParser.h>
+#include <reader/urdf/parsers/OriginParser.h>
+#include <reader/urdf/parsers/GeometryParser.h>
+#include <reader/urdf/parsers/MaterialParser.h>
 
 namespace nspace{
 class VisualParser : public NamedElementParser{

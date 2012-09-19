@@ -25,7 +25,7 @@
 #include <simulation/multibody/impulsebased/ImpulseBasedMultiBodyModule.h>
 #include <simulation/dynamics/connection/RigidBodyConnector.h>
 #include <simulation/dynamics/connection/ConnectorFactory.h>
-#include <readers/urdf/UrdfModelReader.h>
+#include <reader/urdf/UrdfModelReader.h>
 #include <simulation/model/builder/ModelBuilderBase.h>
 #include <simulation/multibody/impulsebased/joints/BallJoint.h>
 #include <simulation/time/CallbackTask.h>

@@ -4,7 +4,7 @@
 #include <simulation/model/builder/ModelBuilderHolder.h>
 #include <simulation/kinematics/CoordinateSystem.h>
 #include <utility/xml/CompositeChildParser.h>
-#include <readers/urdf/parsers/OriginParser.h>
+#include <reader/urdf/parsers/OriginParser.h>
 
 namespace nspace{
   
