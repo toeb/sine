@@ -169,7 +169,7 @@ namespace nspace
 		friend Quaternion operator | (const Vector3D& a, const Quaternion& b);		// (0,a^T) * b
 		friend Quaternion operator | (const Quaternion& a, const Vector3D& b);		// a * (0,b^T)
 		Quaternion& operator = (const Quaternion& q);								// Zuweisung
-    FORCE_INLINE Real& Quaternion::operator [] (const int i)
+    inline Real& Quaternion::operator [] (const int i)
     {
       switch(i)
       {
@@ -181,7 +181,7 @@ namespace nspace
       return _w;
     }
 
-    FORCE_INLINE Real& Quaternion::operator () (const int i)
+    inline Real& Quaternion::operator () (const int i)
     {
       switch(i)
       {
@@ -193,7 +193,7 @@ namespace nspace
       return _w;
     }
 
-    FORCE_INLINE const Real& Quaternion::operator [] (const int i) const
+    inline const Real& Quaternion::operator [] (const int i) const
     {
       switch(i)
       {
@@ -213,7 +213,7 @@ namespace nspace
       return this->operator()(i);
     }
 
-    FORCE_INLINE const Real& Quaternion::operator () (const int i) const
+    inline const Real& Quaternion::operator () (const int i) const
     {
       switch(i)
       {
