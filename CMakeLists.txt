@@ -21,8 +21,11 @@ set(resourceDirectory ${projectPath}/resources)
 
 set(includeDirectories ${sourceDirectory})
 
+
 include(${cmakeScriptsDirectory}/Common.cmake)
 include(${cmakeScriptsDirectory}/AntTweakBar.cmake)      
+
+find_package(OpenGL)
 
 include_directories(${externalsDirectory})
 include_directories(${externalsDirectory}/freeglut/include)
