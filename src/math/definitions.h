@@ -45,14 +45,13 @@ namespace nspace{
   typedef matrix2::DynamicMatrix<Real> MatrixNxM;
 }
 #elif MATRIX_CLASSES == 3
-
-typedef int MatrixNxM;
-typedef int Matrix3x3;
-typedef int Quaternion;
-typedef int Vector3D;
-typedef int Matrix4x4;
-typedef int VectorND;
-using namespace nspace::matrix3;
+#include <Eigen/Core>
+typedef Eigen::Matrix<Real,Eigen::Dynamic,Eigen::Dynamic> MatrixNxM;
+typedef Eigen::Matrix<Real,3,3> Matrix3x3;
+typedef Eigen::Quaternion<Real> Quaternion;
+typedef Eigen::Matrix<Real,3,1> Vector3D;
+typedef Eigen::Matrix<Real,4,4> Matrix4x4;
+typedef Eigen::Matrix<Real,Eigen::Dynamic,1> VectorND;
 #endif
 
 #ifndef M_PI

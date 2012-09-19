@@ -20,7 +20,7 @@ void BallJoint::correctPosition(Real h) {
   Vector3D d;
   calculateDistancePreview(h,d);  
   // store length of distance vector
-  _positionError = d.length();
+  _positionError = d.norm();
   //abort if positions are within tolerance
   if(arePositionsCorrect())return;
   //approximate velocity

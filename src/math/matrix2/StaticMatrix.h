@@ -163,7 +163,7 @@ public:
   }
   inline T norm()const{
     T result;
-    VectorOperations<T>::norm(T,*this);
+    VectorOperations<T>::norm(result,*this);
     return result;
   }
   inline T length2()const{
