@@ -1,3 +1,3 @@
 
 
-subdirs( lodepng tinyxml2 rply )
+subdirs( lodepng tinyxml2 rply freeglut)

@@ -28,5 +28,5 @@ void NamedObject::setName(const std::string * name){
   setName(*name);
 }
 bool NamedObject::hasName()const{
-  return _name;
+  return _name!=0;
 }

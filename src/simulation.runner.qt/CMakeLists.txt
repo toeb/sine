@@ -61,7 +61,7 @@ if(QT_FOUND)
 	source_group("src\\ui" FILES ${runnerUiFiles})
 	
 	add_library(qtrunner ${runnerSource} ${runnerMoc} ${runnerUi})
-	target_link_libraries(qtrunner core common runner math time visualization opengl interaction integration history access ${QT_LIBRARIES})
+	target_link_libraries(qtrunner core common runner time opengl interaction integration history access ${QT_LIBRARIES})
 	project_folder("runners" qtrunner)
 	
 

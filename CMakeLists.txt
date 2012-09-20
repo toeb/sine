@@ -9,7 +9,8 @@ cmake_minimum_required(VERSION 2.4)
 project(ds)
 
 set(defaultProjectFolder "dslib")
-
+add_definitions(-DFREEGLUT_LIB_PRAGMAS=0)
+add_definitions(-DFREEGLUT_STATIC=1)
 
 set(projectPath ${PROJECT_SOURCE_DIR})
 set(LIBRARY_OUTPUT_PATH ${projectPath}/build/lib)
@@ -34,8 +35,6 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 include(${cmakeScriptsDirectory}/Common.cmake)
 include(${cmakeScriptsDirectory}/AntTweakBar.cmake)      
 
-find_package(GLUT)
-find_package(OpenGL)
 
 include_directories(${externalsDirectory})
 include_directories(${externalsDirectory}/freeglut/include)
