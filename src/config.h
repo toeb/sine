@@ -9,6 +9,10 @@
 typedef unsigned int uint;
 typedef unsigned char byte;
 
+
+#define EPSILON 1.0E-9
+#define PI 3.14159  
+
 // define the floating point type Real
 #ifdef USE_DOUBLES
 	typedef double Real;
@@ -20,9 +24,6 @@ typedef unsigned char byte;
 	#define REAL_MAX FLT_MAX
 	#define REAL_MIN FLT_MIN
 #endif
-  
-#define EPSILON 1.0E-9
-#define PI 3.14159  
 
 #define ERRORSTREAM std::cerr
 #ifndef WIN32 
