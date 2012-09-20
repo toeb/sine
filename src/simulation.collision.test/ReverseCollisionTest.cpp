@@ -1,4 +1,3 @@
-#pragma once
 #include "ReverseCollisionTest.h"
 
 using namespace nspace;

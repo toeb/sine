@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <functional>
 
-#include <simulation.dynamics/Connection/ConnectorFactory.h>
-#include <simulation.dynamics/Connection/ParticleConnector.h>
+#include <simulation.dynamics/connection/ConnectorFactory.h>
+#include <simulation.dynamics/connection/ParticleConnector.h>
 
 using namespace std;
 using namespace nspace;

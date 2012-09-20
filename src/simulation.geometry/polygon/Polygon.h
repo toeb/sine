@@ -48,14 +48,14 @@ public:
   std::vector<Vertex*> & vertices();
 
 
-  inline Vertex * vertex(Index i);
-  inline Edge * edge(Index i);
-  inline Face * face(Index i);
-  inline HalfEdge * halfEdge(Index i);
-  inline Vertex * vertex(Index i)const;
-  inline Edge * edge(Index i)const;
-  inline Face * face(Index i)const;
-  inline HalfEdge * halfEdge(Index i)const;
+  Vertex * vertex(Index i);
+  Edge * edge(Index i);
+  Face * face(Index i);
+  HalfEdge * halfEdge(Index i);
+  Vertex * vertex(Index i)const;
+  Edge * edge(Index i)const;
+  Face * face(Index i)const;
+  HalfEdge * halfEdge(Index i)const;
 
   bool isInsideOCS(const Vector3D & p_ocs)const;
   virtual Real calculateBoundingSphereRadius()const;

@@ -26,7 +26,7 @@ struct TextileNode{
     westElongator(0), southElongator(0),
     northEastShearer(0), southEastShearer(0), 
     southWestShearer(0), northWestShearer(0),
-    northFlexor(0), southFlexor(0), westFlexor(0), eastFlexor(0),i(0),j(0){};
+    northFlexor(0), southFlexor(0), westFlexor(0), eastFlexor(0),i(0),j(0){}
 
   ParticleConnector * connector;
   Particle * particle;
@@ -159,7 +159,7 @@ private:
     Real width, Real height,
     int rows, int cols);
 
-	void TextileModel::normalizeShearers(Real maxElongationRate);
-	void TextileModel::normalizeElongators(Real maxElongationRate);
+    void normalizeShearers(Real maxElongationRate);
+    void normalizeElongators(Real maxElongationRate);
 	};
 }

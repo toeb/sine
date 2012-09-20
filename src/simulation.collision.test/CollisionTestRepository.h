@@ -33,7 +33,7 @@ public:
    *
    * \return null if it fails, else the test.
    */
-  const inline CollisionTest* CollisionTestRepository::getTest(const TypeId a,const TypeId b)const{
+  const inline CollisionTest* getTest(const TypeId a,const TypeId b)const{
     const CollisionTest * current=0;
     for(int i=0; i < _tests.size(); i++){
       current = _tests.at(i);

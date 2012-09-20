@@ -134,8 +134,8 @@ namespace nspace{
       m_inverted(2,1)=e;
       m_inverted(2,2)=f;
     }
-    inline void setZero();
-    inline void setTo(Real value);
+    void setZero();
+    void setTo(Real value);
     static inline void multiply(const Matrix3x3 & a, const Matrix3x3 & b, Matrix3x3  &c);
     static inline void transpose(const Matrix3x3 & a, Matrix3x3 & aT){
   aT.v[0].v[0] = a.v[0].v[0]; aT.v[0].v[1] = a.v[1].v[0]; aT.v[0].v[2] = a.v[2].v[0];  

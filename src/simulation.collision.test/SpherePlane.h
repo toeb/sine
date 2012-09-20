@@ -2,7 +2,7 @@
 
 #include <simulation.collision.test/CollisionTest.h>
 #include <simulation.geometry/Plane.h>
-#include <simulation.geometry/Primitives/Sphere.h>
+#include <simulation.geometry/primitives/Sphere.h>
 
 namespace nspace{
 class SpherePlane : public CollisionTest{

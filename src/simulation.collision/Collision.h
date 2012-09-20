@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-#include <simulation.geometry/geometry.h>
+#include <simulation.geometry/Geometry.h>
 #include <simulation.collision/Contact.h>
 namespace nspace{
 class ICollidable;

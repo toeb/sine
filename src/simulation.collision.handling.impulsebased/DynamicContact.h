@@ -1,6 +1,6 @@
 #pragma once
 
-#include <simulation.dynamics/Connection/Connector.h>
+#include <simulation.dynamics/connection/Connector.h>
 
 #include <simulation.collision/Contact.h>
 

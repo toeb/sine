@@ -1,4 +1,3 @@
-#pragma once
 #include "DynamicContact.h"
 #include <simulation.dynamics/connection/ConnectorFactory.h>
 
