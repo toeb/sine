@@ -12,6 +12,7 @@ DynamicsAlgorithm::DynamicsAlgorithm()//:
 //   detectCollisions(true),
 //   collisionHandler(collisionDetector,multiBodyDynamics)
 {
+    doMultiBody = true;
   addComponent(&forceModule);
    addComponent(&multiBodyDynamics);
 //   addComponent(&updatablesModule);

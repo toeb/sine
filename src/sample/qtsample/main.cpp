@@ -137,7 +137,7 @@ int main(int argc, char** argv){
   QtSimulationRunner runner;
   Simulation simulation;
   simulation.initialize();
-  
+
  simulation << setup;
   
   RigidBody b1;
