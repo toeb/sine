@@ -1,9 +1,12 @@
 #pragma once
 
-#include <Simulation/Dynamics/Connection/Connector.h>
-#include <Simulation/Collision/Contact.h>
-#include <Simulation/Collision/Handling/ImpulseBased/DynamicCollidable.h>
-namespace IBDS{
+#include <simulation.dynamics/Connection/Connector.h>
+
+#include <simulation.collision/Contact.h>
+
+#include <simulation.collision.handling.impulsebased/DynamicCollidable.h>
+
+namespace nspace{
 
 enum ContactType {COLLISION, RESTING_CONTACT, DRIFTING_APART, UNKNOWN};
 
@@ -11,8 +14,8 @@ class DynamicContact{
 	private:
 		Contact _contact;
 
-		Connector *_cA;
-		Connector *_cB;
+		DynamicConnector *_cA;
+		DynamicConnector *_cB;
 
 		DynamicCollidable & _collidableA;
 		DynamicCollidable & _collidableB;
@@ -44,11 +47,11 @@ class DynamicContact{
 		inline DynamicCollidable & collidableA(){return _collidableA;};
 		inline DynamicCollidable & collidableB(){return _collidableB;};
 
-		inline Connector& connectorA(){return *_cA;}
-		inline Connector& connectorB(){return *_cB;}
+		inline DynamicConnector& connectorA(){return *_cA;}
+		inline DynamicConnector& connectorB(){return *_cB;}
 
-		inline Connector& connectorA() const{return *_cA;}
-		inline Connector& connectorB() const{return *_cB;}
+		inline DynamicConnector& connectorA() const{return *_cA;}
+		inline DynamicConnector& connectorB() const{return *_cB;}
 
 		/**
 		* Applies the impulse p to the first body and -p to the second body.

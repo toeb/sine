@@ -1,8 +1,8 @@
 #include "Collision.h"
 
-#include <Simulation/Collision/Collidable.h>
+#include <simulation.collision/Collidable.h>
 
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
  bool Collision::lastCollisionUsed=true;
@@ -32,14 +32,14 @@ void Collision::foreachContact(std::function<void (Contact *)> f){
 void Collision::combineContacts(Contact & contact){
     
   foreachContact([&contact](Contact * currentContact){
-    Vector3D::add(contact.pA_wcs,currentContact->pA_wcs,contact.pA_wcs);
-    Vector3D::add(contact.pB_wcs,currentContact->pB_wcs,contact.pB_wcs);
-    Vector3D::add(contact.normal,currentContact->normal,contact.normal);
+    contact.pA_wcs += currentContact->pA_wcs;    
+    contact.pB_wcs += currentContact->pB_wcs;
+    contact.normal += currentContact->normal;
     contact.penetrationDepth += currentContact->penetrationDepth;
   });
-    
-  Vector3D::multiplyScalar(1.0/_contacts.size(),contact.pA_wcs,contact.pA_wcs );
-  Vector3D::multiplyScalar(1.0/_contacts.size(),contact.pB_wcs,contact.pB_wcs );
+  
+  contact.pA_wcs *= 1.0/_contacts.size();
+  contact.pB_wcs *= 1.0/_contacts.size();
   contact.penetrationDepth /= _contacts.size();
   contact.normal.normalize();
 }

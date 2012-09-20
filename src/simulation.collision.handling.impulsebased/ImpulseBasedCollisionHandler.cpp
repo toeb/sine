@@ -1,10 +1,11 @@
 #include "ImpulseBasedCollisionHandler.h"
-#include <Simulation/Dynamics/Connection/Connector.h>
-#include <Simulation/Collision/Handling/ImpulseBased/ContactJoint.h>
-#include <Simulation/Dynamics/Connection/ConnectorFactory.h>
-#include <Simulation/Collision/Handling/ImpulseBased/DynamicContact.h>
+#include <simulation.dynamics/connection/Connector.h>
+#include <simulation.dynamics/connection/ConnectorFactory.h>
 
-using namespace IBDS;
+#include <simulation.collision.handling.impulsebased/DynamicContact.h>
+#include <simulation.collision.handling.impulsebased/ContactJoint.h>
+
+using namespace nspace;
 using namespace std;
 
 
@@ -26,8 +27,8 @@ void ImpulseBasedCollisionHandler::handleCollisions(){
 		_collisionsCount = 0;
 		reset();
 		detector().foreachCollision([this](Collision * collision){
-			if(collision->getObjectA().getType() != DynamicCollidable::type)return;
-			if(collision->getObjectB().getType() != DynamicCollidable::type)return;
+      if(collision->getObjectA().getType() != DynamicCollidable::ClassType())return;
+			if(collision->getObjectB().getType() != DynamicCollidable::ClassType())return;
 			DynamicCollidable & collidableA = static_cast<DynamicCollidable&>(collision->getObjectA());
 			DynamicCollidable & collidableB = static_cast<DynamicCollidable&>(collision->getObjectB());
 			Contact combinedContact;
@@ -60,9 +61,9 @@ void ImpulseBasedCollisionHandler::handleContact(DynamicContact & dynamicContact
 
 	//else its a collision
 	_collisionsCount++;
-
-	Connector &cA = dynamicContact.connectorA();
-	Connector &cB = dynamicContact.connectorB();
+  
+	DynamicConnector &cA = dynamicContact.connectorA();
+	DynamicConnector &cB = dynamicContact.connectorB();
 
   
 	const Vector3D & a_wcs = cA.getCachedWorldPosition();
@@ -89,15 +90,16 @@ void ImpulseBasedCollisionHandler::handleContact(DynamicContact & dynamicContact
   {
     //calculate the resulting impulse
 		Real denominator;
-		Vector3D::dotProduct(contact.normal, K * contact.normal, denominator);
+		denominator = contact.normal * (K * contact.normal);
 
 		Vector3D delta_v;
 		dynamicContact.getNormalRelativeVelocityVector(delta_v);
 
 		double combinedElasticity = dynamicContact.collidableA().getElasticityCoefficient() * dynamicContact.collidableB().getElasticityCoefficient();
 
-		Vector3D::multiplyScalar(-(combinedElasticity + 1), delta_v, delta_v);
-		Vector3D::multiplyScalar(-1 / denominator, delta_v, p_a); 
+    delta_v *= -(combinedElasticity + 1);
+    p_a = (-1 / denominator )*delta_v;
+
 	}
 	
   //apply the impulse

@@ -1,3 +1,3 @@
-add_executable(glutsample main.cpp)
-project_folder("samples" glutsample)
-target_link_libraries(glutsample glutrunner)
+add_executable(sample.glut main.cpp)
+project_folder("samples" sample.glut)
+target_link_libraries(sample.glut simulation.runner.glut)

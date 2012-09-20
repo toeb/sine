@@ -19,5 +19,5 @@ set(compositeSource
 
 source_group("src\\composites" FILES ${compositeSource})
 
-add_library(core ${timeSource} ${coreSource} ${compositeSource})
-project_folder("simulation" core common math)
+add_library(simulation  ${coreSource} ${compositeSource})
+target_link_libraries(simulation math common)

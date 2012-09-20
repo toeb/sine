@@ -1,10 +1,11 @@
 #pragma once
-#include <Simulation/Collision/Collidable.h>
-#include <Simulation/Dynamics/DynamicBody.h>
-#include <Simulation/Core/CompositeSimulationObject.h>
-namespace IBDS{
+#include <simulation/composites/CompositeSimulationObject.h>
+#include <simulation.dynamics/DynamicBody.h>
+#include <simulation.collision/Collidable.h>
+namespace nspace{
   
 class DynamicCollidable : public Collidable, public virtual CompositeSimulationObject{
+TYPED_OBJECT;
 private:
   DynamicBody * _dynamicBody;
 
@@ -15,8 +16,7 @@ private:
   DynamicCollidable(ISimulationObject & collisionObject, DynamicBody & body, Real elasticity = 1, Real staticFriction = 1, Real dynamicFriction = 1);
  
 public:
-  static const TypeId type;
-  const TypeId getType()const{return DynamicCollidable::type;}
+
 
   static DynamicCollidable * create(ISimulationObject * simulationObject,Real elasticity = 1, Real staticFriction = 1, Real dynamicFriction = 1);
   static DynamicCollidable * create(ISimulationObject & collisionObject, DynamicBody & body,Real elasticity = 1, Real staticFriction = 1, Real dynamicFriction = 1);

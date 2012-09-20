@@ -5,5 +5,5 @@ set(source
 
 
 source_group("" FILES ${source})
-add_library(obj ${source} CMakeLists.txt)
-project_folder("readers" obj)
+add_library(utility.reader.obj ${source} CMakeLists.txt)
+target_link_libraries(utility.reader.obj utility.reader simulation.geometry)

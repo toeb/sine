@@ -1,7 +1,9 @@
 #pragma once
-#include <Math/Vector3D.h>
+
 #include <vector>
-namespace IBDS{
+
+#include <math/definitions.h>
+namespace nspace{
 struct Contact{
   ///< the position in world coordinate where object A collides
   Vector3D pA_wcs;

@@ -14,6 +14,5 @@ SET(source
 )
 
 source_group("src" FILES ${source})
-add_library(kinematics ${source} CMakeLists.txt)
-project_folder("simulation/modules" kinematics)
-target_link_libraries(kinematics core math)
+add_library(simulation.kinematics ${source} CMakeLists.txt)
+target_link_libraries(simulation.kinematics simulation math)

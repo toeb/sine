@@ -1,6 +1,6 @@
 #include "ContactJoint.h"
-#include <Math/Matrix3x3.h>
-using namespace IBDS;
+#include <math/definitions.h>
+using namespace nspace;
 
 ContactJoint::ContactJoint(
   DynamicContact &contact, 
@@ -16,15 +16,16 @@ void ContactJoint::calculateDistancePreview(Real h, Vector3D & d)const{
 	Vector3D a,b;
   connectorA().previewPosition(h,a);
   connectorB().previewPosition(h,b);
-	d.assign(b-a);
+  
+  d = b-a;
 }
 
 void ContactJoint::applyNormalImpulses(Matrix3x3 &K, Vector3D &v_n, Vector3D &p_a_n) {
 	// do not enforce contact if there is no interpenetration
 	if (_positionError_n < 0) {
 		Real denominator_n;
-		Vector3D::dotProduct(_normal, K * _normal, denominator_n);
-		Vector3D::multiplyScalar(1 / denominator_n, v_n, p_a_n);
+    denominator_n = _normal * (K*_normal);
+    p_a_n = (1/denominator_n)*v_n;
 		contact().applyNormalImpulse(p_a_n);
 		}
 	}
@@ -38,8 +39,8 @@ void ContactJoint::simulateStaticFriction(Real h, Vector3D& d, Vector3D& v_n, Ma
 
 		Real denominator_t;
 		Vector3D p_a_t;
-		Vector3D::dotProduct(tangent, K_gc * tangent, denominator_t);
-		Vector3D::multiplyScalar(1 / denominator_t, v_t, p_a_t);
+		denominator_t = tangent * (K_gc * tangent);
+		p_a_t = (1 / denominator_t) * v_t;
 		contact().applyTangentialImpulse(p_a_t);
 		}
 	}
@@ -50,16 +51,16 @@ void ContactJoint::simulateDynamicFriction(Vector3D &p_a_n, Vector3D &u_rel_t, M
 
 	Real denominator_t;
 	Vector3D p_a_t_max;
-	Vector3D::dotProduct(tangent, K_gc * tangent, denominator_t);
-	Vector3D::multiplyScalar(1 / denominator_t, u_rel_t, p_a_t_max);
+	denominator_t = tangent * (K_gc * tangent);
+	p_a_t_max = (1 / denominator_t) * u_rel_t;
 
 	Real combinedFrictionCoefficient = contact().collidableA().getDynamicFrictionCoefficient() + contact().collidableB().getDynamicFrictionCoefficient();
 	Vector3D p_a_t;
-	Vector3D::multiplyScalar(combinedFrictionCoefficient * p_a_n.length(), tangent, p_a_t);	// insert friction coefficient here
+	p_a_t =(combinedFrictionCoefficient * p_a_n.norm())*tangent;	// insert friction coefficient here
 
 	Real dotProduct1, dotProduct2;
-	Vector3D::dotProduct(tangent,p_a_t_max,dotProduct1);
-	Vector3D::dotProduct(tangent,p_a_t,dotProduct2);
+  dotProduct1 = tangent *p_a_t_max;
+	dotProduct2 = tangent *p_a_t;
 
 	// apply either p_a_t or p_a_t_max, whichever is weaker 
 	// this ensures that the movement is slowed down but does not have its direction inverted
@@ -76,7 +77,7 @@ void ContactJoint::applyTangentialImpulses(Real h, Vector3D& d, Vector3D& v_n, V
 	Vector3D u_rel, u_rel_t, u_rel_n;
 	contact().getRelativeVelocityVector(u_rel);
 	contact().getNormalRelativeVelocityVector(u_rel_n);
-	Vector3D::subtract(u_rel, u_rel_n, u_rel_t);
+	u_rel_t = u_rel - u_rel_n;
 
 	// K matrix for impulses applied at the center of gravity of the first body to achieve a desired velocity change in the point a
 	Matrix3x3 K_agc_a(0);	
@@ -102,7 +103,7 @@ void ContactJoint::correctPosition(Real h) {
 	_positionError_n = d.length();
 
 	/* Actually, a normal for t+h (preview) should be used! */
-	Vector3D::dotProduct(d, _normal, _positionError_n);
+  _positionError_n = d * _normal;
 
 	//approximate velocity
 	Vector3D v_n = (1/h) * _positionError_n * _normal;

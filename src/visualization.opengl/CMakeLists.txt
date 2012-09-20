@@ -20,14 +20,17 @@ set(opengl_SRC
 )
 
 source_group("src" FILES ${opengl_SRC})
-add_library(opengl   ${opengl_SRC} )
-project_folder("visualization/gl" opengl)
+add_library(visualization.opengl   ${opengl_SRC} )
 
 
 find_package(OpenGL REQUIRED)
 
 
 include_directories(${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIRS})
-target_link_libraries(opengl kinematics integration freeglut  ${OPENGL_LIBRARIES} )
+target_link_libraries(visualization.opengl
+simulation.kinematics 
+simulation.integration 
+freeglut  
+${OPENGL_LIBRARIES} )
 
 

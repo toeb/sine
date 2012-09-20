@@ -10,6 +10,5 @@ set(source
 )
 
 source_group("src" FILES ${source})
-add_library(glutrunner ${source} CMakeLists.txt)
-target_link_libraries(glutrunner runner opengl)
-project_folder("runners" glutrunner)
+add_library(simulation.runner.glut ${source} CMakeLists.txt)
+target_link_libraries(simulation.runner.glut simulation.runner visualization.opengl)

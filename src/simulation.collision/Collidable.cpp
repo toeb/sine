@@ -1,10 +1,8 @@
-#include <Simulation/Collision/Collidable.h>
+#include <simulation.collision/Collidable.h>
 #include <algorithm>
 
 using namespace std;
-using namespace IBDS;
-
-const TypeId Collidable::type = "Collidable";
+using namespace nspace;
 
 
 

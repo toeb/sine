@@ -1,11 +1,12 @@
-#include <QDockWidget>
-#include <simulation.time/SimulationTimeController.h>
 #include <QTimer>
+#include <QDockWidget>
+
+#include <simulation.time/SimulationTimeController.h>
 
 class Ui_TimeControl;
 namespace nspace{
 
-  class QtTimeControl : public QDockWidget{
+class QtTimeControl : public QDockWidget{
   Q_OBJECT;
   private:
     SimulationTimeController * _realTimeModule;

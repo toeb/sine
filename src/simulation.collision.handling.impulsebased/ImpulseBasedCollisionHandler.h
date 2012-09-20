@@ -1,13 +1,14 @@
 #pragma once
-#include <Simulation/Collision/Handling/ImpulseBased/DynamicCollidable.h>
-#include <Simulation/Collision/Handling/ImpulseBased/DynamicContact.h>
-#include <Simulation/Core/Timing/Timeable.h>
-#include <Simulation/Core/SimulationModuleBase.h>
+#include <simulation/SimulationModuleBase.h>
+#include <simulation.timing/Timeable.h>
 
-#include <Simulation/MultiBodyDynamics/ImpulseBased/ImpulseBasedDynamicsAlgorithm.h>
-#include <Simulation/Collision/Detection/CollisionDetector.h>
+#include <simulation.dynamics.multibody.impulsebased/ImpulseBasedMultiBodyModule.h>
+#include <simulation.collision.detection/CollisionDetector.h>
 
-namespace IBDS{
+#include <simulation.collision.handling.impulsebased/DynamicContact.h>
+#include <simulation.collision.handling.impulsebased/DynamicCollidable.h>
+
+namespace nspace{
   
 class ImpulseBasedCollisionHandler : public SimulationModuleBase<DynamicCollidable>, public virtual Timeable{
 private:

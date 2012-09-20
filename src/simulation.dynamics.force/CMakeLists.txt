@@ -11,6 +11,5 @@ set(source
 )
 
 source_group("src" FILES ${source})
-add_library(force ${source})
-project_folder("simulation/modules" force)
-target_link_libraries(force core dynamics)
+add_library(simulation.dynamics.force ${source})
+target_link_libraries(simulation.dynamics.force simulation simulation.dynamics)

@@ -1,3 +1,3 @@
-add_executable(mathperformance main.cpp)
-project_folder("samples" mathperformance)
-target_link_libraries(mathperformance math common )
+add_executable(sample.performance.math main.cpp)
+project_folder("samples" sample.performance.math)
+target_link_libraries(sample.performance.math math common )

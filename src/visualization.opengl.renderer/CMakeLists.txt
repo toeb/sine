@@ -40,7 +40,10 @@ set(tweakbarSource
 )
 source_group("tweakbar" FILES ${tweakbarSource})
 
-add_library(glrenderers CMakeLists.txt ${generalSource} ${geometrySource} ${simulationSource} ${tweakbarSource})
-project_folder("visualization/gl" glrenderers)
-target_link_libraries(glrenderers opengl core kinematics)
+add_library(visualization.opengl.renderer CMakeLists.txt ${generalSource} ${geometrySource} ${simulationSource} ${tweakbarSource})
+
+target_link_libraries(visualization.opengl.renderer
+visualization.opengl 
+simulation
+simulation.kinematics)
 

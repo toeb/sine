@@ -1,24 +1,23 @@
 #pragma once
-
-#include <Simulation/Collision/Collision.h>
-#include <Simulation/Core/ISimulationObject.h>
 #include <vector>
 #include <functional>
-#include <Simulation/Geometry/Geometry.h>
 
-#include <Simulation/Collision/ICollidable.h>
+#include <simulation/ISimulationObject.h>
+#include <simulation.geometry/Geometry.h>
+#include <simulation.collision/Collision.h>
+#include <simulation.collision/ICollidable.h>
 
-namespace IBDS{
+namespace nspace{
 
 class Collidable : public ICollidable{
+  TYPED_OBJECT;
 private:
   std::vector<Collision*> _collisions;
   ISimulationObject & _collisionObject;
   const TypeId _collisionType;
 
 public:
-  static const TypeId type;
-  const TypeId getType()const{return type;}
+  
 
   /**
    * \brief Gets the type of the collision object.

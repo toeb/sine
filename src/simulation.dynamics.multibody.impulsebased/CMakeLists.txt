@@ -20,6 +20,5 @@ set(jointsSource
 source_group("joints" FILES ${jointsSource})
 set(source ${source} ${jointsSource})
 
-add_library(multibody ${source})
-project_folder("simulation/modules" multibody)
-target_link_libraries(multibody dynamics)
+add_library(simulation.dynamics.multibody.impulsebased ${source})
+target_link_libraries(simulation.dynamics.multibody.impulsebased  simulation.dynamics)

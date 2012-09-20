@@ -7,6 +7,5 @@ set(source
 	Keys.cpp
 )
 source_group("src" FILES ${source})
-add_library(interaction ${source} CMakeLists.txt)
-project_folder("simulation/modules" interaction)
-target_link_libraries(interaction core math)
+add_library(simulation.interaction ${source} CMakeLists.txt)
+target_link_libraries(simulation.interaction  simulation)

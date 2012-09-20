@@ -1,5 +1,3 @@
-SET(SIMULATION_LINK_LIBRARIES Math freeglut opengl32.lib glu32.lib ${ANTTWEAKBAR_LIBS})
-SET (SIMULATION_DEPENDENCIES Math freeglut)
 
 set(CollisionExample_SRC
 	./main.cpp

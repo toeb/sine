@@ -43,10 +43,6 @@ include_directories(${externalsDirectory}/lodepng)
 include_directories(${externalsDirectory}/eigen3)
 
 subdirs(externals)
-find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL qtmain REQUIRED)
-include(${cmakeScriptsDirectory}/UseSystemQt4.cmake)
-add_definitions(-DQT)
-include(${QT_USE_FILE})
-message(${includeDirectories})
+
 include_directories(${includeDirectories})
 subdirs(src)

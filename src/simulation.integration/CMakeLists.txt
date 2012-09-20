@@ -51,6 +51,5 @@ source_group("composite" FILES ${compositeSource})
 
  
  
-add_library(integration ${integrationSource} ${implementationSource} ${moduleSource} ${mbslibSource} ${compositeSource} ${historySource})
-target_link_libraries(integration core common math)
-project_folder("simulation/modules" integration)
+add_library(simulation.integration ${integrationSource} ${implementationSource} ${moduleSource} ${mbslibSource} ${compositeSource} ${historySource})
+target_link_libraries(simulation.integration  simulation math)

@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
-#include <Simulation/Geometry/Geometry.h>
 #include <functional>
 #include <algorithm>
-#include <Simulation/Collision/Contact.h>
-namespace IBDS{
+
+#include <simulation.geometry/geometry.h>
+#include <simulation.collision/Contact.h>
+namespace nspace{
 class ICollidable;
 
 

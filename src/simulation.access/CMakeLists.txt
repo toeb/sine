@@ -15,7 +15,6 @@ set(source
 	./DelegateAction.h
 	./DelegateAction.cpp
 )
-source_group("src" FILES ${source})
-add_library(access ${source} CMakeLists.txt)
-target_link_libraries(access core math common)
-project_folder("simulation/utility" access)
+source_group("" FILES ${source})
+add_library(simulation.access ${source} CMakeLists.txt)
+target_link_libraries(simulation.access  simulation)

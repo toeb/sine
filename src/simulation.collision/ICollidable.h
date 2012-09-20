@@ -1,6 +1,8 @@
 #pragma once
-#include <Simulation/Core/ISimulationObject.h>
-namespace IBDS{
+
+#include <simulation/ISimulationObject.h>
+#include <simulation.collision/Collision.h>
+namespace nspace{
 /**
  * \brief ICollidable interface. 
  *

@@ -11,6 +11,5 @@ set(pngSource
 
 source_group("src" FILES imagingSource)
 source_group("src\\png" FILES pngSource)
-add_library(imaging ${imagingSource} ${pngSource} CMakeLists.txt)
-target_link_libraries(imaging core lodepng math logging)
-project_folder("utility" imaging)
+add_library(utility.imaging ${imagingSource} ${pngSource} CMakeLists.txt)
+target_link_libraries(utility.imaging simulation lodepng math simulationlogging)

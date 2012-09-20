@@ -15,6 +15,5 @@ set(timeSource
 
 source_group("src" FILES ${timeSource})
 
-add_library(time ${timeSource} CMakeLists.txt)
-target_link_libraries(time core common)
-project_folder("simulation/utility" time)
+add_library(simulation.time ${timeSource} CMakeLists.txt)
+target_link_libraries(simulation.time simulation)

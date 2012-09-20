@@ -6,6 +6,6 @@ set(source
  )
  
  source_group("" FILES ${source})
- add_library(initialization ${source} CMakeLists.txt)
- project_folder("simulation/modules" initialization)
+ add_library(simulation.initialization ${source} CMakeLists.txt)
+ target_link_libraries(simulation.initialization simulation)
  

@@ -82,8 +82,7 @@ source_group("polygon" FILES ${polygon_SRC})
 set(source ${source} ${polygon_SRC} ${meshPly_SRC} ${mesh_SRC})
 
 
-add_library(geometry ${source} CMakeLists.txt)
-project_folder("simulation/modules" geometry)
-target_link_libraries(geometry common core math)
+add_library(simulation.geometry ${source} CMakeLists.txt)
+target_link_libraries(simulation.geometry simulation math)
 
 

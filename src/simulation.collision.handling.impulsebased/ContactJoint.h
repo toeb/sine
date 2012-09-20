@@ -1,8 +1,8 @@
 #pragma once
-#include <Simulation/MultiBodyDynamics/ImpulseBased/Joint.h>
-#include <Simulation/Collision/Handling/ImpulseBased/DynamicContact.h>
+#include <simulation.dynamics.multibody.impulsebased/Joint.h>
+#include <simulation.collision.handling.impulsebased/DynamicContact.h>
 
-namespace IBDS {
+namespace nspace {
 class ContactJoint : public Joint {
 private:
 	DynamicContact &_contact;
@@ -21,10 +21,10 @@ public:
 	ContactJoint(DynamicContact &contact, const Real pTol, const Vector3D &normal);
   inline DynamicContact & contact(){return _contact;}
   inline const DynamicContact & contact()const{return _contact;}
-  inline Connector & connectorA()const{return contact().connectorA();}
-  inline Connector & connectorB()const{return contact().connectorB();}
-  inline Connector & connectorA(){return contact().connectorA();}
-  inline Connector & connectorB(){return contact().connectorB();}
+  inline DynamicConnector & connectorA()const{return contact().connectorA();}
+  inline DynamicConnector & connectorB()const{return contact().connectorB();}
+  inline DynamicConnector & connectorA(){return contact().connectorA();}
+  inline DynamicConnector & connectorB(){return contact().connectorB();}
 
 	void correctPosition(Real h);
 	bool arePositionsCorrect();

@@ -44,7 +44,10 @@ set(source ${source} ${structsSource})
 
 
 
-add_library(urdf ${source} CMakeLists.txt)
-target_link_libraries(urdf model kinematics xml)
-project_folder("readers" urdf)
+add_library(utility.reader.urdf ${source} CMakeLists.txt)
+target_link_libraries(utility.reader.urdf 
+simulation.model 
+simulation.kinematics 
+utility.xml)
+
 

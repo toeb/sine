@@ -5,5 +5,5 @@ set(source
  ./StateSnapshot.cpp
 )
 source_group("src" FILES ${source})
-add_library(history ${source} CMakeLists.txt)
-project_folder("simulation/modules" history)
+add_library(simulation.history ${source} CMakeLists.txt)
+target_link_libraries(simulation.history simulation.integration simulation)

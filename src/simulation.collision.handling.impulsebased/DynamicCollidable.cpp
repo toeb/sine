@@ -1,8 +1,6 @@
 #include "DynamicCollidable.h"
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
-
-const TypeId DynamicCollidable::type = "DynamicCollidable";
 
 
 DynamicCollidable::DynamicCollidable(
@@ -16,8 +14,8 @@ DynamicCollidable::DynamicCollidable(
 _staticFrictionCoefficient(staticFriction),
 _dynamicFrictionCoefficient(dynamicFriction),
 _dynamicBody(&body){
-  addChild(&collisionObject);
-  addChild(&body);
+  addComponent(&collisionObject);
+  addComponent(&body);
 }
 
 

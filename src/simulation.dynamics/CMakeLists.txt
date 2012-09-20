@@ -35,7 +35,6 @@ set (bodyprimitivesSource
 )
 source_group("src\\bodyprimitives" FILES ${bodyprimitivesSource})
 
-add_library(dynamics ${source} ${connectionSource} ${bodyprimitivesSource})
-project_folder("simulation/modules" dynamics)
-target_link_libraries(dynamics kinematics core)
+add_library(simulation.dynamics  ${source} ${connectionSource} ${bodyprimitivesSource})
+target_link_libraries(simulation.dynamics simulation.kinematics simulation)
 

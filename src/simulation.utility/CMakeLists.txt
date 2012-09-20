@@ -7,8 +7,14 @@ set(source
 ./DynamicsAlgorithm.cpp
 
 )
-source_group("src" FILES ${source})
-add_library(simulationUtilities ${source} CMakeLists.txt)
-target_link_libraries(simulationUtilities time integration visualization core dynamics multibody force)
-project_folder("simulation" simulationUtilities)
+source_group("" FILES ${source})
+add_library(simulation.utility ${source} CMakeLists.txt)
+target_link_libraries(simulation.utility 
+simulation.time 
+simulation.integration 
+visualization
+simulation
+simulation.dynamics 
+simulation.dynamics.multibody.impulsebased
+simulation.dynamics.force)
 

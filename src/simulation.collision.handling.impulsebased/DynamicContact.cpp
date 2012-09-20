@@ -1,8 +1,8 @@
 #pragma once
 #include "DynamicContact.h"
-#include <Simulation/Dynamics/Connection/ConnectorFactory.h>
+#include <simulation.dynamics/connection/ConnectorFactory.h>
 
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 void DynamicContact::getRelativeVelocityVector (Vector3D & out) {
@@ -15,8 +15,9 @@ void DynamicContact::getRelativeVelocityVector (Vector3D & out) {
 	connectorB().calculateCachedValues();
 	const Vector3D &v1 = connectorA().getWorldVelocity();
 	const Vector3D &v2 = connectorB().getWorldVelocity();
+  
+  out = v2-v1;
 
-	Vector3D::subtract(v2, v1, out);
 }
 
 DynamicContact::~DynamicContact(){
@@ -48,13 +49,13 @@ DynamicContact::DynamicContact( DynamicCollidable &collidableA,
 void DynamicContact::getNormalRelativeVelocity(Real &out) {
   Vector3D v_rel;
   getRelativeVelocityVector(v_rel);
-  Vector3D::dotProduct(v_rel, contact().normal, out);
+  out = v_rel * contact().normal;
 }
 
 void DynamicContact::getNormalRelativeVelocityVector (Vector3D &out) {
 	Real v;
 	getNormalRelativeVelocity(v);
-	Vector3D::multiplyScalar(v,contact().normal,out);
+	out = v *contact().normal;
 }
 
 ContactType DynamicContact::classify() {
@@ -79,12 +80,13 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 	//if (!_c1 || !_c2) return;
 	Vector3D newAccumulatedImpulse = _accumulatedImpulse + p;
 	Real dotProduct;
-	Vector3D::dotProduct(newAccumulatedImpulse, contact().normal, dotProduct);
+  dotProduct = newAccumulatedImpulse * contact().normal;
 
 	if (dotProduct <= 0) {
 		connectorA().applyImpulse(p);
 		connectorB().applyImpulse(-p);
-		Vector3D::add(_accumulatedImpulse, p, _accumulatedImpulse); 
+
+    _accumulatedImpulse += p;
 		
 	}
 

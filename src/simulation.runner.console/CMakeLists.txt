@@ -3,6 +3,5 @@ set(source
  ./ConsoleRunner.cpp
 )
 source_group("src" FILES ${source})
-add_library(consolerunner  ${source})
-target_link_libraries(consolerunner runner)
-project_folder("runners" consolerunner)
+add_library(simulation.runner.console  ${source})
+target_link_libraries(simulation.runner.console simulation.runner)

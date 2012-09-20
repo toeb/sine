@@ -27,6 +27,5 @@ set(builderSource
 set(source ${source} ${builderSource})
 source_group("builder" FILES ${builderSource})
 
-add_library(model ${source} CMakeLists.txt)
-target_link_libraries(model core common)
-project_folder("simulation/modules" model)
+add_library(simulation.model ${source} CMakeLists.txt)
+target_link_libraries(simulation.model simulation)

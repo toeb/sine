@@ -1,4 +1,4 @@
 #pragma once
-#include <Simulation\Collision\Contact.h>
-using namespace IBDS;
+#include <simulation.collision/Contact.h>
+using namespace nspace;
 ContactPool * ContactPool::_instance = new ContactPool();

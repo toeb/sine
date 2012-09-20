@@ -1,6 +1,8 @@
 #pragma once
 
+#ifndef nspace
 #define nspace ds
+#endif
 
 #include <float.h>//for DBL_MAX
 
