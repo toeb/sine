@@ -1,31 +1,19 @@
-set(ImpulseBasedHandlingSRC
- ./Collision/Handling/ImpulseBased/DynamicCollidable.h
- ./Collision/Handling/ImpulseBased/DynamicCollidable.cpp
- ./Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.h
- ./Collision/Handling/ImpulseBased/ImpulseBasedCollisionHandler.cpp
- ./Collision/Handling/ImpulseBased/ContactJoint.h
- ./Collision/Handling/ImpulseBased/ContactJoint.cpp
- ./Collision/Handling/ImpulseBased/DynamicContact.h
- ./Collision/Handling/ImpulseBased/DynamicContact.cpp
- )
- source_group("simulation\\collision\\handling\\impulsebased" FILES ${ImpulseBasedHandlingSRC})
- 
+set(source 
+	./Collision.h
+	./Collision.cpp
+	./Collidable.h
+	./Collidable.cpp
+	./Contact.h
+	./Contact.cpp
+	./ICollidable.h
+)
+source_group("" FILES ${source})
+
 set(simulationSource ${simulationSource} ${ImpulseBasedHandlingSRC})
  
 
 
 
-
-SET(collision_SRC
- ./Collision/Collision.h
- ./Collision/Collision.cpp
- ./Collision/Collidable.h
- ./Collision/Collidable.cpp
- ./Collision/Contact.h
- ./Collision/Contact.cpp
- ./Collision/ICollidable.h
- 
-)
 source_group("simulation\\collision" FILES ${collision_SRC})
 set(simulationSource ${simulationSource} ${collision_SRC})
 
