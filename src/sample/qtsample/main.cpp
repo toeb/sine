@@ -1,5 +1,5 @@
 #include <Dslib>
-#include <common/patterns/Singleton.h>
+#include <core/patterns/Singleton.h>
 #include <visualization.opengl.renderer/general/GridRenderer.h>
 #include <visualization.opengl.renderer/general/LightRenderer.h>
 #include <visualization.opengl.renderer/geometry/PolygonRenderer.h>

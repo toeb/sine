@@ -1,7 +1,9 @@
 #pragma once
-#include <common/Time.h>
-#include <math/IAverage.h>
 #include <queue>
+
+#include <core/Time.h>
+
+#include <math/IAverage.h>
 
 namespace nspace{
 struct AverageOverTimeValue{

@@ -21,8 +21,6 @@ typedef unsigned char byte;
 	#define REAL_MIN FLT_MIN
 #endif
   
-#define EPSILON 1.0E-9
-#define PI 3.14159  
 
 #define ERRORSTREAM std::cerr
 #ifndef WIN32 

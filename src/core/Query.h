@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-#include <common/Config.h>
+#include <config.h>
 
 namespace nspace{
 

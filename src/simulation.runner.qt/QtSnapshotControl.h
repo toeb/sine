@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QDockWidget>
-#include <common/Time.h>
+#include <core/Time.h>
 #include <simulation.history/HistoryModule.h>
 #include <simulation/SimulationModuleBase.h>
 #include <QStandardItemModel>

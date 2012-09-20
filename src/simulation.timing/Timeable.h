@@ -1,6 +1,6 @@
 #pragma once
 #include <simulation/ISimulationObject.h>
-#include <common/Time.h>
+#include <core/Time.h>
 
 namespace nspace{
 

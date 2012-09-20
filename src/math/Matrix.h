@@ -22,7 +22,7 @@
  */
 
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <iostream>
 
 namespace nspace

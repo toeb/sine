@@ -1,6 +1,6 @@
 #pragma once
 
-#include <common/Node.h>
+#include <core/Node.h>
 
 namespace nspace{
     // 

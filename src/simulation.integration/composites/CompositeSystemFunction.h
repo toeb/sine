@@ -1,7 +1,7 @@
 #pragma once
 
 #include <simulation.integration/ISystemFunction.h>
-#include <common/patterns/Composite.h>
+#include <core/patterns/Composite.h>
 
 namespace nspace{
 

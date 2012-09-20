@@ -1,6 +1,8 @@
 #pragma once
+#include <core/patterns/ArrayPool.h>
+
 #include <math/Matrix.h>
-#include <common/patterns/ArrayPool.h>
+
 #include <math/MatrixOperations.h>
 #include <math/VectorOperations.h>
 namespace nspace{

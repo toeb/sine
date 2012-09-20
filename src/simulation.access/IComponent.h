@@ -1,6 +1,6 @@
 #pragma once
-#include <common/Config.h>
 #include <string>
+#include <config.h>
 #include <simulation/ISimulationObject.h>
 
 namespace nspace{

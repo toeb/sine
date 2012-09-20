@@ -1,5 +1,5 @@
-#include <common/Config.h>
-#include <common/Time.h>
+#include <config.h>
+#include <core/Time.h>
 #include <iostream>
 #include <math/matrix2/StaticMatrix.h>
 #include <math/matrix2/Quaternion.h>

@@ -22,7 +22,7 @@
  */
 #pragma once
 
-#include <common/Config.h>
+#include <core/Config.h>
 #include <math/Vector.h>
 #include <iostream>
 

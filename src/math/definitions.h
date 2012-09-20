@@ -1,5 +1,10 @@
 #pragma once
-#include <common/Config.h>
+#include <core/Config.h>
+
+
+#define EPSILON 1.0E-9
+#define PI 3.14159  
+
 #define MATRIX_CLASSES 2
 
 #if MATRIX_CLASSES ==1 

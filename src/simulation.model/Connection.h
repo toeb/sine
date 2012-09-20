@@ -1,7 +1,7 @@
 #pragma once
 
 #include <simulation.model/ModelElement.h>
-#include <common/Set.h>
+#include <core/Set.h>
 
 #include <math/definitions.h>
 

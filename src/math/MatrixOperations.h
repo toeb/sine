@@ -1,8 +1,9 @@
 #pragma once 
-#include <common/Config.h>
-#include <math/ScalarOperations.h>
 #include <iostream>
 #include <functional>
+
+#include <config.h>
+#include <math/ScalarOperations.h>
 
 #include <math/operations/MatrixAdditionInPlace.h>
 #include <math/operations/MatrixAddition.h>

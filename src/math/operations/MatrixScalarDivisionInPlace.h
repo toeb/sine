@@ -1,5 +1,5 @@
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <math/operations/MatrixScalarMultiplication.h>
 namespace nspace{
   template<typename MatrixQuotient,typename MatrixDividend, typename ScalarDivisor>

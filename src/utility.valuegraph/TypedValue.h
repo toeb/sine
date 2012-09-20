@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <common/Config.h>
+#include <config.h>
 #include <utility.valuegraph/Value.h>
 
 namespace nspace{

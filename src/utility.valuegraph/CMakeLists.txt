@@ -22,4 +22,4 @@ set(source
 
 source_group("" FILES ${source})
 add_library(utility.valuegraph ${source} CMakeLists.txt)
-target_link_libraries(utility.valuegraph common)
+target_link_libraries(utility.valuegraph core)

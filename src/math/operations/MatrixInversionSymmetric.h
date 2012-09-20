@@ -1,5 +1,5 @@
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <math/operations/MatrixInversion.h>
 namespace nspace{
   template<typename InvertedMatrixType, typename InputMatrixType>

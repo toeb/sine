@@ -1,8 +1,8 @@
 #pragma once
 
-#include <common/Config.h>
+#include <config.h>
 #include <functional>
-#include <common/Set.h>
+#include <core/Set.h>
 #include <utility.valuegraph/Value.h>
 
 namespace nspace{

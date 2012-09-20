@@ -1,6 +1,6 @@
 #pragma once
 
-#include <common/NamedObject.h>
+#include <core/NamedObject.h>
 
 namespace nspace{
 class Simulation;

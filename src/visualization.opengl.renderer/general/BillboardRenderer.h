@@ -1,5 +1,5 @@
 #pragma once 
-#include <common/Config.h>
+#include <config.h>
 #include <visualization/IRenderer.h>
 #include <visualization.opengl/GlTexture.h>
 namespace nspace{

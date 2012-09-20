@@ -1,7 +1,8 @@
 #pragma once
 
+#include <core/Time.h>
+
 #include <simulation/ISimulationObject.h>
-#include <common/Time.h>
 namespace nspace{
 
 class ITimeProvider : public virtual ISimulationObject{

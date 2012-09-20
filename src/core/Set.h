@@ -2,11 +2,11 @@
 #include <functional>
 #include <algorithm>
 
-#include <common/Config.h>
+#include <config.h>
 
-#include <common/Comparator.h>
-#include <common/Query.h>
-#include <common/ObservableCollection.h>
+#include <core/Comparator.h>
+#include <core/Query.h>
+#include <core/ObservableCollection.h>
 
 
 namespace nspace{

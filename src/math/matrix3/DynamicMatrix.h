@@ -1,6 +1,6 @@
 #pragma once
 #include <math/Matrix.h>
-#include <common/patterns/ArrayPool.h>
+#include <core/patterns/ArrayPool.h>
 
 namespace nspace{
   namespace matrix3{

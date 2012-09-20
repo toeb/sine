@@ -1,5 +1,5 @@
 #include <QStandardItem>
-#include <common/Object.h>
+#include <core/Object.h>
 namespace nspace{
 
  class NamedItem : public QStandardItem{

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <common/Set.h>
-#include <common/NamedObject.h>
-#include <common/ValueLookup.h>
-#include <common/Comparator.h>
+#include <core/Set.h>
+#include <core/NamedObject.h>
+#include <core/ValueLookup.h>
+#include <core/Comparator.h>
 
 namespace nspace{
 

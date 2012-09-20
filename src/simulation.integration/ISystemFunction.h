@@ -3,7 +3,7 @@
 #include <simulation/ISimulationObject.h>
 #include <simulation.integration/IStatefulObject.h>
 #include <simulation/SimulationModuleBase.h>
-#include <common/Time.h>
+#include <core/Time.h>
 namespace nspace{
 class ISystemFunction : public virtual ISimulationObject{
 public: 

@@ -1,7 +1,7 @@
 #include <lodepng/lodepng.h>
 #include <math/definitions.h>
 #include <string>
-#include <common/Config.h>
+#include <config.h>
 #include <vector>
 #include <iomanip>
 #include <iostream>

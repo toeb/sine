@@ -21,7 +21,7 @@
  * Jan Bender - Jan.Bender@impulse-based.de
  */
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <math/matrix1/Vector3D.h>
 #include <math/matrix1/Matrix3x3.h>
 #include <math/matrix1/Matrix4x3.h>

@@ -1,6 +1,6 @@
 #pragma once
 #include <simulation/ISimulationObject.h>
-#include <common/patterns/Composite.h>
+#include <core/patterns/Composite.h>
 
 #include <vector>
 #include <functional>

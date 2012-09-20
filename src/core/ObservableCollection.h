@@ -1,5 +1,5 @@
 #pragma once
-#include <common/Query.h>
+#include <core/Query.h>
 
 namespace nspace{
 

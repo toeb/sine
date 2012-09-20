@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
-#include <common/NamedObject.h>
-#include <common/ValueLookup.h>
-#include <common/Node.h>
+
+#include <core/NamedObject.h>
+#include <core/ValueLookup.h>
+#include <core/Node.h>
 
 namespace nspace{
   

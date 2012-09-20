@@ -1,5 +1,5 @@
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <queue>
 namespace nspace{
 

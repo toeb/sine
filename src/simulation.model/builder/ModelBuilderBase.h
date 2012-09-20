@@ -2,7 +2,7 @@
 
 #include <simulation.model/builder/IModelBuilder.h>
 
-#include <common/Set.h>
+#include <core/Set.h>
 
 namespace nspace{
 

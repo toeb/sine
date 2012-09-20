@@ -1,11 +1,12 @@
 #pragma once
+#include <functional>
+#include <vector>
 
-#include <common/Config.h>
+#include <config.h>
+
 #include <simulation/ISimulationModule.h>
 #include <simulation/composites/CompositeSimulationObject.h>
 
-#include <functional>
-#include <vector>
 
 namespace nspace{
 /**

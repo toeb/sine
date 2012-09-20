@@ -19,4 +19,4 @@ set(source
 source_group("" FILES ${source})
 
 add_library(utility.xml ${source} CMakeLists.txt)
-target_link_libraries(utility.xml common tinyxml2)
+target_link_libraries(utility.xml core tinyxml2)

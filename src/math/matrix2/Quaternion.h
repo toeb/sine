@@ -1,5 +1,5 @@
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <math/MatrixOperations.h>
 namespace nspace
 {

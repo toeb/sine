@@ -1,5 +1,5 @@
 #pragma once
-#include <common/patterns/Composite.h>
+#include <core/patterns/Composite.h>
 #include <simulation.integration/IStatefulObject.h>
 namespace nspace{
 

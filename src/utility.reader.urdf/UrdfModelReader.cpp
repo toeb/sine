@@ -5,7 +5,7 @@
 #include <simulation.model/builder/ModelBuilderHolder.h>
 #include <utility.reader.urdf/UrdfModelReader.h>
 #include <utility.reader.urdf/parsers/RobotElementParser.h>
-#include <common/StringTools.h>
+#include <core/StringTools.h>
 
 using namespace std;
 using namespace nspace;

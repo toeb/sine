@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-#include <common/patterns/Composite.h>
+#include <core/patterns/Composite.h>
 #include <simulation.access/IComponent.h>
 
 namespace nspace{

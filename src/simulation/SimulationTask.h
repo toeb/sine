@@ -1,5 +1,5 @@
 #pragma once
-#include <common/patterns/ITask.h>
+#include <core/patterns/ITask.h>
 #include <simulation/ISimulationObject.h>
 namespace nspace{
 

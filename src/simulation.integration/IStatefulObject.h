@@ -2,7 +2,7 @@
 
 #include <simulation/ISimulationObject.h>
 #include <simulation.integration/State.h>
-#include <common/patterns/Composite.h>
+#include <core/patterns/Composite.h>
 
 namespace nspace{
 

@@ -4,7 +4,7 @@
 #include <utility.xml/NamedElementParser.h>
 #include <utility.xml/CompositeChildParser.h>
 #include <simulation.model/builder/ModelBuilderHolder.h>
-#include <common/Node.h>
+#include <core/Node.h>
 
 namespace nspace{
   

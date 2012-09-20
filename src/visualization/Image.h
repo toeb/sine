@@ -1,5 +1,5 @@
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <simulation/ISimulationObject.h>
 #include <visualization/Pixel.h>
 #include <string>

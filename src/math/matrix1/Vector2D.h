@@ -22,7 +22,7 @@
  */
 #pragma once
 
-#include <common/Config.h>
+#include <config.h>
 #include <math/Vector.h>
 #include "Vector3D.h"
 #include <iostream>

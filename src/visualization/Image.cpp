@@ -1,5 +1,5 @@
 #include "Image.h"
-#include <common/patterns/ArrayPool.h>
+#include <core/patterns/ArrayPool.h>
 #include <lodepng.h>
 using namespace std;
 using namespace nspace;

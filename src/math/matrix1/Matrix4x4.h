@@ -22,7 +22,7 @@
  */
 
 #pragma once
-#include <common/Config.h>
+#include <config.h>
 #include <math/Matrix.h>
 #include <math/matrix1/Vector3D.h>
 #include <math/matrix1/Matrix3x3.h>

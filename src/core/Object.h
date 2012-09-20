@@ -1,6 +1,6 @@
 #pragma once
 
-#include <common/Config.h>
+#include <config.h>
 #include <ostream>
 #include <string>
 namespace nspace{

@@ -4,7 +4,7 @@
 
 #include <simulation.integration/State.h>
 #include <simulation.integration/IStatefulObject.h>
-#include <common/Time.h>
+#include <core/Time.h>
 namespace nspace{
   typedef unsigned int StateSnapshotId;
   class StateSnapshot : public ISimulationObject{

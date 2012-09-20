@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <common/Config.h>
+#include <config.h>
 
 
 /** Epsilon wird für Tests gegen 0 verwendet (=> Rundungsfehler)

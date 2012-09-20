@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <common/Node.h>
+#include <core/Node.h>
 #include <simulation.model/Model.h>
 #include <simulation.model/Connector.h>
 #include <simulation.model/Connection.h>

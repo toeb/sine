@@ -1,6 +1,6 @@
 #pragma once
 #include <queue>
-#include <common/Config.h>
+#include <config.h>
 namespace nspace{
 class IAverage{
 public:

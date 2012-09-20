@@ -2,7 +2,7 @@
 
 #include <utility.xml/NamedElementParser.h>
 #include <simulation.model/builder/ModelBuilderHolder.h>
-#include <common/Node.h>
+#include <core/Node.h>
 #include <utility.reader.urdf/parsers/PrimitiveParsers.h>
 #include <utility.reader.urdf/parsers/ConnectParser.h>
 

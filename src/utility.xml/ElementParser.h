@@ -1,5 +1,5 @@
 #pragma once
-#include <common/Config.h>
+#include <core/Config.h>
 
 #include <tinyxml2/tinyxml2.h>
 

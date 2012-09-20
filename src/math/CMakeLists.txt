@@ -125,10 +125,11 @@ set(source
 	./ScalarOperations.h
 	./VectorOperations.h
 	./MatrixOperations.h
+../config.h
 	
 )
 source_group("src" FILES ${source})
 
 add_library(math ${source} ${matrix1Source} ${matrix2Source} ${matrix2Specialization} ${matrix3Source} ${operationsSource} CMakeLists.txt )
-target_link_libraries(math common)
+target_link_libraries(math core)
 

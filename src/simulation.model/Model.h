@@ -2,9 +2,9 @@
 
 
 #include <simulation.model/ModelElement.h>
-#include <common/Set.h>
-#include <common/Node.h>
-#include <common/Graph.h>
+#include <core/Set.h>
+#include <core/Node.h>
+#include <core/Graph.h>
 #include <math/definitions.h>
 
 namespace nspace{
