@@ -78,11 +78,12 @@ void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vecto
 
 
 
-  
-std::ostream & nspace::operator << (std::ostream & o, const CoordinateSystem & coordinates){
+  namespace nspace{
+std::ostream & operator << (std::ostream & o, const CoordinateSystem & coordinates){
   o << "position: (" <<coordinates.position().x()  <<", "<<coordinates.position().y()  <<", "<<coordinates.position().z()<< ") orientation: "<<coordinates.orientation();
   return o;
 }
+  }
 
 
 void CoordinateSystem::fromObjectCoordinates(const CoordinateSystem & coords_ocs,CoordinateSystem & result)const{

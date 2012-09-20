@@ -22,7 +22,7 @@ public:
   }
 
   ~DynamicMatrix(){
-    nspace::ArrayPool<T>::freeArray(&_data,size());
+    nspace::ArrayPool<T>::freeArray(&_data,this->size());
     _rows = 0;
     _cols = 0;
   }
@@ -38,10 +38,10 @@ public:
   bool resize(int n, int m, bool setToZero=true){
     if(_rows==n && _cols==m)return true;
 
-    nspace::ArrayPool<T>::freeArray(&_data,size());
+    nspace::ArrayPool<T>::freeArray(&_data,this->size());
     _rows = n;
     _cols=m;
-    nspace::ArrayPool<T>::createArray(&_data,size());
+    nspace::ArrayPool<T>::createArray(&_data,this->size());
 
     _rows = n;
     _cols =m;

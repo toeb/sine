@@ -2,7 +2,7 @@
 #include <math/definitions.h>
 #include <simulation.geometry/Interval.h>
 #include <simulation.geometry/Axis.h>
-#include <simulation.geometry/BoundingVolumes/BoundingVolume.h>
+#include <simulation.geometry/boundingVolumes/BoundingVolume.h>
 namespace nspace{
   
 class BoundingBox : public BoundingVolume{

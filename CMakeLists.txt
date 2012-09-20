@@ -34,6 +34,7 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 include(${cmakeScriptsDirectory}/Common.cmake)
 include(${cmakeScriptsDirectory}/AntTweakBar.cmake)      
 
+find_package(GLUT)
 find_package(OpenGL)
 
 include_directories(${externalsDirectory})

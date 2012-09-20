@@ -2,6 +2,7 @@
 
 #include <utility.valuegraph/CachedValue.h>
 #include <utility.valuegraph/TypedObservableValue.h>
+#include <utility.valuegraph/ChangeTracker.h>
 namespace nspace{
 
 

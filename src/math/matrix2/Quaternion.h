@@ -18,8 +18,8 @@ namespace matrix2{
     }
     template<typename Quat, typename Vec>
     inline static void  toAngularVelocity(Vec  & result,const Quat& qDot, const Quat & orientation){
-      Quaternion conj;
-      conjugate(cong,orientation);
+      Quat conj;
+      conjugate(conj,orientation);
       Quat omegaTilde;
       multiplyQuaternion(omegaTilde, conj,qDot);
       MatrixOperations<T>::multiplyScalar(omegaTilde,omegaTilde,2.0);
@@ -60,9 +60,9 @@ namespace matrix2{
     template<typename Quat, typename RPYVector>
     static inline void fromRollPitchYaw(Quat & q, const RPYVector rpy){      
       Quat roll,pitch,yaw;
-      QuaternionOperations<T>::fromAxisAngle(roll,Vector3D::UnitX(),rpy(0));
-      QuaternionOperations<T>::fromAxisAngle(pitch,Vector3D::UnitY(),rpy(1));
-      QuaternionOperations<T>::fromAxisAngle(yaw,Vector3D::UnitZ(),rpy(2));
+      QuaternionOperations<T>::fromAxisAngle(roll,RPYVector::UnitX(),rpy(0));
+      QuaternionOperations<T>::fromAxisAngle(pitch,RPYVector::UnitY(),rpy(1));
+      QuaternionOperations<T>::fromAxisAngle(yaw,RPYVector::UnitZ(),rpy(2));
       QuaternionOperations<T>::multiplyQuaternion(q,pitch,roll);
       QuaternionOperations<T>::multiplyQuaternion(roll,yaw,q);
       q = roll;
@@ -135,6 +135,11 @@ namespace matrix2{
     }
     template<typename Quat, typename AxisVectorType>
     static inline void toAxisAngle(AxisVectorType & axis, T & angle, const Quat & q){
+        T x = q.x();
+        T y = q.y();
+        T z = q.z();
+        T w = q.w();
+
       T l2 = x*x + y*y + z*z;
       if (l2 > EPSILON)
       {
@@ -210,7 +215,7 @@ namespace matrix2{
       assign(vec.data());
     }
     Quaternion(){}
-    Quaternion(const T & x, const T & y, const T & z, const T & w):StaticMatrix(x,y,z,w){}
+    Quaternion(const T & x, const T & y, const T & z, const T & w):StaticMatrix<T,4,1>(x,y,z,w){}
 
     static const Quaternion & ZeroRotation(){
       static Quaternion _zeroRotationVector(0,0,0,1);

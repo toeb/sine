@@ -24,8 +24,8 @@
  * \file src/vis/opengl/opengl.h
  * includes opengl correctly under the different plattforms
  */
-#ifndef __mbslib_opengl_h__
-#define __mbslib_opengl_h__
+#pragma once
+
 #ifdef APPLE
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -38,11 +38,10 @@
 //#include <GL/wglew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#elif UNIX
+#else //unix
 //#include <GL/glew.h>
 //#include <GL/glxew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#endif
 #endif
 

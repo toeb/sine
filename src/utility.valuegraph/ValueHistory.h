@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include <utility.valuegraph/TypedObservableValue.h>
-
+#include <iostream>
 namespace nspace{ 
 
 template<typename T>

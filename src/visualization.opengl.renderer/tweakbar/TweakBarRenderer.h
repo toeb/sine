@@ -1,6 +1,6 @@
 #pragma once
 #include <visualization/IRenderer.h>
-#include <AntTweakBar/AntTweakBar.h>
+#include <anttweakbar/AntTweakBar.h>
 #include <simulation.interaction/InputHandler.h>
 #include <simulation/ISimulationModule.h>
 #include <simulation/SimulationModuleBase.h>

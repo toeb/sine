@@ -21,7 +21,8 @@
  * Jan Bender - Jan.Bender@impulse-based.de
  */
 #pragma once
-
+#include <cstring>
+#include <cmath>
 #include <math/matrix1/DynamicMatrix.h>
 #include <math/matrix1/VectorND.h>
 #include <functional>
@@ -73,7 +74,7 @@ namespace nspace
           sum+=value(i,j)*value(i,j);
         }
       }
-      return sqrt(sum);
+      return std::sqrt(sum);
     }
 	public:
     MatrixNxM(){}    

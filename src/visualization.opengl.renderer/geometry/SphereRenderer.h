@@ -1,7 +1,7 @@
 #pragma once
 
 #include <visualization/IRenderer.h>
-#include <simulation.geometry/primitives/sphere.h>
+#include <simulation.geometry/primitives/Sphere.h>
 
 namespace nspace{
 class SphereRenderer : public virtual IRenderer{

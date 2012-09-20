@@ -9,6 +9,6 @@ set(source
 )
 source_group("src" FILES ${source})
 add_library(simulationUtilities ${source} CMakeLists.txt)
-target_link_libraries(simulationUtilities time integration visualization core)
+target_link_libraries(simulationUtilities time integration visualization core dynamics multibody force)
 project_folder("simulation" simulationUtilities)
 

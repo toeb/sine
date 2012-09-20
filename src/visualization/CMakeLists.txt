@@ -29,7 +29,7 @@ set(compositeSource
 source_group("src\\composites" FILES ${compositeSource})
 
 add_library(visualization ${source}  ${compositeSource} CMakeLists.txt)
-target_link_libraries(visualization core math)
+target_link_libraries(visualization core math lodepng)
 project_folder("visualization" visualization)
 
 

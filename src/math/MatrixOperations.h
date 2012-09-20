@@ -140,7 +140,7 @@ namespace nspace{
   public:
     static inline void operation(C & c, const A &  a, const B & b){
       if(a.rows() != b.rows() ||a.cols()!=b.cols()){
-        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<endl;
+        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<std::endl;
         return;
       }
       c.resize(a.rows(),a.cols(),false);
@@ -171,7 +171,7 @@ namespace nspace{
   public:
     static inline void operation(C & c, const A &  a, const B & b){
       if(a.rows() != b.rows() ||a.cols()!=b.cols()){
-        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<endl;
+        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<std::endl;
         return;
       }
       c.resize(a.rows(),a.cols(),false);
@@ -196,7 +196,7 @@ namespace nspace{
   public:
     static inline void operation(C & c, const A &  a, const B & b){
       if(a.rows() != b.rows() ||a.cols()!=b.cols()){
-        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<endl;
+        std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<std::endl;
         return;
       }
       c.resize(a.rows(),a.cols(),false);
@@ -251,7 +251,7 @@ namespace nspace{
     uint rowsBottom = kernel.rows()/2;
     uint colsLeft = kernel.cols()/2-1+kernel.cols()%2;
     uint colsRight = kernel.cols()/2;
-    DynamicMatrix<Real> padded;
+    InputMatrix padded;
     padMatrix(padded,original,rowsTop,rowsBottom,colsLeft,colsRight);
     MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,padded,kernel);
   }
@@ -370,7 +370,12 @@ namespace nspace{
 
   template<typename T, typename MatrixType>
   inline MatrixType & setMatrixConstant(MatrixType & mat, const T & val){
-    MatrixOperations<T>::setConstant<MatrixType>(mat,val);
+      for(int i= 0; i < mat.rows(); i++){
+          for(int j=0; j < mat.cols(); j++){
+              mat(i,j)=val;
+          }
+      }
+
     return mat;
   }
 }

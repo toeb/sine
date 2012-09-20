@@ -22,10 +22,11 @@
  */
 #pragma once
 
-#include "Common/Config.h"
+#include <common/Config.h>
 #include <math/Vector.h>
 #include "Vector3D.h"
 #include <iostream>
+#include <cmath>
 
 namespace nspace{
 	class Matrix2x2;
@@ -80,7 +81,7 @@ namespace nspace{
     inline Real & operator()(int i){return v[i];};
     inline const Real &operator()(int i)const{return v[i];};
     inline int size()const{return 2;};
-    inline Real length() const{return sqrt(length2());}
+    inline Real length() const{return std::sqrt(length2());}
     inline Real length2() const{return v[0]*v[0]+v[1]*v[1];}
     inline void normalize(){Real l = length(); v[0] = v[0]/l; v[1]=v[1]/l;}
 

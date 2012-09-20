@@ -22,3 +22,4 @@ set(source ${source} ${jointsSource})
 
 add_library(multibody ${source})
 project_folder("simulation/modules" multibody)
+target_link_libraries(multibody dynamics)

@@ -1,6 +1,7 @@
 #pragma once
 #include <common/Config.h>
 #include <math/ScalarOperations.h>
+#include <math/MatrixOperations.h>
 
 namespace nspace{
   template<typename T>

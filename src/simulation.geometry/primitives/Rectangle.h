@@ -1,5 +1,5 @@
 #pragma once
-#include <simulation.geometry/Polygon/Polygon.h>
+#include <simulation.geometry/polygon/Polygon.h>
 #include <math/definitions.h>
 namespace nspace{
 class Rectangle : public virtual Polygon{

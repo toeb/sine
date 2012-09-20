@@ -1,4 +1,4 @@
-#pragma once;
+#pragma once
 #include <visualization/IRenderer.h>
 #include <visualization.opengl/MiniGL.h>
 

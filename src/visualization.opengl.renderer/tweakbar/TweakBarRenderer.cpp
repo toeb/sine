@@ -1,5 +1,5 @@
 #include "TweakBarRenderer.h"
-#include <AntTweakBar/AntTweakBar.h>
+#include <anttweakbar/AntTweakBar.h>
 #include <GL/glut.h>
 #include <sstream>
 #include <iostream>

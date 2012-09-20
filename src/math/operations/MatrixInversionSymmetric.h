@@ -6,7 +6,7 @@ namespace nspace{
   class MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>{
   public:
     static void operation(InvertedMatrixType & inv, const InputMatrixType & type){
-      assert(false);
+      //assert(false);
     }
   };
 

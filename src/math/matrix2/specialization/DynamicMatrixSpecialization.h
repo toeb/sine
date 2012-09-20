@@ -1,5 +1,6 @@
 #pragma once
-
+//include cstring for memcpy
+#include <cstring>
 #include <math/matrix2/DynamicMatrix.h>
 namespace nspace{
 

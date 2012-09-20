@@ -1,5 +1,6 @@
 #pragma once
-
+#include <common/Config.h>
+#include <math/definitions.h>
 namespace nspace{
 class GlMaterial{
 public:
@@ -10,14 +11,10 @@ public:
   static GlMaterial * bronze;
  
 
-static void setup(){
-	glDisable(GL_COLOR_MATERIAL);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
+static void setup();
 
   void set();
-  GlMaterial(){};
+  GlMaterial(){}
   GlMaterial(
     Real r,
     Real g,
@@ -26,20 +23,7 @@ static void setup(){
     Real diffuse, 
     Real specular, 
     Real alpha, 
-    Real shininess)
-  : shininess(shininess), alpha(alpha){
-    this->ambient.x()=r*alpha;
-    this->ambient.y()=g*alpha;
-    this->ambient.z()=b*alpha; 
-
-    this->diffuse.x()=r*alpha;
-    this->diffuse.y()=g*alpha;
-    this->diffuse.z()=b*alpha; 
-
-    this->specular.x()=r*alpha;
-    this->specular.y()=g*alpha;
-    this->specular.z()=b*alpha; 
-  };
+    Real shininess);
   GlMaterial(
     Real Ra,
     Real Ga,
@@ -52,21 +36,7 @@ static void setup(){
     Real Bs,
     Real alpha,
     Real shininess
-    ){
-    ambient.x()=Ra;
-    ambient.y()=Ga;
-    ambient.z()=Ba; 
-
-    diffuse.x()=Rd;
-    diffuse.y()=Gd;
-    diffuse.z()=Bd; 
-
-    specular.x()=Rs;
-    specular.y()=Gs;
-    specular.z()=Bs; 
-    this->alpha = alpha;
-    this->shininess = shininess;
-  };
+    );
   Vector3D ambient;
   Vector3D diffuse;
   Vector3D specular;

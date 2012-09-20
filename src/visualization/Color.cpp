@@ -25,8 +25,9 @@ int Color::loadColors(const std::string &filename ){
   }  
   return colorsLoaded;
 }
-
-std::ostream & nspace::operator <<(std::ostream & o, const Color & color){
+namespace nspace{
+std::ostream & operator <<(std::ostream & o, const Color & color){
   o << "[" << (int)color.r8bit() << ", " << (int)color.g8bit()<<", "<< (int)color.b8bit() << "] " << color.colorName().c_str();  
   return o;
+}
 }

@@ -2,6 +2,7 @@
 #include <math/Matrix.h>
 #include <common/patterns/ArrayPool.h>
 #include <math/MatrixOperations.h>
+#include <math/VectorOperations.h>
 namespace nspace{
   namespace matrix2{
 template<typename T>

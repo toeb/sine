@@ -18,10 +18,13 @@ protected:
 
 public:
 
-  inline static StaticMatrix<T,RowCount,ColumnCount>  Zero(){    
-    StaticMatrix<T,RowCount,ColumnCount>  matrix;    
-    matrix.setZero();          
-    return matrix;
+  inline static const StaticMatrix<T,RowCount,ColumnCount> & Zero(){
+    static StaticMatrix<T,RowCount,ColumnCount> *  matrix=0;
+    if(!matrix){
+        matrix = new StaticMatrix<T,RowCount,ColumnCount>();
+        matrix->setZero();
+    }
+    return *matrix;
   }
   //rule of three
   StaticMatrix(const StaticMatrix<T,RowCount,ColumnCount> & orig){
@@ -132,6 +135,7 @@ public:
     _data[3]=w;
   }
   static StaticMatrix<T,RowCount,ColumnCount> Identity(){
+
     StaticMatrix<T,RowCount,ColumnCount> matrix;    
     matrix.setZero();
     for(int i=0; i < RowCount && i < ColumnCount; i++){
@@ -173,7 +177,7 @@ public:
   }
   inline T norm2()const{
     T result;
-    VectorOperations<T>::normSquared(T,*this);
+    VectorOperations<T>::normSquared(result,*this);
     return result;
   }
   inline T maximum()const{

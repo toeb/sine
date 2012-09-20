@@ -2,6 +2,7 @@
 
 #include <simulation.dynamics/RigidBody.h>
 #include <simulation/composites/CompositeSimulationObject.h>
+#include <simulation.geometry/Geometry.h>
 namespace nspace{
 template<class T>
 class DynamicGeometry :public CompositeSimulationObject{
@@ -28,7 +29,7 @@ public:
   inline const RigidBody & body()const{return body();}
 
   inline T & geometry(){return _geometry;}
-  inline operator T(void){return geometry();};
+  inline operator T(void){return geometry();}
 };
 
 

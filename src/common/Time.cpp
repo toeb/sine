@@ -25,7 +25,7 @@ InitTime __initTime;
 namespace nspace{
  Time systemTime(){
      timeval t;
-     gettimeofday(&t,NULL);
+     gettimeofday(&t,0);
    Time result =  t.tv_sec+t.tv_usec /1000000.0;
    return result;
  }

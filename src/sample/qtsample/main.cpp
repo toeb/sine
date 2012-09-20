@@ -8,7 +8,7 @@
 #include <visualization.opengl.renderer/general/BillboardRenderer.h>
 #include <visualization.opengl.renderer/geometry/SphereRenderer.h>
 #include <visualization/Color.h>
-#include <simulation.geometry/Primitives/Hexahedron.h>
+#include <simulation.geometry/primitives/Hexahedron.h>
 #include <simulation.kinematics/KinematicCoordinates.h>
 #include <simulation.geometry/Plane.h>
 #include <simulation.history/HistoryModule.h>
@@ -20,7 +20,7 @@
 #include <simulation.dynamics.force/Gravity.h>
 #include <simulation.dynamics/RigidBody.h>
 #include <simulation.dynamics/primitives/DynamicBox.h>
-#include <simulation.geometry/Primitives/Sphere.h>
+#include <simulation.geometry/primitives/Sphere.h>
 #include <simulation.dynamics.multibody.impulsebased/ImpulseBasedMultiBodyModule.h>
 #include <simulation.dynamics.multibody.impulsebased/joints/BallJoint.h>
 #include <simulation.dynamics/connection/RigidBodyConnector.h>
@@ -28,7 +28,8 @@
 #include <simulation.model/builder/ModelBuilderBase.h>
 #include <simulation.time/CallbackTask.h>
 #include <simulation.time/PeriodicTask.h>
-#include <gl/glut.h>
+#include <visualization.opengl/opengl.h>
+#include <GL/glut.h>
 #include <utility.reader.urdf/UrdfModelReader.h>
 using namespace nspace;
 using namespace std;

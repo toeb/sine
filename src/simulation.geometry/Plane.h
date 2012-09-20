@@ -1,5 +1,5 @@
 #pragma once
-#include <simulation.geometry/geometry.h>
+#include <simulation.geometry/Geometry.h>
 #include <math/definitions.h>
 #include <simulation.geometry/Axis.h>
 namespace nspace{

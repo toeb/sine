@@ -20,7 +20,7 @@
  *
  * Jan Bender - Jan.Bender@impulse-based.de
  */
-
+#include "Vector3D.h"
 #include "math.h"
 #include "Matrix3x3.h"
 #include "Matrix2x3.h"
@@ -28,10 +28,12 @@
 #include "Vector2D.h"
 #include "Vector1D.h"
 #include <iostream>
+#include <cmath>
+#include <cstring>
 using namespace std;
 using namespace nspace;
 
-;
+
 #define VEC_INC //incVec();
 #define VEC_DEC //decVec();
 
@@ -273,11 +275,13 @@ Real nspace::operator * (const Vector3D& a, const Vector3D& b)
 /** Kreuzprodukt: v1 ^ v2\n
   * Berechnet das Kreuzprodukt der Vektoren v1 und v2
   */
-Vector3D nspace::operator ^ (const Vector3D& a, const Vector3D& b) 
+namespace nspace{
+Vector3D operator ^ (const Vector3D& a, const Vector3D& b)
 {
 	return Vector3D ( 	a.v[1]*b.v[2] - a.v[2]*b.v[1],
 				a.v[2]*b.v[0] - a.v[0]*b.v[2],
 				a.v[0]*b.v[1] - a.v[1]*b.v[0]);
+}
 }
 
 /** Multiplikation von Zeilenvektor v mit 3x3 Matrix m\n

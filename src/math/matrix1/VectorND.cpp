@@ -126,11 +126,11 @@ VectorND& VectorND::operator /= ( const Real d )
 
 
 // FRIENDS
-
+namespace nspace{
 /** Gleichheit: v1 == v2 \n
   * Überprüft die Gleichheit der Komponenten von Vektor v1 und v2.
   */
-bool nspace::operator == (const VectorND &a, const VectorND &b)
+bool operator == (const VectorND &a, const VectorND &b)
 {
   bool bl = true;
   #pragma omp parallel for
@@ -142,14 +142,14 @@ bool nspace::operator == (const VectorND &a, const VectorND &b)
 /** Ungleichheit: v1 != v2 \n
   * Überprüft die Ungleichheit der Komponenten von Vektor v1 und v2.
   */
-bool nspace::operator != (const VectorND &a, const VectorND &b)
+bool operator != (const VectorND &a, const VectorND &b)
 {
   bool bl = false;
   for (int i=0; i < a.n; i++)
     bl = bl || (a.v[i] != b.v[i]);
   return bl;
 }
-
+}
 
 
 /** Negation: -v1 \n

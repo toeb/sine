@@ -23,8 +23,8 @@
 /**
  * \file src/vis/opengl/OpenGlRenderer.h
  */
-#include "OpenGLRenderModule.h"
 #include <visualization.opengl/opengl.h>
+#include "OpenGLRenderModule.h"
 #include <visualization.opengl/Utility.h>
 using namespace nspace;
 using namespace std;
@@ -36,6 +36,7 @@ void OpenGLRenderModule::onBeforeRender(){
 
 bool OpenGLRenderModule::initializeRenderEngine(){
 	//initializes GL
+
 	glEnable (GL_DEPTH_TEST);
 	glEnable (GL_NORMALIZE);
 	glShadeModel (GL_SMOOTH);

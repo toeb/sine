@@ -2,6 +2,8 @@
 
 #define nspace ds
 
+#include <float.h>//for DBL_MAX
+
 typedef unsigned int uint;
 typedef unsigned char byte;
 

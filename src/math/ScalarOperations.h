@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 namespace nspace{
 template<typename T>
 class ScalarOperations{

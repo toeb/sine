@@ -24,7 +24,7 @@
 #ifndef __MATRIX3X2_H__
 #define __MATRIX3X2_H__
 
-#include "Common/Config.h"
+#include <common/Config.h>
 #include <math/Matrix.h>
 #include "Matrix2x3.h"
 #include "Vector3D.h"

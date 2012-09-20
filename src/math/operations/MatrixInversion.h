@@ -15,7 +15,7 @@ namespace nspace{
   class MatrixInversion{
   public:
     static void operation(InvertedMatrixType & inv, const OriginalMatrixType & orig){
-      assert(false);
+
     }
   };
 
