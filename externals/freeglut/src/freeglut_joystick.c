@@ -67,6 +67,19 @@
 
 #endif
 
+#ifndef O_RDONLY
+#define O_RDONLY 00
+#endif
+#ifndef O_NONBLOCK
+#define O_NONBLOCK 04000
+#endif
+#ifndef F_SETFL
+#define F_SETFL 4
+#endif
+#ifndef F_OK
+#define F_OK 0
+#endif
+
 #if TARGET_HOST_POSIX_X11
 #    define _JS_MAX_AXES 16
 #    ifdef HAVE_SYS_IOCTL_H

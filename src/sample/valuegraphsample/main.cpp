@@ -120,7 +120,7 @@ public:
 
   
 };
-int main(int argc, const char * argv){
+int main(int argc, const char ** argv){
   
 
   TypedObservableValue<int> a =0;
