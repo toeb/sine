@@ -278,7 +278,7 @@ int main(int argc, char** argv){
   {
 
 
-    int n(0), m(2), l(2);
+    int n(1000), m(4), l(4);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){
@@ -292,11 +292,11 @@ int main(int argc, char** argv){
           p->kinematics().angularVelocity()(2) = (rand()%1000)/1000.0*1-0.5;
           p->kinematics().position()(0) = i*3-m/2*3;
           p->kinematics().position()(1) = j* 3-n/2*3;
-          p->kinematics().position()(2) = k* 3-n/2*3;
-          p->kinematics().orientation()(0) = (rand()%1000)/1000.0*1;
-          p->kinematics().orientation()(1) = (rand()%1000)/1000.0*1;
-          p->kinematics().orientation()(2) = (rand()%1000)/1000.0*1;
-          p->kinematics().orientation()(3) = (rand()%1000)/1000.0*1;
+          p->kinematics().position()(2) = k* 3-l/2*3;
+          p->kinematics().orientation().w() = (rand()%1000)/1000.0*1;
+          p->kinematics().orientation().x() = (rand()%1000)/1000.0*1;
+          p->kinematics().orientation().y() = (rand()%1000)/1000.0*1;
+          p->kinematics().orientation().z() = (rand()%1000)/1000.0*1;
           p->kinematics().orientation().normalize();
           // PointRenderer * pr = new PointRenderer(p->position());
           BoxRenderer * br = new BoxRenderer(p->geometry());

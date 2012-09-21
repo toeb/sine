@@ -86,6 +86,7 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
     pitch += -dy*speed*0.1;
     Quaternion qx;
     Quaternion qy;
+
     qx.fromAxisAngle(Vector3D::UnitX(),pitch);
     qy.fromAxisAngle(Vector3D::UnitY(),yaw);
     qx.normalize();

@@ -45,6 +45,19 @@ inline void MatrixMultiplication<Real,matrix2::StaticMatrix<Real,3,1> ,matrix2::
     c[2]= a[2]*b[0]+a[5]*b[1]+a[8]*b[2];    
 };
 
+template<typename T, int n, int m>
+class MatrixScalarMultiplication<matrix2::StaticMatrix<T,n,m>,matrix2::StaticMatrix<T,n,m>, T >{
+public:
+  static inline void operation(matrix2::StaticMatrix<T,n,m> & product, const matrix2::StaticMatrix<T,n,m>  & aMat, const T & d){
+    const Real * a = aMat.data();
+    Real * p = product.data();
+
+    for(int i=0; i < n*m; i++){
+      p[i] = a[i]*d;
+    }
+  }
+};
+
 template<typename T>
 class MatrixScalarMultiplication<matrix2::StaticMatrix<T,3,3>,matrix2::StaticMatrix<T,3,3>, T >{
 public:
