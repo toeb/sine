@@ -1,4 +1,5 @@
 #pragma once 
+#include <stdio.h>
 #include <iostream>
 #include <functional>
 
@@ -219,9 +220,48 @@ namespace nspace{
       }
     }
   };
+  template<typename T, typename SourceType>
+  class MatrixCopyToPointer{
+  public:
+    static inline void operation(T * data, const SourceType & source){
+      //slow implementation copies every element
+      for(uint i=0; i < source.size(); i++){
+        data[i] = source(i);
+      }
+    }
+  };
 
+  template<typename T, typename TargetType>
+  class MatrixAssignData{
+  public:
+    static inline void operation(TargetType  & target, const T * source){
+      for(uint i=0; i < target.size(); i++){
+        target(i) = source[i];
+      }
+    }
+  };
+  
   namespace MatrixOps{
-    
+
+    template<typename MatType,typename BlockType>
+    inline void setBlock(MatType & target, const BlockType & source, uint rowoffset, uint coloffset){
+      MatrixBlockAssign<BlockType,MatType>::operation(target,source,rowoffset,coloffset);
+    }
+
+    template<typename BlockType, typename MatType>
+    inline void getBlock(BlockType & block, const MatType & mat, uint rowoffset, uint coloffset){
+      MatrixBlockExtract<BlockType,MatType>::operation(block,mat,rowoffset,coloffset);
+    }
+
+    template<typename T, typename TargetType>
+    inline void assign(TargetType & target, const T* source){
+      MatrixAssignData<T,TargetType>::operation(target,source);
+    }
+
+    template<typename T, typename SourceType>
+    inline void copyTo(T * target, const SourceType & source){
+      MatrixCopyToPointer<T,SourceType>::operation(target,source);
+    }
     template<typename T, typename VectorTypeA, typename VectorTypeB>
     inline void innerProduct(T & result, const VectorTypeA & a, const VectorTypeB & b){
       VectorInnerProduct<T,VectorTypeA,VectorTypeB>::operation(result,a,b);

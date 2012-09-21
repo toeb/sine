@@ -48,11 +48,12 @@ public:
   inline int index(int i, int j)const{return i* ColumnCount+j;}
 
   
-  StaticMatrix<T,ColumnCount,1> row(int i)const{
+  StaticMatrix<T,ColumnCount,1> row(uint i)const{
     StaticMatrix<T,ColumnCount,1> result;
     result.assign(getRow(i));
+    return result;
   }
-  StaticMatrix<T,RowCount,1>col(int j)const{
+  StaticMatrix<T,RowCount,1>col(uint j)const{
     StaticMatrix<T,RowCount,1> result;
     for(int i=0; i < RowCount;i++ ){
       result(i)=value(i,j);

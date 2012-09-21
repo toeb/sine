@@ -9,19 +9,19 @@ using namespace nspace;
  void  Plane::getNormal(Vector3D & n)const{
   Matrix3x3 RT;
   coordinates().orientation().toTransposedRotationMatrix(RT);
-  n.assign(RT.getRow(1));
+  n = RT.row(1);
   n.normalize();
 }
  void  Plane::getUAxis(Axis & a)const{
   Matrix3x3 RT;
   coordinates().orientation().toTransposedRotationMatrix(RT);
-  a.n.assign(RT.getRow(0));
+  a.n = RT.row(0);
   a.p =coordinates().position();
 }
  void  Plane::getVAxis(Axis & b)const{
   Matrix3x3 RT;
   coordinates().orientation().toTransposedRotationMatrix(RT);
-  b.n.assign(RT.getRow(2));
+  b.n = RT.row(2);
   b.p=(coordinates().position());
 }
 Vector3D Plane::getPositionFromUV(const Vector2D & uv)const{
