@@ -2,6 +2,8 @@
 
 set(source
 	./definitions.h
+	./ScalarOperations.h
+	./ScalarConstants.h
 	./CDMath.cpp
 	./CDMath.h
 	./MathDefs.h
@@ -22,7 +24,14 @@ set(source
 )
 source_group("" FILES ${source})
 
-add_library(math ${source} CMakeLists.txt ../config.h)
+
+file(GLOB_RECURSE operationsSource 
+    "operations/*.h"
+    "operations/*.cpp"
+)
+source_group("operations" FILES ${operationsSource})
+
+add_library(math ${source} ${operationsSource} CMakeLists.txt ../config.h)
 target_link_libraries(math core 
  math.linearalgebra
  math.linearalgebra.dslib

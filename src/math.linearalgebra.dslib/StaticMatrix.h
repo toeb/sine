@@ -221,7 +221,7 @@ inline operator MatType()const{
   }
   inline StaticMatrix<T,RowCount,ColumnCount> operator -(){
     StaticMatrix<T,RowCount,ColumnCount> result;
-    MatrixOperations<T>::negate(result, *this);
+    MatrixOps::negate(result,*this);
     return result;
   }
 };

@@ -156,11 +156,11 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   
   //optimized code. uses inline functions
   
-  crossProductMatrix(tmpA,r_b_wcs);
+  MatrixOps::crossProductMatrix(tmpA,r_b_wcs);
   //tmpA = r_b_star
   tmpB = J_inv_wcs *tmpA;
   //tmpB = J_inv_wcs * r_b_star
-  crossProductMatrix(tmpA,r_a_wcs);
+  MatrixOps::crossProductMatrix(tmpA,r_a_wcs);
   //tmpA = r_a_star
   K = tmpA*tmpB;
   // K = r_a_star * J_inv_wcs * r_b_star

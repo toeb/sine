@@ -1,55 +1,7 @@
 #pragma once
 #include <config.h>
 #include <math.linearalgebra/operations/MatrixSetConstant.h>
-namespace nspace{
-
-
-  template<typename OutputMatrix, typename InputMatrix>
-  class MatrixExtractBlock{
-  public:
-    static inline void operation(OutputMatrix & result, const InputMatrix & original, uint startRow, uint startCol, uint rows, uint cols){
-      result.resize(rows,cols,false);
-      if(original.rows()<rows+startRow)return;
-      if(original.cols()<cols+startCol)return;
-      for(int i=0; i < rows;i++ ){
-        for(int j=0; j < cols; j++){
-          result(i,j) = original(i+startRow,j+startCol);
-        }
-      }
-    }
-  };
-
-
-  
-
-  template<typename T,typename Mat>
-  class MatrixSum{
-  public:
-    static inline void operation(T & result, const Mat & mat){
-      result =0;
-      for(int i=0; i < mat.rows(); i++){
-        for(int j=0; j < mat.cols(); j++){
-          result = result + mat(i,j);
-        }
-      }
-    }
-  };
-
-  template<typename OutputMat, typename InputMat>
-  class MatrixPad{
-  public: 
-    static inline void operation(OutputMat & out, const InputMat & input, uint rowsTop, uint rowsBottom, uint colsLeft, uint colsRight){
-      out.resize(input.rows()+rowsTop+rowsBottom,input.cols()+colsLeft+colsRight);
-      MatrixSetConstant<Real, OutputMat>::operation(out,0.0);
-      for(int i=0; i< input.rows(); i++){
-        for(int j=0; j < input.cols(); j++){
-          out(i+rowsTop,j+colsLeft) = input(i,j);
-        }
-      }
-    }
-  };
-
-
+namespace nspace{ 
 
   template< typename OutputMatrix, typename InputMatrix, typename KernelMatrix,typename T>
   class MatrixConvolution{
@@ -78,4 +30,8 @@ namespace nspace{
 
     }
   };
+  
+
+
+
 }

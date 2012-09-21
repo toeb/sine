@@ -1,6 +1,16 @@
 #pragma once
-#include <cmath>
+#include <cmath>  
 namespace nspace{
+
+template<typename T>
+  class ScalarArcusTangens{
+  public:
+    static inline void operation(T & c, const T & a){
+      c = atan(a);
+    }
+  };
+
+
 template<typename T>
 class ScalarOperations{
 public:

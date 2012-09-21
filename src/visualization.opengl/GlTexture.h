@@ -1,5 +1,5 @@
 #pragma once
-#include <visualization/Image.h>
+#include <utility.imaging/Image.h>
 
 namespace nspace{
 class Texture : public virtual ISimulationObject{

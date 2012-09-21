@@ -1,6 +1,5 @@
 #include "BoxRenderer.h"
 #include <visualization.opengl/MiniGL.h>
-#include <visualization/Image.h>
 #include <simulation/Simulation.h>
 using namespace std;
 using namespace nspace;

@@ -5,7 +5,7 @@ template<typename Mat33 , typename Vec3>
 class VectorToCrossProductMatrix{
 public:
   static inline void operation(Mat33 &  r_star, const Vec3 & r){
-    if(3=r_star.size()){
+    if(3==r_star.size()){
       ERROR("incompatible sizes");
       return;
     }

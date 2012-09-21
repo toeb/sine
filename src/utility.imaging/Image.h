@@ -1,7 +1,7 @@
 #pragma once
 #include <config.h>
 #include <simulation/ISimulationObject.h>
-#include <visualization/Pixel.h>
+#include <utility.imaging/Pixel.h>
 #include <string>
 #include <iostream>
 #include <functional>
