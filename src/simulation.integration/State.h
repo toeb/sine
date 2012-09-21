@@ -18,7 +18,7 @@ namespace nspace{
     }
   public:
     static inline void setBlock(StateMatrix & matrix, const StateMatrix & block, uint rowIndex, uint colIndex){
-      
+    
 #if MATRIX_CLASSES == 3
       uint newrows = block.rows();
       uint newcols = block.cols();
@@ -63,7 +63,7 @@ namespace nspace{
       state.resize(_derivatives,_dimension);
       //state.resize(_derivatives,_dimension,false);
       
-      getBlock(state,*_stateMatrix,0,_offset);
+      MatrixOps::getBlock(state,*_stateMatrix,0,_offset);
       //state = _stateMatrix->block(0,_offset,_derivatives,_dimension);
       //_stateMatrix->getBlock(state,0,_offset);
     }
@@ -80,16 +80,17 @@ namespace nspace{
     void getX(StateMatrix & x)const{
       //x.resize(_derivatives-1,_dimension,false);
       x.resize(_derivatives-1,_dimension);
+      x.setZero();
       //x = _stateMatrix->block(0,_offset,_derivatives-1,_dimension);
-      getBlock(x,*_stateMatrix,0,_offset);
+      MatrixOps::getBlock(x,*_stateMatrix,0,_offset);
       //_stateMatrix->getBlock(x,0,_offset);
     }
     void getXDot(StateMatrix & xDot)const{
       //xDot.resize(_derivatives-1,_dimension,false);
       //_stateMatrix->getBlock(xDot,1,_offset);
       xDot.resize(_derivatives-1,_dimension);
-      
-      getBlock(xDot,*_stateMatrix,1,_offset);
+      xDot.setZero();
+      MatrixOps::getBlock(xDot,*_stateMatrix,1,_offset);
       //x = _stateMatrix->block(1,_offset,_derivatives-1,_dimension);
       
     }
@@ -98,7 +99,7 @@ namespace nspace{
         std::cerr << "State::Could not set state " << std::endl;
         return;
       }
-      setBlock(*_stateMatrix,x,0,_offset);
+      MatrixOps::setBlock(*_stateMatrix,x,0,_offset);
       //_stateMatrix->setBlock(0,_offset,x);
     }
 

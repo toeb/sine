@@ -8,7 +8,8 @@ namespace nspace{
 namespace math{
 namespace eigen{
 		
-typedef Eigen::Matrix<Real,Eigen::Dynamic,Eigen::Dynamic> MatrixNxM;
+  // it is significant that the NxM matrix format is set to RowMajor . Else simulation.state will not work
+typedef Eigen::Matrix<Real,Eigen::Dynamic,Eigen::Dynamic, Eigen::AutoAlign|Eigen::RowMajor> MatrixNxM; 
 typedef Eigen::Matrix<Real,3,3> Matrix3x3;
 typedef Eigen::Matrix<Real,2,2> Matrix2x2;
 typedef Eigen::Matrix<Real,3,2> Matrix3x2;

@@ -27,6 +27,8 @@ void FpsCamera::timeout(Time timePassed,Time time){
   direction =  R.col(2);
   normal=  R.col(1);
   binormal=  R.col(0);
+  
+  
 
   if(_handler->isKeyDown(KEY_W))body.velocity() += direction * speed;
   if(_handler->isKeyDown(KEY_S))body.velocity() -= direction * speed;
@@ -36,6 +38,8 @@ void FpsCamera::timeout(Time timePassed,Time time){
   if(_handler->isKeyDown(KEY_SPACE))body.velocity() -= normal * speed;
   eulerIntegrator.setUpperBound(eulerIntegrator.upperBound()+timePassed);
   eulerIntegrator.integrate();
+
+  
 }
 
 void FpsCamera::onMouseMove(int x , int y, int dx, int dy){

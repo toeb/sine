@@ -22,7 +22,7 @@ set(resourceDirectory ${projectPath}/resources)
 
 set(includeDirectories ${sourceDirectory})
 # 1 for ibds classes 2 for dslib 3 for eigen 
-add_definitions(-DMATRIX_CLASSES=2)
+add_definitions(-DMATRIX_CLASSES=3)
 
 IF (CMAKE_COMPILER_IS_GNUCC)
   ##use c++0x flags for gcc (needed for the new integrators)
