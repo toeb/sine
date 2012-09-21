@@ -15,10 +15,10 @@ void KinematicBody::setZero(){
 }
 KinematicBody::KinematicBody():
 StatefulObject(13,2),
-velocity(& (Vector3D)Vector3D::Zero()), // casting to vector 3d is needed because of eigen library
-acceleration(& (Vector3D)Vector3D::Zero()),
-angularAcceleration(& (Vector3D)Vector3D::Zero()),
-angularVelocity(& (Vector3D)Vector3D::Zero())
+velocity(& Vector3D::Zero()),
+acceleration(& Vector3D::Zero()),
+angularAcceleration(& Vector3D::Zero()),
+angularVelocity(& Vector3D::Zero())
 {
  setZero();
 }
