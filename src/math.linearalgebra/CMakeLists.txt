@@ -46,6 +46,7 @@ set(operationsSource
 ./operations/VectorOuterProduct.h
 ./operations/VectorToCrossProductMatrix.h
 ./operations/QuaternionMultiplication.h
+./operations/QuaternionMultiplicationScalar.h
 ./operations/QuaternionConjugation.h
 ./operations/QuaternionToRotationMatrix.h
 ./operations/MatrixElementWiseMultiplication.h
