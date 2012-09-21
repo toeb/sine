@@ -36,3 +36,14 @@ namespace nspace{
 }
 #endif
 
+namespace nspace{
+  namespace math{
+    namespace operators{
+      inline Vector3D operator ^ (const Vector3D & a, const Vector3D & b){
+        Vector3D result;
+        MatrixOps::crossProduct(result, a,b);
+        return result;
+      }
+    }
+  }
+}

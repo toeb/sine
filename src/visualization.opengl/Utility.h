@@ -40,7 +40,7 @@ void glRotate(const Matrix3x3 & R);
 void glScale(const Vector3D & s);
 void glScale(Real s);
 void glRotate(const Real u, const Real x, const Real y, const Real z);
-void glRotate(const Quaternion & q);
+void glRotateQuaternion(const Quaternion & q);
 void glScale(const Real x, const Real y, const Real z);
 void glTranslate(const Real x, const Real y, const Real z);
 void glTranslate(const Vector3D& v);

@@ -2,7 +2,6 @@
 
 using namespace std;
 using namespace nspace;
-
 Rectangle::Rectangle( const Vector2D & dimension):
  _dimension(dimension){
 
@@ -48,7 +47,8 @@ const Vector2D & Rectangle::getDimension()const{
  void Rectangle::getNormal(Vector3D &n_wcs)const{
    Matrix3x3 RT;
    coordinates().orientation().toTransposedRotationMatrix(RT);
-   n_wcs.assign(RT.getRow(2));
+   
+   n_wcs = RT.row(2);
  }
 
 

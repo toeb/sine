@@ -24,4 +24,16 @@ typedef Eigen::Quaternion<Real> Quaternion;
 
 }
 }
+
+//specialization
+template<>
+class VectorCrossProduct<math::eigen::Vector3D,math::eigen::Vector3D,math::eigen::Vector3D>{
+public:
+  static inline void operation(math::eigen::Vector3D & result,const math::eigen::Vector3D & a,const math::eigen::Vector3D & b){
+    result = a.cross(b);
+  }
+};
+
+
+
 }

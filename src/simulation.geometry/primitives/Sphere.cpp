@@ -11,7 +11,7 @@ Classification classifyBoundingBox(const BoundingBox & aabb_ocs, const Sphere & 
   Vector3D center;
   aabb_ocs.getCenter(center);
   Axis axis;
-  if(center.length2()==0)center = Vector3D::UnitX();
+  if(center.squaredNorm()==0)center = Vector3D::UnitX();
   axis.n = center;
   axis.n.normalize();
   // axis of separation is the center of aabb to center of sphere

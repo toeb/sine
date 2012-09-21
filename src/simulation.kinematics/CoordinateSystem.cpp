@@ -7,13 +7,13 @@ using namespace std;
 CoordinateSystem::CoordinateSystem():
 _R(0),
   _RT(0),
-  position(&Vector3D::Zero()),
-  orientation(&Quaternion::Identity()){
+  position(Vector3D::Zero(),true),
+  orientation(Quaternion::Identity(),true){
   orientation() = Quaternion::Identity();
 }
 
 CoordinateSystem::CoordinateSystem(const Vector3D & p, const Quaternion & q):
-position(&p),orientation(&q),
+position(p,true),orientation(q,true),
  _R(0),_RT(0){
 
   calculateRotationMatrices();

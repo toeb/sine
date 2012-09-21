@@ -117,7 +117,18 @@ public:
         matrix(i,j)=1;
     return matrix;    
   }
-  
+  //convert this matrix to any other type
+  template<typename MatType>
+inline operator MatType()const{
+  MatType other;
+  other.resize(rows(),cols());
+  for(int i=0; i< rows(); i++){
+    for(int j =0; j < cols(); j++){
+      other(i,j)=(*this)(i,j);
+    }
+  }
+  return other;
+}
   
   inline T & w(){return _data[0];}
   inline const T & w()const{return _data[0];} 
@@ -186,7 +197,7 @@ public:
     VectorOperations<T>::normSquared(result,*this);
     return result;
   }
-  inline T norm2()const{
+  inline T squaredNorm()const{
     T result;
     VectorOperations<T>::normSquared(result,*this);
     return result;
@@ -203,8 +214,9 @@ public:
   inline void normalize(){
     VectorOperations<T>::normalize(*this);
   }
-  inline bool resize(int rows, int cols, bool setToZero){
-    if(rows==RowCount && cols == ColumnCount)return true;
+  
+  inline bool resize(int rows, int cols){
+    if(rows==RowCount && cols == ColumnCount)return true;    
     return false;
   }
   inline StaticMatrix<T,RowCount,ColumnCount> operator -(){

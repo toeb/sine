@@ -31,9 +31,12 @@ void Particle::calculateDynamics(){
 void Particle::notifyStateChanged(){
 //    Real * x = state().stateVector(0);
 //    Real * xDot = state().stateVector(1);  
-   
-   position().assign(_x);
-   velocity().assign(_xDot);
+
+
+  // position().assign(_x);
+   //velocity().assign(_xDot);
+  MatrixOps::assign(position(),_x);
+  MatrixOps::assign(velocity(),_xDot);
 
  }
  void Particle::notifyStateNeeded(){
@@ -42,10 +45,14 @@ void Particle::notifyStateChanged(){
 //    Real * xDotDot = state().stateVector(2);  
 
 
-   position().copyTo(_x);
-   velocity().copyTo(_xDot);
-   acceleration().copyTo(_xDotDot);
+   //position().copyTo(_x);
+   //velocity().copyTo(_xDot);
+   //acceleration().copyTo(_xDotDot);
 
+
+   MatrixOps::copyTo(_x,position());
+   MatrixOps::copyTo(_xDot,velocity());
+   MatrixOps::copyTo(_xDotDot,acceleration());
  }
 
 

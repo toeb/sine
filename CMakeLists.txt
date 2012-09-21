@@ -41,6 +41,7 @@ include_directories(${externalsDirectory}/freeglut/include)
 include_directories(${externalsDirectory}/soil/src)
 include_directories(${externalsDirectory}/lodepng)
 include_directories(${externalsDirectory}/eigen3)
+include_directories(${externalsDirectory}/cppunitlite)
 
 subdirs(externals)
 

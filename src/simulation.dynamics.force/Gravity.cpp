@@ -39,7 +39,7 @@ void Gravity::calculateGravity(){
 }
 void Gravity::setGravity(const Vector3D & gravity){
   setDirection(gravity);
-  setGravityMagnitude(gravity.length());
+  setGravityMagnitude(gravity.norm());
   calculateGravity();
 }
 const Vector3D & Gravity::getGravity()const{

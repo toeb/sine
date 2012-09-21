@@ -12,8 +12,8 @@ template<typename T>
 class DynamicMatrix  : public nspace::Matrix<T>{
 protected:
   T * _data;
-  int _rows;
-  int _cols;
+  uint _rows;
+  uint _cols;
   inline Real & value(int i, int j){
     return _data[index(i,j)];
   }
@@ -157,7 +157,7 @@ public:
     return *this;
   }
   
-  inline bool resize(int n, int m, bool setToZero=true){
+  inline bool resize(int n, int m){
     if(_rows==n && _cols==m){
       return true; 
     }
@@ -168,7 +168,7 @@ public:
 
     _rows = n;
     _cols =m;
-    if(setToZero) setZero();
+
     return true;
   }
   inline DynamicMatrix<T> transpose()const {

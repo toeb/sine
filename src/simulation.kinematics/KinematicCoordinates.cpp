@@ -15,10 +15,10 @@ void KinematicBody::setZero(){
 }
 KinematicBody::KinematicBody():
 StatefulObject(13,2),
-velocity(& Vector3D::Zero()),
-acceleration(& Vector3D::Zero()),
-angularAcceleration(& Vector3D::Zero()),
-angularVelocity(& Vector3D::Zero())
+velocity( Vector3D::Zero(),true),
+acceleration( Vector3D::Zero(),true),
+angularAcceleration(Vector3D::Zero(),true),
+angularVelocity(Vector3D::Zero(),true)
 {
  setZero();
 }

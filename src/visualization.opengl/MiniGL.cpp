@@ -38,6 +38,7 @@
 #include "math.h"
 
 using namespace nspace;
+using namespace nspace::math::operators;
 
 float MiniGL::fovy = 45;
 float MiniGL::znear = 0.5f;

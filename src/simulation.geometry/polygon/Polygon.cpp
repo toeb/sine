@@ -4,7 +4,7 @@
 #include <math/MathDefs.h>
 using namespace nspace;
 using namespace std;
-
+using namespace nspace::math::operators;
 
 Classification classifySphere(const BoundingSphere & sphere, const Polygon & polygon){
   const Vector3D & c = sphere.getPositionPCS();
@@ -143,7 +143,8 @@ bool Polygon::isInsideOCS(const Vector3D & p_ocs)const{
     f->getCenter(f_c);
     Vector3D p = p_ocs - f_c;
     Real val =1;
-    val = f->n_ocs*p;
+    MatrixOps::innerProduct(val,f->n_ocs,p);
+    //val = f->n_ocs*p;
     //Vector3D::dotProduct(f->n_ocs,p,val);
 
     if(val-EPSILON > 0 )return false;
@@ -158,7 +159,7 @@ void Polygon::cleanupObject(){
    Real Polygon::calculateBoundingSphereRadius()const{
     Real result = 0;
     for(int i=0; i < vertices().size(); i++){
-      Real currentLength = vertices().at(i)->p_ocs.length2();
+      Real currentLength = vertices().at(i)->p_ocs.squaredNorm();
       if(result < currentLength)result = currentLength;
     }
 
@@ -355,7 +356,11 @@ bool Polygon::correctEdgeDirections(){
 }
 
 void Polygon::scale(Real x, Real y, Real z){
-  Matrix3x3 mat(x,y,z);
+  Matrix3x3 mat = Matrix3x3::Zero();
+  mat(0,0)=x;
+  mat(1,1)=y;
+  mat(2,2)=z;
+
   for_each(vertices().begin(), vertices().end(), [&mat](Vertex * v){
     v->p_ocs = mat * v->p_ocs ;
   });

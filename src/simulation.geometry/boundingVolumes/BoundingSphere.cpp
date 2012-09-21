@@ -7,7 +7,7 @@ using namespace nspace;
 BoundingSphere::BoundingSphere(const Vector3D & min, const Vector3D & max, const CoordinateSystem & coordinateSystem):BoundingVolume(coordinateSystem){
   _p_pcs = min+0.5*(max-min);
   //coordinates().position()=_p_pcs;
-  setRadius((0.5*(max-min)).length());
+  setRadius((0.5*(max-min)).norm());
 }
 
 

@@ -25,10 +25,11 @@ public:
    * \author Tobi
    * \date 01.07.2012
    *
-   * \param emptyFlag    I added this parameter as a hack so that noconfusion arises when doing somehting like position = Vector3D / position() = Vector3D....
+   * \param safetyFlagValueARbitrary   added safety flag because else automatic type conversion might occur which would lead to situating were the developer would assign the value holders
+   * value in a wrong way:  vh = val results in a new value holder vh() = val results in the values holders value being set
    * \param initialValue The initial value.
    */
-  ValueHolder(const T * initialValue):_privateValue(*initialValue),_sharedValue(&_privateValue){
+  ValueHolder(const T & initialValue, bool safetyFlagValueARbitrary):_privateValue(initialValue),_sharedValue(&_privateValue){
 
   }
   ValueHolder():_sharedValue(&_privateValue){

@@ -1,6 +1,6 @@
 #include "RigidBodyConnector.h"
 using namespace nspace;
-
+using namespace nspace::math::operators;
 RigidBodyConnector::RigidBodyConnector(RigidBody & b, const Vector3D  & r)
   :DynamicConnector(b),_rigidBody(b), _r(r)
 {

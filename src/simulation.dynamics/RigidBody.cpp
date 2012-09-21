@@ -2,7 +2,7 @@
 #include <math/definitions.h>
 
 using namespace nspace;
-
+using namespace nspace::math::operators;
 
 
 RigidBody::RigidBody(){

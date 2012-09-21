@@ -15,7 +15,7 @@ namespace nspace{
         return;
       }
       int size = rows*cols;
-      sumMat.resize(rows,cols,false);
+      sumMat.resize(rows,cols);
       // get data arrays
       const T* a=aMat.data();
       const T* b = bMat.data();
@@ -108,7 +108,7 @@ namespace nspace{
   public:
     static inline void operation(matrix2::DynamicMatrix<T> & cMat, const matrix2::DynamicMatrix<T> & aMat, const T & b){
       const int s = aMat.size();
-      cMat.resize(aMat.rows(),aMat.cols(),false);
+      cMat.resize(aMat.rows(),aMat.cols());
       const T * a = aMat.data();
       T * c = cMat.data();
       //go serial if size is smaller than sum trehshold
@@ -133,7 +133,7 @@ namespace nspace{
     static inline void operation(matrix2::DynamicMatrix<T> &  result, const matrix2::DynamicMatrix<T> & val){
       const int rows = val.rows();
       const int cols = val.cols();
-      result.resize(rows,cols,false);
+      result.resize(rows,cols);
       T * a = result.data();
       const T * b = val.data();
       const int size = rows*cols;

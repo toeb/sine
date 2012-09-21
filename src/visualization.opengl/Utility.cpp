@@ -71,7 +71,7 @@ void nspace::glTransformation(const CoordinateSystem & coordinates){
   glRotate(coordinates.orientation().toTransposedRotationMatrix());
   glTranslate(coordinates.position());
 }
-void nspace::glRotate(const Quaternion & q){
+void nspace::glRotateQuaternion(const Quaternion & q){
   glRotate(q.toRotationMatrix());
 }
 void nspace::glScale(const Vector3D & s){

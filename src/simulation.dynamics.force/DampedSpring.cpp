@@ -44,7 +44,7 @@ inline void DampedSpring::calculateSpringAndDampeningForce(){
 //  Vector3D::subtract(b_wcs,a_wcs,n_wcs);
 	n_wcs=b_wcs-a_wcs;
   //n_wcs = b_wcs - a_wcs;
-	_currentLength = n_wcs.length();
+	_currentLength = n_wcs.norm();
   //Vector3D::multiplyScalar(1/_currentLength,n_wcs,n_wcs);
   n_wcs /= _currentLength;
   //n_wcs = (1/amount)*n_wcs;
@@ -61,7 +61,8 @@ inline void DampedSpring::calculateSpringAndDampeningForce(){
     _f_s_wcs = (_k_s*(_currentLength-_l0))*n_wcs;
     //f_s_wcs.assign( _k_s * (amount - _l0) *n_wcs);
     Real velocityDotNormal;
-    velocityDotNormal = deltaV * n_wcs;
+    MatrixOps::innerProduct(velocityDotNormal,deltaV,n_wcs);
+    //velocityDotNormal = deltaV * n_wcs;
     //Vector3D::dotProduct(deltaV,n_wcs,velocityDotNormal);
     _f_d_wcs = (_k_d*velocityDotNormal)*n_wcs;
     //Vector3D::multiplyScalar( _k_d*velocityDotNormal,n_wcs,_f_d_wcs);
@@ -89,5 +90,5 @@ void DampedSpring::setStiffnessConstant(Real k_s){
 Real DampedSpring::getCurrentLength()const {
 	//_cA.calculateCachedValues();
 	//_cB.calculateCachedValues();
-	return (_cA.getWorldPosition() - _cB.getWorldPosition()).length();
+	return (_cA.getWorldPosition() - _cB.getWorldPosition()).norm();
 }

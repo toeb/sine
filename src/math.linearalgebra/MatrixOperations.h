@@ -230,7 +230,7 @@ namespace nspace{
       }
     }
   };
-
+  
   template<typename T, typename TargetType>
   class MatrixAssignData{
   public:
@@ -241,7 +241,26 @@ namespace nspace{
     }
   };
   
+  template<typename TargetType>
+  class MatrixResize{
+  public:
+    static inline void operation(TargetType  & target, uint rows, uint cols, bool setToZero){
+     target.resize(rows,cols);      
+     if(setToZero) MatrixSetConstant<Real,TargetType>::operation(target,val);
+    }
+  };
+  
   namespace MatrixOps{
+    template<typename Vec3A ,typename Vec3B, typename Vec3C>
+    inline void crossProduct(Vec3C & c, const Vec3A & a, const Vec3B & b){
+      VectorCrossProduct<Vec3C,Vec3A,Vec3B>::operation(c,a,b);
+    }
+
+    template<typename Mat>
+    inline void resize(Mat & mat, uint rows, uint cols, bool setToZero){
+      MatrixResize<Mat>::operation(mat,rows,cols,setToZero);   
+    }
+    
 
     template<typename MatType,typename BlockType>
     inline void setBlock(MatType & target, const BlockType & source, uint rowoffset, uint coloffset){
