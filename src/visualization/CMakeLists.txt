@@ -7,10 +7,6 @@ set(source
  ./Color.cpp
  ./Material.h
  ./Material.cpp 
- ./Image.h
- ./Image.cpp 
- ./Pixel.h
- ./Pixel.cpp 
  ./Texture.h
  ./Texture.cpp 
  ./ViewportController.h
