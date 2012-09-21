@@ -3,6 +3,8 @@ set(imagingSource
 	./Image.cpp
 	./ImageLoader.h
 	./ImageLoader.cpp
+	./Pixel.h
+	./Pixel.cpp
 )
 set(pngSource
 	./png/PngLoader.h
