@@ -27,7 +27,10 @@
 //#include <math/operations/SquareRoot.h>
 //#include <math/operations/Subtraction.h>
 //#include <math/operations/Tangens.h>
-//#include <math/operations/Zero.h>
+#include <math/operations/Zero.h>
+#include <math/operations/SquareRootOfTwo.h>
+#include <math/operations/Pi.h>
+#include <math/operations/EulersNumer.h>
 
 #define NULLARY_SHORTHAND(NAME , OP)  template<typename T> T NAME(){ T result; scalar::Operation<T,operation::Nullary,operation::OP>::operation(result); return result; }
 #define UNARY_SHORTHAND(NAME , OP)  template<typename T> T NAME(const T a){T result; scalar::Operation<T,operation::Unary,operation::OP>::operation(result, a); return result;}
@@ -42,6 +45,11 @@ namespace nspace{
     UNARY_SHORTHAND(absolute,Absolute);
     UNARY_SHORTHAND(arcusSinus,ArcusSinus);
 
+
+    NULLARY_SHORTHAND(e,EulersNumber);
+    NULLARY_SHORTHAND(pi,Pi);
+    NULLARY_SHORTHAND(squareRootOfTwo,SquareRootOfTwo);
+    NULLARY_SHORTHAND(zero,Zero);
 
 
   }

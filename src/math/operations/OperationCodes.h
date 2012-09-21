@@ -24,7 +24,10 @@ namespace scalar{
     SquareRoot,
     Subtraction,
     Tangens,
-    Zero
+    Zero,
+    EulersNumber,
+    Pi,
+    SquareRootOfTwo
   };
   }
 }
