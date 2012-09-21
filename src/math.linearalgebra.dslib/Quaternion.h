@@ -301,6 +301,31 @@ namespace matrix2{
     QuaternionOperations<T>::multiplyQuaternion(c,a,b);
     return c;
   }
+
+  template<typename QuatC, typename QuatA, typename T> 
+  class QuaternionMultiplicationScalar{
+  public:
+    inline static void operation(QuatC & c, const QuatA & a, const T & b){
+      c.w() = a.w()*b;
+      c.x() = a.x()*b;
+      c.y() = a.y()*b;
+      c.z() = a.z()*b;
+    }
+  };
+
+  template<typename T>
+  Quaternion<T> operator * (const T & s, const Quaternion<T> & q){
+    Quaternion<T> result;
+    QuaternionMultiplication<Quaternion<T> ,Quaternion<T> ,T>::operation(result, q,s);
+    return result;
+  }
+  template<typename T>
+  Quaternion<T> operator * ( const Quaternion<T> & q,const T & s){
+    Quaternion<T> result;
+    QuaternionMultiplication<Quaternion<T> ,Quaternion<T> ,T>::operation(result, q,s);
+    return result;
+  }
+
 }
 }
 
