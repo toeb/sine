@@ -136,10 +136,10 @@ public:
   void resize(uint width, uint height){
     _width = width;
     _height = height;
-    _red.resize(height,width,false);
-    _green.resize(height,width,false);
-    _blue.resize(height,width,false);
-    _alpha.resize(height,width,false);
+    _red.resize(height,width);
+    _green.resize(height,width);
+    _blue.resize(height,width);
+    _alpha.resize(height,width);
   }
   inline uint size()const{
     return _width*_height;

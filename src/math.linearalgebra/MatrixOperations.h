@@ -77,7 +77,7 @@ namespace nspace{
   class MatrixSubtractionConstant{
   public:
     static inline void operation(MatrixResult & c, const Matrix & a, const Scalar & b){
-      c.resize(a.rows(),a.cols(),false);
+      c.resize(a.rows(),a.cols());
       for(int i=0; i < a.rows(); i++){
         for(int j=0; j < a.cols(); j++){
           c(i,j)=a(i,j)-b;
@@ -144,7 +144,7 @@ namespace nspace{
         std::cerr<< __FUNCSIG__ << ": Dimensions mismatch" <<std::endl;
         return;
       }
-      c.resize(a.rows(),a.cols(),false);
+      c.resize(a.rows(),a.cols());
       for(int i=0; i < a.rows(); i++){
         for(int j=0; j < a.cols(); j++){
           c(i,j)=a(i,j)*b(i,j);
@@ -246,7 +246,7 @@ namespace nspace{
   public:
     static inline void operation(TargetType  & target, uint rows, uint cols, bool setToZero){
      target.resize(rows,cols);      
-     if(setToZero) MatrixSetConstant<Real,TargetType>::operation(target,val);
+     if(setToZero) MatrixSetConstant<Real,TargetType>::operation(target,0.0);
     }
   };
   
