@@ -19,8 +19,9 @@ Vector3D n;
   inline Real projectOnAxis(const Vector3D & a) const{
    // Vector3D diff;
     Vector3D diff = a-p;
-    Real result = n*diff;
-
+    Real result;
+    
+    MatrixOps::innerProduct(result, n,diff);
     /*
     Vector3D::subtract(a, p,diff);
     Vector3D::dotProduct(n,diff,result);*/

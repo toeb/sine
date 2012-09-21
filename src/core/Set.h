@@ -54,7 +54,7 @@ public:
   bool empty()const{
     return size()==0;
   }
-  int size()const{
+  uint size()const{
     return _elements.size();
   }
   const std::vector<T> & elements()const{return _elements;}

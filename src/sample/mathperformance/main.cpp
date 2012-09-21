@@ -1,22 +1,22 @@
 #include <config.h>
 #include <core/Time.h>
 #include <iostream>
-#include <math/matrix2/StaticMatrix.h>
-#include <math/matrix2/Quaternion.h>
-#include <math/matrix2/specialization/StaticMatrixNxNSpecialization.h>
-#include <math/matrix2/specialization/StaticMatrix3x3Specialization.h>
-#include <math/matrix2/specialization/StaticMatrix3x1Specialization.h>
-#include <math/matrix2/StaticMatrixOperators.h>
+#include <math.linearalgebra.dslib/StaticMatrix.h>
+#include <math.linearalgebra.dslib/Quaternion.h>
+#include <math.linearalgebra.dslib/specialization/StaticMatrixNxNSpecialization.h>
+#include <math.linearalgebra.dslib/specialization/StaticMatrix3x3Specialization.h>
+#include <math.linearalgebra.dslib/specialization/StaticMatrix3x1Specialization.h>
+#include <math.linearalgebra.dslib/StaticMatrixOperators.h>
 
-#include <math/matrix2/DynamicMatrix.h>
-#include <math/matrix2/specialization/DynamicMatrixSpecialization.h>
-#include <math/matrix2/DynamicMatrixOperators.h>
+#include <math.linearalgebra.dslib/DynamicMatrix.h>
+#include <math.linearalgebra.dslib/specialization/DynamicMatrixSpecialization.h>
+#include <math.linearalgebra.dslib/DynamicMatrixOperators.h>
 #include <string>
 
 #include <algorithm>
-#include <math/matrix1/MatrixNxM.h>
-#include <math/matrix1/Quaternion.h>
-#include <math/matrix1/Matrix3x3.h>
+#include <math.linearalgebra.ibds/MatrixNxM.h>
+#include <math.linearalgebra.ibds/Quaternion.h>
+#include <math.linearalgebra.ibds/Matrix3x3.h>
 #include <typeinfo>
 #include <sstream>
 #include <functional>

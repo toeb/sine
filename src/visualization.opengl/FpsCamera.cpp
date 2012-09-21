@@ -18,7 +18,7 @@ void FpsCamera::timeout(Time timePassed,Time time){
   body.velocity().setZero();
   body.angularVelocity().setZero();  
   
-  Matrix3x3 R = body.orientation().rotationMatrix();
+  Matrix3x3 R = body.orientation().toRotationMatrix();
   
   
   Vector3D direction;
@@ -47,7 +47,7 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
   Real xSpeed = speed*dx;
   Real ySpeed = speed*dy;
 
-  Matrix3x3 R = body.orientation().rotationMatrix();
+  Matrix3x3 R = body.orientation().toRotationMatrix();
   
   
   Vector3D direction;

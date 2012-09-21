@@ -68,11 +68,11 @@ void nspace::glRotate(const Matrix3x3 & R){
   glMultMatrix(R,Vector3D::Zero());
 }
 void nspace::glTransformation(const CoordinateSystem & coordinates){
-  glRotate(coordinates.orientation().transposedRotationMatrix());
+  glRotate(coordinates.orientation().toTransposedRotationMatrix());
   glTranslate(coordinates.position());
 }
 void nspace::glRotate(const Quaternion & q){
-  glRotate(q.rotationMatrix());
+  glRotate(q.toRotationMatrix());
 }
 void nspace::glScale(const Vector3D & s){
   glScale(s(0),s(1),s(2));

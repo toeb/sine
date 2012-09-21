@@ -10,15 +10,15 @@ void KinematicBody::setMovementToZero(){
 }
 void KinematicBody::setZero(){
   position().setZero();
-  orientation() = Quaternion::ZeroRotation();
+  orientation() = Quaternion::Identity();
   setMovementToZero();
 }
 KinematicBody::KinematicBody():
 StatefulObject(13,2),
-velocity(&Vector3D::Zero()),
-acceleration(&Vector3D::Zero()),
-angularAcceleration(&Vector3D::Zero()),
-angularVelocity(&Vector3D::Zero())
+velocity(& (Vector3D)Vector3D::Zero()), // casting to vector 3d is needed because of eigen library
+acceleration(& (Vector3D)Vector3D::Zero()),
+angularAcceleration(& (Vector3D)Vector3D::Zero()),
+angularVelocity(& (Vector3D)Vector3D::Zero())
 {
  setZero();
 }
@@ -42,7 +42,7 @@ inline void transformAngularVelocity(Quaternion & qDot, const Vector3D & omega, 
   qDot.x()=omega.x();
   qDot.y()=omega.y();
   qDot.z()=omega.z();
-  qDot =0.5*(q*qDot);
+  qDot = 0.5*(q*qDot);
 }
 
 Quaternion qOmegaDot(const Quaternion & orientation, const Vector3D & omega, const Vector3D & omegaDot){

@@ -70,7 +70,8 @@ public:
   Time step(){
     if(!needsIntegration())return _t; 
     const StateMatrix & x = evaluator()->x();
-    x_next.resize(x.rows(),x.cols(),false);
+    //x_next.resize(x.rows(),x.cols(),false);
+    x_next.resize(x.rows(),x.cols());
     doStep(x_next, evaluator()->x(),_t,_h);
     evaluator()->setX(x_next);
     _t += _h;

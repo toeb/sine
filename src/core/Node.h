@@ -100,13 +100,13 @@ public:
        successors().add(node);
        return *this;
      }
-
+     // overload for dfs(f,successors)
+     void dfs(std::function<void (bool & , Node *)> f){
+       dfs(f,[](Set<Node *>& successors,const Node & node){ successors |= node.successors(); });
+     }
     // really bad implementation of dfs, it is slow and will crash if there are cycles in the graph
-    void dfs(std::function<void (bool & , Node *)> f, std::function<void (Set<Node*> &, const Node &) > successors=0){
-      if(!successors)successors = [](Set<Node *>& successors,const Node & node){
-        successors |= node.successors();
-      };
-
+    void dfs(std::function<void (bool & , Node *)> f, std::function<void (Set<Node*> &, const Node &) > successors){
+      
       Set<Node* > next;
       successors(next,*this);
       bool cont=true;

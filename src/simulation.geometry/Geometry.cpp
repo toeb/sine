@@ -68,7 +68,7 @@ Real Geometry::calculateBoundingSphereRadius()const{
   BoundingBox bb;
   getBoundingBoxOCS(bb);
   Vector3D delta = bb.maxValue()-bb.minValue();
-  Real l=  delta.length();
+  Real l=  delta.norm();
   
   return l/2;
 }

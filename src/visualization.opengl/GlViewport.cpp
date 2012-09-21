@@ -23,17 +23,20 @@
 /**
  * \file src/vis/opengl/GlViewport.h
  */
-#include "GlViewport.h"
+
+#include <math/definitions.h>
+
 #include <visualization.opengl/opengl.h>
 #include <visualization.opengl/Utility.h>
-#include <math/definitions.h>
+
+#include "GlViewport.h"
+
 using namespace nspace;
 
 void GlViewport::viewport(){			 
-	//glRenderMode (GL_RENDER);
 	glViewport (0, 0, width(), height());
 	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
+	glLoadIdentity();
 
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity(); 
@@ -44,16 +47,14 @@ void GlViewport::viewport(){
 	glLoadIdentity();
 
   glScale(zoomFactor());
-  glTransformation(coordinates());
-  //logInfo("Camera position: " << coordinates().position());
-  //logInfo("Camera orientation: " << coordinates().orientation());
+  glTransformation(coordinates()); 
 }
 
 bool GlViewport::initializeObject(){
-	glEnable (GL_DEPTH_TEST);
-	glEnable (GL_NORMALIZE);
-	glShadeModel (GL_SMOOTH);
-	glEnable (GL_BLEND); 
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_NORMALIZE);
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	return true;
 }

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <simulation.timing/Timeable.h>
 #include <simulation.logging/LoggingObject.h>
+#include <math.linearalgebra.dslib/DynamicMatrix.h>
 using namespace nspace;
 using namespace nspace::matrix2;
 using namespace std;

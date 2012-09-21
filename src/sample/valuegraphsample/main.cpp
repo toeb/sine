@@ -68,8 +68,9 @@ public:
 
   }
   Vector3D calculate(){
-    Matrix3x3 R;
-    _orientation.toRotationMatrix(R);
+    //Matrix3x3 R;
+    //_orientation.toRotationMatrix(R);
+	  Matrix3x3 R = _orientation.toRotationMatrix();
     return _position + R * _relativePosition;
   }
 };

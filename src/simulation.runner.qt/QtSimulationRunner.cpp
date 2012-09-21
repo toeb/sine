@@ -123,11 +123,15 @@ void QtSimulationRunner::loadWindowState()
   //camera.loadState(settings.value("camera").toString().toStdString());
 
   auto viewport = dynamic_cast<ViewportBase*>(glWidget->viewport());
-
+  
+   auto val= settings.value("camera");
+   auto qstr = val.toString();    
+   const QByteArray asc = qstr.toAscii();
+   string str(asc.constData(), asc.length());
+   
   if(viewport){
-    auto string = settings.value("camera").toString().toStdString();
-    if(string.length()>0){
-      stringstream ss(string);
+    stringstream ss(str);
+    if(str.length()>0){
       ss>>viewport->coordinates().position()(0);
       ss>>viewport->coordinates().position()(1);
       ss>>viewport->coordinates().position()(2);
