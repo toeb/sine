@@ -70,8 +70,8 @@ void ImpulseBasedCollisionHandler::handleContact(DynamicContact & dynamicContact
 	const Vector3D & b_wcs = cB.getCachedWorldPosition();
 
   //initialize two matrices and get the K matrix from the connectors
-	Matrix3x3  K_aa(0);
-	Matrix3x3  K_bb(0);
+  Matrix3x3  K_aa;
+	Matrix3x3  K_bb;
   
 	cA.getKMatrix(K_aa,a_wcs,a_wcs);
 	cB.getKMatrix(K_bb,b_wcs,b_wcs);
@@ -90,7 +90,8 @@ void ImpulseBasedCollisionHandler::handleContact(DynamicContact & dynamicContact
   {
     //calculate the resulting impulse
 		Real denominator;
-		denominator = contact.normal * (K * contact.normal);
+    MatrixOps::innerProduct(denominator,contact.normal,K*contact.normal);
+    //denominator = contact.normal * (K * contact.normal);
 
 		Vector3D delta_v;
 		dynamicContact.getNormalRelativeVelocityVector(delta_v);

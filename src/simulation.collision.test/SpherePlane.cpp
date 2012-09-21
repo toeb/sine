@@ -36,7 +36,7 @@ bool SpherePlane::testCollision(const Sphere & sphere, const Plane & plane, Coll
   //project the collisionPoint of sphere onto plane
   plane.projectOnPlane(contact->pA_wcs,contact->pB_wcs);
 
-  contact->penetrationDepth = (contact->pA_wcs-contact->pB_wcs).length();
+  contact->penetrationDepth = (contact->pA_wcs-contact->pB_wcs).norm();
 
   //add contact to collision
   collision->addContact(contact);

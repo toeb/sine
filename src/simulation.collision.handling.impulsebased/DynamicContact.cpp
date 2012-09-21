@@ -48,13 +48,14 @@ DynamicContact::DynamicContact( DynamicCollidable &collidableA,
 void DynamicContact::getNormalRelativeVelocity(Real &out) {
   Vector3D v_rel;
   getRelativeVelocityVector(v_rel);
-  out = v_rel * contact().normal;
+  MatrixOps::innerProduct(out,v_rel,contact().normal);
+  //out = v_rel * contact().normal;
 }
 
 void DynamicContact::getNormalRelativeVelocityVector (Vector3D &out) {
 	Real v;
-	getNormalRelativeVelocity(v);
-	out = v *contact().normal;
+	getNormalRelativeVelocity(v);  
+  out = v *contact().normal;
 }
 
 ContactType DynamicContact::classify() {
@@ -79,12 +80,12 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 	//if (!_c1 || !_c2) return;
 	Vector3D newAccumulatedImpulse = _accumulatedImpulse + p;
 	Real dotProduct;
-  dotProduct = newAccumulatedImpulse * contact().normal;
+  MatrixOps::innerProduct(dotProduct,newAccumulatedImpulse,contact().normal);
+  //dotProduct = newAccumulatedImpulse * contact().normal;
 
 	if (dotProduct <= 0) {
 		connectorA().applyImpulse(p);
 		connectorB().applyImpulse(-p);
-
     _accumulatedImpulse += p;
 		
 	}

@@ -229,7 +229,7 @@ void TextileModel::setNormalizing(bool flag){
 DampedSpring * TextileModel::createSpring(TextileNode * nodeA, TextileNode * nodeB, Real k_s, Real k_d){
   DynamicConnector* a = nodeA->connector;
   DynamicConnector * b = nodeB->connector;
-  Real l_0 = (a->getWorldPosition()-b->getWorldPosition()).length();
+  Real l_0 = (a->getWorldPosition()-b->getWorldPosition()).norm();
   DampedSpring * spring = new DampedSpring(*a,*b,k_s,k_d,l_0);
   addSimulationObject(spring);
   return spring;

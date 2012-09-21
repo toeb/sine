@@ -17,26 +17,7 @@ namespace nspace{
 
     }
   public:
-    static inline void setBlock(StateMatrix & matrix, const StateMatrix & block, uint rowIndex, uint colIndex){
-    
-#if MATRIX_CLASSES == 3
-      uint newrows = block.rows();
-      uint newcols = block.cols();
-      matrix.block(rowIndex,colIndex,newrows,newcols) = block;
-#else
-      matrix.setBlock(rowIndex,colIndex,block);
-#endif
 
-    }
-    static inline void getBlock(StateMatrix & block, const StateMatrix & matrix, uint rowIndex,uint colIndex){
-#if MATRIX_CLASSES == 3
-      uint newrows = block.rows();
-      uint newcols = block.cols();
-      block= matrix.block(rowIndex,colIndex,newrows,newcols);
-#else
-      matrix.getBlock(block,rowIndex,colIndex);
-#endif
-    }
     State():_parent(0),_derivatives(0),_offset(0),_dimension(0),_stateMatrix(0){
 
     }
@@ -73,7 +54,7 @@ namespace nspace{
         return;
       }
       
-      setBlock(*_stateMatrix,state,0,_offset);
+      MatrixOps::setBlock(*_stateMatrix,state,0,_offset);
       //_stateMatrix->block(0,_offset,_derivatives,_dimension) = state;
       //_stateMatrix->setBlock(0,_offset,state);
     }

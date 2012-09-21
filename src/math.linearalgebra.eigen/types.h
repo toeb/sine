@@ -10,8 +10,9 @@ namespace eigen{
 		
   // it is significant that the NxM matrix format is set to RowMajor . Else simulation.state will not work
 typedef Eigen::Matrix<Real,Eigen::Dynamic,Eigen::Dynamic, Eigen::AutoAlign|Eigen::RowMajor> MatrixNxM; 
-typedef Eigen::Matrix<Real,3,3> Matrix3x3;
+
 typedef Eigen::Matrix<Real,2,2> Matrix2x2;
+typedef Eigen::Matrix<Real,3,3> Matrix3x3;
 typedef Eigen::Matrix<Real,3,2> Matrix3x2;
 typedef Eigen::Matrix<Real,2,3> Matrix2x3;
 typedef Eigen::Matrix<Real,3,1> Vector3D;

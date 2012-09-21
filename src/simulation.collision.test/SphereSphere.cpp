@@ -12,7 +12,7 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   const Vector3D & pB = B.coordinates().position();
   collisionNormal = pB-pA;
   //calculate the length
-  Real length = collisionNormal.length();
+  Real length = collisionNormal.norm();
 
   // if lenth is near zero numerical instability might occur
   if(length==0){  

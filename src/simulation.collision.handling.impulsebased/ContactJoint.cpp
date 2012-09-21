@@ -24,7 +24,8 @@ void ContactJoint::applyNormalImpulses(Matrix3x3 &K, Vector3D &v_n, Vector3D &p_
 	// do not enforce contact if there is no interpenetration
 	if (_positionError_n < 0) {
 		Real denominator_n;
-    denominator_n = _normal * (K*_normal);
+    //denominator_n = _normal * (K*_normal);
+    MatrixOps::innerProduct(denominator_n,_normal,(K )* (_normal));
     p_a_n = (1/denominator_n)*v_n;
 		contact().applyNormalImpulse(p_a_n);
 		}
@@ -34,12 +35,14 @@ void ContactJoint::simulateStaticFriction(Real h, Vector3D& d, Vector3D& v_n, Ma
 	// approximation of tangential velocity based on a distance preview:
 	Vector3D v_t = (1/h) * d - v_n;		
 	Vector3D tangent(v_t);
-	if (tangent.length() != 0) {
+	if (tangent.norm() != 0) {
 		tangent.normalize();
 
 		Real denominator_t;
 		Vector3D p_a_t;
-		denominator_t = tangent * (K_gc * tangent);
+    
+    MatrixOps::innerProduct(denominator_t,tangent,K_gc*tangent);
+		//denominator_t = tangent * (K_gc * tangent);
 		p_a_t = (1 / denominator_t) * v_t;
 		contact().applyTangentialImpulse(p_a_t);
 		}
@@ -51,7 +54,8 @@ void ContactJoint::simulateDynamicFriction(Vector3D &p_a_n, Vector3D &u_rel_t, M
 
 	Real denominator_t;
 	Vector3D p_a_t_max;
-	denominator_t = tangent * (K_gc * tangent);
+	//denominator_t = tangent * (K_gc * tangent);
+   MatrixOps::innerProduct(denominator_t,tangent,K_gc*tangent);
 	p_a_t_max = (1 / denominator_t) * u_rel_t;
 
 	Real combinedFrictionCoefficient = contact().collidableA().getDynamicFrictionCoefficient() + contact().collidableB().getDynamicFrictionCoefficient();
@@ -59,8 +63,12 @@ void ContactJoint::simulateDynamicFriction(Vector3D &p_a_n, Vector3D &u_rel_t, M
 	p_a_t =(combinedFrictionCoefficient * p_a_n.norm())*tangent;	// insert friction coefficient here
 
 	Real dotProduct1, dotProduct2;
-  dotProduct1 = tangent *p_a_t_max;
-	dotProduct2 = tangent *p_a_t;
+  MatrixOps::innerProduct(dotProduct1,tangent,p_a_t_max);
+  MatrixOps::innerProduct(dotProduct2,tangent,p_a_t);
+  //dotProduct1 = tangent *p_a_t_max;
+	//dotProduct2 = tangent *p_a_t;
+
+
 
 	// apply either p_a_t or p_a_t_max, whichever is weaker 
 	// this ensures that the movement is slowed down but does not have its direction inverted
@@ -80,19 +88,18 @@ void ContactJoint::applyTangentialImpulses(Real h, Vector3D& d, Vector3D& v_n, V
 	u_rel_t = u_rel - u_rel_n;
 
 	// K matrix for impulses applied at the center of gravity of the first body to achieve a desired velocity change in the point a
-	Matrix3x3 K_agc_a(0);	
+  Matrix3x3 K_agc_a;
 	// K matrix for impulses applied at the center of gravity of the second body to achieve a desired velocity change in the point b
-	Matrix3x3 K_bgc_b(0);	
+	Matrix3x3 K_bgc_b;	
 	connectorA().getKMatrix(K_agc_a,contact().connectorA().body().getCenterOfGravity(),a_wcs);
 	connectorB().getKMatrix(K_bgc_b,contact().connectorB().body().getCenterOfGravity(),b_wcs);
 	Matrix3x3 K_gc = K_agc_a + K_bgc_b;
 
-	if (u_rel_t.length() == 0) {
+	if (u_rel_t.norm() < EPSILON) {
 		simulateStaticFriction(h, d, v_n, K_gc);
-		}
-	else {
+	} else {
 		simulateDynamicFriction(p_a_n, u_rel_t, K_gc);
-		}
+	}
 	}
 
 void ContactJoint::correctPosition(Real h) {
@@ -100,17 +107,18 @@ void ContactJoint::correctPosition(Real h) {
 	Vector3D d;
 	calculateDistancePreview(h,d);  
 	// store length of distance vector
-	_positionError_n = d.length();
+	_positionError_n = d.norm();
 
 	/* Actually, a normal for t+h (preview) should be used! */
-  _positionError_n = d * _normal;
+  MatrixOps::innerProduct(_positionError_n,d,_normal);
+  //_positionError_n = d * _normal;
 
 	//approximate velocity
 	Vector3D v_n = (1/h) * _positionError_n * _normal;
 
 	// calculate impulse correction
-	Matrix3x3  K_aa(0);
-	Matrix3x3  K_bb(0);
+	Matrix3x3  K_aa;
+	Matrix3x3  K_bb;
 	connectorA().calculateCachedValues();
 	connectorB().calculateCachedValues();
 	const Vector3D & a_wcs = connectorA().getCachedWorldPosition();
