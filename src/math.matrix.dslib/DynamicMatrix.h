@@ -119,7 +119,7 @@ public:
   }
   inline T norm()const{
     T result;
-    VectorOperations<T>::norm(result,*this);
+    vectorop::norm(result,*this);
     return result;
   }
 

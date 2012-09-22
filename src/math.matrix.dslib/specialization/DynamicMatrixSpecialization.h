@@ -39,7 +39,7 @@ namespace nspace{
         return;
       }
       int size = rows*cols;
-      sumMat.resize(rows,cols,false);
+      sumMat.resize(rows,cols);
       // get data arrays
       const T* a=aMat.data();
       const T* b = bMat.data();
