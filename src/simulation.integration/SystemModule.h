@@ -1,10 +1,13 @@
 #pragma once
 #include <simulation/ISimulationModule.h>
-#include <simulation.integration/composites/CompositeSystemFunction.h>
-#include <simulation.integration/composites/CompositeStatefulObject.h>
-#include <simulation.integration/StepIntegrator.h>
-#include <simulation.time/SimulationTimeProvider.h>
+
 #include <simulation/SimulationTask.h>
+#include <simulation.time/SimulationTimeProvider.h>
+
+#include <simulation.state/CompositeStatefulObject.h>
+
+#include <simulation.integration/CompositeSystemFunction.h>
+#include <simulation.integration/StepIntegrator.h>
 #include <simulation.integration/Evaluator.h>
 
 namespace nspace{	

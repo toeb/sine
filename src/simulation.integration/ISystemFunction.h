@@ -1,9 +1,11 @@
 #pragma once
 
-#include <simulation/ISimulationObject.h>
-#include <simulation.integration/IStatefulObject.h>
-#include <simulation/SimulationModuleBase.h>
 #include <core/Time.h>
+
+#include <simulation/ISimulationObject.h>
+#include <simulation/SimulationModuleBase.h>
+
+#include <simulation.state/IStatefulObject.h>
 namespace nspace{
 class ISystemFunction : public virtual ISimulationObject{
 public: 

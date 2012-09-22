@@ -1,6 +1,6 @@
 #pragma once
 #include <core/patterns/Composite.h>
-#include <simulation.integration/IStatefulObject.h>
+#include <simulation.state/IStatefulObject.h>
 namespace nspace{
 
 

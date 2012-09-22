@@ -4,7 +4,7 @@
 #include <simulation.dynamics.force/ForceModule.h>
 #include <simulation.dynamics/DynamicBodyModule.h>
 #include <simulation.dynamics/connection/ConnectorModule.h>
-#include <simulation.integration/composites/CompositeStatefulObject.h>
+#include <simulation.state/CompositeStatefulObject.h>
 #include <simulation.integration/ISystemFunction.h>
 #include <simulation/composites/CompositeSimulationObject.h>
 //#include <simulation/Textiles/TextileAlgorithm.h>

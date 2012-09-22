@@ -26,9 +26,11 @@
  */
 #pragma once
 
-#include <simulation.integration/IStatefulObject.h>
-#include <simulation.integration/ISystemFunction.h>
 #include <simulation.timing/Timeable.h>
+
+#include <simulation.state/IStatefulObject.h>
+
+#include <simulation.integration/ISystemFunction.h>
 #include <simulation.integration/Evaluator.h>
 namespace nspace{
 

@@ -1,16 +1,17 @@
 
 
 
-set(integrationSource
- ./IStatefulObject.h
+set(integrationSource 
  ./Integrator.h
  ./Integrator.cpp
- ./State.h
- ./State.cpp
  ./StepIntegrator.h
  ./StepIntegrator.cpp
  ./ISystemFunction.h 
  ./Evaluator.h
+ ./CompositeSystemFunction.h
+ ./CompositeSystemFunction.cpp
+ ./SystemModule.h
+ ./SystemModule.cpp 
 )
 source_group("" FILES ${integrationSource})
 set(implementationSource
@@ -35,21 +36,6 @@ set(implementationSource
  )
 source_group("implementation" FILES ${implementationSource})
  
- set(moduleSource
- ./module/SystemModule.h
- ./module/SystemModule.cpp 
- )
-source_group("module" FILES ${moduleSource})
-
- set(compositeSource
- ./composites/CompositeSystemFunction.h
- ./composites/CompositeSystemFunction.cpp
- ./composites/CompositeStatefulObject.h
- ./composites/CompositeStatefulObject.cpp
- )
-source_group("composite" FILES ${compositeSource})
-
  
- 
-add_library(simulation.integration ${integrationSource} ${implementationSource} ${moduleSource} ${mbslibSource} ${compositeSource} ${historySource})
-target_link_libraries(simulation.integration  simulation math)
+add_library(simulation.integration ${integrationSource} ${implementationSource} )
+target_link_libraries(simulation.integration  simulation simulation.state math)

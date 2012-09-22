@@ -1,7 +1,9 @@
 #pragma once
 #include <simulation/ISimulationObject.h>
-#include <simulation.integration/State.h>
-#include <simulation.integration/IStatefulObject.h>
+
+#include <simulation.state/State.h>
+#include <simulation.state/IStatefulObject.h>
+
 #include <simulation.integration/ISystemFunction.h>
 
 namespace nspace{

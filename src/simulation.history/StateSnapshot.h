@@ -2,8 +2,8 @@
 
 #include <sstream>
 
-#include <simulation.integration/State.h>
-#include <simulation.integration/IStatefulObject.h>
+#include <simulation.state/State.h>
+#include <simulation.state/IStatefulObject.h>
 #include <core/Time.h>
 namespace nspace{
   typedef unsigned int StateSnapshotId;

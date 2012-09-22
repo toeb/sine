@@ -1,7 +1,7 @@
 #pragma once
 
 #include <simulation/ISimulationObject.h>
-#include <simulation.integration/State.h>
+#include <simulation.state/State.h>
 #include <core/patterns/Composite.h>
 
 namespace nspace{

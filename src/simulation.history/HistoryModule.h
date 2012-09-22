@@ -1,13 +1,19 @@
 #pragma once
 #include <simulation/ISimulationObject.h>
-#include <simulation.history/StateSnapshot.h>
-#include <simulation.time/SimulationTimeProvider.h>
-#include <simulation.integration/IStatefulObject.h>
-#include <simulation.time/PeriodicTask.h>
 #include <simulation/Simulation.h>
+
+
+#include <simulation.time/SimulationTimeProvider.h>
+#include <simulation.time/PeriodicTask.h>
 #include <simulation.time/CallbackTask.h>
+
+#include <simulation.state/IStatefulObject.h>
+
+#include <simulation.history/StateSnapshot.h>
+
 #include <vector>
 #include <algorithm>
+
 namespace nspace{
   class HistoryModule:public ISimulationObject, public virtual Composite<StateSnapshot>{
   private:

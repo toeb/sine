@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <simulation.integration/IStatefulObject.h>
+#include <simulation.state/IStatefulObject.h>
 #include <simulation/ISimulationObject.h>
 #include <simulation.kinematics/CoordinateSystem.h>
 #include <simulation.kinematics/Acceleration.h>
