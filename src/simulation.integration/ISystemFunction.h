@@ -14,5 +14,5 @@ public:
   virtual void postIntegration(Time t, Time h){};  
   virtual void logSystemInfo(std::ostream & ostream)const{};
 };
-};
+}
 
