@@ -5,7 +5,7 @@
  */
 #pragma once
 #include <visualization/IRenderer.h>
-#include <math/definitions.h>
+#include <math/core.h>
 namespace nspace{
 
 /**

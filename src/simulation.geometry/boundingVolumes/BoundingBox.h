@@ -1,5 +1,5 @@
 #pragma once
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.geometry/Interval.h>
 #include <simulation.geometry/Axis.h>
 #include <simulation.geometry/boundingVolumes/BoundingVolume.h>

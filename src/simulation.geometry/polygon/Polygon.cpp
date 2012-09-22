@@ -143,7 +143,7 @@ bool Polygon::isInsideOCS(const Vector3D & p_ocs)const{
     f->getCenter(f_c);
     Vector3D p = p_ocs - f_c;
     Real val =1;
-    MatrixOps::innerProduct(val,f->n_ocs,p);
+    matrix::innerProduct(val,f->n_ocs,p);
     //val = f->n_ocs*p;
     //Vector3D::dotProduct(f->n_ocs,p,val);
 

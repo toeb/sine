@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <simulation/SimulationModuleBase.h>
 #include <simulation.interaction/Keys.h>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.interaction/IInputListener.h>
 namespace nspace{
 

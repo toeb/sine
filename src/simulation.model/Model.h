@@ -5,7 +5,7 @@
 #include <core/Set.h>
 #include <core/Node.h>
 #include <core/Graph.h>
-#include <math/definitions.h>
+#include <math/core.h>
 
 namespace nspace{
   

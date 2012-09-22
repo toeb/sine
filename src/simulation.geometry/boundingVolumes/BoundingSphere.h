@@ -1,6 +1,6 @@
 #pragma once
 #include <simulation.geometry/boundingVolumes/BoundingVolume.h>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.geometry/primitives/Sphere.h>
 namespace nspace {
 

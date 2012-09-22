@@ -4,7 +4,7 @@
 #pragma once
 #include <visualization/IRenderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
-#include <math/definitions.h>
+#include <math/core.h>
 
 namespace nspace{
 

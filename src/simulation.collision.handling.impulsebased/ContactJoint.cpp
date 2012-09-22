@@ -1,5 +1,5 @@
 #include "ContactJoint.h"
-#include <math/definitions.h>
+#include <math/core.h>
 using namespace nspace;
 
 ContactJoint::ContactJoint(
@@ -25,7 +25,7 @@ void ContactJoint::applyNormalImpulses(Matrix3x3 &K, Vector3D &v_n, Vector3D &p_
 	if (_positionError_n < 0) {
 		Real denominator_n;
     //denominator_n = _normal * (K*_normal);
-    MatrixOps::innerProduct(denominator_n,_normal,(K )* (_normal));
+    matrix::innerProduct(denominator_n,_normal,(K )* (_normal));
     p_a_n = (1/denominator_n)*v_n;
 		contact().applyNormalImpulse(p_a_n);
 		}
@@ -40,8 +40,7 @@ void ContactJoint::simulateStaticFriction(Real h, Vector3D& d, Vector3D& v_n, Ma
 
 		Real denominator_t;
 		Vector3D p_a_t;
-    
-    MatrixOps::innerProduct(denominator_t,tangent,K_gc*tangent);
+    matrix::innerProduct(denominator_t,tangent,K_gc*tangent);
 		//denominator_t = tangent * (K_gc * tangent);
 		p_a_t = (1 / denominator_t) * v_t;
 		contact().applyTangentialImpulse(p_a_t);
@@ -55,7 +54,7 @@ void ContactJoint::simulateDynamicFriction(Vector3D &p_a_n, Vector3D &u_rel_t, M
 	Real denominator_t;
 	Vector3D p_a_t_max;
 	//denominator_t = tangent * (K_gc * tangent);
-   MatrixOps::innerProduct(denominator_t,tangent,K_gc*tangent);
+   matrix::innerProduct(denominator_t,tangent,K_gc*tangent);
 	p_a_t_max = (1 / denominator_t) * u_rel_t;
 
 	Real combinedFrictionCoefficient = contact().collidableA().getDynamicFrictionCoefficient() + contact().collidableB().getDynamicFrictionCoefficient();
@@ -63,8 +62,8 @@ void ContactJoint::simulateDynamicFriction(Vector3D &p_a_n, Vector3D &u_rel_t, M
 	p_a_t =(combinedFrictionCoefficient * p_a_n.norm())*tangent;	// insert friction coefficient here
 
 	Real dotProduct1, dotProduct2;
-  MatrixOps::innerProduct(dotProduct1,tangent,p_a_t_max);
-  MatrixOps::innerProduct(dotProduct2,tangent,p_a_t);
+  matrix::innerProduct(dotProduct1,tangent,p_a_t_max);
+  matrix::innerProduct(dotProduct2,tangent,p_a_t);
   //dotProduct1 = tangent *p_a_t_max;
 	//dotProduct2 = tangent *p_a_t;
 
@@ -110,7 +109,7 @@ void ContactJoint::correctPosition(Real h) {
 	_positionError_n = d.norm();
 
 	/* Actually, a normal for t+h (preview) should be used! */
-  MatrixOps::innerProduct(_positionError_n,d,_normal);
+  matrix::innerProduct(_positionError_n,d,_normal);
   //_positionError_n = d * _normal;
 
 	//approximate velocity

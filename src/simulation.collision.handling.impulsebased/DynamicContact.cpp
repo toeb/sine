@@ -48,7 +48,7 @@ DynamicContact::DynamicContact( DynamicCollidable &collidableA,
 void DynamicContact::getNormalRelativeVelocity(Real &out) {
   Vector3D v_rel;
   getRelativeVelocityVector(v_rel);
-  MatrixOps::innerProduct(out,v_rel,contact().normal);
+  matrix::innerProduct(out,v_rel,contact().normal);
   //out = v_rel * contact().normal;
 }
 
@@ -80,7 +80,7 @@ void DynamicContact::applyNormalImpulse(Vector3D &p) {
 	//if (!_c1 || !_c2) return;
 	Vector3D newAccumulatedImpulse = _accumulatedImpulse + p;
 	Real dotProduct;
-  MatrixOps::innerProduct(dotProduct,newAccumulatedImpulse,contact().normal);
+  matrix::innerProduct(dotProduct,newAccumulatedImpulse,contact().normal);
   //dotProduct = newAccumulatedImpulse * contact().normal;
 
 	if (dotProduct <= 0) {

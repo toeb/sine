@@ -1,8 +1,7 @@
 #pragma once
 
-#include <math/AverageOverTime.h>
+#include <math/core.h>
 #include <simulation.time/ITimeProvider.h>
-#include <math/AverageRate.h>
 namespace nspace{
   
 class SimulationTimeProvider:public virtual ITimeProvider{

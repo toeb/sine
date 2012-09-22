@@ -3,7 +3,7 @@
 #include <simulation.model/ModelElement.h>
 #include <core/Set.h>
 
-#include <math/definitions.h>
+#include <math/core.h>
 
 namespace nspace{
   struct Connection{

@@ -2,7 +2,7 @@
 #include <simulation.time/SimulationTimeProvider.h>
 #include <simulation.time/PeriodicTask.h>
 
-#include <math/AverageOverTime.h>
+#include <math.statistics/core.h>
 
 #include <queue>
 namespace nspace{

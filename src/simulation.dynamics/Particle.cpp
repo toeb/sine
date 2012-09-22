@@ -1,5 +1,5 @@
 #include "Particle.h"
-#include <math/definitions.h>
+#include <math/core.h>
 
 using namespace nspace;
 
@@ -24,7 +24,7 @@ void Particle::calculateDynamics(){
     return;
   }
   // acceleration is force / mass
-  MatrixOps::multiplyScalar(acceleration(),_f,1/m);
+  matrix::multiplyScalar(acceleration(),_f,1/m);
   //acceleration() = _f*(1/m);
 }
 
@@ -35,8 +35,8 @@ void Particle::notifyStateChanged(){
 
   // position().assign(_x);
    //velocity().assign(_xDot);
-  MatrixOps::assign(position(),_x);
-  MatrixOps::assign(velocity(),_xDot);
+  matrix::assign(position(),_x);
+  matrix::assign(velocity(),_xDot);
 
  }
  void Particle::notifyStateNeeded(){
@@ -50,9 +50,9 @@ void Particle::notifyStateChanged(){
    //acceleration().copyTo(_xDotDot);
 
 
-   MatrixOps::copyTo(_x,position());
-   MatrixOps::copyTo(_xDot,velocity());
-   MatrixOps::copyTo(_xDotDot,acceleration());
+   matrix::copyTo(_x,position());
+   matrix::copyTo(_xDot,velocity());
+   matrix::copyTo(_xDotDot,acceleration());
  }
 
 

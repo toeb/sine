@@ -278,7 +278,7 @@ int main(int argc, char** argv){
   {
 
 
-    int n(1000), m(4), l(4);
+    int n(20), m(4), l(4);
     for(int j=0; j < n; j++){
       for(int i=0; i< m; i++){
         for(int k=0; k < l; k++){

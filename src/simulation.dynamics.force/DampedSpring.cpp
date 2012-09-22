@@ -61,7 +61,7 @@ inline void DampedSpring::calculateSpringAndDampeningForce(){
     _f_s_wcs = (_k_s*(_currentLength-_l0))*n_wcs;
     //f_s_wcs.assign( _k_s * (amount - _l0) *n_wcs);
     Real velocityDotNormal;
-    MatrixOps::innerProduct(velocityDotNormal,deltaV,n_wcs);
+    matrix::innerProduct(velocityDotNormal,deltaV,n_wcs);
     //velocityDotNormal = deltaV * n_wcs;
     //Vector3D::dotProduct(deltaV,n_wcs,velocityDotNormal);
     _f_d_wcs = (_k_d*velocityDotNormal)*n_wcs;

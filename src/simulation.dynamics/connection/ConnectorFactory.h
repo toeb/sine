@@ -1,6 +1,6 @@
 #pragma once
 #include <simulation.dynamics/DynamicBody.h>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.dynamics/connection/Connector.h>
 namespace nspace{
   class ConnectorFactory{

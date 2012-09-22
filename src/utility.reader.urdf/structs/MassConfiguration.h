@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math/definitions.h>
+#include <math/core.h>
 
 namespace nspace{
 class MassConfiguration{

@@ -36,7 +36,7 @@ bool SeparatingAxes::testCollision(const ISimulationObject & collidableA, const 
       e2->getDirection(dirB);
       Axis axis;
       
-      VectorOperations<Real>::crossProduct(axis.n,dirA,dirB);
+      vectorop::crossProduct(axis.n,dirA,dirB);
       axis.n.normalize();
 
     }

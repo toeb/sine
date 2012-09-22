@@ -1,5 +1,5 @@
 #pragma once
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.dynamics/connection/Connector.h>
 #include <simulation.dynamics.multibody.impulsebased/Joint.h>
 namespace nspace {

@@ -30,7 +30,7 @@
 #include "GL/glu.h"
 #include "GL/glut.h"
 #include "GL/freeglut_ext.h"
-#include <math/definitions.h>
+#include <math/core.h>
 //#include "Utilities/StringTools.h"
 #include <visualization.opengl/Utility.h>
 #define _USE_MATH_DEFINES

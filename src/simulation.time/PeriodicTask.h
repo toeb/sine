@@ -3,7 +3,7 @@
 #include <simulation.time/ITimeProvider.h>
 #include <simulation/SimulationTask.h>
 #include <simulation.time/RealTimeProvider.h>
-#include <math/AverageOverTime.h>
+#include <math.statistics/AverageOverTime.h>
 
 #include <functional>
 namespace nspace{

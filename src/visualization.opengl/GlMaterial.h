@@ -1,6 +1,6 @@
 #pragma once
 #include <config.h>
-#include <math/definitions.h>
+#include <math/core.h>
 namespace nspace{
 class GlMaterial{
 public:

@@ -1,6 +1,6 @@
 #pragma once
 #include <simulation.geometry/polygon/Polygon.h>
-#include <math/definitions.h>
+#include <math/core.h>
 namespace nspace{
 class Rectangle : public virtual Polygon{
 private:

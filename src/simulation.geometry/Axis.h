@@ -1,5 +1,5 @@
 #pragma once
-#include <math/definitions.h>
+#include <math/core.h>
 namespace nspace{
   
 class Axis{
@@ -21,7 +21,7 @@ Vector3D n;
     Vector3D diff = a-p;
     Real result;
     
-    MatrixOps::innerProduct(result, n,diff);
+    matrix::innerProduct(result, n,diff);
     /*
     Vector3D::subtract(a, p,diff);
     Vector3D::dotProduct(n,diff,result);*/

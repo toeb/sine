@@ -1,5 +1,5 @@
 #pragma once
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.dynamics/Particle.h>
 #include <simulation.dynamics/connection/Connector.h>
 

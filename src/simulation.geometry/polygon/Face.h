@@ -2,7 +2,7 @@
 
 #include <simulation.geometry/polygon/Element.h>
 #include <simulation.geometry/polygon/HalfEdge.h>
-#include <math/definitions.h>
+#include <math/core.h>
 
 namespace nspace{
 

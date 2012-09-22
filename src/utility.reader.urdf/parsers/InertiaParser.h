@@ -1,6 +1,6 @@
 #pragma once
 #include <utility.xml/NamedChildParser.h>
-#include <math/definitions.h>
+#include <math/core.h>
 
 namespace nspace{
   

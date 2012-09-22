@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <math/definitions.h>
+#include <math/core.h>
 namespace nspace{
 struct Contact{
   ///< the position in world coordinate where object A collides

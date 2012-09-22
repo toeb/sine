@@ -1,5 +1,5 @@
 #include <lodepng/lodepng.h>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <string>
 #include <config.h>
 #include <vector>
@@ -8,7 +8,7 @@
 #include <fstream>
 #include <simulation.timing/Timeable.h>
 #include <simulation.logging/LoggingObject.h>
-#include <math.linearalgebra.dslib/DynamicMatrix.h>
+#include <math.matrix.dslib/DynamicMatrix.h>
 using namespace nspace;
 using namespace nspace::matrix2;
 using namespace std;
@@ -274,13 +274,13 @@ int main(int argc, char ** argv){
   dx(2)=0.5;
   DynamicMatrix<Real> dy = dx.transpose(); 
   
-  MatrixOps::convolveSame(Ix,I,dx);
-  MatrixOps::convolveSame(Iy,I,dy);
+  matrix::convolveSame(Ix,I,dx);
+  matrix::convolveSame(Iy,I,dy);
 
 
-  MatrixOps::elementWiseMultiply(IxIy, Ix,Iy);
-  MatrixOps::elementWiseMultiply(IxIx, Ix,Ix);
-  MatrixOps::elementWiseMultiply(IyIy, Iy,Iy);
+  matrix::elementWiseMultiply(IxIy, Ix,Iy);
+  matrix::elementWiseMultiply(IxIx, Ix,Ix);
+  matrix::elementWiseMultiply(IyIy, Iy,Iy);
 
   I.toUnitInterval();
   I *= 255.0;

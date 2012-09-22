@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.dynamics.force/Force.h>
 #include <vector>
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <simulation/ISimulationObject.h>
-#include <math/definitions.h>
+#include <math/core.h>
 namespace nspace{  
 
   class Connector : public ISimulationObject{

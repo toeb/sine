@@ -23,7 +23,7 @@
 /**
  * \file src/vis/opengl/Utility.h
  */
-#include <math/definitions.h>
+#include <math/core.h>
 #include <visualization.opengl/opengl.h>
 #include <simulation.kinematics/CoordinateSystem.h>
 #include <visualization.opengl/GlMaterial.h>

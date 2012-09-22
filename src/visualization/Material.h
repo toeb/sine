@@ -1,4 +1,4 @@
-#include <math/definitions.h>
+#include <math/core.h>
 #pragma once
 
 

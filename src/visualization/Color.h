@@ -1,4 +1,4 @@
-#include <math/definitions.h>
+#include <math/core.h>
 #include <map>
 #include <string>
 #pragma once
@@ -75,7 +75,7 @@ namespace nspace{
     void normalize(){
       if(_alpha<0)_alpha=0;
       if(_alpha>1)_alpha=1;
-	    _rgb = _rgb * (1.0/ MatrixOps::maximum(_rgb));
+	    _rgb = _rgb * (1.0/ matrix::maximum(_rgb));
     }
 
 

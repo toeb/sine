@@ -1,42 +1,29 @@
 
 
 set(source
-	./definitions.h
-	./ScalarOperations.h
-	./ScalarConstants.h
 	./CDMath.cpp
 	./CDMath.h
 	./MathDefs.h
 	./SimMath.cpp
 	./SimMath.h
-	./IAverage.h
-	./IAverage.cpp
-	./Average.h
-	./Average.cpp
-	./AverageRate.h
-	./AverageRate.cpp
-	./AverageOverTime.h
-	./AverageOverTime.cpp
-	./Statistics.h
-	./Statistics.cpp
+	./core.h
 ../config.h
-	
+	./CMakeLists.txt 
 )
 source_group("" FILES ${source})
 
 
-file(GLOB_RECURSE operationsSource 
-    "operations/*.h"
-    "operations/*.cpp"
-)
-source_group("operations" FILES ${operationsSource})
 
-add_library(math ${source} ${operationsSource} CMakeLists.txt ../config.h)
-target_link_libraries(math core 
- math.linearalgebra
- math.linearalgebra.dslib
- math.linearalgebra.ibds
- math.linearalgebra.eigen
+add_library(math ${source}  )
+target_link_libraries(math 
+core 
+ math.operation
+ math.scalar
+ math.matrix
+ math.matrix.dslib
+ math.matrix.ibds
+ math.matrix.eigen
+ math.statistics
  
 )
 

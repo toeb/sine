@@ -24,7 +24,7 @@
  * \file src/vis/opengl/GlViewport.h
  */
 
-#include <math/definitions.h>
+#include <math/core.h>
 
 #include <visualization.opengl/opengl.h>
 #include <visualization.opengl/Utility.h>

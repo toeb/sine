@@ -1,6 +1,6 @@
 
 #include "Connector.h"
-#include <math/definitions.h>
+#include <math/core.h>
 
 using namespace nspace;
 

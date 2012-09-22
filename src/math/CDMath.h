@@ -23,7 +23,7 @@
 #pragma once
 
 #include <config.h>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <math/MathDefs.h>
 namespace nspace
 {

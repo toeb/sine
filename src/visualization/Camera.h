@@ -2,7 +2,7 @@
 
 #include <simulation/ISimulationObject.h>
 #include <simulation/kinematics/CoordinateSystem.h>
-#include <math/definitions.h>
+#include <math/core.h>
 
 
 

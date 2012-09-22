@@ -1,6 +1,8 @@
 #pragma once
 #include <ostream>
-#include <math/definitions.h>
+#include <math/core.h>
+
+
 
 namespace nspace{
 
@@ -43,8 +45,7 @@ namespace nspace{
       if(_derivatives == 0 && _dimension==0)return;
       state.resize(_derivatives,_dimension);
       //state.resize(_derivatives,_dimension,false);
-      
-      MatrixOps::getBlock(state,*_stateMatrix,0,_offset);
+      matrix::getBlock(state,*_stateMatrix,0,_offset);
       //state = _stateMatrix->block(0,_offset,_derivatives,_dimension);
       //_stateMatrix->getBlock(state,0,_offset);
     }
@@ -54,7 +55,7 @@ namespace nspace{
         return;
       }
       
-      MatrixOps::setBlock(*_stateMatrix,state,0,_offset);
+      matrix::setBlock(*_stateMatrix,state,0,_offset);
       //_stateMatrix->block(0,_offset,_derivatives,_dimension) = state;
       //_stateMatrix->setBlock(0,_offset,state);
     }
@@ -63,7 +64,7 @@ namespace nspace{
       x.resize(_derivatives-1,_dimension);
       x.setZero();
       //x = _stateMatrix->block(0,_offset,_derivatives-1,_dimension);
-      MatrixOps::getBlock(x,*_stateMatrix,0,_offset);
+      matrix::getBlock(x,*_stateMatrix,0,_offset);
       //_stateMatrix->getBlock(x,0,_offset);
     }
     void getXDot(StateMatrix & xDot)const{
@@ -71,7 +72,7 @@ namespace nspace{
       //_stateMatrix->getBlock(xDot,1,_offset);
       xDot.resize(_derivatives-1,_dimension);
       xDot.setZero();
-      MatrixOps::getBlock(xDot,*_stateMatrix,1,_offset);
+      matrix::getBlock(xDot,*_stateMatrix,1,_offset);
       //x = _stateMatrix->block(1,_offset,_derivatives-1,_dimension);
       
     }
@@ -80,7 +81,7 @@ namespace nspace{
         std::cerr << "State::Could not set state " << std::endl;
         return;
       }
-      MatrixOps::setBlock(*_stateMatrix,x,0,_offset);
+      matrix::setBlock(*_stateMatrix,x,0,_offset);
       //_stateMatrix->setBlock(0,_offset,x);
     }
 

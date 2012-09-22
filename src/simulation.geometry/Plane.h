@@ -1,6 +1,6 @@
 #pragma once
 #include <simulation.geometry/Geometry.h>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.geometry/Axis.h>
 namespace nspace{
 class Plane:public Geometry{

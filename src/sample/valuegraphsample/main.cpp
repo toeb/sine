@@ -1,6 +1,6 @@
 #include <utility.valuegraph/valuegraph.h>
 #include <iostream>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <core/Node.h>
 using namespace nspace;
 using namespace std;

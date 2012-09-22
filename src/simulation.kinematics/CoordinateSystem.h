@@ -1,7 +1,7 @@
 #pragma once
 
 #include <simulation/ISimulationObject.h>
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.kinematics/Position.h>
 #include <simulation.kinematics/Orientation.h>
 

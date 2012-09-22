@@ -1,5 +1,5 @@
 #include "RigidBody.h"
-#include <math/definitions.h>
+#include <math/core.h>
 
 using namespace nspace;
 using namespace nspace::math::operators;
@@ -156,11 +156,11 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
   
   //optimized code. uses inline functions
   
-  MatrixOps::crossProductMatrix(tmpA,r_b_wcs);
+  matrix::crossProductMatrix(tmpA,r_b_wcs);
   //tmpA = r_b_star
   tmpB = J_inv_wcs *tmpA;
   //tmpB = J_inv_wcs * r_b_star
-  MatrixOps::crossProductMatrix(tmpA,r_a_wcs);
+  matrix::crossProductMatrix(tmpA,r_a_wcs);
   //tmpA = r_a_star
   K = tmpA*tmpB;
   // K = r_a_star * J_inv_wcs * r_b_star

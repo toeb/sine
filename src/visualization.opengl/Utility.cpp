@@ -1,6 +1,6 @@
 #include "opengl.h"
 #include "Utility.h"
-#include <math/definitions.h>
+#include <math/core.h>
 
 
 

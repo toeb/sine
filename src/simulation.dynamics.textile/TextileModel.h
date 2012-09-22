@@ -3,7 +3,7 @@
 #include <vector>
 #include <functional>
 
-#include <math/definitions.h>
+#include <math/core.h>
 
 #include <simulation/ISimulationObject.h>
 #include <simulation.dynamics.force/DampedSpring.h>

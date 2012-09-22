@@ -1,26 +1,26 @@
 #include <config.h>
 #include <core/Time.h>
 #include <iostream>
-#include <math.linearalgebra.dslib/StaticMatrix.h>
-#include <math.linearalgebra.dslib/Quaternion.h>
-#include <math.linearalgebra.dslib/specialization/StaticMatrixNxNSpecialization.h>
-#include <math.linearalgebra.dslib/specialization/StaticMatrix3x3Specialization.h>
-#include <math.linearalgebra.dslib/specialization/StaticMatrix3x1Specialization.h>
-#include <math.linearalgebra.dslib/StaticMatrixOperators.h>
+#include <math.matrix.dslib/StaticMatrix.h>
+#include <math.matrix.dslib/Quaternion.h>
+#include <math.matrix.dslib/specialization/StaticMatrixNxNSpecialization.h>
+#include <math.matrix.dslib/specialization/StaticMatrix3x3Specialization.h>
+#include <math.matrix.dslib/specialization/StaticMatrix3x1Specialization.h>
+#include <math.matrix.dslib/StaticMatrixOperators.h>
 
-#include <math.linearalgebra.dslib/DynamicMatrix.h>
-#include <math.linearalgebra.dslib/specialization/DynamicMatrixSpecialization.h>
-#include <math.linearalgebra.dslib/DynamicMatrixOperators.h>
+#include <math.matrix.dslib/DynamicMatrix.h>
+#include <math.matrix.dslib/specialization/DynamicMatrixSpecialization.h>
+#include <math.matrix.dslib/DynamicMatrixOperators.h>
 #include <string>
 
 #include <algorithm>
-#include <math.linearalgebra.ibds/MatrixNxM.h>
-#include <math.linearalgebra.ibds/Quaternion.h>
-#include <math.linearalgebra.ibds/Matrix3x3.h>
+#include <math.matrix.ibds/MatrixNxM.h>
+#include <math.matrix.ibds/Quaternion.h>
+#include <math.matrix.ibds/Matrix3x3.h>
 #include <typeinfo>
 #include <sstream>
 #include <functional>
-// //#include <math/definitions.h>
+// //#include <math/core.h>
 using namespace nspace;
 using namespace std;
 
@@ -379,7 +379,7 @@ public:
   }
   void performTest(){
     tick();
-    MatrixOps::invertSymmetricMatrix(b,a);
+    operations::invertSymmetricMatrix(b,a);
     tock();
   }
 };
@@ -395,7 +395,7 @@ public:
   }
   void performTest(){
     tick();
-    MatrixOps::compareMatrix(result,a,b);
+    matrix::compareMatrix(result,a,b);
     tock();
   }
 };

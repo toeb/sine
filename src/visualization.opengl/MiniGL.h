@@ -23,7 +23,7 @@
 #pragma once
 
 #include <config.h>
-#include <math/definitions.h>
+#include <math/core.h>
 
 #ifdef USE_DOUBLES
 	#define glNormal3v glNormal3dv

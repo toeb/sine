@@ -60,18 +60,18 @@ void KinematicBody::notifyStateNeeded(){
   Real * x = state().stateVector(0);
   Real * xDot = state().stateVector(1);
 
-  MatrixOps::copyTo(x,position());
+  matrix::copyTo(x,position());
   //position().copyTo(x);
-  MatrixOps::copyTo(x+3, velocity());
-  MatrixOps::copyTo(x+6, orientation());
-  MatrixOps::copyTo(x+10,angularVelocity());
+  matrix::copyTo(x+3, velocity());
+  matrix::copyTo(x+6, orientation());
+  matrix::copyTo(x+10,angularVelocity());
 
-  MatrixOps::copyTo(xDot , velocity());
-  MatrixOps::copyTo(xDot +3 ,acceleration());
+  matrix::copyTo(xDot , velocity());
+  matrix::copyTo(xDot +3 ,acceleration());
   Quaternion qDot;
   transformAngularVelocity(qDot,angularVelocity(),orientation());
-  MatrixOps::copyTo(xDot+6,qDot);
-  MatrixOps::copyTo(xDot+10,angularAcceleration());
+  matrix::copyTo(xDot+6,qDot);
+  matrix::copyTo(xDot+10,angularAcceleration());
 }
 
  /**
@@ -83,10 +83,10 @@ void KinematicBody::notifyStateChanged()
   Real * x = state().stateVector(0);
   //Real * xDot = state().stateVector(0);
   
-  MatrixOps::assign(position(),x);
-  MatrixOps::assign(velocity(),x+3);
-  MatrixOps::assign(orientation(),x+6);
-  MatrixOps::assign(angularVelocity(),x+10);
+  matrix::assign(position(),x);
+  matrix::assign(velocity(),x+3);
+  matrix::assign(orientation(),x+6);
+  matrix::assign(angularVelocity(),x+10);
 
   /*
   position().assign(x);

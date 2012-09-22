@@ -90,7 +90,7 @@ void ImpulseBasedCollisionHandler::handleContact(DynamicContact & dynamicContact
   {
     //calculate the resulting impulse
 		Real denominator;
-    MatrixOps::innerProduct(denominator,contact.normal,K*contact.normal);
+    matrix::innerProduct(denominator,contact.normal,K*contact.normal);
     //denominator = contact.normal * (K * contact.normal);
 
 		Vector3D delta_v;

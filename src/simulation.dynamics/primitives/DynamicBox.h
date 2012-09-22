@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <math/definitions.h>
+#include <math/core.h>
 #include <simulation.geometry/primitives/Hexahedron.h>
 #include <simulation.dynamics/primitives/DynamicGeometry.h>
 namespace nspace{
