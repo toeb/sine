@@ -1,5 +1,5 @@
 #include "RungeKuttaFehlberg45.h"
-using namespace mbslib;
+using namespace nspace;
 using namespace std;
 // coefficients needed for rkf45
 #define c20 1.0/4.0
@@ -34,7 +34,7 @@ using namespace std;
 
 
 RungeKuttaFehlberg45::RungeKuttaFehlberg45(
-  TScalar tolerance, 
+  Real tolerance, 
   Real h0, 
   Real alpha,
   Real beta,
@@ -77,7 +77,7 @@ int RungeKuttaFehlberg45::getErrorOrder()const{
   return 6;
 }
 
-const TScalar& RungeKuttaFehlberg45::getErrorEstimate()const{
+const Real& RungeKuttaFehlberg45::getErrorEstimate()const{
   return currentErrorEstimate;
 }
   
@@ -117,9 +117,9 @@ void RungeKuttaFehlberg45::doStep(StateMatrix & x_next, const StateMatrix & x, R
   calculateRungeKutta45(t_i,x,h_i,y,z);
   // calculate the error estimate 
   currentErrorEstimate =  (y-z).norm();
-  TScalar s =  pow(tolerance*h_i/currentErrorEstimate,1.0/4.0); 
-  TScalar h_star = s * h_i;
-  TScalar h_new =h_star*alpha; // h star * alpha reduces the step size causing overhead but since f is changing the overall efficiency is increased
+  Real s =  pow(tolerance*h_i/currentErrorEstimate,1.0/4.0); 
+  Real h_star = s * h_i;
+  Real h_new =h_star*alpha; // h star * alpha reduces the step size causing overhead but since f is changing the overall efficiency is increased
   // stepsize increase is bounded by h*beta
   if(h_new>beta*h_i)h_new =  beta  * h_i;
   //stepsize decrease is bounded by h*gamma

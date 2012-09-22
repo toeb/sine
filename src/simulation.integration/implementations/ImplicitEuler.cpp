@@ -23,7 +23,7 @@ using namespace std;
 };
 
   
-ImplicitEuler::ImplicitEuler(TTime h0, TScalar tolerance,int maxIterations):StepIntegrator(h0), _tolerance(tolerance),_maxIterations(maxIterations){
+ImplicitEuler::ImplicitEuler(Time h0, Real tolerance,int maxIterations):StepIntegrator(h0), _tolerance(tolerance),_maxIterations(maxIterations){
   setName("ImplicitEuler");
 }
 void ImplicitEuler::logParameters(ostream & o){

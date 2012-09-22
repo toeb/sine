@@ -34,7 +34,7 @@ namespace nspace{
 class ImplicitEuler : public StepIntegrator{
 private:
   StateMatrix _x_next;
-  TScalar _tolerance;
+  Real _tolerance;
   int _maxIterations;
 public:
 
