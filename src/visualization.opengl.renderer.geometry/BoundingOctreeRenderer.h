@@ -1,7 +1,7 @@
 #pragma once
-#include <Visualization/IRenderer.h>
-#include <Simulation/Geometry/BoundingVolumes/BoundingOctree.h>
-namespace IBDS{
+#include <visualization/IRenderer.h>
+#include <simulation.geometry/boundingVolumes/BoundingOctree.h>
+namespace nspace{
   class OctreeRenderer : public IRenderer{
     Octree & _octree;
   public:

@@ -2,37 +2,51 @@
 
 #include <Dslib>
 #include <core/patterns/Singleton.h>
-#include <visualization.opengl.renderer/general/GridRenderer.h>
-#include <visualization.opengl.renderer/general/LightRenderer.h>
-#include <visualization.opengl.renderer/geometry/PolygonRenderer.h>
-#include <visualization.opengl.renderer/geometry/BoxRenderer.h>
-#include <visualization.opengl.renderer/geometry/PointRenderer.h>
-#include <visualization.opengl.renderer/general/BillboardRenderer.h>
-#include <visualization.opengl.renderer/geometry/SphereRenderer.h>
-#include <visualization/Color.h>
-#include <simulation.geometry/primitives/Hexahedron.h>
-#include <simulation.kinematics/KinematicCoordinates.h>
-#include <simulation.geometry/Plane.h>
-#include <simulation.history/HistoryModule.h>
-#include <simulation.dynamics.force/ForceField.h>
-#include <simulation.dynamics/Particle.h>
-#include <simulation.dynamics/DynamicBodyModule.h>
-#include <simulation.dynamics.force/ForceModule.h>
-#include <simulation.utility/DynamicsAlgorithm.h>
-#include <simulation.dynamics.force/Gravity.h>
-#include <simulation.dynamics/RigidBody.h>
-#include <simulation.dynamics/primitives/DynamicBox.h>
-#include <simulation.geometry/primitives/Sphere.h>
-#include <simulation.dynamics.multibody.impulsebased/ImpulseBasedMultiBodyModule.h>
-#include <simulation.dynamics.multibody.impulsebased/joints/BallJoint.h>
-#include <simulation.dynamics/connection/RigidBodyConnector.h>
-#include <simulation.dynamics/connection/ConnectorFactory.h>
-#include <simulation.model/builder/ModelBuilderBase.h>
+
+#include <GL/glut.h>
+
+
 #include <simulation.time/CallbackTask.h>
 #include <simulation.time/PeriodicTask.h>
+
+
+#include <visualization/Color.h>
 #include <visualization.opengl/opengl.h>
-#include <GL/glut.h>
+#include <visualization.opengl.renderer/GridRenderer.h>
+#include <visualization.opengl.renderer/LightRenderer.h>
+#include <visualization.opengl.renderer/BillboardRenderer.h>
+#include <visualization.opengl.renderer.geometry/PolygonRenderer.h>
+#include <visualization.opengl.renderer.geometry/BoxRenderer.h>
+#include <visualization.opengl.renderer.geometry/PointRenderer.h>
+#include <visualization.opengl.renderer.geometry/SphereRenderer.h>
+
+
+#include <simulation.geometry/primitives/Hexahedron.h>
+#include <simulation.geometry/Plane.h>
+#include <simulation.geometry/primitives/Sphere.h>
+
+#include <simulation.kinematics/KinematicCoordinates.h>
+#include <simulation.history/HistoryModule.h>
+#include <simulation.utility/DynamicsAlgorithm.h>
+
+#include <simulation.dynamics/Particle.h>
+#include <simulation.dynamics/DynamicBodyModule.h>
+#include <simulation.dynamics/RigidBody.h>
+#include <simulation.dynamics/primitives/DynamicBox.h>
+#include <simulation.dynamics/connection/RigidBodyConnector.h>
+#include <simulation.dynamics/connection/ConnectorFactory.h>
+
+#include <simulation.dynamics.force/ForceModule.h>
+#include <simulation.dynamics.force/Gravity.h>
+#include <simulation.dynamics.force/ForceField.h>
+
+#include <simulation.dynamics.multibody.impulsebased/ImpulseBasedMultiBodyModule.h>
+#include <simulation.dynamics.multibody.impulsebased/joints/BallJoint.h>
+
+#include <simulation.model/builder/ModelBuilderBase.h>
+
 #include <utility.reader.urdf/UrdfModelReader.h>
+
 using namespace nspace;
 using namespace std;
 class GlutObject : public virtual IRenderer{

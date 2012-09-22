@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Simulation/Force/DampedSpring.h>
-#include <Visualization/IRenderer.h>
+#include <simulation.dynamics.force/DampedSpring.h>
+#include <visualization/IRenderer.h>
 
-namespace IBDS{
+namespace nspace{
   class SpringRenderer:public IRenderer{
   private:
     Real _maxForceAmount;

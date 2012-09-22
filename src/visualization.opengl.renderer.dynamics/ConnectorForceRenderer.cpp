@@ -1,9 +1,9 @@
 #include "ConnectorForceRenderer.h"
-#include <Visualization/MiniGL.h>
+#include <visualization.opengl/MiniGL.h>
 
-using namespace IBDS;
+using namespace nspace;
 
-ConnectorForceRenderer::ConnectorForceRenderer(const Connector & connector):_connector(connector){
+ConnectorForceRenderer::ConnectorForceRenderer(const DynamicConnector & connector):_connector(connector){
   _offset=Vector3D(-1,0,0);
 }
 void ConnectorForceRenderer::render(){

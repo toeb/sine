@@ -1,9 +1,9 @@
 #include "ConnectorVelocityRenderer.h"
-#include <Visualization/MiniGL.h>
+#include <visualization.opengl/MiniGL.h>
 
-using namespace IBDS;
+using namespace nspace;
 
-ConnectorVelocityRenderer::ConnectorVelocityRenderer(Connector & connector):_connector(connector){
+ConnectorVelocityRenderer::ConnectorVelocityRenderer(DynamicConnector & connector):_connector(connector){
 }
 void ConnectorVelocityRenderer::render(){
   const Vector3D & a =_connector.getWorldPosition();

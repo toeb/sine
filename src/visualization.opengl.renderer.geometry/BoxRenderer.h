@@ -2,7 +2,7 @@
 #include <visualization/IRenderer.h>
 
 #include <simulation.geometry/primitives/Hexahedron.h>
-#include <visualization.opengl.renderer/general/TextRenderer.h>
+#include <visualization.opengl.renderer.text/TextRenderer.h>
 #include <visualization.opengl/GlTexture.h>
 
 namespace nspace{

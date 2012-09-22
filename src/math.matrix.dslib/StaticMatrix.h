@@ -186,35 +186,35 @@ inline operator MatType()const{
   
   inline T length()const{
     T result;
-    VectorOperations<T>::norm(result,*this);
+    vectorop::norm(result,*this);
     return result;
   }
   inline T norm()const{
     T result;
-    math::shorthands::vector::norm(result,*this);
+    vectorop::norm(result,*this);
     return result;
   }
   inline T length2()const{
     T result;
-    math::shorthands::vector::normSquared(result,*this);
+    vectorop::normSquared(result,*this);
     return result;
   }
   inline T squaredNorm()const{
     T result;
-    math::shorthands::vector::normSquared(result,*this);
+    vectorop::normSquared(result,*this);
     return result;
   }
   inline T maximum()const{
     T result;
-    math::shorthands::vector::maximum(result,*this);
+    vectorop::maximum(result,*this);
     return result;
   }
   inline T minimum()const{
     T result;
-    math::shorthands::vector::minimum(result,*this);
+    vectorop::minimum(result,*this);
   }
   inline void normalize(){
-    math::shorthands::vector::normalize(*this);
+    vectorop::normalize(*this);
   }
   
   inline bool resize(int rows, int cols){

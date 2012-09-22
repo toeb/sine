@@ -1,7 +1,7 @@
 #include "ParticleRenderer.h"
 
-#include <Visualization/MiniGL.h>
-using namespace IBDS;
+#include <visualization.opengl/MiniGL.h>
+using namespace nspace;
 
 
 ParticleRenderer::ParticleRenderer(const Particle & particle):_particle(particle){

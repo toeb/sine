@@ -1,8 +1,8 @@
-#include <Visualization/MiniGL.h>
-#include <Simulation/Geometry/BoundingVolumes/BoundingSphere.h>
-#include "OctreeRenderer.h"
+#include <visualization.opengl/MiniGL.h>
+#include <simulation.geometry/boundingVolumes/BoundingSphere.h>
+#include "BoundingOctreeRenderer.h"
 
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 int OctreeRenderer::level =0;
 bool OctreeRenderer::doRender =true;
@@ -43,7 +43,7 @@ void OctreeRenderer::render(){
     
     BoundingSphere * bs = dynamic_cast<BoundingSphere*>(volume);
     if(bs){
-      MiniGL::drawSphere(&(bs->getPositionPCS()),bs->radius(),color,14U);
+      MiniGL::drawSphere(bs->getPositionPCS(),bs->radius(),color,14U);
     }
     //MiniGL::drawCube(&center,&((Matrix3x3::Identity())),aabb.getWidth(), aabb.getHeight(), aabb.getDepth(),color);
     

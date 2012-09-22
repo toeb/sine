@@ -11,6 +11,9 @@ target_link_libraries(sample.qt
  simulation.dynamics.force
  simulation.geometry
  visualization.opengl.renderer
+ visualization.opengl.renderer.geometry
+ visualization.opengl.renderer.text
+ visualization.opengl.renderer.dynamics
  utility.reader.urdf
  simulation.dynamics.multibody.impulsebased math)
 project_folder("samples" sample.qt )

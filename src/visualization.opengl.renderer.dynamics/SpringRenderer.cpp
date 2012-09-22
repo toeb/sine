@@ -1,8 +1,8 @@
 #include "SpringRenderer.h"
 
-#include <Visualization/MiniGL.h>
+#include <visualization.opengl/MiniGL.h>
 #include <iostream>
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 SpringRenderer::SpringRenderer(DampedSpring & spring):_spring(spring){
@@ -13,8 +13,8 @@ SpringRenderer::SpringRenderer(DampedSpring & spring):_spring(spring){
 void SpringRenderer::render(){
   _spring.calculateSpringAndDampeningForce();
   
-  Connector & cA = _spring.getConnectorA();
-  Connector & cB = _spring.getConnectorB();
+  DynamicConnector & cA = _spring.getConnectorA();
+  DynamicConnector & cB = _spring.getConnectorB();
 
   const Vector3D  & a_wcs = cA.getWorldPosition();
   const Vector3D  & b_wcs = cB.getWorldPosition();

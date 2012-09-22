@@ -1,11 +1,13 @@
 #pragma once
-#include <Simulation/Collision/Collidable.h>
-#include <Simulation/Collision/Detection/CollisionDetector.h>
-#include <Simulation/Core/IUpdateable.h>
-#include <Simulation/Core/CompositeSimulationObject.h>
-#include <Visualization/IRenderer.h>
+#include <simulation.collision/Collidable.h>
+#include <simulation.collision.detection/CollisionDetector.h>
+
+#include <simulation/composites/CompositeSimulationObject.h>
+#include <visualization/IRenderer.h>
 #include <queue>
-namespace IBDS{
+
+
+namespace nspace{
 class CollidableRenderer : public virtual IRenderer{
 private:
   Collidable & _collidable;
@@ -19,7 +21,7 @@ struct RenderContact : public Contact{
   Real startTime;
   Real timeAlive;
 };
-class CollisionRenderer : public virtual IRenderer, public virtual IUpdatable{
+class CollisionRenderer : public virtual IRenderer{
 private:
 CollisionDetector & _detector;
 std::vector<RenderContact* > collisions;

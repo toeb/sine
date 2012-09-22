@@ -1,7 +1,7 @@
 #include "CollisionRenderer.h"
-#include <Visualization/MiniGL.h>
+#include <visualization.opengl/MiniGL.h>
 
-using namespace IBDS;
+using namespace nspace;
 using namespace std;
 
 void CollidableRenderer::render(){
@@ -68,6 +68,7 @@ void CollisionRenderer::render(){
    if(alpha < 0)alpha = 0;
    if(alpha > 1)alpha = 1;
       float color[4];
+      
       MiniGL::alpha(MiniGL::blue, alpha, color);
       MiniGL::drawPoint(p.pA_wcs,4,color);
       MiniGL::drawVector(p.pA_wcs,p.pA_wcs+p.normal,2,color);
