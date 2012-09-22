@@ -1,7 +1,7 @@
 #pragma once
-#include <simulation/core/ISimulationObject.h>
+#include <simulation/ISimulationObject.h>
 
-namespace mbslib{
+namespace nspace{
 class Wrapper : public ISimulationObject{
 public:
   virtual ISimulationObject* wrap(ISimulationObject * object)=0;

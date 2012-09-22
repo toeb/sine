@@ -1,8 +1,8 @@
 #pragma once
-#include <simulation/core/ISimulationModule.h>
-#include <simulation/core/CompositeSimulationObject.h>
-#include <simulation/core/wrapper/Wrapper.h>
-#include <simulation/core/Simulation.h>
+#include <simulation/ISimulationModule.h>
+#include <simulation/composites/CompositeSimulationObject.h>
+#include <simulation.wrapper/Wrapper.h>
+#include <simulation/Simulation.h>
 
 namespace mbslib{	
 class WrapperModule : public virtual Composite<Wrapper>, public virtual ISimulationModule {
