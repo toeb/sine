@@ -64,9 +64,7 @@ void nspace::glRotate(const Real u, const Real x, const Real y, const Real z)
   glRotated(u, x, y, z);
 }
 
-void nspace::glRotate(const Matrix3x3 & R){
-  glMultMatrix(R,Vector3D::Zero());
-}
+
 void nspace::glTransformation(const CoordinateSystem & coordinates){
   glRotate(coordinates.orientation().toTransposedRotationMatrix());
   glTranslate(coordinates.position());
@@ -85,26 +83,13 @@ void nspace::glScale(const Real x, const Real y, const Real z)
   glScaled(x, y, z);
 }
 
+
 void nspace::glTranslate(const Real x, const Real y, const Real z)
 {
   glTranslated(x, y, z);
 }
 
-void nspace::glTranslate(const Vector3D& v)
-{
-  glTranslated(v.x(), v.y(), v.z());
-}
 
-void nspace::glNormal(const Vector3D& v)
-{
-  glNormal3d(v(0), v(1), v(2));
-}
-
-void nspace::glVertex(const Vector3D& v)
-{
-
-  glVertex3d(v(0), v(1), v(2));
-}
 void nspace::glColor(const Color & color){
   glColor4d(color.r(),color.g(),color.b(),color.a());
 }
@@ -112,27 +97,6 @@ void nspace::glSetClearColor(const Color & color){
   glClearColor(color.r(),color.g(),color.b(),color.a());
 }
 
-void nspace::glMultMatrix(const Matrix3x3& R, const Vector3D& r)
-{
-  double m[16];
-  m[0] = R(0, 0);
-  m[4] = R(0, 1);
-  m[8] = R(0, 2);
-  m[12] = r(0);
-  m[1] = R(1, 0);
-  m[5] = R(1, 1);
-  m[9] = R(1, 2);
-  m[13] = r(1);
-  m[2] = R(2, 0);
-  m[6] = R(2, 1);
-  m[10] = R(2, 2);
-  m[14] = r(2);
-  m[3] = 0;
-  m[7] = 0;
-  m[11] = 0;
-  m[15] = 1;
-  glMultMatrixd(m);
-}
 
 
 void nspace::glLight(int light, 

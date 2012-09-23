@@ -31,21 +31,50 @@
 
 
 namespace nspace{
+  
+template<typename VectorType> void glVertex(const VectorType& v){  glVertex3d(v(0), v(1), v(2)); }
+template<typename VectorType> void glNormal(const VectorType& v){  glNormal3d(v(0), v(1), v(2)); }
+template<typename Matrix3x3Type> void glRotate(const Matrix3x3Type & R){   glMultMatrix(R,Vector3D::Zero()); }
+template<typename VectorType> void glTranslate(const VectorType& v){  glTranslated(v.x(), v.y(), v.z()); }
+template<typename MatrixType, typename VectorType> void glMultMatrix(const MatrixType& R, const VectorType& r){
+  // transform matrix and vector into a double array which is a opegnl 4x4 matrix
+  double m[16];
+  m[0] = R(0, 0);
+  m[4] = R(0, 1);
+  m[8] = R(0, 2);
+  m[12] = r(0);
+  m[1] = R(1, 0);
+  m[5] = R(1, 1);
+  m[9] = R(1, 2);
+  m[13] = r(1);
+  m[2] = R(2, 0);
+  m[6] = R(2, 1);
+  m[10] = R(2, 2);
+  m[14] = r(2);
+  m[3] = 0;
+  m[7] = 0;
+  m[11] = 0;
+  m[15] = 1;
+  glMultMatrixd(m);
+}
+
+
+
 void convert(const Matrix3x3 & from,  double * to);
 void glTriangle(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & n);
 void glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d,const Vector3D & n);
-void glVertex(const Vector3D& v);
-void glNormal(const Vector3D& v);
-void glRotate(const Matrix3x3 & R);
+
 void glScale(const Vector3D & s);
 void glScale(Real s);
 void glRotate(const Real u, const Real x, const Real y, const Real z);
 void glRotateQuaternion(const Quaternion & q);
 void glScale(const Real x, const Real y, const Real z);
 void glTranslate(const Real x, const Real y, const Real z);
-void glTranslate(const Vector3D& v);
+
+
+
 void glTransformation(const CoordinateSystem & coordinates);
-void glMultMatrix(const Matrix3x3& R, const Vector3D& r);
+
 void glLight(int light, 
   const Vector3D & position = Vector3D(1,1,0), 
   const Vector3D & ambience = Vector3D::Zero(), 

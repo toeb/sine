@@ -1,7 +1,4 @@
-
-
-
-set(opengl_SRC
+set(source
 ./MiniGL.h
 ./MiniGL.cpp
 ./opengl.h
@@ -19,18 +16,20 @@ set(opengl_SRC
 ./GlTexture.cpp
 )
 
-source_group("src" FILES ${opengl_SRC})
-add_library(visualization.opengl   ${opengl_SRC} )
+source_group("src" FILES ${source})
+add_library(visualization.opengl   ${source} )
 
-
+##opengl is required for visualization.opengl
 find_package(OpenGL REQUIRED)
-
-
 include_directories(${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIRS})
+
 target_link_libraries(visualization.opengl
+visualization
 simulation.kinematics 
 simulation.integration 
 freeglut  
 ${OPENGL_LIBRARIES} )
+
+
 
 
