@@ -23,16 +23,15 @@ public:
   Position position;
   Orientation orientation;
 
-  void mirror(CoordinateSystem & original){
-    position.mirror(original.position);
-    orientation.mirror(original.orientation);
-  }
-  void unshare(){
-    position.unshare();
-    orientation.unshare();
-  }
+  void mirror(CoordinateSystem & original);
+  void unshare();
 
   static const CoordinateSystem & identity();
+
+  CoordinateSystem(const CoordinateSystem & original);
+  CoordinateSystem & operator=(const CoordinateSystem & original);
+  void assign(const CoordinateSystem & original);
+
 
   CoordinateSystem(const Vector3D & p, const Quaternion & q);
   CoordinateSystem();
