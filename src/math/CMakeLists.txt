@@ -13,7 +13,6 @@ set(source
 source_group("" FILES ${source})
 
 
-
 add_library(math ${source}  )
 target_link_libraries(math 
 core 
@@ -21,7 +20,6 @@ core
  math.scalar
  math.matrix
  math.matrix.dslib
- math.matrix.ibds
  math.matrix.eigen
  math.statistics
  
