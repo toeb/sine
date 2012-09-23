@@ -174,6 +174,7 @@ namespace nspace{
     if(contains(element))return false;
     _elements.push_back(element);
     notifyElementAdded(element);
+    return true;
   }
   template<typename T>
   bool Set<T>::remove(T element){
