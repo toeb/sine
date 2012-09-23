@@ -8,6 +8,7 @@ set(integrationSource
  ./StepIntegrator.cpp
  ./ISystemFunction.h 
  ./Evaluator.h
+ ./Evaluator.cpp
  ./CompositeSystemFunction.h
  ./CompositeSystemFunction.cpp
  ./SystemModule.h

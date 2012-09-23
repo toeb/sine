@@ -2,12 +2,13 @@
 #include <simulation/ISimulationObject.h>
 
 #include <simulation.state/State.h>
-#include <simulation.state/IStatefulObject.h>
+#include <simulation.state/StatefulObject.h>
 
 #include <simulation.integration/ISystemFunction.h>
 
 namespace nspace{
-
+  // class combines a stateful object with a system function 
+  // which allows an Integrator to integrate its state
   class Evaluator : public virtual ISimulationObject{
   private:
     State _state;
@@ -16,30 +17,15 @@ namespace nspace{
     StatefulObject & _statefulObject;
     ISystemFunction * _systemFunction;
   public:
-    Evaluator(StatefulObject & stateful, ISystemFunction * systemFunction=0):
-        _statefulObject(stateful),
-          _systemFunction(systemFunction){
-            _statefulObject.assignState(_state);  
-            _statefulObject.notifyStateNeeded();
-        }
-        void setX(const StateMatrix & x){
-          _state.setX(x);
-          _statefulObject.notifyStateChanged();
-        }
-        const StateMatrix & x(){
-          _statefulObject.notifyStateNeeded();
-          _state.getX(_x);
-          return _x;
-        }
-        const StateMatrix & xDot(){
-          _statefulObject.notifyStateNeeded();
-          _state.getXDot(_xDot);
-          return _xDot;
-        }
-        const StateMatrix & f(const StateMatrix &x, Real t, Real h){
-          setX(x);
-          if(_systemFunction)_systemFunction->evaluate(t,h);
-          return xDot();
-        }
+    // constructor.  needs a stateful object.  a systemfunction is not needed.  (this results in the derived states always being zero)
+    Evaluator(StatefulObject & stateful, ISystemFunction * systemFunction=0);
+    // sets the state x of the evaluator
+    void setX(const StateMatrix & x);
+    // gets the current state x
+    const StateMatrix & x();
+    // gets the current derived state xdot
+    const StateMatrix & xDot();
+    // evaluates the evaluator at time t and setpsize h stores the result in x
+    const StateMatrix & f(const StateMatrix &x, Real t, Real h);
   };
 }
