@@ -1,6 +1,7 @@
 set(source
 ./CMakeLists.txt
-./IStatefulObject.h
+./StatefulObject.h
+./StatefulObject.cpp
 ./State.h
 ./State.cpp
 ./CompositeStatefulObject.h
