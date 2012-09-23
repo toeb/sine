@@ -14,7 +14,7 @@ bool PolygonRenderer::initializeObject(){
   return true;
 }
 
-PolygonRenderer::PolygonRenderer(ds::Polygon & poly):
+PolygonRenderer::PolygonRenderer(nspace::Polygon & poly):
 texture(*new PngImage("resources/images/testimage.png")),
 _polygon(poly),
   faceColor("gray"),
