@@ -18,10 +18,10 @@ namespace nspace{
 class CoordinateSystemRenderer : public IRenderer
 {
 private:
-  CoordinateSystem & _coordinateSystem;
+  const CoordinateSystem & _coordinateSystem;
 public:
 
-  CoordinateSystemRenderer(CoordinateSystem  & coordinateSystem):_coordinateSystem(coordinateSystem){
+  CoordinateSystemRenderer(const CoordinateSystem  & coordinateSystem):_coordinateSystem(coordinateSystem){
 
   }
 

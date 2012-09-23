@@ -37,6 +37,6 @@ source_group("mesh" FILES ${meshSource})
 set(source ${source} ${meshSource})
 add_library(visualization.opengl.renderer.geometry ${source} ./CMakeLists.txt)
 target_link_libraries(visualization.opengl.renderer.geometry 
- visualization.opengl.renderer
+ visualization.opengl
  simulation.geometry 
  )
