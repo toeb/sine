@@ -17,7 +17,24 @@ set(source
 )
 
 source_group("" FILES ${source})
-
+set(meshSource
+ ./mesh/CubeMesh.h
+ ./mesh/CubeMesh.cpp
+ ./mesh/Mesh.h
+ ./mesh/Mesh.cpp
+ ./mesh/MeshRenderer.h
+ ./mesh/MeshRenderer.cpp
+ ./mesh/ObjMesh.h
+ ./mesh/ObjMesh.cpp
+ ./mesh/SphereMesh.h
+ ./mesh/SphereMesh.cpp
+ ./mesh/PlaneMesh.h
+ ./mesh/PlaneMesh.cpp
+ ./mesh/PlyMesh.h
+ ./mesh/PlyMesh.cpp
+)
+source_group("mesh" FILES ${meshSource})
+set(source ${source} ${meshSource})
 add_library(visualization.opengl.renderer.geometry ${source} ./CMakeLists.txt)
 target_link_libraries(visualization.opengl.renderer.geometry 
  visualization.opengl.renderer
