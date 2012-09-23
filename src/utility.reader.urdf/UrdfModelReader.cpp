@@ -1,11 +1,14 @@
 #include "UrdfModelReader.h"
-#include <tinyxml2/tinyxml2.h>
 
+#include <tinyxml2/tinyxml2.h>
 #include <fstream>
+
+#include <core/StringTools.h>
+
 #include <simulation.model/builder/ModelBuilderHolder.h>
+
 #include <utility.reader.urdf/UrdfModelReader.h>
 #include <utility.reader.urdf/parsers/RobotElementParser.h>
-#include <core/StringTools.h>
 
 using namespace std;
 using namespace nspace;
@@ -24,14 +27,16 @@ bool UrdfModelReader::parse(IModelBuilder & builder, std::istream & data){
 
   //return false if document could not be parsed (this indicates that xml was not valid
   if(errorCode){
-    ERROR("tinyxml2 Parse error number 2"<<errorCode);
+    ERROR("tinyxml2 Parse error number " <<errorCode);
     return false;
   }
+
+
   
   // create a robot parser and parse all nodes of document
   RobotElementParser robotParser(builder);
   robotParser.parseSiblingsOf(document.FirstChildElement());
-  
+ 
 }
 
 

@@ -24,6 +24,8 @@ protected:
      if(!connectorNode)return false;
 
      _connectionNode.predecessors().add(connectorNode);
+
+     return true;
    }
 };
 }
