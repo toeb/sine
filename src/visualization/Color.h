@@ -1,125 +1,104 @@
-#include <math/core.h>
-#include <map>
-#include <string>
 #pragma once
 
+#include <map>
+#include <string>
+
+#include <math/core.h>
 
 namespace nspace{
+  // RGB is a vector
   typedef Vector3D RGB;
+  // YUV is a vector
   typedef Vector3D YUV;
+
+  // represents a color which has a name a rgb value and and alpha value. 
+  // static color class contains a map of all collors : a color palette
   class Color{
   private:
+    // the name of the color
     std::string * _colorName;
+    // rgb value
     RGB _rgb;
+    // alpha
     Real _alpha;
+    // static map of all loaded colors
     static std::map<std::string, Color*> & _palette;
-  public:
-    Color(const std::string & name){
-      setTo(name);
-    }
-    void setTo(const std::string & name){
-      auto color = getColorByName(name);
-      *this = color;
-    }
-    void operator()(const std::string & name){
-      setTo(name);
-    }
-    Color & operator=(const Color  & newValue){
-      setColorName(newValue.colorName());
-      _rgb = newValue.rgb();
-      _alpha =newValue.a();
-      return *this;
-    }
-
+    // the unknow color value (default : black)
     static const  Color& unknown;
+  public:
+    // constructor sets the color to the color represented by name
+    // if it does not exists it sets it to the default: black
+    Color(const std::string & name);
+
+    // setTo assigns this color the value of the color represented by name (or black if the name was not found)
+    void setTo(const std::string & name);
+    // sets the color to the color represented by name or if not found : black
+    void operator()(const std::string & name);
+
+    // assigns this color the value of the other color
+    Color & operator=(const Color  & newValue);
+    // assigns this color the value of the color specified by name
+    Color & operator=(const std::string & name);
+
+
     //not thread safe
-    operator const float*()const{
-      static float color[4];
-      colorArray(color);
-      return color;
-    } 
-    friend bool operator==(const Color& a, const Color & b){
-      if(&a==&b)return true;
-      return false;
-    }
-    friend bool operator!=(const Color & a, const Color & b){
-      return !(a==b);
-    }
+    operator const float*()const;
+    friend bool operator==(const Color& a, const Color & b);
+    friend bool operator!=(const Color & a, const Color & b);
+
+    // loads all colors from the color file specified by filename
     static int loadColors(const std::string & filename);
-    static const Color & getColorByName(const std::string & name){
-      auto color = _palette[name];
-      if(color)return *color;
-      return unknown;
-    }
+    // returns the color from the palette by name
+    static const Color & getColorByName(const std::string & name);
+
+    // returns the current color but with an alpha value of al
+    Color alpha(Real al);
+
+    Color(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha, const std::string & name);
+    Color();
+    Color(const RGB & rgb, Real alpha);
+    Color(const Vector3D &  col);
+    Color(Real r, Real g, Real b, Real alpha=0);
+
+    // normalizes the color (sets all color channels to between zero and one)
+    void normalize();
     
-    Color alpha(Real al){
-      return Color(_rgb,al);
-    }
+    // byte value of the red channel (0-255)
+    unsigned char r8bit()const;
+    // byte value of the green channel (0-255)
+    unsigned char g8bit()const;
+    // byte value of the blue channel (0-255)
+    unsigned char b8bit()const;
+    // byte value of the alpha channel (0-255)
+    unsigned char a8bit()const;
 
-    Color(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha, const std::string & name):
-    _rgb(r/255.0, g/255.0, b/255.0), _alpha(alpha/255.0),_colorName(new std::string(name)){
+    // returns the grayscale value of this color (not implemented yet)
+    Real grayscale();
 
-    }
-    Color():_rgb(0,0,0),_alpha(0),_colorName(0) {
+    void setColorName(const std::string& name);
+    const std::string & colorName()const;
 
-    }
-    Color(const RGB & rgb, Real alpha):_rgb(rgb),_alpha(alpha),_colorName(0){
-         
-    }
-    Color(const Vector3D &  col):_alpha(1),_colorName(0),_rgb(col){
-      normalize();
-    }
-    Color(Real r, Real g, Real b, Real alpha=0):_rgb(r,g,b),_alpha(alpha),_colorName(0){
-      
-    }
-    void normalize(){
-      if(_alpha<0)_alpha=0;
-      if(_alpha>1)_alpha=1;
-	    _rgb = _rgb * (1.0/ matrix::maximum(_rgb));
-    }
+    // copies the color value into the float array (length 4)
+    void colorArray(float * color)const;
 
+    // read/write access to the  color vector
+    RGB & rgb();
+    // read access to the color vector
+    const RGB & rgb()const;    
 
-    unsigned char r8bit()const{
-      return (unsigned char)(255*r());
-    }
-    unsigned char g8bit()const{
-      return (unsigned char)(255*g());
-    }
-    unsigned char b8bit()const{
-      return (unsigned char)(255*b());
-    }
-    unsigned char a8bit()const{
-      return (unsigned char)(255*a());
-    }
+    // read/write access to the color values
+    Real & r();
+    Real & g();
+    Real & b(); 
+    Real & a();
 
+    // read access to the color values
+    const Real & r()const;
+    const Real & g()const;
+    const Real & b()const;
+    const Real & a()const;
 
-    Real grayscale(){
-      return 0;
-    }
-    void colorArray(float * color)const{
-      color[0] = (float)r();
-      color[1] = (float)g();
-      color[2] = (float)b();
-      color[3] = (float)a();
-    }
-    void setColorName(const std::string& name){
-      _colorName = new std::string(name);
-    }
-    const std::string & colorName()const{
-      static std::string defaultName ="<NONAME>";
-      if(_colorName)return *_colorName;
-      return defaultName;
-    }
-    RGB & rgb(){ return _rgb;}
-    const RGB & rgb()const{return _rgb;}     
-    Real & a(){return _alpha;}
-    const Real & a()const{return _alpha;}
-    Real & r(){return _rgb(0);}  
-    Real & g(){return _rgb(1);}  
-    Real & b(){return _rgb(2);}
-    const  Real & r()const{return _rgb(0);}  
-    const Real & g()const{return _rgb(1); }  
-    const Real & b()const{return _rgb(2); }  
+    // writes the color to the output stream
     friend std::ostream & operator <<(std::ostream & o, const Color & color);
   };
 }
