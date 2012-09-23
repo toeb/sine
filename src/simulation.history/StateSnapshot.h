@@ -3,7 +3,7 @@
 #include <sstream>
 
 #include <simulation.state/State.h>
-#include <simulation.state/IStatefulObject.h>
+#include <simulation.state/StatefulObject.h>
 #include <core/Time.h>
 namespace nspace{
   typedef unsigned int StateSnapshotId;

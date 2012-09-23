@@ -1,13 +1,15 @@
 #pragma once
+
+#include <core/patterns/Composite.h>
+
 #include <simulation/ISimulationObject.h>
 #include <simulation/Simulation.h>
-
 
 #include <simulation.time/SimulationTimeProvider.h>
 #include <simulation.time/PeriodicTask.h>
 #include <simulation.time/CallbackTask.h>
 
-#include <simulation.state/IStatefulObject.h>
+#include <simulation.state/StatefulObject.h>
 
 #include <simulation.history/StateSnapshot.h>
 
