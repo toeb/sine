@@ -37,4 +37,5 @@ bool UrdfModelReader::parse(IModelBuilder & builder, std::istream & data){
   RobotElementParser robotParser(builder);
   robotParser.parseSiblingsOf(document.FirstChildElement());
  
+  return true;
 }
