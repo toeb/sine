@@ -10,7 +10,7 @@
 #include <math.scalar/constants.h>
 // include all scalar operations
 //#include <math.scalar/operation/Addition.h>
-//#include <math.scalar/operation/ArcusCosinus.h>
+#include <math.scalar/operation/ArcusCosinus.h>
 //#include <math.scalar/operation/ArcusTangens.h>
 //#include <math.scalar/operation/ArcusTangens2.h>
 //#include <math.scalar/operation/Division.h>
@@ -55,6 +55,7 @@ namespace scalar{
     UNARY_SHORTHAND(sine,Sinus);
     UNARY_SHORTHAND(absolute,Absolute);
     UNARY_SHORTHAND(arcusSinus,ArcusSinus);
+    UNARY_SHORTHAND(arcusCosinus,ArcusSinus);
     UNARY_SHORTHAND(squareRoot,SquareRoot);
     UNARY_SHORTHAND(reciprocal,Reciprocal);
 
