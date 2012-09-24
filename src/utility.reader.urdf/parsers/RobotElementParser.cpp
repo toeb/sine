@@ -153,6 +153,14 @@ void RobotElementParser::convertJoint(Node * node){
 
 }
   
+void RobotElementParser::convertSpring(Node * node){
+  ExtendedUrdfSpring * urdfSpring ;
+  node->get(urdfSpring,"urdfspring");
+  if(!urdfSpring)return;
+
+
+
+}
 
 void RobotElementParser::convert(){
   Node * root = findRoot();
@@ -173,6 +181,7 @@ void RobotElementParser::convert(){
     convertLink(node);
     convertJoint(node);
     convertConnector(node);
+    convertSpring(node);
   });    
 }
 

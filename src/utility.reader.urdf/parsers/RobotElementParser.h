@@ -22,6 +22,7 @@ private:
   void convertConnector(Node * node);
   void convertConnection(Node * node);
   void convertJoint(Node * node);
+  void convertSpring(Node * node);
   void convert();
 };
 

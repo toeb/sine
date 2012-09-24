@@ -80,8 +80,46 @@ protected:
      //set connection as successor of connector a and predecessor of connectorb
      *connection << connectorA >> connectorB;
      
+     // parse joint limits  (yeah, i know its redundant but for completeness both the urdflimits and 
+     //TODO put this into another parser class
+     XMLElement * limitsElement = jointElement->FirstChildElement("limit");
+     if(limitsElement){
+       JointLimit * limits = new JointLimit;
+       UrdfJointLimits * urdfLimits = new UrdfJointLimits;
+
+       if(limitsElement->Attribute("effort")){
+         limits->effort() = limitsElement->DoubleAttribute("effort");
+         urdfLimits->effortLimit = limitsElement->DoubleAttribute("effort");
+       }
+
+       if(limitsElement->Attribute("velocity")){
+         limits->velocity() = limitsElement->DoubleAttribute("velocity");
+         urdfLimits->velocityLimit = limitsElement->DoubleAttribute("velocity");
+       }
+
+       if(limitsElement->Attribute("lower")){
+         limits->lowerPosition() = limitsElement->DoubleAttribute("lower");
+         urdfLimits->lowerPositionLimit = limitsElement->DoubleAttribute("lower");
+       }
+
+       if(limitsElement->Attribute("upper")){
+         limits->upperPosition() = limitsElement->DoubleAttribute("upper");
+         urdfLimits->upperPositionLimit = limitsElement->DoubleAttribute("upper");
+       }
+
+       joint->limits = urdfLimits;
+
+       
+
+       
+     }
+
+
      //set urdf joint and link structs
      connection->set("urdfjoint",joint);
+
+
+
 
      //add created nodes to the model
      model().nodes() |= connection,connectorA,connectorB;

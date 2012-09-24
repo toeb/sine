@@ -38,6 +38,7 @@ public:
     visual.parse(linkElement);
 
     
+    
     //add new node to current model
     model().nodes().add(node);
 

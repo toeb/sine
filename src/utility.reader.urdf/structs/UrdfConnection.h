@@ -1,7 +1,9 @@
 #pragma once
+
+#include <utility.reader.urdf/structs/UrdfElement.h>
 namespace nspace{
 
-struct UrdfConnection{
+  struct UrdfConnection :public UrdfElement{
 
 };
 }

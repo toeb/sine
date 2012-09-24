@@ -38,6 +38,11 @@ set(structsSource
 	./structs/UrdfElement.h
 	./structs/UrdfJoint.h
 	./structs/UrdfLink.h
+	./structs/UrdfGeometry.h
+	./structs/UrdfVisual.h
+	./structs/UrdfMaterial.h
+	./structs/UrdfCollision.h
+	./structs/ExtendedUrdfSpring.h
 )
 source_group("structs" FILES ${structsSource})
 set(source ${source} ${structsSource})
