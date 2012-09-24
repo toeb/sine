@@ -37,8 +37,12 @@ namespace nspace{
     
   }
   virtual void setData(const QVariant &value, int role = Qt::UserRole + 1 ){    
-    if(role == Qt::EditRole){   
-      std::stringstream ss(value.toString().toStdString());
+    if(role == Qt::EditRole){
+      auto qstr = value.toString();    
+      const QByteArray asc = qstr.toAscii();
+      std::string str(asc.constData(), asc.length());
+   
+      std::stringstream ss(str);
       set(ss);
       emitDataChanged();
       QStandardItem::setData(value,role);
