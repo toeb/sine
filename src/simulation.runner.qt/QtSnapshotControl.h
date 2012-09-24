@@ -4,12 +4,13 @@
 #include <core/Time.h>
 #include <simulation.history/HistoryModule.h>
 #include <simulation/SimulationModuleBase.h>
+#include <simulation.runner.qt/SimulationDockWidget.h>
 #include <QStandardItemModel>
 #include <QStandardItem>
 class Ui_SnapshotControl;
 
 namespace nspace{
-  class QtSnapshotControl : public QDockWidget, public virtual SimulationModuleBase<HistoryModule>{
+  class QtSnapshotControl : public SimulationDockWidget, public virtual SimulationModuleBase<HistoryModule>{
     Q_OBJECT;
   public:
     QtSnapshotControl(QWidget * parent);

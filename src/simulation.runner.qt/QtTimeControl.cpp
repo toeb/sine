@@ -4,7 +4,7 @@
 using namespace std;
 using namespace nspace;
 
-QtTimeControl::QtTimeControl(QWidget * parent):_realTimeModule(0),QDockWidget(parent){
+QtTimeControl::QtTimeControl(QWidget * parent):_realTimeModule(0),SimulationDockWidget(parent){
   _ui = new Ui_TimeControl();
   _ui->setupUi(this);
   _refreshTimer = new QTimer();
