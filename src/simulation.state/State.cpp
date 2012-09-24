@@ -18,10 +18,10 @@ std::ostream& operator<<(std::ostream & out, const State & state){
   out <<endl;
   out << setw((width+1)* state.derivatives() + 22)<< setfill('-')<< "-";
   out << setfill(' ')<<endl;
-  for(int i=0; i < state.dimension(); i++){
+  for(uint i=0; i < state.dimension(); i++){
     out << std::setw(20)<<i;
     out << "||";
-    for(int d=0; d < state.derivatives(); d++){
+    for(uint d=0; d < state.derivatives(); d++){
       out << std::setw(width) << std::setprecision(5) << state(i,d);
       out <<"|";
     }
