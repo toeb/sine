@@ -145,8 +145,9 @@ void Comparator<Node*,const char*>::operation(bool & result, const Node * a, con
       std::function<void (Set<Node*> &, const Node &) > sfunc = [](Set<Node *>& successors,const Node & node){        successors |= node.successors();      };
       return bfs(f,sfunc);
     }
+    namespace nspace{
     // prints the suceeding graph to the output stream reference
-    std::ostream &  nspace::operator << (std::ostream & c, Node& node){
+    std::ostream &  operator << (std::ostream & c, Node& node){
       node.set("level",0);
       node.dfs([&c](bool & cont, Node * n){
         int level = n->get<int>("level");
@@ -167,6 +168,7 @@ void Comparator<Node*,const char*>::operation(bool & result, const Node * a, con
 
       });
       return c;
+    }
     }
     // callback when an element is added to the node. makes sure that the nodes are connected in both directions
     void Node::elementAdded(ObservableCollection<Node*> * sender, Node * node){
