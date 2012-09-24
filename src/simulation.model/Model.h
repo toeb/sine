@@ -1,11 +1,11 @@
 #pragma once
 
-
-#include <simulation.model/ModelElement.h>
 #include <core/Set.h>
 #include <core/Node.h>
 #include <core/Graph.h>
 #include <math/core.h>
+
+#include <simulation.model/ModelElement.h>
 
 namespace nspace{
   

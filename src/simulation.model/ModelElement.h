@@ -22,9 +22,6 @@ namespace nspace{
     public NodeData,
     public ValueLookup, 
     public NamedObject{
-  
-
-
 
   };
 }
