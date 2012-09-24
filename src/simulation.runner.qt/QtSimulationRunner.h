@@ -25,24 +25,27 @@
  * 
  */
 #pragma once
+#include <vector>
+
+#include <simulation.time/SimulationTimeController.h>
+
+#include <simulation.access/IAction.h>
+
 #include <simulation.runner/SimulationRunner.h>
+
 #include <simulation.runner.qt/QtTimeControl.h>
 #include <simulation.runner.qt/QtSnapshotControl.h>
+#include <simulation.runner.qt/SimulationDockWidget.h>
+#include <simulation.runner.qt/GlWidget.h>
 
 #include <QApplication>
 #include <QMainWindow>
 #include <QElapsedTimer>
 #include <QGLWidget>
 #include <QSettings>
-
-#include <simulation.runner.qt/GlWidget.h>
-#include <simulation.time/SimulationTimeController.h>
-#include <vector>
-
 #include <QStandardItemModel>
 #include <QStandardItem>
 
-#include <simulation.access/IAction.h>
 
 class Ui_MainWindow;
 class Ui_PropertyWindow;
@@ -61,6 +64,7 @@ class QtSimulationRunner : public QObject, public virtual SimulationRunner{
 private:
   SimulationTimeController * _realTimeModule;
   std::vector<IAction*> _actions;
+  std::vector<QDockWidget*> _dockWidgets;
 public:
 
   /**
@@ -168,6 +172,11 @@ public slots:
    * \param rate The rate.
    */
   void setFramerate(double rate);
+
+  void showRenderWindow(bool visible);
+  void showTimeWindow(bool visible);
+  void showHistoryWindow(bool visible);
+  void showPropertiesWindow(bool visible);
 protected slots:
 	void onSimulationSet();
   /**
@@ -191,10 +200,16 @@ private:
   Ui_PropertyWindow * propertyUi;
   QtSnapshotControl * _snapshotControl;
 
+  
+  ///< pointer to the property window
+  SimulationDockWidget * propertyWindow;  
+  SimulationDockWidget * renderWindow;
+  SimulationDockWidget * historyWindow;
+  SimulationDockWidget * timeControlWindow;
+
   ///< pointer to the main window
   QMainWindow * mainWindow;
-  ///< pointer to the property window
-  QDockWidget * propertyWindow;  
+
   ///< The gl widget
   GlWidget * glWidget;
   ///< The simulation timer

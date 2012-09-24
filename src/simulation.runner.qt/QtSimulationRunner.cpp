@@ -24,6 +24,18 @@
  * \file src/vis/qt_model_viewer/QtModelViewer.cpp
  * 
  */
+#include <iostream>
+#include <algorithm>
+
+#include <simulation.access/IValue.h>
+
+#include <simulation.history/HistoryModule.h>
+
+#include <visualization.opengl/FpsCamera.h>
+
+#include <simulation.runner.qt/ValueItemFactory.h>
+#include <simulation.runner.qt/ValueItemDelegate.h>
+#include <simulation.runner.qt/QtSimulationAction.h>
 
 #include <QApplication>
 #include <QDockWidget>
@@ -34,23 +46,10 @@
 #include <QTreeView>
 #include <QStandardItemModel>
 
-#include <simulation.runner.qt/ValueItemFactory.h>
-#include <simulation.runner.qt/ValueItemDelegate.h>
-#include <simulation.runner.qt/QtSimulationAction.h>
-
-#include <simulation.access/IValue.h>
-
-#include <algorithm>
-
-#include "QtSimulationRunner.h"
-
 #include "ui_mainwindow.h"
 #include "ui_propertyWindow.h"
 
-
-#include <iostream>
-#include <visualization.opengl/FpsCamera.h>
-#include <simulation.history/HistoryModule.h>
+#include "QtSimulationRunner.h"
 
 using namespace nspace;
 using namespace std;
@@ -144,6 +143,14 @@ void QtSimulationRunner::loadWindowState()
 
   settings.endGroup();
 }
+
+
+void QtSimulationRunner::showRenderWindow(bool visible){
+  renderWindow->setVisible(visible);
+}
+void QtSimulationRunner::showTimeWindow(bool visible){}
+void QtSimulationRunner::showHistoryWindow(bool visible){}
+void QtSimulationRunner::showPropertiesWindow(bool visible){}
 bool QtSimulationRunner::initializeRunner(){              
   application = new QApplication(argc,argv);
     
@@ -165,11 +172,17 @@ bool QtSimulationRunner::initializeRunner(){
 	glWidget->setViewport(viewport);
 
 
-  QDockWidget * renderWindow = new QDockWidget();
+renderWindow = new SimulationDockWidget();
   renderWindow->setObjectName(("RenderWindow"));
   renderWindow->setWidget(glWidget);
   mainWindow->addDockWidget(Qt::LeftDockWidgetArea,renderWindow);
-
+  
+  QAction * renderWindowAction = new QAction("Render Window",0);
+  renderWindowAction->setCheckable(true);
+  renderWindowAction->setChecked(true);  
+  connect(renderWindow, SIGNAL(windowClosed()), renderWindowAction, SLOT(toggle()));
+  connect(renderWindowAction,SIGNAL(triggered(bool)),this,SLOT(showRenderWindow(bool)));  
+  ui->menuWindows->addAction(renderWindowAction);
   
 
 	
@@ -187,14 +200,41 @@ bool QtSimulationRunner::initializeRunner(){
   //setup history 
   _snapshotControl = new QtSnapshotControl(0);
   mainWindow->addDockWidget(Qt::BottomDockWidgetArea,_snapshotControl);
+
+    QAction * timeControlWindowAction = new QAction("Time Control Window",0);
+  timeControlWindowAction->setCheckable(true);
+  timeControlWindowAction->setChecked(true);  
+  connect(_timeControl, SIGNAL(windowClosed()), timeControlWindowAction, SLOT(toggle()));  
+  connect(timeControlWindowAction,SIGNAL(triggered(bool)),_timeControl,SLOT(setVisible(bool)));  
+  ui->menuWindows->addAction(timeControlWindowAction);
+
+  // history
+   _snapshotControl = new QtSnapshotControl(0);
+  mainWindow->addDockWidget(Qt::BottomDockWidgetArea,_snapshotControl);
  *simulation()<<_snapshotControl;
 
+  QAction * snapshotWindowAction = new QAction("Snapshot Window",0);
+  snapshotWindowAction->setCheckable(true);
+  snapshotWindowAction->setChecked(true);  
+  connect(_snapshotControl, SIGNAL(windowClosed()), snapshotWindowAction, SLOT(toggle()));  
+  connect(snapshotWindowAction,SIGNAL(triggered(bool)),_snapshotControl,SLOT(setVisible(bool)));  
+  ui->menuWindows->addAction(snapshotWindowAction);
+
+
  // Setup Property Window
-  propertyWindow = new QDockWidget();
+ propertyWindow = new SimulationDockWidget();
   propertyWindow->setObjectName("PropertyWindow");
   Ui_PropertyWindow * propertyUi = new Ui_PropertyWindow();
   propertyUi->setupUi(propertyWindow);
   mainWindow->addDockWidget(Qt::RightDockWidgetArea, propertyWindow);
+
+  QAction * propertyWindowAction = new QAction("Property Window",0);
+  propertyWindowAction->setCheckable(true);
+  propertyWindowAction->setChecked(true);  
+  connect(propertyWindow, SIGNAL(windowClosed()), propertyWindowAction, SLOT(toggle()));  
+  connect(propertyWindowAction,SIGNAL(triggered(bool)),propertyWindow,SLOT(setVisible(bool)));  
+  ui->menuWindows->addAction(propertyWindowAction);
+
 
   _itemModel = new QStandardItemModel;
   _itemModel->setColumnCount(10);

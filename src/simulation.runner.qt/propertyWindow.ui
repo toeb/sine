@@ -26,7 +26,7 @@
       <attribute name="headerCascadingSectionResizes">
        <bool>true</bool>
       </attribute>
-     </widget>
+     </widget> 
     </item>
    </layout>
   </widget>

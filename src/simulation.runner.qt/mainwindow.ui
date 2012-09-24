@@ -54,10 +54,16 @@
      <string>Interaction</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuWindows">
+    <property name="title">
+     <string>Windows</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRendering"/>
    <addaction name="menuSimulation"/>
    <addaction name="menuInteraction"/>
+   <addaction name="menuWindows"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionWireframe">

@@ -26,6 +26,8 @@ set(runnerSource
 ./QtPropertyView.cpp
 ./QtSimulationObjectsView.h
 ./QtSimulationObjectsView.cpp
+./SimulationDockWidget.h
+./SimulationDockWidget.cpp
 )
 
 set(runnerMocFiles
@@ -38,6 +40,7 @@ set(runnerMocFiles
 ./ValueItemDelegate.h
 ./QtSnapshotControl.h
 ./QtPropertyView.h
+./SimulationDockWidget.h
 )
 
 set(runnerUiFiles
@@ -49,7 +52,7 @@ statehistory.ui
 )
 
 find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL qtmain REQUIRED)
-include(${cmakeScriptsDirectory}/UseSystemQt4.cmake)
+#include(${cmakeScriptsDirectory}/UseSystemQt4.cmake)
 add_definitions(-DQT)
 include(${QT_USE_FILE})
 
