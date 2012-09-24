@@ -11,10 +11,14 @@ namespace nspace{
     void onStateAssigned(){
       uint currentOffset=0;
       foreachComponent([&currentOffset,this](StatefulObject* obj){
+        if(!hasAssignedState()){
+          obj->assignState(0);
+          return;
+        }
         uint currentDimension = obj->dimension();
-        uint currentDerivatives = obj->derivatives();
+        uint currentDerivatives = obj->derivatives();        
         State * currentState = state().range(currentOffset,currentDimension,currentDerivatives);
-        obj->assignState(*currentState);
+        obj->assignState(currentState);
         currentOffset+=currentDimension;
       });
     }

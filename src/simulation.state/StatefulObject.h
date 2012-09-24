@@ -22,6 +22,8 @@ namespace nspace{
     // access to the state
     inline State & state(){return *_state;}
   public:
+    // returns true if this object has  a state assigned and thus state() can return a correct reference
+    bool hasAssignedState()const;
     // instanciates stateful object  the dimension is the number of state this object requires and derivitaves is the number of 
     // of derivatives this object this object can supply 
     // you need to count the zeroth derivative . so for a constant this would result in 1 derivative. when the first derivative is available set to 2
@@ -29,7 +31,7 @@ namespace nspace{
     // default constructor
     StatefulObject();
     // assign this object a state var
-    void assignState(State & state);
+    void assignState(State * state);
     // resize this state
     void resizeState(uint dimension, uint derivatives);
     // returns the number of derivatives (including 0th derivative)
