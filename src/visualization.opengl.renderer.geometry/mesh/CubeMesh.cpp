@@ -2,8 +2,8 @@
 #include "CubeMesh.h"
 
 
-
-void mbslib::CubeMesh::load(){
+using namespace nspace;
+void CubeMesh::load(){
    Vertex a,b,c,d;
     
     //leftface

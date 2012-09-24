@@ -1,8 +1,9 @@
 #include "ObjMesh.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
-using namespace mbslib;
+using namespace nspace;
 using namespace std;
 
 

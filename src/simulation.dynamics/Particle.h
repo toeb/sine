@@ -26,7 +26,7 @@
 #include <simulation.kinematics/CoordinateSystem.h>
 #include <simulation.kinematics/Velocity.h>
 #include <simulation.kinematics/Acceleration.h>
-#include <simulation.state/IStatefulObject.h>
+#include <simulation.state/StatefulObject.h>
 namespace nspace
 {
 class Particle : public DynamicBody, public virtual StatefulObject

@@ -3,7 +3,7 @@
 #include <visualization/IRenderer.h>
 #include <string>
 #include "Mesh.h"
-namespace mbslib{
+namespace nspace{
 
 /**
  * \brief Ply mesh. Represents a Mesh loaded from a ply file.
