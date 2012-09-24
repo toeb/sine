@@ -30,3 +30,18 @@ void NamedObject::setName(const std::string * name){
 bool NamedObject::hasName()const{
   return _name!=0;
 }
+
+bool NamedObject::operator == (const std::string & str)const{
+  return name()==str;
+}
+// equalitiy operator. returns true if this objects name equals the c string
+bool NamedObject::operator==(const char * str)const{
+  return *this==std::string(str);
+}
+namespace nspace{
+  // equality operator compares a NamedObject's name to a std::string and returns true iff they are equal
+  bool operator==(const NamedObject * obj, const std::string & name){
+    return *obj==name;
+  }
+
+}

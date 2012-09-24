@@ -4,6 +4,8 @@
 
 namespace nspace{
 
+// a templated comparator this template may be specialized for different types
+// it is particularly useful for comparing two pointer types which would not be comparable by operator overloading
 template<typename A, typename B>
 class Comparator{
 public:
@@ -12,6 +14,7 @@ public:
   }
 };
 
+// a shorthand for comparing two types
 template<typename A,typename B>
 bool compare(A a,B b){
   bool result;

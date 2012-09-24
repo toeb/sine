@@ -56,17 +56,21 @@ namespace nspace{
     // returns the first element matching the Compartype
     template<typename CompareType> T operator()(CompareType val)const;
     // returns the subset of elements where the predicate evaluates to true
-    Set<T> select(std::function<bool (T)> predicate)const;
+    Set<T> subset(std::function<bool (T)> predicate)const;
+    // selects ResultType from this sets element
+    template<typename ResultType> 
+    Set<ResultType> select(std::function<ResultType (T)> selector)const;    
     // returns the first element were the predicate evaluates to true
-    T selectFirst(std::function<bool (T)> f)const;
+    T first(std::function<bool (T)> f)const;
     // copies every element were the predicate evaluates to true to the result set
-    void selectInto(Set<T> & result, std::function<bool (T) > predicate)const;
+    void insertInto(Set<T> & result, std::function<bool (T) > predicate)const;
     // copies every element from other set to this set
     void copyFrom(const Set<T> & other);
     // copies every element from this set to the other set
     void copyTo(Set<T> & result);
     // returns true if the element is part of the set
     bool contains(T  element)const;
+
 
 
     // reduce into result
@@ -107,6 +111,15 @@ namespace nspace{
 
   //IMPLEMENTATION FOLLOWS:
 
+  template<typename T>
+  template<typename ResultType> 
+  Set<ResultType> Set<T>::select(std::function<ResultType (T)> selector)const{
+    Set<ResultType> result;
+    foreachElement([&result, selector](T element){
+      result |= selector(element);
+    });
+    return result;
+  }
 
   // returns cardinality  (size of the set)
   template<typename T>
@@ -146,7 +159,7 @@ namespace nspace{
   template<typename T>
   template<typename CompareType>
   T Set<T>::operator()(CompareType val)const{
-    return selectFirst([&val](T element){
+    return first([&val](T element){
       return compare(element,val);
     });
   }
@@ -195,24 +208,27 @@ namespace nspace{
     });
   }
   template<typename T>
-  void Set<T>::selectInto(Set<T> & result, std::function<bool (T) > f)const{
+  void Set<T>::insertInto(Set<T> & result, std::function<bool (T) > f)const{
     Query<T>::select(result._elements,_elements,[f](bool & predicate, bool & cont, T elem){
       predicate = f(elem);
     });
   }
   template<typename T>
   bool Set<T>::contains(T  element)const{
-    return selectFirst([element](T e){return e==element;})!=0;
+    return first([element](T e){return e==element;})!=0;
   }
 
   template<typename T>
-  Set<T> Set<T>::select(std::function<bool (T)> f)const{
+  Set<T> Set<T>::subset(std::function<bool (T)> f)const{
     Set<T> result;
-    selectInto(result,f);
+    insertInto(result,f);
     return result;
   }
+
+
+
   template<typename T>
-  T Set<T>::selectFirst(std::function<bool (T)> f)const{
+  T Set<T>::first(std::function<bool (T)> f)const{
     return Query<T>::selectFirst(_elements,f);
   } 
 

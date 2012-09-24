@@ -1,6 +1,5 @@
 
 set(source
-./Types.h
 ./Time.h
 ./Time.cpp
 ./Object.h
@@ -10,6 +9,7 @@ set(source
 ./Node.h
 ./Node.cpp
 ./Graph.h
+./Graph.cpp
 ./Comparator.h
 ./ObservableCollection.h
 ./Query.h
