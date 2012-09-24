@@ -24,7 +24,8 @@ namespace nspace{
   template<typename T>
   inline matrix2::StaticMatrix<T,3,1> operator^(const matrix2::StaticMatrix<T,3,1> & a,const matrix2::StaticMatrix<T,3,1> & b){
     matrix2::StaticMatrix<T,3,1> c;
-    VectorOperations<T>::crossProduct(c,a,b);
+    VectorCrossProduct<matrix2::StaticMatrix<T,3,1>,matrix2::StaticMatrix<T,3,1>,matrix2::StaticMatrix<T,3,1>>::operation(c,a,b);
+    //VectorOperations<T>::crossProduct(c,a,b);
     return c;
   }
 
@@ -32,7 +33,8 @@ namespace nspace{
   template<typename T, int dimension>
   inline T operator*(const matrix2::StaticMatrix<T,dimension,1> & a,const matrix2::StaticMatrix<T,dimension,1> & b){
     T result;
-   VectorOperations<T>::innerProduct(result,a,b);
+    VectorInnerProduct<matrix2::StaticMatrix<T,dimension,1>,matrix2::StaticMatrix<T,dimension,1>,matrix2::StaticMatrix<T,dimension,1> >::operation(result,a,b);
+   //VectorOperations<T>::innerProduct(result,a,b);
     return result;
   }
 
@@ -51,7 +53,8 @@ namespace nspace{
   template<typename T,int rows, int cols>
   inline  matrix2::StaticMatrix<T,rows,cols> operator/(const matrix2::StaticMatrix<T,rows,cols> & a, const T & d){
     matrix2::StaticMatrix<T,rows,cols> c;
-    MatrixOperations<T>::divideScalar(c,a,d);
+
+    //MatrixOperations<T>::divideScalar(c,a,d);
     return c;
   }
   template<typename T,int rows, int cols>

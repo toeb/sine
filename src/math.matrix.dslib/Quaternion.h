@@ -23,7 +23,8 @@ namespace matrix2{
       conjugate(conj,orientation);
       Quat omegaTilde;
       multiplyQuaternion(omegaTilde, conj,qDot);
-      MatrixOperations<T>::multiplyScalar(omegaTilde,omegaTilde,2.0);
+      math::shorthands::matrix::multiplyScalar(omegaTilde,omegaTilde,2.0);
+     // MatrixOperations<T>::multiplyScalar(omegaTilde,omegaTilde,2.0);
       result(0)=omegaTilde.x();
       result(1)=omegaTilde.y();
       result(2)=omegaTilde.z();
@@ -148,11 +149,13 @@ namespace matrix2{
           w = 1.0;
         else if (w < -1.0) 
           w = -1.0;
-        ScalarOperations<T>::acos(angle,w);
+        math::shorthands::scalar::arcusCosinus(angle,w);
+        //ScalarOperations<T>::acos(angle,w);
         angle = 2*angle;
         //angle = (Real) 2.0 * ScalarOperations<T>::acos (w);
         T l;
-        ScalarOperations<T>::sqrt(l,l2);
+        //ScalarOperations<T>::sqrt(l,l2);
+        math::shorthands::scalar::squareRoot(l,l2);
         axis(0) = x / l;
         axis(1) = y / l;
         axis(2) = z / l;

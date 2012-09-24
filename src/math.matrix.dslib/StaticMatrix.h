@@ -176,7 +176,7 @@ inline operator MatType()const{
   }
   inline void toTransposed(StaticMatrix<T,ColumnCount,RowCount> & AT)const{
     MatrixTranspose<StaticMatrix<T,ColumnCount,RowCount>, StaticMatrix<T,RowCount,ColumnCount> >::operation(AT,*this);
-    MatrixOperations<T>::transpose(AT,*this);
+    //MatrixOperations<T>::transpose(AT,*this);
   }
   inline StaticMatrix<T,ColumnCount,RowCount> transposed()const{
     StaticMatrix<T,ColumnCount,RowCount> AT;
