@@ -1,4 +1,6 @@
-
+#pragma once
+#include <config.h>
+namespace nspace{
   template<typename MatHom,typename MatCart>
   class MatrixCartesianToHomogenousCoordinates{
   public:
@@ -14,3 +16,4 @@
       }
     }
   };
+}

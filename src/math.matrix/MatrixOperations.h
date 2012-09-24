@@ -54,6 +54,7 @@
 #include <math.matrix/operations/MatrixInversion.h>
 #include <math.matrix/operations/MatrixInversionSymmetric.h>
 #include <math.matrix/operations/MatrixCartesianToHomogenousCoordinates.h>
+#include <math.matrix/operations/MatrixHomogenousToCartesianCoordinates.h>
 #include <math.matrix/operations/MatrixExportData.h>
 #include <math.matrix/operations/MatrixImportData.h>
 #include <math.matrix/operations/MatrixResize.h>
@@ -201,7 +202,7 @@ namespace nspace{
     MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,matrix);
   }
   
-  };
+  }
 
   
 }

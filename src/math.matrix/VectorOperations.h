@@ -25,11 +25,6 @@ namespace vector{
   static inline void normSquared(T & nSquared,const Vec & a){
     innerProduct(nSquared,a,a);
   }
-  template<typename Vec>
-  static void normalize(Vec & v ){
-    Real l;
-    normalize(v,l);
-  }
 
   template<typename T, typename Vec>
   static void normalize(Vec & v, T & length){
@@ -40,8 +35,16 @@ namespace vector{
       return;
     }
     MatrixScalarMultiplication<Vec,Vec,T>::operation(v,v,1.0/length);
-   
+
   }
+
+  template<typename Vec>
+  static void normalize(Vec & v ){
+    Real l;
+    normalize(v,l);
+  }
+
+
 
    template<typename T, typename Vec>
    inline static void norm(T & l,const Vec & a){
