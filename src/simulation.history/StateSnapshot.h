@@ -26,6 +26,7 @@ namespace nspace{
     StatefulObject & statefulObject(){return _statefulObject;}
     void restore(){
       _statefulObject.state().setState(_state);
+      _statefulObject.notifyStateChanged();
     }
     StateSnapshotId id()const{return _id;}
     Time applicationTime()const{return _applicationTime;}
@@ -43,7 +44,17 @@ namespace nspace{
       snapshot->_applicationTime = t_app;
       snapshot->_simulationTime = t_sim;
       snapshot->_systemTime = t_sys;
-
+      if(!statefulObject.hasAssignedState()){
+        State state;
+        statefulObject.assignState(&state);
+        statefulObject.notifyStateNeeded();
+        statefulObject.state().getState(snapshot->_state);
+        statefulObject.assignState(0);
+      }else{
+        statefulObject.state().getState(snapshot->_state);
+        
+      }
+      
       return snapshot;
     }
     const StateMatrix & storedState()const{
