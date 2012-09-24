@@ -1,3 +1,4 @@
+#pragma once
 #include <simulation.runner.qt/ValueItem.h>
 namespace nspace{
 

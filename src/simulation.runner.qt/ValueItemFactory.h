@@ -1,3 +1,4 @@
+#pragma once
 #include <QStandardItem>
 #include <simulation.access/IComponent.h>
 namespace nspace{

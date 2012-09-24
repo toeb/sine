@@ -1,4 +1,4 @@
-
+#pragma once
 #include <QAction>
 
 #include <simulation.access/IAction.h>

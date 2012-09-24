@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QStandardItem>
 #include <core/Object.h>
 namespace nspace{

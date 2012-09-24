@@ -1,3 +1,4 @@
+#pragma once
 #include <QStandardItem>
 #include <QTimer>
 #include <QItemDelegate>
