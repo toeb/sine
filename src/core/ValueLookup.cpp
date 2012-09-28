@@ -1,6 +1,7 @@
 #include "ValueLookup.h"
-
+#include <string>
 using namespace nspace;
+using namespace std;
 
 const Set<Entry*> & ValueLookup::entries()const{
   return _entries;

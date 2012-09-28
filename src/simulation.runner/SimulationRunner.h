@@ -4,12 +4,11 @@
 #include <simulation/SimulationModuleBase.h>
 #include <simulation/SimulationTask.h>
 namespace nspace{
-
-
 class SimulationRunner : public virtual SimulationModuleBase<SimulationTask>{
 protected:
   //these methods need to be implemented by a SimulationRunner
   virtual int executeRunner()=0;
+  virtual void stopRunner(){}
   virtual bool initializeRunner()=0;
   
   // this method needs to be called by executeRunner
@@ -34,6 +33,7 @@ public:
    *
    */
   int run();
+  void stop();
 
 protected:
   

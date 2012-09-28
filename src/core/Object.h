@@ -13,6 +13,7 @@ struct TypeData{
   TypeId id;  
   // operator for converting this TypeData to its type id
   inline operator const TypeId & ()const{return id;}
+
   // default constructor
   TypeData();
   // number of typedata structs created
@@ -22,7 +23,7 @@ private:
 };
 
 // Macro for making an object a typed object.  
-#define TYPED_OBJECT public: static inline const TypeData & ClassType(){static TypeData typeData; return typeData; }; virtual inline const TypeId getType()const {return ClassType().id;}
+#define TYPED_OBJECT public: static inline const TypeData & ClassType(){static TypeData typeData; return typeData; }; virtual inline const TypeId & getType()const {return ClassType().id;}
 
 
 // base class including types

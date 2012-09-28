@@ -21,19 +21,4 @@ ISimulationObject::ISimulationObject(const std::string & name): _simulation(0){
 }
 
 ISimulationObject::ISimulationObject():_simulation(0),_parent(0){}
-bool Initializable::initialize(){
-  if(_initialized){
-    return true;
-  } 
-  _initialized = initializeObject();
-  if(_initialized)onObjectInitialized();
-  return _initialized;
-};
-
-bool Initializable::cleanup(){
-  cleanupObject();
-  _initialized = false;
-  return true;
-};
-
 

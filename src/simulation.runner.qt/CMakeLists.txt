@@ -28,6 +28,10 @@ set(runnerSource
 ./QtSimulationObjectsView.cpp
 ./SimulationDockWidget.h
 ./SimulationDockWidget.cpp
+./QtTaskRunner.h
+./QtTaskRunner.cpp
+./QtViewport.h
+./QtViewport.cpp
 )
 
 set(runnerMocFiles
@@ -41,6 +45,8 @@ set(runnerMocFiles
 ./QtSnapshotControl.h
 ./QtPropertyView.h
 ./SimulationDockWidget.h
+./QtTaskRunner.h
+./QtViewport.h
 )
 
 set(runnerUiFiles
@@ -49,6 +55,7 @@ mainwindow.ui
 timecontrol.ui
 propertyWindow.ui
 statehistory.ui
+taskwidget.ui
 )
 
 find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL qtmain REQUIRED)
@@ -66,6 +73,7 @@ source_group("src\\ui" FILES ${runnerUiFiles})
 
 add_library(simulation.runner.qt ${runnerSource} ${runnerMoc} ${runnerUi})
 target_link_libraries(simulation.runner.qt
+   application.qt
    simulation
    simulation.runner 
    simulation.time 

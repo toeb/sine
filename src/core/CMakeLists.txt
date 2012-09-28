@@ -23,7 +23,6 @@ set(source
 source_group("" FILES ${source})
 
 set(patternsSource
-./patterns/ITask.h
 ./patterns/TaskRunner.h
 ./patterns/TaskRunner.cpp
 ./patterns/ValueHolder.h

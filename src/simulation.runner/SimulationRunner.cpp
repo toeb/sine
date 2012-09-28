@@ -18,6 +18,9 @@ SimulationRunner::SimulationRunner(){
 SimulationRunner::~SimulationRunner(){
 
 }
+void SimulationRunner::stop(){
+  stopRunner();
+}
 int SimulationRunner::run(){
   if(!simulation()){
      cerr << "SimulationRunner: Simulation is not set" << endl;

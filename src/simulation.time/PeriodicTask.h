@@ -65,7 +65,7 @@ public:
   }
   virtual void timeout(Time timePassed, Time time)=0;
   
-  void run(){
+  void runTask(){
     Time t = timeProvider().time();
     Time dt_call = t-_lastCallTime;
     _lastCallTime = t;

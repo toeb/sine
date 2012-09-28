@@ -11,10 +11,10 @@ struct AverageOverTimeValue{
 };
 class AverageOverTime : public IAverage{
 private:
-  int _valueCount;
+  uint _valueCount;
   Real _valueSum;
-  int _maxPoolCount;
-  int _poolCount;
+  uint _maxPoolCount;
+  uint _poolCount;
   std::queue<AverageOverTimeValue*> _values;
   std::queue<AverageOverTimeValue*> _freeStructs;
   Time timeLength;

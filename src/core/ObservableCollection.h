@@ -17,6 +17,16 @@ public:
     virtual void elementAdded(ObservableCollection<T> * sender, T element){}
     virtual void elementRemoved(ObservableCollection<T> * sender, T element){}
   };
+  class DelegateElementAddedObserver:Observer{
+    std::function<void (ObservableCollection<T> ,T) > _callback;
+    DelegateElementAddedObserver(std::function<void (ObservableCollection<T> ,T) > callback):_callback(callback){}
+    virtual void elementAdded(ObservableCollection<T> * sender, T element){_callback(sender,element);}
+  };
+  class DelegateElementRemovedObserver:Observer{
+    std::function<void (ObservableCollection<T> ,T) > _callback;
+    DelegateElementRemovedObserver(std::function<void (ObservableCollection<T> ,T) > callback):_callback(callback){}
+    virtual void elementRemoved(ObservableCollection<T> * sender, T element){_callback(sender,element);}
+  };
 private:  
   std::vector<Observer*> _observers;
 protected:

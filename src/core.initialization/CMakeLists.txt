@@ -6,6 +6,6 @@ set(source
  )
  
  source_group("" FILES ${source})
- add_library(simulation.initialization ${source} CMakeLists.txt)
- target_link_libraries(simulation.initialization simulation)
+ add_library(core.initialization ${source} CMakeLists.txt)
+ target_link_libraries(core.initialization simulation)
  

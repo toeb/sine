@@ -10,7 +10,7 @@ _integrator(0){
   
 }
 
-void SystemModule:: run(){
+void SystemModule:: runTask(){
   if(!_evaluator){
     _evaluator = new Evaluator(_statefulObjects,&_systemFunction);
     _integrator->setEvaluator(_evaluator);

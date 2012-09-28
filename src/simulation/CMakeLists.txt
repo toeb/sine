@@ -6,6 +6,7 @@ set(coreSource
 	./SimulationModuleBase.cpp
 	./ISimulationObject.h
 	./ISimulationObject.cpp
+	./SimulationTask.h
 ../config.h
 )
 source_group("src" FILES ${coreSource})
@@ -21,4 +22,4 @@ set(compositeSource
 source_group("src\\composites" FILES ${compositeSource})
 
 add_library(simulation  ${coreSource} ${compositeSource})
-target_link_libraries(simulation math core)
+target_link_libraries(simulation math core core.task core.initialization)

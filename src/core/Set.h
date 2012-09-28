@@ -57,6 +57,10 @@ namespace nspace{
     template<typename CompareType> T operator()(CompareType val)const;
     // returns the subset of elements where the predicate evaluates to true
     Set<T> subset(std::function<bool (T)> predicate)const;
+    //returns the subset of elements which are of type T2
+    template<typename T2>
+    Set<T2> subset()const;
+
     // selects ResultType from this sets element
     template<typename ResultType> 
     Set<ResultType> select(std::function<ResultType (T)> selector)const;    
@@ -110,6 +114,13 @@ namespace nspace{
   };
 
   //IMPLEMENTATION FOLLOWS:
+
+  
+  template<typename T>
+  template<typename T2>
+  Set<T2> Set<T>::subset()const{
+    return subset([](T t){return dynamic_cast<T2>(t)!=0;}).select([](T t){return dynamic_cast<T2>(t);});
+  }
 
   template<typename T>
   template<typename ResultType> 

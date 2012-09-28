@@ -13,20 +13,16 @@
 #define error(x)
 #endif
 namespace nspace{
-class LoggingObject : public virtual ISimulationObject{
-private:
+  class LoggingObject : public virtual ISimulationObject{
+  protected:
+    void addEntry(const std::string & message, int level, const std::string & file, const std::string & functionSignature, int line ){
+      switch(level){
+      case 1:std::cout << "Info    : ";
+      case 2:std::cout << "Warning : ";
+      case 3:std::cout << "Error   : ";
+      }
 
-public:
-  LoggingObject(){}
-protected:
-  void addEntry(const std::string & message, int level, const std::string & file, const std::string & functionSignature, int line ){
-    switch(level){
-    case 1: std::cout <<"Info   : ";
-    case 2:std::cout << "Warning: ";
-    case 3:std::cout << "Error  : ";
+      std::cout << functionSignature <<": " << message << std::endl;
     }
-    
-    std::cout << functionSignature <<": " << message << std::endl;
-  }
-};
+  };
 }

@@ -41,7 +41,7 @@ public:
 protected:
   void announce(ISimulationObject * object);
   void renounce(ISimulationObject * object){}
-  void run();
+  void runTask();
   bool initializeObject();
   virtual Time currentTime() const;
 

@@ -1,1 +1,1 @@
-subdirs(math simulation)
+subdirs(math simulation core.hub core)
