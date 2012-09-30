@@ -25,7 +25,7 @@ public:
 class OffsetRenderer :public Renderer, public CoordinateSystem{
   TYPED_OBJECT;
 private:
-  IRenderer & _renderer;
+  Renderer & _renderer;
  
 public:
 

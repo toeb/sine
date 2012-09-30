@@ -1,6 +1,7 @@
 #pragma once
 #include <application.qt/PluginWindow.h>
 #include <visualization.opengl/GlViewport.h>
+#include <visualization.opengl.qt/GlWidget.h>
 class Ui_GlViewportWidget;
 namespace nspace{
   
@@ -9,12 +10,15 @@ namespace nspace{
     TYPED_OBJECT;
   private:
     Set<GlViewport*> & _viewports;
+    GlWidget * _glWidget;
     Ui_GlViewportWidget * _ui;
   public:
-    GlWidgetPluginWindow(Set<GlViewport*> viewports);
+    GlWidgetPluginWindow(Set<GlViewport*> & viewports);
     
     void collectionChanged(ObservableCollection<GlViewport*> * sender){}
-    void elementAdded(ObservableCollection<GlViewport*> * sender, GlViewport* element){}
-    void elementRemoved(ObservableCollection<GlViewport*> * sender, GlViewport* element){}
+    void elementAdded(ObservableCollection<GlViewport*> * sender, GlViewport* element);
+    void elementRemoved(ObservableCollection<GlViewport*> * sender, GlViewport* element);
+  protected slots:
+    void viewportIndexChanged(int newindex);
   };
 }

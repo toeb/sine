@@ -23,7 +23,7 @@
 #include <visualization.opengl/MiniGL.h>
 #include <simulation/Simulation.h>
 using namespace nspace;
-OffsetRenderer::OffsetRenderer(IRenderer & renderer):_renderer(renderer){}
+OffsetRenderer::OffsetRenderer(Renderer & renderer):_renderer(renderer){}
 void OffsetRenderer::render(Viewport & viewport){
   MiniGL::pushMatrix();
   MiniGL::translate(position());

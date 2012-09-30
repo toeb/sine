@@ -6,6 +6,7 @@
 #include <core.hub/Hub.h>
 #include <visualization.opengl.renderer.geometry/CoordinateSystemRenderer.h>
 #include <core.initialization/InitializationModule.h>
+#include <visualization.opengl/GlViewport.h>
 #include <iostream>
 using namespace nspace;
 using namespace std;
@@ -31,6 +32,12 @@ int main(int argc,  char ** argv){
   ViewportPlugin viewport;
   hub << viewport;
 
+  GlViewport glviewport;
+  hub<<glviewport;
+
+  GlViewport glviewport2;
+  glviewport2.setName("second view");
+  hub<<glviewport2;
   
   CoordinateSystemRenderer originRenderer(CoordinateSystem::identity());
   
