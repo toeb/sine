@@ -4,7 +4,7 @@
  * \file src/vis/opengl/GeneralRenderers/VectorRenderer.h
  */
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <math/core.h>
 namespace nspace{
 
@@ -13,7 +13,7 @@ namespace nspace{
  *
  * 
  */
-class VectorRenderer : public IRenderer{
+class VectorRenderer : public Renderer{
 public:
 
   /**

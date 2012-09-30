@@ -1,8 +1,8 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.geometry/boundingVolumes/BoundingOctree.h>
 namespace nspace{
-  class OctreeRenderer : public IRenderer{
+  class OctreeRenderer : public Renderer{
     Octree & _octree;
   public:
     static int level;

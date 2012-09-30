@@ -33,7 +33,8 @@
 
 using namespace nspace;
 
-void GlViewport::viewport(){			 
+void GlViewport::viewportTransform(){		
+  initialize();
 	glViewport (0, 0, width(), height());
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity();

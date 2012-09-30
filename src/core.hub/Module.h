@@ -8,5 +8,7 @@ namespace nspace{
   public:
     virtual void announce(Object * object)=0;
     virtual void renounce(Object * object)=0;
+    Module & operator << (Object * object){announce(object);}
+    
   };
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/Set.h>
 #include <core.hub/Module.h>
 
 namespace nspace{

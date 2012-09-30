@@ -11,6 +11,6 @@ set(source
 add_executable(sample.qt.plugins ${source} CMakeLists.txt)
 
 
-target_link_libraries(sample.qt.plugins simulation.runner.qt simulation.time visualization.opengl.renderer.geometry)
+target_link_libraries(sample.qt.plugins simulation.runner.qt simulation.time visualization.opengl.renderer.geometry visualization.opengl.qt)
 
 project_folder("samples" sample.qt.plugins)

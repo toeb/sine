@@ -24,11 +24,11 @@
 #include <simulation/Simulation.h>
 using namespace nspace;
 OffsetRenderer::OffsetRenderer(IRenderer & renderer):_renderer(renderer){}
-void OffsetRenderer::render(){
+void OffsetRenderer::render(Viewport & viewport){
   MiniGL::pushMatrix();
   MiniGL::translate(position());
   MiniGL::multQuaternion(orientation());
-  _renderer.render();
+  _renderer.render(viewport);
   MiniGL::popMatrix();
 }
 

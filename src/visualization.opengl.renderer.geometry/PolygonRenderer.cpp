@@ -10,7 +10,7 @@ using namespace nspace;
 using namespace std;
 
 bool PolygonRenderer::initializeObject(){
-  *simulation()<<texture;
+  *hub()<<texture;
   return true;
 }
 

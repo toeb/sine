@@ -4,7 +4,7 @@
  * \file src/vis/opengl/GeneralRenderers/CoordinateSystemRenderer.h
  */
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
 
 namespace nspace{
@@ -15,7 +15,7 @@ namespace nspace{
  * \author Tobias Becker
  * \date 05.04.2012
  */
-class CoordinateSystemRenderer : public IRenderer
+class CoordinateSystemRenderer : public Renderer
 {
 private:
   const CoordinateSystem & _coordinateSystem;

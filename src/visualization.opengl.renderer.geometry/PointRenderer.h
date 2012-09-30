@@ -1,8 +1,8 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <math/core.h>
 namespace nspace{
-class PointRenderer :public virtual IRenderer{
+class PointRenderer :public virtual Renderer{
 private:
   const Vector3D & _pointCoordinates;
 public:

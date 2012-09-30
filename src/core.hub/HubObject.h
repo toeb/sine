@@ -11,6 +11,7 @@ namespace nspace{
     const Hub * hub()const{return _hub;}
     Hub * hub(){return _hub;}
     void setHub(Hub * hub){_hub=hub;}
+    virtual void onHubSet(Hub * hbu){}
     friend class Hub;
   };
 

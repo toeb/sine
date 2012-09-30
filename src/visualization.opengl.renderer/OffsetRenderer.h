@@ -2,7 +2,7 @@
 
 
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
 #include <math/core.h>
 
@@ -22,7 +22,8 @@ public:
  * \author Tobias Becker
  * \date 05.04.2012
  */
-class OffsetRenderer :public IRenderer, public CoordinateSystem{
+class OffsetRenderer :public Renderer, public CoordinateSystem{
+  TYPED_OBJECT;
 private:
   IRenderer & _renderer;
  
@@ -41,7 +42,7 @@ public:
    * \author Tobias Becker
    * \date 05.04.2012
    */
-  void render();
+  void render(Viewport & viewport);
 protected:
   bool initializeObject();
 };//class OffsetRenderer

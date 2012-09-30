@@ -1,6 +1,6 @@
 #pragma once
 
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <string>
 #include "Mesh.h"
 namespace nspace{

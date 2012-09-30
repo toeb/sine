@@ -1,10 +1,10 @@
 #pragma once
 
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.geometry/primitives/Sphere.h>
 
 namespace nspace{
-class SphereRenderer : public virtual IRenderer{
+class SphereRenderer : public virtual Renderer{
 private:
   Sphere & _sphere;
 public:

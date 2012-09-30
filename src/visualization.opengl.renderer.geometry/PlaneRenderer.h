@@ -1,11 +1,11 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.geometry/Plane.h>
 
 namespace nspace{
 
 
-class PlaneRenderer :public IRenderer{
+class PlaneRenderer :public Renderer{
 private:
   Plane & _plane;
   Real _extent;

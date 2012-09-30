@@ -32,6 +32,7 @@
 
 namespace nspace{
 	class FpsCamera : public virtual PeriodicTask, public virtual GlViewport, public virtual IInputListener{
+    TYPED_OBJECT;
 	public:
     FpsCamera();
 		void setInputHandler(InputHandler * handler){
