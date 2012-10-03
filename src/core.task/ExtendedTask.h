@@ -4,7 +4,7 @@
 #include <core/Time.h>
 namespace nspace{
   class ExtendedTask :public virtual Task{
-    TYPED_OBJECT;
+    TYPED_OBJECT(ExtendedTask);
   private :
     long _runCount;
     Time _runTime;

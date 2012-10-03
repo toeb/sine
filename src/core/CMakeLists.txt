@@ -18,6 +18,8 @@ set(source
 ./StringTools.cpp
 ./ValueLookup.h
 ./ValueLookup.cpp
+./PairMap.h
+./PairMap.cpp
 ../config.h
 )
 source_group("" FILES ${source})

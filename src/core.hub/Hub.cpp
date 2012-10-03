@@ -1,82 +1,118 @@
 #include "Hub.h"
 #include <core.hub/HubObject.h>
+#include <iostream>
+
 using namespace nspace;
 
-Hub & Hub::operator << (Object * object){
-  announce(object);
-  return *this;
+
+void Hub::onElementAdded(Object * object){
+  
+  toString(std::cout);
 }
-Hub & Hub::operator << (Object & object){
-  announce(&object);
-  return *this;
+void Hub::onElementRemoved(Object * object){
+  
 }
 
-
-
-Hub::Hub(){}    
+Hub::Hub():_processing(false){}    
+Hub::~Hub(){
+  foreachElement([this](Object * object){
+    auto ho = dynamic_cast<HubObject*>(object);
+    if(!ho)return;
+    ho->_hubs /= this;
+  });
+}    
 const Set<Module*> & Hub::modules()const{return _modules;}
-const Set<Object*> & Hub::objects()const{return _objects;}
 
+bool Hub::add(Object * object){
+  _waitingAnnouncedObjects|=object;
+  processObjects();
+  return true;
+}
+bool Hub::remove(Object * object){
+  _waitingRenouncedObjects|=object;
+  processObjects();
+  return true;
+}
 
 void Hub::announce(Object * object){
   if(!object)return;
-  _waitingAnnouncedObjects.push(object);
-  processObjects();
+  *this |= object;
 }
 void Hub::renounce(Object * object){
-  _waitingRenouncedObjects.push(object);
-  processObjects();
+  if(!object)return;
+  *this /= object;
 }
 
 void Hub::processObjects(){
+  if(_processing)return;
+  _processing = true;
   while(_waitingRenouncedObjects.size()){
-    processObjectRenounce(_waitingRenouncedObjects.front());
-    _waitingRenouncedObjects.pop();
+    Object * object = _waitingRenouncedObjects.first();
+    processObjectRenounce(object);
+    _waitingRenouncedObjects/=object;
   }
   while(_waitingAnnouncedObjects.size()){
-    processObjectAnnounce(_waitingAnnouncedObjects.front());
-    _waitingAnnouncedObjects.pop();
+    Object * object = _waitingAnnouncedObjects.first();
+    processObjectAnnounce(object);
+    _waitingAnnouncedObjects/=object;
   }
+  _processing = false;
 }
 void Hub::processObjectAnnounce(Object  *object){
-  if(_objects.contains(object))return;
-   auto module = dynamic_cast<Module * > (object);
-  if(module){
-    _modules |= module;
-    _objects.foreachElement([module](Object * o){
-      module->announce(o);
-    });
-  }
-  _objects |= object;
+  
+  if(!Set<Object*>::add(object))return;
+  
+  // add object to all modules
   _modules.foreachElement([object](Module * module){
     module->announce(object);
   });
-  
+
+
+  auto module = dynamic_cast<Module * > (object);
+  // process module
+  if(module){
+    // add module to module list
+    _modules |= module;
+    // add every object to the module
+    foreachElement([module](Object * o){
+      if(module==o)return;
+      module->announce(o);
+    });    
+  }
+
+  //
   auto hubObject = dynamic_cast<HubObject*>(object);
   if(hubObject){
-    hubObject->setHub(this);
+    hubObject->_hubs |=this;
+    hubObject->onAddedToHub(*this);
   }
+
+
+
 }
 
 
 void Hub::processObjectRenounce(Object  *object){
-
+  // important to stop recursion
+   if(!Set<Object*>::remove(object))return;
 
   auto module = dynamic_cast<Module * > (object);
   if(module){
     _modules /= module;
-    _objects.foreachElement([module](Object * o){
+    foreachElement([module](Object * o){
       module->renounce(o);
     });
   }
   _modules.foreachElement([object](Module * module){
     module->renounce(object);
   });
-  _objects /= object;
   auto hubObject = dynamic_cast<HubObject*>(object);
   if(hubObject){
-    hubObject->setHub(0);
+    hubObject->_hubs /=this;
+    hubObject->onRemovedFromHub(*this);
   }
+
+  
 }
 
 

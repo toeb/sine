@@ -4,7 +4,7 @@
 #include <core.task/ITask.h>
 namespace nspace{
   class Task : public virtual Object, public virtual ITask{
-    TYPED_OBJECT;
+    TYPED_OBJECT(Task);
   protected:
     virtual void onBeforeRun();
     virtual void onAfterRun();

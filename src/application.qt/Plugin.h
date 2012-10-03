@@ -9,7 +9,7 @@ namespace nspace{
   class PluginContainer;
   class Plugin : public QObject, public virtual NamedObject{
     Q_OBJECT;
-    TYPED_OBJECT;
+    TYPED_OBJECT(Plugin);
   public:
     virtual const std::string pluginName()const{return name();}
   protected:

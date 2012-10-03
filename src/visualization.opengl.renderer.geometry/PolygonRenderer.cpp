@@ -10,7 +10,6 @@ using namespace nspace;
 using namespace std;
 
 bool PolygonRenderer::initializeObject(){
-  *hub()<<texture;
   return true;
 }
 
@@ -24,6 +23,8 @@ _polygon(poly),
   drawLabels = true;
   drawNormals = true;
   drawFaces = true;
+
+  components() |= &texture;
   
 }
 

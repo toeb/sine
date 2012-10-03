@@ -7,6 +7,8 @@ set(source
  ModuleBase.cpp 
  HubObject.h
  HubObject.cpp 
+ CompositeHubObject.h
+ CompositeHubObject.cpp 
  )
  
  source_group("" FILES ${source})

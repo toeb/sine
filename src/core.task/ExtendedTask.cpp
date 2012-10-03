@@ -17,7 +17,8 @@ void ExtendedTask::onAfterRun(){
 
 void ExtendedTask:: toString(std::ostream & o)const{
   auto named = dynamic_cast<const NamedObject*>(this);
-  if(named )  o << "Task " << named->name()  << ": ";
-  else  o << "Unnamed Task: " ;
-  o <<"runcount = "<<_runCount<< " runtime = "<<_runTime;
+  o << "<task ";
+  if(named)  o << " name=\"" << named->name()  << "\"";
+  else  o << "" ;
+  o <<" runcount = "<<_runCount<< " runtime = "<<_runTime<<" />";
 }

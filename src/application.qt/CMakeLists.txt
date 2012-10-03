@@ -7,6 +7,8 @@ set(source
  PluginContainer.cpp
  PluginWindow.h
  PluginWindow.cpp
+QtInputHandler.h
+QtInputHandler.cpp
 
 )
 set(moc

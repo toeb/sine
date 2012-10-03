@@ -32,23 +32,27 @@
 #include "GlViewport.h"
 
 using namespace nspace;
-
+Color & GlViewport::clearColor(){
+  return _clearColor;
+}
+const Color & GlViewport::clearColor()const{
+  return _clearColor;
+}
 void GlViewport::viewportTransform(){		
   initialize();
 	glViewport (0, 0, width(), height());
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity();
 
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity(); 
 	gluPerspective (fieldOfViewAngle()/M_PI*180, aspectRatio(), nearCutOffPlane(), farCutOffPlane()); 
 
 	glMatrixMode (GL_MODELVIEW);
-
 	glLoadIdentity();
-
   glScale(zoomFactor());
   glTransformation(coordinates()); 
+
+  glClearColor(_clearColor.r(),_clearColor.g(),_clearColor.b(),_clearColor.a());
+  glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 }
 
 bool GlViewport::initializeObject(){
@@ -57,5 +61,10 @@ bool GlViewport::initializeObject(){
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND); 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	return true;
+}
+
+GlViewport::GlViewport(){
+  _clearColor.setTo("LightGrey");
 }

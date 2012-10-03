@@ -1,8 +1,8 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 namespace nspace{
   
-class LightRenderer : public IRenderer{
+class LightRenderer : public Renderer{
 public:
   void doLights();
   void render();

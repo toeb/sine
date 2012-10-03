@@ -13,13 +13,23 @@ std::string Object::toString()const{
 
 unsigned int TypeData::_typeCounter = 0;
 TypeData::TypeData():id(++_typeCounter){ }
+
+TypeData::TypeData(const std::string & name):id(++_typeCounter),name(name){}
+
 unsigned int TypeData::typeCount(){
   return _typeCounter;
 }
   
+uint Object::_idCounter=0;
+void Object::toString(std::ostream & out)const{
+  out << "<object typeid=\""<<getType()<<"\" typename=\""<< getTypeData().name <<"\" id=\""<<_id<<"\"/>";
+};
+Object::Object():_id(++_idCounter){
 
-void Object::toString(std::ostream & out)const{out << "typeID: "<<getType();};
+}
+Object::~Object(){
 
+}
 
 std::ostream & Object::operator<<(std::ostream & out)const{
   toString(out);

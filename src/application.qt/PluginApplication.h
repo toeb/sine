@@ -15,7 +15,7 @@ class Ui_PluginContainerWindow;
 namespace nspace{
   class PluginApplication : public QObject, public virtual NamedObject,public virtual ModuleBase, public virtual ObservableCollection<Plugin*>::Observer{
     Q_OBJECT;
-    TYPED_OBJECT;
+    TYPED_OBJECT(PluginApplication);
   private:
     Set<Plugin*> _plugins;
     Set<Plugin*> _enabledPlugins;

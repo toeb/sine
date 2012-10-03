@@ -8,12 +8,7 @@ using namespace std;
 
 
 
-void ISimulationObject::toString(ostream & out)const{
-  out << "<object>"<<endl;
-  out << "  <name>" << this->name().c_str() << "</name>"<<endl;
-  out << "  <type>" << this->getType() << "</type>"<<endl;
-  out << "</object>" <<endl;
-}
+
 
 
 ISimulationObject::ISimulationObject(const std::string & name): _simulation(0){

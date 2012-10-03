@@ -40,7 +40,6 @@ namespace nspace{
     // returns the size of the set
     uint size()const;
 
-
     // returns the first element
     T first();
     const T  first()const;
@@ -104,13 +103,15 @@ namespace nspace{
     //static are equal test
     static bool areEqual(const Set<T> &a, const Set<T> & b);
     // static symmetric difference 
-    static Set<T> symetricDifference(const Set<T> &a , const Set<T> & b);
+    static Set<T> symmetricDifference(const Set<T> &a , const Set<T> & b);
     // static difference
     static Set<T> difference(const Set<T> & a, const Set<T> & b);
     // static union
     static Set<T> unite(const Set<T> & a, const Set<T> & b);
     // static intersection
     static Set<T> intersect(const Set<T> & a, const Set<T> & b);
+
+    
   };
 
   //IMPLEMENTATION FOLLOWS:
@@ -253,7 +254,9 @@ namespace nspace{
 
   template<typename T>
   void Set<T>::foreachElement(std::function<void(T)> f)const{
-    std::for_each(elements().begin(),elements().end(),f);
+    for(int i=0; i < _elements.size();i++){
+      f(_elements[i]);
+    }
   }
   template<typename T>
   Set<T> & Set<T>::operator=(const Set<T>& a){
@@ -308,6 +311,7 @@ namespace nspace{
   }
   template<typename T>
   Set<T> & Set<T>::operator /=(const Set<T> & b){
+  
     b.reduce<Set<T> >(*this,[](Set<T> & accu,T element){
       accu.remove(element);
     });
@@ -331,7 +335,7 @@ namespace nspace{
     return symetricDifference(a,b).size()==0;
   }
   template<typename T>
-  Set<T> Set<T>::symetricDifference(const Set<T> &a , const Set<T> & b){
+  Set<T> Set<T>::symmetricDifference(const Set<T> &a , const Set<T> & b){
     return unite(difference(a,b),difference(b,a));
   }
   template<typename T>

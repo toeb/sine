@@ -5,7 +5,7 @@
 
 namespace nspace{
   class InitializationModule : public virtual ModuleBase, public virtual Initializable{
-    TYPED_OBJECT;
+    TYPED_OBJECT(InitializationModule);
   private:
     Set<Initializable*> _initializeables;
   public:

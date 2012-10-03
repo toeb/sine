@@ -256,6 +256,11 @@ namespace matrix2{
       QuaternionOperations<T>::fromRollPitchYaw(*this,rpy);
     }
 
+    inline void fromRollPitchYaw(T roll, T pitch, T yaw){
+      Vector3D rpy(roll,pitch,yaw);
+      QuaternionOperations<T>::fromRollPitchYaw(*this,rpy);
+    }
+
 
 
   };

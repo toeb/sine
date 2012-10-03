@@ -1,6 +1,6 @@
 #include "StringTools.h"
 
-
+#include <string>
 
 using namespace std::extensions;
 
@@ -15,4 +15,10 @@ std::string std::extensions:: operator +(std::string a, const char * b){
 }
 std::string std::extensions::operator +(const char * a, std::string b){
   return std::string(a)+b;
+}
+
+
+std::string std::extensions::replace(std::string  original, const std::string & search, const std::string & replacement){
+  if( original.find(search) > original.size())return original;
+  return  original.replace(original.find(search), replacement.size()-1, replacement);
 }

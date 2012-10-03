@@ -1,7 +1,5 @@
 #pragma once
-#include <vector>
-#include <algorithm>
-#include <simulation/ISimulationModule.h>
+#include <config.h>
 
 #define MAX_KEYS 256
 #define MAX_MOUSE_BUTTONS 3

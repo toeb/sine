@@ -22,7 +22,7 @@ enum OctreeNodeId{
 
 
 class Octree : public ISimulationObject{
-  TYPED_OBJECT;
+  TYPED_OBJECT(Octree);
 private:
   Geometry & _geometry;
   ///< The id of the node

@@ -4,10 +4,10 @@
 /**
  * \file src/vis/opengl/GeneralRenderers/GridRenderer.h
  */
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 namespace nspace{
 
-class MeshGridRenderer : public IRenderer{
+class MeshGridRenderer : public Renderer{
 public:
 	void render();
 };
@@ -18,7 +18,7 @@ public:
  * \author Tobias Becker
  * \date 05.04.2012
  */
-class GridRenderer : public IRenderer{
+class GridRenderer : public Renderer{
 public:
 
   /**

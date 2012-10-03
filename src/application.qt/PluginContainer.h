@@ -2,6 +2,7 @@
 
 
 #include <config.h>
+#include <core/Object.h>
 #include <QObject>
 #include <application.qt/Plugin.h>
 #include <application.qt/PluginWindow.h>
@@ -9,8 +10,9 @@
 #include <QAction>
 namespace nspace{
   class PluginApplication;
-  class PluginContainer : public QObject{
+  class PluginContainer : public QObject, public virtual Object{
     Q_OBJECT;
+    TYPED_OBJECT(PluginContainer);
   private:
     // reference to the plugin
     Plugin & _plugin;

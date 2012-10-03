@@ -27,11 +27,17 @@
 #include <simulation.logging/LoggingObject.h>
 #include <visualization/PerspectiveViewport.h>
 #include <core.initialization/Initializable.h>
-
+#include <visualization/Color.h>
 namespace nspace{
   class GlViewport:public virtual PerspectiveViewport, public virtual Initializable{
-    TYPED_OBJECT;
+    TYPED_OBJECT(GlViewport);
+    Color _clearColor;
+
   public:
+    GlViewport();
+    Color& clearColor();
+    const Color& clearColor()const;
+
 
     void viewportTransform();
   protected:

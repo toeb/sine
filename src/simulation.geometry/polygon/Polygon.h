@@ -12,7 +12,7 @@
 namespace nspace{
 
 class Polygon : public Geometry{
-  TYPED_OBJECT;
+  TYPED_OBJECT(Polygon);
 private:
   // a polygon consist of faces, edges, half edges and vertices
   std::vector<Face*> _faces;

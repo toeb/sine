@@ -24,6 +24,8 @@ GlWidgetPluginWindow::GlWidgetPluginWindow(Set<GlViewport*> & viewports):PluginW
   });
   connect(_ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT( viewportIndexChanged(int)));
 
+  components()|=_glWidget;
+
 }
 
 void GlWidgetPluginWindow::viewportIndexChanged(int idx){

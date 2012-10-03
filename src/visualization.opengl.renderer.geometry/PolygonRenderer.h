@@ -3,12 +3,12 @@
 #include <simulation.geometry/polygon/Polygon.h>
 #include <visualization/Color.h>
 #include <visualization.opengl/GlTexture.h>
-#include <core.hub/HubObject.h>
+#include <core.hub/CompositeHubObject.h>
 #include <core.initialization/Initializable.h>
 namespace nspace{
 
-  class PolygonRenderer : public virtual Renderer, public virtual HubObject, public virtual Initializable{
-    TYPED_OBJECT;
+  class PolygonRenderer : public virtual Renderer, public virtual CompositeHubObject, public virtual Initializable{
+    TYPED_OBJECT(PolygonRenderer);
   public:
     Texture texture;
     Color faceColor;
@@ -33,6 +33,8 @@ namespace nspace{
     PolygonRenderer( Polygon & polygon);
     bool initializeObject();
     void render();    
+  protected:
+  
   };
 
 }

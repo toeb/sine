@@ -27,7 +27,7 @@ struct Face:public MeshElement{
  * \date 05.04.2012
  */
 class Mesh : public virtual Initializable, public virtual NamedObject {
-  TYPED_OBJECT;
+  TYPED_OBJECT(Mesh);
 private:
   std::vector<Vertex * > _vertices;
   std::vector<Face * > _faces;

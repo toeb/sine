@@ -16,7 +16,7 @@ namespace nspace{
     inline Real & nearCutOffPlane(){return _nearCutOffPlane;}
     inline Real & farCutOffPlane(){return _farCutOffPlane;}
     inline Real & zoomFactor(){return _zoomFactor;}
-    void onBeforeRender(){}
+    void onBeforeRender(){viewportTransform();}
 
   protected:
     virtual void viewportTransform()=0;

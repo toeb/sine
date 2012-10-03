@@ -9,7 +9,7 @@ namespace nspace{
  *
  */
 class SimulationTask : public virtual ISimulationObject, public virtual ExtendedTask{
-  TYPED_OBJECT;
+  TYPED_OBJECT(SimulationTask);
 public:
   virtual void toString(std::ostream & o)const{
     ExtendedTask::toString(o);

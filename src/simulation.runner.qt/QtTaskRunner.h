@@ -8,10 +8,10 @@
 #include <QTimer>
 class Ui_TaskWidget;
 namespace nspace{
-  
+
   class QtTaskRunner : public Plugin, public virtual SimulationRunner {
     Q_OBJECT;
-    TYPED_OBJECT;
+    TYPED_OBJECT(QtTaskRunner);
   private:
     QTimer * _taskTimer;
     Ui_TaskWidget * _ui;
@@ -20,8 +20,8 @@ namespace nspace{
   protected:
     //these methods need to be implemented by a SimulationRunner
     int executeRunner();
-    
-   void stopRunner();
+
+    void stopRunner();
     bool initializeRunner();
     public slots:
       void timeout();
