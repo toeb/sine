@@ -4,27 +4,38 @@
 
 namespace nspace{
   // a class holding all nodes of a graph
+  template<typename NodeType>
   class Graph{
   private:
     // field of all nodes this graph contains
-    Set<Node*> _nodes;
+    Set<NodeType*> _nodes;
   public:
     // returns all nodes of the graph
-    Set<Node*> & nodes();
+    Set<NodeType*> & nodes(){
+      return _nodes;
+    }
     // readonly access to all nodes in the graph
-    const Set<Node*> & nodes()const;
+    const Set<NodeType*> & nodes()const{
+      return _nodes;
+    }
     // gets a single node by comparison with id
-    template<typename T> Node * operator()(const T id)const;
+    template<typename T> NodeType * operator()(const T id)const;
     // returns all nodes which have no predecessors
-    Set<Node*> leaves()const;   
+    Set<NodeType*> leaves()const{
+      return nodes().subset([](NodeType * n){
+        return (bool)!n->predecessors();
+      });
+    }  
+
   };
 
 
 
   //implementaion of templated methods
   // gets a single node by comparison with id
+  template<typename NodeType>
   template<typename T>
-  Node * Graph::operator()(const T id)const{
+  NodeType * Graph<NodeType>::operator()(const T id)const{
     return _nodes(id);
   }
 }

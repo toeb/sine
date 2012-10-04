@@ -6,9 +6,9 @@
 #include <core/NamedObject.h>
 #include <core.hub/Module.h>
 #include <core/StringTools.h>
-
+#include <core/DataNode.h>
 namespace nspace{
-  class Hub : public virtual NamedObject , public virtual Module, public virtual Set<Object*>{
+  class Hub : public virtual NamedObject , public virtual Module, public virtual DataNode<Object*>, public virtual Set<Object*>{
     TYPED_OBJECT(Hub);
   private:
     Set<Module*> _modules;
@@ -19,9 +19,9 @@ namespace nspace{
   public:
     void toString(std::ostream & out)const{
       out << "<Hub name=\"" << name() <<"\">"<< std::endl;
-      foreachElement([&out](Object * object){
+      foreachElement([&out](Object * node){
         out << " " ;
-        std::string str = object->toString();
+        std::string str = node->toString();
         
         str = std::extensions::replace(str,"\n","\n ");
         out << str<<std::endl;

@@ -1,6 +1,7 @@
 #pragma once
 #include <core/Object.h>
 #include <core.hub/Hub.h>
+#include <core/DataNode.h>
 namespace nspace{
   class HubObject : public virtual Object{
     TYPED_OBJECT(HubObject);

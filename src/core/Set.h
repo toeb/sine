@@ -254,7 +254,7 @@ namespace nspace{
 
   template<typename T>
   void Set<T>::foreachElement(std::function<void(T)> f)const{
-    for(int i=0; i < _elements.size();i++){
+    for(uint i=0; i < _elements.size();i++){
       f(_elements[i]);
     }
   }

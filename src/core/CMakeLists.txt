@@ -6,6 +6,9 @@ set(source
 ./Object.cpp
 ./NamedObject.h
 ./NamedObject.cpp
+./TypedNode.h
+./DataNode.h
+./DerivableDataNode.h
 ./Node.h
 ./Node.cpp
 ./Graph.h

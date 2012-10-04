@@ -5,7 +5,7 @@
 
 namespace nspace{
   
-  class CompositeHubObject : public HubObject, private Set<Object*>{
+  class CompositeHubObject : public HubObject, private Set<Object*>,public virtual DataNode<Object*>{
     TYPED_OBJECT(CompositeHubObject);
   private:
 
@@ -23,7 +23,7 @@ namespace nspace{
       });      
       out <<"</CompositeHubObject>"<<std::endl;
     }
-    CompositeHubObject(){
+    CompositeHubObject():DataNode<Object*>(this){
 
     }
     ~CompositeHubObject(){
@@ -46,12 +46,27 @@ namespace nspace{
         *hub |= object;
       });
       onComponentAdded(object);
+
+      auto node = dynamic_cast<DataNode<Object *> *>(object);
+      if(!node){
+        node = new DataNode<Object *>(object);
+      }
+      successors()|=node;
     }
     void onElementRemoved(Object * object){
       _hubs.foreachElement([this,object](Hub * hub){
         *hub /= object;
       });
       onComponentRemoved(object);
+
+      auto element = successors().subset([object](DataNode<Object*> * node){
+        return node->data() == object;
+      });
+
+      successors() /= element;
+
+
+
     }
   protected:
     virtual void onComponentAdded(Object * object){}

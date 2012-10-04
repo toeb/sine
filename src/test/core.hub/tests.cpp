@@ -80,7 +80,7 @@ TEST(renounce2, Hub){
 }
 
 class TestModule : public virtual ModuleBase, public virtual HubObject{
-  TYPED_OBJECT;
+  TYPED_OBJECT(TestModule);
 protected:
   bool accept(Object * o){
     return true;
@@ -238,19 +238,32 @@ TEST(compositeRemove3, CompositeHubObject){
   CHECK(!hub.contains(&obj)); 
 }
 
-TEST(deleteComposite1, CompositeHubObject){
-  CompositeHubObject*  obj = new CompositeHubObject;
-  auto o1 = new Object;
-  auto o2 = new Object;
 
-  obj->components()|=o1;
-  obj->components()|=o2;
-  Hub hub;
-  hub |= o1;
-  hub |= obj;
+TEST(HubGraph , Hub){
+  Hub uut;
+  CompositeHubObject n1;
+  CompositeHubObject n2;
+  Object n3;
+  Object n4;
 
-  delete obj;
-  obj = 0;  
-  CHECK(hub.size()==0);
+
+  uut |= &n1;
+  n1.components() |= &n2;
+  n2.components() |= &n3;
+  n1.components() |= &n4;
+
+
+
+  Set<Object *  > order;
+
+  uut.dfs([&order](DataNode<Object* > * node){
+    order |= node->data();
+  });
   
+  CHECK(order.at(0) == & uut);
+  CHECK(order.at(1) == & n1);
+  CHECK(order.at(2) == & n2);
+  CHECK(order.at(3) == & n3);
+  CHECK(order.at(4) == & n4);
+
 }

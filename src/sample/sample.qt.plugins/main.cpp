@@ -13,11 +13,14 @@
 using namespace nspace;
 using namespace std;
 
+
+
+
 int main(int argc,  char ** argv){
   Color::loadColors("resources/colors/palette.txt");
 
   Hub hub;
-  
+
   InitializationModule initializer;
   hub |= &initializer;
 
@@ -32,7 +35,7 @@ int main(int argc,  char ** argv){
   PluginApplication app(argc,argv);
   hub |= &app;
 
-  
+
   ViewportPlugin viewportPlugin;
   hub |= &viewportPlugin;
 
@@ -43,7 +46,7 @@ int main(int argc,  char ** argv){
 
   viewportPlugin.glWidget()->setViewportController(new FpsCamera());
   GlViewport glviewport;
-  
+
 
   hub|=&glviewport;
 

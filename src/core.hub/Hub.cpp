@@ -6,14 +6,18 @@ using namespace nspace;
 
 
 void Hub::onElementAdded(Object * object){
-  
-  toString(std::cout);
-}
-void Hub::onElementRemoved(Object * object){
-  
+  auto node = dynamic_cast<DataNode<Object *>* >(object);
+  if(!node) node = new DataNode<Object*>(object);
+  successors() |= node;
 }
 
-Hub::Hub():_processing(false){}    
+
+void Hub::onElementRemoved(Object * object){
+  auto result = successors().subset([object](DataNode<Object *> * o){return o->data() == object;});
+  successors() |= result;
+}
+
+Hub::Hub():DataNode<Object*>(this),_processing(false){}    
 Hub::~Hub(){
   foreachElement([this](Object * object){
     auto ho = dynamic_cast<HubObject*>(object);
