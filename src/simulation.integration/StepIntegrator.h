@@ -85,7 +85,7 @@ public:
   }
   
   
-  StepIntegrator(Real h0=0.01):_h(h0),_h0(h0),_a(0.0),_b(0.0),_t(0.0){
+  StepIntegrator(Real h0=0.01):_h(h0),_h0(h0),_a(0.0),_b(DBL_MAX),_t(0.0){
 
   }
 
