@@ -251,10 +251,8 @@ TEST(HubGraph , Hub){
   n1.components() |= &n2;
   n2.components() |= &n3;
   n1.components() |= &n4;
-
-
-
-  Set<Object *  > order;
+  
+  Set<Object *> order;
 
   uut.dfs([&order](DataNode<Object* > * node){
     order |= node->data();
@@ -266,4 +264,7 @@ TEST(HubGraph , Hub){
   CHECK(order.at(3) == & n3);
   CHECK(order.at(4) == & n4);
 
+
+  
 }
+

@@ -26,12 +26,10 @@
 */
 #pragma once
 
-#include <simulation.timing/Timeable.h>
-
 #include <simulation.state/StatefulObject.h>
-
 #include <simulation.integration/ISystemFunction.h>
 #include <simulation.integration/Evaluator.h>
+
 namespace nspace{
   /**
   * <summary> Abstract Integrator class.</summary>
@@ -47,19 +45,26 @@ namespace nspace{
     Integrator();
     //integrates the evaluator over the interval [a,b]
     virtual void integrate(Real a, Real b)=0;
-    
+    // returns the evaluator of this integrator
     inline Evaluator * evaluator(){ return _evaluator; }
+    // sets the evaluator of integrator
     void setEvaluator(Evaluator * evaluator);
   protected:
-    inline const StateMatrix & f(const StateMatrix & x, Real t, Real h){
-      if(!evaluator()){
-        std::cerr << " No evaluator set.  cannot call f!!"<<std::endl;
-        return *reinterpret_cast<StateMatrix*>(0);
-      }    
-      return evaluator()->f(x,t,h);
-
-    }
+    // evaluates the evaluator at state x ,time t and stepsize h
+    inline const StateMatrix & f(const StateMatrix & x, Real t, Real h);
   };
+
+
+
+  //implementation
+  inline const StateMatrix & Integrator::f(const StateMatrix & x, Real t, Real h){
+    if(!evaluator()){
+      std::cerr << " No evaluator set.  cannot call f!!"<<std::endl;
+      return *reinterpret_cast<StateMatrix*>(0);
+    }    
+    return evaluator()->f(x,t,h);
+
+  }
 
 
 }//namespace mbslib

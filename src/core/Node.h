@@ -12,7 +12,7 @@ namespace nspace{
     Set<Derived*> _predecessors;
     Set<Derived*> _successors;
     Derived & _this;
-  public:
+  public:    
     // returns a reference to this node but already cast to its derived type
     inline Derived & derived();
     // same as above w/o write access
@@ -67,7 +67,6 @@ namespace nspace{
     void foreachPredecessor(std::function<void (Derived*)> action)const;
     // iterates the successors
     void foreachSuccessor(std::function<void (Derived*)> action)const;
-
 
     void dfs(std::function<void (Derived * )> action);
     // really bad implementation of dfs, it is slow and will crash (stack overflow ) if there are cycles in the graph
@@ -218,6 +217,7 @@ namespace nspace{
     successors().add(node);
     return derived();
   }
+
 
   template<typename Derived>
   void Node<Derived>::dfs(std::function<void (Derived * )> action){

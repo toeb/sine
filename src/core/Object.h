@@ -3,6 +3,7 @@
 #include <config.h>
 #include <ostream>
 #include <string>
+
 namespace nspace{
 
 typedef const uint TypeId;
@@ -43,10 +44,12 @@ public:
   inline const ObjectId & objectId()const{return _id;}
   // tostring method which converts this object to a string representation (should be overridden by subclasses)
   virtual void toString(std::ostream & out)const;
+  
   // to string operator
   std::ostream & operator<<(std::ostream & out)const;
   // tostring method which returns the string
   std::string toString()const;
+
 };
 
 
