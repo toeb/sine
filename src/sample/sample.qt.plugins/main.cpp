@@ -50,6 +50,7 @@ int main(int argc,  char ** argv){
 
   hub|=&glviewport;
 
+  hub.toString(cout);
   GlViewport glviewport2;
   glviewport2.setName("second view");
   hub|=&glviewport2; 

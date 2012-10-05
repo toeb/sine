@@ -40,6 +40,10 @@ namespace nspace{
     // returns the size of the set
     uint size()const;
 
+    // returns last element
+    T last();
+    // returns last element
+    const T last()const;
     // returns the first element
     T first();
     const T  first()const;
@@ -111,12 +115,17 @@ namespace nspace{
     // static intersection
     static Set<T> intersect(const Set<T> & a, const Set<T> & b);
 
-    
+
   };
 
   //IMPLEMENTATION FOLLOWS:
+  // returns last element
+  template<typename T>
+  T last(){return at(size()-1);}
+  // returns last element
+  template<typename T>
+  const T last()const{return at(size()-1);}
 
-  
   template<typename T>
   template<typename T2>
   Set<T2> Set<T>::subset()const{
@@ -311,7 +320,7 @@ namespace nspace{
   }
   template<typename T>
   Set<T> & Set<T>::operator /=(const Set<T> & b){
-  
+
     b.reduce<Set<T> >(*this,[](Set<T> & accu,T element){
       accu.remove(element);
     });

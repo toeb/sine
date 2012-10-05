@@ -10,28 +10,11 @@
 #include <core/DataNode.h>
 namespace nspace{
 
-  template<typename NodeType>
-  class DepthFirstSearch{
-    typedef Set<NodeType*> set;
-    typedef std::function<void (NodeType * , set )> Action;
-    typedef std::function<set  (const NodeType * ) > Successors; 
-  public:
-    inline static void operation(NodeType * node,  Action action, Successors successorFunction, set visited){
-      action(node, visited);
-      visited |= node;
-      
-      set successors = successorFunction(node);
-      successors.foreachElement([successorFunction, visited, action](NodeType * child){
-        DepthFirstSearch<NodeType>::operation(child,action,successorFunction,visited);
-      });
-
-    }
-  };
-
+  typedef DataNode<Object*> HubNode;
   class Hub : 
     public virtual NamedObject , 
     public virtual Module, 
-    public virtual DataNode<Object*>,
+    public virtual HubNode,
     public virtual Set<Object*>
   {
     TYPED_OBJECT(Hub);
@@ -41,13 +24,31 @@ namespace nspace{
     Set<Object *> _waitingRenouncedObjects;
     bool _processing;
     
+
   public:
-    template<NodeType>
-    void dfs(NodeType * node){
-      
-    }
+
 
     void toString(std::ostream & out)const{
+      typedef HubNode* node;
+      typedef Set<node> set;
+
+      set visited;
+      set unexplored;
+      set path;
+
+      unexplored |= successors();
+
+      while(unexplored){
+        node current = unexplored.last();
+        unexplored /= current;
+        if(visited.contains(current))continue;
+        visited |= current;
+        
+        std::cout << "."<<std::endl;
+
+      }
+
+
 
     }
 
