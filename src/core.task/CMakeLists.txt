@@ -3,6 +3,8 @@ set(source
  ./Task.cpp
  ./ExtendedTask.h
  ./ExtendedTask.cpp
+ ./ScheduledTask.h
+ ./ScheduledTask.cpp
  ./ITask.h
  ./ITask.cpp
  ./ITaskRunner.h
@@ -13,6 +15,8 @@ set(source
  ./SerialTaskRunner.cpp
  ./ParallelTaskRunner.h
  ./ParallelTaskRunner.cpp
+ ./ScheduledTaskRunner.h
+ ./ScheduledTaskRunner.cpp
 )
 
 source_group("" FILES ${source})

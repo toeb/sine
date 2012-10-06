@@ -2,7 +2,7 @@
 #include <config.h>
 
 namespace nspace{
-
+  // a pair map is a twoway map
 template< typename K1, typename K2 >
 class PairMap{
 private:
@@ -15,6 +15,8 @@ public:
 	K2 operator()(K1 k);
 	void addMapping(K1 k1,K2 k2);
 };
+
+
 // implementation
 template< typename K1, typename K2 >
 	bool PairMap<K1,K2>::mappingExists(K1 k){

@@ -5,24 +5,27 @@
 #include <QObject>
 #include <application.qt/Plugin.h>
 #include <application.qt/PluginApplication.h>
+#include <core.task/SerialTaskRunner.h>
+#include <core.task/ScheduledTaskRunner.h>
+#include <core.hub/CompositeHubObject.h>
 #include <QTimer>
 class Ui_TaskWidget;
 namespace nspace{
 
-  class QtTaskRunner : public Plugin, public virtual SimulationRunner {
+  class QtTaskRunner : public Plugin, public virtual CompositeHubObject, public virtual TypedModuleBase<ITask>{
     Q_OBJECT;
     TYPED_OBJECT(QtTaskRunner);
   private:
+    ScheduledTaskRunner _scheduledTaskRunner;
+    SerialTaskRunner _serialTaskRunner;
     QTimer * _taskTimer;
     Ui_TaskWidget * _ui;
   public:
     QtTaskRunner();
   protected:
-    //these methods need to be implemented by a SimulationRunner
-    int executeRunner();
-
-    void stopRunner();
-    bool initializeRunner();
+    void onElementAdded(ITask * task);
+    void onElementRemoved(ITask * task);
+    bool accept(ITask * task);
     public slots:
       void timeout();
   public:
@@ -30,5 +33,7 @@ namespace nspace{
     void uninstall(PluginContainer & container);
     void enable();
     void disable();
+
+
   };
 }

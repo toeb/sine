@@ -4,36 +4,25 @@
 
 
 namespace nspace{
-  
+
   class CompositeHubObject : public HubObject, private Set<Object*>,public virtual DataNode<Object*>{
     TYPED_OBJECT(CompositeHubObject);
   private:
 
   public:
 
-    virtual void toString(std::ostream & out)const{
-      out << "<CompositeHubObject components=\""<<size()<<"\" >"<<std::endl;
-      
-      foreachElement([&out](Object * object){
-        out << " " ;
-        std::string str = object->toString();
-        
-        str = std::extensions::replace(str,"\n","\n ");
-        out << str<<std::endl;
-      });      
-      out <<"</CompositeHubObject>"<<std::endl;
-    }
-    CompositeHubObject():DataNode<Object*>(this){
 
+    CompositeHubObject(){
+      data()=this;
     }
     ~CompositeHubObject(){
       // it does not seem to work
-   /*   Set<Hub*> hubs = _hubs;
+      /*   Set<Hub*> hubs = _hubs;
       Set<Object*> components = this->components();
       hubs.foreachElement([components](Hub * hub){
-        
-        *hub /= components;
-       // *hub /= this;
+
+      *hub /= components;
+      // *hub /= this;
       });*/
     }
     Set<Object*> & components(){

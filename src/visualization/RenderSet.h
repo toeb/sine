@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core.hub/ModuleBase.h>
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 
 #include <functional>
 
@@ -10,18 +10,19 @@ namespace nspace{
   * \brief Render Module.
   *
   */
-  class RenderSet:public virtual ModuleBase, public virtual IRenderer {
+  class RenderSet:public virtual TypedModuleBase<Renderer>, public virtual Renderer {
+    TYPED_OBJECT(RenderSet);
   private:
-    Set<IRenderer*> _renderers;
+    
   public:  
     void onBeforeRendering(Viewport & viewport){
-      _renderers.foreachElement([&viewport](IRenderer * renderer){renderer->onBeforeRendering(viewport);});
+      foreachElement([&viewport](Renderer * renderer){renderer->onBeforeRendering(viewport);});
     }
     void render(Viewport & viewport){
-      _renderers.foreachElement([&viewport](IRenderer * renderer){renderer->render(viewport);});    
+      foreachElement([&viewport](Renderer * renderer){renderer->render(viewport);});    
     }
     void sceneResized(int newWidth, int newHeight,Viewport & viewport){
-      _renderers.foreachElement([&viewport, & newWidth,&newHeight](IRenderer * renderer){renderer->sceneResized(newWidth,newHeight,viewport);});    
+      foreachElement([&viewport, & newWidth,&newHeight](Renderer * renderer){renderer->sceneResized(newWidth,newHeight,viewport);});    
     }
 
   };

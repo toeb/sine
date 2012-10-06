@@ -13,6 +13,8 @@ set(source
  ./CameraRenderer.cpp
  ./GridRenderer.h
  ./GridRenderer.cpp
+ ./MeshGridRenderer.h
+ ./MeshGridRenderer.cpp
 )
 source_group("" FILES ${source})
 

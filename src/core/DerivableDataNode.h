@@ -23,6 +23,25 @@ namespace nspace{
     operator const T & ()const{
       return _data;
     }
+    friend std::ostream &  operator << (std::ostream & out, const DerivableDataNode<T,Derived> &node ){
+      out << "node{";
+      node.toStream(out);
+      out << "}";
+      return out;
+    }
+
+    virtual void toStream(std::ostream & out)const{
+      out << data();
+    }
+
+    void successorsToStream(std::ostream & out){
+      this->dfsWithPath([](Derived* current, Set<Derived*> path){
+        cout << spaces(path.size());
+        cout << *current<<"\n";
+      });
+    }
+
+
   };
 
 }

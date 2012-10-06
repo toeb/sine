@@ -12,6 +12,8 @@ namespace nspace{
   class InputHandler:public virtual ModuleBase{
     TYPED_OBJECT(InputHandler);
   private:
+    // store the last change time which allows clients to see which is the current inputhandler
+    Time _lastChange;
     // the set of listeners which are currently waiting for events of this handler
     Set<IInputListener* > _listeners;
     // the array of keys which are currently pressed
@@ -24,6 +26,7 @@ namespace nspace{
     // the mouse wheel position of this inputhandler
     Real _mouseWheel;
   public:    
+    Time lastChange()const{return _lastChange;}
     // access to the listeners of this input handler
     Set<IInputListener* > & listeners();
     // readonly access to the listeners of this input handler

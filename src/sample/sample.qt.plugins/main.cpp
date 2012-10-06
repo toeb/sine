@@ -10,25 +10,39 @@
 #include <visualization/Color.h>
 #include <visualization.opengl/FpsCamera.h>
 #include <iostream>
+#include <visualization.opengl.renderer/GridRenderer.h>
+#include <visualization.opengl.renderer/MeshGridRenderer.h>
+#include <core/StringTools.h>
+#include <visualization/RenderSet.h>
+#include <visualization.opengl.renderer/LightRenderer.h>
 using namespace nspace;
 using namespace std;
+using namespace std::extensions;
 
-
+class Tmp : public virtual ScheduledTask{
+  TYPED_OBJECT(Tmp);
+public:
+  Tmp(Time t){
+    interval()=t;
+    isOneTimeTask()=false;
+  }
+  void timeout(Time dt, Time t){
+    cout << "lol" <<dt <<" "<<t<< endl;
+  }
+};
 
 
 int main(int argc,  char ** argv){
   Color::loadColors("resources/colors/palette.txt");
-
   Hub hub;
 
   InitializationModule initializer;
   hub |= &initializer;
 
+  hub.successorsToStream(cout);
 
   ViewportPlugin viewport2;
   hub|= &viewport2;
-
-
   QtTaskRunner taskRunner;
   hub |=&taskRunner;
 
@@ -38,27 +52,39 @@ int main(int argc,  char ** argv){
 
   ViewportPlugin viewportPlugin;
   hub |= &viewportPlugin;
-
-  DelegateKeyListener listener([](Keys key, DelegateKeyListener::KeyState state){
-    std::cout << key << " " << state << std::endl;
-  });
-  hub |= &listener;
-
+  
+  viewport2.glWidget()->setViewportController(new FpsCamera());  
   viewportPlugin.glWidget()->setViewportController(new FpsCamera());
   GlViewport glviewport;
 
 
+
+
   hub|=&glviewport;
 
-  hub.toString(cout);
   GlViewport glviewport2;
   glviewport2.setName("second view");
   hub|=&glviewport2; 
-  glviewport2.clearColor().setTo("red");
+  glviewport2.clearColor().setTo("AliceBlue");
   glviewport.coordinates().position() = Vector3D(0,0,10);
   glviewport.coordinates().orientation().fromRollPitchYaw(0.0,0.0,scalar::pi<Real>());
   CoordinateSystemRenderer originRenderer(CoordinateSystem::identity());
-  glviewport.setRenderer(&originRenderer);
+  
+
+  RenderSet renderset;
+
+  hub |= &renderset;
+
+  MeshGridRenderer renderer;
+
+  hub |= & renderer;
+
+  LightRenderer lights;
+  hub |= &lights;
+  
+  glviewport.setRenderer(& renderset);
+  glviewport2.setRenderer(&renderset);
+  hub.successorsToStream(cout);
   app.run();
   return 0;
 }

@@ -26,6 +26,7 @@ namespace nspace{
   class SystemModule : 
     public virtual SimulationTask,
     public virtual ISimulationModule{
+      TYPED_OBJECT(SystemModule);
   private:
     CompositeStatefulObject _statefulObjects;
     CompositeSystemFunction _systemFunction;

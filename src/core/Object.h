@@ -46,11 +46,14 @@ public:
   virtual void toString(std::ostream & out)const;
   
   // to string operator
-  std::ostream & operator<<(std::ostream & out)const;
+  //std::ostream & operator<<(std::ostream & out)const;
   // tostring method which returns the string
   std::string toString()const;
 
+  friend std::ostream & operator << (std::ostream & out, const Object * obj);  
+  friend std::ostream & operator << (std::ostream & out, const Object & obj);
 };
+
 
 
 

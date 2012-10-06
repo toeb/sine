@@ -27,7 +27,7 @@ bool BillboardRenderer::initializeObject(){
      res.fromGrayscale(255);*/
   });
  _texture = new Texture(*result);
- *hub()<<_texture;
+ //<TODO *hub()<<_texture;
   return true;
 }
 void BillboardRenderer::cleanupObject(){

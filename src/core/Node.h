@@ -68,6 +68,9 @@ namespace nspace{
     // iterates the successors
     void foreachSuccessor(std::function<void (Derived*)> action)const;
 
+    // does a depth first search calling action on every node and also passing the path to the node as a parameter to action
+    void dfsWithPath(std::function<void (Derived *, Set<Derived * > )> action, Set<Derived * > currentpath = Set<Derived*>());
+
     void dfs(std::function<void (Derived * )> action);
     // really bad implementation of dfs, it is slow and will crash (stack overflow ) if there are cycles in the graph
     void dfs(std::function<void (bool & , Derived *)> f, std::function<void (Set<Derived*> &, const Derived &) > successors);
@@ -218,6 +221,13 @@ namespace nspace{
     return derived();
   }
 
+  template<typename Derived>
+  void Node<Derived>::dfsWithPath(std::function<void (Derived *, Set<Derived * > )> action, Set<Derived * > currentpath = Set<Derived*>()){
+    action(&this->derived(),currentpath);
+    successors().foreachElement([action,this,&currentpath](Derived * next){
+      next->dfsWithPath(action,currentpath|&this->derived());
+    });
+  }
 
   template<typename Derived>
   void Node<Derived>::dfs(std::function<void (Derived * )> action){

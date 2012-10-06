@@ -11,6 +11,7 @@ namespace nspace{
     friend class InputHandler;
   public:
     const Set<InputHandler*> handlers()const{return _handlers;}   
+    InputHandler * currentHandler()const;
 
     virtual void onKeyDown(InputHandler * sender, Keys key){onKeyDown(key);};    
     virtual void onKeyDown(Keys key){};

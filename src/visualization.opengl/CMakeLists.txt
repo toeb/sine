@@ -16,7 +16,7 @@ set(source
 ./GlTexture.cpp
 )
 
-source_group("src" FILES ${source})
+source_group("" FILES ${source})
 add_library(visualization.opengl   ${source} )
 
 ##opengl is required for visualization.opengl

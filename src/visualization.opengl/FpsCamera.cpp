@@ -6,19 +6,31 @@ using namespace std;
 #define iftype(type,object) if(dynamic_cast<type*>(object))dynamic_cast<type*>(object)
 
 void FpsCamera::onViewportAdded(Viewport * viewport){
-
+  auto v = dynamic_cast<PerspectiveViewport*>(viewport);
+  if(!v)return;
+  body.position.mirror(v->coordinates().position);
+  body.orientation.mirror(v->coordinates().orientation);
 }
 void FpsCamera::onViewportRemoved(Viewport * viewport){
+  auto v = dynamic_cast<PerspectiveViewport*>(viewport);
+  if(!v)return;
+  // v->coordinates().unshare();
+
+
 }
 
 FpsCamera::FpsCamera():roll(0),pitch(0),yaw(0){
-  eulerIntegrator.setLowerBound(0.0);
-  eulerIntegrator.setEvaluator(new Evaluator(kinematicBody()));
+  isOneTimeTask()=false;
   interval()=0.01;
+
+  eulerIntegrator.setLowerBound(0.0);
+  eulerIntegrator.setUpperBound(0.0);
+  eulerIntegrator.setEvaluator(new Evaluator(kinematicBody()));
 }
 
 void FpsCamera::timeout(Time timePassed,Time time){
-  if(!_handler)return;
+  auto handler = currentHandler();
+  if(!handler)return;
 
   Real speed = 4;
 
@@ -37,19 +49,20 @@ void FpsCamera::timeout(Time timePassed,Time time){
 
 
 
-  if(_handler->isKeyDown(KEY_W))body.velocity() += direction * speed;
-  if(_handler->isKeyDown(KEY_S))body.velocity() -= direction * speed;
-  if(_handler->isKeyDown(KEY_A))body.velocity() += binormal * speed;
-  if(_handler->isKeyDown(KEY_D))body.velocity() -= binormal * speed;
-  if(_handler->isKeyDown(KEY_CTRL))body.velocity() += normal * speed;
-  if(_handler->isKeyDown(KEY_SPACE))body.velocity() -= normal * speed;
+  if(handler->isKeyDown(KEY_W))body.velocity() += direction * speed;
+  if(handler->isKeyDown(KEY_S))body.velocity() -= direction * speed;
+  if(handler->isKeyDown(KEY_A))body.velocity() += binormal * speed;
+  if(handler->isKeyDown(KEY_D))body.velocity() -= binormal * speed;
+  if(handler->isKeyDown(KEY_CTRL))body.velocity() += normal * speed;
+  if(handler->isKeyDown(KEY_SPACE))body.velocity() -= normal * speed;
   eulerIntegrator.setUpperBound(eulerIntegrator.upperBound()+timePassed);
   eulerIntegrator.integrate();
 
+  
 
 }
 
-void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
+void FpsCamera::onMouseMove(InputHandler * inputhandler, int x , int y, int dx, int dy){
   if(abs(dx)>40 || abs(dy)>40){
     return;
   }
@@ -68,27 +81,27 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
   normal=  R.col(1);
   binormal=  R.col(0);
 
-  if(!_handler)return;
-  if(_handler->isMouseButtonDown(BUTTON_RIGHT)||_handler->isKeyDown(KEY_SHIFT)){
+  if(!inputhandler)return;
+  if(inputhandler->isMouseButtonDown(BUTTON_RIGHT)||inputhandler->isKeyDown(KEY_SHIFT)){
     body.position() += -direction*ySpeed;
     body.position() += -binormal*xSpeed;
   }
-  if(_handler->isMouseButtonDown(BUTTON_MIDDLE)||_handler->isKeyDown(KEY_ALT)){
+  if(inputhandler->isMouseButtonDown(BUTTON_MIDDLE)||inputhandler->isKeyDown(KEY_ALT)){
     body.position() += -normal*ySpeed;
     body.position() += -binormal*xSpeed;
   }
 
-  if(_handler->isKeyDown(KEY_1)){    
+  if(inputhandler->isKeyDown(KEY_1)){    
     body.position() += binormal*length*speed;
   } 
-  if(_handler->isKeyDown(KEY_2)){    
+  if(inputhandler->isKeyDown(KEY_2)){    
     body.position() +=normal*length*speed;
   }
-  if(_handler->isKeyDown(KEY_3)){    
+  if(inputhandler->isKeyDown(KEY_3)){    
     body.position() +=direction* length*speed;
   }
 
-  if(_handler->isMouseButtonDown(BUTTON_LEFT) || _handler->isKeyDown(KEY_Q)){
+  if(inputhandler->isMouseButtonDown(BUTTON_LEFT) || inputhandler->isKeyDown(KEY_Q)){
     yaw += -dx*speed*0.1;
     pitch += -dy*speed*0.1;
     Quaternion qx;
@@ -101,5 +114,4 @@ void FpsCamera::onMouseMove(int x , int y, int dx, int dy){
     body.orientation() = qy*qx;
     body.orientation().normalize();
   }
-
 }

@@ -5,18 +5,6 @@
 
 using namespace nspace;
 
-void MeshGridRenderer::render(){
-		int number=50;
-		for(int i=0; i< number; i++){
-			for(int j=0; j< number; j++){
-				for(int k=0; k< number; k++){
-					Vector3D p(i-number/2.0,j-number/2.0,k-number/2.0);
-					MiniGL::drawPoint(p,1,MiniGL::black);
-				}
-			}
-		}
-	}
-
 void GridRenderer::render(){
 
   glPushMatrix();

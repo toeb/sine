@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <stack>
+#include <iostream>
 
 #include <core/Set.h>
 #include <core/NamedObject.h>
@@ -28,29 +29,7 @@ namespace nspace{
   public:
 
 
-    void toString(std::ostream & out)const{
-      typedef HubNode* node;
-      typedef Set<node> set;
 
-      set visited;
-      set unexplored;
-      set path;
-
-      unexplored |= successors();
-
-      while(unexplored){
-        node current = unexplored.last();
-        unexplored /= current;
-        if(visited.contains(current))continue;
-        visited |= current;
-        
-        std::cout << "."<<std::endl;
-
-      }
-
-
-
-    }
 
     Hub();    
     ~Hub();

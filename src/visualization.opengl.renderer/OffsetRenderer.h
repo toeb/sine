@@ -23,7 +23,7 @@ public:
  * \date 05.04.2012
  */
 class OffsetRenderer :public Renderer, public CoordinateSystem{
-  TYPED_OBJECT;
+  TYPED_OBJECT(OffsetRenderer);
 private:
   Renderer & _renderer;
  
@@ -35,7 +35,7 @@ public:
    * \author Tobias Becker
    * \date 05.04.2012
    */
-  OffsetRenderer(IRenderer & renderer);
+  OffsetRenderer(Renderer & renderer);
   /**
    * \brief Renders this object.
    *

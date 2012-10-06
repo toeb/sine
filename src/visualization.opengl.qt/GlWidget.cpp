@@ -4,16 +4,27 @@
 #define safe(x) if(x)x
 
 using namespace nspace;
+using namespace std;
 
-GlWidget::GlWidget(QWidget * parent):QGLWidget(parent),_viewport(0),_viewportController(0){
+GlWidget::GlWidget(QWidget * parent):QGLWidget(parent),_viewport(0),_viewportController(0),
+  _refreshTask([this](Time t, Time t2){repaint();}){
+    _refreshTask.isOneTimeTask()=false;
+    _refreshTask.interval()=0.01;
   components()|=&_inputHandler;
+  components()|=&_refreshTask;
   setFocusPolicy(Qt::StrongFocus);
   installEventFilter(this);
 }
-
+void GlWidget::repaint(){
+  updateGL();
+}
 void GlWidget::setViewportController(ViewportController * controller){
   components()/=controller;
+
+  
   _viewportController = controller;
+
+  
   safe(_viewportController)->setViewport(_viewport);
   components()|=controller;
 }
@@ -23,6 +34,9 @@ void GlWidget::onComponentAdded(Object * object){
   if(listener){
     this->_inputHandler.listeners()|=listener;
   }
+
+  
+
 }
 void GlWidget::onComponentRemoved(Object * object){
   auto listener = dynamic_cast<IInputListener*>(object);
@@ -30,7 +44,6 @@ void GlWidget::onComponentRemoved(Object * object){
     this->_inputHandler.listeners()/=listener;
   }
 }
-
 
 void GlWidget::setGlViewport(GlViewport * viewport){
   _viewport = viewport;

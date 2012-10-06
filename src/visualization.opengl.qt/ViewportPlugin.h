@@ -13,13 +13,17 @@ namespace nspace{
     Q_OBJECT;
     TYPED_OBJECT(ViewportPlugin);
   private:
+    // pointer to the currently displaying viewport 
     GlViewport * _glViewport;
+    // set of possible viewports
     Set<GlViewport *> _viewports;
+    // the plugin window
     GlWidgetPluginWindow * _pluginWindow;
+
   public:
+
     GlWidget * glWidget(){return _pluginWindow->glWidget();}
-
-
+    
     ViewportPlugin():_pluginWindow(0){
       setName("ViewportPlugin");
     }

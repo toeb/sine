@@ -7,10 +7,6 @@
 #include <visualization/Renderer.h>
 namespace nspace{
 
-class MeshGridRenderer : public Renderer{
-public:
-	void render();
-};
 
 /**
  * \brief Grid renderer. Renders a xz-plane as a Grid at a given y position

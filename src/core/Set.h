@@ -56,6 +56,10 @@ namespace nspace{
     // read access to the std::vector of elements 
     const std::vector<T> & elements()const;
 
+    void sort(std::function<bool (const T, const T) > compare){
+      std::sort(_elements.begin(),_elements.end(),compare);
+    }
+
     // returns the first element matching the Compartype
     template<typename CompareType> T operator()(CompareType val)const;
     // returns the subset of elements where the predicate evaluates to true
@@ -121,10 +125,10 @@ namespace nspace{
   //IMPLEMENTATION FOLLOWS:
   // returns last element
   template<typename T>
-  T last(){return at(size()-1);}
+  T  Set<T>::last(){return at(size()-1);}
   // returns last element
   template<typename T>
-  const T last()const{return at(size()-1);}
+  const T  Set<T>::last()const{return at(size()-1);}
 
   template<typename T>
   template<typename T2>

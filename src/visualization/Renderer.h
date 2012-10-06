@@ -5,6 +5,7 @@
 namespace nspace{
 class Viewport;
 class Renderer:public virtual HubObject{
+  TYPED_OBJECT(Renderer)
 public:
   virtual void onBeforeRendering(Viewport & viewport){onBeforeRendering();}
   virtual void onBeforeRendering(){}
@@ -14,6 +15,7 @@ public:
 };
 
 class DelegateRenderer : public Renderer{
+  TYPED_OBJECT(Renderer)
 private:
   std::function<void()> _renderFunction;
 public:

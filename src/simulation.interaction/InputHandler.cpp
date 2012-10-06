@@ -20,7 +20,7 @@ void InputHandler::onRenounce(Object * object){
   _listeners /= listener;
 }
 
-InputHandler::InputHandler() :  _mouseX(0), _mouseY(0), _mouseWheel(0){
+InputHandler::InputHandler() : _lastChange(0), _mouseX(0), _mouseY(0), _mouseWheel(0){
   for(int i =0; i < MAX_MOUSE_BUTTONS; i++){
     _mouseButtonsDown[i]=0;
   }
@@ -30,19 +30,21 @@ InputHandler::InputHandler() :  _mouseX(0), _mouseY(0), _mouseWheel(0){
 }
 
 void InputHandler::onMouseMove(int x, int y){
+  _lastChange = systemTime();
   int dx = x - _mouseX;
   int dy = y - _mouseY;
   _mouseX = x;
   _mouseY = y;
   listeners().foreachElement([this,&dx,&dy](IInputListener * l){
-    l->onMouseMove(_mouseX, _mouseY, dx,dy);
+    l->onMouseMove(this,_mouseX, _mouseY, dx,dy);
   });
 
 }
 void InputHandler::onMouseButtonDown(MouseButtons b){
+  _lastChange = systemTime();
   _mouseButtonsDown[b] = true;	
   listeners().foreachElement([this,&b](IInputListener * l){
-    l->onMouseDown(b);
+    l->onMouseDown(this,b);
   });
 }
 
@@ -50,29 +52,33 @@ bool InputHandler::accept(Object * object){
   return dynamic_cast<IInputListener*>(object)!=0;
 }
 void InputHandler::onMouseButtonUp(MouseButtons b){
+  _lastChange = systemTime();
   _mouseButtonsDown[b] = false;	
 
   listeners().foreachElement([this,&b](IInputListener * l){
-    l->onMouseUp(b);
+    l->onMouseUp(this,b);
   });
 }
 void InputHandler::onKeyDown(Keys key){
+  _lastChange = systemTime();
   _keysDown[key] = true;	
   listeners().foreachElement([this,&key](IInputListener * l){
-    l->onKeyDown(key);
+    l->onKeyDown(this,key);
   });
 }
 void InputHandler::onKeyUp(Keys key){
+  _lastChange = systemTime();
   _keysDown[key] = false;	
   listeners().foreachElement([this,&key](IInputListener * l){
-    l->onKeyUp(key);
+    l->onKeyUp(this,key);
   });
 }
 void InputHandler::onMouseWheelMove(Real p){
+  _lastChange = systemTime();
   Real dp = p-_mouseWheel;
   _mouseWheel =p;
   listeners().foreachElement([this,&p,&dp](IInputListener * l){
-    l->onMouseWheelMove(p,dp);
+    l->onMouseWheelMove(this,p,dp);
   });
 }
 

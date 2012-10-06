@@ -21,7 +21,7 @@ set(source
  ./Camera.cpp 
  
 )
-source_group("src" FILES ${source})
+source_group("" FILES ${source})
 
 add_library(visualization ${source}  CMakeLists.txt)
 target_link_libraries(visualization core.hub math lodepng)

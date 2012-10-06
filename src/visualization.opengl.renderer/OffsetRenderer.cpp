@@ -34,8 +34,8 @@ void OffsetRenderer::render(Viewport & viewport){
 
 bool OffsetRenderer::initializeObject(){
   //add original renderer to simulation
-  *simulation() << _renderer;
+ // *simulation() << _renderer;
   // set original renderer to ignore.  causing the rendermodule not to run the render method
-  _renderer.setIgnore(true);
+ // _renderer.setIgnore(true);
   return true;
 }

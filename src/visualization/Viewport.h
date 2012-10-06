@@ -2,13 +2,11 @@
 #include <core/NamedObject.h>
 #include <visualization/Renderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
-#include <visualization/ViewportController.h>
 
 namespace nspace{
 
   class Viewport : virtual public NamedObject{
   private:
-    ViewportController * _controller;
     Renderer * _renderer;
     int _width;
     int _height;

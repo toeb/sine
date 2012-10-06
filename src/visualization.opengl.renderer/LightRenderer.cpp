@@ -1,5 +1,6 @@
-#include <visualization.opengl/opengl.h>
+
 #include "LightRenderer.h"
+#include <visualization.opengl/opengl.h>
 using namespace nspace;
 
 void LightRenderer::doLights(){
