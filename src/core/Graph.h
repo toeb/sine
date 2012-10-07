@@ -5,10 +5,7 @@
 namespace nspace{
   // a class holding all nodes of a graph
   template<typename NodeType>
-  class Graph{
-  private:
-    // field of all nodes this graph contains
-    Set<NodeType*> _nodes;
+  class Graph: private virtual Set<NodeType*>, public virtual ObservableCollection<NodeType*>::Observer{
   public:
     // returns all nodes of the graph
     Set<NodeType*> & nodes();
@@ -18,17 +15,39 @@ namespace nspace{
     template<typename T> NodeType * operator()(const T id)const;
     // returns all nodes which have no predecessors
     Set<NodeType*> leaves()const;
+  protected:
+    virtual void onElementAdded(NodeType * element);
+    virtual void onElementRemoved(NodeType * element);
+    
+    virtual void elementAdded(ObservableCollection<NodeType*> * sender, NodeType* element){
+      nodes()|=element;
+    }
+    virtual void elementRemoved(ObservableCollection<NodeType*> * sender, NodeType* element){
+      
+    }
   };
 
 
 
   //implementation of templated methods
 
+  template<typename NodeType>
+   void Graph<NodeType>::onElementAdded(NodeType * element){
+    element->addObserver(this);
+    element->neighbors().foreachElement([this](NodeType * node){
+      this->nodes()|=node;
+    });
+  }
+    template<typename NodeType>
+     void Graph<NodeType>::onElementRemoved(NodeType * element){
+      element->removeObserver(this);
+    }
+
   // gets a single node by comparison with id
   template<typename NodeType>
   template<typename T>
   NodeType * Graph<NodeType>::operator()(const T id)const{
-    return _nodes(id);
+    return *this(id);
   }
 
 
@@ -36,19 +55,19 @@ namespace nspace{
   // returns all nodes of the graph
   template<typename NodeType>
   Set<NodeType*> & Graph<NodeType>::nodes(){
-    return _nodes;
+    return *this;
   }
   // readonly access to all nodes in the graph
   template<typename NodeType>
   const Set<NodeType*> & Graph<NodeType>::nodes()const{
-    return _nodes;
+    return *this;
   }
 
-  // returns all nodes which have no predecessors
+  // returns all nodes which have no successors
   template<typename NodeType>
   Set<NodeType*> Graph<NodeType>::leaves()const{
     return nodes().subset([](NodeType * n){
-      return (bool)!n->predecessors();
+      return (bool)!n->successors();
     });
   }  
 

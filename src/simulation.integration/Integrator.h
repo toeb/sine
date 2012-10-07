@@ -63,8 +63,6 @@ namespace nspace{
       return *reinterpret_cast<StateMatrix*>(0);
     }    
     return evaluator()->f(x,t,h);
-
   }
-
 
 }//namespace mbslib

@@ -3,24 +3,12 @@
 #include <core/NamedObject.h>
 #include <core/DataNode.h>
 #include <core/Graph.h>
-
+#include "conversion.h"
 #include <string>
 #include <sstream>
 using namespace nspace;
 using namespace std;
 
-SimpleString StringFrom (int value)
-{
-  stringstream s;
-  s << value;
-  return SimpleString(s.str().c_str());
-}
-SimpleString StringFrom (uint value)
-{
-  stringstream s;
-  s << value;
-  return SimpleString(s.str().c_str());
-}
 
 
 TEST(Create, Object){
@@ -87,7 +75,7 @@ TEST(DisConnect2,DataNode){
   DataNode<int> uut2(2);
   uut1 << uut2;
   
-  uut2 /= &uut1;
+  uut2.remove(&uut1);
 
   CHECK(!uut1.predecessors().contains(&uut2));
   CHECK(!uut2.successors().contains(&uut1));
@@ -185,10 +173,4 @@ TEST(GraphCreate1, Graph){
   
   CHECK_EQUAL(7U, uut.nodes().size());
   CHECK(uut.leaves().size()==4);
-
-
-
-
-
-
 }

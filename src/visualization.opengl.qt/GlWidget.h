@@ -20,18 +20,14 @@ namespace nspace{
     void setGlViewport(GlViewport * viewport);
     void setViewportController(ViewportController * controller);
     GlViewport * viewport();
-     void repaint();
-
+    void repaint();
   protected:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
 
-   
-
     void onComponentAdded(Object * object);
     void onComponentRemoved(Object * object);
-
     
     void keyPressEvent(QKeyEvent* ke);
     void keyReleaseEvent(QKeyEvent* ke);

@@ -27,7 +27,7 @@ namespace nspace{
     void onElementRemoved(ITask * task);
     bool accept(ITask * task);
     public slots:
-      void timeout();
+    void timeout();
   public:
     void install(PluginContainer & container);
     void uninstall(PluginContainer & container);

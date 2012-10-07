@@ -15,24 +15,16 @@
 #include <core/StringTools.h>
 #include <visualization/RenderSet.h>
 #include <visualization.opengl.renderer/LightRenderer.h>
+#include <core/PropertyChangingObject.h>
 using namespace nspace;
 using namespace std;
 using namespace std::extensions;
 
-class Tmp : public virtual ScheduledTask{
-  TYPED_OBJECT(Tmp);
-public:
-  Tmp(Time t){
-    interval()=t;
-    isOneTimeTask()=false;
-  }
-  void timeout(Time dt, Time t){
-    cout << "lol" <<dt <<" "<<t<< endl;
-  }
-};
+
 
 
 int main(int argc,  char ** argv){
+
   Color::loadColors("resources/colors/palette.txt");
   Hub hub;
 

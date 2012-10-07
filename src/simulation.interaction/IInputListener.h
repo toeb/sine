@@ -8,11 +8,13 @@ namespace nspace{
     TYPED_OBJECT(IInputListener);
   private:
     Set<InputHandler*> _handlers;
+    InputHandler * _currentHandler;
     friend class InputHandler;
   public:
+    IInputListener();
     const Set<InputHandler*> handlers()const{return _handlers;}   
     InputHandler * currentHandler()const;
-
+    void setCurrentHandler(InputHandler * handler);
     virtual void onKeyDown(InputHandler * sender, Keys key){onKeyDown(key);};    
     virtual void onKeyDown(Keys key){};
     virtual void onKeyUp(InputHandler * sender, Keys key){onKeyUp(key);};    

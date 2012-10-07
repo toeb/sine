@@ -2,6 +2,7 @@
 #include <core/Object.h>
 #include <core/Set.h>
 
+
 namespace nspace{
   class Viewport;
   class ViewportController : 
@@ -10,6 +11,9 @@ namespace nspace{
   {
     TYPED_OBJECT(ViewportController);
   public:
+
+
+
     void setViewport(Viewport * viewport){
       Viewport * oldviewport = first();
       if(add(viewport)) remove(oldviewport);
@@ -22,4 +26,15 @@ namespace nspace{
     virtual void onViewportRemoved(Viewport * viewport){}
 
   };
+
+  class InteractiveViewportController : public virtual ViewportController{
+    TYPED_OBJECT(InteractiveViewportController);
+  private:
+    InputHandler * _inputhandler;
+  public:
+    void setInputHandler(InputHandler * handler){
+    }
+    
+  };
+
 }

@@ -9,7 +9,9 @@
 #include <visualization.opengl.qt/GlWidgetPluginWindow.h>
 
 namespace nspace{
-  class ViewportPlugin : public Plugin,public virtual ModuleBase, public virtual CompositeHubObject{
+  class ViewportPlugin : public Plugin,
+    public virtual ModuleBase, 
+    public virtual CompositeHubObject{
     Q_OBJECT;
     TYPED_OBJECT(ViewportPlugin);
   private:
@@ -21,42 +23,16 @@ namespace nspace{
     GlWidgetPluginWindow * _pluginWindow;
 
   public:
+    GlWidget * glWidget();    
+    ViewportPlugin();
+    bool accept(Object * object);
+    void onAcception(Object * object);
+    void onRenounce(Object * object);
 
-    GlWidget * glWidget(){return _pluginWindow->glWidget();}
-    
-    ViewportPlugin():_pluginWindow(0){
-      setName("ViewportPlugin");
-    }
-
-
-    bool accept(Object * object){
-      return dynamic_cast<GlViewport * > (object)!=0;
-    }
-
-    void onAcception(Object * object){      
-      _viewports |= dynamic_cast<GlViewport*>(object);
-
-    }
-    void onRenounce(Object * object){      
-      _viewports /= dynamic_cast<GlViewport*>(object);
-    }
-
-
-    virtual void install(PluginContainer & container){
-      _pluginWindow = new GlWidgetPluginWindow(_viewports);
-      container.setPluginWindow(_pluginWindow);
-
-      components()|=_pluginWindow;
-    }
-    virtual void enable(){}
-    virtual void disable(){}
-    virtual void uninstall(PluginContainer & container){
-
-      components()|=_pluginWindow;
-      delete _pluginWindow;
-    }
-
-  protected:
+    virtual void install(PluginContainer & container);
+    virtual void enable();
+    virtual void disable();
+    virtual void uninstall(PluginContainer & container);
 
   };
 }

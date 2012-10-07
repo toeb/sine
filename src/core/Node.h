@@ -1,22 +1,16 @@
 #pragma once
 
+#include <core/patterns/Derivable.h>
 #include <core/Set.h>
 #include <core/Comparator.h>
 
 namespace nspace{
-
-
   template<typename Derived>
-  class Node : public ObservableCollection<Derived*>, public ObservableCollection<Derived*>::Observer{
+  class Node : public Derivable<Derived>, public ObservableCollection<Derived*>, public ObservableCollection<Derived*>::Observer{
   private:
     Set<Derived*> _predecessors;
-    Set<Derived*> _successors;
-    Derived & _this;
+    Set<Derived*> _successors;    
   public:    
-    // returns a reference to this node but already cast to its derived type
-    inline Derived & derived();
-    // same as above w/o write access
-    inline const Derived & derived()const;
     Node();
     ~Node();
     // callback when an element is added to the node. makes sure that the nodes are connected in both directions
@@ -61,6 +55,8 @@ namespace nspace{
     Derived & operator <<(Derived * node);
     // adds a single successor (by pointer)
     Derived & operator >>(Derived * node);
+    //removes the node from successors and predecessors
+    void remove(Derived * node);
     // iterates the neigbors
     void foreachNeighbor(std::function<void (Derived*)> action)const;
     // iterates the predecessors
@@ -89,6 +85,10 @@ namespace nspace{
 
   // implementation of node
 
+  
+  template<typename Derived>
+    void  Node<Derived>::remove(Derived * node){successors()/=node; predecessors()/=node;}
+
   template<typename Derived>
   void Node<Derived>::foreachNeighbor(std::function<void (Derived*)> action)const{
     neighbors().foreachElement(action);
@@ -103,14 +103,9 @@ namespace nspace{
   }
 
   template<typename Derived>
-  inline Derived & Node<Derived>::derived(){return _this;}
-  template<typename Derived>
-  inline const Derived & Node<Derived>::derived()const{return _this;}
-  template<typename Derived>
-  Node<Derived>::Node():_this(*static_cast<Derived*>(this)){
+  Node<Derived>::Node(){
     _predecessors.addObserver(this);
     _successors.addObserver(this);
-
   }
   template<typename Derived>
   Node<Derived>::~Node(){
