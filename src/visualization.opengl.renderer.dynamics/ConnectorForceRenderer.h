@@ -1,9 +1,10 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.dynamics/connection/Connector.h>
 namespace nspace{
 
-class ConnectorForceRenderer : public IRenderer{
+class ConnectorForceRenderer : public Renderer{
+  TYPED_OBJECT(ConnectorForceRenderer)
   const DynamicConnector & _connector;
   Vector3D _offset;
 public:

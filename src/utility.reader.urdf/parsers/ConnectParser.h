@@ -5,9 +5,9 @@
 
 namespace nspace{
 class ConnectParser: public NamedElementParser, public ModelBuilderHolder{
-  Node & _connectionNode;
+  ModelNode & _connectionNode;
 public:
-  ConnectParser(IModelBuilder & builder, Node & connectionNode) : 
+  ConnectParser(IModelBuilder & builder, ModelNode & connectionNode) : 
       NamedElementParser("connect"), 
         ModelBuilderHolder(builder),
         _connectionNode(connectionNode){
@@ -20,7 +20,7 @@ protected:
      if(!cstr)return false;
      std::string connectorName = cstr;
 
-     Node * connectorNode = model().nodes()(connectorName);
+     ModelNode * connectorNode = model().nodes()(connectorName);
      if(!connectorNode)return false;
 
      _connectionNode.predecessors().add(connectorNode);

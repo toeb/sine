@@ -1,5 +1,5 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 
 #include <simulation.geometry/primitives/Hexahedron.h>
 #include <visualization.opengl.renderer.text/TextRenderer.h>
@@ -7,7 +7,7 @@
 
 namespace nspace{
   
-class BoxRenderer : public IRenderer{
+class BoxRenderer : public Renderer{
 private:  
   //Texture texture;
   TextRenderer * _textRenderer;

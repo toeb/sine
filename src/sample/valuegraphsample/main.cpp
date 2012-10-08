@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math/core.h>
 #include <core/Node.h>
+#include <core/ValueLookup.h>
 using namespace nspace;
 using namespace std;
 

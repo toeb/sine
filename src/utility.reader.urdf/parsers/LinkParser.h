@@ -16,7 +16,7 @@ public:
   protected:
   virtual bool parseNamedElement(XMLElement * linkElement){
     //create node
-    Node * node=new Node;
+    ModelNode * node=new ModelNode;
 
     //set nodes name
     parseName(node,linkElement);

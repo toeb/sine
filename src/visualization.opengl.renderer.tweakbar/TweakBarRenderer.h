@@ -1,5 +1,5 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <anttweakbar/AntTweakBar.h>
 #include <simulation.interaction/InputHandler.h>
 #include <simulation/ISimulationModule.h>
@@ -16,10 +16,11 @@ namespace nspace{
   
 class TweakBarRenderer 
   :
-  public virtual IRenderer, 
+  public virtual Renderer, 
   public virtual IInputListener, 
   public virtual ISimulationModule
 {
+  TYPED_OBJECT(TweakBarRenderer)
   private:
     bool _initialized;
     TwBar  * _tweakBar;
@@ -28,10 +29,8 @@ class TweakBarRenderer
     std::vector<IValue * > _values;
     void addEntry(ISimulationObject * o);
   public:
-    using IRenderer::name;
-    using IRenderer::setName;
-
-    ISimulationObject * toSimulationObject(){return static_cast<ISimulationObject*>(static_cast<IRenderer*>(this));}
+    
+//    ISimulationObject * toSimulationObject(){return static_cast<ISimulationObject*>(static_cast<Renderer*>(this));}
 
     TweakBarRenderer();
     bool addSimulationObject(ISimulationObject * object);

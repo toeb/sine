@@ -1,10 +1,10 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <visualization.opengl.renderer.geometry/mesh/Mesh.h>
 
 namespace nspace{
   
-class MeshRenderer : public IRenderer{
+class MeshRenderer : public Renderer{
 private:
  Mesh & _mesh;
  float _color[4];

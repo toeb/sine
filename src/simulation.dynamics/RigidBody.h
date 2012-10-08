@@ -14,7 +14,7 @@ namespace nspace{
  * \date 10.04.2012
  */
 class RigidBody : public DynamicBody, public virtual CompositeSimulationObject {
-  TYPED_OBJECT;
+  TYPED_OBJECT(RigidBody);
 private:  
   Real _m;
   ///< The inertia tensor

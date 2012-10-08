@@ -1,5 +1,5 @@
 #pragma once
-
+#include <QResizeEvent>
 #include <QDockWidget>
 #include <config.h>
 namespace nspace{
@@ -11,7 +11,9 @@ signals:
   protected:
     // overrides closeevent to catch emit the window closed signal
     void closeEvent(QCloseEvent * e);
-  public:
+ 
+
+  public: 
     // constructor
     PluginWindow(QWidget * parent=0);
   };

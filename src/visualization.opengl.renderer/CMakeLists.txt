@@ -13,6 +13,11 @@ set(source
  ./CameraRenderer.cpp
  ./GridRenderer.h
  ./GridRenderer.cpp
+ ./MeshGridRenderer.h
+ ./MeshGridRenderer.cpp
+ ./SkyboxRenderer.h
+ ./SkyboxRenderer.cpp
+ ../visualization.opengl.renderer.h
 )
 source_group("" FILES ${source})
 
@@ -21,5 +26,7 @@ add_library(visualization.opengl.renderer CMakeLists.txt ${source})
 target_link_libraries(visualization.opengl.renderer
 visualization.opengl 
 simulation
-simulation.kinematics)
+simulation.kinematics
+utility.imaging
+)
 

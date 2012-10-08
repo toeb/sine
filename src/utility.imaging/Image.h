@@ -1,14 +1,14 @@
 #pragma once
 #include <config.h>
-#include <simulation/ISimulationObject.h>
+#include <core/Object.h>
 #include <utility.imaging/Pixel.h>
 #include <string>
 #include <iostream>
 #include <functional>
 namespace nspace{
-  
 
-  class Image : public virtual ISimulationObject{
+
+  class Image : public virtual Object{
   private:
     uint _width;
     uint _height;
@@ -22,14 +22,15 @@ namespace nspace{
     inline uint width()const{return _width;}
     inline uint height()const{return _height;}
     inline uint size()const{return width()*height();}
-    inline uint byteSize()const{return sizeof(Pixel)*size();}
+    inline uint byteSize()const{return pixelSize()*size();}
+    inline uint pixelSize()const{return sizeof(Pixel);}
     inline Pixel * data(){return _data;}
     inline const Pixel * data()const{return _data;}
 
     void resize(uint width, uint height);
     void loadData(const void * dataPtr);
     void load(uint width, uint height, const void * dataPtr);
-    
+
     Pixel & operator()(uint i, uint j){
       return _data[_width*i+j];
     }
@@ -56,18 +57,18 @@ namespace nspace{
     }
   };
   static void filter(Image & output, const Image & input, uint width, uint height, std::function<void (Pixel &, const PixelWindow & )> f){
-   output.resize(input.width()-2*width,input.height()-2*height);
-   PixelWindow current(const_cast<Image &>(input),width,height,width,height);
+    output.resize(input.width()-2*width,input.height()-2*height);
+    PixelWindow current(const_cast<Image &>(input),width,height,width,height);
     for(uint i=0; i < output.width(); i++){
       for(uint j=0; j < output.height();j++){
         current._x=width+i;
         current._y=height+j;
-       // std::cout << i << " " << j  << " ";
+        // std::cout << i << " " << j  << " ";
         f(output(i,j), current);
       }
     }
   }
-  
+
 
   class PngImage : public Image{
   public:

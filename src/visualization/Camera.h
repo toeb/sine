@@ -1,7 +1,7 @@
 #pragma once
 
-#include <simulation/ISimulationObject.h>
-#include <simulation/kinematics/CoordinateSystem.h>
+#include <core/Object.h>
+#include <simulation.kinematics/CoordinateSystem.h>
 #include <math/core.h>
 
 
@@ -12,7 +12,7 @@ namespace nspace{
  void cartesianToHomogeneousCoordinates(Vector3D & hom2d, const Vector2D & cart2d){};
  void homogeneousToCartesianCoordinates(Vector2D & cart2d, const Vector3D & hom2d){};
  
-  class Camera : public virtual ISimulationObject{
+ class Camera : public virtual NamedObject{
   TYPED_OBJECT;
   private:
 	Matrix4x4 _worldToCameraCoordinates;

@@ -2,7 +2,7 @@
 #include <core/Object.h>
 namespace nspace{
 class Initializable : public virtual Object{
-TYPED_OBJECT;
+TYPED_OBJECT(Initializable);
 private:
   bool _initialized;
 public:

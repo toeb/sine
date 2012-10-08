@@ -3,12 +3,12 @@
 #include <simulation.collision.detection/CollisionDetector.h>
 
 #include <simulation/composites/CompositeSimulationObject.h>
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <queue>
 
 
 namespace nspace{
-class CollidableRenderer : public virtual IRenderer{
+class CollidableRenderer : public virtual Renderer{
 private:
   Collidable & _collidable;
 public:
@@ -21,7 +21,7 @@ struct RenderContact : public Contact{
   Real startTime;
   Real timeAlive;
 };
-class CollisionRenderer : public virtual IRenderer{
+class CollisionRenderer : public virtual Renderer{
 private:
 CollisionDetector & _detector;
 std::vector<RenderContact* > collisions;

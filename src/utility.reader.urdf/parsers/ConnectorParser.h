@@ -11,7 +11,7 @@ public:
   }
 protected:
   bool parseNamedElement(XMLElement * element){
-    Node * connectorNode = new Node;
+    ModelNode * connectorNode = new ModelNode;
     parseName(connectorNode,element);
 
     // get parent element of connector

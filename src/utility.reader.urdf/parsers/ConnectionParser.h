@@ -15,7 +15,7 @@ public:
   }
 protected:
    bool parseNamedElement(XMLElement * element){
-     Node * connectionNode = new Node;
+     ModelNode * connectionNode = new ModelNode;
      parseName(connectionNode,element);
 
      ConnectParser p(builder(),*connectionNode);
@@ -36,7 +36,7 @@ protected:
          connectionNode->set("urdfspring",urdfSpring);
        }
      }
-
+     
      model().nodes()|=connectionNode;
      return true;
    }

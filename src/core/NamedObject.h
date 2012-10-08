@@ -6,7 +6,7 @@
 namespace nspace{
   // a base class for objects that need to be named
   class NamedObject  : public virtual Object{
-    TYPED_OBJECT;
+    TYPED_OBJECT(NamedObject);
   private:
     // the name field
     std::string * _name;
@@ -35,7 +35,10 @@ namespace nspace{
     bool friend operator==(const NamedObject * obj, const std::string & name);
   protected:
     // extension point which is called when the name of this named object changes.  subclasses may override this
-    virtual void nameChanged(const std::string& newName){}
+    virtual void onNameChanged(const std::string& newName){}
   };
+
+  // method for extracting the name of a named object
+  const std::string & name(Object * object);
 
 }

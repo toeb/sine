@@ -10,7 +10,7 @@
 namespace nspace{
 
 class Collidable : public ICollidable{
-  TYPED_OBJECT;
+  TYPED_OBJECT(Collidable);
 private:
   std::vector<Collision*> _collisions;
   ISimulationObject & _collisionObject;

@@ -4,7 +4,7 @@
 #include <simulation.geometry/Axis.h>
 namespace nspace{
 class Plane:public Geometry{
-  TYPED_OBJECT;
+  TYPED_OBJECT(Plane);
 public:
 
   void getNormal(Vector3D & n)const;

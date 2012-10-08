@@ -1,41 +1,54 @@
 #pragma once
 
-#include <core/NamedObject.h>
-#include <core/Set.h>
 #include <queue>
+#include <stack>
+#include <iostream>
+
+#include <core/Set.h>
+#include <core/NamedObject.h>
 #include <core.hub/Module.h>
+#include <core/StringTools.h>
+#include <core/DataNode.h>
 namespace nspace{
 
-
-  
-
-  class Hub : public virtual NamedObject , public virtual Module{
-    TYPED_OBJECT;
+  typedef DataNode<Object*> HubNode;
+  class Hub : 
+    public virtual NamedObject , 
+    public virtual Module, 
+    public virtual HubNode,
+    public virtual Set<Object*>
+  {
+    TYPED_OBJECT(Hub);
   private:
     Set<Module*> _modules;
-    Set<Object*> _objects;
-    std::queue<Object *> _waitingAnnouncedObjects;
-    std::queue<Object *> _waitingRenouncedObjects;
+    Set<Object *> _waitingAnnouncedObjects;
+    Set<Object *> _waitingRenouncedObjects;
+    bool _processing;
+    
+
   public:
+    
+
+
+
     Hub();    
+    ~Hub();
     const Set<Module*> & modules()const;
-    const Set<Object*> & objects()const;
 
     void announce(Object * object);
     void renounce(Object * object);
-    
 
-    Hub & operator << (Object * o);
-    Hub & operator << (Object & o);
-
+    // override
+    virtual bool add(Object * element);
+    virtual bool remove(Object * element);
 
     void processObjects();
     void processObjectAnnounce(Object * object);
     void processObjectRenounce(Object * object);
 
-
+  protected:
+    void onElementAdded(Object * object);
+    void onElementRemoved(Object * object);
 
   };
- 
-
 }

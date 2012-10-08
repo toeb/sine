@@ -9,13 +9,14 @@
 #include <QObject>
 #include <QApplication>
 #include <QMainWindow>
+#include <QSettings>
 
 // forward declaration of plugin application main window
 class Ui_PluginContainerWindow;
 namespace nspace{
   class PluginApplication : public QObject, public virtual NamedObject,public virtual ModuleBase, public virtual ObservableCollection<Plugin*>::Observer{
     Q_OBJECT;
-    TYPED_OBJECT;
+    TYPED_OBJECT(PluginApplication);
   private:
     Set<Plugin*> _plugins;
     Set<Plugin*> _enabledPlugins;
@@ -35,6 +36,11 @@ namespace nspace{
     PluginApplication(int & argc,  char ** argv);
     // executes this application
     int  run();
+  public slots:
+    // stores this applications settings
+    void saveSettings();
+    // loads this applications settings
+    void loadSettings();
   protected slots:
     // called whenever a plugin was enabled or disabled
     void pluginEnabledChanged(PluginContainer * container, bool enabled=true);
@@ -52,7 +58,9 @@ namespace nspace{
     // rebuilds the main menu 
     void rebuildMenu();
     // rebuilds the window menu
-    void rebuildWindowMenu();
+    void rebuildWindowMenu(); 
+    // called when the named objects name was changed
+    void onNameChanged(const std::string& newName);
     // friend class definition
     friend class PluginContainer;
   private:
@@ -60,11 +68,16 @@ namespace nspace{
     void connectContainer(PluginContainer * c);
     // disconnects the signals of a plugin container
     void disconnectContainer(PluginContainer * c);
+    // loads the settings of a specific plugin
+    void loadPluginSettings(PluginContainer * container);
+    // saves the settings of a specific plugin
+    void savePluginSettings(PluginContainer * container);
     
     Set<PluginContainer *> _containers;
     Ui_PluginContainerWindow * _ui;
     QMainWindow * _mainWindow;
     QApplication * _application;
+    QSettings _settings;
   };
 
 }

@@ -1,8 +1,10 @@
 #pragma once
 #include <functional>
 
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <math/core.h>
+#include <core.initialization/Initializable.h>
+#include <core/NamedObject.h>
 
 namespace nspace{
 typedef int Index;
@@ -24,7 +26,8 @@ struct Face:public MeshElement{
  * \author Tobias Becker
  * \date 05.04.2012
  */
-class Mesh : public ISimulationObject{
+class Mesh : public virtual Initializable, public virtual NamedObject {
+  TYPED_OBJECT(Mesh);
 private:
   std::vector<Vertex * > _vertices;
   std::vector<Face * > _faces;

@@ -1,25 +1,24 @@
 #pragma once
 #include <config.h>
-namespace nspace{
-template<typename DerivedType>
-class Singleton{
- protected:
-  Singleton(){
-    if(instanceData()){
-      std::cerr << "Double instanciation of Singleton"<<std::endl;
-    }
-    *instanceData() = static_cast<DerivedType*>(this);
-  }
-private:
-  static DerivedType ** instanceData(){
-    static DerivedType ** _instanceData=0;
-    return _instanceData;
-  }
-public:
-  static DerivedType& instance(){
-    if(!instanceData())new DerivedType();
-    return **instanceData();
-  }
+
+//defines a the class as a singleton
+#define SINGLETON(CLASSNAME)\
+  public: \
+  static CLASSNAME * instance(){\
+  static CLASSNAME * _instance =0;\
+  if(!_instance)_instance = new CLASSNAME();\
+  return _instance;\
+}\
+private:\
+  CLASSNAME()
+/*  Example of a class using the singleton macro
+
+class TestClass{
+ SINGLETON(TestClass){
+   // constructor code here
+ }
 };
 
-}
+*/
+
+

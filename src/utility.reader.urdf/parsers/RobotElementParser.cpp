@@ -17,11 +17,11 @@ RobotElementParser::RobotElementParser(IModelBuilder & builder):ModelBuilderHold
   _children.composite().add(new JointParser(builder));
 
 }
-Node * RobotElementParser::findRoot(){
-  return model().get<Node*>("root");
+ModelNode * RobotElementParser::findRoot(){
+  return model().get<ModelNode*>("root");
 }
 
-void RobotElementParser::convertLink(Node * node){
+void RobotElementParser::convertLink(ModelNode * node){
   UrdfLink * link=0;
   node->get(link,"urdflink");
   if(!link)return;
@@ -32,7 +32,7 @@ void RobotElementParser::convertLink(Node * node){
   body->mass = link->mass;
 
   CoordinateSystem preceedingCoordinates;
-  Node * connector = node->predecessors().first();
+  ModelNode * connector = node->predecessors().first();
     
   //get preceeding coordinates if they are set
   if(connector){
@@ -56,7 +56,7 @@ void RobotElementParser::convertLink(Node * node){
 
 
 }
-void RobotElementParser::convertConnector(Node * node){
+void RobotElementParser::convertConnector(ModelNode * node){
   UrdfConnector* urdfConnector=0;
   node->get(urdfConnector,"urdfconnector");
   if(!urdfConnector)return;
@@ -66,7 +66,7 @@ void RobotElementParser::convertConnector(Node * node){
   node->set("connector", connector);
 
   // get preceeding body (urdfconnector always is a successor)
-  Node * body = node->predecessors().first();
+  ModelNode * body = node->predecessors().first();
   if(!body)return;
 
   // get body coordinates
@@ -87,14 +87,14 @@ void RobotElementParser::convertConnector(Node * node){
   node->set("initialcoordinates", initialCoordinates);
 
 }
-void RobotElementParser::convertConnection(Node * node){
+void RobotElementParser::convertConnection(ModelNode * node){
   UrdfConnection * connection =0;
   node->get(connection,"urdfconnection");
   if(!connection )return;
 
   //todo: implement
 }
-void RobotElementParser::convertJoint(Node * node){
+void RobotElementParser::convertJoint(ModelNode * node){
   UrdfJoint * joint=0;
   node->get(joint,"urdfjoint");
   if(!joint)return;
@@ -109,8 +109,8 @@ void RobotElementParser::convertJoint(Node * node){
 
     
   // get connectors and bodies
-  Node * connectorNodeA = node->predecessors().first();
-  Node * connectorNodeB = node->successors().first();
+  ModelNode * connectorNodeA = node->predecessors().first();
+  ModelNode * connectorNodeB = node->successors().first();
 
   Connector * connectorA = new Connector;
   Connector * connectorB = new Connector;
@@ -118,8 +118,8 @@ void RobotElementParser::convertJoint(Node * node){
   connectorNodeA->set("connector",connectorA);
   connectorNodeB->set("connector",connectorB);
 
-  Node * bodyA = connectorNodeA->predecessors().first();
-  Node * bodyB = connectorNodeB->successors().first();
+  ModelNode * bodyA = connectorNodeA->predecessors().first();
+  ModelNode * bodyB = connectorNodeB->successors().first();
 
 
   CoordinateSystem bodyCoordinatesA;
@@ -153,7 +153,7 @@ void RobotElementParser::convertJoint(Node * node){
 
 }
   
-void RobotElementParser::convertSpring(Node * node){
+void RobotElementParser::convertSpring(ModelNode * node){
   ExtendedUrdfSpring * urdfSpring ;
   node->get(urdfSpring,"urdfspring");
   if(!urdfSpring)return;
@@ -163,7 +163,7 @@ void RobotElementParser::convertSpring(Node * node){
 }
 
 void RobotElementParser::convert(){
-  Node * root = findRoot();
+  ModelNode * root = findRoot();
     
   if(!root){
    ERROR("could not find root");
@@ -177,7 +177,7 @@ void RobotElementParser::convert(){
   root->set("relativecoordinates", (CoordinateSystem)rootOrigin);
  
   // iterate through the tree depth first (note: dfs currently crashes if cycles exist)
-  root->dfs([this](bool & cont, Node * node){
+  root->dfs([this](ModelNode * node){
     convertLink(node);
     convertJoint(node);
     convertConnector(node);

@@ -2,7 +2,7 @@
 #include <simulation.geometry/Geometry.h>
 namespace nspace{
 class Sphere : public Geometry{
-  TYPED_OBJECT;
+  TYPED_OBJECT(Sphere);
 private:
   Real _radius;
 public:

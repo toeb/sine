@@ -1,9 +1,9 @@
 #pragma once 
 #include <config.h>
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <visualization.opengl/GlTexture.h>
 namespace nspace{
-  class BillboardRenderer : public IRenderer{
+  class BillboardRenderer : public Renderer{
   private:
     Image * _image;
     Texture * _texture;

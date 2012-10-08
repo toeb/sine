@@ -9,12 +9,12 @@
 
 namespace nspace{
   
-  
-class Model : public Graph,public ModelElement{
+
+class Model : public Graph<ModelNode>,public ModelElement{
 
   friend std::ostream & operator << (std::ostream & stream, const Model & model){
-    model.leaves().foreachElement([&stream](Node * node){
-      stream << *node;
+    model.leaves().foreachElement([&stream](ModelNode * node){
+      node->toString(stream);
     });
     return stream;
   }

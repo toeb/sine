@@ -1,8 +1,12 @@
 set(source
  ./Viewport.h
- ./IRenderer.h
- ./RenderModule.h
- ./RenderModule.cpp  
+ ./Viewport.cpp
+ ./PerspectiveViewport.h
+ ./PerspectiveViewport.cpp
+ ./Renderer.h
+ ./Renderer.cpp
+ ./RenderSet.h
+ ./RenderSet.cpp  
  ./Color.h
  ./Color.cpp
  ./Material.h
@@ -15,17 +19,17 @@ set(source
  ./SceneObject.cpp 
  ./Camera.h
  ./Camera.cpp 
+./FpsViewportController.h
+./FpsViewportController.cpp
+./Light.h
+./Light.cpp
+../visualization.h
  
 )
-source_group("src" FILES ${source})
-set(compositeSource
- ./composite/CompositeRenderer.h
- ./composite/CompositeRenderer.cpp
-)
-source_group("src\\composites" FILES ${compositeSource})
+source_group("" FILES ${source})
 
-add_library(visualization ${source}  ${compositeSource} CMakeLists.txt)
-target_link_libraries(visualization simulation math lodepng)
+add_library(visualization ${source}  CMakeLists.txt)
+target_link_libraries(visualization simulation.interaction core.hub math lodepng)
 
 
 

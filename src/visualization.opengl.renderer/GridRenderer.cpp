@@ -1,53 +1,51 @@
 #include "GridRenderer.h"
 
 #include <visualization.opengl/opengl.h>
-#include <visualization.opengl/MiniGL.h>
+#include <visualization.opengl/Utility.h>
 
 using namespace nspace;
 
-void MeshGridRenderer::render(){
-		int number=50;
-		for(int i=0; i< number; i++){
-			for(int j=0; j< number; j++){
-				for(int k=0; k< number; k++){
-					Vector3D p(i-number/2.0,j-number/2.0,k-number/2.0);
-					MiniGL::drawPoint(p,1,MiniGL::black);
-				}
-			}
-		}
-	}
-
+GridRenderer::GridRenderer():_Sections(20), _Width(20),_Height(20) {
+}
 void GridRenderer::render(){
-
+  ///glPushAttrib(GL_LIGHTING|GL_COLOR_MATERIAL);
   glPushMatrix();
-  glTranslated(-width/2,y,-height/2);
-  double w2 = width/2;
-  double h2 = height/2;
+
+  //glDisable(GL_LIGHTING);
+  //glDisable(GL_COLOR_MATERIAL);
+  
+  glMaterial(GridMaterial());
+
+  glTransformation(Coordinates());
+
+  Real w2 = Width()/2;
+  Real h2 = Height()/2;
+
+ 
   Vector3D a,b;
 
-  for(int i = 0; i <= sections; i++){
-    a(0) = width * ((double)i/(double)sections-0.5);
-    a(1) = y;
+  for(int i = 0; i <= Sections(); i++){
+    a(0) = Width() * ((double)i/(double)Sections()-0.5);
+    a(1) = 0;
     a(2) = -h2;
-    b(0) = width*((double)i/(double)sections-0.5);
-    b(1) = y;
+    b(0) = Width()*((double)i/(double)Sections()-0.5);
+    b(1) = 0;
     b(2) = h2;
     
-    MiniGL::drawVector(a,b, 2.0f,MiniGL::green);
-
+    glLine(a,b);
 
     a(0) = -w2;
-    a(1) = y;
-    a(2) = height*((double)i/(double)sections-0.5);
+    a(1) = 0;
+    a(2) = Height()*((double)i/(double)Sections()-0.5);
     b(0) = w2;
-    b(1) = y;
-    b(2) = height*((double)i/(double)sections-0.5);
+    b(1) = 0;
+    b(2) = Height()*((double)i/(double)Sections()-0.5);
     
-    MiniGL::drawVector(a,b, 2.0f,MiniGL::black);
+    glLine(a,b);
   
   }
 
   glPopMatrix();
+ // glPopAttrib();
 
-  glEnd();
 };

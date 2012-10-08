@@ -6,6 +6,9 @@ set(source
 ./Object.cpp
 ./NamedObject.h
 ./NamedObject.cpp
+./TypedNode.h
+./DataNode.h
+./DerivableDataNode.h
 ./Node.h
 ./Node.cpp
 ./Graph.h
@@ -18,13 +21,22 @@ set(source
 ./StringTools.cpp
 ./ValueLookup.h
 ./ValueLookup.cpp
+./PairMap.h
+./PairMap.cpp
+./PropertyChangingObject.h
+./PropertyChangingObject.cpp
+./Property.h
+./Property.cpp
+./TypedProperty.h
+./TypedProperty.cpp
+./Reflection.h
 ../config.h
+../core.h
 )
 source_group("" FILES ${source})
 
 set(patternsSource
-./patterns/TaskRunner.h
-./patterns/TaskRunner.cpp
+./patterns/Derivable.h
 ./patterns/ValueHolder.h
 ./patterns/Composite.h
 ./patterns/ArrayPool.h

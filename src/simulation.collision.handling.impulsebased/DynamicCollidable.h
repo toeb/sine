@@ -5,7 +5,7 @@
 namespace nspace{
   
 class DynamicCollidable : public Collidable, public virtual CompositeSimulationObject{
-TYPED_OBJECT;
+TYPED_OBJECT(DynamicCollidable);
 private:
   DynamicBody * _dynamicBody;
 

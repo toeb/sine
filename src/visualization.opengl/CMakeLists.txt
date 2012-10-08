@@ -8,15 +8,14 @@ set(source
 ./GlViewport.cpp
 ./Utility.h
 ./Utility.cpp
-./FpsCamera.h
-./FpsCamera.cpp
 ./GlMaterial.h
 ./GlMaterial.cpp
 ./GlTexture.h
 ./GlTexture.cpp
+../visualization.opengl.h
 )
 
-source_group("src" FILES ${source})
+source_group("" FILES ${source})
 add_library(visualization.opengl   ${source} )
 
 ##opengl is required for visualization.opengl

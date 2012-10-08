@@ -8,7 +8,7 @@
 #include <simulation.integration/SystemModule.h>
 namespace nspace{
 class DefaultSimulationSetup : public ISimulationObject{
-  TYPED_OBJECT;
+  TYPED_OBJECT(DefaultSimulationSetup);
 public:  
   SystemModule defaultSystem;
   SimulationTimeProvider simulationTimeProvider;

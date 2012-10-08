@@ -1,17 +1,22 @@
 #pragma once
 #include <core/Object.h>
 #include <core.hub/Hub.h>
+#include <core/DataNode.h>
 namespace nspace{
- class HubObject : public virtual Object{
-    TYPED_OBJECT;
+  class HubObject : public virtual Object{
+    TYPED_OBJECT(HubObject);
   private:
-    Hub * _hub;
+    friend class Hub;    
+    friend class CompositeHubObject;
+    Set<Hub*> _hubs;
   public:
-    HubObject():_hub(0){}
-    const Hub * hub()const{return _hub;}
-    Hub * hub(){return _hub;}
-    void setHub(Hub * hub){_hub=hub;}
-    friend class Hub;
+    HubObject();
+    ~HubObject();
+    const Set<Hub*> & hubs()const;
+  protected:
+    virtual void onAddedToHub(Hub & hub){}
+    virtual void onRemovedFromHub(Hub & hub){}
+
   };
 
 }

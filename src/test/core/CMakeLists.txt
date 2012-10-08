@@ -2,6 +2,9 @@ set(source
  tests.cpp
  main.cpp 
  set.cpp
+ reflection.cpp
+ conversion.h
+ conversion.cpp
  )
  source_group("" FILES ${source})
  add_executable(test.core ${source} CMakeLists.txt)

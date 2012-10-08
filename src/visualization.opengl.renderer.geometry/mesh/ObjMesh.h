@@ -147,7 +147,7 @@ public:
         if(normals().size() > vertexData.normalIndex){
           n = normal(vertexData.normalIndex);        
         }else{
-          std::cout << " normal not available for index " << vertexData.normalIndex<<std::endl;
+         // std::cout << " normal not available for index " << vertexData.normalIndex<<std::endl;
         }
 
         v.normal = n;

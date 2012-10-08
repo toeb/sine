@@ -106,8 +106,13 @@ void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vecto
 
 namespace nspace{
   std::ostream & operator << (std::ostream & o, const CoordinateSystem & coordinates){
-    o << "position: (" <<coordinates.position().x()  <<", "<<coordinates.position().y()  <<", "<<coordinates.position().z()<< ") orientation: "<<coordinates.orientation();
+    o << "position: (" <<coordinates.position().x()  <<", "<<coordinates.position().y()  <<", "<<coordinates.position().z()<< ") orientation: ";
+    coordinates.orientation().toStream(o);
     return o;
+  }
+  
+  bool operator ==(const CoordinateSystem & a, const CoordinateSystem & b){
+    return &a==&b;
   }
 }
 

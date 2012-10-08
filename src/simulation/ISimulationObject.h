@@ -14,12 +14,11 @@ class ISimulationModule;
  * 				They are distributed accross the simulation tree.
  */
 class ISimulationObject : public virtual NamedObject, public virtual Initializable{
-  TYPED_OBJECT;
+  TYPED_OBJECT(ISimulationObject);
 private:
   ISimulationModule * _parent;
   Simulation * _simulation;
 public:
-  virtual void toString(std:: ostream & out )const;
    
   ISimulationObject();
   ISimulationObject(const std::string & name);

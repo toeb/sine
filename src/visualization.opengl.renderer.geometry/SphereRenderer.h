@@ -1,14 +1,13 @@
 #pragma once
+#include <core/Set.h>
 
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.geometry/primitives/Sphere.h>
 
 namespace nspace{
-class SphereRenderer : public virtual IRenderer{
-private:
-  Sphere & _sphere;
+class SphereRenderer : public virtual Renderer, public virtual Set<Sphere*>{
+
 public:
-  SphereRenderer(Sphere & sphere):_sphere(sphere){}
   void render();
-};
+};//SphereMesh
 }

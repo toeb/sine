@@ -1,39 +1,42 @@
 #pragma once
 
+#include <core/Set.h>
 #include <core.hub/Module.h>
 
 namespace nspace{
-class ModuleBase : public virtual Module{
-    TYPED_OBJECT;
+  class ModuleBase : public virtual Module{
+    TYPED_OBJECT(ModuleBase);
   private:
     Set<Object*> _objects;
   public:
-    const Set<Object*> objects(){return _objects;}
+    const Set<Object*>& objects()const;
     virtual bool accept(Object * object)=0;
 
     virtual void onAcception(Object * object){}
+    virtual void onRenounce(Object * object){}
     virtual void onRejection(Object * object){}
     virtual void onAnnounce(Object * object){}
-    virtual void onRenounce(Object * object){}
     virtual void onBeforeRenounce(Object * object){}
 
-    void announce(Object * object){
-      onAnnounce(object);
-      if(accept(object)){
-        _objects |= object;
-        onAcception(object);
-      }else{
-        onRejection(object);
-      }     
+    void announce(Object * object);
+    void renounce(Object * object);
+
+  };
+
+  template<typename T>
+  class TypedModuleBase : public virtual ModuleBase, protected virtual Set<T*>{
+    virtual bool accept(T * object){return true;}
+    bool accept(Object * object){
+      auto obj = dynamic_cast<T*>(object);
+      if(!obj)return false;
+      return accept(obj);
     }
-    void renounce(Object * object){
-      if(_objects.contains(object)){
-        onBeforeRenounce(object);
-      }
-      if(_objects.remove(object)){
-        onRenounce(object);
-      }
+    void onAcception(Object * object){
+      *this |= dynamic_cast<T*>(object);
     }
+    void onRenounce(Object * object){
+      *this /= dynamic_cast<T*>(object);
+    }    
 
   };
 

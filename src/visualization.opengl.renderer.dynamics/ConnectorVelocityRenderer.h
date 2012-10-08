@@ -1,9 +1,9 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <simulation.dynamics/connection/Connector.h>
 
 namespace nspace{
-class ConnectorVelocityRenderer : public IRenderer{
+class ConnectorVelocityRenderer : public Renderer{
 private:
   DynamicConnector & _connector;
 public:

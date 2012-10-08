@@ -4,6 +4,51 @@
 using namespace nspace;
 
 
+
+// allows the plugin container to load its settings
+void PluginContainer::loadSettings(QSettings & settings){
+  settings.beginGroup(_plugin.name().c_str());
+
+  if(_pluginWindow){    
+    
+    auto mainWindow = application()._mainWindow;
+
+    mainWindow->addDockWidget((Qt::DockWidgetArea)settings.value("dockarea", Qt::RightDockWidgetArea).toInt(), _pluginWindow);
+  
+    
+
+    _pluginWindow->setFloating(settings.value("docked").toBool());
+    auto size = settings.value("size", QSize(1, 1)).toSize();
+    _pluginWindow->resize(size);
+    _pluginWindow->move(settings.value("position", QPoint(200, 200)).toPoint());
+    
+    
+  
+    
+
+  }
+  _plugin.loadSettings(settings);
+  settings.endGroup();
+}
+// allows the plugin container to save its settings
+void PluginContainer::saveSettings(QSettings & settings){
+  settings.beginGroup(_plugin.name().c_str());  
+  if(_pluginWindow){    
+    auto mainWindow = application()._mainWindow;
+    
+    settings.setValue("dockarea",  mainWindow->dockWidgetArea(_pluginWindow));
+    settings.setValue("docked", _pluginWindow->isFloating());
+    settings.setValue("size", _pluginWindow->size());
+    settings.setValue("position", _pluginWindow->pos());
+
+  }
+
+
+
+  _plugin.saveSettings(settings);
+  settings.endGroup();
+}
+
 PluginContainer::PluginContainer(Plugin & plugin, PluginApplication & app):_plugin(plugin),_pluginApplication(app),_pluginWindow(0),_pluginMenu(0),_togglePluginWindowAction(0){
   _enableDisableAction = new QAction(0);
   _enableDisableAction->setText(plugin.pluginName().c_str());
@@ -18,7 +63,6 @@ PluginContainer::PluginContainer(Plugin & plugin, PluginApplication & app):_plug
 
 PluginContainer::~PluginContainer(){
   if(_togglePluginWindowAction){
-
     disconnect(_togglePluginWindowAction,SIGNAL(toggled(bool)),this,SLOT(setEnabled(bool)));
     delete _togglePluginWindowAction;
   }
@@ -63,6 +107,7 @@ void PluginContainer::setPluginWindow(PluginWindow * window){
     connect(_pluginWindow,SIGNAL(windowClosed()),this, SLOT(windowClosed()));
     _pluginApplication._mainWindow->addDockWidget(Qt::LeftDockWidgetArea,_pluginWindow);
     _pluginWindow->setVisible(false);
+    _pluginWindow->setObjectName(_plugin.name().c_str());
   }
 
 }

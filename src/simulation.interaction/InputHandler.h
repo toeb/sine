@@ -2,84 +2,67 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-#include <simulation/SimulationModuleBase.h>
+
 #include <simulation.interaction/Keys.h>
 #include <math/core.h>
 #include <simulation.interaction/IInputListener.h>
+#include <core.hub/ModuleBase.h>
 namespace nspace{
-
-class InputHandler:public SimulationModuleBase<IInputListener>{
-private:
+  //an inputhandler is a module which translates input into events for IInputListeners and keeps track of keyboard / mouse input state
+  class InputHandler:public virtual ModuleBase{
+    TYPED_OBJECT(InputHandler);
+  private:
+    // store the last change time which allows clients to see which is the current inputhandler
+    Time _lastChange;
+    // the set of listeners which are currently waiting for events of this handler
+    Set<IInputListener* > _listeners;
+    // the array of keys which are currently pressed
     bool _keysDown[MAX_KEYS];
+    // the array of mouse buttons which are currently pressed
     bool _mouseButtonsDown[MAX_MOUSE_BUTTONS];
-		int _mouseX;
+    // the mouse position of this inputhander
+    int _mouseX;
     int _mouseY;
+    // the mouse wheel position of this inputhandler
     Real _mouseWheel;
-public:    
-	InputHandler();
+  public:    
+    Time lastChange()const{return _lastChange;}
+    // access to the listeners of this input handler
+    Set<IInputListener* > & listeners();
+    // readonly access to the listeners of this input handler
+    const Set<IInputListener* > & listeners()const;
+    // override of ModuleBase.  this module only accepts iinputlistener objects
+    bool accept(Object * object);
+    //default constructor
+    InputHandler();
+    // returns true if any key is currently being pressed
+    bool isAnyKeyDown()const;
+    // returns true if the button specified is currently beeing pressend
+    bool operator ()(MouseButtons button)const;
+    // returns true if the key specified is currently being pressend
+    bool operator()(Keys key)const;
+    // returns true if the mouse button specified is being pressed
+    virtual bool isMouseButtonDown(MouseButtons b)const;
+    // returns brief key is being pressed
+    virtual bool isKeyDown(Keys key)const;
+    // returns the mouse x position
+    virtual int mouseX()const;
+    // retunrs the mouse y position
+    virtual int mouseY()const;
+    // returns the mouse wheel value
+    virtual Real mouseWheel()const;
 
-    bool isAnyKeyDown(){
-      for(int i=0; i <MAX_KEYS;i++ ){
-        if(_keysDown[i])return true;
-      }
-      return false;
-    }
-		bool operator ()(MouseButtons button){
-			return isMouseButtonDown(button);
-		}
-		bool operator()(Keys key){
-			return isKeyDown(key);
-		}
-
-    virtual bool isMouseButtonDown(MouseButtons b){
-			return _mouseButtonsDown[b];
-		};
-    virtual bool isKeyDown(Keys key){
-			return _keysDown[key];
-		};
-		
-		virtual int mouseX(){return _mouseX;}
-		virtual int mouseY(){return _mouseY;}
-		virtual Real mouseWheel(){return _mouseWheel;}
-
-		void onMouseMove(int x, int y);
-		void onMouseButtonDown(MouseButtons b);
-		void onKeyDown(Keys key);
-		void onKeyUp(Keys key);
-		void onMouseButtonUp(MouseButtons b);
-		void onMouseWheelMove(Real p);
-protected:
-	void onObjectAdded(IInputListener * obj){
-		obj->setInputHandler(this);
-	}
+    //
+    void onMouseMove(int x, int y);
+    void onMouseButtonDown(MouseButtons b);
+    void onKeyDown(Keys key);
+    void onKeyUp(Keys key);
+    void onMouseButtonUp(MouseButtons b);
+    void onMouseWheelMove(Real p);
+  protected:
+    void onAcception(Object * object);
+    void onRenounce(Object * object);
   };
 
-template< typename K1, typename K2 >
-class PairMap{
-private:
-	std::map<K1,K2> m12;
-	std::map<K2,K1> m21;
-public:
-	bool mappingExists(K1 k){
-		auto it = m12.find(k);
-		if(it == m12.end())return false;
-		return true;
-	}
-	bool mappingExists(K2 k){
-		auto it = m21.find(k);
-		if(it == m21.end())return false;
-		return true;
-	}
-	K1 operator()(K2 k){
-		return m21[k];
-	}
-	
-	K2 operator()(K1 k){
-		return m12[k];
-	}
-	void addMapping(K1 k1,K2 k2){
-		m12[k1] = k2;
-		m21[k2] = k1;
-	}
-};
+
 }

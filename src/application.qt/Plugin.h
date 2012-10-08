@@ -2,6 +2,7 @@
 
 #include <config.h>
 #include <QObject>
+#include <QSettings>
 #include <core/NamedObject.h>
 
 namespace nspace{
@@ -9,7 +10,7 @@ namespace nspace{
   class PluginContainer;
   class Plugin : public QObject, public virtual NamedObject{
     Q_OBJECT;
-    TYPED_OBJECT;
+    TYPED_OBJECT(Plugin);
   public:
     virtual const std::string pluginName()const{return name();}
   protected:
@@ -17,7 +18,8 @@ namespace nspace{
     virtual void enable(){}
     virtual void disable(){}
     virtual void uninstall(PluginContainer & container){}
-
+    virtual void loadSettings(QSettings & settings){}
+    virtual void saveSettings(QSettings & settings){}
     friend class PluginApplication;
     friend class PluginContainer;
 

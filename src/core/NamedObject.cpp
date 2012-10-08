@@ -44,4 +44,14 @@ namespace nspace{
     return *obj==name;
   }
 
+  const std::string & name(Object * object){
+    static std::string nullString="null-object";
+    static std::string notNamed="unnamed-object";    
+    if(!object)return nullString;
+    auto no = dynamic_cast<NamedObject*>(object);
+    if(!no)return notNamed;
+    return no->name();
+  }
+
+
 }

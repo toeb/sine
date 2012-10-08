@@ -1,10 +1,10 @@
 #pragma once
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 #include <visualization.opengl/MiniGL.h>
 
 namespace nspace{
   
-class TextRenderer : public IRenderer{
+class TextRenderer : public Renderer{
 private:
   const std::string & _text;
   const char * _c_text;

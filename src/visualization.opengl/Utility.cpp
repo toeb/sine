@@ -5,11 +5,6 @@
 
 
 using namespace nspace;
-GlMaterial * nspace::GlMaterial::jade=new GlMaterial(0.14,0.22,0.16,0.54,0.89,0.63,0.32,0.32,0.32,0.9,12.8);
-GlMaterial * nspace::GlMaterial::rubber= new GlMaterial(0.02,0.02,0.02,0.01,0.01,0.01,0.4,0.4,0.4,1.0,10.0);
-GlMaterial * nspace::GlMaterial::plastic=new GlMaterial(0,0,0,0.01,0.01,0.01,0.5,0.5,0.5,1.0,32.0);  
-GlMaterial * nspace::GlMaterial::sinn=new GlMaterial(0.14,0.22,0.16,0.54,0.89,0.63,0.32,0.32,0.32,0.9,12.8);
-GlMaterial * nspace::GlMaterial::bronze=new GlMaterial(0.21,0.13,0.05,0.71,0.43,0.18,0.39,0.27,0.17,1,25.6);
 
 void nspace::glTriangle(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & n){
   glBegin(GL_TRIANGLES);
@@ -140,15 +135,33 @@ void setMaterialFloat(float* vec, Vector3D value, Real factor, Real a)
   vec[2] = value(2) * factor;
   vec[3] = a;
 }
+void nspace::glDisableLights(){
+  const uint lightId = GL_LIGHT0;
+  for(uint i=0; i < 8;i++){
+    glDisable(lightId+i);
+  }  
+}
 
+void nspace::glLight(uint lightNumber, const Light & light){  
+  glPushMatrix();
+  glTransformation(light.Coordinates());
+  const uint lightId = GL_LIGHT0+lightNumber;
+  glLightfv(lightId,GL_AMBIENT  ,(light.AmbientColor()  * light.AmbientIntensity() ));
+  glLightfv(lightId,GL_DIFFUSE  ,(light.DiffuseColor()  * light.DiffuseIntensity() ));
+  glLightfv(lightId,GL_SPECULAR ,(light.SpecularColor() * light.SpecularIntensity()));
+  float pos[4]={0,0,0,1};
+  glLightfv(lightId,GL_POSITION,pos);
+  glEnable(lightId);
+  glPopMatrix();
+}
 
 void nspace::glMaterial(
   const Vector3D & color
-  ,const Real & ambient
-  , const Real & diffuse
-  , const Real & specular
-  , const Real & shininess
-  , const Real & alpha)
+  ,  Real ambient
+  ,  Real diffuse
+  ,  Real specular
+  ,  Real shininess
+  ,  Real alpha)
 {
   float vec[4];
 
@@ -172,27 +185,87 @@ void nspace::glMaterial(
 
 
 
-void nspace::glMaterial(nspace::GlMaterial & material){
-  float vec[4];
-
-  setMaterialFloat(vec,material.ambient,1, material.alpha);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, vec);
-
-  setMaterialFloat(vec, material.diffuse,1,  material.alpha);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, vec);
-  glColor3fv(vec);
-
-  setMaterialFloat(vec,material.specular, 1, material.alpha);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, vec);
-
-  float zero[4] = {0.f, 0.f, 0.f, 0.f};
-  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zero);
-
-  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess);
-
+void nspace::glMaterial(const nspace::Material & material){
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material.Ambient());
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material.Diffuse());
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material.Diffuse());
+  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, material.Emission());
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.Shininess());
+  glColor(material.Diffuse());
 };
     
+void nspace::glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d, const Vector3D * normal){
+    glBegin(GL_QUADS);
+
+    if(!normal){
+      Vector3D n;
+      vectorop::crossProduct(n, b-a, c-a);
+      n.normalize();
+      glNormal(n);
+    }else{
+      glNormal(*normal);
+    }
+
+		// Das untere QUAD
+		glTexCoord2d(0, 1); glVertex(a); 
+		glTexCoord2d(1, 1); glVertex(b);
+		glTexCoord2d(1, 0); glVertex(c); 
+		glTexCoord2d(0, 0); glVertex(d); 
+	  glEnd();
+}
+
+void nspace::glQuad(const Vector3D & position, const Quaternion & normal, Real a){
+  auto matrix = normal.toRotationMatrix();
+  auto ux = matrix.row(0);
+  auto uy = matrix.row(1);
+  auto uz = matrix.row(2);
+
+  auto a2 = a /2;
+  auto va = position-ux * a2-uy*a2;
+  auto vb = position+ux * a2-uy*a2;
+  auto vc = position+ux * a2+uy*a2;
+  auto vd = position-ux * a2-uy*a2;
+  
+  uz.normalize();
+  glQuad(va,vb,vc,vd,&uz);
+
+}
 
 
+void nspace::glSphere(double r, int lats, int longs) {
+    int i, j;
+    for(i = 0; i <= lats; i++) {
+        double lat0 = M_PI * (-0.5 + (double) (i - 1) / lats);
+        double z0  = sin(lat0);
+        double zr0 =  cos(lat0);
 
+        double lat1 = M_PI * (-0.5 + (double) i / lats);
+        double z1 = sin(lat1);
+        double zr1 = cos(lat1);
+
+        glBegin(GL_QUAD_STRIP);
+        for(j = 0; j <= longs; j++) {
+            double lng = 2 * M_PI * (double) (j - 1) / longs;
+            double x = cos(lng);
+            double y = sin(lng);
+
+            glNormal3f(x * zr0, y * zr0, z0);
+            glVertex3f(x * zr0, y * zr0, z0);
+            glNormal3f(x * zr1, y * zr1, z1);
+            glVertex3f(x * zr1, y * zr1, z1);
+        }
+        glEnd();
+    }
+}
+
+
+void nspace::glLine(const Vector3D & a, const Vector3D & b){  
+	glBegin (GL_LINES);
+  glVertex3d(a(0),a(1),a(2));
+  glVertex3d(b(0),b(1),b(2));
+	glEnd ();  
+}
+void nspace::glVector(const Vector3D & start, const Vector3D & direction){
+  glLine(start,start+direction);
+}
 

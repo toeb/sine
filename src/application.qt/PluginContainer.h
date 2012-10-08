@@ -2,15 +2,18 @@
 
 
 #include <config.h>
+#include <core/Object.h>
 #include <QObject>
 #include <application.qt/Plugin.h>
 #include <application.qt/PluginWindow.h>
 #include <QMenu>
 #include <QAction>
+#include <QSettings>
 namespace nspace{
   class PluginApplication;
-  class PluginContainer : public QObject{
+  class PluginContainer : public QObject, public virtual Object{
     Q_OBJECT;
+    TYPED_OBJECT(PluginContainer);
   private:
     // reference to the plugin
     Plugin & _plugin;
@@ -21,6 +24,10 @@ namespace nspace{
     //pointer to the plugin's menu
     QMenu * _pluginMenu;
   public:
+    // allows the plugin container to load its settings
+    void loadSettings(QSettings & settings);
+    // allows the plugin container to save its settings
+    void saveSettings(QSettings & settings);
     // constructor takes a reference to the plugin and the plugin application
     PluginContainer(Plugin & plugin, PluginApplication & application);
     // destructor

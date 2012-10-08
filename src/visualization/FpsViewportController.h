@@ -23,25 +23,33 @@
 #include <visualization.opengl/GlViewport.h>
 #include <simulation.interaction/IInputListener.h>
 #include <simulation.kinematics/KinematicCoordinates.h>
-#include <simulation.time/PeriodicTask.h>
 #include <simulation.integration/implementations/ExplicitEuler.h>
+#include <core.hub/CompositeHubObject.h>
+#include <core.task/ScheduledTask.h>
 /**
  * \file src/vis/opengl/FpsCamera.h
  */
 #include <simulation/SimulationTask.h>
-
+#include <visualization/ViewportController.h>
 namespace nspace{
-	class FpsCamera : public virtual PeriodicTask, public virtual GlViewport, public virtual IInputListener{
+  class FpsCamera :
+    public virtual ViewportController,
+    public virtual CompositeHubObject, 
+    public virtual ScheduledTask,
+    public virtual IInputListener
+  {
+    TYPED_OBJECT(FpsCamera);
 	public:
+    virtual void toString(std::ostream & out)const{CompositeHubObject::toString(out);}
     FpsCamera();
-		void setInputHandler(InputHandler * handler){
-			_handler = handler;
-		}
-		void onMouseMove(int x , int y, int dx, int dy);
+		void onMouseMove(InputHandler * sender, int x , int y, int dx, int dy);
     void timeout(Time timePassed,Time time);
     KinematicBody & kinematicBody(){return body;}
+  protected:
+    void onViewportAdded(Viewport * viewport);
+    void onViewportRemoved(Viewport * viewport);
 	private:
-		InputHandler * _handler;
+
     Real roll,pitch,yaw;
     KinematicBody body;
     ExplicitEuler eulerIntegrator;

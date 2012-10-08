@@ -23,19 +23,19 @@
 #include <visualization.opengl/MiniGL.h>
 #include <simulation/Simulation.h>
 using namespace nspace;
-OffsetRenderer::OffsetRenderer(IRenderer & renderer):_renderer(renderer){}
-void OffsetRenderer::render(){
+OffsetRenderer::OffsetRenderer(Renderer & renderer):_renderer(renderer){}
+void OffsetRenderer::render(Viewport & viewport){
   MiniGL::pushMatrix();
   MiniGL::translate(position());
   MiniGL::multQuaternion(orientation());
-  _renderer.render();
+  _renderer.render(viewport);
   MiniGL::popMatrix();
 }
 
 bool OffsetRenderer::initializeObject(){
   //add original renderer to simulation
-  *simulation() << _renderer;
+ // *simulation() << _renderer;
   // set original renderer to ignore.  causing the rendermodule not to run the render method
-  _renderer.setIgnore(true);
+ // _renderer.setIgnore(true);
   return true;
 }

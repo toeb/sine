@@ -34,5 +34,5 @@ bool BoxRenderer::initializeObject(){
   if(!_box.hasName())return true;
   const string & name =_box.name();
   _textRenderer = new TextRenderer(name,_textPosition);
-  return _textRenderer->initialize();
+  return true;
 }

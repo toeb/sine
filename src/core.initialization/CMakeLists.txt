@@ -3,6 +3,7 @@ set(source
  ./Initializable.cpp
  ./InitializationModule.h
  ./InitializationModule.cpp
+ ../core.initialization.h
  )
  
  source_group("" FILES ${source})
