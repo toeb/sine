@@ -30,7 +30,7 @@ namespace nspace{
 
   namespace model{
     class Spring : public Connection{
-      Connection(JointLimit);
+        TYPED_OBJECT(Spring);
     private:
       Real _dampeningCoefficient;
       Real _springCoefficient;

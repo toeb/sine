@@ -1,4 +1,4 @@
-
+/*
 
 #include <Dslib>
 #include <core/patterns/Singleton.h>
@@ -150,7 +150,7 @@ int main(int argc, char** argv){
 
   DefaultSimulationSetup setup;
 
-  QtSimulationRunner runner;
+  //QtSimulationRunner runner;
   Simulation simulation;
   simulation.initialize();
 
@@ -176,44 +176,40 @@ int main(int argc, char** argv){
   RigidBodyConnector * c3 = ( RigidBodyConnector*)ConnectorFactory::instance().createWithWorldConnectionPoint(b2,Vector3D(1,0,0));
   RigidBodyConnector * c4 = ( RigidBodyConnector*)ConnectorFactory::instance().createWithWorldConnectionPoint(b3,Vector3D(1,0,0));
    
-  simulation << new BallJoint(*c3,*c4);
-  simulation << new BallJoint(*c1,*c2);
+  simulation |= new BallJoint(*c3,*c4);
+  simulation |= new BallJoint(*c1,*c2);
   
-  simulation << new ConnectorImpulseRenderer(*c1);
-  simulation << new ConnectorImpulseRenderer(*c2);
-  simulation << new ConnectorImpulseRenderer(*c3);
-  simulation << new ConnectorImpulseRenderer(*c4);
+  simulation |= new ConnectorImpulseRenderer(*c1);
+  simulation |= new ConnectorImpulseRenderer(*c2);
+  simulation |= new ConnectorImpulseRenderer(*c3);
+  simulation |= new ConnectorImpulseRenderer(*c4);
   
-  simulation << b1;
-  simulation << b2;
-  simulation << b3;
+  simulation |= b1;
+  simulation |= b2;
+  simulation |= b3;
 
-  simulation << c1;
-  simulation << c2;
-  simulation << c3;
-  simulation << c4;
+  simulation |= c1;
+  simulation |= c2;
+  simulation |= c3;
+  simulation |= c4;
 
 
   Hexahedron * box = new Hexahedron(0.5,0.5,0.5);
   box->coordinates().mirror(b1.coordinates());
-  simulation << box;
-  simulation << new BoxRenderer(*box);
+  simulation |= box;
+  simulation |= new BoxRenderer(*box);
 
   Hexahedron * box2 = new Hexahedron(0.5,0.5,0.5);
   box2->coordinates().mirror(b2.coordinates());
-  simulation << box2;
-  simulation << new BoxRenderer(*box2);
+  simulation |= box2;
+  simulation |= new BoxRenderer(*box2);
 
   Hexahedron * box3 = new Hexahedron(0.5,0.5,0.5);
   box3->coordinates().mirror(b3.coordinates());
-  simulation << box3;
-  simulation << box3;
-  simulation << new BoxRenderer(*box3);
-/*
-  simulation << new PeriodicTaskDelegate([b2](Time t,Time dt){
-    cout << t << ": " << b2.coordinates().position() << endl;
-  },1.0,true);
-*/
+  simulation |= box3;
+  simulation |= box3;
+  simulation |= new BoxRenderer(*box3);
+
 
 
 
@@ -224,7 +220,7 @@ int main(int argc, char** argv){
 
   bool result = urdfReader.parseFile(builder,"resources/models/model1.urdf");
 
-  simulation << builder.simulationObjects();
+  simulation |= builder.simulationObjects();
   
 
   {
@@ -248,20 +244,10 @@ int main(int argc, char** argv){
   }
   }
   DynamicsAlgorithm da;
-  simulation << new Gravity(1);
+  simulation |= new Gravity(1);
   
 
-  
 
- /* simulation << new ForceField([](Vector3D & force, Vector3D & torque, const Vector3D & cog, Time t){
-    if(cog.length2()<1){
- //    force = Vector3D(0,2,0);// - Vector3D::UnitX()*cog.x()*0.01 - Vector3D::UnitZ()*cog.z()*0.01;
-    }
-    //Vector3D rando ((rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5,(rand()%1000)/1000.0-0.5);
-    //MatrixOps::multiplyScalar(force,cog,-0.0001);
-    //MatrixOps::add(force,force,rando);
-    //force = rando -0.001*cog;// sin(t)*Vector3D::UnitX()-cog*((rand()%1000)/1000.0*0.01)+Vector3D::UnitY()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitZ()*((rand()%1000)/1000.0-0.5)+Vector3D::UnitX()*((rand()%1000)/1000.0-0.5);
-  });*/
 
   simulation << da;
   {
@@ -321,16 +307,18 @@ int main(int argc, char** argv){
     }
   }
   //simulation << new BillboardRenderer();
- simulation << new HistoryModule (setup.defaultSystem.statefulObject(), setup.simulationTimeProvider);
+ simulation |= new HistoryModule (setup.defaultSystem.statefulObject(), setup.simulationTimeProvider);
 
-  simulation << new GlutObject(argc,argv);
+  simulation |= new GlutObject(argc,argv);
   
- simulation << new GridRenderer(0);
-  simulation << new LightRenderer();
-  simulation<<runner;
+ simulation |= new GridRenderer(0);
+  simulation |= new LightRenderer();
+  simulation|=runner;
 
   
   simulation.initialize();
-  runner.run();
+//  runner.run();
   simulation.cleanup();
 }
+*/
+int main(){}

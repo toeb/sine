@@ -15,7 +15,7 @@ namespace nspace{
 
     Derived & operator = (T data){
       this->data()=data;
-      return derived();
+      return this->derived();
     }
     operator T&() {
       return _data;
@@ -33,8 +33,8 @@ namespace nspace{
 
     void successorsToStream(std::ostream & out){
       this->dfsWithPath([](Derived* current, Set<Derived*> path){
-        cout << std::extensions::spaces(path.size());
-        cout << *current<<"\n";
+        std::cout << std::extensions::spaces(path.size());
+        std::cout << *current<<"\n";
       });
     }
 

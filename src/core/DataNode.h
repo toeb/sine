@@ -6,10 +6,10 @@ namespace nspace{
   class DataNode : public DerivableDataNode<T,DataNode<T> >{
   public:
     DataNode(){}
-    DataNode(T data):DerivableDataNode(data){}  
+    DataNode(T data):DerivableDataNode<T,DataNode<T> >(data){}
     DataNode<T> & operator = (T data){
       this->data()=data;
-      return derived();
+      return this->derived();
     }
   };
 }

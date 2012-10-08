@@ -104,7 +104,7 @@ namespace nspace{
     // returns the symmetric difference (xor)
     Set<T> operator ^(const Set<T> & b)const;
     // returns the intersection of this set and set b;
-    Set<T> operator &(const Set<T> & b)const;
+    Set<T> operator &&(const Set<T> & b)const;
     // returns true if the sets contain exactly the same elements (symmetric difference has a cardinality of zero)
     bool operator ==(const Set<T> & b)const;
 
@@ -336,7 +336,7 @@ namespace nspace{
     return symmetricDifference(*this, b);
   }
   template<typename T>
-  Set<T> Set<T>::operator &(const Set<T> & b)const{
+  Set<T> Set<T>::operator &&(const Set<T> & b)const{
     return intersect(*this,b);
   }
   template<typename T>

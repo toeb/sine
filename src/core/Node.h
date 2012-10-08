@@ -117,11 +117,11 @@ namespace nspace{
   void Node<Derived>::elementAdded(ObservableCollection<Derived*> * sender, Derived * node){
     if(sender==&_predecessors) {        
       onPredecessorAdded(node);
-      node->successors() |= &derived();
+      node->successors() |= &this->derived();
     }
     if(sender==&_successors) {
       onSuccessorAdded(node);
-      node->predecessors()|=&derived();
+      node->predecessors()|=&this->derived();
     }
   }
   // callback when an element is removed from the node. makes sure the nodes are removed
@@ -129,11 +129,11 @@ namespace nspace{
   void Node<Derived>::elementRemoved(ObservableCollection<Derived*> * sender, Derived * node){
     if(sender==&_predecessors) {
       onPredecessorRemoved(node);
-      node->successors() /=&derived();
+      node->successors() /=&this->derived();
     }
     if(sender==&_successors){
       onSuccessorRemoved(node);
-      node->predecessors()/=&derived();
+      node->predecessors()/=&this->derived();
     }
   }
   // all connected nodes (union of predecessors and successors)
@@ -158,7 +158,7 @@ namespace nspace{
   Derived * Node<Derived>::predecessor(uint i){return predecessors().at(i);}
   // read access to predecessor by index
   template<typename Derived>
-  const Derived * Node<Derived>::predecessor(uint i)const{return predecssors().at(i);}
+  const Derived * Node<Derived>::predecessor(uint i)const{return predecessors().at(i);}
   // read access tot first successor
   template<typename Derived>
   const Derived * Node<Derived>::firstSuccessor()const{return successors().first();}
@@ -183,41 +183,41 @@ namespace nspace{
   template<typename Derived>
   Derived & Node<Derived>::operator <<(const Set<Derived*> & nodes){
     predecessors() |= nodes;
-    return derived();
+    return this->derived();
   }
   // adds a set of successors 
   template<typename Derived>
   Derived & Node<Derived>::operator >>(const Set<Derived*> & nodes){
     successors() |= nodes;
-    return derived();
+    return this->derived();
   }
   // adds a single predecessor
   template<typename Derived>
   Derived & Node<Derived>::operator <<(Derived & node){
     predecessors().add(&node);
-    return derived();
+    return this->derived();
   }
   //adds a single successor
   template<typename Derived>
   Derived & Node<Derived>::operator >>(Derived & node){
     successors().add(&node);
-    return derived();
+    return this->derived();
   }
   // adds a single predecessor (by pointer)
   template<typename Derived>
   Derived & Node<Derived>::operator <<(Derived * node){
     predecessors().add(node);
-    return derived();
+    return this->derived();
   }
   // adds a single successor (by pointer)
   template<typename Derived>
   Derived & Node<Derived>::operator >>(Derived * node){
     successors().add(node);
-    return derived();
+    return this->derived();
   }
 
   template<typename Derived>
-  void Node<Derived>::dfsWithPath(std::function<void (Derived *, Set<Derived * > )> action, Set<Derived * > currentpath = Set<Derived*>()){
+  void Node<Derived>::dfsWithPath(std::function<void (Derived *, Set<Derived * > )> action, Set<Derived * > currentpath){
     action(&this->derived(),currentpath);
     successors().foreachElement([action,this,&currentpath](Derived * next){
       next->dfsWithPath(action,currentpath|&this->derived());
@@ -235,9 +235,9 @@ namespace nspace{
   template<typename Derived>
   void Node<Derived>::dfs(std::function<void (bool & , Derived *)> f, std::function<void (Set<Derived*> &, const Derived &) > successors){
     Set<Derived* > next;
-    successors(next,derived());
+    successors(next,this->derived());
     bool cont=true;
-    f(cont,&derived());
+    f(cont,&this->derived());
     if(!cont)return;
     next.foreachElement([f,successors](Derived * n){
       n->dfs(f,successors);
@@ -247,7 +247,7 @@ namespace nspace{
   // also a realy bad implemention. this time of bfs (performancewise). it does not crash if cycles are contained and returns the number of cycles found
   template<typename Derived>
   int Node<Derived>::bfs(std::function<void (bool& ,Derived*)> f,std::function<void (Set<Derived*> &, const Derived &) > successors){
-    Set<Derived *> list = &derived();
+    Set<Derived *> list = &this->derived();
     int cycles =0;
     while(list){
       // get first element

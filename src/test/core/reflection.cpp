@@ -17,7 +17,7 @@ TEST(Create, Prop){
   class TestClass{
   public:
     TestClass():_IntegerProperty(0){}
-    PROPERTY(int, IntegerProperty){
+    SIMPLE_PROPERTY(int, IntegerProperty){
       if(newvalue > oldvalue +4)cancel = true;
     }
   }a;

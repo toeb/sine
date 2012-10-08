@@ -1,5 +1,5 @@
 #pragma once
-#include <QGlWidget>
+#include <QGLWidget>
 #include <application.qt/PluginWindow.h>
 #include <application.qt/PluginContainer.h>
 #include <application.qt/Plugin.h>

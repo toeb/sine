@@ -37,11 +37,11 @@ using namespace nspace;
     _skybox.setFileBase(ResourceDirectory()+"/images/sky");
 
     hub()|=&_grid;
-    hub()|=&_skybox;
+   // hub()|=&_skybox;
     hub()|=&_application;
     hub()|=&_initializer;
     hub()|=&_viewportPlugin;
-    hub()|=&_Camera;
+    hub().add(&_Camera);
     hub()|=&_lights;
     hub()|=&_glViewport;
     hub()|=&_taskrunner;

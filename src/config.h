@@ -5,6 +5,7 @@
 #endif
 
 #include <float.h>//for DBL_MAX
+#include <iostream>
 
 typedef unsigned int uint;
 typedef unsigned char byte;

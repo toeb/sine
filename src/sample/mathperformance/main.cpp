@@ -143,7 +143,7 @@ public:
   }
   void performTest(){
     tick();
-    MatrixOps::add(c,a,b);
+    math::shorthands::matrix::add(c,a,b);
     tock();
   }
 };
@@ -175,7 +175,7 @@ public:
   }
   void performTest(){
     tick();
-    MatrixOps::subtract(c,a,b);
+    math::shorthands::matrix::subtract(c,a,b);
     tock();
   }
 };
@@ -211,7 +211,7 @@ public:
   }
   void performTest(){
     tick();
-    MatrixOps::multiplyMatrix(c,a,b);
+    math::shorthands::matrix::multiplyMatrix(c,a,b);
     tock();
   }
 };
@@ -247,7 +247,7 @@ public:
   }
   void performTest(){
     tick();
-    MatrixOps::multiplyScalar(c,a,b);
+    math::shorthands::matrix::multiplyScalar(c,a,b);
     tock();
   }
 };
@@ -362,7 +362,7 @@ public:
   }
   void performTest(){
     tick();
-    MatrixOps::convolve(b,a,k);
+    math::shorthands::matrix::convolve(b,a,k);
     tock();
   }
 };
@@ -379,7 +379,7 @@ public:
   }
   void performTest(){
     tick();
-    operations::invertSymmetricMatrix(b,a);
+    math::shorthands::matrix::invertSymmetricMatrix(b,a);
     tock();
   }
 };

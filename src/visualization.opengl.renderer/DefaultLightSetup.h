@@ -16,7 +16,7 @@ namespace nspace{
     Light & light1(){return _light1;};
     Light & light2(){return _light2;};
     Light & light3(){return _light3;};
-    LightRenderer & LightRenderer(){return _lightRenderer;}
+    LightRenderer & lightRenderer(){return _lightRenderer;}
     DefaultLightSetup(){
       
       _light1.Coordinates().position() = Vector3D(-10,10,10);

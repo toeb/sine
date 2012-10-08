@@ -31,7 +31,7 @@ private:
   SIMPLE_PROPERTY(std::string, ResourceDirectory){}
   REFERENCE_PROPERTY(std::string, ResourceDirectory);
 public:
-  SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = "resources");
+  SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = ".");
   Hub & hub();
   GlViewport & viewport();
   

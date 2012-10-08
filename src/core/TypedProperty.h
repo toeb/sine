@@ -4,7 +4,7 @@ namespace nspace{
 
   template<typename OwningClass, typename ValueType>
   class TypedProperty : public virtual Property{
-    TYPED_OBJECT(TypedProperty<OwningClass,ValueType>);
+    TYPED_OBJECT(TypedProperty);
   private:
     
     void setValue(void * object, const void * value)const{
