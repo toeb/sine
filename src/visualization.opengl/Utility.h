@@ -26,8 +26,9 @@
 #include <math/core.h>
 #include <visualization.opengl/opengl.h>
 #include <simulation.kinematics/CoordinateSystem.h>
-#include <visualization.opengl/GlMaterial.h>
 #include <visualization/Color.h>
+#include <visualization/Light.h>
+#include <visualization/Material.h>
 
 
 namespace nspace{
@@ -81,16 +82,24 @@ void glLight(int light,
   const Vector3D & diffuse=Vector3D::Ones(), 
   const Vector3D& specular=Vector3D::Ones());
 
+
+
+void glDisableLights();
+void glLight(uint lightNumber, const Light & light);
+
+
 void glMaterial(
   const Vector3D & color
-  ,const Real & ambient
-  , const Real & diffuse
-  , const Real & specular
-  , const Real & shininess
-  , const Real & alpha);
+  , Real  ambient
+  ,  Real  diffuse
+  ,  Real  specular
+  ,  Real  shininess
+  ,  Real  alpha);
 
-void glMaterial(nspace::GlMaterial & material);
+void glMaterial(const Material & material);
 
 void glColor(const Color & color);
 void glSetClearColor(const Color & color);
+
+void glSphere(double r, int lats, int longs) ;
 }

@@ -17,9 +17,9 @@ protected:
    virtual bool parseNamedElement(XMLElement * jointElement){
      
      //create two connectors and a connetion 
-     Node * connectorA = new Node;
-     Node * connectorB = new Node;
-     Node * connection = new Node;
+     ModelNode * connectorA = new ModelNode;
+     ModelNode * connectorB = new ModelNode;
+     ModelNode * connection = new ModelNode;
 
      UrdfJoint * joint = new UrdfJoint;
      UrdfLink * parentLink;

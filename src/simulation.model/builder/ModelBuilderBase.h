@@ -12,7 +12,7 @@ namespace nspace{
     Model * _currentModel;
     ModelElement * _currentElement;
   protected:
-    virtual Node * createNode();
+    virtual ModelNode * createNode();
     virtual Connection * createConnection();
     virtual Connector * createConnector();
   public:    
@@ -24,7 +24,7 @@ namespace nspace{
     Model * currentModel();
     Model * beginModel();
     Model * endModel();
-    Node * addNode();
+    ModelNode * addNode();
     Connector * addConnector(const std::string & nodeName);
     Connection * addConnection(const std::string & nodeAm, const std::string & nodeB);
     template<typename T>

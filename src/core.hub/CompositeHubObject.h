@@ -60,11 +60,11 @@ namespace nspace{
   protected:
     virtual void onComponentAdded(Object * object){}
     virtual void onComponentRemoved(Object * object){}
-    void onAddedToHub(Hub & hub){
-      hub |= *this;
+    virtual void onAddedToHub(Hub & hub){
+      hub |= components();
     }
-    void onRemovedFromHub(Hub & hub){
-      hub /= *this;
+    virtual void onRemovedFromHub(Hub & hub){
+      hub /= components();
     }
 
   };

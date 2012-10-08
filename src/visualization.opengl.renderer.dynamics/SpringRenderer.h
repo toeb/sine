@@ -1,10 +1,10 @@
 #pragma once
 
 #include <simulation.dynamics.force/DampedSpring.h>
-#include <visualization/IRenderer.h>
+#include <visualization/Renderer.h>
 
 namespace nspace{
-  class SpringRenderer:public IRenderer{
+  class SpringRenderer:public Renderer{
   private:
     Real _maxForceAmount;
     DampedSpring & _spring;

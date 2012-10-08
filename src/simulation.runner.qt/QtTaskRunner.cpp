@@ -1,15 +1,16 @@
 #include "QtTaskRunner.h"
 
 #include "ui_taskwidget.h"
-
+#include <core/StringTools.h>
 #include <iostream>
 
 using namespace std;
 using namespace nspace;
 
+using namespace std::extensions;
 
 QtTaskRunner::QtTaskRunner():_taskTimer(0){
-  setName("simulation.runner.qt.taskrunner");
+  setName("TaskRunner");
   _taskTimer = new QTimer(this);
   _taskTimer->setInterval(5);
   connect(_taskTimer,SIGNAL(timeout()), this, SLOT(timeout()));
@@ -45,6 +46,7 @@ void QtTaskRunner::install(PluginContainer & container){
   _ui = new Ui_TaskWidget();
   PluginWindow * window = new PluginWindow();
   _ui->setupUi(window);
+  window->setWindowTitle((name()+" Window").c_str());
   container.setPluginWindow(window);
 
 }

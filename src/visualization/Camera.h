@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Object.h>
-#include <simulation/kinematics/CoordinateSystem.h>
+#include <simulation.kinematics/CoordinateSystem.h>
 #include <math/core.h>
 
 

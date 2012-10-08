@@ -8,12 +8,11 @@ set(source
 ./GlViewport.cpp
 ./Utility.h
 ./Utility.cpp
-./FpsCamera.h
-./FpsCamera.cpp
 ./GlMaterial.h
 ./GlMaterial.cpp
 ./GlTexture.h
 ./GlTexture.cpp
+../visualization.opengl.h
 )
 
 source_group("" FILES ${source})

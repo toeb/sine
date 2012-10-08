@@ -3,7 +3,7 @@
 #include <simulation.dynamics/Particle.h>
 
 namespace nspace{
-  class ParticleRenderer : public IRenderer{
+  class ParticleRenderer : public Renderer{
   private:
     const Particle & _particle;
     PointRenderer * _pointRenderer;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Node.h>
-
+#include <core/StringTools.h>
 namespace nspace{
 
   template<typename T, typename Derived>
@@ -36,7 +36,7 @@ namespace nspace{
 
     void successorsToStream(std::ostream & out){
       this->dfsWithPath([](Derived* current, Set<Derived*> path){
-        cout << spaces(path.size());
+        cout << std::extensions::spaces(path.size());
         cout << *current<<"\n";
       });
     }

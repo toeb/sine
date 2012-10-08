@@ -333,7 +333,7 @@ namespace nspace{
 
   template<typename T>
   Set<T> Set<T>::operator ^(const Set<T> & b)const{
-    return symetricDifference(*this, b);
+    return symmetricDifference(*this, b);
   }
   template<typename T>
   Set<T> Set<T>::operator &(const Set<T> & b)const{
@@ -345,7 +345,7 @@ namespace nspace{
   }
   template<typename T>
   bool Set<T>::areEqual(const Set<T> &a, const Set<T> & b){
-    return symetricDifference(a,b).size()==0;
+    return symmetricDifference(a,b).size()==0;
   }
   template<typename T>
   Set<T> Set<T>::symmetricDifference(const Set<T> &a , const Set<T> & b){

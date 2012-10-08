@@ -1,21 +1,13 @@
-
-
-
 #pragma once
+
+#include <config.h>
+
 #include <visualization/Renderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
 #include <math/core.h>
 
 namespace nspace{
 
-class Transformation : CoordinateSystem{
-public:
-  ValueHolder<Vector3D> scale;
-  ValueHolder<Vector3D> skew;
-  
-  void getTransformationMatrix(Matrix4x4 & T);
-  Matrix4x4 getTransformationMatrix();
-};
 /**
  * \brief
  *
@@ -46,4 +38,5 @@ public:
 protected:
   bool initializeObject();
 };//class OffsetRenderer
+
 }

@@ -27,7 +27,7 @@ protected:
     std::string typeString = typeText;
 
 
-    Node * rootNode = model().nodes()(linkString);
+    ModelNode * rootNode = model().nodes()(linkString);
     if(!rootNode){
       ERROR("Could not find Node by name of " << linkString);
       return false;

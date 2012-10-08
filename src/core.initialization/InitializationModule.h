@@ -2,7 +2,6 @@
 
 #include <core.hub/ModuleBase.h>
 #include <core.initialization/Initializable.h>
-
 namespace nspace{
   class InitializationModule : public virtual ModuleBase, public virtual Initializable{
     TYPED_OBJECT(InitializationModule);
@@ -15,8 +14,9 @@ namespace nspace{
     }
 
     virtual void onAcception(Object * object){
+
       auto initializeable = dynamic_cast<Initializable*>(object);
-      if(isInitialized() && !initializeable->initialize()){
+      if(isInitialized() && !processObject(initializeable)){
         renounce(initializeable);
         return;
       }
@@ -32,23 +32,26 @@ namespace nspace{
    void cleanupObject(){
      _initializeables.foreachElement([](Initializable * initializeable){initializeable->cleanup();});
    };
-   bool initializeObject(){
-     bool success = true;
-     _initializeables.foreachElement([&success](Initializable * initializeable){
-       auto named = dynamic_cast<NamedObject*>(initializeable);
-       
-       std::cout<< "Initializing ";
-       if(named)std::cout << named->name() << " ";
-       else std::cout << " unknown ";
+   bool processObject(Initializable * initializeable){
+     if(initializeable->isInitialized())return true;
+       std::cout<< "Initializing " << nspace::name(initializeable) << " ";
        std::cout << ". . . . . . . . . . ";
        bool s = initializeable->initialize() ;
        if(s)std::cout << "successful" ;
        else std::cout<< "failed";
        std::cout << std::endl;
-       success &=s;
-       
+      return s;
+   }
+   bool processUninitializedObjects(){
+      bool success = true;
+     _initializeables.foreachElement([&success,this](Initializable * initializeable){
+      success |= processObject(initializeable);       
      });
      return success;
+   }
+
+   bool initializeObject(){
+    return processUninitializedObjects();
    }
   };
 }

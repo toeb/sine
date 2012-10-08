@@ -49,8 +49,8 @@
 
 using namespace nspace;
 using namespace std;
-class GlutObject : public virtual IRenderer{
-  TYPED_OBJECT;
+class GlutObject : public virtual Renderer{
+  TYPED_OBJECT(GlutObject);
 private:
   int _argc;
   char ** _argv;  
@@ -68,7 +68,7 @@ public:
 };
 
 
-class ConnectorImpulseRenderer : public IRenderer{
+class ConnectorImpulseRenderer : public Renderer{
 private:
   RigidBodyConnector & connector;
 public:
@@ -93,33 +93,33 @@ public:
 protected:
   
   void buildModel(Model & model){     
-    model.nodes().foreachElement([this](Node * node){
+    model.nodes().foreachElement([this](ModelNode * node){
       convertBody(node);
     });
-    model.nodes().foreachElement([this](Node * node){
+    model.nodes().foreachElement([this](ModelNode * node){
       convertConnector(node);
     });
-    model.nodes().foreachElement([this](Node * node){
+    model.nodes().foreachElement([this](ModelNode * node){
       convertConnection(node);
     });
     std::cout << model;
   }
     
 private:
-  void convertConnector(Node * node){
+  void convertConnector(ModelNode * node){
     Connector * connector =0;
     node->get(connector,"connector");
     if(!connector)return;
 
   }
-  void convertConnection(Node * node){
+  void convertConnection(ModelNode * node){
     Connection * connection=0;
     node->get(connection,"connection");
     if(!connection)return;
 
 
   }
-  void convertBody(Node * node){
+  void convertBody(ModelNode * node){
     Body * body=0;
     node->get(body,"body");
     if(!body)return;
@@ -137,7 +137,7 @@ private:
 
     Sphere * sphere = new Sphere();
     sphere->coordinates().position.mirror(rigidBody->kinematics().position);
-    _objects.addComponent(new  SphereRenderer(*sphere));
+    //_objects.addComponent(new SphereRenderer(*sphere));
     
     _objects.addComponent(rigidBody);
   }

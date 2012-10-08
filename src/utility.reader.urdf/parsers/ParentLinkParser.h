@@ -10,7 +10,7 @@ namespace nspace{
 class ParentLinkParser : public NamedChildParser, public ModelBuilderHolder{
 public:
   std::string name;
-  Node * node;
+  ModelNode * node;
 
   ParentLinkParser(IModelBuilder & builder):node(0),ModelBuilderHolder(builder), NamedChildParser("parent"){
 

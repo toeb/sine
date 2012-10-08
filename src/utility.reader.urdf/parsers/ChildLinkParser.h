@@ -10,7 +10,7 @@ public:
 
   }
   std::string name;
-  Node * node;
+  ModelNode * node;
 protected:
   bool parseChild(XMLElement * childElement){
     const char * cstr = childElement->Attribute("link");

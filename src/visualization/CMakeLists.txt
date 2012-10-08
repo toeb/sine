@@ -19,6 +19,11 @@ set(source
  ./SceneObject.cpp 
  ./Camera.h
  ./Camera.cpp 
+./FpsViewportController.h
+./FpsViewportController.cpp
+./Light.h
+./Light.cpp
+../visualization.h
  
 )
 source_group("" FILES ${source})

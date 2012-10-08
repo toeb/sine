@@ -18,7 +18,6 @@ PluginContainer::PluginContainer(Plugin & plugin, PluginApplication & app):_plug
 
 PluginContainer::~PluginContainer(){
   if(_togglePluginWindowAction){
-
     disconnect(_togglePluginWindowAction,SIGNAL(toggled(bool)),this,SLOT(setEnabled(bool)));
     delete _togglePluginWindowAction;
   }

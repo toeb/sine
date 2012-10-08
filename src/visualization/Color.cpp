@@ -6,7 +6,7 @@ using namespace std;
 using namespace nspace;
 map<string, Color*> & Color::_palette = *new map<string, Color*>();
 const Color & Color::unknown= *new Color(0,0,0,1,"unknown");
-int colors = Color::loadColors("resources/colors/palette.txt");
+
 
 int Color::loadColors(const std::string &filename ){
   ifstream file(filename,ifstream::in);

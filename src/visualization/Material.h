@@ -1,66 +1,38 @@
-#include <math/core.h>
 #pragma once
-
-
+#include <config.h>
+#include <visualization/Color.h>
+#include <core/Reflection.h>
+#include <core/PropertyChangingObject.h>
+#define PROP(TYPE,NAME) REFERENCE_PROPERTY(TYPE,NAME); REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME)
 namespace nspace{
-  class VisualMaterial{
-  private:
-    Vector3D ambient;
-    Vector3D diffuse;
-    Vector3D specular;
-    Real shininess;
-    Real alpha;
-  public:
-    VisualMaterial(){};
-    VisualMaterial(
-      Real r,
-      Real g,
-      Real b, 
-      Real ambient,
-      Real diffuse, 
-      Real specular, 
-      Real alpha, 
-      Real shininess)
-      : shininess(shininess), alpha(alpha){
-        this->ambient.x()=r*alpha;
-        this->ambient.y()=g*alpha;
-        this->ambient.z()=b*alpha; 
+class Material : public virtual PropertyChangingObject{
+  TYPED_OBJECT(Material);
+  REFLECTABLE(Material);
+private:
+  PROP(Color,Ambient){}
+  PROP(Color,Diffuse){}
+  PROP(Color,Specular){}
+  PROP(Color,Emission){}
+  PROP(Real,Shininess){}
+  PROP(std::string, MaterialName){}
+     
+  
+  static std::map<std::string, Material*> & _palette;
+   
+public: 
+  void setTo(const std::string & name);
+    static const  Material& unknown; 
+    static int loadMaterials(const std::string & filename);
+    static const Material & getMaterialByName(const std::string & name);
+    Material();
+ Material(const Color & color);
 
-        this->diffuse.x()=r*alpha;
-        this->diffuse.y()=g*alpha;
-        this->diffuse.z()=b*alpha; 
+ Material(const std::string &name, const Color & ambient, const Color & diffuse, const Color & specular, const Color & emission, Real shininess);
+ Material(const std::string & name);
 
-        this->specular.x()=r*alpha;
-        this->specular.y()=g*alpha;
-        this->specular.z()=b*alpha; 
-    };
-    VisualMaterial(
-      Real Ra,
-      Real Ga,
-      Real Ba,
-      Real Rd,
-      Real Gd,
-      Real Bd,
-      Real Rs,
-      Real Gs,
-      Real Bs,
-      Real alpha,
-      Real shininess
-      ){
-        ambient.x()=Ra;
-        ambient.y()=Ga;
-        ambient.z()=Ba; 
+ Material(const Material & material);
+ Material & operator =(const Material& material);
 
-        diffuse.x()=Rd;
-        diffuse.y()=Gd;
-        diffuse.z()=Bd; 
 
-        specular.x()=Rs;
-        specular.y()=Gs;
-        specular.z()=Bs; 
-        this->alpha = alpha;
-        this->shininess = shininess;
-    };
-    
-  };
+};
 }

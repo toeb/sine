@@ -7,7 +7,7 @@
 
 namespace nspace{
   class ForceField : public virtual Force{
-  TYPED_OBJECT;
+  TYPED_OBJECT(ForceField);
   private:
     std::function<void (Vector3D &, Vector3D & ,const  Vector3D& , Time)> _f;
   public:

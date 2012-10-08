@@ -10,6 +10,9 @@ using namespace nspace;
 using namespace std;
 
 
+
+
+
 TEST(Create, Prop){
   class TestClass{
   public:
@@ -58,7 +61,7 @@ TEST(Test1, PropertyChanging){
 }
 
 class TestClass2{
-  REFLECTABLE_OBJECT(TestClass2);
+  REFLECTABLE(TestClass2);
 public:
   TestClass2():_IntegerProperty(0){}
   REFLECTABLE_PROPERTY(int, IntegerProperty){

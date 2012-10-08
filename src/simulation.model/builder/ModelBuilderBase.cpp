@@ -3,7 +3,7 @@
 using namespace nspace;
 
 
-Node * ModelBuilderBase::createNode(){return new Node;};
+ModelNode * ModelBuilderBase::createNode(){return new ModelNode;};
 Connection * ModelBuilderBase::createConnection(){return new Connection;}
 Connector * ModelBuilderBase::createConnector(){return new Connector;}
 
@@ -34,8 +34,8 @@ Model * ModelBuilderBase::endModel(){
   _currentModel =0;
   return model;
 }
-Node * ModelBuilderBase::addNode(){
-  Node * node = createNode();
+ModelNode * ModelBuilderBase::addNode(){
+  ModelNode * node = createNode();
   //addElement(node);
   _currentModel->nodes().add(node);
   return node;   

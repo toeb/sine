@@ -38,4 +38,7 @@ namespace nspace{
     virtual void nameChanged(const std::string& newName){}
   };
 
+  // method for extracting the name of a named object
+  const std::string & name(Object * object);
+
 }

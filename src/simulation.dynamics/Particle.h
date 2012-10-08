@@ -31,7 +31,7 @@ namespace nspace
 {
 class Particle : public DynamicBody, public virtual StatefulObject
   {  
-    TYPED_OBJECT;
+    TYPED_OBJECT(Particle);
   private:
     Vector3D _f;
     Real _m;

@@ -17,12 +17,12 @@ public:
 protected: 
   bool parseNamedElement(XMLElement * element);
 private:  
-  Node * findRoot();
-  void convertLink(Node * node);
-  void convertConnector(Node * node);
-  void convertConnection(Node * node);
-  void convertJoint(Node * node);
-  void convertSpring(Node * node);
+  ModelNode * findRoot();
+  void convertLink(ModelNode * node);
+  void convertConnector(ModelNode * node);
+  void convertConnection(ModelNode * node);
+  void convertJoint(ModelNode * node);
+  void convertSpring(ModelNode * node);
   void convert();
 };
 

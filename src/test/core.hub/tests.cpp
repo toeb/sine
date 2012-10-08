@@ -238,7 +238,6 @@ TEST(compositeRemove3, CompositeHubObject){
   CHECK(!hub.contains(&obj)); 
 }
 
-
 TEST(HubGraph , Hub){
   Hub uut;
   CompositeHubObject n1;
@@ -267,4 +266,25 @@ TEST(HubGraph , Hub){
 
   
 }
+class A : public virtual CompositeHubObject{
+
+};
+
+TEST(compositeBoxedAdd, CompositeHubObject){
+  CompositeHubObject a;
+  A b;
+  A c;
+  Object o;
+
+  Hub h;
+
+  a.components()|=&b;
+  b.components()|=&c;
+  c.components()|=&o;
+  h|=&a;
+
+  CHECK(h.size()==4);
+}
+
+
 

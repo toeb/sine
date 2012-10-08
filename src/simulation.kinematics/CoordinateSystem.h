@@ -58,6 +58,7 @@ public:
 
   
   friend std::ostream & operator << (std::ostream & o, const CoordinateSystem & coordinates);
+  friend bool operator ==(const CoordinateSystem & a, const CoordinateSystem & b);
 
   void fromObjectCoordinates(const CoordinateSystem & coords_ocs,CoordinateSystem & result)const;
   void toObjectCoordinates(const CoordinateSystem & coords_wcs,CoordinateSystem & result)const;

@@ -13,11 +13,11 @@ namespace nspace{
   public:
     virtual Model* beginModel()=0;
 
-    Node * addBody(const std::string & name);
-    Node * addConnection(const std::string & name, const std::string  & bodyA, const std::string & bodyB);
+    ModelNode * addBody(const std::string & name);
+    ModelNode * addConnection(const std::string & name, const std::string  & bodyA, const std::string & bodyB);
     
 
-    virtual Node* addNode()=0;   
+    virtual ModelNode* addNode()=0;   
 
 
     virtual Connector* addConnector(const std::string &nodeName)=0;

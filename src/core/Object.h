@@ -23,6 +23,14 @@ private:\
   private:\
   void on##NAME##Changing(TYPE oldvalue, TYPE & newvalue, bool & cancel)
 
+#define EXTENDED_REFERENCE_PROPERTY(MODIFIER,TYPE, NAME)\
+  MODIFIER:\
+  const TYPE & NAME()const{return _##NAME;} \
+  TYPE & NAME(){return _##NAME;} \
+  private:
+
+#define REFERENCE_PROPERTY(TYPE, NAME) EXTENDED_REFERENCE_PROPERTY(public,TYPE, NAME)
+
 // This macro defines a Property in a class generating getter and setter methods
 // as well as a field of the specified TYPE called _<Name> .  It also checks the value for equality 
 // before changing it (if the oldvalue and new value are equal the set method just returns)

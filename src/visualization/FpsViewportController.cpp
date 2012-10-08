@@ -1,4 +1,4 @@
-#include "FpsCamera.h"
+#include "FpsViewportController.h"
 #include <simulation.interaction/InputHandler.h>
 using namespace nspace;
 using namespace std;

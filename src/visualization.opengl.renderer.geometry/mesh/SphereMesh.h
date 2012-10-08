@@ -1,10 +1,13 @@
-#ifndef __mbslib_SphereMesh_h__
-#define __mbslib_SphereMesh_h__
-#include "Mesh.h"
+#pragma once
 
-namespace mbslib{
-class SphereMesh : public Mesh{
-protected:
+#include <core/Set.h>
+#include <visualization/Renderer.h>
+
+#include <simulation.geometry/primitives/Sphere.h>
+
+namespace nspace{
+class SphereRenderer : public virtual Renderer, public virtual Set<Sphere*>{
+public:
+  virtual void render(){}
 };//SphereMesh
 }
-#endif

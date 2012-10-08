@@ -110,6 +110,10 @@ namespace nspace{
     coordinates.orientation().toStream(o);
     return o;
   }
+  
+  bool operator ==(const CoordinateSystem & a, const CoordinateSystem & b){
+    return &a==&b;
+  }
 }
 
 

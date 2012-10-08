@@ -1,19 +1,21 @@
 #pragma once
 
-#include <simulation.model/ModelElement.h>
 #include <core/Set.h>
-
 #include <math/core.h>
+
+#include <simulation.model/ModelElement.h>
 #include <simulation.model/Connector.h>
 namespace nspace{
+
   class Connection :public NamedObject{
-    TYPED_OBJECT
+    TYPED_OBJECT(Connection)
   public:
     std::string type;
     Vector3D axis;
   };
 
   class JointLimit : public NamedObject {
+    TYPED_OBJECT(JointLimit)
   private:
     Real _lowerPosition;
     Real _upperPosition;
@@ -26,12 +28,9 @@ namespace nspace{
     Real & effort(){return _effort;}
   };
 
-  
-
-
   namespace model{
     class Spring : public Connection{
-      TYPED_OBJECT;
+      Connection(JointLimit);
     private:
       Real _dampeningCoefficient;
       Real _springCoefficient;
@@ -46,18 +45,10 @@ namespace nspace{
     }
 
     class Joint : public Connection{
-      TYPED_OBJECT
+      TYPED_OBJECT(Joint)
     private:
       joint::JointType _type;
     public:
-
-
-
     };
-
-
   }
-
-
-
 }

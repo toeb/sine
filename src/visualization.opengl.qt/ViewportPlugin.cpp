@@ -25,9 +25,11 @@ void ViewportPlugin::onRenounce(Object * object){
 
 void ViewportPlugin::install(PluginContainer & container){
   _pluginWindow = new GlWidgetPluginWindow(_viewports);
+  _pluginWindow->setWindowTitle(name().c_str());
   container.setPluginWindow(_pluginWindow);
 
   components()|=_pluginWindow;
+  
 }
   void ViewportPlugin::enable(){}
   void ViewportPlugin::disable(){}

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <core.initialization/Initializable.h>
 #include <utility.imaging/Image.h>
 #include <core/NamedObject.h>
 namespace nspace{
-  class Texture : public virtual NamedObject{
+  class Texture : public virtual NamedObject, public virtual Initializable{
+    TYPED_OBJECT(Texture);
   private:
     Image & _image;
     static uint _nextId;

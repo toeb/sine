@@ -5,9 +5,22 @@
 #include <core/PropertyChangingObject.h>
 #include <core/patterns/Singleton.h>
 
+// to use reflection REFLECTABLE(<CLASSNAME>) needs to be 
+// stated once in the class. it creates multiple things:
+// - properties() : a static set of const Propert * which contains all reflectable properties of a class
+// - getProperty(string) : a static method for accessing a property
+// - T getPropertyValue(string name) : a class member which returns the value of the specified property
+// - setPropertyValue(string name) : a class member for setting the value of a specific property
+// - (a private set of const properties called propertiesSet())
+// WARNING:  Since Class Hierarchy is not yet supported it is not possible to reflect upon properties of supertypes
+// 
+// after REFLECTABLE(<CLASSNAME>) was called you may add reflectable properties by
+// adding :
+// - REFLECTABLE_CUSTOM_PROPERTY
+// - REFLECTABLE_PROPERTY
+// - REFLECTABLE_NOTIFYING_PROPERTY
 
-#define REFLECTABLE_OBJECT(TYPENAME)\
-  TYPED_OBJECT(TYPENAME);\
+#define REFLECTABLE(TYPENAME)\
   typedef TYPENAME ReflectableType;\
   private:\
   static Set<const Property*> & propertiesSet(){\

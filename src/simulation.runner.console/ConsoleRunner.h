@@ -5,7 +5,7 @@
 
 namespace nspace{
   class ConsoleRunner : public SimulationRunner{
-    TYPED_OBJECT;
+    TYPED_OBJECT(ConsoleRunner);
 
     SimulationTimeProvider * simulationTime;
     bool running;

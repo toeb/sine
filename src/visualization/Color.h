@@ -98,6 +98,12 @@ namespace nspace{
     const Real & b()const;
     const Real & a()const;
 
+    Color operator * (Real val)const{
+      Color c = *this;
+      c.rgb() *= val;
+      return c;
+    }
+
     // writes the color to the output stream
     friend std::ostream & operator <<(std::ostream & o, const Color & color);
   };
