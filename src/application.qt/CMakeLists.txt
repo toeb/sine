@@ -9,7 +9,7 @@ set(source
  PluginWindow.cpp
 QtInputHandler.h
 QtInputHandler.cpp
-../application.qt.h
+../include/application.qt.h
 
 )
 set(moc

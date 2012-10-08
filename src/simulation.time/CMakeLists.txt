@@ -11,7 +11,7 @@ set(timeSource
 	./SimulationTimeController.cpp
 	./CallbackTask.h
 	./CallbackTask.cpp
-	../simulation.time.h
+	../include/simulation.time.h
 )
 
 source_group("src" FILES ${timeSource})

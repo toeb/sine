@@ -23,7 +23,7 @@ set(source
 ./FpsViewportController.cpp
 ./Light.h
 ./Light.cpp
-../visualization.h
+../include/visualization.h
  
 )
 source_group("" FILES ${source})

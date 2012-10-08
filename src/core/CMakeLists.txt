@@ -31,7 +31,7 @@ set(source
 ./TypedProperty.cpp
 ./Reflection.h
 ../config.h
-../core.h
+../include/core.h
 )
 source_group("" FILES ${source})
 

@@ -14,7 +14,7 @@ set(source
 ./CoordinateSystemRenderer.cpp
 ./BoundingOctreeRenderer.h
 ./BoundingOctreeRenderer.cpp
-../visualization.opengl.renderer.geometry.h
+../include/visualization.opengl.renderer.geometry.h
 )
 
 source_group("" FILES ${source})

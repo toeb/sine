@@ -5,7 +5,7 @@ set(source
  GlWidget.cpp
  GlWidgetPluginWindow.h
  GlWidgetPluginWindow.cpp
- ../visualization.opengl.qt.h
+ ../include/visualization.opengl.qt.h
 )
 set(moc
  ViewportPlugin.h

@@ -10,7 +10,7 @@ set(source
  Sample.cpp
  SampleApplication.h
  SampleApplication.cpp 
-../application.sample.h
+../include/application.sample.h
 )
 
 source_group("" FILES ${source})

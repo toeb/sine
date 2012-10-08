@@ -12,7 +12,7 @@ set(source
 ./GlMaterial.cpp
 ./GlTexture.h
 ./GlTexture.cpp
-../visualization.opengl.h
+../include/visualization.opengl.h
 )
 
 source_group("" FILES ${source})
