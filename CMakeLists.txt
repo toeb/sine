@@ -35,7 +35,7 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 include(${cmakeScriptsDirectory}/Common.cmake)
 include(${cmakeScriptsDirectory}/AntTweakBar.cmake)      
 
-
+include_directories(${sourceDirectory}/include)
 include_directories(${externalsDirectory})
 include_directories(${externalsDirectory}/freeglut/include)
 include_directories(${externalsDirectory}/soil/src)
