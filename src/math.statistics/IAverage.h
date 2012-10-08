@@ -10,5 +10,4 @@ namespace nspace{
     // calculate method should return the average which is to be caluclated
     virtual Real calculate()=0;
   };
-
 }

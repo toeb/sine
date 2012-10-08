@@ -4,27 +4,48 @@
 #include <ostream>
 #include <string>
 
+
+#define FIELDNAME(NAME) _##NAME
+#define FIELD(MODIFIER, TYPE,NAME) MODIFIER: TYPE FIELDNAME(NAME);
+#define GETTER(MODIFIER, TYPE,NAME) MODIFIER: inline TYPE get##NAME()const{return FIELDNAME(NAME);}
+#define SETTER(MODIFIER,TYPE,NAME,BEFORESET,AFTERSET) MODIFIER:inline  void set##NAME(TYPE newvalue){BEFORESET; FIELDNAME(NAME) = newvalue; AFTERSET;} 
+#define READONLY_REFERENCE(MODIFIER, TYPE,NAME) MODIFIER:inline  const TYPE & NAME()const{return FIELDNAME(NAME);}
+#define REFERENCE(MODIFIER,TYPE,NAME) MODIFIER:inline TYPE & NAME(){return FIELDNAME(NAME);}
+
+#define FIELD_REFERENCE(MODIFIER,TYPE,NAME) FIELD(private,TYPE,NAME) READONLY_REFERENCE(MODIFIER,TYPE,NAME); REFERENCE(MODIFIER, TYPE,NAME);
+#define PUBLIC_FIELD_REFERENCE(TYPE,NAME) FIELD_REFERENCE(public,TYPE,NAME)
+
+#define READONLY_SIMPLE_PROPERTY(TYPE,NAME)\
+  FIELD(private, TYPE,NAME);\
+  GETTER(public,TYPE,NAME);
+
+
+#define READONLY_PROPERTY(TYPE,NAME) \
+  READONLY_REFERENCE(public,TYPE,NAME)\
+  READONLY_SIMPLE_PROPERTY(TYPE,NAME)
+
+
+/*
+#define READONLY_REFERENCE(TYPE,NAME,FIELDNAME)\
+  const TYPE & NAME()const{return FIELDNAME;}
+
+#define REFERENCE(TYPE,NAME,FIELDNAME) 
+
+#define EXTENDED_REFERENCE(TYPE,NAME,EXTENSION)\
+  
+
+#define REFERENCE(TYPE,NAME, FIELD) 
+  */
+
 // the signature of the on changing method (w/o returntype, which is void)
 #define ON_PROPERTY_CHANGING(TYPE,NAME) on##NAME##Changing(TYPE oldvalue, TYPE & newvalue, bool & cancel)
 // a nicer to read alias of ON_PROPERTY_CHANGING
 #define propertyChanging(TYPE,NAME) ON_PROPERTY_CHANGING(TYPE,NAME)
 
-#define EXTENDED_PROPERTY(MODIFIER,TYPE, NAME,BEFORECHANGE, AFTERCHANGE) \
-private:\
-  TYPE _##NAME;\
-  MODIFIER:\
-    TYPE get##NAME()const{\
-    return _##NAME;\
-    }\
-    void set##NAME(TYPE value){\
-    BEFORECHANGE;\
-      if(_##NAME==value)return;\
-      bool cancel = false;\
-        this->on##NAME##Changing(_##NAME,value,cancel);\
-        if(cancel)return;\
-      this->_##NAME = value;\
-      AFTERCHANGE;\
-    }\
+#define EXTENDED_PROPERTY(MODIFIER,TYPE, NAME,BEFORESET, AFTERSET) \
+  FIELD(private,TYPE,NAME);\
+  GETTER(public,TYPE,NAME);\
+  SETTER(public,TYPE,NAME,BEFORESET; if(FIELDNAME(NAME)==newvalue)return; bool cancel=false;  this->on##NAME##Changing(FIELDNAME(NAME),newvalue,cancel); if(cancel)return;, AFTERSET; );\
   private:\
   void ON_PROPERTY_CHANGING(TYPE,NAME)
 
@@ -35,6 +56,7 @@ private:\
   private:
 
 #define REFERENCE_PROPERTY(TYPE, NAME) EXTENDED_REFERENCE_PROPERTY(public,TYPE, NAME)
+
 
 // This macro defines a Property in a class generating getter and setter methods
 // as well as a field of the specified TYPE called _<Name> .  It also checks the value for equality 

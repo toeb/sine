@@ -9,7 +9,7 @@
 #include <simulation.integration/CompositeSystemFunction.h>
 #include <simulation.integration/StepIntegrator.h>
 #include <simulation.integration/Evaluator.h>
-
+#include <core.task/ScheduledTask.h>
 namespace nspace{	
 
   /**
@@ -24,7 +24,7 @@ namespace nspace{
   * \date 13.07.2012
   */
   class SystemModule : 
-    public virtual SimulationTask,
+    public virtual ScheduledTask,
     public virtual ISimulationModule{
       TYPED_OBJECT(SystemModule);
   private:
@@ -42,7 +42,7 @@ namespace nspace{
   protected:
     void announce(ISimulationObject * object);
     void renounce(ISimulationObject * object){}
-    void runTask();
+    void timeout(Time t, Time dt);
     bool initializeObject();
     virtual Time currentTime() const;
 

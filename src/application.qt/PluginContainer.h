@@ -8,6 +8,7 @@
 #include <application.qt/PluginWindow.h>
 #include <QMenu>
 #include <QAction>
+#include <QSettings>
 namespace nspace{
   class PluginApplication;
   class PluginContainer : public QObject, public virtual Object{
@@ -23,6 +24,10 @@ namespace nspace{
     //pointer to the plugin's menu
     QMenu * _pluginMenu;
   public:
+    // allows the plugin container to load its settings
+    void loadSettings(QSettings & settings);
+    // allows the plugin container to save its settings
+    void saveSettings(QSettings & settings);
     // constructor takes a reference to the plugin and the plugin application
     PluginContainer(Plugin & plugin, PluginApplication & application);
     // destructor

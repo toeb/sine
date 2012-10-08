@@ -2,6 +2,7 @@
 
 #include <config.h>
 #include <QObject>
+#include <QSettings>
 #include <core/NamedObject.h>
 
 namespace nspace{
@@ -17,7 +18,8 @@ namespace nspace{
     virtual void enable(){}
     virtual void disable(){}
     virtual void uninstall(PluginContainer & container){}
-
+    virtual void loadSettings(QSettings & settings){}
+    virtual void saveSettings(QSettings & settings){}
     friend class PluginApplication;
     friend class PluginContainer;
 

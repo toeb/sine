@@ -16,6 +16,7 @@ namespace nspace{
     Q_OBJECT;
     TYPED_OBJECT(QtTaskRunner);
   private:
+    ScheduledTask *_breakTask;
     ScheduledTaskRunner _scheduledTaskRunner;
     SerialTaskRunner _serialTaskRunner;
     QTimer * _taskTimer;

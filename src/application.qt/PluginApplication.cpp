@@ -6,7 +6,14 @@ using namespace nspace;
 
 Set<Plugin*> & PluginApplication::plugins(){return _plugins;}
 
-PluginApplication::PluginApplication(int & argc,  char ** argv):_ui(0), _mainWindow(0), _application(0){
+PluginApplication::PluginApplication(int & argc,  char ** argv):
+_ui(0),
+  _mainWindow(0),
+  _application(0),
+ _settings("application.ini",QSettings::IniFormat)
+{
+  auto fn = _settings.fileName();
+  
   _application = new QApplication(argc,argv);
   plugins().addObserver(this);
 
@@ -14,8 +21,11 @@ PluginApplication::PluginApplication(int & argc,  char ** argv):_ui(0), _mainWin
   _ui = new Ui_PluginContainerWindow();
   _ui->setupUi(_mainWindow);
   _mainWindow->show();
+  loadSettings();
   
   connect(_ui->actionClose, SIGNAL(triggered()), this, SLOT(close()));
+  connect(_ui->actionLoadSettings,SIGNAL(triggered()),this,SLOT(loadSettings()));
+  connect(_ui->actionSaveSettings,SIGNAL(triggered()),this,SLOT(saveSettings()));
 
 }
 int PluginApplication::run(){
@@ -35,6 +45,35 @@ bool PluginApplication::accept(Object * object){
   install(*plugin,true);
   return true;
 }
+
+void PluginApplication::saveSettings(){
+   // store window layout
+  _settings.beginGroup("MainWindow");
+  _settings.setValue("geometry", _mainWindow->saveGeometry());
+  //_settings.setValue("state", _mainWindow->saveState());
+  _settings.endGroup();
+  
+  
+  _containers.foreachElement([this](PluginContainer * container){
+    savePluginSettings(container);
+  });
+  
+}
+void PluginApplication::loadSettings(){
+    // load window layout
+  _settings.beginGroup("MainWindow");
+  _mainWindow->restoreGeometry(_settings.value("geometry").toByteArray());
+ // _mainWindow->restoreState(_settings.value("state").toByteArray());
+  _settings.endGroup();
+
+  
+  _containers.foreachElement([this](PluginContainer * container){
+    loadPluginSettings( container);
+  });
+
+
+}
+
 
 void PluginApplication::pluginEnabledChanged(PluginContainer * container, bool enabled){
   if(enabled){
@@ -88,6 +127,12 @@ void PluginApplication::rebuildWindowMenu(){
   });
 }
 
+void PluginApplication::savePluginSettings(PluginContainer * container){
+  container->saveSettings(_settings);
+}
+void PluginApplication::loadPluginSettings(PluginContainer * container){
+  container->loadSettings(_settings);
+}
 
 void PluginApplication::connectContainer(PluginContainer * c){  
   connect(c,SIGNAL(enabledChanged(PluginContainer * ,bool)),this,SLOT(pluginEnabledChanged(PluginContainer *, bool)) );
@@ -109,6 +154,10 @@ void PluginApplication::uninstall(Plugin & plugin){
 
 }
 
+void PluginApplication::onNameChanged(const std::string & name){
+  if(_mainWindow)_mainWindow->setWindowTitle(name.c_str());
+}
+
 void PluginApplication::install(Plugin & plugin, bool enable ){
    // create a container for the added plugin
   PluginContainer * container = new PluginContainer(plugin,*this);  
@@ -119,4 +168,7 @@ void PluginApplication::install(Plugin & plugin, bool enable ){
   connectContainer(container);
   _plugins|=(&plugin);
   if(enable)  container->enable();
+
+  loadPluginSettings(container);
+
 }

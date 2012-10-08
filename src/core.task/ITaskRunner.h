@@ -52,6 +52,7 @@ namespace nspace{
       if(!task)return;
       onBeforeTaskRun(task);
       if(isHalting())return;
+      
       task->run();
       onAfterTaskRun(task);
     }

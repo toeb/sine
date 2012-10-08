@@ -27,6 +27,8 @@ void ViewportPlugin::install(PluginContainer & container){
   _pluginWindow = new GlWidgetPluginWindow(_viewports);
   _pluginWindow->setWindowTitle(name().c_str());
   container.setPluginWindow(_pluginWindow);
+  
+  container.toggleWindow(true);
 
   components()|=_pluginWindow;
   

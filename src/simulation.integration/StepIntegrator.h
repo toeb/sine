@@ -70,11 +70,13 @@ namespace nspace{
     Time step(){
       if(!needsIntegration())return _t; 
       const StateMatrix & x = evaluator()->x();
-      //x_next.resize(x.rows(),x.cols(),false);
-      x_next.resize(x.rows(),x.cols());
-      x_next.setZero();
-      doStep(x_next, evaluator()->x(),_t,_h);
-      evaluator()->setX(x_next);
+      if(x.size()){
+        //x_next.resize(x.rows(),x.cols(),false);
+        x_next.resize(x.rows(),x.cols());
+        x_next.setZero();
+        doStep(x_next, evaluator()->x(),_t,_h);
+        evaluator()->setX(x_next);
+      }
       _t += _h;
       return _t;
     }

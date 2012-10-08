@@ -4,12 +4,17 @@ using namespace std;
 using namespace nspace;
 
 
- SampleApplication::SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory):_sample(sample),_application(argc,argv),_ResourceDirectory(resourceDirectory){
+ SampleApplication::SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory):
+_sample(sample),_application(argc,argv),_ResourceDirectory(resourceDirectory),
+  _rk4(0.05),
+  _defaultSystem(_simulationTimeProvider),
+  _simulationTimeController(_simulationTimeProvider,false){
+    _application.setName("Sample Application");
     setName("SampleApplication");
     Color::loadColors(resourceDirectory+"/colors/palette.txt");
     Material::loadMaterials(resourceDirectory+"/materials/palette.txt");
     _sample.setApplication(*this);
-    
+
   } 
 
  void SampleApplication::printSetup(){
@@ -19,7 +24,7 @@ using namespace nspace;
     });
  }
  void SampleApplication::printHierarchy(){
-   hub().successorsToStream(cout);
+   hub().successorsToStream(cout); 
  }
  
  void SampleApplication::setup(){
@@ -36,6 +41,14 @@ using namespace nspace;
 
     _skybox.setFileBase(ResourceDirectory()+"/images/sky");
 
+    _timeControl.setTimeController(&_simulationTimeController);
+
+    hub()|=&_simulation;
+    hub()|=&_defaultSystem;
+    hub()|=&_rk4;    
+    hub()|=&_simulationTimeProvider;
+    hub()|=&_simulationTimeController;
+    hub()|=&_timeControl;
     hub()|=&_grid;
     hub()|=&_skybox;
     hub()|=&_application;
@@ -46,7 +59,9 @@ using namespace nspace;
     hub()|=&_glViewport;
     hub()|=&_taskrunner;
     hub()|=&_renderers;
-    hub()|= &_sample;
+    hub()|=&_sample;
+
+
     _glViewport.setViewportRenderer(&_renderers);
     _viewportPlugin.glWidget()->setViewportController(&_Camera);
 

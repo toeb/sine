@@ -3,13 +3,30 @@
 #include "ui_taskwidget.h"
 #include <core/StringTools.h>
 #include <iostream>
+#include <core.task/ScheduledTask.h>
 
 using namespace std;
 using namespace nspace;
 
 using namespace std::extensions;
 
-QtTaskRunner::QtTaskRunner():_taskTimer(0){
+class BreakTask :public virtual ScheduledTask{
+private:
+  ScheduledTaskRunner & _runner;
+public:
+  BreakTask(ScheduledTaskRunner & runner):_runner(runner){
+    runner.addTask(this);
+  }
+protected:
+  void timeout(Time t, Time dt){
+    _runner.halt();
+    _runner.addTask(this);
+  }
+
+};
+QtTaskRunner::QtTaskRunner():_taskTimer(0),_breakTask(0){
+  _breakTask = new BreakTask(_scheduledTaskRunner);
+  _breakTask->interval() = 0.01;
   setName("TaskRunner");
   _taskTimer = new QTimer(this);
   _taskTimer->setInterval(5);
@@ -22,7 +39,7 @@ void QtTaskRunner::timeout(){
   _serialTaskRunner.run();  
 }
 bool QtTaskRunner::accept(ITask * task){
- 
+  
   // ignore the taskrunners (which are also tasks)
   if(&_scheduledTaskRunner==task)return false;
   if(&_serialTaskRunner==task)return false;
@@ -41,13 +58,13 @@ void QtTaskRunner::disable(){
   _taskTimer->stop();
 }
 void QtTaskRunner::install(PluginContainer & container){
-
+  /*
 
   _ui = new Ui_TaskWidget();
   PluginWindow * window = new PluginWindow();
   _ui->setupUi(window);
   window->setWindowTitle((name()+" Window").c_str());
-  container.setPluginWindow(window);
+  container.setPluginWindow(window);*/
 
 }
 

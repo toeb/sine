@@ -8,6 +8,10 @@
 #include <visualization.opengl.renderer.h>
 #include <simulation.runner.qt/QtTaskRunner.h>
 #include <visualization/Material.h>
+#include <simulation.runner.qt/QtTimeControlPlugin.h>
+#include <simulation.time.h>
+#include <simulation.integration/SystemModule.h>
+#include <simulation.integration/implementations/RungeKutta4.h>
 
 
 namespace nspace{
@@ -25,6 +29,15 @@ private:
   DefaultLightSetup _lights;
   SkyboxRenderer _skybox;
   GridRenderer _grid;
+  QtTimeControlPlugin _timeControl;
+  SimulationTimeController _simulationTimeController;
+  SimulationTimeProvider _simulationTimeProvider;
+  Simulation _simulation;
+  SystemModule _defaultSystem;
+  RungeKutta4 _rk4;
+
+
+
 
   REFERENCE_PROPERTY(SkyboxRenderer,skybox);
   REFERENCE_PROPERTY(FpsCamera,Camera);

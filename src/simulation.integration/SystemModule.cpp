@@ -1,5 +1,6 @@
 #include "SystemModule.h"
 #include <simulation/Simulation.h>
+#include <core.task/ScheduledTask.h>
 using namespace nspace;
 using namespace std;
 
@@ -7,10 +8,13 @@ SystemModule::SystemModule(SimulationTimeProvider & timeProvider):
   _timeProvider(timeProvider),
   _evaluator(0),
   _integrator(0){
+        
+    interval()=0.01;
+    isOneTimeTask()=false;
 
 }
 
-void SystemModule:: runTask(){
+void SystemModule::timeout(Time t, Time dt){
   if(!_evaluator){
     _evaluator = new Evaluator(_statefulObjects,&_systemFunction);
     _integrator->setEvaluator(_evaluator);

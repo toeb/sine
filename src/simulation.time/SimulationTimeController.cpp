@@ -3,31 +3,31 @@
 using namespace std;
 using namespace nspace;
 SimulationTimeController::SimulationTimeController(SimulationTimeProvider & tp, bool startPaused):
-  PeriodicTask(0,RealTimeProvider::defaultInstance()),
+  //PeriodicTask(0,RealTimeProvider::defaultInstance()),
   _simulationTimeProvider(tp),
-  _paused(true),
-  _desiredSpeed(1),
-  _realTimeFactor(1),
-  _actualSpeed(1),
-  _meanSpeed(1)
+    _Paused(true),
+    _DesiredSpeed(1),
+    _RealTimeFactor(1),
+  _ActualSpeed(1),
+  _MeanSpeed(1)
+  
 {
-  setPause(startPaused);
+  
+    interval()=0.001;
+    isOneTimeTask()=false;
+  setPaused(startPaused);
   setName("SimulationTimeController");      
 }
    
-void SimulationTimeController::setPause(bool flag){
-  if(flag == _paused)return;
-  _paused = flag; 
-};
 void SimulationTimeController::togglePause(){
-  setPause(!_paused);
+  setPaused(!Paused());
 };
 
 Real SimulationTimeController::actualSpeedAverage(){
-  return _meanSpeed.calculate();
+  return MeanSpeed().calculate();
 }
 
 void SimulationTimeController::timeout(Time dt,Time t){
-  if(_paused)return; 
-  _simulationTimeProvider.advanceBy(dt*_desiredSpeed);
+  if(Paused())return; 
+  _simulationTimeProvider.advanceBy(dt*DesiredSpeed());
 }

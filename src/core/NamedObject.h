@@ -35,7 +35,7 @@ namespace nspace{
     bool friend operator==(const NamedObject * obj, const std::string & name);
   protected:
     // extension point which is called when the name of this named object changes.  subclasses may override this
-    virtual void nameChanged(const std::string& newName){}
+    virtual void onNameChanged(const std::string& newName){}
   };
 
   // method for extracting the name of a named object
