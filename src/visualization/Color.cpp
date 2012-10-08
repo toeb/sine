@@ -20,6 +20,7 @@ int Color::loadColors(const std::string &filename ){
     getline(file,name);
 
     name = name.substr(1);
+
     _palette[name]=new Color(r,g,b,255,name);
     colorsLoaded++;
   }  
