@@ -61,6 +61,7 @@ namespace nspace{
     virtual void onComponentAdded(Object * object){}
     virtual void onComponentRemoved(Object * object){}
     virtual void onAddedToHub(Hub & hub){
+      std::cout << *this <<" --> " << hub << std::endl;
       hub |= components();
     }
     virtual void onRemovedFromHub(Hub & hub){

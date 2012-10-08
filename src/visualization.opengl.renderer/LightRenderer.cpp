@@ -17,8 +17,14 @@ void LightRenderer::render(){
     glPushMatrix();
     glTransformation(light->Coordinates());    
     //glTranslate(light->Coordinates().position());
-    MiniGL::coordinateSystem();
-   // MiniGL::drawPoint(Vector3D::Zero(),20,Color("white"));
+    //glCoordinateSystem();
+    Material m("PolishedGold");
+    m.Shininess()=100;
+    m.Emission()=m.Specular();
+
+    glMaterial(m);
+    glScale(0.2);
+    glSphere(0.01,15,15);
     glPopMatrix();
   });
   

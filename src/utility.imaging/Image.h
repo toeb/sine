@@ -22,7 +22,8 @@ namespace nspace{
     inline uint width()const{return _width;}
     inline uint height()const{return _height;}
     inline uint size()const{return width()*height();}
-    inline uint byteSize()const{return sizeof(Pixel)*size();}
+    inline uint byteSize()const{return pixelSize()*size();}
+    inline uint pixelSize()const{return sizeof(Pixel);}
     inline Pixel * data(){return _data;}
     inline const Pixel * data()const{return _data;}
 

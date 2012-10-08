@@ -5,40 +5,39 @@ using namespace nspace;
 
 
 Real Viewport::aspectRatio()const {
-  return (Real)_width / (Real)_height;
+  return (Real)_Width / (Real)_Height;
 }
-Viewport::Viewport():_width(1),_height(1),_renderer(0){
+Viewport::Viewport():_Width(1),_Height(1),_ViewportRenderer(0){
   setName("Viewport");
 }
-void Viewport::setRenderer(Renderer * renderer){
-  _renderer = renderer;
-}
 
-Renderer * Viewport::renderer(){
-  return _renderer;
+
+
+
+void Viewport::propertyChanging(int,Width){
+  
+  doResize(Width(),Height());
 }
-const Renderer * Viewport::renderer()const{
-  return _renderer;
+void Viewport::propertyChanging(int,Height){
+  if(newvalue<1)newvalue=1;
+  doResize(Width(),Height());
+}
+void Viewport::doResize(int width, int height){
+  
+  onResize(width,height);
+  if(getViewportRenderer())getViewportRenderer()->sceneResized(width,height,*this);
 }
 void Viewport::resize(int width, int height){
-  if(width <=0)width = 1;
-  if(height <= 0)height=1;
+  setWidth(width);
+  setHeight(height);
 
-  if(_width==width && _height == height){
-    return;
-  }
-  _width = width;
-  _height = height;
-  onResize(width,height);
-  if(_renderer)_renderer->sceneResized(width,height,*this);
 }
-const int & Viewport::width()const{return _width;}
-const int & Viewport::height()const{return _height;}
+
 
 void Viewport::render(){
   onBeforeRender();
-  if(!_renderer)return;
-  _renderer->onBeforeRendering(*this);
-  _renderer->render(*this);
+  if(_ViewportRenderer)_ViewportRenderer->onBeforeRendering(*this);
+  onBeginRender();
+   if(_ViewportRenderer)_ViewportRenderer->render(*this);
   onAfterRender();
 }

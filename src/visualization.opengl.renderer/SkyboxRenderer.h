@@ -21,10 +21,12 @@ namespace nspace{
     REFLECTABLE(SkyboxRenderer);
 
     PROP(Set<Texture*>,Textures){}
+    PROP(std::string,FileBase);
 
   public:
-    SkyboxRenderer(const std::string & filebase);
-    void render();
+    SkyboxRenderer();
+    void render(Viewport & viweport);
+    void onBeforeRendering(Viewport & vp);
   protected:
      void cleanupObject(){};
      bool initializeObject();

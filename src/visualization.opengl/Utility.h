@@ -101,5 +101,12 @@ void glMaterial(const Material & material);
 void glColor(const Color & color);
 void glSetClearColor(const Color & color);
 
+
+
 void glSphere(double r, int lats, int longs) ;
+void glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d, const Vector3D * normal=0);
+void glQuad(const Vector3D & position, const Quaternion & orientation, Real sidelength=1);
+
+void glLine(const Vector3D & a, const Vector3D & b);
+void glVector(const Vector3D & start, const Vector3D & direction);
 }

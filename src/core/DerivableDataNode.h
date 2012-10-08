@@ -23,14 +23,11 @@ namespace nspace{
     operator const T & ()const{
       return _data;
     }
-    friend std::ostream &  operator << (std::ostream & out, const DerivableDataNode<T,Derived> &node ){
-      out << "node{";
-      node.toStream(out);
-      out << "}";
-      return out;
-    }
 
-    virtual void toStream(std::ostream & out)const{
+    virtual void toStream(std::ostream & out)const{     
+      out << "node{";
+      this->toStream(out);
+      out << "}";
       out << data();
     }
 

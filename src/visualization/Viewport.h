@@ -2,30 +2,38 @@
 #include <core/NamedObject.h>
 #include <visualization/Renderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
-
+#include <core/Reflection.h>
+#include <core/PropertyChangingObject.h>
 namespace nspace{
 
-  class Viewport : virtual public NamedObject{
-  private:
-    Renderer * _renderer;
-    int _width;
-    int _height;
+  class Viewport : virtual public NamedObject, public virtual PropertyChangingObject{
+    REFLECTABLE_OBJECT(Viewport);
+  public:
+    REFLECTABLE_NOTIFYING_PROPERTY(Renderer *, ViewportRenderer){}
+    PROPERTY(int,Width);
+    PROPERTY(int, Height);
   public:
 
     Real aspectRatio()const;
+
+
     Viewport();
     void resize(int width, int height);
-    const int & width()const;
-    const int & height()const;
-    void setRenderer(Renderer * renderer);
-    Renderer * renderer();
-    const Renderer * renderer()const;
-    //renders the renderer into this viewport
+
+
+    //renders the renderer into of viewport
     void render();
+
   protected:
+    // is called first when entering the render method
     virtual void onBeforeRender(){}
+    // is called after all renderers' onBeforeRender Method was called
+    virtual void onBeginRender(){}
+    // is called after all renderers were renderered
     virtual void onAfterRender(){}
     virtual void onResize(int newWidth, int newHeight){}
+  private:
+    void doResize(int width,int height);
   };
 
 

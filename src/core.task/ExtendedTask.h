@@ -2,6 +2,7 @@
 
 #include <core.task/Task.h>
 #include <core/Time.h>
+#include <functional>
 namespace nspace{
   class ExtendedTask :public virtual Task{
     TYPED_OBJECT(ExtendedTask);
@@ -18,5 +19,15 @@ namespace nspace{
     void onBeforeRun();
     void onAfterRun();
 
+  };
+
+  class DelegateTask : public virtual ExtendedTask{
+    TYPED_OBJECT(ExtendedTask);
+  private:
+    std::function<void () > _action;
+  public:
+    DelegateTask(std::function<void()> callback):_action(callback){}
+  public:
+    void runTask(){_action();}
   };
 }

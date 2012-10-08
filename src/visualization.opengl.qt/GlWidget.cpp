@@ -14,6 +14,7 @@ GlWidget::GlWidget(QWidget * parent):QGLWidget(parent),_viewport(0),_viewportCon
   components()|=&_refreshTask;
   setFocusPolicy(Qt::StrongFocus);
   installEventFilter(this);
+  setMouseTracking(true);
 }
 void GlWidget::repaint(){
   updateGL();

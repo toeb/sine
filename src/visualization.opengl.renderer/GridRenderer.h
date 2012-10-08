@@ -5,7 +5,15 @@
  * \file src/vis/opengl/GeneralRenderers/GridRenderer.h
  */
 #include <visualization/Renderer.h>
+#include <core/Reflection.h>
+#include <core/PropertyChangingObject.h>
+#include <simulation.kinematics/CoordinateSystem.h>
+#include <visualization/Material.h>
+
+
+#define PROP(TYPE,NAME) REFERENCE_PROPERTY(TYPE,NAME); REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME)
 namespace nspace{
+
 
 
 /**
@@ -14,7 +22,16 @@ namespace nspace{
  * \author Tobias Becker
  * \date 05.04.2012
  */
-class GridRenderer : public Renderer{
+class GridRenderer : public virtual Renderer, public virtual PropertyChangingObject{
+  TYPED_OBJECT(GridRenderer);
+  REFLECTABLE(GridRenderer);
+public:
+  PROP(CoordinateSystem,Coordinates){}
+  PROP(int, Sections){}
+  PROP(Real, Width){}
+  PROP(Real, Height){}
+  PROP(Material, GridMaterial){}
+
 public:
 
   /**
@@ -28,15 +45,7 @@ public:
    * \param _height   (optional) the breadth of the grid.
    * \param _sections (optional) the number of sections in one direction.
    */
-  GridRenderer(
-    double y_where, 
-    double _width=20, 
-    double _height=20,
-    int _sections = 20)
-    :width(_width)
-    ,height(_height)
-    ,sections(_sections)
-    ,y(y_where){}
+  GridRenderer();
 
   /**
    * \brief Renders this object.
@@ -45,14 +54,5 @@ public:
    * \date 05.04.2012
    */
   void render();
-private:
-  ///< The width
-  double width;
-  ///< The height
-  double height;
-  ///< The y coordinate
-  double y;
-  ///< The sections
-  int sections; 
 };//class GridRenderer
 }

@@ -38,23 +38,27 @@ Color & GlViewport::clearColor(){
 const Color & GlViewport::clearColor()const{
   return _clearColor;
 }
-void GlViewport::viewportTransform(){		
+void GlViewport::onBeforeRender(){
+  // ensure object is initialized
   initialize();
-  glViewport (0, 0, width(), height());
-
-  glMatrixMode(GL_PROJECTION); 
-  glLoadIdentity(); 
-
-  gluPerspective (fieldOfViewAngle()/M_PI*180, aspectRatio(), nearCutOffPlane(), farCutOffPlane()); 
-
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity();
-  glScale(zoomFactor());
-  glTransformation(coordinates()); 
-
-
+  // clear screen before renderering
   glClearColor(_clearColor.r(),_clearColor.g(),_clearColor.b(),_clearColor.a());
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+}
+void GlViewport::viewportTransform(){		
+  // set viewport
+  glViewport (0, 0, Width(), Height());
+
+  // set perspectvive
+  glMatrixMode(GL_PROJECTION); 
+  glLoadIdentity(); 
+  gluPerspective (FieldOfViewAngle()/M_PI*180, aspectRatio(), NearCutOffPlane(), FarCutOffPlane()); 
+  
+  // move viewport to correct position/orientation
+  glMatrixMode (GL_MODELVIEW);
+  glLoadIdentity();
+  glScale(ZoomFactor());
+  glTransformation(Coordinates()); 
 }
 
 bool GlViewport::initializeObject(){

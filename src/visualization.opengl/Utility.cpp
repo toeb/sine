@@ -194,8 +194,42 @@ void nspace::glMaterial(const nspace::Material & material){
   glColor(material.Diffuse());
 };
     
+void nspace::glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d, const Vector3D * normal){
+    glBegin(GL_QUADS);
 
+    if(!normal){
+      Vector3D n;
+      vectorop::crossProduct(n, b-a, c-a);
+      n.normalize();
+      glNormal(n);
+    }else{
+      glNormal(*normal);
+    }
 
+		// Das untere QUAD
+		glTexCoord2d(0, 1); glVertex(a); 
+		glTexCoord2d(1, 1); glVertex(b);
+		glTexCoord2d(1, 0); glVertex(c); 
+		glTexCoord2d(0, 0); glVertex(d); 
+	  glEnd();
+}
+
+void nspace::glQuad(const Vector3D & position, const Quaternion & normal, Real a){
+  auto matrix = normal.toRotationMatrix();
+  auto ux = matrix.row(0);
+  auto uy = matrix.row(1);
+  auto uz = matrix.row(2);
+
+  auto a2 = a /2;
+  auto va = position-ux * a2-uy*a2;
+  auto vb = position+ux * a2-uy*a2;
+  auto vc = position+ux * a2+uy*a2;
+  auto vd = position-ux * a2-uy*a2;
+  
+  uz.normalize();
+  glQuad(va,vb,vc,vd,&uz);
+
+}
 
 
 void nspace::glSphere(double r, int lats, int longs) {
@@ -222,5 +256,16 @@ void nspace::glSphere(double r, int lats, int longs) {
         }
         glEnd();
     }
+}
+
+
+void nspace::glLine(const Vector3D & a, const Vector3D & b){  
+	glBegin (GL_LINES);
+  glVertex3d(a(0),a(1),a(2));
+  glVertex3d(b(0),b(1),b(2));
+	glEnd ();  
+}
+void nspace::glVector(const Vector3D & start, const Vector3D & direction){
+  glLine(start,start+direction);
 }
 

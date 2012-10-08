@@ -8,8 +8,8 @@ using namespace std;
 void FpsCamera::onViewportAdded(Viewport * viewport){
   auto v = dynamic_cast<PerspectiveViewport*>(viewport);
   if(!v)return;
-  body.position.mirror(v->coordinates().position);
-  body.orientation.mirror(v->coordinates().orientation);
+  body.position.mirror(v->Coordinates().position);
+  body.orientation.mirror(v->Coordinates().orientation);
 }
 void FpsCamera::onViewportRemoved(Viewport * viewport){
   auto v = dynamic_cast<PerspectiveViewport*>(viewport);

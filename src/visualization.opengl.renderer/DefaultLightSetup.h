@@ -20,8 +20,8 @@ namespace nspace{
     DefaultLightSetup(){
       
       _light1.Coordinates().position() = Vector3D(-10,10,10);
-      _light2.Coordinates().position() = Vector3D(-10,-10,10);
-      _light2.Coordinates().position() = Vector3D(0,0,0);
+      _light2.Coordinates().position() = Vector3D(-10,10,-10);
+      _light2.Coordinates().position() = Vector3D(10,10,10);
 
       components()|=&_lightRenderer;
       components()|=&_light1;

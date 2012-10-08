@@ -41,6 +41,7 @@ namespace nspace{
 
     void viewportTransform();
   protected:
+    void onBeforeRender();
     bool initializeObject();
   };//class GlViewport
 

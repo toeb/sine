@@ -11,7 +11,7 @@
 
 
 namespace nspace{
-class SampleApplication{
+class SampleApplication : public virtual NamedObject{
 private:
   Hub _hub;
   PluginApplication _application;
@@ -23,40 +23,21 @@ private:
   QtTaskRunner _taskrunner;
   Sample & _sample;
   DefaultLightSetup _lights;
+  SkyboxRenderer _skybox;
+  GridRenderer _grid;
 
+  REFERENCE_PROPERTY(SkyboxRenderer,skybox);
   REFERENCE_PROPERTY(FpsCamera,Camera);
-  PROPERTY(std::string, ResourceDirectory){}
-
+  SIMPLE_PROPERTY(std::string, ResourceDirectory){}
+  REFERENCE_PROPERTY(std::string, ResourceDirectory);
 public:
-  SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = "resources"):_sample(sample),_application(argc,argv),_ResourceDirectory(resourceDirectory){
-    Color::loadColors(resourceDirectory+"/colors/palette.txt");
-    Material::loadMaterials(resourceDirectory+"/materials/palette.txt");
-    _sample.setApplication(*this);
-  }
-  Hub & hub(){return _hub;}
-  GlViewport & viewport(){return _glViewport;}
+  SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = "resources");
+  Hub & hub();
+  GlViewport & viewport();
   
-   void setup(){
-    _viewportPlugin.setName("Visualization Window");
-    hub()|=&_application;
-    hub()|=&_initializer;
-    hub()|=&_viewportPlugin;
-    hub()|=&_Camera;
-    hub()|=&_lights;
-    hub()|=&_glViewport;
-    hub()|=&_taskrunner;
-    hub()|=&_renderers;
-    hub()|= &_sample;
-    _glViewport.setRenderer(&_renderers);
-    _viewportPlugin.glWidget()->setViewportController(&_Camera);
-    _glViewport.setName("Default View");
-  }
-  int run(){
-    setup();
-    _sample.setup();
-    _initializer.initialize();
-    return _application.run();
-  }
-
+   void setup();
+  int run();
+  void printSetup();
+  void printHierarchy();
 };
 }
