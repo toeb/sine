@@ -1,8 +1,10 @@
 
 
+if(cmakeScriptsDirectory)
 find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL qtmain REQUIRED)
 include(${cmakeScriptsDirectory}/UseSystemQt4.cmake)
 include(${QT_USE_FILE})
+endif(cmakeScriptsDirectory)
 
 
 set(source
