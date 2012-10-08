@@ -32,9 +32,15 @@ set(runnerSource
 ./QtTaskRunner.cpp
 ./QtViewport.h
 ./QtViewport.cpp
+./QtTimeControlPlugin.h
+./QtTimeControlPlugin.cpp
+./QtSnapshotPlugin.h
+./QtSnapshotPlugin.cpp
 )
 
 set(runnerMocFiles
+./QtSnapshotPlugin.h
+./QtTimeControlPlugin.h
 ./QtSimulationObjectsView.h
 ./QtTimeControl.h
 ./QtSimulationRunner.h
