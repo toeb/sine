@@ -4,8 +4,9 @@
 #include <simulation.wrapper/Wrapper.h>
 #include <simulation/Simulation.h>
 
-namespace mbslib{	
+namespace nspace{	
 class WrapperModule : public virtual Composite<Wrapper>, public virtual ISimulationModule {
+  TYPED_OBJECT(WrapperModule)
 public:
   ISimulationObject * wrapObject(ISimulationObject * object){
     CompositeSimulationObject * composite = new CompositeSimulationObject("WrappedObjects");
