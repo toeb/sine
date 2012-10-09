@@ -21,7 +21,7 @@ private:
   ///< The simulation modules
   std::set<ISimulationModule*> _modules;  
 public:
-  void toString(std::ostream & out)const;
+ 
   Simulation();
   
   /**

@@ -33,15 +33,7 @@ bool Simulation::removeSimulationModule(ISimulationModule * module){
   return true;
 }
 
-void Simulation::toString(std::ostream & out)const{
-  out<< "<simulation>"<<endl;
-  out << "  <objects>"<<endl;
-  foreachObjectConst([&out](ISimulationObject*  object){
-    out << " <object><name>"<<object->name()<<"</name></object>"<<endl;
-  });  
-  out << "  </objects>"<<endl;
-  out <<"</simulation>"<<endl;
-}
+
 
 void Simulation::add(ISimulationObject * object){
   if(!object){

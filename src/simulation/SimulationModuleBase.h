@@ -15,6 +15,7 @@ namespace nspace{
  */
 template<class T>
 class SimulationModuleBase : public virtual ISimulationModule{
+  TYPED_OBJECT(SimulationModuleBase)
 private:
   std::vector<T*> _objects;
 public:
