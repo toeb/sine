@@ -6,6 +6,7 @@
 namespace nspace{
   // stateful object allows an object access to state.  the objects must implement notifyStateChanged,notifyStateNeeded
   class StatefulObject : public virtual ISimulationObject{
+    TYPED_OBJECT(StatefulObject);
   private:
     State * _state;
     uint _stateDimension;
