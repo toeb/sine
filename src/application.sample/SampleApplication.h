@@ -16,6 +16,20 @@
 
 namespace nspace{
 class SampleApplication : public virtual NamedObject{
+  TYPED_OBJECT(SampleApplication);
+public:
+  REFERENCE_PROPERTY(SkyboxRenderer,skybox);
+  REFERENCE_PROPERTY(FpsCamera,Camera);
+  SIMPLE_PROPERTY(std::string, ResourceDirectory){}
+  REFERENCE_PROPERTY(std::string, ResourceDirectory);
+public:
+  SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = ".");
+  Hub & hub();
+  GlViewport & viewport();  
+  void setup();
+  int run();
+  void printSetup();
+  void printHierarchy();  
 private:
   Hub _hub;
   PluginApplication _application;
@@ -35,22 +49,5 @@ private:
   Simulation _simulation;
   SystemModule _defaultSystem;
   RungeKutta4 _rk4;
-
-
-
-
-  REFERENCE_PROPERTY(SkyboxRenderer,skybox);
-  REFERENCE_PROPERTY(FpsCamera,Camera);
-  SIMPLE_PROPERTY(std::string, ResourceDirectory){}
-  REFERENCE_PROPERTY(std::string, ResourceDirectory);
-public:
-  SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = ".");
-  Hub & hub();
-  GlViewport & viewport();
-  
-   void setup();
-  int run();
-  void printSetup();
-  void printHierarchy();
 };
 }

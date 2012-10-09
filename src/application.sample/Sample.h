@@ -5,15 +5,34 @@
 namespace nspace{
   class SampleApplication;
 
-class Sample : public virtual CompositeHubObject{
-  TYPED_OBJECT(Sample);
-  SampleApplication * _application;
-protected:
-  friend class SampleApplication;
-  Sample():_application(0){}
-  void setApplication(SampleApplication & application){_application = &application;}
-  SampleApplication & application(){return *_application;}
-public:    
-  virtual void setup()=0;
-};
+  // the sample class needs to be derived and implemented 
+  // the client needs to override setup in which he can add 
+  // to the Samples components() set.
+  // e.g.  
+/*
+  class MySample{
+    protected:
+    void setup(){
+      Sphere * sphere = new Sphere(0.5);
+      SphereRenderer * sphereRenderer = new SphereRenderer();
+      sphereRenderer->add(sphere);
+
+      components()|=sphere;
+      components()|=sphereRenderer;
+
+    }
+  };
+*/
+  class Sample : public virtual CompositeHubObject{
+    TYPED_OBJECT(Sample);
+  protected:    
+    virtual void setup()=0;  
+    Sample();
+    void setApplication(SampleApplication & application);
+    SampleApplication & application();
+  protected:
+    friend class SampleApplication;
+  private:
+    SampleApplication * _application;
+  };
 }
