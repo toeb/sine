@@ -9,6 +9,7 @@
 namespace nspace{
   // interface for the system function. 
   class ISystemFunction : public virtual ISimulationObject{
+    TYPED_OBJECT(ISystemFunction);
   public: 
     // called before integration step
     virtual void preIntegration(Time t, Time h){};
