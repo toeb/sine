@@ -5,7 +5,7 @@
 namespace nspace{
 
 class LightRenderer : public virtual Renderer, public virtual Set<Light*>{
-private:
+  TYPED_OBJECT(LightRenderer);
 public:
   void doLights();
   void render();
