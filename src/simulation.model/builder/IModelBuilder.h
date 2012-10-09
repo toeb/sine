@@ -7,9 +7,11 @@
 #include <simulation.model/Connector.h>
 #include <simulation.model/Connection.h>
 
+#include <core/Object.h>
 
 namespace nspace{
-  class IModelBuilder{
+  class IModelBuilder : public virtual Object{
+    TYPED_OBJECT(IModelBuilder);
   public:
     virtual Model* beginModel()=0;
 

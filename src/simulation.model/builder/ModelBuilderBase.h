@@ -7,6 +7,7 @@
 namespace nspace{
 
   class ModelBuilderBase : public IModelBuilder, public Set<ModelElement*> {
+    TYPED_OBJECT(ModelBuilderBase);
   private:  
     Set<Model*> _models;
     Model * _currentModel;
