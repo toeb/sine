@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #include <config.h>
-
 #include <core/Comparator.h>
 #include <core/Query.h>
 #include <core/ObservableCollection.h>
@@ -240,7 +239,7 @@ namespace nspace{
   }
   template<typename T>
   bool Set<T>::contains(T  element)const{
-    return first([element](T e){return e==element;})!=0;
+      return !this->subset([element](T e){return compare(e,element);}).empty();
   }
 
   template<typename T>
