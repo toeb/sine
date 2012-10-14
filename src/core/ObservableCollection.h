@@ -17,16 +17,28 @@ public:
     virtual void elementAdded(ObservableCollection<T> * sender, T element){}
     virtual void elementRemoved(ObservableCollection<T> * sender, T element){}
   };
-  class DelegateElementAddedObserver:Observer{
-    std::function<void (ObservableCollection<T> ,T) > _callback;
-    DelegateElementAddedObserver(std::function<void (ObservableCollection<T> ,T) > callback):_callback(callback){}
-    virtual void elementAdded(ObservableCollection<T> * sender, T element){_callback(sender,element);}
+  class DelegateElementAddedObserver: public Observer{
+    std::function<void (ObservableCollection<T> *,T) > _callback;
+  public:
+    DelegateElementAddedObserver(std::function<void (ObservableCollection<T> *,T) > callback):_callback(callback){}
+    void elementAdded(ObservableCollection<T> * sender, T element){_callback(sender,element);}
   };
-  class DelegateElementRemovedObserver:Observer{
-    std::function<void (ObservableCollection<T> ,T) > _callback;
-    DelegateElementRemovedObserver(std::function<void (ObservableCollection<T> ,T) > callback):_callback(callback){}
-    virtual void elementRemoved(ObservableCollection<T> * sender, T element){_callback(sender,element);}
+  class DelegateElementRemovedObserver: public Observer{
+    std::function<void (ObservableCollection<T>* ,T) > _callback;
+  public:
+    DelegateElementRemovedObserver(std::function<void (ObservableCollection<T>* ,T) > callback):_callback(callback){}
+    void elementRemoved(ObservableCollection<T> * sender, T element){_callback(sender,element);}
   };
+  class DelegateObserver : public Observer{
+      std::function<void (ObservableCollection<T> *,T) > _elementAddedCallback;
+      std::function<void (ObservableCollection<T> *,T) > _elementRemovedCallback;
+  public:
+      DelegateObserver(std::function<void (ObservableCollection<T>* ,T) > addedCallback,std::function<void (ObservableCollection<T> *,T) > removedCallback):
+          _elementAddedCallback(addedCallback),_elementRemovedCallback(removedCallback){}
+      void elementAdded(ObservableCollection<T> * sender, T element){_elementAddedCallback(sender,element);}
+      void elementRemoved(ObservableCollection<T> * sender, T element){_elementRemovedCallback(sender,element);}
+  };
+
 private:  
   std::vector<Observer*> _observers;
 protected:

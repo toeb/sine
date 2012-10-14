@@ -3,7 +3,9 @@
 #include <config.h>
 #include <ostream>
 #include <string>
+#include <memory>
 
+#include <core/Set.h>
 #include <core/Comparator.h>
 
 
@@ -24,6 +26,54 @@
 #define READONLY_PROPERTY(TYPE,NAME) \
   READONLY_REFERENCE(public,TYPE,NAME)\
   READONLY_SIMPLE_PROPERTY(TYPE,NAME)
+
+#define ITEMADDMETHODNAME(NAME) onItemAddedTo##NAME
+#define ITEMREMOVEMETHODNAME(NAME) onItemRemovedFrom##NAME
+#define itemAdded(TYPE,NAME) ITEMADDMETHODNAME(NAME)(TYPE  item)
+#define itemRemoved(TYPE,NAME) ITEMREMOVEMETHODNAME(NAME)(TYPE  item)
+
+
+// creates a set of type TYPE in the current class allows public reference acces to the field. adds an observer
+// to the set which causses the code blocks in ONADD and ONREMOVE to be called whenever an element is added or removed
+// e.g.
+//  class TestClass{
+//    PROPERTYSET(int,Numbers,{cout << item << " added"<<endl;}, {cout << item << " removed" <<endl;});
+//  };
+// int main(){
+//  TestClass c;
+//  c.Numbers().add(2);
+//  c.Numbers().add(3);
+//  c.Numbers().add(2);
+//  c.Numbers().remove(3);
+//  c.Numbers().remove(3);
+//  c.Numbers().remove(2);
+// }
+// this code would result in following output
+// 2 added
+// 3 added
+// 3 removed
+// 2 removed
+
+#define PROPERTYSET(TYPE,NAME, ONADD, ONREMOVE)\
+        FIELD(private,nspace::Set<TYPE >,NAME);\
+    private:\
+        std::unique_ptr<nspace::ObservableCollection<TYPE >::Observer> _##NAME##Observer;\
+        void init##NAME##Observer(){\
+            if(!_##NAME##Observer.get()){\
+                _##NAME##Observer.reset(new nspace::ObservableCollection<TYPE >::DelegateObserver(\
+                            [this](nspace::ObservableCollection<TYPE > * sender, TYPE  object){ ITEMADDMETHODNAME(NAME)(object);},\
+                            [this](nspace::ObservableCollection<TYPE > * sender, TYPE  object){ ITEMREMOVEMETHODNAME(NAME)(object);}\
+                            ));\
+                FIELDNAME(NAME).addObserver(_##NAME##Observer.get());\
+            }\
+        }\
+        void itemAdded(TYPE ,NAME)ONADD;\
+        void itemRemoved(TYPE ,NAME)ONREMOVE;\
+    public:\
+        const nspace::Set<TYPE > & NAME()const{ return FIELDNAME(NAME);}\
+        nspace::Set<TYPE > & NAME(){init##NAME##Observer(); return FIELDNAME(NAME);}\
+    private:
+
 
 
 /*
@@ -98,10 +148,11 @@ struct TypeData{
 
   // default constructor
   TypeData();  
-  // default constructor
+  // constructor accepting name
   TypeData(const std::string & name);
   // number of typedata structs created
   static unsigned int typeCount();
+  //void * createInstance();
 private:
   static unsigned int _typeCounter;
 };

@@ -58,6 +58,16 @@ namespace nspace{
     void sort(std::function<bool (const T, const T) > compare){
       std::sort(_elements.begin(),_elements.end(),compare);
     }
+    enum SortDirection{
+        Ascending,Descending
+    };
+
+    void sortByIntValue(std::function<int (const T)> toIntValue, SortDirection direction=Ascending){
+        sort([toIntValue,direction](const T a, const T b){
+             return direction==Ascending?(toIntValue(a)<toIntValue(b)):(toIntValue(a)>toIntValue(b));
+        });
+    }
+
 
     // returns the first element matching the Compartype
     template<typename CompareType> T operator()(CompareType val)const;
@@ -118,6 +128,16 @@ namespace nspace{
     // static intersection
     static Set<T> intersect(const Set<T> & a, const Set<T> & b);
 
+    template<typename T2>
+    bool tryAdd(T2 item){
+        T test = dynamic_cast<T>(item);
+        if(test)add(test);
+    }
+    template<typename T2>
+    bool tryRemove(T2 item){
+        T  test = dynamic_cast<T>(item);
+        if(test)remove(test);
+    }
 
   };
 
@@ -292,7 +312,7 @@ namespace nspace{
   }
   template<typename T>
   Set<T>::~Set(){
-    clear();
+    //clear();
   }
 
 

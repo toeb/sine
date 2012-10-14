@@ -14,6 +14,7 @@ public:
   }
 };
 
+
 // a shorthand for comparing two types
 template<typename A,typename B>
 bool compare(A a,B b){
