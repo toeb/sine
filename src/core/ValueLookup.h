@@ -5,9 +5,9 @@ namespace nspace{
 
   // struct which combines a void pointer and a name
   struct Entry{
-    Entry():value(0),name(""){}
-    std::string name;
     void * value;
+    std::string name;
+    Entry():value(0),name(""){}
   };
 
   //a value lookup which has easy to use methods for getting and setting / iterating the values.

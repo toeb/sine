@@ -1,9 +1,8 @@
 #pragma once
 #include <config.h>
 namespace nspace{  
-  //alieas for a time
+  //alias for a time
   typedef Real Time;
-
   // returns the system time
   Time systemTime();
   // returns the system time when the application started up

@@ -16,7 +16,7 @@ namespace nspace{
       auto typedObject = reinterpret_cast<const OwningClass*>(object);
       auto typedValue = reinterpret_cast<ValueType*>(value);
       *typedValue= getTypedValue(typedObject);
-    }  
+    }
     
     virtual void setTypedValue(OwningClass *  object , ValueType value)const=0;
     virtual ValueType getTypedValue(const OwningClass *  object)const=0;

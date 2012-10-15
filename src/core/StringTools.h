@@ -3,19 +3,36 @@
 #include <string>
 #include <sstream>
 namespace nspace{
-    std::string operator +(const std::string & a, const std::string & b);
-    std::string operator +(std::string a, const char * b);
-    std::string operator +(const char * a, std::string b);
+  //concatenates to strings
+  std::string operator +(const std::string & a, const std::string & b);
+  // concatenates a string and a const char *
+  std::string operator +(const std::string & a, const char * b);
+  // concatenatesa a string and a const char*
+  std::string operator +(const char * a, const std::string & b);
+  // concatenates  astring and any type of reference using the << operator
+  template<typename T> std::string operator +(const std::string & a, const T & t);
+  // concatenates  astring and any type of reference using the << operator
+  template<typename T> std::string operator +( const T & t,const std::string & a);
 
-    template<typename T>
-    std::string operator +(const std::string & a, const T & t){
-        std::stringstream s;
-        s<<a<<t;
-        return s.str();
+  // replaces the search string in original with replacement string
+  std::string replace(std::string original, const std::string & search, const std::string & replacement);
+  // generates whitespaces
+  std::string spaces(unsigned int n);
+  // repeats str n times
+  std::string repeat(const std::string & str, unsigned int n );
+}
 
-    }
 
-    std::string replace(std::string original, const std::string & search, const std::string & replacement);
-    std::string spaces(unsigned int count);
 
+
+//implementation
+
+template<typename T> std::string nspace::operator +(const std::string & a, const T & t){
+  std::stringstream s;
+  s<<a<<t;
+  return s.str();
+}
+
+template<typename T> std::string nspace::operator +( const T & t,const std::string & a){
+  return a+t;
 }
