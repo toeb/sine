@@ -15,12 +15,18 @@ private:
   Real _valueSum;
   uint _maxPoolCount;
   uint _poolCount;
+  Time _timeLength;
   std::queue<AverageOverTimeValue*> _values;
   std::queue<AverageOverTimeValue*> _freeStructs;
-  Time timeLength;
 
 public:
-  AverageOverTime(Time tl):timeLength(tl),_maxPoolCount(4000),_valueCount(0),_valueSum(0),_poolCount(0){}
+  AverageOverTime(Time tl):
+    _valueCount(0),
+    _valueSum(0),
+    _maxPoolCount(4000),
+    _poolCount(0),
+    _timeLength(tl)
+  {}
   AverageOverTimeValue * createValue(){
     AverageOverTimeValue * av;
     if(_freeStructs.empty()){
@@ -53,7 +59,7 @@ public:
 
   void removeOldSamples(){
     AverageOverTimeValue * current;
-    Time t = applicationTime()-timeLength;
+    Time t = applicationTime()-_timeLength;
     while(_valueCount){
       current = _values.front();
       if(current->t > t)break;
