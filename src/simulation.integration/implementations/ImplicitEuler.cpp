@@ -4,7 +4,7 @@ using namespace nspace;
 using namespace std;
 
  void ImplicitEuler::doStep(StateMatrix & x_next, const StateMatrix & x_i, Real t_i, Real h){ 
-  int maxIterations = 100;
+
   int i=0;
   StateMatrix tmp;
   Real diff;
