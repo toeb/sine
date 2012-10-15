@@ -7,7 +7,7 @@
 
 
 namespace nspace{
-  namespace matrix2{
+namespace matrix2{
 template<typename T>
 class DynamicMatrix  : public nspace::Matrix<T>{
 protected:
