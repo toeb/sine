@@ -39,7 +39,7 @@ void QtTimeControl::refresh(){
   QTime appTime = QTime().addMSecs(int(applicationTime()*1000));
   _ui->applicationTimeEdit->setTime(appTime);
 
-  _ui->desiredSpeedValue->setValue(_TimeController->DesiredSpeed());
+  _ui->desiredSpeedValue->setValue(_TimeController->getDesiredSpeed());
   _ui->actualSpeedValue->setValue(_TimeController->simulationTimeProvider().averageActualSpeed());
 }
 
@@ -65,6 +65,6 @@ void QtTimeControl::setSpeed(double value){
   }
   _TimeController->setPaused(false);
 
-  _TimeController->DesiredSpeed() = value;
+  _TimeController->setDesiredSpeed(value);
 }
 
