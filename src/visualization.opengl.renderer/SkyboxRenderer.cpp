@@ -4,12 +4,14 @@
 #include <visualization.opengl/Utility.h>
 #include <utility.imaging/Image.h>
 #include <visualization.opengl/GlViewport.h>
+
 using namespace nspace;
+using namespace nspace::stringtools;
 
 void SkyboxRenderer::propertyChanging(std::string, FileBase){
   
   Textures().clear();
-  components().clear();
+  Components().clear();
   Textures()|=new Texture(*new PngImage(newvalue+"0.png"));
   Textures()|=new Texture(*new PngImage(newvalue+"1.png"));
   Textures()|=new Texture(*new PngImage(newvalue+"2.png"));
@@ -17,7 +19,7 @@ void SkyboxRenderer::propertyChanging(std::string, FileBase){
   Textures()|=new Texture(*new PngImage(newvalue+"4.png"));
   Textures()|=new Texture(*new PngImage(newvalue+"5.png"));
   Textures().foreachElement([this](Texture * t){
-    components()|=t;
+    Components()|=t;
     t->initialize();
   });
 }
