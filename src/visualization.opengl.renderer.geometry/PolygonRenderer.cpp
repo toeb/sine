@@ -24,7 +24,7 @@ _polygon(poly),
   drawNormals = true;
   drawFaces = true;
 
-  components() |= &texture;
+  Components() |= &texture;
   
 }
 
