@@ -10,8 +10,8 @@ GlWidget::GlWidget(QWidget * parent):QGLWidget(parent),_viewport(0),_viewportCon
   _refreshTask([this](Time t, Time t2){repaint();}){
     _refreshTask.isOneTimeTask()=false;
     _refreshTask.interval()=0.01;
-  components()|=&_inputHandler;
-  components()|=&_refreshTask;
+  Components()|=&_inputHandler;
+  Components()|=&_refreshTask;
   setFocusPolicy(Qt::StrongFocus);
   installEventFilter(this);
   setMouseTracking(true);
@@ -20,14 +20,14 @@ void GlWidget::repaint(){
   updateGL();
 }
 void GlWidget::setViewportController(ViewportController * controller){
-  components()/=controller;
+  Components()/=controller;
 
   
   _viewportController = controller;
 
   
   safe(_viewportController)->setViewport(_viewport);
-  components()|=controller;
+  Components()|=controller;
 }
 
 void GlWidget::onComponentAdded(Object * object){

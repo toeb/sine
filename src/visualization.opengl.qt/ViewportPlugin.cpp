@@ -30,13 +30,13 @@ void ViewportPlugin::install(PluginContainer & container){
   
   container.toggleWindow(true);
 
-  components()|=_pluginWindow;
+  Components()|=_pluginWindow;
   
 }
   void ViewportPlugin::enable(){}
   void ViewportPlugin::disable(){}
   void ViewportPlugin::uninstall(PluginContainer & container){
 
-  components()|=_pluginWindow;
+  Components()|=_pluginWindow;
   delete _pluginWindow;
 }
