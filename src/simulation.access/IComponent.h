@@ -1,23 +1,18 @@
 #pragma once
 #include <string>
 #include <config.h>
-#include <simulation/ISimulationObject.h>
+#include <core/NamedObject.h>
+#include <core/Reflection.h>
 
 namespace nspace{
 
-  class IComponent : public virtual ISimulationObject{
+  class IComponent : public virtual NamedObject, public virtual PropertyChangingObject{
+    REFLECTABLE_OBJECT(IComponent);
   private:
-    std::string _displayName;
-    std::string _desription;
-    ISimulationObject * _parent;
+    PROPERTY(std::string, DisplayName){}
+    PROPERTY(std::string, Description){}
+    PROPERTY(Object *, Parent){}
   public:
-    IComponent(ISimulationObject * parent=0):_parent(parent),_displayName(""),_desription(""){}
-    void setDisplayName(const std::string & displayName){_displayName=displayName;}
-    const std::string & displayName()const{return _displayName;}
-    void setDescription(const std::string & despription){_desription = despription;}
-    const std::string & description()const{return _desription;}
-    void setParent(ISimulationObject * obj){_parent = obj;};
-    ISimulationObject * parent(){return _parent;}
-
+    IComponent(Object * parent=0):_Parent(parent),_DisplayName(""),_Description(""){}
   };
 }
