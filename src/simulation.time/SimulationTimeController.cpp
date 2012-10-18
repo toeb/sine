@@ -20,7 +20,7 @@ SimulationTimeController::SimulationTimeController(SimulationTimeProvider & tp, 
 }
    
 void SimulationTimeController::togglePause(){
-  setPaused(!Paused());
+  setPaused(!getPaused());
 };
 
 Real SimulationTimeController::actualSpeedAverage(){
@@ -28,6 +28,6 @@ Real SimulationTimeController::actualSpeedAverage(){
 }
 
 void SimulationTimeController::timeout(Time dt,Time t){
-  if(Paused())return; 
-  _simulationTimeProvider.advanceBy(dt*DesiredSpeed());
+  if(getPaused())return; 
+  _simulationTimeProvider.advanceBy(dt*getDesiredSpeed());
 }
