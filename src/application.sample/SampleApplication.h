@@ -12,7 +12,7 @@
 #include <simulation.time.h>
 #include <simulation.integration/SystemModule.h>
 #include <simulation.integration/implementations/RungeKutta4.h>
-
+#include <simulation.runner.qt/QtPropertyView.h>
 
 namespace nspace{
 class SampleApplication : public virtual NamedObject{
@@ -22,6 +22,11 @@ public:
   REFERENCE_PROPERTY(FpsCamera,Camera);
   SIMPLE_PROPERTY(std::string, ResourceDirectory){}
   REFERENCE_PROPERTY(std::string, ResourceDirectory);
+  FIELD(private, SimulationTimeProvider, TimeProvider);
+  REFERENCE_PROPERTY(SimulationTimeProvider, TimeProvider);
+
+  FIELD(private, QtPropertyView, PropertyView);
+
 public:
   SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = ".");
   Hub & hub();
@@ -45,9 +50,8 @@ private:
   GridRenderer _grid;
   QtTimeControlPlugin _timeControl;
   SimulationTimeController _simulationTimeController;
-  SimulationTimeProvider _simulationTimeProvider;
   Simulation _simulation;
-  SystemModule _defaultSystem;
+  //SystemModule _defaultSystem;
   RungeKutta4 _rk4;
 };
 }
