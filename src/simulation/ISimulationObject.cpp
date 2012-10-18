@@ -11,7 +11,7 @@ using namespace std;
 
 
 
-ISimulationObject::ISimulationObject(const std::string & name): _simulation(0){
+ISimulationObject::ISimulationObject(const std::string & name): _simulation(0),_parent(0){
   setName(name);
 }
 

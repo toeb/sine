@@ -27,7 +27,10 @@ public:
   inline virtual void accepted(){};
   inline ISimulationModule * parent(){return _parent;}
   inline void setSimulation(Simulation * simulation){_simulation = simulation;}
-  inline Simulation * simulation(){return _simulation;}
+  inline Simulation * simulation(){
+    if(!_simulation) ERROR("Cannot access simulation because it is null");
+    return _simulation;
+  }
 protected:
 };
 
