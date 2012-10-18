@@ -3,6 +3,7 @@
 #include <simulation/composites/CompositeSimulationObject.h>
 #include <simulation.wrapper/Wrapper.h>
 #include <simulation/Simulation.h>
+#include <core.hub/CompositeHubObject.h>
 
 namespace nspace{	
 class WrapperModule : public virtual Composite<Wrapper>, public virtual ISimulationModule {
