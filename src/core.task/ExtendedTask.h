@@ -21,13 +21,4 @@ namespace nspace{
 
   };
 
-  class DelegateTask : public virtual ExtendedTask{
-    TYPED_OBJECT(ExtendedTask);
-  private:
-    std::function<void () > _action;
-  public:
-    DelegateTask(std::function<void()> callback):_action(callback){}
-  public:
-    void runTask(){_action();}
-  };
 }

@@ -13,4 +13,17 @@ namespace nspace{
     void run();
     virtual void runTask()=0;
   };
+
+  template<typename T>
+  class DelegateTask : public virtual ITask{
+    TYPED_OBJECT(DelegateTask);
+    T & _function;
+  public:
+    DelegateTask(T & functionObject):_function(functionObject){
+      
+    }
+    void run(){
+      _function();
+    }
+  };
 }
