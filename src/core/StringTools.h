@@ -1,8 +1,9 @@
 #pragma once
-
+#include <config.h>
 #include <string>
 #include <sstream>
 namespace nspace{
+  namespace stringtools{
   //concatenates to strings
   std::string operator +(const std::string & a, const std::string & b);
   // concatenates a string and a const char *
@@ -21,18 +22,19 @@ namespace nspace{
   // repeats str n times
   std::string repeat(const std::string & str, unsigned int n );
 }
+}
 
 
 
 
 //implementation
 
-template<typename T> std::string nspace::operator +(const std::string & a, const T & t){
+template<typename T> std::string nspace::stringtools::operator +(const std::string & a, const T & t){
   std::stringstream s;
   s<<a<<t;
   return s.str();
 }
 
-template<typename T> std::string nspace::operator +( const T & t,const std::string & a){
+template<typename T> std::string nspace::stringtools::operator +( const T & t,const std::string & a){
   return a+t;
 }

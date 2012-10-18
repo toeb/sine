@@ -33,7 +33,7 @@ namespace nspace{
 
     void successorsToStream(std::ostream & out){
       this->dfsWithPath([](Derived* current, Set<Derived*> path){
-        std::cout << spaces(path.size());
+        std::cout << stringtools::spaces(path.size());
         std::cout << *current<<"\n";
       });
     }
