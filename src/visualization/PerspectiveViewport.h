@@ -10,10 +10,15 @@ namespace nspace{
   private:
 
     PROPERTY(CoordinateSystem,Coordinates){}
+    REFERENCE(public,CoordinateSystem, Coordinates);
     PROPERTY(Real, FieldOfViewAngle){}
+    REFERENCE(public,Real, FieldOfViewAngle);
     PROPERTY(Real, NearCutOffPlane){}
+    REFERENCE(public,Real, NearCutOffPlane);
     PROPERTY(Real, FarCutOffPlane){}
+    REFERENCE(public,Real, FarCutOffPlane);
     PROPERTY(Real, ZoomFactor){}
+    REFERENCE(public,Real, ZoomFactor);
 
   public:
     PerspectiveViewport();

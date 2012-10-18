@@ -16,11 +16,11 @@ Viewport::Viewport():_Width(1),_Height(1),_ViewportRenderer(0){
 
 void Viewport::propertyChanging(int,Width){
   
-  doResize(Width(),Height());
+  doResize(getWidth(),getHeight());
 }
 void Viewport::propertyChanging(int,Height){
   if(newvalue<1)newvalue=1;
-  doResize(Width(),Height());
+  doResize(getWidth(),getHeight());
 }
 void Viewport::doResize(int width, int height){
   

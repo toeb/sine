@@ -9,9 +9,11 @@ namespace nspace{
   class Viewport : virtual public NamedObject, public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(Viewport);
   public:
-    REFLECTABLE_NOTIFYING_PROPERTY(Renderer *, ViewportRenderer){}
+    PROPERTY(Renderer *, ViewportRenderer){}
     PROPERTY(int,Width);
+    REFERENCE(public, int, Width);
     PROPERTY(int, Height);
+    REFERENCE(public, int, Height);
   public:
 
     Real aspectRatio()const;
