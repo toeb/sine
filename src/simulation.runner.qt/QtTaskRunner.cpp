@@ -30,8 +30,8 @@ QtTaskRunner::QtTaskRunner():_taskTimer(0),_breakTask(0){
   _taskTimer = new QTimer(this);
   _taskTimer->setInterval(5);
   connect(_taskTimer,SIGNAL(timeout()), this, SLOT(timeout()));
-  components() |= &_scheduledTaskRunner;
-  components() |= &_serialTaskRunner;
+  Components() |= &_scheduledTaskRunner;
+  Components() |= &_serialTaskRunner;
 }
 void QtTaskRunner::timeout(){
   _scheduledTaskRunner.run();
