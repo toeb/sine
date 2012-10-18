@@ -1,15 +1,14 @@
 #pragma once
-#include <simulation/ISimulationModule.h>
 
-#include <simulation/SimulationTask.h>
+#include <core.task/ScheduledTask.h>
+#include <simulation.integration/ISystemFunction.h>
+#include <simulation.integration/Evaluator.h>
+#include <simulation.integration/StepIntegrator.h>
+#include <core/Reflection.h>
+#include <core.hub/CompositeHubObject.h>
+
 #include <simulation.time/SimulationTimeProvider.h>
 
-#include <simulation.state/CompositeStatefulObject.h>
-
-#include <simulation.integration/CompositeSystemFunction.h>
-#include <simulation.integration/StepIntegrator.h>
-#include <simulation.integration/Evaluator.h>
-#include <core.task/ScheduledTask.h>
 namespace nspace{	
 
   /**
@@ -23,28 +22,24 @@ namespace nspace{
   * \author Tobi
   * \date 13.07.2012
   */
-  class SystemModule : 
-    public virtual ScheduledTask,
-    public virtual ISimulationModule{
-      TYPED_OBJECT(SystemModule);
-  private:
-    CompositeStatefulObject _statefulObjects;
-    CompositeSystemFunction _systemFunction;
-    StepIntegrator * _integrator;
-    SimulationTimeProvider & _timeProvider;
-    Evaluator * _evaluator;
-  public:  
-    SystemModule(SimulationTimeProvider & timeProvider);
-    void setIntegrator(StepIntegrator * integrator);
-    StatefulObject & statefulObject(){return _statefulObjects;}
-    ISystemFunction & systemFunction(){return _systemFunction;}
-    ITimeProvider & timeProvider(){return _timeProvider;}
-  protected:
-    void announce(ISimulationObject * object);
-    void renounce(ISimulationObject * object){}
-    void timeout(Time t, Time dt);
-    bool initializeObject();
-    virtual Time currentTime() const;
+  class IntegratingSystem :
+    public virtual NamedObject,
+    public virtual PropertyChangingObject,
+    public virtual CompositeHubObject
+  {
+    REFLECTABLE_OBJECT(IntegratingSystem);
+    PROPERTY(ITask * , Task);
+    PROPERTY(StatefulObject *, State);
+    PROPERTY(ISystemFunction *, SystemFunction);
+    PROPERTY(Evaluator *, Evaluator);
+    PROPERTY(SimulationTimeProvider *, TimeProvider);
+    PROPERTY(StepIntegrator *, Integrator);
+  public:
+    void operator()();
+    IntegratingSystem(SimulationTimeProvider * timeProvider);
 
+  private:
+    void timeout(Time dt, Time t);
+    void setupEvaluator(StatefulObject * state, ISystemFunction * func);
   };
 }
