@@ -19,8 +19,8 @@ namespace nspace{
   private:
     // the difference between components and references is, that components are removed when this composite is removed from the hub
     //whilst the references are not removed.  however both are added to the hub
-    PROPERTYSET(Object*, Components);
-    PROPERTYSET(Object*, References);
+    PROPERTYSET(Object*, Components,,);
+    PROPERTYSET(Object*, References,,);
 
   public:
     CompositeHubObject();
