@@ -14,7 +14,15 @@ private:
   AverageRate _averageTargetSpeed;
   AverageRate _averageActualSpeed;
 public:
-  SimulationTimeProvider():_averageActualSpeed(* new AverageOverTime(3)),_t_initial(0),_lastTargetAdvance(0),_lastActualAdvance(0),_t_target(0),_t_actual(0),_averageTargetSpeed(*new AverageOverTime(1)){setName("SimulationTimeProvider");}
+  SimulationTimeProvider():
+    _t_initial(0),
+    _t_target(0),
+    _t_actual(0),
+    _lastTargetAdvance(0),
+    _lastActualAdvance(0),
+    _averageTargetSpeed(*new AverageOverTime(1)),
+    _averageActualSpeed(* new AverageOverTime(3))
+  {setName("SimulationTimeProvider");}
   inline Time time()const{
     return actualTime();//return _t_target;
   }
@@ -31,7 +39,7 @@ public:
   inline void advanceTo(Time t){
     if(_t_actual > t)return;
     Time t_app= applicationTime();
-    Time dt_app = t_app - _lastTargetAdvance;
+    //Time dt_app = t_app - _lastTargetAdvance;
     _lastTargetAdvance = t_app;
     Time dt = t-_t_target;
     _averageTargetSpeed.addSample(t);
