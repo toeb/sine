@@ -1,10 +1,6 @@
 #include "QtInputHandler.h"
 
-
-
 using namespace nspace;
-
-
 
 void QtInputHandler::keyPressEvent(QKeyEvent* ke){
   Qt::Key key = static_cast<Qt::Key>(ke->key());
@@ -47,6 +43,8 @@ void QtInputHandler::mouseReleaseEvent(QMouseEvent* me){
 
 
 QtInputHandler::QtInputHandler(){
+  setName("QtInputHandler");
+  logInfo("Creating Inputhandler");
   _buttons.addMapping(Qt::LeftButton,  nspace::BUTTON_LEFT);
   _buttons.addMapping(Qt::RightButton, nspace::BUTTON_RIGHT);
   _buttons.addMapping(Qt::MiddleButton,nspace::BUTTON_MIDDLE);

@@ -66,6 +66,7 @@ PluginContainer::~PluginContainer(){
     disconnect(_togglePluginWindowAction,SIGNAL(toggled(bool)),this,SLOT(setEnabled(bool)));
     delete _togglePluginWindowAction;
   }
+  _plugin.uninstall(*this);
 }
 void PluginContainer::setEnabled(bool enabledFlag){
   if(enabledFlag){
