@@ -25,11 +25,11 @@ namespace nspace{
 
   template<typename T>
   class TypedModuleBase : public virtual ModuleBase, protected virtual Set<T*>{
-    virtual bool accept(T * object){return true;}
+    virtual bool acceptTypedObject(T * object){return true;}
     bool accept(Object * object){
       auto obj = dynamic_cast<T*>(object);
       if(!obj)return false;
-      return accept(obj);
+      return acceptTypedObject(obj);
     }
     void onAcception(Object * object){
       *this |= dynamic_cast<T*>(object);

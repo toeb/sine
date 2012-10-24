@@ -15,11 +15,11 @@ CompositeHubObject::~CompositeHubObject(){
 
 void CompositeHubObject::itemAdded(Object*, Components){
   addObject(item);
-  onComponentRemoved(item);
+  onComponentAdded(item);
 }
 void CompositeHubObject::itemRemoved(Object *, Components){
   removeObject(item,true);
-  onComponentAdded(item);
+  onComponentRemoved(item);
 }
 void CompositeHubObject::itemAdded(Object*, References){
   addObject(item);
