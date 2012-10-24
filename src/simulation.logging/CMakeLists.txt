@@ -1,9 +1,7 @@
 set(source 
-./LoggingObject.h
-./LoggingObject.cpp
-./LoggingModule.h
-./LoggingModule.cpp
+./Log.h
+./Log.cpp
 )
 source_group("" FILES ${source})
 add_library(simulation.logging ${source} CMakeLists.txt)
-target_link_libraries(simulation.logging simulation)
+target_link_libraries(simulation.logging core)
