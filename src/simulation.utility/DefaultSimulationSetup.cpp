@@ -9,7 +9,7 @@
 #include <simulation/Simulation.h>
 
 using namespace nspace;
-DefaultSimulationSetup::DefaultSimulationSetup():defaultSystem(simulationTimeProvider){
+DefaultSimulationSetup::DefaultSimulationSetup():defaultSystem(&simulationTimeProvider){
 
 }
 bool DefaultSimulationSetup::initializeObject(){
@@ -22,7 +22,7 @@ bool DefaultSimulationSetup::initializeObject(){
     // the timing module is used to measure how much time is needed by various objects
     *simulation() << timings;
     // the integrable system module connects the integrables, system functions and the integrator.
-    *simulation() << defaultSystem;
+    //*simulation() << defaultSystem;
 
 
     return true;

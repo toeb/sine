@@ -1,2 +1,10 @@
 
-subdirs( sample.simple sample.qt.plugins qtsample imaging glutsample mathperformance simulationperformance valuegraphsample)#cloth collisionDetection collisionHandling multibody
+set(directories sample.threading sample.simple sample.qt.plugins qtsample imaging glutsample mathperformance simulationperformance valuegraphsample)
+#subdirlist(directories ${CMAKE_CURRENT_SOURCE_DIR})
+#list(REMOVE_ITEM directories ".svn")
+#list(REMOVE_ITEM directories "include")
+foreach(item ${directories})
+ message("  adding: " ${item})
+ add_subdirectory(${item}) 
+endforeach(item ${directories})
+

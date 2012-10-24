@@ -11,9 +11,9 @@ public:
     // create a sphere renderer
     auto sphereRenderer = new SphereRenderer();
     // add renderer to component set
-    components() |= sphereRenderer;
+    Components() |= sphereRenderer;
 
-    // create a sphere with radius 0
+    // create a sphere with radius 0.5
     auto sphere = new Sphere(0.5);
 
     // add sphere to renderer

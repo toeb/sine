@@ -67,16 +67,16 @@ namespace nspace{
 
       Object * currentObject = 0;
       if(parent.isValid()){
-        currentObject = static_cast<Object*>(parent.internalPointer());
+        currentObject = reinterpret_cast<Object*>(parent.internalPointer());
       }else{
         currentObject = getCurrentObject();
       }
 
       if(!currentObject)return QModelIndex();
 
-      auto prop = currentObject->getTypeData().getProperty(column);
+      auto prop = currentObject->getTypeData().getProperty(row);
       if(!prop)return QModelIndex();
-      return createIndex(row,column,(void*)prop);      
+      return createIndex(row,column,(void*)(Object*)prop);      
     }
 
     int rowCount(const QModelIndex &parent=QModelIndex())const{

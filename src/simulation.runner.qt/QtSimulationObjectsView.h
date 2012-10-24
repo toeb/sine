@@ -5,7 +5,7 @@
 #include <application.qt/PluginContainer.h>
 #include <core/Reflection.h>
 
-namespace mbslib{
+namespace nspace{
   class QtObjectViewPlugin : public Plugin{
     Q_OBJECT;
     REFLECTABLE_OBJECT(QtObjectViewPlugin);

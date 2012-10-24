@@ -61,7 +61,7 @@ TEST(Test1, PropertyChanging){
 }
 
 class TestClass2{
-  REFLECTABLE(TestClass2);
+  REFLECTABLE_OBJECT(TestClass2);
 public:
   TestClass2():_IntegerProperty(0){}
   REFLECTABLE_PROPERTY(int, IntegerProperty){
@@ -79,7 +79,7 @@ TEST(Test1, Reflection){
   auto prop =a.getProperty("IntegerProperty");
 
   CHECK(prop!=0);
-  CHECK(prop->propertyName()=="IntegerProperty");
+  CHECK(prop->getPropertyName()=="IntegerProperty");
   CHECK_EQUAL(3,a.getPropertyValue<int>("IntegerProperty"));
   a.setPropertyValue("IntegerProperty",5);
   CHECK_EQUAL(5,a.getIntegerProperty());

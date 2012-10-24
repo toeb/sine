@@ -73,9 +73,9 @@ void TweakBarRenderer::addEntry(ISimulationObject * o){
   }
   auto vecval = dynamic_cast<TypedMatrixValue<Vector3D>*>(o);
   if(vecval){
-    addEntry(new TypedValue<Real>((vecval->value().x())));
-    addEntry(new TypedValue<Real>((vecval->value().y())));
-    addEntry(new TypedValue<Real>((vecval->value().z())));
+   // addEntry(new TypedValue<Real>((vecval->value().x())));
+   // addEntry(new TypedValue<Real>((vecval->value().y())));
+   // addEntry(new TypedValue<Real>((vecval->value().z())));
   }
 
   auto quatval = dynamic_cast<TypedMatrixValue<Quaternion>*>(o);

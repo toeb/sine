@@ -138,13 +138,13 @@ TEST(compositeAdd1, CompositeHubObject){
   auto o1 = new Object;
   auto o2 = new Object;
 
-  obj.components()|=o1;
-  obj.components()|=o2;
+  obj.Components()|=o1;
+  obj.Components()|=o2;
   Hub hub;
   hub |= &obj;
 
   CHECK(hub.size()==3);
-  CHECK(obj.components().size()==2);
+  CHECK(obj.Components().size()==2);
   CHECK(hub.contains(o1));
   CHECK(hub.contains(o2));
   CHECK(hub.contains(&obj)); 
@@ -158,16 +158,16 @@ TEST(compositeAdd2, CompositeHubObject){
   auto o1 = new Object;
   auto o2 = new Object;
 
-  obj.components()|=o1;
+  obj.Components()|=o1;
   Hub hub;
   hub |= &obj;
   
   CHECK(hub.size()==2);
   
-  obj.components()|=o2;
+  obj.Components()|=o2;
 
   CHECK(hub.size()==3);
-  CHECK(obj.components().size()==2);
+  CHECK(obj.Components().size()==2);
   CHECK(hub.contains(o1));
   CHECK(hub.contains(o2));
   CHECK(hub.contains(&obj)); 
@@ -181,15 +181,15 @@ TEST(compositeRemove1, CompositeHubObject){
   auto o1 = new Object;
   auto o2 = new Object;
 
-  obj.components()|=o1;
+  obj.Components()|=o1;
   Hub hub;
   hub |= &obj;
-  obj.components()|=o2;
+  obj.Components()|=o2;
 
-  obj.components()/=o2;
+  obj.Components()/=o2;
 
   CHECK(hub.size()==2);
-  CHECK(obj.components().size()==1);
+  CHECK(obj.Components().size()==1);
   CHECK(hub.contains(o1));
   CHECK(!hub.contains(o2));
   CHECK(hub.contains(&obj)); 
@@ -203,15 +203,15 @@ TEST(compositeAdd3, CompositeHubObject){
   auto o1 = new Object;
   auto o2 = new Object;
 
-  obj.components()|=o1;
+  obj.Components()|=o1;
   Hub hub;
   hub |= o1;
   hub |= &obj;
-  obj.components()|=o2;
+  obj.Components()|=o2;
 
 
   CHECK(hub.size()==3);
-  CHECK(obj.components().size()==2);
+  CHECK(obj.Components().size()==2);
   CHECK(hub.contains(o1));
   CHECK(hub.contains(o2));
   CHECK(hub.contains(&obj)); 
@@ -223,18 +223,18 @@ TEST(compositeRemove3, CompositeHubObject){
   auto o1 = new Object;
   auto o2 = new Object;
 
-  obj.components()|=o1;
+  obj.Components()|=o1;
   Hub hub;
   hub |= o1;
   hub |= &obj;
-  obj.components()|=o2;
+  obj.Components()|=o2;
 
   hub /= &obj;
 
   CHECK(hub.size()==0);
-  CHECK(obj.components().size()==2);
-  CHECK(obj.components().contains(o1));
-  CHECK(obj.components().contains(o2));
+  CHECK(obj.Components().size()==2);
+  CHECK(obj.Components().contains(o1));
+  CHECK(obj.Components().contains(o2));
   CHECK(!hub.contains(&obj)); 
 }
 
@@ -247,9 +247,9 @@ TEST(HubGraph , Hub){
 
 
   uut |= &n1;
-  n1.components() |= &n2;
-  n2.components() |= &n3;
-  n1.components() |= &n4;
+  n1.Components() |= &n2;
+  n2.Components() |= &n3;
+  n1.Components() |= &n4;
   
   Set<Object *> order;
 
@@ -278,9 +278,9 @@ TEST(compositeBoxedAdd, CompositeHubObject){
 
   Hub h;
 
-  a.components()|=&b;
-  b.components()|=&c;
-  c.components()|=&o;
+  a.Components()|=&b;
+  b.Components()|=&c;
+  c.Components()|=&o;
   h|=&a;
 
   CHECK(h.size()==4);

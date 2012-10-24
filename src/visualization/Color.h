@@ -2,7 +2,7 @@
 
 #include <map>
 #include <string>
-
+#include <sstream>
 #include <math/core.h>
 
 namespace nspace{

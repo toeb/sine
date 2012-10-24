@@ -10,7 +10,7 @@ namespace nspace{
 class DefaultSimulationSetup : public ISimulationObject{
   TYPED_OBJECT(DefaultSimulationSetup);
 public:  
-  SystemModule defaultSystem;
+  IntegratingSystem defaultSystem;
   SimulationTimeProvider simulationTimeProvider;
   TimingModule timings;
   bool initializeObject();

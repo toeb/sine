@@ -19,7 +19,7 @@
 #include <core/StringTools.h>
 using namespace nspace;
 using namespace std;
-using namespace std::extensions;
+using namespace nspace::stringtools;
 
 
 
