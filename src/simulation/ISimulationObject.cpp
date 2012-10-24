@@ -15,5 +15,5 @@ ISimulationObject::ISimulationObject(const std::string & name): _simulation(0),_
   setName(name);
 }
 
-ISimulationObject::ISimulationObject():_parent(0),_simulation(0){}
+ISimulationObject::ISimulationObject():_simulation(0),_parent(0){}
 

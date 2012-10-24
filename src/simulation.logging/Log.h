@@ -32,7 +32,7 @@ namespace nspace{
 
 
   public:
-    LogEntry():_Owner(0),_LogLevel(100){
+    LogEntry():_LogLevel(100),_Owner(0){
       setSystemTimeStamp(systemTime());
     }
     void toString(std::ostream & out)const{

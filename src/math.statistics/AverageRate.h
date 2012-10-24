@@ -7,9 +7,9 @@ namespace nspace{
 
 class AverageRate : public IAverage{
   private:
+    IAverage & _average;
     bool _initialized;
     Time _lastSampleTime;
-    IAverage & _average;
     Real _lastSample;
   public:
     AverageRate(IAverage & average):_average(average),_initialized(false){

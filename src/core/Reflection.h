@@ -67,19 +67,19 @@
 
 #define PROPERTYCLASS(NAME) NAME##PropertyClass
 
-#define PROPERTYCLASSINSTANCE(NAME) ((PROPERTYCLASS(NAME)*)NAME##PropertyClass::instance())
+#define PROPERTYCLASSINSTANCE(NAME) ( (PROPERTYCLASS(NAME) * ) PROPERTYCLASS(NAME)::instance())
 
 #define REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,PROPERTYDECLARATION)\
   private:\
   class PROPERTYCLASS(NAME) : public virtual TypedProperty<ReflectableType,TYPE>{\
-  TYPED_OBJECT(PROPERTYCLASS(NAME));\
+  TYPED_OBJECT( PROPERTYCLASS(NAME) );\
   public:\
-  SINGLETON(PROPERTYCLASS(NAME)){setPropertyName(#NAME);}\
-  void setTypedValue(ReflectableType *  object , TYPE value)const{object->set##NAME(value); }\
+  SINGLETON( PROPERTYCLASS(NAME) ){setPropertyName(#NAME);}\
+  void setTypedValue(ReflectableType *  object , TYPE value)const{ object->set##NAME(value); }\
   TYPE getTypedValue(const ReflectableType *  object)const{ return object->get##NAME(); }\
   };\
   private:\
-  STATIC_INITIALIZER(NAME##Property, { ReflectableType::propertiesSet() |= NAME##PropertyClass::instance();})\
+  STATIC_INITIALIZER(NAME##Property, { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);})\
   PROPERTYDECLARATION(TYPE,NAME)
 
 // sets the propertydisplayname property of the property object created for the property specified by NAME (.... property)
@@ -106,5 +106,8 @@ private:\
 
 // default property macro 
 #define PROPERTY(TYPE,NAME) REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME)
+
+// creates a property for any nonpointer / nonreference field and addutionally allows access by reference
+#define REF_PROP(TYPE,NAME) REFERENCE_PROPERTY(TYPE,NAME); PROPERTY(TYPE,NAME)
 
 

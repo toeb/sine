@@ -10,5 +10,5 @@ void CompositeSimulationModule::addModule(ISimulationModule * module){
 }
 void CompositeSimulationModule::removeModule(ISimulationModule * module){
   removeComponent(module);
-  auto pos = std::remove(_modules.begin(), _modules.end(), module);
+  std::remove(_modules.begin(), _modules.end(), module);
 }  

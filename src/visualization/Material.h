@@ -3,18 +3,18 @@
 #include <visualization/Color.h>
 #include <core/Reflection.h>
 #include <core/PropertyChangingObject.h>
-#define PROP(TYPE,NAME) REFERENCE_PROPERTY(TYPE,NAME); REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME)
+
+
 namespace nspace{
 class Material : public virtual PropertyChangingObject{
-  TYPED_OBJECT(Material);
-  REFLECTABLE(Material);
+  REFLECTABLE_OBJECT(Material);
 private:
-  PROP(Color,Ambient){}
-  PROP(Color,Diffuse){}
-  PROP(Color,Specular){}
-  PROP(Color,Emission){}
-  PROP(Real,Shininess){}
-  PROP(std::string, MaterialName){}
+  REF_PROP(Color,Ambient){}
+  REF_PROP(Color,Diffuse){}
+  REF_PROP(Color,Specular){}
+  REF_PROP(Color,Emission){}
+  REF_PROP(Real,Shininess){}
+  REF_PROP(std::string, MaterialName){}
      
   
   static std::map<std::string, Material*> & _palette;

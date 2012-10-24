@@ -29,7 +29,7 @@ void DampedSpring::act (std::vector<DynamicBody*> & target, Real time) {
 	_cA.addExternalForce(_f_wcs);
 	_cB.addExternalForce(-_f_wcs);
 }
-inline void DampedSpring::calculateSpringAndDampeningForce(){  
+ void DampedSpring::calculateSpringAndDampeningForce(){
   _lastLength = _currentLength;
 
    //_cA.calculateCachedValues();

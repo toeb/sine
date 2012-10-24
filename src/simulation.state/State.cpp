@@ -32,6 +32,7 @@ std::ostream& operator<<(std::ostream & out, const State & state){
 
 }
 
-State::State(uint offset, uint dimension, uint derivatives, State & parent):_parent(&parent),_offset(offset),_derivatives(derivatives),_stateMatrix(parent._stateMatrix),_dimension(dimension){ }
+State::State(uint offset, uint dimension, uint derivatives, State & parent):
+  _parent(&parent),_stateMatrix(parent._stateMatrix),_offset(offset),_dimension(dimension),_derivatives(derivatives){ }
 
-State::State():_parent(0),_derivatives(0),_offset(0),_dimension(0),_stateMatrix(0){ }
+State::State():_parent(0),_stateMatrix(0),_offset(0),_dimension(0),_derivatives(0){ }

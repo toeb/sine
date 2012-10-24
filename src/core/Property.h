@@ -33,8 +33,8 @@ namespace nspace{
 
   class PropertyAdapter{
   private:
-    const Property & _property;
     void * _object;
+    const Property & _property;
   public:
     const Property & property()const{
       return _property;
@@ -47,28 +47,28 @@ namespace nspace{
     
     template< typename T>
     void get(T& value){
-      _property.getValue(&object,&value);
+      this-> _property.getValue(object(),&value);
     }
     template< typename T>
     T get(){
       T t;
-      _property.getValue(&object,&t);
+      this->_property.getValue(object(),&t);
       return t;
     }
     template< typename T>
     void set(const T& value){
-      _property.setValue(&object,&value);
+      this->_property.setValue(object(),&value);
     }
 
     void deserialize(std::istream & in){
-      _property.deserialize(_object,in);
+      this->_property.deserialize(_object,in);
     }
     void serialize(std::ostream & out){
-      _property.serialize(_object,out);
+      this->_property.serialize(object(),out);
     }
 
     void setToDefault(){
-      _property.setToDefaultValue(_object);
+      this->_property.setToDefaultValue(object());
     }
   };
 }

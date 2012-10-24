@@ -5,7 +5,7 @@ namespace nspace{
 
 template<typename T>
 class TypedValue : public IValue{
-  REFLECTABLE_OBJECT(TypedValue);
+  TYPED_OBJECT(TypedValue<T>);
   T & _value;
 public:
   T & value(){
@@ -19,7 +19,7 @@ public:
   }
   virtual void toString(std::ostream & out)const{
     out << get();
-  };
+  }
  
   void set(const T & type){
     _value = type;

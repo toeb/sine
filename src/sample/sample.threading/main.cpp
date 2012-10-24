@@ -9,12 +9,6 @@ int main(int argc, char ** argv){
   bool iterate = true;
 
 
-  auto p = high_resolution_clock::period();
-  std::cout << p.num<<"/"<<p.den<<endl;
-  p = system_clock::period();
-  std::cout << p.num<<"/"<<p.den<<endl;
-  p = steady_clock::period();
-  std::cout << p.num<<"/"<<p.den<<endl;
 
 
   thread t1([&iterate](){ while(iterate) ; });

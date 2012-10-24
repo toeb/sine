@@ -8,9 +8,9 @@ namespace nspace{
   class StatefulObject : public virtual ISimulationObject{
     TYPED_OBJECT(StatefulObject);
   private:
-    State * _state;
     uint _stateDimension;
     uint _stateDerivatives;
+    State * _state;
   public:
     // is called when the state of the object was changed. clients can then 
     // set their objects internal data to the data specified by state()

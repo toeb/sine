@@ -57,7 +57,7 @@ namespace nspace{
     
     Qt::ItemFlags flags(const QModelIndex & index)const{
       if(index.column()==1){
-        int result = QAbstractItemModel::flags(index)|Qt::ItemIsEditable;
+        Qt::ItemFlags result = QAbstractItemModel::flags(index)|Qt::ItemIsEditable;
         return result;
       }
       return QAbstractItemModel::flags(index);

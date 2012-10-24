@@ -28,12 +28,12 @@ namespace nspace{
     public virtual CompositeHubObject
   {
     REFLECTABLE_OBJECT(IntegratingSystem);
-    PROPERTY(ITask * , Task);
-    PROPERTY(StatefulObject *, State);
-    PROPERTY(ISystemFunction *, SystemFunction);
-    PROPERTY(Evaluator *, Evaluator);
+    PROPERTY(ITask*, Task);
+    PROPERTY(StatefulObject*, State);
+    PROPERTY(ISystemFunction*, SystemFunction);
+    PROPERTY(Evaluator*, Evaluator);
     PROPERTY(SimulationTimeProvider *, TimeProvider);
-    PROPERTY(StepIntegrator *, Integrator);
+    PROPERTY(StepIntegrator*, Integrator);
   public:
     void operator()();
     IntegratingSystem(SimulationTimeProvider * timeProvider);

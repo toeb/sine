@@ -24,7 +24,7 @@ std::string Object::toString()const{
   }
   const Property* TypeData::getProperty(int index)const{
     if(!properties)return 0;
-    properties->at(index);
+    return properties->at(index);
   }
 
 unsigned int TypeData::_typeCounter = 0;

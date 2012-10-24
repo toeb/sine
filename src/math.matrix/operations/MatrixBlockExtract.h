@@ -17,7 +17,6 @@ template<typename BlockType, typename SourceType>
       }
       for(uint i=0; i < target.rows(); i++){
         for(uint j=0; j < target.cols(); j++){
-          Real tmp = source(i+rowOffset,j+colOffset);
           target(i,j) = source(i+rowOffset,j+colOffset);
         }
       }

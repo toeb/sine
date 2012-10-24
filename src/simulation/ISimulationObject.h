@@ -16,8 +16,8 @@ class ISimulationModule;
 class ISimulationObject : public virtual NamedObject, public virtual Initializable{
   TYPED_OBJECT(ISimulationObject);
 private:
-  ISimulationModule * _parent;
   Simulation * _simulation;
+  ISimulationModule * _parent;
 public:
    
   ISimulationObject();

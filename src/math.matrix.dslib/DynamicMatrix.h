@@ -11,9 +11,9 @@ namespace matrix2{
 template<typename T>
 class DynamicMatrix  : public nspace::Matrix<T>{
 protected:
-  T * _data;
   uint _rows;
   uint _cols;
+  T * _data;
   inline Real & value(int i, int j){
     return _data[index(i,j)];
   }
