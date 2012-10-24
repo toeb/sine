@@ -6,26 +6,28 @@
 using namespace nspace;
 using namespace std;
 
-GlWidget::GlWidget(QWidget * parent):QGLWidget(parent),_viewport(0),_viewportController(0),
-  _refreshTask([this](Time t, Time t2){repaint();}){
+GlWidget::GlWidget(QWidget * parent):QGLWidget(parent),
+  _viewport(0),
+  _viewportController(0),
+  _inputHandler(0),
+  _refreshTask([this](Time t, Time t2){repaint();})
+{
+    setName("GlWidget");
     _refreshTask.isOneTimeTask()=false;
     _refreshTask.interval()=0.01;
-  Components()|=&_inputHandler;
-  Components()|=&_refreshTask;
-  setFocusPolicy(Qt::StrongFocus);
-  installEventFilter(this);
-  setMouseTracking(true);
+    _inputHandler=new QtInputHandler();
+    Components()|=_inputHandler;
+    Components()|=&_refreshTask;
+    setFocusPolicy(Qt::StrongFocus);
+    installEventFilter(this);
+    setMouseTracking(true);
 }
 void GlWidget::repaint(){
   updateGL();
 }
 void GlWidget::setViewportController(ViewportController * controller){
   Components()/=controller;
-
-  
-  _viewportController = controller;
-
-  
+  _viewportController = controller;  
   safe(_viewportController)->setViewport(_viewport);
   Components()|=controller;
 }
@@ -33,16 +35,13 @@ void GlWidget::setViewportController(ViewportController * controller){
 void GlWidget::onComponentAdded(Object * object){
   auto listener = dynamic_cast<IInputListener*>(object);
   if(listener){
-    this->_inputHandler.listeners()|=listener;
+    _inputHandler->InputListeners()|=listener;
   }
-
-  
-
 }
 void GlWidget::onComponentRemoved(Object * object){
   auto listener = dynamic_cast<IInputListener*>(object);
   if(listener){
-    this->_inputHandler.listeners()/=listener;
+    _inputHandler->InputListeners()/=listener;
   }
 }
 
@@ -69,27 +68,27 @@ void GlWidget::paintGL(){
 
 void GlWidget:: mouseMoveEvent(QMouseEvent* me){
   // forward mouse event to input handler
-  _inputHandler.mouseMoveEvent(me);
+  _inputHandler->mouseMoveEvent(me);
 }
 
 void GlWidget::mousePressEvent(QMouseEvent* me){
   // forward mouse event to input handler
-  _inputHandler.mousePressEvent(me);
+  _inputHandler->mousePressEvent(me);
 }
 
 void GlWidget:: mouseReleaseEvent(QMouseEvent* me){
   // forward mouse event to input handler
-  _inputHandler.mouseReleaseEvent(me);
+  _inputHandler->mouseReleaseEvent(me);
 }
 
 void GlWidget:: keyReleaseEvent(QKeyEvent* me){
   // forward mouse event to input handler
-  _inputHandler.keyReleaseEvent(me);
+  _inputHandler->keyReleaseEvent(me);
 }
 
 void GlWidget:: keyPressEvent(QKeyEvent* me){
   // forward mouse event to input handler
-  _inputHandler.keyPressEvent(me);
+  _inputHandler->keyPressEvent(me);
 }
 
 bool GlWidget::eventFilter(QObject *object, QEvent *event)

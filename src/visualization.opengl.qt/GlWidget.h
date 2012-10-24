@@ -8,12 +8,12 @@
 #include <visualization/ViewportController.h>
 
 namespace nspace{
-  class GlWidget : public QGLWidget, public virtual CompositeHubObject{
+  class GlWidget : public QGLWidget, public virtual NamedObject, public virtual CompositeHubObject{
     Q_OBJECT;
     TYPED_OBJECT(GlWidget);
     GlViewport * _viewport;
     ViewportController * _viewportController;
-    QtInputHandler _inputHandler;
+    QtInputHandler *_inputHandler;
     ScheduledTaskDelegate _refreshTask;
   public:
     GlWidget(QWidget * parent=0);

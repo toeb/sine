@@ -5,6 +5,7 @@
 using namespace nspace;
 
 GlWidgetPluginWindow::GlWidgetPluginWindow(Set<GlViewport*> & viewports):PluginWindow(0),_ui(0),_viewports(viewports),_glWidget(0){
+  setName("GlWidgetPluginWindow");
   viewports.addObserver(this);
   _ui = new Ui_GlViewportWidget();
   QWidget * widget = new QWidget();

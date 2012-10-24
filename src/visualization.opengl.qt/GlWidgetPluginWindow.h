@@ -10,6 +10,7 @@ namespace nspace{
   // the gl widget plugin window is a plugin window which has a renderer and viewport specific options showing
   class GlWidgetPluginWindow : 
     public PluginWindow, 
+    public virtual NamedObject,
     public virtual CompositeHubObject, 
     public virtual ObservableCollection<GlViewport*>::Observer{
     Q_OBJECT;
