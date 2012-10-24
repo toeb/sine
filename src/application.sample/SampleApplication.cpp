@@ -5,17 +5,55 @@ using namespace nspace;
 
 
 SampleApplication::SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory):
-  _sample(sample),_application(argc,argv),_ResourceDirectory(resourceDirectory),
-  _rk4(0.05),
- // _defaultSystem(_simulationTimeProvider),
- _simulationTimeController(TimeProvider(),false)
+  _sample(sample),
+  _ResourceDirectory(resourceDirectory),
+  _Skybox(0),
+  _Camera(0),
+  _SimulationTimeProvider(0),
+  _ObjectViewPlugin(0),
+  _QtPropertyView(0),
+  _ViewportPlugin(0),
+  _Initializer(0),
+  _Hub(0),
+  _Application(0),
+  _Viewport(0),
+  _RenderSet(0),
+  _QtTaskRunner(0),
+  _QtTimeControlPlugin(0),
+  _DefaultLightSetup(0),
+  _SimulationTimeController(0),
+  _Simulation(0),
+  _Integrator(0),
+  _Grid(0)
 {
-  _application.setName("Sample Application");
-  setName("SampleApplication");
   Color::loadColors(resourceDirectory+"/colors/palette.txt");
   Material::loadMaterials(resourceDirectory+"/materials/palette.txt");
+  
+  _Application = new PluginApplication(argc,argv);
   _sample.setApplication(*this);
+  setName("SampleApplication");
+  
 
+  getApplication()->setName("Sample Application");
+
+  _Integrator=new RungeKutta4(0.05);
+  _SimulationTimeProvider = new SimulationTimeProvider();
+  _SimulationTimeController=new SimulationTimeController(*getSimulationTimeProvider(),false);
+  
+  _Skybox = new SkyboxRenderer();
+  _Camera = new FpsCamera();
+  _ObjectViewPlugin = new ObjectViewPlugin();
+  _QtPropertyView = new QtPropertyView();
+  _ViewportPlugin = new ViewportPlugin();
+  _Initializer = new InitializationModule();
+  _Hub = new Hub();
+  _Viewport = new GlViewport();
+  _RenderSet = new RenderSet();
+  _QtTaskRunner = new QtTaskRunner();
+  _QtTimeControlPlugin = new QtTimeControlPlugin();
+  _Grid = new GridRenderer();
+  _DefaultLightSetup = new DefaultLightSetup();
+  _Simulation =  new Simulation();
 } 
 
 void SampleApplication::printSetup(){
@@ -29,52 +67,56 @@ void SampleApplication::printHierarchy(){
 }
 
 void SampleApplication::setup(){
+  
 
-  viewport().clearColor().setTo("LightGreen");
-  _viewportPlugin.setName("Visualization Window");
-  _glViewport.setName("Default View");
+  getViewport()->clearColor().setTo("LightGreen");
+  getViewport()->setName("Default View");
 
-  _grid.GridMaterial() = Color("LightGrey");
-  _grid.setSections(50);
-  _grid.Coordinates().position().y()=-5;
-  _grid.setWidth(100);
-  _grid.setHeight(100);
+  getViewportPlugin()->setName("Visualization Window");
 
-  _skybox.setFileBase(ResourceDirectory()+"/images/sky");
+  
+  getGrid()->GridMaterial() = Color("LightGrey");
+  getGrid()->setSections(50);
+  getGrid()->Coordinates().position().y()=-5;
+  getGrid()->setWidth(100);
+  getGrid()->setHeight(100);
 
-  _timeControl.setTimeController(&_simulationTimeController);
+  getSkybox()->setFileBase(getResourceDirectory()+"/images/sky");
 
-  hub()|=&_simulation;
-//  hub()|=&_defaultSystem;
-  hub()|=&_rk4;    
-  hub()|=&TimeProvider();
-  hub()|=&_simulationTimeController;
-  hub()|=&_timeControl;
-  hub()|=&_grid;
-  hub()|=&_skybox;
-  hub()|=&_application;
-  hub()|=&_initializer;
-  hub()|=&_viewportPlugin;
-  hub()|=&_Camera;
-  hub()|=&_lights;
-  hub()|=&_glViewport;
-  hub()|=&_taskrunner;
-  hub()|=&_renderers;
+  getQtTimeControlPlugin()->setTimeController(getSimulationTimeController());
+
+
+  hub()|=getSimulation();
+  hub()|=getIntegrator();    
+  hub()|=getSimulationTimeProvider();
+  hub()|=getSimulationTimeController();
+  hub()|=getQtTimeControlPlugin();
+  hub()|=getGrid();
+  hub()|=getSkybox();
+  hub()|=getApplication();
+  hub()|=getInitializer();
+  hub()|=getViewportPlugin();
+  hub()|=getCamera();
+  hub()|=getDefaultLightSetup();
+  hub()|=getViewport();
+  hub()|=getQtTaskRunner();
+  hub()|=getRenderSet();
   hub()|=&_sample;
-  hub()|=&_PropertyView;
+  hub()|=getObjectViewPlugin();
+  hub()|=getQtPropertyView();
 
-  _glViewport.setViewportRenderer(&_renderers);
-  _viewportPlugin.glWidget()->setViewportController(&_Camera);
 
-  viewport().Coordinates().position()=Vector3D(0,0,-10);
+  getViewport()->setViewportRenderer(getRenderSet());
+  getViewport()->Coordinates().position()=Vector3D(0,0,-10);
+  getViewportPlugin()->glWidget()->setViewportController(getCamera());
+
 }
-Hub & SampleApplication::hub(){return _hub;}
-GlViewport & SampleApplication::viewport(){return _glViewport;}
+Hub & SampleApplication::hub(){return *getHub();}
 
 
 int SampleApplication::run(){
   setup();
   _sample.setup();
-  _initializer.initialize();
-  return _application.run();
+  getInitializer()->initialize();
+  return getApplication()->run();
 }

@@ -13,45 +13,45 @@
 #include <simulation.integration/SystemModule.h>
 #include <simulation.integration/implementations/RungeKutta4.h>
 #include <simulation.runner.qt/QtPropertyView.h>
+#include <application.qt/ObjectViewPlugin.h>
 
 namespace nspace{
-class SampleApplication : public virtual NamedObject{
-  TYPED_OBJECT(SampleApplication);
+  class SampleApplication : public virtual NamedObject, public virtual PropertyChangingObject{
+    REFLECTABLE_OBJECT(SampleApplication);
 public:
-  REFERENCE_PROPERTY(SkyboxRenderer,skybox);
-  REFERENCE_PROPERTY(FpsCamera,Camera);
-  SIMPLE_PROPERTY(std::string, ResourceDirectory){}
-  REFERENCE_PROPERTY(std::string, ResourceDirectory);
-  FIELD(private, SimulationTimeProvider, TimeProvider);
-  REFERENCE_PROPERTY(SimulationTimeProvider, TimeProvider);
+  PROPERTY(SkyboxRenderer * ,Skybox){cancel = true;}
+  PROPERTY(ViewportController * ,Camera){cancel = true;}
+  PROPERTY(std::string  ,ResourceDirectory){}
+  PROPERTY(SimulationTimeProvider * ,SimulationTimeProvider){cancel = true;}
+  PROPERTY(ObjectViewPlugin * ,ObjectViewPlugin){cancel = true;}
+  PROPERTY(QtPropertyView * ,QtPropertyView){cancel = true;}
+  PROPERTY(ViewportPlugin * ,ViewportPlugin){cancel = true;}
+  PROPERTY(InitializationModule * ,Initializer){cancel = true;}
+  PROPERTY(Hub * ,Hub){cancel = true;}
+  PROPERTY(PluginApplication * ,Application){cancel = true;}
+  PROPERTY(GlViewport * ,Viewport){cancel = true;}
+  PROPERTY(RenderSet * ,RenderSet){cancel = true;}
+  PROPERTY(QtTaskRunner * ,QtTaskRunner){cancel = true;}
+  PROPERTY(GridRenderer * ,Grid){cancel = true;}
+  PROPERTY(QtTimeControlPlugin * ,QtTimeControlPlugin){cancel = true;}
+  PROPERTY(DefaultLightSetup * ,DefaultLightSetup){cancel = true;}
+  PROPERTY(SimulationTimeController * ,SimulationTimeController){cancel = true;}
+  PROPERTY(Simulation * ,Simulation){cancel = true;}
+  PROPERTY(StepIntegrator * ,Integrator){cancel = true;}
 
-  FIELD(private, QtPropertyView, PropertyView);
+
+
 
 public:
   SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = ".");
   Hub & hub();
-  GlViewport & viewport();  
   void setup();
   int run();
   void printSetup();
   void printHierarchy();  
-private:
-  Hub _hub;
-  PluginApplication _application;
-  InitializationModule _initializer;
-  ViewportPlugin _viewportPlugin;
-  FpsCamera _Camera;
-  GlViewport _glViewport;
-  RenderSet _renderers;
-  QtTaskRunner _taskrunner;
-  Sample & _sample;
-  DefaultLightSetup _lights;
-  SkyboxRenderer _skybox;
-  GridRenderer _grid;
-  QtTimeControlPlugin _timeControl;
-  SimulationTimeController _simulationTimeController;
-  Simulation _simulation;
-  //SystemModule _defaultSystem;
-  RungeKutta4 _rk4;
+private:  Sample & _sample;
+
+
+
 };
 }
