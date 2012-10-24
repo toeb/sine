@@ -36,6 +36,8 @@ set(runnerSource
 ./QtTimeControlPlugin.cpp
 ./QtSnapshotPlugin.h
 ./QtSnapshotPlugin.cpp
+./QtLogViewPlugin.h
+./QtLogViewPlugin.cpp
 )
 
 set(runnerMocFiles
@@ -53,13 +55,16 @@ set(runnerMocFiles
 ./SimulationDockWidget.h
 ./QtTaskRunner.h
 ./QtViewport.h
+./QtLogViewPlugin.h
 )
 
 set(runnerUiFiles
 simulationobjects.ui
 mainwindow.ui
 timecontrol.ui
-propertyWindow.ui
+propertyView.ui
+logView.ui
+objectView.ui
 statehistory.ui
 taskwidget.ui
 )

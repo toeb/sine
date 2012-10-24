@@ -1,12 +1,21 @@
 #pragma once
 
-#include <QDockWidget>
+#include <application.qt/Plugin.h>
+#include <application.qt/PluginWindow.h>
+#include <application.qt/PluginContainer.h>
+#include <core/Reflection.h>
 
 namespace mbslib{
-  class QtSimulationObjectsView : public QDockWidget{
+  class QtObjectViewPlugin : public Plugin{
     Q_OBJECT;
+    REFLECTABLE_OBJECT(QtObjectViewPlugin);
+    
   public:
-    QtSimulationObjectsView(QWidget * parent);
+    QtObjectViewPlugin(){
+    
+    }
+
+
   
   };
 

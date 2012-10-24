@@ -1,9 +1,11 @@
 #pragma once
 #include <QStandardItem>
 #include <simulation.access/IComponent.h>
+#include <core/Set.h>
 namespace nspace{
+  class ValueItem;
  class ValueItemFactory{
  public:
-   static void create(QStandardItem& parent,  IComponent * component);
+   static Set<ValueItem*> create(QStandardItem& parent,  IComponent * component);
  };
 }

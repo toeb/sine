@@ -8,9 +8,9 @@
 using namespace nspace;
 using namespace std;
 
-void ValueItemFactory::create(QStandardItem& parent,  IComponent * component){
-   
-  if(!component)return;
+Set<ValueItem*> ValueItemFactory::create(QStandardItem& parent,  IComponent * component){
+   Set<ValueItem*> items;
+  if(!component)return items;
 
 
   QList<QStandardItem*> row;
@@ -28,28 +28,34 @@ void ValueItemFactory::create(QStandardItem& parent,  IComponent * component){
         ss << "a"<<(i+1)<<(j+1);
 
         row<< new QStandardItem(QString::fromStdString(ss.str()));
-        row << new DoubleItem(matrixItem->value(i,j));
+        auto item = new DoubleItem(matrixItem->value(i,j));
+        row << item;
+        items |= item;
       }
       namedItem->appendRow(row);
     }
     
     parent.appendRow(namedItem);
-    return;
+    return items;
   }
   if(value){
     row << new NamedItem(*value);
-    row << new IValueItem(*value);
+    auto item = new IValueItem(*value);
+    row << item;
+    items|=item;
     parent.appendRow(row);
-    return;
+    return items;
   }
   auto group = dynamic_cast<Group*>(component);
   if(group){
     NamedItem * item = new NamedItem(*group);
     
-   group->foreachComponent([item](IComponent * component){
-     create(*item,component);
+   group->foreachComponent([item,&items](IComponent * component){
+     items |= create(*item,component);
    });
    parent.appendRow(item);
+
+   return items;
   }
 
 
