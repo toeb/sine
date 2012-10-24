@@ -1,5 +1,6 @@
 #pragma once
 #include <config.h>
+#include <core/Serialization.h>
 #ifndef MATRIX_CLASSES
 #define MATRIX_CLASSES 2
 #endif
@@ -19,6 +20,9 @@ typedef nspace::math::dslib::Matrix3x4  Matrix3x4;
 typedef nspace::math::dslib::Quaternion Quaternion;
 typedef nspace::math::dslib::VectorND   VectorND;
 typedef nspace::math::dslib::MatrixNxM  MatrixNxM;
+
+
+
 }
 #elif MATRIX_CLASSES == 3
 #include <math.matrix.dslib/types.h>
@@ -39,6 +43,10 @@ namespace nspace{
 #endif
 
 namespace nspace{
+  
+SERIALIZERS(Vector3D, stream<<(*value)(0) <<" "<< (*value)(1)<<" " << (*value)(2), stream >> (*value)(0) >> (*value)(1) >> (*value)(2) )
+SERIALIZERS(Vector2D, stream<<(*value)(0) <<" "<< (*value)(1), stream >> (*value)(0) >> (*value)(1) )
+  
   namespace math{
 
 
@@ -53,3 +61,4 @@ namespace nspace{
     }
   }
 }
+
