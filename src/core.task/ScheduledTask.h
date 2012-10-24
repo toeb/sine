@@ -6,10 +6,10 @@ namespace nspace{
   class ScheduledTaskRunner;
   class ScheduledTask : public virtual ITask{
   private:
-    Time _nextExecutionTime;    
     Time _interval;
-    bool _oneTimeTask;
     Time _lastTimeoutTime;
+    Time _nextExecutionTime;
+    bool _oneTimeTask;
 
   public:
     struct CompareTaskPriority{
