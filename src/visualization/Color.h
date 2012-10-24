@@ -25,7 +25,10 @@ namespace nspace{
     static std::map<std::string, Color*> & _palette;
     // the unknow color value (default : black)
     static const  Color& unknown;
+    static std::string _defaultname;
   public:
+    static const Color & UnknownColor(){return unknown;}
+
     // constructor sets the color to the color represented by name
     // if it does not exists it sets it to the default: black
     Color(const std::string & name);
@@ -46,6 +49,7 @@ namespace nspace{
     friend bool operator==(const Color& a, const Color & b);
     friend bool operator!=(const Color & a, const Color & b);
 
+    
     // loads all colors from the color file specified by filename
     static int loadColors(const std::string & filename);
     // returns the color from the palette by name
@@ -59,6 +63,9 @@ namespace nspace{
     Color(const RGB & rgb, Real alpha);
     Color(const Vector3D &  col);
     Color(Real r, Real g, Real b, Real alpha=0);
+    Color(const Color & color){
+      *this = color;
+    }
 
     // normalizes the color (sets all color channels to between zero and one)
     void normalize();
@@ -76,7 +83,10 @@ namespace nspace{
     Real grayscale();
 
     void setColorName(const std::string& name);
+    void setColorNameNull(){_colorName=0;}
     const std::string & colorName()const;
+
+    bool hasName()const;
 
     // copies the color value into the float array (length 4)
     void colorArray(float * color)const;
@@ -107,4 +117,24 @@ namespace nspace{
     // writes the color to the output stream
     friend std::ostream & operator <<(std::ostream & o, const Color & color);
   };
+
+
+  
+SERIALIZERS(Color,{
+  if(value->hasName())stream << value->colorName();
+  else stream << value->r() << " "<<value->g() <<" "<<value->b()<<" " <<value->a();
+  return true;
+},{
+  std::string colorname;
+  stream>>colorname;
+  auto color = Color::getColorByName(colorname);
+  if(&color!=&Color::UnknownColor()){
+    *value = color;
+    return true;
+  }  
+  std::stringstream ss(colorname);
+  stream>>value->r()>>value->g()>>value->b()>>value->a();
+  value->setColorNameNull();
+  return true;
+});
 }

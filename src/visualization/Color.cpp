@@ -64,7 +64,11 @@ void Color::operator()(const std::string & name){
   setTo(name);
 }
 Color & Color::operator=(const Color  & newValue){
-  setColorName(newValue.colorName());
+  if(!newValue.hasName()){
+    setColorNameNull();
+  }else{
+    setColorName(newValue.colorName());
+  }
   _rgb = newValue.rgb();
   _alpha =newValue.a();
   return *this;
@@ -130,11 +134,19 @@ void Color::colorArray(float * color)const{
 void Color::setColorName(const std::string& name){
   _colorName = new std::string(name);
 }
+std::string Color::_defaultname="<NONAME>";
 const std::string & Color::colorName()const{
-  static std::string defaultName ="<NONAME>";
+ 
   if(_colorName)return *_colorName;
-  return defaultName;
+  return _defaultname;
 }
+
+
+bool Color::hasName()const{
+  if(_colorName)return true;
+  return false;
+}
+
 RGB & Color::rgb(){ return _rgb;}
 const RGB & Color::rgb()const{return _rgb;}     
 Real & Color::a(){return _alpha;}
