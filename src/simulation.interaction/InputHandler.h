@@ -7,15 +7,16 @@
 #include <math/core.h>
 #include <simulation.interaction/IInputListener.h>
 #include <core.hub/ModuleBase.h>
+#include <core/Reflection.h>
+#include <simulation.logging/Log.h>
 namespace nspace{
   //an inputhandler is a module which translates input into events for IInputListeners and keeps track of keyboard / mouse input state
-  class InputHandler:public virtual ModuleBase{
-    TYPED_OBJECT(InputHandler);
+  class InputHandler:public virtual ModuleBase,public virtual NamedObject, public virtual Log{
+    REFLECTABLE_OBJECT(InputHandler);
+    PROPERTYSET(IInputListener*, InputListeners,,);
   private:
     // store the last change time which allows clients to see which is the current inputhandler
     Time _lastChange;
-    // the set of listeners which are currently waiting for events of this handler
-    Set<IInputListener* > _listeners;
     // the array of keys which are currently pressed
     bool _keysDown[MAX_KEYS];
     // the array of mouse buttons which are currently pressed
@@ -27,10 +28,6 @@ namespace nspace{
     Real _mouseWheel;
   public:    
     Time lastChange()const{return _lastChange;}
-    // access to the listeners of this input handler
-    Set<IInputListener* > & listeners();
-    // readonly access to the listeners of this input handler
-    const Set<IInputListener* > & listeners()const;
     // override of ModuleBase.  this module only accepts iinputlistener objects
     bool accept(Object * object);
     //default constructor
