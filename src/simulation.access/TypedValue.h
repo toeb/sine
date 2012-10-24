@@ -5,6 +5,7 @@ namespace nspace{
 
 template<typename T>
 class TypedValue : public IValue{
+  REFLECTABLE_OBJECT(TypedValue);
   T & _value;
 public:
   T & value(){

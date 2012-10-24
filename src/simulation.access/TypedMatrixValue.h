@@ -4,6 +4,7 @@ namespace nspace{
 
 template<typename Derived>
 class TypedMatrixValue : public MatrixValue{
+  REFLECTABLE_OBJECT(TypedMatrixValue);
 private:
   Derived & _matrix;
 public:

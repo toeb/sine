@@ -5,6 +5,7 @@ namespace nspace{
 
 template<typename T>
 class TypedValueDelegate : public IValue{
+  REFLECTABLE_OBJECT(TypedValueDelegate)
 private:
   std::function<void (const T & )> _setter;
   std::function<T ()> _getter;
