@@ -5,6 +5,8 @@
 #include <core/PropertyChangingObject.h>
 #include <core/patterns/Singleton.h>
 
+
+
 // to use reflection REFLECTABLE(<CLASSNAME>) needs to be 
 // stated once in the class. it creates multiple things:
 // - properties() : a static set of const Propert * which contains all reflectable properties of a class
@@ -19,12 +21,17 @@
 // - REFLECTABLE_CUSTOM_PROPERTY
 // - REFLECTABLE_PROPERTY
 // - REFLECTABLE_NOTIFYING_PROPERTY
-
 #define REFLECTABLE(TYPENAME)\
   typedef TYPENAME ReflectableType;\
   private:\
   static Set<const Property*> & propertiesSet(){\
-  static Set<const Property*> * _propertiesSet=new Set<const Property*>();\
+  static Set<const Property*> * _propertiesSet=0;\
+    if(!_propertiesSet){\
+    _propertiesSet = new Set<const Property*>();\
+    const TypeData & type = ClassType();\
+    TypeData* unconstType= const_cast<TypeData*>(&type);\
+    unconstType->properties =_propertiesSet;\
+    }\
   return *_propertiesSet;\
   };\
   public:\
@@ -46,8 +53,11 @@
   return propertiesSet();\
   }\
   static const Property * getProperty(const std::string & propertyname){\
-  auto p = properties().first([&propertyname](const Property * p ){return p->propertyName()==propertyname;});\
+  auto p = properties().first([&propertyname](const Property * p ){return p->PropertyName()==propertyname;});\
   return p;\
+  }\
+  PropertyAdapter getPropertyAdapter(const std::string & name){\
+    return PropertyAdapter(this,*getProperty(name));\
   }\
   private:\
 
@@ -55,28 +65,46 @@
 // shorthand for a typed object which is also reflectable
 #define REFLECTABLE_OBJECT(TYPE) TYPED_OBJECT(TYPE); REFLECTABLE(TYPE);
 
+#define PROPERTYCLASS(NAME) NAME##PropertyClass
+
+#define PROPERTYCLASSINSTANCE(NAME) ((PROPERTYCLASS(NAME)*)NAME##PropertyClass::instance())
+
 #define REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,PROPERTYDECLARATION)\
+  private:\
+  class PROPERTYCLASS(NAME) : public virtual TypedProperty<ReflectableType,TYPE>{\
+  TYPED_OBJECT(PROPERTYCLASS(NAME));\
   public:\
-  class NAME##PropertyClass : public virtual TypedProperty<ReflectableType,TYPE>{\
-  TYPED_OBJECT(NAME##PropertyClass);\
-  static NAME##PropertyClass * _instance;\
-  public:\
-  SINGLETON(NAME##PropertyClass){setPropertyName(#NAME);}\
+  SINGLETON(PROPERTYCLASS(NAME)){setPropertyName(#NAME);}\
   void setTypedValue(ReflectableType *  object , TYPE value)const{object->set##NAME(value); }\
   TYPE getTypedValue(const ReflectableType *  object)const{ return object->get##NAME(); }\
   };\
   private:\
-  class __init##NAME##Class{\
-  public:\
-  __init##NAME##Class(){\
-  ReflectableType::propertiesSet() |= NAME##PropertyClass::instance();\
-  }\
-  };\
-  __init##NAME##Class __init##NAME;\
+  STATIC_INITIALIZER(NAME##Property, { ReflectableType::propertiesSet() |= NAME##PropertyClass::instance();})\
   PROPERTYDECLARATION(TYPE,NAME)
+
+// sets the propertydisplayname property of the property object created for the property specified by NAME (.... property)
+#define DISPLAYNAME(NAME, DNAME)\
+  STATIC_INITIALIZER(NAME##DisplayName, {PROPERTYCLASSINSTANCE(NAME)->setPropertyDisplayName(DNAME);})
+
+// sets the description of property specified by name
+#define DESCRIPTION(NAME, DDESCRIPTION)\
+  STATIC_INITIALIZER(NAME##Description, {PROPERTYCLASSINSTANCE(NAME)->setPropertyDescription(DDESCRIPTION);})
+
+// sets the default value for the property specified by NAME  (make sure the type is correct) also add the set to default method
+#define DEFAULTVALUE(NAME,DEFAULTVALUE)\
+  public:\
+  void set##NAME##ToDefault(){PROPERTYCLASSINSTANCE(NAME)->setToDefaultValue(this);}\
+private:\
+  STATIC_INITIALIZER(NAME##DefaultValue, {static auto defaultvalue = DEFAULTVALUE; PROPERTYCLASSINSTANCE(NAME)->setDefaultValue(&defaultvalue);})
+
+// sets the groupname of the property specified by NAME
+#define GROUPNAME(NAME,GROUP)\
+  STATIC_INITIALIZER(NAME##GroupName,PROPERTYCLASSINSTANCE(NAME)->setGroupName(GROUP))
 
 #define REFLECTABLE_PROPERTY(TYPE,NAME) REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,SIMPLE_PROPERTY)
 #define REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME) REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,NOTIFYING_PROPERTY)
 
 // default property macro 
 #define PROPERTY(TYPE,NAME) REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME)
+
+

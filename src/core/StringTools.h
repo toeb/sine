@@ -14,7 +14,10 @@ namespace nspace{
   template<typename T> std::string operator +(const std::string & a, const T & t);
   // concatenates  astring and any type of reference using the << operator
   template<typename T> std::string operator +( const T & t,const std::string & a);
-
+  bool contains(const std::string & original, const std::string & search);
+  bool containsIgnoreCase(const std::string & original, const std::string & search);
+  std::string toLowerCase(const std::string & original);
+  std::string toUpperCase(const std::string & original);
   // replaces the search string in original with replacement string
   std::string replace(std::string original, const std::string & search, const std::string & replacement);
   // generates whitespaces

@@ -39,6 +39,13 @@ namespace nspace{
   };
 
   // method for extracting the name of a named object
-  const std::string & name(Object * object);
+  const std::string & name(const Object * object);
+  // returns true if the object is a named object and it has a name
+  bool hasObjectName(const Object * object);
+  // returns truie if object is nameable
+  bool isObjectNameable(const Object * object);
+  // set the name of the object if it is nameable. returns true if it was successful
+  bool setObjectName(Object * object, const std::string &name);
+
 
 }

@@ -9,7 +9,7 @@ namespace nspace{
 template<typename A, typename B>
 class Comparator{
 public:
-  static void operation(bool & equal, const A a,const B b){
+  static inline void operation(bool & equal, const A a,const B b){
     equal = a==b;
   }
 };
@@ -17,7 +17,7 @@ public:
 
 // a shorthand for comparing two types
 template<typename A,typename B>
-bool compare(A a,B b){
+inline bool compare(A a,B b){
   bool result;
   Comparator<A,B>::operation(result,a,b);
   return result;

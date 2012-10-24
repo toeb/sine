@@ -30,6 +30,7 @@ set(source
 ./TypedProperty.h
 ./TypedProperty.cpp
 ./Reflection.h
+./Serialization.h
 ../config.h
 ../include/core.h
 )

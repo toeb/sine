@@ -82,6 +82,23 @@
         nspace::Set<TYPE > & NAME(){init##NAME##Observer(); return FIELDNAME(NAME);}\
     private:
 
+#define INITIALIZERNAME(NAME) __##NAME##initializer
+#define INITIALIZERCLASSNAME(NAME) INITIALIZERNAME(NAME)##Class
+
+
+// use inside a class definition.  INITIALIZATIONCODE will be executed every time an object the class is instanciated
+#define INITIALIZER(NAME,INITIALIZATIONCODE)\
+  private:\
+class INITIALIZERCLASSNAME(NAME){\
+public:\
+  INITIALIZERCLASSNAME(NAME)(){INITIALIZATIONCODE}\
+};\
+  INITIALIZERCLASSNAME(NAME) INITIALIZERNAME(NAME);
+
+//use inside a class definition INITIALIZATIONCODE will be executed for this type.  It will be called when the first object of that type is constructed
+#define STATIC_INITIALIZER(NAME,INITIALIZATIONCODE)\
+  INITIALIZER(NAME##Static, static bool __isInitialized=false; if(__isInitialized)return; __isInitialized=true; INITIALIZATIONCODE)
+
 
 
 /*
@@ -95,23 +112,23 @@
 
 #define REFERENCE(TYPE,NAME, FIELD) 
   */
-
+#define ON_PROPERTY_CHANGING_METHOD_NAME(NAME)on##NAME##Changing
 // the signature of the on changing method (w/o returntype, which is void)
-#define ON_PROPERTY_CHANGING(TYPE,NAME) on##NAME##Changing(TYPE oldvalue, TYPE & newvalue, bool & cancel)
+#define ON_PROPERTY_CHANGING(TYPE,NAME) ON_PROPERTY_CHANGING_METHOD_NAME(NAME)(TYPE oldvalue, TYPE & newvalue, bool & cancel)
 // a nicer to read alias of ON_PROPERTY_CHANGING
 #define propertyChanging(TYPE,NAME) ON_PROPERTY_CHANGING(TYPE,NAME)
 
 #define EXTENDED_PROPERTY(MODIFIER,TYPE, NAME,BEFORESET, AFTERSET) \
   FIELD(private,TYPE,NAME);\
   GETTER(public,TYPE,NAME);\
-  SETTER(public,TYPE,NAME,BEFORESET; if(FIELDNAME(NAME)==newvalue)return; bool cancel=false;  this->on##NAME##Changing(FIELDNAME(NAME),newvalue,cancel); if(cancel)return;, AFTERSET; );\
+  SETTER(public,TYPE,NAME,BEFORESET; if(FIELDNAME(NAME)==newvalue)return; bool cancel=false;  this->ON_PROPERTY_CHANGING_METHOD_NAME(NAME)(FIELDNAME(NAME),newvalue,cancel); if(cancel)return;, AFTERSET; );\
   private:\
   void ON_PROPERTY_CHANGING(TYPE,NAME)
 
 #define EXTENDED_REFERENCE_PROPERTY(MODIFIER,TYPE, NAME)\
-  MODIFIER:\
-  const TYPE & NAME()const{return _##NAME;} \
-  TYPE & NAME(){return _##NAME;} \
+MODIFIER:\
+  const TYPE & NAME()const{return FIELDNAME(NAME);} \
+  TYPE & NAME(){return FIELDNAME(NAME);} \
   private:
 
 #define REFERENCE_PROPERTY(TYPE, NAME) EXTENDED_REFERENCE_PROPERTY(public,TYPE, NAME)
@@ -143,10 +160,12 @@
 
 
 namespace nspace{
+class Property;
 typedef const uint TypeId;
 typedef const uint ObjectId;
 // struct representing a type. 
 struct TypeData{
+  static const TypeData & UnknownType;
   // the id of this type
   TypeId id;  
   // name of this type
@@ -161,24 +180,63 @@ struct TypeData{
   // number of typedata structs created
   static unsigned int typeCount();
   //void * createInstance();
+  Set<const Property*> * properties;
+
+  int getPropertyCount()const;
+  const Property * getProperty(const std::string & name)const;
+  const Property* getProperty(int index)const;
+
 private:
   static unsigned int _typeCounter;
 };
 
-// Macro for making an object a typed object.  
 
+template<typename T>
+class TypeDataProvider{
+public:
+static inline const TypeData & getTypeData(){
+  return TypeData::UnknownType;
+}
+};
+
+
+
+
+
+#define TYPEDATAPROVIDER(TYPE) \
+  template<>\
+  class TypeDataProvider<TYPE>{\
+  public:\
+    static inline const TypeData & getTypeData(){\
+      return TYPE::ClassType();\
+    }\
+  };\
+  template<>\
+  class TypeDataProvider<TYPE*>{\
+  public:\
+    static inline const TypeData & getTypeData(){\
+      return TYPE::ClassType();\
+    }\
+  };
+
+
+#define typeof(TYPE) (TypeDataProvider<TYPE>::getTypeData())
+
+
+
+// Macro for making an object a typed object.  
+// defines a static meta information structure (TypeData) and virtual access methods
 #define TYPED_OBJECT(type) public:\
   static inline const TypeData & ClassType(){static TypeData typeData(#type); return typeData; };\
   virtual inline const TypeId & getType()const {return ClassType().id;}\
   virtual inline const TypeData & getTypeData()const {return ClassType();}
-
+ 
 // base class including types
 class Object{
 TYPED_OBJECT(Object);
 private:
   static uint _idCounter;
-  ObjectId _id;
-
+  ObjectId _id;  
 public:  
   Object();
   ~Object();
@@ -198,7 +256,7 @@ public:
     return &a==&b;
   }
 };
-
+TYPEDATAPROVIDER(Object)
 
 
 

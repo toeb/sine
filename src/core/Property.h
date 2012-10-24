@@ -1,25 +1,25 @@
 #pragma once
 #include <core/Object.h>
 namespace nspace{
-class Property : public virtual Object{
+  class Property : public virtual Object{
     TYPED_OBJECT(Property);
-  private:
-    std::string _propertyName;    
-    bool _hasReadonlyReference;
-    bool _hasMutableReference;
-    bool _hasGetter;
-    bool _hasSetter;
-  protected:
-    void setPropertyName(const std::string & propertyName){_propertyName = propertyName;}
-    
+
+    SIMPLE_PROPERTY(std::string, PropertyName){if(getPropertyDisplayName()!="")return; setPropertyDisplayName(newvalue);}
+    SIMPLE_PROPERTY(std::string, PropertyDescription){}
+    SIMPLE_PROPERTY(std::string, PropertyDisplayName){}
+    SIMPLE_PROPERTY(const TypeData *, PropertyType){}
+    SIMPLE_PROPERTY(const void *, DefaultValue){}
+    SIMPLE_PROPERTY(std::string, GroupName){}
+    REFERENCE_PROPERTY(std::string, PropertyName);
   public:
-
-
-    const std::string & propertyName()const{return _propertyName;}    
-  
-
+    // sets this property to the default value
+    void setToDefaultValue(void * object)const{setValue(object,getDefaultValue());}
     virtual void setValue(void * object, const void * value)const=0;
     virtual void getValue(const void * object, void * value)const=0;  
+
+
+    virtual bool deserialize(void * object, std::istream & in)const{return false;}
+    virtual bool serialize(void * object, std::ostream & out)const{return false;}
 
     template<typename ObjectType, typename T>
     void get(T& value, const ObjectType & object)const{
@@ -29,5 +29,46 @@ class Property : public virtual Object{
     void set(const T& value, ObjectType & object)const{
       setValue(&object,&value);
     }    
+  };
+
+  class PropertyAdapter{
+  private:
+    const Property & _property;
+    void * _object;
+  public:
+    const Property & property()const{
+      return _property;
+    }
+    void * object(){return _object;}
+
+    PropertyAdapter(void * object,const Property & prop):_object(object),_property(prop){
+
+    }
+    
+    template< typename T>
+    void get(T& value){
+      _property.getValue(&object,&value);
+    }
+    template< typename T>
+    T get(){
+      T t;
+      _property.getValue(&object,&t);
+      return t;
+    }
+    template< typename T>
+    void set(const T& value){
+      _property.setValue(&object,&value);
+    }
+
+    void deserialize(std::istream & in){
+      _property.deserialize(_object,in);
+    }
+    void serialize(std::ostream & out){
+      _property.serialize(_object,out);
+    }
+
+    void setToDefault(){
+      _property.setToDefaultValue(_object);
+    }
   };
 }

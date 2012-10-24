@@ -32,8 +32,8 @@ namespace nspace{
 
   // an object which allows listeners to listen for property change events
   class PropertyChangingObject : public virtual Object{
-    TYPED_OBJECT(PropertyChangingObject);
-  private:
+    TYPED_OBJECT(PropertyChangingObject); 
+  private:    
     Set<PropertyChangedListener*> _listeners;
   public:
     Set<PropertyChangedListener*> & listeners();

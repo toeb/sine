@@ -1,10 +1,18 @@
 #pragma once
 #include <core/Property.h>
+#include <core/Serialization.h>
 namespace nspace{
+
+  
+
 
   template<typename OwningClass, typename ValueType>
   class TypedProperty : public virtual Property{
     TYPED_OBJECT(TypedProperty);
+  public:
+    TypedProperty(){
+      setPropertyType(&TypeDataProvider<ValueType>::getTypeData());
+    }
   private:
     
     void setValue(void * object, const void * value)const{
@@ -17,7 +25,21 @@ namespace nspace{
       auto typedValue = reinterpret_cast<ValueType*>(value);
       *typedValue= getTypedValue(typedObject);
     }
-    
+    virtual bool deserialize(void * ptr, std::istream & in)const{
+      Object *object = reinterpret_cast<Object*>(ptr);
+      OwningClass * owningClass = dynamic_cast<OwningClass*>(object);
+      if(!owningClass)return false;
+      ValueType value;
+      if(!Deserializer<ValueType>::deserialize(&value,in))return false;
+      setTypedValue(owningClass,value);
+      return true;
+    }
+    virtual bool serialize(void * object, std::ostream & out)const{
+      OwningClass * owningClass = dynamic_cast<OwningClass*>(static_cast<Object*>(object));
+      ValueType value = getTypedValue(owningClass);
+      if(!Serializer<ValueType>::serialize(out,&value))return false;
+      return true;
+    }
     virtual void setTypedValue(OwningClass *  object , ValueType value)const=0;
     virtual ValueType getTypedValue(const OwningClass *  object)const=0;
   };
