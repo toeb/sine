@@ -13,13 +13,14 @@ CoordinateSystem::CoordinateSystem():
 }
 
 CoordinateSystem::CoordinateSystem(const Vector3D & p, const Quaternion & q):
-  position(p,true),orientation(q,true),
-  _R(0),_RT(0){
-
-    //calculateRotationMatrices();
+  _R(0),_RT(0),
+  position(p,true),orientation(q,true){
 }
 
-CoordinateSystem::CoordinateSystem(const CoordinateSystem & original): _R(0),_RT(0){
+CoordinateSystem::CoordinateSystem(const CoordinateSystem & original):
+  _R(0),_RT(0),
+  position(Vector3D::Zero(),true),
+  orientation(Quaternion::Identity(),true){
   assign(original);
 }
 CoordinateSystem & CoordinateSystem::operator=(const CoordinateSystem & original){
@@ -107,7 +108,8 @@ void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vecto
 namespace nspace{
   std::ostream & operator << (std::ostream & o, const CoordinateSystem & coordinates){
     o << "position: (" <<coordinates.position().x()  <<", "<<coordinates.position().y()  <<", "<<coordinates.position().z()<< ") orientation: ";
-    coordinates.orientation().toStream(o);
+    const Quaternion & ori = coordinates.orientation();
+    o << "(" <<ori.w()<<", "<<ori.x()<<", "<<ori.y()<<", "<<ori.z()<<")";
     return o;
   }
   

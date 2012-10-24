@@ -4,7 +4,7 @@
 #include <math/core.h>
 #include <simulation.kinematics/Position.h>
 #include <simulation.kinematics/Orientation.h>
-
+#include <core/Serialization.h>
 namespace nspace{
 
 /**
@@ -15,6 +15,7 @@ namespace nspace{
  *
  */
 class CoordinateSystem : public virtual ISimulationObject{
+  TYPED_OBJECT(CoordinateSystem)
 private:
 
   Matrix3x3 * _R;
@@ -64,4 +65,17 @@ public:
   void toObjectCoordinates(const CoordinateSystem & coords_wcs,CoordinateSystem & result)const;
 
 };
+TYPEDATAPROVIDER(CoordinateSystem)
+SERIALIZERS(CoordinateSystem,
+{
+  stream << value->position()(0)<<" " << value->position()(1)<<" " << value->position()(2);  
+  stream << " "<<value->orientation()(0)<<" " << value->orientation()(1)<<" " << value->orientation()(2)<<" " << value->orientation()(3);
+  return true;
+},
+{
+  stream >> value->position()(0) >> value->position()(1)>> value->position()(2);
+  stream >> value->orientation()(0) >> value->orientation()(1)>> value->orientation()(2)>> value->orientation()(3);
+  return true;
+});
+
 }

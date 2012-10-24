@@ -22,6 +22,7 @@ namespace nspace{
  * \date 10.04.2012
  */
 class KinematicBody : public StatefulObject, public virtual CoordinateSystem{
+  TYPED_OBJECT(KinematicBody)
 public:
 
   LinearVelocity velocity;
