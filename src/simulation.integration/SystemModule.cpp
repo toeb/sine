@@ -33,9 +33,11 @@ void IntegratingSystem::setupEvaluator(StatefulObject * state, ISystemFunction *
     delete evaluator;
   }
   // if one of the following is 0 return
-  if(!(state&&func))return;
+  if(!state)return;
+  if(!func)return;
+  logInfo("Creating new Evaluator");
   // create new evaluator
-  Evaluator * evaluator = new Evaluator(*getState(),getSystemFunction());
+  Evaluator * evaluator = new Evaluator(*state,func);
   setEvaluator(evaluator);  
 }
 
@@ -44,13 +46,21 @@ void IntegratingSystem::propertyChanging(ITask *, Task){
   cancel=true;
 }
 void IntegratingSystem::propertyChanging(ISystemFunction *, SystemFunction){
+  logInfo("System Function Changing");
   setupEvaluator(getState(),newvalue);
+  Components()/=oldvalue;
+  Components()|=newvalue;
 }
 void IntegratingSystem::propertyChanging(StatefulObject *, State){
+  logInfo("Stateful Object Changing");
   setupEvaluator(newvalue,getSystemFunction());
+  Components()/=oldvalue;
+  Components()|=newvalue;
 }
 void IntegratingSystem::propertyChanging(Evaluator *, Evaluator){
   if(getIntegrator())getIntegrator()->setEvaluator(newvalue);
+  Components()/=oldvalue;
+  Components()|=newvalue;
 }
 void IntegratingSystem::propertyChanging(SimulationTimeProvider *, TimeProvider){
   // add task only if both integratpr and timeprovider are set

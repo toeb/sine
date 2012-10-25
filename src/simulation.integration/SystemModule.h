@@ -8,7 +8,7 @@
 #include <core.hub/CompositeHubObject.h>
 
 #include <simulation.time/SimulationTimeProvider.h>
-
+#include <simulation.logging/Log.h>
 namespace nspace{	
 
   /**
@@ -25,7 +25,8 @@ namespace nspace{
   class IntegratingSystem :
     public virtual NamedObject,
     public virtual PropertyChangingObject,
-    public virtual CompositeHubObject
+    public virtual CompositeHubObject,
+    public virtual Log
   {
     REFLECTABLE_OBJECT(IntegratingSystem);
     PROPERTY(ITask*, Task);
@@ -35,6 +36,7 @@ namespace nspace{
     PROPERTY(SimulationTimeProvider *, TimeProvider);
     PROPERTY(StepIntegrator*, Integrator);
   public:
+    // this object is a functor which will be used as a callback in the Task
     void operator()();
     IntegratingSystem(SimulationTimeProvider * timeProvider);
 
