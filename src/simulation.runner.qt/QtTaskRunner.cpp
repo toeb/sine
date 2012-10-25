@@ -24,24 +24,26 @@ protected:
 
 };
 QtTaskRunner::QtTaskRunner():_taskTimer(0),_breakTask(0){
+  setName("TaskRunner");
   _breakTask = new BreakTask(_scheduledTaskRunner);
   _breakTask->interval() = 0.01;
-  setName("TaskRunner");
   _taskTimer = new QTimer(this);
   _taskTimer->setInterval(5);
   connect(_taskTimer,SIGNAL(timeout()), this, SLOT(timeout()));
   Components() |= &_scheduledTaskRunner;
   Components() |= &_serialTaskRunner;
+
 }
 void QtTaskRunner::timeout(){
+  logMessage(4," timing out --> executing scheduledtaskrunner and serialtaskrunner");
   _scheduledTaskRunner.run();
   _serialTaskRunner.run();  
 }
-bool QtTaskRunner::accept(ITask * task){
-  
+bool QtTaskRunner::accept(ITask * task){;
   // ignore the taskrunners (which are also tasks)
   if(&_scheduledTaskRunner==task)return false;
   if(&_serialTaskRunner==task)return false;
+  logInfo("accepted task: "<<nspace::name(task)<<"");
   return true;
 }
 void QtTaskRunner::onElementAdded(ITask * task){
@@ -68,5 +70,13 @@ void QtTaskRunner::install(PluginContainer & container){
 }
 
 void QtTaskRunner::uninstall(PluginContainer & container){
+  logError("Function Not implemented");
+}
 
+
+void QtTaskRunner::onComponentAdded(Object * o){
+  logDebug("adding " <<*o);
+}
+void QtTaskRunner::onComponentRemoved(Object * o){
+  logDebug("removing "<< *o);
 }

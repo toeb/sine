@@ -9,25 +9,35 @@
 #include <core.task/ScheduledTaskRunner.h>
 #include <core.hub/CompositeHubObject.h>
 #include <QTimer>
+#include <core/Reflection.h>
+#include <simulation.logging/Log.h>
 class Ui_TaskWidget;
 namespace nspace{
 
-  class QtTaskRunner : public Plugin, public virtual CompositeHubObject, public virtual TypedModuleBase<ITask>{
+  class QtTaskRunner : public Plugin, public virtual CompositeHubObject, public virtual TypedModuleBase<ITask>,public virtual Log{
     Q_OBJECT;
-    TYPED_OBJECT(QtTaskRunner);
+    REFLECTABLE_OBJECT(QtTaskRunner);
+    SUBCLASSOF(Log);
+    SUBCLASSOF(Plugin);
+
   private:
     ScheduledTask *_breakTask;
     ScheduledTaskRunner _scheduledTaskRunner;
     SerialTaskRunner _serialTaskRunner;
     QTimer * _taskTimer;
     Ui_TaskWidget * _ui;
+
+
+
   public:
     QtTaskRunner();
   protected:
     void onElementAdded(ITask * task);
     void onElementRemoved(ITask * task);
+    void onComponentAdded(Object * o);
+    void onComponentRemoved(Object * o);
     bool accept(ITask * task);
-    public slots:
+  public slots:
     void timeout();
   public:
     void install(PluginContainer & container);
