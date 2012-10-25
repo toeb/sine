@@ -6,13 +6,12 @@
 #include <QTreeView>
 using namespace nspace;
 
-ObjectPropertyView::ObjectPropertyView(QWidget*parent):QWidget(parent),_CurrentObject(0){  
-  _ui = new Ui_ObjectPropertyView();  
+ObjectPropertyView::ObjectPropertyView(QWidget*parent):QWidget(parent),_CurrentObject(0){
+  _ui = new Ui_ObjectPropertyView();
   _ui->setupUi(this);
   _model = new ObjectPropertyViewModel();
   QTreeView* tv =_ui->treeView;
   tv->setModel(_model);
-
 }
 
 void ObjectPropertyView::propertyChanging(Object*, CurrentObject){
