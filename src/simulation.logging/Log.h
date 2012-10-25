@@ -1,18 +1,27 @@
 #pragma once
 #include <config.h>
 #include <core/Object.h>
-#include <iostream>
-#include <sstream>
+#include <core/NamedObject.h>
 #include <core/Reflection.h>
-#include <string>
 #include <core/Time.h>
 
-#include <core/NamedObject.h>
+#include <iostream>
+#include <sstream>
+#include <string>
+
 
 // these macros work within any class that contains a function to a reference called log (Log & log();}
 #define logInfo(x) {std::stringstream ss; ss << x ; log().info(ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
 #define logWarning(x) {std::stringstream ss; ss << x ; log().warn(ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
 #define logError(x) {std::stringstream ss; ss << x ; log().error(ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
+#define logMessage(level, x) {std::stringstream ss; ss << x ; log().log(level, ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
+//TODO move to cmake
+#define DEBUG
+#ifdef  DEBUG
+#define logDebug(x) logMessage(5,x) 
+#else 
+#define logDebug(x)
+#endif //  DEBUG
 
 namespace nspace{
   
@@ -53,8 +62,13 @@ namespace nspace{
   };
   class Log : public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(Log);
-    PROPERTY(bool, IsLoggingEnabled){};
+
+    PROPERTY(bool,LoggingEnabled){};
+    DEFAULTVALUE(LoggingEnabled, true);
+
     PROPERTY(int, LoggingLevel){};
+    DEFAULTVALUE(LoggingLevel, int(3));
+
     PROPERTY(std::ostream *, LogInfoStream){}
     PROPERTY(std::ostream *, LogWarningStream){}
     PROPERTY(std::ostream *, LogErrorStream){}    
@@ -87,6 +101,23 @@ default:
       setLogInfoStream(&std::cout);
       setLogErrorStream(&std::cerr);
       setLogWarningStream(&std::cout);
+      setLoggingLevelToDefault();
+      setLoggingEnabledToDefault();
+
+    }
+    void log(
+      int level,
+      const std::string & message,
+      const std::string & functionsignature="",
+      const std::string & sourcefile ="",
+      int sourcelinenumber=-1){
+        auto entry = new LogEntry();
+        entry->setLogLevel(level);
+        entry->setMessage(message);
+        entry->setFunctionSignature(functionsignature);
+        entry->setSourceFileName(sourcefile);
+        entry->setSourceLineNumber(sourcelinenumber);
+        addEntry(entry);
 
     }
     void info(
@@ -131,6 +162,8 @@ default:
         addEntry(entry);
       }
     void addEntry(LogEntry * entry){
+      if(!getLoggingEnabled())return;
+      if(getLoggingLevel()<entry->getLogLevel())return; // TODO delete entry? or discontinue * usage or accept entry and check logging level elsewhere?
       entry->setOwner(this);
       const TypeData & td = getTypeData();
       if(entry->getClassName()=="")entry->setClassName(getTypeData().name);
