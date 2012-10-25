@@ -1,25 +1,27 @@
 #pragma once
 
 #include <core/Object.h>
-
+#include <simulation.logging/Log.h>
 #include <core.task/ITask.h>
 namespace nspace{
 
   class ITaskRunner : public virtual ITask{
     TYPED_OBJECT(ITaskRunner);
+
   public:
     virtual bool addTask(ITask * task)=0;
   };
 
 
-  class TaskRunnerBase : public virtual ITaskRunner{
-    TYPED_OBJECT(TaskRunnerBase);
+  class TaskRunnerBase : public virtual ITaskRunner,public virtual Log, public virtual NamedObject{
+    REFLECTABLE_OBJECT(TaskRunnerBase);
+    SUBCLASSOF(Log)
   private:
     bool _running;
     bool _halting;
   public:
     TaskRunnerBase():_running(false),_halting(false){
-
+      setName("TaskRunnerBase");
     }
 
     void halt(){
@@ -30,7 +32,10 @@ namespace nspace{
     }
     bool addTask(ITask * task){
       bool accepted= accept(task);
-      if(accepted)onTaskAccepted(task);
+      if(accepted){
+        onTaskAccepted(task);
+        logDebug("Task Accepted: "<<*task);
+      }
       else onTaskRejected(task);
       return accepted;
     }
@@ -52,8 +57,9 @@ namespace nspace{
       if(!task)return;
       onBeforeTaskRun(task);
       if(isHalting())return;
-      
+      logDebug("Starting Task: "<<*task);
       task->run();
+      logDebug("Ending Task:"<<*task);
       onAfterTaskRun(task);
     }
 

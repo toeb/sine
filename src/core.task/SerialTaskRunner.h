@@ -4,9 +4,12 @@
 #include <queue>
 namespace nspace{
   class SerialTaskRunner : public virtual TaskRunnerBase{
+    REFLECTABLE_OBJECT(SerialTaskRunner);
+    SUBCLASSOF(TaskRunnerBase)
   private:
     std::queue<ITask *> _taskqueue;
   public:
+    SerialTaskRunner(){setName("SerialTaskRunner");}
     virtual bool hasTasks(){
       return _taskqueue.size()!=0;
     }

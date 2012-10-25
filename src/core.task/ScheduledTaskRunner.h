@@ -5,11 +5,12 @@
 #include <queue>
 namespace nspace{
   class ScheduledTaskRunner : public virtual TaskRunnerBase{
-  TYPED_OBJECT(ScheduledTaskRunner);
+    REFLECTABLE_OBJECT(ScheduledTaskRunner);
+    SUBCLASSOF(TaskRunnerBase)
   private:    
     std::priority_queue<ScheduledTask*,std::vector<ScheduledTask*>,ScheduledTask::CompareTaskPriority> _taskqueue;
   public:
-    ScheduledTaskRunner(){}
+    ScheduledTaskRunner(){setName("ScheduledTaskRunner");}
   
   protected:
     

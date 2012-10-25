@@ -15,12 +15,12 @@ namespace nspace{
   };
 
   template<typename T>
-  class DelegateTask : public virtual ITask{
+  class DelegateTask : public virtual ITask, public virtual NamedObject{
     TYPED_OBJECT(DelegateTask);
     T & _function;
   public:
     DelegateTask(T & functionObject):_function(functionObject){
-      
+      setName("DelegateTask");
     }
     void run(){
       _function();
