@@ -6,7 +6,7 @@
 #include <core/Reflection.h>
 #include <string>
 #include <core/Time.h>
-#include <chrono>
+
 #include <core/NamedObject.h>
 
 // these macros work within any class that contains a function to a reference called log (Log & log();}
