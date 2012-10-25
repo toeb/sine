@@ -142,7 +142,7 @@ namespace nspace{
   template<typename T>
   void Set<T>::sortByIntValue(std::function<int (const T)> toIntValue, SortDirection direction){
     sort([toIntValue,direction](const T a, const T b){
-         return direction==Ascending?(toIntValue(a)<toIntValue(b)):(toIntValue(a)>toIntValue(b));
+         return direction==Set<T>::Ascending?(toIntValue(a)<toIntValue(b)):(toIntValue(a)>toIntValue(b));
   });
 }
 

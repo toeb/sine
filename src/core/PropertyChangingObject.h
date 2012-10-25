@@ -4,13 +4,14 @@
 #include <core/Set.h>
 
 // may only be used inside class which has the a raisePropertyChanged(string) method
-#define NOTIFYING_PROPERTY(TYPE, NAME) EXTENDED_PROPERTY(public,TYPE, NAME,{},{static std::string propertyName=#NAME; raisePropertyChanged(propertyName);})
+#define NOTIFYING_PROPERTY(TYPE, NAME) EXTENDED_PROPERTY(TYPE, NAME,public,,,{static std::string propertyName=#NAME; raisePropertyChanged(propertyName);})
 
 
-namespace nspace{
-  
-  
+namespace nspace{ 
+  // forward declaration of PropertyChangingObject
   class PropertyChangingObject;
+
+  // A PropertyChangedListener can be added to a PropertyChangingObject and is notified via onPropertyChanged when a property of the Object has Changed
   class PropertyChangedListener : public virtual Object{
     TYPED_OBJECT(PropertyChangedListener);
   protected:
@@ -18,6 +19,7 @@ namespace nspace{
     friend class PropertyChangingObject;
   };
 
+  // an implementation of PropertyChangedListener which will delegate it
   class DelegatePropertyChangedListener : public virtual PropertyChangedListener{
     TYPED_OBJECT(DelegatePropertyChangedListener);
   private:

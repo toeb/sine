@@ -10,6 +10,7 @@ namespace nspace{
     SIMPLE_PROPERTY(const TypeData *, PropertyType){}
     SIMPLE_PROPERTY(const void *, DefaultValue){}
     SIMPLE_PROPERTY(std::string, GroupName){}
+
     REFERENCE_PROPERTY(std::string, PropertyName);
   public:
     // sets this property to the default value

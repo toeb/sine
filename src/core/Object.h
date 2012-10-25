@@ -8,22 +8,97 @@
 #include <core/Set.h>
 #include <core/Comparator.h>
 
+// helper macros needed for MODIFIER(x)
+#define _MODIFIER_public public:
+#define _MODIFIER_private private:
+#define _MODIFIER_protected protected:
+#define _MODIFIER_ 
 
+// returns the modifier specfied by x and appending a : if x is not empty
+// MODIFIER(public) --> public:
+// MODIFIER(private) --> private:
+// MODIFIER() --> 
+#define MODIFIER(x) _MODIFIER_##x  
+
+// macro for defining the fieldname (SomeName --> _SomeName
 #define FIELDNAME(NAME) _##NAME
+// macro for get method (SomeName --> getSomeName)
 #define GETMETHOD(NAME) get##NAME
+// macro for set method (SomeName --> setSomeName)
 #define SETMETHOD(NAME) set##NAME
-#define FIELD(MODIFIER, TYPE,NAME) MODIFIER: TYPE FIELDNAME(NAME);
-#define GETTER(MODIFIER,TYPE,NAME) MODIFIER: inline TYPE GETMETHOD(NAME)()const{return FIELDNAME(NAME);}
-#define SETTER(MODIFIER,TYPE,NAME,BEFORESET,AFTERSET) MODIFIER:inline  void SETMETHOD(NAME)(TYPE newvalue){BEFORESET; FIELDNAME(NAME) = newvalue; AFTERSET;} 
+
+
+// defines a field named <NAME> of type <TYPE> in a class/struct which is private by default
+// FIELD(int, number) --> private: int number;
+// FIELD(int, number, public) --> public: int number; //remark:  actually the expansion will result in: private: public: int number;
+#define FIELD(TYPE,NAME,_MODIFIER) private: MODIFIER(_MODIFIER) TYPE NAME;
+
+
+// defines a getter method for a property name <NAME> of type <TYPE> which is public by default
+// GET(int, Number) --> public: inline int getNumber()const
+// GET(int, Number, protected) --> protected: inline int getNumber()const
+#define GET(TYPE,NAME,_MODIFIER) public: MODIFIER(_MODIFIER) inline TYPE GETMETHOD(NAME)()const
+
+// defines a setter method for a property name <NAME> of type <TYPE> which is public by default
+// SET(int, Number) --> public: inline void setNumber(int value)
+// SET(int, Number, protected) --> protected: inline void setNumber(int value)
+#define SET(TYPE,NAME,_MODIFIER) public: MODIFIER(_MODIFIER) inline void SETMETHOD(NAME)(TYPE value)
+
+//#define FIELD(MODIFIER, TYPE,NAME) MODIFIER: TYPE FIELDNAME(NAME);
+
+// declares the default setter method (default: public) allows insertion of code before the fields value is returned
+#define GETTER(TYPE,NAME,_MODIFIER,BEFOREGET) GET(TYPE,NAME,_MODIFIER){BEFOREGET; return FIELDNAME(NAME);}
+
+// declares the default getter method allows insertion of code before and after th value of the field is set
+#define SETTER(TYPE,NAME,_MODIFIER,BEFORESET,AFTERSET) SET(TYPE,NAME,_MODIFIER){BEFORESET; FIELDNAME(NAME) = value; AFTERSET;} 
+
+
+// BASIC_PROPERTY - defines a property which consists of a private field named _<NAME> and a getter and setter method which are public by default
+// it is also possible to inject code in get method as well as before and after the private field was changed
+// BASIC_PROPERTY(std::string, LastName) -->  private: std::string _LastName;
+//                                  public: inline std::string getLastName()const{ return _LastName; }
+//                                  public: inline void setLastName(std::string value){ _LastName=value; }
+//
+// BASIC_PROPERTY(int, Num,protected,std::cout<<"getting Num"<<std::endl, std::cout << "setting Num" << std::endl, std::cout << "Num was set to " << value << std::endl) -->
+//            private: int _Num;
+//            public: inline int getNum()const{ 
+//              std::cout << "getting Num" << std::endl;
+//              return _Num;
+//            }
+//            public: inline void setNum(int value){
+//              std::cout << "setting Num" << std::endl;
+//              _Num = value;
+//              std::cout << "Num was set to " << value << std::endl;
+//            }
+// which can then be called
+// given: _Num =0;
+// object.setNum(3);
+// object.getNum();
+// --> output   setting Num
+//              Num was set to 3
+//              getting Num
+#define BASIC_PROPERTY(TYPE,NAME,_MODIFIER, BEFOREGET, BEFORESET, AFTERSET) \
+  FIELD(TYPE,FIELDNAME(NAME),private)\
+  GETTER(TYPE,NAME,_MODIFIER,BEFOREGET)\
+  SETTER(TYPE,NAME,_MODIFIER,BEFORESET,AFTERSET)
+
+
+
+
+// defines a reference accessor of type <TYPE> & which is non const and public by default
+// REF(std::string, FirstName) --> public: inline std::string  & FirstName()
+// REF(std::string, FirstName, const, protected) --> protected: inline const std::string & FirstName()const
+#define REF(TYPE,NAME,CONST,_MODIFIER) public: MODIFIER(_MODIFIER) inline CONST TYPE & NAME() CONST
+
 #define READONLY_REFERENCE(MODIFIER, TYPE,NAME) MODIFIER:inline  const TYPE & NAME()const{return FIELDNAME(NAME);}
 #define REFERENCE(MODIFIER,TYPE,NAME) MODIFIER:inline TYPE & NAME(){return FIELDNAME(NAME);}
-#define FIELD_REFERENCE(MODIFIER,TYPE,NAME) FIELD(private,TYPE,NAME) READONLY_REFERENCE(MODIFIER,TYPE,NAME); REFERENCE(MODIFIER, TYPE,NAME);
+#define FIELD_REFERENCE(MODIFIER,TYPE,NAME) FIELD(TYPE,FIELDNAME(NAME),private) READONLY_REFERENCE(MODIFIER,TYPE,NAME); REFERENCE(MODIFIER, TYPE,NAME);
 #define PUBLIC_FIELD_REFERENCE(TYPE,NAME) FIELD_REFERENCE(public,TYPE,NAME)
 
 
 #define READONLY_SIMPLE_PROPERTY(TYPE,NAME)\
-  FIELD(private, TYPE,NAME);\
-  GETTER(public,TYPE,NAME);
+  FIELD(TYPE,FIELDNAME(NAME),private);\
+  GETTER(TYPE,NAME,public);
 
 
 #define READONLY_PROPERTY(TYPE,NAME) \
@@ -31,8 +106,9 @@
   READONLY_SIMPLE_PROPERTY(TYPE,NAME)
 
 
-#define POINTER_PROPERTY_DELETER(TYPE,NAME)\
-  void delete##NAME(){TYPE temp = GETMETHOD(NAME)(); SETMETHOD(NAME)(0); delete temp;}
+//#define POINTER_PROPERTY_DELETER(TYPE,NAME)\
+//  void delete##NAME(){TYPE temp = GETMETHOD(NAME)(); SETMETHOD(NAME)(0); delete temp;}
+
 
 #define ITEMADDMETHODNAME(NAME) onItemAddedTo##NAME
 #define ITEMREMOVEMETHODNAME(NAME) onItemRemovedFrom##NAME
@@ -63,7 +139,7 @@
 // 3 removed
 // 2 removed
 #define PROPERTYSET(TYPE,NAME, ONADD, ONREMOVE)\
-        FIELD(private,nspace::Set<TYPE >,NAME);\
+        FIELD(nspace::Set<TYPE >,FIELDNAME(NAME),private);\
     private:\
         std::unique_ptr<nspace::ObservableCollection<TYPE >::Observer> _##NAME##Observer;\
         void init##NAME##Observer(){\
@@ -118,10 +194,14 @@ public:\
 // a nicer to read alias of ON_PROPERTY_CHANGING
 #define propertyChanging(TYPE,NAME) ON_PROPERTY_CHANGING(TYPE,NAME)
 
-#define EXTENDED_PROPERTY(MODIFIER,TYPE, NAME,BEFORESET, AFTERSET) \
-  FIELD(private,TYPE,NAME);\
-  GETTER(public,TYPE,NAME);\
-  SETTER(public,TYPE,NAME,BEFORESET; if(FIELDNAME(NAME)==newvalue)return; bool cancel=false;  this->ON_PROPERTY_CHANGING_METHOD_NAME(NAME)(FIELDNAME(NAME),newvalue,cancel); if(cancel)return;, AFTERSET; );\
+#define EXTENDED_PROPERTY(TYPE, NAME,_MODIFIER,BEFOREGET,BEFORESET, AFTERSET) \
+  BASIC_PROPERTY(TYPE,NAME,_MODIFIER,BEFOREGET,\
+    BEFORESET; \
+    bool cancel=false;\
+    if(FIELDNAME(NAME)==value)return; \
+    this->ON_PROPERTY_CHANGING_METHOD_NAME(NAME)(FIELDNAME(NAME),value,cancel); \
+    if(cancel)return;\
+    , AFTERSET);\
   private:\
   void ON_PROPERTY_CHANGING(TYPE,NAME)
 
@@ -156,7 +236,7 @@ MODIFIER:\
 //  this will create the same field and methods as example 1 however it will cancel the change if
 //  the new value is smaller than 3.  if the value is higher than three a string will be printed
 //  e.g: setNumberOfOrders(4) --> "Number of Orders changed from 0 to 4"
-#define SIMPLE_PROPERTY(TYPE, NAME) EXTENDED_PROPERTY(public,TYPE,NAME,{},{})
+#define SIMPLE_PROPERTY(TYPE, NAME) EXTENDED_PROPERTY(TYPE,NAME,public,,,)
 
 
 namespace nspace{

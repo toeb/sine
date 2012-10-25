@@ -69,17 +69,24 @@
 
 #define PROPERTYCLASSINSTANCE(NAME) ( (PROPERTYCLASS(NAME) * ) PROPERTYCLASS(NAME)::instance())
 
-#define REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,PROPERTYDECLARATION)\
+// enables property reflection for the property <NAME> of type <TYPE> 
+// this may only be used in a class which has been declared as REFLECTABLE and has both the set<NAME>(<TYPE>) and <TYPE> get<NAME>()const methods
+//
+#define ENABLE_PROPERTY_REFLECTION(TYPE,NAME)\
   private:\
   class PROPERTYCLASS(NAME) : public virtual TypedProperty<ReflectableType,TYPE>{\
   TYPED_OBJECT( PROPERTYCLASS(NAME) );\
   public:\
   SINGLETON( PROPERTYCLASS(NAME) ){setPropertyName(#NAME);}\
-  void setTypedValue(ReflectableType *  object , TYPE value)const{ object->set##NAME(value); }\
-  TYPE getTypedValue(const ReflectableType *  object)const{ return object->get##NAME(); }\
+    void setTypedValue(ReflectableType *  object , TYPE value)const{ object->SETMETHOD(NAME)(value); }\
+    TYPE getTypedValue(const ReflectableType *  object)const{ return object->GETMETHOD(NAME)(); }\
   };\
   private:\
   STATIC_INITIALIZER(NAME##Property, { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);})\
+
+
+#define REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,PROPERTYDECLARATION)\
+  ENABLE_PROPERTY_REFLECTION(TYPE,NAME)\
   PROPERTYDECLARATION(TYPE,NAME)
 
 // sets the propertydisplayname property of the property object created for the property specified by NAME (.... property)
