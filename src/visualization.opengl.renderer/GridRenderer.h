@@ -22,7 +22,7 @@ namespace nspace{
  * \author Tobias Becker
  * \date 05.04.2012
  */
-class GridRenderer : public virtual Renderer, public virtual PropertyChangingObject{
+class GridRenderer : public virtual Renderer, public virtual PropertyChangingObject,public virtual NamedObject{
   TYPED_OBJECT(GridRenderer);
   REFLECTABLE(GridRenderer);
 public:

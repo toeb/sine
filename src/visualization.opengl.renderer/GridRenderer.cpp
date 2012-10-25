@@ -6,6 +6,7 @@
 using namespace nspace;
 
 GridRenderer::GridRenderer():_Sections(20), _Width(20),_Height(20) {
+  setName("GridRenderer");
 }
 void GridRenderer::render(){
   ///glPushAttrib(GL_LIGHTING|GL_COLOR_MATERIAL);
@@ -23,7 +24,7 @@ void GridRenderer::render(){
 
  
   Vector3D a,b;
-
+  glLineWidth(0.1);
   for(int i = 0; i <= Sections(); i++){
     a(0) = Width() * ((double)i/(double)Sections()-0.5);
     a(1) = 0;
