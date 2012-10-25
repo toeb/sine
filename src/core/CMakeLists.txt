@@ -31,6 +31,9 @@ set(source
 ./TypedProperty.cpp
 ./Reflection.h
 ./Serialization.h
+./Members.h
+./Type.h
+./Type.cpp
 ../config.h
 ../include/core.h
 )

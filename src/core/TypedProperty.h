@@ -3,9 +3,6 @@
 #include <core/Serialization.h>
 namespace nspace{
 
-  
-
-
   template<typename OwningClass, typename ValueType>
   class TypedProperty : public virtual Property{
     TYPED_OBJECT(TypedProperty);
@@ -26,18 +23,28 @@ namespace nspace{
       *typedValue= getTypedValue(typedObject);
     }
     virtual bool deserialize(void * ptr, std::istream & in)const{
+      // get Object* from ptr
       Object *object = reinterpret_cast<Object*>(ptr);
       OwningClass * owningClass = dynamic_cast<OwningClass*>(object);
       if(!owningClass)return false;
       ValueType value;
-      if(!Deserializer<ValueType>::deserialize(&value,in))return false;
+      if(getCustomDeserializer()){
+         if(!(getCustomDeserializer()->deserialize(&value,in)))return false;
+      }else{
+        if(!Deserializer<ValueType>::deserialize(&value,in))return false;
+      }
+
       setTypedValue(owningClass,value);
       return true;
     }
     virtual bool serialize(void * object, std::ostream & out)const{
       OwningClass * owningClass = dynamic_cast<OwningClass*>(static_cast<Object*>(object));
       ValueType value = getTypedValue(owningClass);
-      if(!Serializer<ValueType>::serialize(out,&value))return false;
+      if(getCustomSerializer()){
+         if(!(getCustomSerializer()->serialize(out,object)))return false;
+      }else{
+        if(!Serializer<ValueType>::serialize(out,&value))return false;
+      }
       return true;
     }
     virtual void setTypedValue(OwningClass *  object , ValueType value)const=0;

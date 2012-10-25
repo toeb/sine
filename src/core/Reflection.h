@@ -27,10 +27,9 @@
   static Set<const Property*> & propertiesSet(){\
   static Set<const Property*> * _propertiesSet=0;\
     if(!_propertiesSet){\
-    _propertiesSet = new Set<const Property*>();\
     const TypeData & type = ClassType();\
     TypeData* unconstType= const_cast<TypeData*>(&type);\
-    unconstType->properties =_propertiesSet;\
+    _propertiesSet = &unconstType->Properties();\
     }\
   return *_propertiesSet;\
   };\
@@ -60,6 +59,8 @@
     return PropertyAdapter(this,*getProperty(name));\
   }\
   private:\
+
+
 
 
 // shorthand for a typed object which is also reflectable
@@ -107,6 +108,47 @@ private:\
 // sets the groupname of the property specified by NAME
 #define GROUPNAME(NAME,GROUP)\
   STATIC_INITIALIZER(NAME##GroupName,PROPERTYCLASSINSTANCE(NAME)->setGroupName(GROUP))
+
+
+#define SERIALIZERARGUMENTS(TYPE) std::ostream & stream, const TYPE * value
+#define DESERIALIZERARGUMENTS(TYPE) TYPE * value, std::istream & stream
+
+#define SERIALIZEMETHODNAME(NAME) serialize##NAME
+#define DESERIALIZEMETHODNAME(NAME) deserialize##NAME
+#define SERIALIZESIGNATURE(TYPE,NAME) SERIALIZEMETHODNAME(NAME)(SERIALIZERARGUMENTS(TYPE))
+#define DESERIALIZESIGNATURE(TYPE,NAME) DESERIALIZEMETHODNAME(NAME)(DESERIALIZERARGUMENTS(TYPE))
+// macro for implementing serializing property <NAME> of type <TYPE>.  be sure to define the returntype as bool (See CUSTOMSERIALIZER macro)
+#define serializeProperty(TYPE,NAME) SERIALIZESIGNATURE(TYPE,NAME)
+// macro for implementing deserializing property <NAME> of type <TYPE>.  be sure to define the returntype as bool(See CUSTOMSERIALIZER macro)
+#define deserializeProperty(TYPE,NAME) DESERIALIZESIGNATURE(TYPE,NAME)
+
+// make sure to return if the deserialization was successful or not
+#define CUSTOMDESERIALIZER(TYPE,NAME,CODE)\
+  public:\
+  static bool DESERIALIZESIGNATURE(TYPE,NAME) CODE;\
+  private:\
+class NAME##CustomDeserializer : public virtual TypedCustomDeserializer<TYPE>{\
+public:\
+  bool deserializeType(DESERIALIZERARGUMENTS(TYPE)){return DESERIALIZEMETHODNAME(NAME)(value,stream);};\
+};\
+  STATIC_INITIALIZER(NAME##CustomDeserializer,{PROPERTYCLASSINSTANCE(NAME)->setCustomDeserializer(new NAME##CustomDeserializer());})
+
+// make sure to return if the serialization was successful or not
+#define CUSTOMSERIALIZER(TYPE,NAME,CODE)\
+  public:\
+  static bool SERIALIZESIGNATURE(TYPE,NAME) CODE;\
+  private:\
+class NAME##CustomSerializer : public virtual TypedCustomSerializer<TYPE>{\
+public:\
+  bool serializeType(SERIALIZERARGUMENTS(TYPE)){return SERIALIZEMETHODNAME(NAME)(value,stream);};\
+};\
+  STATIC_INITIALIZER(NAME##CustomSerializer,{PROPERTYCLASSINSTANCE(NAME)->setCustomSerializer(new NAME##CustomSerializer());})
+
+// defines a custom serializer for property <NAME>  
+#define CUSTOMSERIALIZERS(TYPE,NAME,SERIALIZECODE,DESERIALIZECODE)\
+  CUSTOMSERIALIZER(TYPE,NAME,SERIALIZECODE);\
+  CUSTOMDESERIALIZER(TYPE,NAME,DESERIALIZECODE);
+
 
 #define REFLECTABLE_PROPERTY(TYPE,NAME) REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,SIMPLE_PROPERTY)
 #define REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME) REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,NOTIFYING_PROPERTY)
