@@ -26,4 +26,6 @@ namespace nspace{
       _function();
     }
   };
+
+
 }
