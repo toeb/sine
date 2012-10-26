@@ -235,13 +235,13 @@ template<typename T>
 bool Set<T>::add(T element){
   if(contains(element))return false;
   _elements.push_back(element);
-  notifyElementAdded(element);
+  this->notifyElementAdded(element);
   return true;
 }
 template<typename T>
 bool Set<T>::remove(T element){
   bool result = Query<T>::remove(_elements,element);
-  if(result)notifyElementRemoved(element);
+  if(result)this->notifyElementRemoved(element);
   return result;
 }
 template<typename T>
