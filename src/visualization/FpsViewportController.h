@@ -26,6 +26,7 @@
 #include <simulation.integration/implementations/ExplicitEuler.h>
 #include <core.hub/CompositeHubObject.h>
 #include <core.task/ScheduledTask.h>
+#include <simulation.logging/Log.h>
 /**
  * \file src/vis/opengl/FpsCamera.h
  */
@@ -36,9 +37,11 @@ namespace nspace{
     public virtual ViewportController,
     public virtual CompositeHubObject, 
     public virtual ScheduledTask,
-    public virtual IInputListener
+    public virtual IInputListener,
+          public virtual Log
   {
-    TYPED_OBJECT(FpsCamera);
+    REFLECTABLE_OBJECT(FpsCamera);
+    SUBCLASSOF(Log)
 	public:
     virtual void toString(std::ostream & out)const{CompositeHubObject::toString(out);}
     FpsCamera();

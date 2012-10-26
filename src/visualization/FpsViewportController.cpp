@@ -100,8 +100,10 @@ void FpsCamera::onMouseMove(InputHandler * inputhandler, int x , int y, int dx, 
   if(inputhandler->isKeyDown(KEY_3)){    
     body.position() +=direction* length*speed;
   }
-
   if(inputhandler->isMouseButtonDown(BUTTON_LEFT) || inputhandler->isKeyDown(KEY_Q)){
+
+      logInfo("left mouse button down --> rotating view");
+
     yaw += -dx*speed*0.1;
     pitch += -dy*speed*0.1;
     Quaternion qx;
