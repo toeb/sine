@@ -24,13 +24,13 @@ void ObjectViewPlugin::install(PluginContainer & container){
   _ui->setupUi(w);
   _objectPropertyView = new ObjectPropertyView();
   QGridLayout * gridLayout = _ui->gridLayout;
-
+  QSplitter * splitter = _ui->splitter;
   auto binding = new LineEditDataBinding();
   binding->setSource(this);
   binding->setTarget(_ui->searchTextBox);
   binding->setPropertyName("SearchString");
-  gridLayout->addWidget(_objectPropertyView,0,1,2,1);
-
+  //gridLayout->addWidget(_objectPropertyView,0,1,2,1);
+  splitter->addWidget(_objectPropertyView);
   connect(_ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),this, SLOT(objectDoubleClicked(QListWidgetItem*)));
   
   window->setWidget(w);

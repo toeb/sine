@@ -10,6 +10,7 @@ namespace nspace{
   class ObjectPropertyViewModel : public QAbstractItemModel, public virtual PropertyChangingObject, public virtual Log{
     Q_OBJECT;
     REFLECTABLE_OBJECT(ObjectPropertyViewModel);
+    SUBCLASSOF(Log);
     PROPERTY(Object *, CurrentObject){}
 
 
@@ -36,10 +37,8 @@ namespace nspace{
       if(!index.isValid())return 0;
       auto object = getCurrentObject();
       if(!object)return 0;
-      auto properties = object->getTypeData().properties;
-      if(!properties)return 0;
       int row = index.row();
-      auto prop = properties->at(row);      
+      auto prop = object->getTypeData().Properties().at(row);      
       return prop;
     }
 
@@ -74,7 +73,7 @@ namespace nspace{
 
       if(!currentObject)return QModelIndex();
 
-      auto prop = currentObject->getTypeData().getProperty(row);
+      auto prop = currentObject->getTypeData().Properties().at(row);
       if(!prop)return QModelIndex();
       return createIndex(row,column,(void*)(Object*)prop);      
     }
@@ -82,10 +81,7 @@ namespace nspace{
     int rowCount(const QModelIndex &parent=QModelIndex())const{
       if(getCurrentObject()==0)return 0;
 
-      auto properties = getCurrentObject()->getTypeData().properties;
-      if(!properties)return 0;
-
-      return properties->size();
+      return getCurrentObject()->getTypeData().Properties().size();
 
     }
     int columnCount(const QModelIndex &parent=QModelIndex())const{
@@ -101,14 +97,20 @@ namespace nspace{
     bool hasIndex(const QModelIndex & index)const{
       return hasIndex(index.row(),index.column());
     }*/
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole)const{
-
-      //logInfo("getting data @"<<index.row()<<"."<<index.column()<<" role:"<<role); 
-      if(role!=Qt::DisplayRole)return QVariant();
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole)const{      
       auto object = getCurrentObject();
       auto prop = getProperty(index);
       if(!prop)return QVariant();
+    
+      if(role==Qt::WhatsThisRole || role == Qt::ToolTipRole){
+        return QVariant::fromValue(tr(prop->getPropertyDescription().c_str()));
+      }
+
+      //logInfo("getting data @"<<index.row()<<"."<<index.column()<<" role:"<<role); 
+      if(role!=Qt::DisplayRole)return QVariant();
+        
       if(index.column()==0) return QVariant::fromValue(tr(prop->getPropertyDisplayName().c_str()));      
+
       else if(index.column()==1) {
         std::stringstream ss;
         prop->serialize(object,ss);

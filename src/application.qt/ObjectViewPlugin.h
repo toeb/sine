@@ -13,8 +13,9 @@ namespace nspace{
   class ObjectViewPlugin : public Plugin, public virtual PropertyChangingObject, public virtual TypedModuleBase<Object>,public virtual Log {
     Q_OBJECT;    
     REFLECTABLE_OBJECT(ObjectViewPlugin);
+    SUBCLASSOF(Log)
     PROPERTY(std::string,SearchString){
-      logInfo("SearchString changing to"<<newvalue);
+      logDebug("SearchString changing to"<<newvalue);
     }
     PROPERTYSET(Object *, Objects,,)
   private:
