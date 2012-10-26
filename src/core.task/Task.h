@@ -2,6 +2,7 @@
 
 #include <core/Object.h>
 #include <core.task/ITask.h>
+#include <core/NamedObject.h>
 namespace nspace{
   class Task : public virtual ITask{
     TYPED_OBJECT(Task);
@@ -20,7 +21,7 @@ namespace nspace{
     T & _function;
   public:
     DelegateTask(T & functionObject):_function(functionObject){
-      setName("DelegateTask");
+      this->setName("DelegateTask");
     }
     void run(){
       _function();
