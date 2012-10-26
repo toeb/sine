@@ -96,3 +96,4 @@ static inline const TypeData & getTypeData(){
   TypeData * unconstSuperType = const_cast<TypeData*>(&TYPE::ClassType());\
   unconstSuperType->successors()|=unconstCurrentType;\
 })
+
