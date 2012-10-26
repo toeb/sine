@@ -6,9 +6,9 @@
 #include <core.hub/CompositeHubObject.h>
 #include <core.task/ScheduledTask.h>
 #include <visualization/ViewportController.h>
-
+#include <simulation.logging/Log.h>
 namespace nspace{
-  class GlWidget : public QGLWidget, public virtual NamedObject, public virtual CompositeHubObject{
+  class GlWidget : public QGLWidget, public virtual NamedObject, public virtual CompositeHubObject,public virtual Log{
     Q_OBJECT;
     TYPED_OBJECT(GlWidget);
     GlViewport * _viewport;

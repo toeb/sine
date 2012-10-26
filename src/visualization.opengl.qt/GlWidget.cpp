@@ -19,6 +19,7 @@ GlWidget::GlWidget(QWidget * parent):QGLWidget(parent),
     Components()|=_inputHandler;
     Components()|=&_refreshTask;
     setFocusPolicy(Qt::StrongFocus);
+    logInfo("installing eventfilter and setting mouse tracking to true");
     installEventFilter(this);
     setMouseTracking(true);
 }
@@ -69,6 +70,7 @@ void GlWidget::paintGL(){
 void GlWidget:: mouseMoveEvent(QMouseEvent* me){
   // forward mouse event to input handler
   _inputHandler->mouseMoveEvent(me);
+  logInfo("mouse event "<<me->pos().x()<< " "<<me->pos().y());
 }
 
 void GlWidget::mousePressEvent(QMouseEvent* me){
