@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Object.h>
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 #include <core.task/ITask.h>
 namespace nspace{
   /**

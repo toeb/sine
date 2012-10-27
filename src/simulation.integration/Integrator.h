@@ -30,7 +30,7 @@
 #include <simulation.integration/ISystemFunction.h>
 #include <simulation.integration/Evaluator.h>
 #include <core/Reflection.h>
-#include <simulation.logging/Log.h>
+#include <core.logging/Log.h>
 namespace nspace{
   /**
   * <summary> Abstract Integrator class.</summary>

@@ -1,7 +1,7 @@
 #pragma once
 #include <visualization/Renderer.h>
 #include <visualization/Light.h>
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 #include <visualization/Material.h>
 #include <visualization/Color.h>
 

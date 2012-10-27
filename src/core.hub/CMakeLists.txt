@@ -16,4 +16,4 @@ set(source
  
  add_library(core.hub ${source} CMakeLists.txt)
  
- target_link_libraries(core.hub core)
+ target_link_libraries(core.hub core core.logging)

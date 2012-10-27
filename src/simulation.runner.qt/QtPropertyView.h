@@ -2,11 +2,13 @@
 #include <QDockWidget>
 #include <core.hub/ModuleBase.h>
 #include <application.qt/Plugin.h>
+#include <core/Reflection.h>
+#include <core.logging.h>
 #include <simulation.access/IValue.h>
-#include <simulation.logging/Log.h>
+
+
 #include <QStandardItem>
 #include <QStandardItemModel>
-#include <core/Reflection.h>
 
 class Ui_PropertyWindow;
 namespace nspace{

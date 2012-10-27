@@ -10,7 +10,7 @@
 #include <core.hub/CompositeHubObject.h>
 #include <QTimer>
 #include <core/Reflection.h>
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 class Ui_TaskWidget;
 namespace nspace{
 

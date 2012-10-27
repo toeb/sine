@@ -7,7 +7,7 @@
 #include <core.hub/ModuleBase.h>
 #include <QListWidgetItem>
 #include <application.qt/ObjectPropertyView.h>
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 class Ui_ObjectView;
 namespace nspace{
   class ObjectViewPlugin : public Plugin, public virtual PropertyChangingObject, public virtual TypedModuleBase<Object>,public virtual Log {

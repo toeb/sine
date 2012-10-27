@@ -3,7 +3,7 @@
 #include <simulation.kinematics/CoordinateSystem.h>
 #include <core/Reflection.h>
 #include <core/PropertyChangingObject.h>
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 #include <core/NamedObject.h>
 
 namespace nspace{

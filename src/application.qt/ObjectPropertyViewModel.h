@@ -4,7 +4,7 @@
 #include <core/Object.h>
 #include <core/Reflection.h>
 #include <QAbstractItemModel>
-#include <simulation.logging/Log.h>
+#include <core.logging/Log.h>
 #include <sstream>
 namespace nspace{
   class ObjectPropertyViewModel : 

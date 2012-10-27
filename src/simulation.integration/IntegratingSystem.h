@@ -8,7 +8,7 @@
 #include <core.hub/CompositeHubObject.h>
 
 #include <simulation.time/SimulationTimeProvider.h>
-#include <simulation.logging/Log.h>
+#include <core.logging/Log.h>
 namespace nspace{	
 
   /**

@@ -45,7 +45,7 @@ int main(int argc, char** argv){
   for(int i=0; i < 10; i++){
     stepper.step();
 
-    std::cout << "i: "<<i<<" t: "<< stepper.t()<<endl<< p.position()<<endl<<endl;
+    std::cout << "i: "<<i<<" t: "<< stepper.getCurrentStepSize()<<endl<< p.position()<<endl<<endl;
   }
 
   /*

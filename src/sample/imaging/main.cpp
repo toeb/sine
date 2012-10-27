@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <simulation.timing/Timeable.h>
-#include <simulation.logging/LoggingObject.h>
+#include <core.logging.h>
 #include <math.matrix.dslib/DynamicMatrix.h>
 using namespace nspace;
 using namespace nspace::matrix2;
@@ -155,7 +155,7 @@ public:
 
 
 
-class ImageLoader : public virtual LoggingObject{
+class ImageLoader : public virtual Log{
 public:
   
   virtual void load(Image & image, std::istream & i)=0;

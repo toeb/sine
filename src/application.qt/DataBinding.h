@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <core/Reflection.h>
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 
 
 #include <QObject>

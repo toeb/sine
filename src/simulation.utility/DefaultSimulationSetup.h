@@ -5,7 +5,7 @@
 
 #include <simulation.timing/TimingModule.h>
 
-#include <simulation.integration/SystemModule.h>
+#include <simulation.integration/IntegratingSystem.h>
 namespace nspace{
 class DefaultSimulationSetup : public ISimulationObject{
   TYPED_OBJECT(DefaultSimulationSetup);

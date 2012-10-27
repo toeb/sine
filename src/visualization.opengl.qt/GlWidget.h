@@ -6,7 +6,7 @@
 #include <core.hub/CompositeHubObject.h>
 #include <core.task/ScheduledTaskDelegate.h>
 #include <visualization/ViewportController.h>
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 namespace nspace{
   class GlWidget : 
     public QGLWidget, 

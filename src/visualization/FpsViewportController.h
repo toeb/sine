@@ -27,8 +27,9 @@
 #include <simulation.interaction/IInputListener.h>
 #include <simulation.kinematics/KinematicCoordinates.h>
 #include <simulation.integration/implementations/ExplicitEuler.h>
-#include <simulation.logging/Log.h>
 #include <simulation/SimulationTask.h>
+
+#include <core.logging.h>
 
 #include <visualization/ViewportController.h>
 

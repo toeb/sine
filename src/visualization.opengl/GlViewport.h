@@ -24,7 +24,7 @@
 * \file src/vis/opengl/GlViewport.h
 */
 #pragma once
-#include <simulation.logging/Log.h>
+#include <core.logging.h>
 #include <visualization/PerspectiveViewport.h>
 #include <core.initialization/Initializable.h>
 #include <visualization/Color.h>

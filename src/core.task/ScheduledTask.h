@@ -2,7 +2,7 @@
 
 #include <core/Time.h>
 #include <core.task/ITask.h>
-#include <simulation.logging/Log.h>
+#include <core.logging/Log.h>
 
 namespace nspace{
   class ScheduledTaskRunner;
