@@ -1,67 +1,52 @@
 #pragma once
-#include <functional>
-#include <core.task/ITask.h>
+
 #include <core/Time.h>
+#include <core.task/ITask.h>
+#include <simulation.logging/Log.h>
+
 namespace nspace{
   class ScheduledTaskRunner;
-  class ScheduledTask : public virtual ITask{
+  class ScheduledTask : 
+    public virtual ITask, 
+    public virtual PropertyChangingObject,
+    public virtual Log,
+    public virtual NamedObject
+  {
+    REFLECTABLE_OBJECT(ScheduledTask);
+    SUBCLASSOF(Log);
   private:
-    Time _interval;
-    Time _lastTimeoutTime;
-    Time _nextExecutionTime;
-    bool _oneTimeTask;
+    DESCRIPTION(Interval,"The timeout Interval in seconds");
+    DISPLAYNAME(Interval,"Timeout Interval");
+    PROPERTY(Time, Interval){logMessage("setting timeout to: "<<newvalue,4);}
 
+    DESCRIPTION(IsOneTimeTask, "This flag Indicates whether to run the task repeatedly or only once");
+    DISPLAYNAME(IsOneTimeTask, "Run Task Only Once")
+    PROPERTY(bool, IsOneTimeTask){logMessage("setting IsOneTimeTask to: "<<newvalue,4);}
+
+    // the last time this task has timed out
+    Time _lastTimeoutTime;
+    // the next time this task is to be run
+    Time _nextExecutionTime;
   public:
+    // Default Constructor creates a Task which is run directly and only once
+    ScheduledTask();
+    // returns the requested next execution time
+    Time nextExecutionTime()const;
+    // overridable method which is called to calculate the next execution time 
+    virtual void calculateNextTimeout(Time time);
+    // implementation of the run method. Class the virtual timeout method
+    void run();
+    // TimeoutMethod gets the time passed since last execution/creation and the absolute time as arguments
+    virtual void timeout(Time dt, Time t);
+    // struct for comparing task priority (those with tasks with less time have a higher ie lower value priority
     struct CompareTaskPriority{
     public :
-      bool operator ()(const ScheduledTask * a,const ScheduledTask * b){
-        return a->_nextExecutionTime > b->_nextExecutionTime;
-      }
+      bool operator ()(const ScheduledTask * a,const ScheduledTask * b);
     };
-
-    Time & interval(){
-      return _interval;
-    }
-    Time nextExecutionTime()const{
-      return _nextExecutionTime;
-    }
-    
-    bool & isOneTimeTask(){
-      return _oneTimeTask;
-    }
-    virtual void calculateNextTimeout(Time time){
-      _lastTimeoutTime = time;
-      _nextExecutionTime = time +_interval;
-      // _nextExecutionTime += _timeout;
-    }
-    void run(){
-      Time now = systemTime();
-      timeout(now - _lastTimeoutTime,now);
-    }
-
-    virtual void timeout(Time dt, Time t){
-      
-    }
-    
-
-    ScheduledTask():_interval(0.0),_lastTimeoutTime(REAL_MAX),_nextExecutionTime(REAL_MAX),_oneTimeTask(true){}
-
-    static bool comp(const ScheduledTask * a, const ScheduledTask * b){
-      return a->nextExecutionTime() < b->nextExecutionTime();
-    }
-
+    // compares two tasks to and returns true if a comes before b 
+    static bool comp(const ScheduledTask * a, const ScheduledTask * b);
     friend class ScheduledTaskRunner;
   };
 
-  class ScheduledTaskDelegate : public virtual ScheduledTask{
-    std::function<void (Time,Time) > _callback;
-  public :
-    ScheduledTaskDelegate(std::function<void(Time,Time)> callback):_callback(callback){
-
-    }
-    virtual void timeout(Time dt, Time t){
-      _callback(dt,t);
-    }
-  };
 
 }

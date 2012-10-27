@@ -1,6 +1,6 @@
 #pragma once
 #include <core.task/ITask.h>
-#include <core.task/ITaskRunner.h>
+#include <core.task/TaskRunnerBase.h>
 #include <queue>
 namespace nspace{
   class SerialTaskRunner : public virtual TaskRunnerBase{

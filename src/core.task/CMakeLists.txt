@@ -17,6 +17,12 @@ set(source
  ./ParallelTaskRunner.cpp
  ./ScheduledTaskRunner.h
  ./ScheduledTaskRunner.cpp
+ ./ScheduledTaskDelegate.h
+ ./ScheduledTaskDelegate.cpp
+ ./TaskDelegate.h
+ ./TaskDelegate.cpp
+ ./TaskRunnerBase.h
+ ./TaskRunnerBase.cpp
 )
 
 source_group("" FILES ${source})
