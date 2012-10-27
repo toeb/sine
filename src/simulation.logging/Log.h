@@ -4,6 +4,7 @@
 #include <core/NamedObject.h>
 #include <core/Reflection.h>
 #include <core/Time.h>
+#include <core/Set.h>
 
 #include <iostream>
 #include <sstream>
@@ -11,20 +12,47 @@
 
 
 // these macros work within any class that contains a function to a reference called log (Log & log();}
-#define logInfo(x) {std::stringstream ss; ss << x ; log().info(ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
-#define logWarning(x) {std::stringstream ss; ss << x ; log().warn(ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
-#define logError(x) {std::stringstream ss; ss << x ; log().error(ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
-#define logMessage(level, x) {std::stringstream ss; ss << x ; log().log(level, ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
+
+
+#define createLogMessage(level, x) {std::stringstream ss; ss << x ; log().log(level, ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
+#define logMessage_0(x) createLogMessage(0,x)
+#define logMessage_1(x) createLogMessage(1,x)
+#define logMessage_2(x) createLogMessage(2,x)
+#define logMessage_3(x) createLogMessage(3,x)
+#define logMessage_4(x) createLogMessage(4,x)
+#define logMessage_5(x) createLogMessage(5,x)
+#define logMessage_6(x) createLogMessage(6,x)
+#define logMessage_7(x) createLogMessage(7,x)
+#define logMessage_8(x) createLogMessage(8,x)
+#define logMessage_9(x) createLogMessage(9,x)
+// default level
+#define logMessage_(x) logMessage_3(x)
+
+// macro for logging a message 
+#define logMessage(message,level) logMessage_##level(message)
+
+
+#define logInfo(x) logMessage(x,3);
+#define logWarning(x) logMessage(x,2)
+#define logError(x) logMessage(x,1)
+#define logFatal(x) logMessage(x,0)
+
 //TODO move to cmake
 #define DEBUG
 #ifdef  DEBUG
-#define logDebug(x) logMessage(5,x) 
+#define debugInfo(x)           logInfo(x) 
+#define debugWarning(x)        logWarning(x)
+#define debugError(x)          logError(x)
+#define debugMessage(x,level)  logMessage(x,level)
 #else 
-#define logDebug(x)
+#define debugInfo(x) 
+#define debugWarning(x) 
+#define debugError(x) 
+#define debugMessage(level,x) 
 #endif //  DEBUG
 
 namespace nspace{
-  
+
   class Log;
   class LogEntry : public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(LogEntry);    
@@ -73,16 +101,15 @@ namespace nspace{
     PROPERTY(std::ostream *, LogWarningStream){}
     PROPERTY(std::ostream *, LogErrorStream){}    
     PROPERTYSET(LogEntry*,LogEntries,{
-      
       std::ostream * out=0;
       switch(item->getLogLevel()){
       case 1:
         out = getLogErrorStream();
         break;
-case 2:
+      case 2:
         out = getLogWarningStream();
         break;
-default:
+      default:
         out = getLogInfoStream();
         break;
 
@@ -90,10 +117,10 @@ default:
       if(!out)return;
       *out << *item << std::endl;
 
-    
+
     },{})
   protected:
-    
+
     Log & log()const{return *const_cast<Log*>(this);}
   public:
 
@@ -125,50 +152,42 @@ default:
       const std::string & functionsignature="",
       const std::string & sourcefile ="",
       int sourcelinenumber=-1){
-        auto entry = new LogEntry();
-        entry->setLogLevel(3);
-        entry->setMessage(message);
-        entry->setFunctionSignature(functionsignature);
-        entry->setSourceFileName(sourcefile);
-        entry->setSourceLineNumber(sourcelinenumber);
-        addEntry(entry);
-      }
-    
+        log(3,message,functionsignature,sourcefile,sourcelinenumber);
+    }
+
     void warn(
       const std::string & message,
       const std::string & functionsignature="",
       const std::string & sourcefile ="",
       int sourcelinenumber=-1){
-        auto entry = new LogEntry();
-        entry->setLogLevel(2);
-        entry->setMessage(message);
-        entry->setFunctionSignature(functionsignature);
-        entry->setSourceFileName(sourcefile);
-        entry->setSourceLineNumber(sourcelinenumber);
-        addEntry(entry);
-      }
-      
-      void error(
+        log(2,message,functionsignature,sourcefile,sourcelinenumber);
+    }
+
+    void error(
       const std::string & message,
       const std::string & functionsignature="",
       const std::string & sourcefile ="",
       int sourcelinenumber=-1){
-        auto entry = new LogEntry();
-        entry->setLogLevel(1);
-        entry->setMessage(message);
-        entry->setFunctionSignature(functionsignature);
-        entry->setSourceFileName(sourcefile);
-        entry->setSourceLineNumber(sourcelinenumber);
-        addEntry(entry);
-      }
+        log(1,message,functionsignature,sourcefile,sourcelinenumber);
+    }
+
+
     void addEntry(LogEntry * entry){
-      if(!getLoggingEnabled())return;
-      if(getLoggingLevel()<entry->getLogLevel())return; // TODO delete entry? or discontinue * usage or accept entry and check logging level elsewhere?
+      if(!getLoggingEnabled()){
+        delete entry;
+        entry = 0;
+        return;
+      }
+      if(getLoggingLevel()<entry->getLogLevel()){
+        delete entry;
+        entry = 0;
+        return;
+      }
       entry->setOwner(this);
       const TypeData & td = getTypeData();
       if(entry->getClassName()=="")entry->setClassName(getTypeData().name);
       if(entry->getObjectName()=="")entry->setObjectName(name(this));
-      
+
       LogEntries()|=entry;
     }
   };
