@@ -11,6 +11,14 @@ namespace nspace{
       setPropertyType(&TypeDataProvider<ValueType>::getTypeData());
     }
   private:
+
+    const void * getConstReference()const{return reinterpret_cast<const void*>(getConstTypedReference());}
+    void * getMutableReference()const{return reinterpret_cast<void*>( getMutableTypedReference());}
+
+    virtual const ValueType * getConstTypedReference()const{return 0;}
+    virtual ValueType * getMutableTypedReference()const{return 0;}
+
+
     
     void setValue(void * object, const void * value)const{
       auto typedObject = reinterpret_cast<OwningClass*>(object);
@@ -41,7 +49,7 @@ namespace nspace{
       OwningClass * owningClass = dynamic_cast<OwningClass*>(static_cast<Object*>(object));
       ValueType value = getTypedValue(owningClass);
       if(getCustomSerializer()){
-         if(!(getCustomSerializer()->serialize(out,object)))return false;
+         if(!(getCustomSerializer()->serialize(out,&value)))return false;
       }else{
         if(!Serializer<ValueType>::serialize(out,&value))return false;
       }

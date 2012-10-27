@@ -4,7 +4,12 @@
 #include <core/Set.h>
 
 // may only be used inside class which has the a raisePropertyChanged(string) method
-#define NOTIFYING_PROPERTY(TYPE, NAME) EXTENDED_PROPERTY(TYPE, NAME,public,,,{static std::string propertyName=#NAME; raisePropertyChanged(propertyName);})
+// a private raise<NAME>Changed() method is created which allows this class to control additionally raise the changed event
+// then a public PROPERTY is added
+#define NOTIFYING_PROPERTY(TYPE, NAME) \
+  private:\
+  inline void notify##NAME##Changed(){static std::string propertyName=#NAME; raisePropertyChanged(propertyName);}\
+  EXTENDED_PROPERTY(TYPE, NAME,public,,,{notify##NAME##Changed();})
 
 
 namespace nspace{ 

@@ -5,7 +5,7 @@ namespace nspace{
   
   class CustomSerializer{
   public:
-    virtual bool serialize(std::ostream & o, void * value)=0;
+    virtual bool serialize(std::ostream & o, const void * value)=0;
   };
   class CustomDeserializer{
   public:
@@ -29,23 +29,51 @@ namespace nspace{
     TYPED_OBJECT(Property);
 
     SIMPLE_PROPERTY(std::string, PropertyName){if(getPropertyDisplayName()!="")return; setPropertyDisplayName(newvalue);}
+    
     SIMPLE_PROPERTY(std::string, PropertyDescription){}
     SIMPLE_PROPERTY(std::string, PropertyDisplayName){}
-    SIMPLE_PROPERTY(const TypeData *, PropertyType){}
-    SIMPLE_PROPERTY(const void *, DefaultValue){}
     SIMPLE_PROPERTY(std::string, GroupName){}
+    SIMPLE_PROPERTY(bool, IsVisible){}
+    
+    SIMPLE_PROPERTY(bool, HasGetter){}
+    SIMPLE_PROPERTY(bool, HasSetter){}
+    SIMPLE_PROPERTY(bool, HasConstReference){}
+    SIMPLE_PROPERTY(bool, HasMutableReference){}
+
+
+    // the typedata of the property
+    SIMPLE_PROPERTY(const TypeData *, PropertyType){}
+    // access to the default value
+    SIMPLE_PROPERTY(const void *, DefaultValue){}
+    // custom serializer
     SIMPLE_PROPERTY(CustomSerializer*, CustomSerializer){}
+    // custom deserializer
     SIMPLE_PROPERTY(CustomDeserializer*, CustomDeserializer){}
+    
 
     REFERENCE_PROPERTY(std::string, PropertyName);
   public:
-    Property():_PropertyType(0),_DefaultValue(0),_CustomDeserializer(0),_CustomSerializer(0){}
+    Property():
+      _PropertyType(0),
+      _DefaultValue(0),
+      _CustomDeserializer(0),
+      _CustomSerializer(0),
+      _IsVisible(true),
+      _HasGetter(false),
+      _HasSetter(false),
+      _HasMutableReference(false),
+      _HasConstReference(false)
+    {}
     // sets this property to the default value
     void setToDefaultValue(void * object)const{setValue(object,getDefaultValue());}
+    // sets the value of the property
     virtual void setValue(void * object, const void * value)const=0;
+    // gets the value of the property
     virtual void getValue(const void * object, void * value)const=0;  
 
-
+    virtual void * getMutableReference()const{return 0;}
+    virtual const void * getConstReference()const{return 0;}
+    
     virtual bool deserialize(void * object, std::istream & in)const=0;
     virtual bool serialize(void * object, std::ostream & out)const=0;
 

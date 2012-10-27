@@ -109,6 +109,12 @@ private:\
 #define GROUPNAME(NAME,GROUP)\
   STATIC_INITIALIZER(NAME##GroupName,PROPERTYCLASSINSTANCE(NAME)->setGroupName(GROUP))
 
+// sets the property as hidden
+#define HIDDEN(NAME)\
+  STATIC_INITIALIZER(NAME##Visibility,PROPERTYCLASSINSTANCE(NAME)->setIsVisible(false))
+
+
+
 
 #define SERIALIZERARGUMENTS(TYPE) std::ostream & stream, const TYPE * value
 #define DESERIALIZERARGUMENTS(TYPE) TYPE * value, std::istream & stream
@@ -140,7 +146,7 @@ public:\
   private:\
 class NAME##CustomSerializer : public virtual TypedCustomSerializer<TYPE>{\
 public:\
-  bool serializeType(SERIALIZERARGUMENTS(TYPE)){return SERIALIZEMETHODNAME(NAME)(value,stream);};\
+  bool serializeType(SERIALIZERARGUMENTS(TYPE)){return SERIALIZEMETHODNAME(NAME)(stream,value);};\
 };\
   STATIC_INITIALIZER(NAME##CustomSerializer,{PROPERTYCLASSINSTANCE(NAME)->setCustomSerializer(new NAME##CustomSerializer());})
 
