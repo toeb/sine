@@ -8,25 +8,8 @@
 using namespace std;
 using namespace nspace;
 
-
-class BreakTask :public virtual ScheduledTask{
-private:
-  ScheduledTaskRunner & _runner;
-public:
-  BreakTask(ScheduledTaskRunner & runner):_runner(runner){
-    runner.addTask(this);
-  }
-protected:
-  void timeout(Time t, Time dt){
-    _runner.halt();
-    _runner.addTask(this);
-  }
-
-};
-QtTaskRunner::QtTaskRunner():_taskTimer(0),_breakTask(0){
+QtTaskRunner::QtTaskRunner():_taskTimer(0),_ui(0){
   setName("TaskRunner");
-  _breakTask = new BreakTask(_scheduledTaskRunner);
-  _breakTask->interval() = 0.01;
   _taskTimer = new QTimer(this);
   _taskTimer->setInterval(5);
   connect(_taskTimer,SIGNAL(timeout()), this, SLOT(timeout()));
@@ -35,9 +18,9 @@ QtTaskRunner::QtTaskRunner():_taskTimer(0),_breakTask(0){
 
 }
 void QtTaskRunner::timeout(){
-  logMessage(4," timing out --> executing scheduledtaskrunner and serialtaskrunner");
-  _scheduledTaskRunner.run();
-  _serialTaskRunner.run();  
+  logMessage(" timing out --> executing scheduledtaskrunner and serialtaskrunner",4);
+  _scheduledTaskRunner.step();
+  _serialTaskRunner.step();
 }
 bool QtTaskRunner::accept(ITask * task){;
   // ignore the taskrunners (which are also tasks)
@@ -59,14 +42,7 @@ void QtTaskRunner::disable(){
   _taskTimer->stop();
 }
 void QtTaskRunner::install(PluginContainer & container){
-  /*
-
-  _ui = new Ui_TaskWidget();
-  PluginWindow * window = new PluginWindow();
-  _ui->setupUi(window);
-  window->setWindowTitle((name()+" Window").c_str());
-  container.setPluginWindow(window);*/
-
+  logWarning("not implemented");
 }
 
 void QtTaskRunner::uninstall(PluginContainer & container){
@@ -75,8 +51,8 @@ void QtTaskRunner::uninstall(PluginContainer & container){
 
 
 void QtTaskRunner::onComponentAdded(Object * o){
-  logDebug("adding " <<*o);
+  debugInfo("adding " <<*o);
 }
 void QtTaskRunner::onComponentRemoved(Object * o){
-  logDebug("removing "<< *o);
+  debugInfo("removing "<< *o);
 }

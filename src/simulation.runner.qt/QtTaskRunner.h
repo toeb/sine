@@ -21,13 +21,10 @@ namespace nspace{
     SUBCLASSOF(Plugin);
 
   private:
-    ScheduledTask *_breakTask;
     ScheduledTaskRunner _scheduledTaskRunner;
     SerialTaskRunner _serialTaskRunner;
     QTimer * _taskTimer;
     Ui_TaskWidget * _ui;
-
-
 
   public:
     QtTaskRunner();

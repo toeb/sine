@@ -88,6 +88,7 @@ target_link_libraries(simulation.runner.qt
    simulation
    simulation.runner 
    simulation.time 
+   core.task
    visualization.opengl 
    simulation.interaction 
    simulation.integration 
