@@ -29,16 +29,14 @@
 #include <core.initialization/Initializable.h>
 #include <visualization/Color.h>
 namespace nspace{
-  class GlViewport:public virtual PerspectiveViewport, public virtual Initializable{
-    TYPED_OBJECT(GlViewport);
-    Color _clearColor;
+  class GlViewport:
+    public virtual PerspectiveViewport, 
+    public virtual Initializable{
 
+    REFLECTABLE_OBJECT(GlViewport);
+    PROPERTY(Color,ClearColor){};
   public:
-    GlViewport();
-    Color& clearColor();
-    const Color& clearColor()const;
-
-
+    GlViewport();    
     void viewportTransform();
   protected:
     void onBeforeRender();
