@@ -48,7 +48,7 @@ public:
    */
   AdamsBashford4(Real h0 = 0.01) : StepIntegrator(h0){
     setName("Adams Bashforth 4");
-  };
+  }
   /**
    * \brief Steps the integrator.  Adams Bashford 4th order step as described in http://www.icp.uni-
    *        stuttgart.de/~hilfer/lehre/100-online/skriptum/html_book00/node104.html.
@@ -68,11 +68,11 @@ public:
     f_3 = f_2;
     f_2 = f_1;
     f_1 = f_0;    
-  };
+  }
   
   int getErrorOrder()const{return 1;}
   void initializeIntegrator(const StateMatrix & currentState){
-    StateMatrix f_0 = f(currentState,0,h());
+    StateMatrix f_0 = f(currentState,0,getCurrentStepSize());
     f_1=f_2=f_3 = f_0;
   }
 
