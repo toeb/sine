@@ -5,38 +5,95 @@ using namespace std;
 
 #define iftype(type,object) if(dynamic_cast<type*>(object))dynamic_cast<type*>(object)
 
-void FpsCamera::onViewportAdded(Viewport * viewport){
+void FpsViewportController::onViewportAdded(Viewport * viewport){
   auto v = dynamic_cast<PerspectiveViewport*>(viewport);
   if(!v)return;
   body.position.mirror(v->Coordinates().position);
   body.orientation.mirror(v->Coordinates().orientation);
 }
-void FpsCamera::onViewportRemoved(Viewport * viewport){
+void FpsViewportController::onViewportRemoved(Viewport * viewport){
   auto v = dynamic_cast<PerspectiveViewport*>(viewport);
   if(!v)return;
   // v->coordinates().unshare();
 
 
 }
+Real degToRad(Real deg){
+  return deg*scalar::pi<Real>()/180;
+}
+Real radToDeg(Real deg){
+  return 180*deg/scalar::pi<Real>();
+}
+Real clampToPeriod(Real x, Real range){
+  Real p = floor(x/range)*range;
+  return x-p;
+}
+Real clampTo2Pi(Real x){
+  return clampToPeriod(x,2*scalar::pi<Real>());
+}
+void deserializeDeg2Rad(Real & val,std::istream & in){
+  in >> val;
+  val = degToRad(val);
+  val = clampTo2Pi(val);
+}
+void serializeRad2Deg(std::ostream & out, Real val){
+  val = clampTo2Pi(val);
+  val = radToDeg(val);
+  out << val;
+}
+bool FpsViewportController::deserializeProperty(Real,Roll){
+  deserializeDeg2Rad(*value,stream);
+  return true;
+}
+bool FpsViewportController::serializeProperty(Real,Roll){  
+  serializeRad2Deg(stream,*value);
+  return true;
+}
+bool FpsViewportController::deserializeProperty(Real,Yaw){
+  deserializeDeg2Rad(*value,stream);
+  return true;
+}
+bool FpsViewportController::serializeProperty(Real,Yaw){
+  serializeRad2Deg(stream,*value);
+  return true;
+}
 
-FpsCamera::FpsCamera():roll(0),pitch(0),yaw(0){
-  isOneTimeTask()=false;
-  interval()=0.01;
+bool FpsViewportController::deserializeProperty(Real,Pitch){
+  deserializeDeg2Rad(*value,stream);
+  return true;
+}
+bool FpsViewportController::serializeProperty(Real,Pitch){
+  serializeRad2Deg(stream,*value);
+  return true;
+}
+
+
+FpsViewportController::FpsViewportController():_Roll(0),_Pitch(0),_Yaw(0){
+  setName("FpsViewportController");
+  setIsOneTimeTask(false);
+  setInterval(0.01);
+
+  setMovementSpeed(4);
+  setRotationSpeed(0.1);
 
   eulerIntegrator.setLowerBound(0.0);
   eulerIntegrator.setUpperBound(0.0);
   eulerIntegrator.setEvaluator(new Evaluator(kinematicBody()));
+  Components()|=&eulerIntegrator;
+
+
 }
 
-void FpsCamera::timeout(Time timePassed,Time time){
+void FpsViewportController::timeout(Time timePassed,Time time){
   auto handler = currentHandler();
   if(!handler)return;
 
-  Real speed = 4;
+  Real speed = getMovementSpeed();
 
   body.velocity().setZero();
   body.angularVelocity().setZero();  
-
+  
+      calculateRotation();
   Matrix3x3 R = body.orientation().toRotationMatrix();
 
 
@@ -55,18 +112,21 @@ void FpsCamera::timeout(Time timePassed,Time time){
   if(handler->isKeyDown(KEY_D))body.velocity() -= binormal * speed;
   if(handler->isKeyDown(KEY_CTRL))body.velocity() += normal * speed;
   if(handler->isKeyDown(KEY_SPACE))body.velocity() -= normal * speed;
-  eulerIntegrator.setUpperBound(eulerIntegrator.upperBound()+timePassed);
-  eulerIntegrator.integrate();
 
   
 
+  eulerIntegrator.setUpperBound(eulerIntegrator.getUpperBound()+timePassed);
+  eulerIntegrator.integrate();
+
+
+
 }
 
-void FpsCamera::onMouseMove(InputHandler * inputhandler, int x , int y, int dx, int dy){
+void FpsViewportController::onMouseMove(InputHandler * inputhandler, int x , int y, int dx, int dy){
   if(abs(dx)>40 || abs(dy)>40){
     return;
   }
-  Real speed = 0.1;
+  Real speed = getRotationSpeed();
   Real length =dx+dy;// sqrt((Real)dx*dx+dy*dy);
   Real xSpeed = speed*dx;
   Real ySpeed = speed*dy;
@@ -100,20 +160,36 @@ void FpsCamera::onMouseMove(InputHandler * inputhandler, int x , int y, int dx, 
   if(inputhandler->isKeyDown(KEY_3)){    
     body.position() +=direction* length*speed;
   }
+  if(inputhandler->isKeyDown(KEY_R)){
+    _Roll += dx*speed*0.1;
+    notifyRollChanged();
+  }
+
   if(inputhandler->isMouseButtonDown(BUTTON_LEFT) || inputhandler->isKeyDown(KEY_Q)){
+    debugMessage("left mouse button down --> rotating view (yaw: "<<(int)(getYaw()/scalar::pi<Real>()*360)<<", roll: "<<(int)(getRoll()/scalar::pi<Real>()*360)<<")",9);
+    _Yaw += -dx*speed*0.1;
+    notifyYawChanged();
+    _Pitch += -dy*speed*0.1;
+    notifyPitchChanged();
+    calculateRotation();
+  }
 
-      logInfo("left mouse button down --> rotating view");
 
-    yaw += -dx*speed*0.1;
-    pitch += -dy*speed*0.1;
+
+}
+
+void FpsViewportController::calculateRotation(){
     Quaternion qx;
     Quaternion qy;
+    Quaternion qz;
 
-    qx.fromAxisAngle(Vector3D::UnitX(),pitch);
-    qy.fromAxisAngle(Vector3D::UnitY(),yaw);
+    qx.fromAxisAngle(Vector3D::UnitX(),_Pitch);
+    qy.fromAxisAngle(Vector3D::UnitY(),_Yaw);
+    qz.fromAxisAngle(Vector3D::UnitZ(),_Roll);
     qx.normalize();
     qy.normalize();
-    body.orientation() = qy*qx;
+    qz.normalize();
+    body.orientation() = qy*qx*qz;
     body.orientation().normalize();
-  }
+  
 }
