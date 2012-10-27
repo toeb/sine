@@ -128,7 +128,7 @@ void RungeKuttaFehlberg45::doStep(StateMatrix & x_next, const StateMatrix & x, R
   if(minimumStepSize > h_new)h_new = minimumStepSize;
   if(maximumStepSize < h_new)h_new = maximumStepSize;
     
-  h() = h_new;
+  setTime(h_new);
 
   //if(getNumberOfSteps()%10==0)cout << h_new<<" "<< currentErrorEstimate<<endl;
   //return the higher order approximation

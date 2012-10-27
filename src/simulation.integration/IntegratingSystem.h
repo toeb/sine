@@ -12,15 +12,7 @@
 namespace nspace{	
 
   /**
-  * \brief Integrable system module. 
-  * 				This module accepts all integrables and system functions.
-  * 				These input are combined and integrated via the integrator
-  * 				When an integrator is added to the simulation and it is not used
-  * 				it will replace the current integrator of this module
-  * 				you can also control the integrator via the set integrator method
   *
-  * \author Tobi
-  * \date 13.07.2012
   */
   class IntegratingSystem :
     public virtual NamedObject,
@@ -35,11 +27,13 @@ namespace nspace{
     PROPERTY(Evaluator*, Evaluator);
     PROPERTY(SimulationTimeProvider *, TimeProvider);
     PROPERTY(StepIntegrator*, Integrator);
+    PROPERTY(long, EvaluationCount){};
   public:
     // this object is a functor which will be used as a callback in the Task
     void operator()();
     IntegratingSystem(SimulationTimeProvider * timeProvider);
-
+  protected:
+    void onPropertyChanged(const std::string & propertyName);
   private:
     void timeout(Time dt, Time t);
     void setupEvaluator(StatefulObject * state, ISystemFunction * func);

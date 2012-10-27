@@ -1,7 +1,9 @@
-#include "SystemModule.h"
+#include "IntegratingSystem.h"
 #include <simulation/Simulation.h>
 #include <core.task/ScheduledTask.h>
-#include <core.task/Task.h>
+#include <core.task/TaskDelegate.h>
+#include <core.task/ITask.h>
+#include <core.task/ITaskRunner.h>
 using namespace nspace;
 using namespace std;
 
@@ -11,18 +13,43 @@ IntegratingSystem::IntegratingSystem(SimulationTimeProvider * timeProvider):
   _Evaluator(0),
   _Task(0),
   _State(0),
-  _SystemFunction(0)  
+  _SystemFunction(0),
+  _EvaluationCount(0)
 {
-  _Task=new DelegateTask<IntegratingSystem>(*this);
+  _Task=new TaskDelegate<IntegratingSystem>(*this);
+  _Task->setName("Integrating System Task");
   setTimeProvider(timeProvider);
 } 
+
+
+void IntegratingSystem::onPropertyChanged(const std::string & propertyName){
+  bool ok=true;
+  ok &= getEvaluator()!=0;
+  ok &= getTimeProvider()!=0;
+  ok &= getIntegrator()!=0;
+  ok &= getTask()!=0;
+
+  if(ok){
+    Components()|=getTask();
+  }
+  else {
+    Components()/=getTask();
+  }
+
+}
+
 // gets called by task  steps the integrator once and notifies the timeprovider which time it reached
 void IntegratingSystem::operator()(){
+
   if(!_TimeProvider)return;
   if(!_Integrator)return;
+  debugMessage("advancing time to "<<_TimeProvider->targetTime(),8);
   _Integrator->setLowerBound(_TimeProvider->initialTime());
-  _Integrator->setUpperBound(_TimeProvider->targetTime());
-  _TimeProvider->notifyTimeReached(_Integrator->step());
+  _Integrator->setUpperBound(_TimeProvider->targetTime());  
+  
+  _TimeProvider->notifyTimeReached(_Integrator->step());  
+  setEvaluationCount(getEvaluationCount()+1);
+  getTask()->getTaskRunner()->addTask(getTask());
 }
 
 void IntegratingSystem::setupEvaluator(StatefulObject * state, ISystemFunction * func){

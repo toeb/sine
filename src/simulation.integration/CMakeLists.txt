@@ -11,8 +11,8 @@ set(integrationSource
  ./Evaluator.cpp
  ./CompositeSystemFunction.h
  ./CompositeSystemFunction.cpp
- ./SystemModule.h
- ./SystemModule.cpp 
+ ./IntegratingSystem.h
+ ./IntegratingSystem.cpp 
 )
 source_group("" FILES ${integrationSource})
 set(implementationSource

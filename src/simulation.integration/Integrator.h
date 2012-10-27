@@ -29,7 +29,8 @@
 #include <simulation.state/StatefulObject.h>
 #include <simulation.integration/ISystemFunction.h>
 #include <simulation.integration/Evaluator.h>
-
+#include <core/Reflection.h>
+#include <simulation.logging/Log.h>
 namespace nspace{
   /**
   * <summary> Abstract Integrator class.</summary>
@@ -37,32 +38,33 @@ namespace nspace{
   * <remarks> Tobias Becker, 13.04.2012.</remarks>
   */
 
-  class Integrator : public virtual ISimulationObject{
-  private:
-    Evaluator * _evaluator;
+  class Integrator : 
+    public virtual NamedObject, 
+    public virtual PropertyChangingObject,
+    public virtual Log
+  {
+    REFLECTABLE_OBJECT(Integrator);
+    SUBCLASSOF(Log);
+
+    DESCRIPTION(Evaluator,"The evaluator which is to be integrated");
+    PROPERTY(Evaluator*, Evaluator){}
   public:
     // default constructor (no evaluator set)
     Integrator();
     //integrates the evaluator over the interval [a,b]
     virtual void integrate(Real a, Real b)=0;
-    // returns the evaluator of this integrator
-    inline Evaluator * evaluator(){ return _evaluator; }
-    // sets the evaluator of integrator
-    void setEvaluator(Evaluator * evaluator);
   protected:
     // evaluates the evaluator at state x ,time t and stepsize h
     inline const StateMatrix & f(const StateMatrix & x, Real t, Real h);
   };
 
-
-
   //implementation
   inline const StateMatrix & Integrator::f(const StateMatrix & x, Real t, Real h){
-    if(!evaluator()){
-      std::cerr << " No evaluator set.  cannot call f!!"<<std::endl;
+    if(!getEvaluator()){
+      logWarning(" No evaluator set. call to f(x,t,h) is returning invalid matrix!!");
       return *reinterpret_cast<StateMatrix*>(0);
     }    
-    return evaluator()->f(x,t,h);
+    return getEvaluator()->f(x,t,h);
   }
 
 }//namespace mbslib
