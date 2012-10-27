@@ -7,11 +7,39 @@
 #include <simulation.logging/Log.h>
 #include <sstream>
 namespace nspace{
-  class ObjectPropertyViewModel : public QAbstractItemModel, public virtual PropertyChangingObject, public virtual Log{
+  class ObjectPropertyViewModel : 
+    public QAbstractItemModel, 
+    public virtual PropertyChangingObject, 
+    public virtual Log, 
+    public virtual PropertyChangedListener{
     Q_OBJECT;
     REFLECTABLE_OBJECT(ObjectPropertyViewModel);
     SUBCLASSOF(Log);
-    PROPERTY(Object *, CurrentObject){}
+    PROPERTY(Object *, CurrentObject){
+      if(oldvalue){
+        auto pc = dynamic_cast<PropertyChangingObject*>(oldvalue);
+        if(pc)pc->listeners()/=this;
+      }
+      if(newvalue){        
+        auto pc = dynamic_cast<PropertyChangingObject*>(newvalue);
+        if(pc)pc->listeners()|=this;
+      }
+    
+    }
+    
+  protected:
+    void onPropertyChanged(Object * sender, const std::string & propertyName){
+      //if(result)emit dataChanged(index,index);
+      auto object = getCurrentObject();
+      const Set<const Property*> properties = object->getTypeData().Properties();
+
+      for(int i=0; i < properties; i++){
+        if(properties.at(i)->getPropertyName()==propertyName){
+          auto idx = index(i,1);
+          emit dataChanged(idx,idx);
+        }
+      }
+    }
 
 
   public:
@@ -50,6 +78,7 @@ namespace nspace{
       std::stringstream ss(stdstring);
       bool result = prop->deserialize(object,ss);
       if(!result)logWarning("could not deserialize "<<prop->getPropertyName()<<" from string '"<<stdstring<<"'");
+      if(result)emit dataChanged(index,index);
       return result;
 
     }

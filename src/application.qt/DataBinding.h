@@ -1,12 +1,20 @@
 #pragma once
 
-#include <core/Reflection.h>
 #include <memory>
+
+#include <core/Reflection.h>
+#include <simulation.logging/Log.h>
+
+
 #include <QObject>
 #include <QLineEdit>
-#include <simulation.logging/Log.h>
 namespace nspace{
-  class LineEditDataBinding : public QObject, public virtual PropertyChangingObject, public virtual PropertyChangedListener, public virtual Log{
+  class LineEditDataBinding : 
+    public QObject, 
+    public virtual PropertyChangingObject, 
+    public virtual PropertyChangedListener, 
+    public virtual Log
+  {
     Q_OBJECT;
     REFLECTABLE_OBJECT(LineEditDataBinding);
   public:
@@ -16,7 +24,7 @@ namespace nspace{
       OneWayToSource
     };
 
-    PROPERTY(QLineEdit * , Target){
+    PROPERTY(QLineEdit * , Target){      
       if(oldvalue)disconnect();
       if(newvalue)connect(newvalue,SIGNAL(editingFinished()),this,SLOT(targetChanged()));
       if(newvalue)connect(newvalue,SIGNAL(textEdited(const QString& )),this,SLOT(targetChanged()));

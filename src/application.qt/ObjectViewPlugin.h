@@ -15,7 +15,7 @@ namespace nspace{
     REFLECTABLE_OBJECT(ObjectViewPlugin);
     SUBCLASSOF(Log)
     PROPERTY(std::string,SearchString){
-      logDebug("SearchString changing to"<<newvalue);
+      debugMessage("SearchString changing to"<<newvalue,6);
     }
     PROPERTYSET(Object *, Objects,,)
   private:
