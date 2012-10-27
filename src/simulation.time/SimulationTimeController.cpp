@@ -13,8 +13,8 @@ SimulationTimeController::SimulationTimeController(SimulationTimeProvider & tp, 
   
 {
   
-    interval()=0.001;
-    isOneTimeTask()=false;
+  setInterval(0.001);
+  setIsOneTimeTask(false);
   setPaused(startPaused);
   setName("SimulationTimeController");      
 }
