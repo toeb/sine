@@ -4,22 +4,28 @@
 #include <visualization.opengl/GlViewport.h>
 #include <application.qt/QtInputHandler.h>
 #include <core.hub/CompositeHubObject.h>
-#include <core.task/ScheduledTask.h>
+#include <core.task/ScheduledTaskDelegate.h>
 #include <visualization/ViewportController.h>
 #include <simulation.logging/Log.h>
 namespace nspace{
-  class GlWidget : public QGLWidget, public virtual NamedObject, public virtual CompositeHubObject,public virtual Log{
+  class GlWidget : 
+    public QGLWidget, 
+    public virtual NamedObject, 
+    public virtual CompositeHubObject,
+    public virtual Log
+  {
     Q_OBJECT;
-    TYPED_OBJECT(GlWidget);
-    GlViewport * _viewport;
-    ViewportController * _viewportController;
-    QtInputHandler *_inputHandler;
-    ScheduledTaskDelegate _refreshTask;
+    REFLECTABLE_OBJECT(GlWidget);
+    SUBCLASSOF(Log);
+
+    PROPERTY(GlViewport*, Viewport);
+    PROPERTY(ViewportController*, ViewportController);
+
+    QtInputHandler * _inputHandler;
+    ScheduledTaskDelegate<> _refreshTask;
+
   public:
     GlWidget(QWidget * parent=0);
-    void setGlViewport(GlViewport * viewport);
-    void setViewportController(ViewportController * controller);
-    GlViewport * viewport();
     void repaint();
   protected:
     void initializeGL();
@@ -29,11 +35,11 @@ namespace nspace{
     void onComponentAdded(Object * object);
     void onComponentRemoved(Object * object);
     
+    bool eventFilter(QObject *object, QEvent *event);
     void keyPressEvent(QKeyEvent* ke);
     void keyReleaseEvent(QKeyEvent* ke);
     void mouseMoveEvent(QMouseEvent* me);
     void mousePressEvent(QMouseEvent* me);
     void mouseReleaseEvent(QMouseEvent* me);
-    bool eventFilter(QObject *object, QEvent *event);
   };
 }

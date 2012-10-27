@@ -33,7 +33,7 @@ void GlWidgetPluginWindow::viewportIndexChanged(int idx){
   auto variant =_ui->comboBox->itemData(idx);
   auto dataPtr = variant.value<void*>();
   auto viewport = static_cast<GlViewport*> (dataPtr);
-  _glWidget->setGlViewport(viewport);
+  _glWidget->setViewport(viewport);
 }
 
 
