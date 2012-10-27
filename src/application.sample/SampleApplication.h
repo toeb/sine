@@ -10,7 +10,7 @@
 #include <visualization/Material.h>
 #include <simulation.runner.qt/QtTimeControlPlugin.h>
 #include <simulation.time.h>
-#include <simulation.integration/SystemModule.h>
+#include <simulation.integration/IntegratingSystem.h>
 #include <simulation.integration/implementations/RungeKutta4.h>
 #include <simulation.runner.qt/QtPropertyView.h>
 #include <application.qt/ObjectViewPlugin.h>

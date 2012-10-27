@@ -41,7 +41,7 @@ SampleApplication::SampleApplication(int argc, char ** argv, Sample & sample, co
   _SimulationTimeController=new SimulationTimeController(*getSimulationTimeProvider(),false);
   
   _Skybox = new SkyboxRenderer();
-  _Camera = new FpsCamera();
+  _Camera = new FpsViewportController();
   _ObjectViewPlugin = new ObjectViewPlugin();
   _QtPropertyView = new QtPropertyView();
   _ViewportPlugin = new ViewportPlugin();
@@ -67,9 +67,6 @@ void SampleApplication::printHierarchy(){
 }
 
 void SampleApplication::setup(){
-  
-
-  getViewport()->clearColor().setTo("LightGreen");
   getViewport()->setName("Default View");
 
   getViewportPlugin()->setName("Visualization Window");
