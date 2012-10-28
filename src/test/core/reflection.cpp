@@ -79,7 +79,7 @@ TEST(Test1, Reflection){
   auto prop =a.getProperty("IntegerProperty");
 
   CHECK(prop!=0);
-  CHECK(prop->getPropertyName()=="IntegerProperty");
+  CHECK(prop->getName()=="IntegerProperty");
   CHECK_EQUAL(3,a.getPropertyValue<int>("IntegerProperty"));
   a.setPropertyValue("IntegerProperty",5);
   CHECK_EQUAL(5,a.getIntegerProperty());

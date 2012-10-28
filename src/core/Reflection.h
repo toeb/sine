@@ -52,7 +52,7 @@
   return propertiesSet();\
   }\
   static const Property * getProperty(const std::string & propertyname){\
-  auto p = properties().first([&propertyname](const Property * p ){return p->PropertyName()==propertyname;});\
+  auto p = properties().first([&propertyname](const Property * p ){return p->Name()==propertyname;});\
   return p;\
   }\
   PropertyAdapter getPropertyAdapter(const std::string & name){\
@@ -78,7 +78,7 @@
   class PROPERTYCLASS(NAME) : public virtual TypedProperty<ReflectableType,TYPE>{\
   TYPED_OBJECT( PROPERTYCLASS(NAME) );\
   public:\
-  SINGLETON( PROPERTYCLASS(NAME) ){setPropertyName(#NAME);}\
+  SINGLETON( PROPERTYCLASS(NAME) ){setName(#NAME);}\
     void setTypedValue(ReflectableType *  object , TYPE value)const{ object->SETMETHOD(NAME)(value); }\
     TYPE getTypedValue(const ReflectableType *  object)const{ return object->GETMETHOD(NAME)(); }\
   };\
@@ -92,11 +92,11 @@
 
 // sets the propertydisplayname property of the property object created for the property specified by NAME (.... property)
 #define DISPLAYNAME(NAME, DNAME)\
-  STATIC_INITIALIZER(NAME##DisplayName, {PROPERTYCLASSINSTANCE(NAME)->setPropertyDisplayName(DNAME);})
+  STATIC_INITIALIZER(NAME##DisplayName, {PROPERTYCLASSINSTANCE(NAME)->setDisplayName(DNAME);})
 
 // sets the description of property specified by name
 #define DESCRIPTION(NAME, DDESCRIPTION)\
-  STATIC_INITIALIZER(NAME##Description, {PROPERTYCLASSINSTANCE(NAME)->setPropertyDescription(DDESCRIPTION);})
+  STATIC_INITIALIZER(NAME##Description, {PROPERTYCLASSINSTANCE(NAME)->setDescription(DDESCRIPTION);})
 
 // sets the default value for the property specified by NAME  (make sure the type is correct) also add the set to default method
 #define DEFAULTVALUE(NAME,DEFAULTVALUE)\

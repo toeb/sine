@@ -3,6 +3,7 @@
 
 namespace nspace{
 
+
 /**
  * \brief A collection that will notify its observers if elements were added or removed
  */

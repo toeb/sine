@@ -7,7 +7,7 @@ using namespace nspace;
 const TypeData & TypeData::UnknownType = *new TypeData("Unknown");
 
 void TypeData::onPredecessorAdded(TypeData* typedata){
-  std::cout << name <<"is subclass of " <<typedata->name<<std::endl;
+  //std::cout << name <<" is subclass of " <<typedata->name<<std::endl;
   Properties()|=typedata->Properties();
 }
 void TypeData::onPredecessorRemoved(TypeData* typedata){
@@ -27,7 +27,7 @@ void TypeData::itemRemoved(const Property* ,Properties){
 }
 
 const Property * TypeData::getProperty(const std::string & name)const{  
-  const Property* prop= Properties().first([&name](const Property * prop){return prop->getPropertyName()==name;});
+  const Property* prop= Properties().first([&name](const Property * prop){return prop->getName()==name;});
   return prop;
 }
 

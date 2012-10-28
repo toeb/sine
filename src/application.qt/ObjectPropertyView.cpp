@@ -22,7 +22,7 @@ void ObjectPropertyView::propertyChanging(Object*, CurrentObject){
 
   properties->foreachElement([this](const Property * prop){
     auto label = new QLabel();
-    label->setText(tr(prop->getPropertyDisplayName().c_str()));
+    label->setText(tr(prop->getDisplayName().c_str()));
     Widgets()|= label;
     
   });

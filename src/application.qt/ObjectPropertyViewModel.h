@@ -28,13 +28,13 @@ namespace nspace{
     }
     
   protected:
-    void onPropertyChanged(Object * sender, const std::string & propertyName){
+    void onPropertyChanged(Object * sender, const std::string & name){
       //if(result)emit dataChanged(index,index);
       auto object = getCurrentObject();
       const Set<const Property*> properties = object->getTypeData().Properties();
 
       for(int i=0; i < properties; i++){
-        if(properties.at(i)->getPropertyName()==propertyName){
+        if(properties.at(i)->getName()==name){
           auto idx = index(i,1);
           emit dataChanged(idx,idx);
         }
@@ -77,7 +77,7 @@ namespace nspace{
       auto object = getCurrentObject();
       std::stringstream ss(stdstring);
       bool result = prop->deserialize(object,ss);
-      if(!result)logWarning("could not deserialize "<<prop->getPropertyName()<<" from string '"<<stdstring<<"'");
+      if(!result)logWarning("could not deserialize "<<prop->getName()<<" from string '"<<stdstring<<"'");
       if(result)emit dataChanged(index,index);
       return result;
 
@@ -132,13 +132,13 @@ namespace nspace{
       if(!prop)return QVariant();
     
       if(role==Qt::WhatsThisRole || role == Qt::ToolTipRole){
-        return QVariant::fromValue(tr(prop->getPropertyDescription().c_str()));
+        return QVariant::fromValue(tr(prop->getDescription().c_str()));
       }
 
       //logInfo("getting data @"<<index.row()<<"."<<index.column()<<" role:"<<role); 
       if(role!=Qt::DisplayRole)return QVariant();
         
-      if(index.column()==0) return QVariant::fromValue(tr(prop->getPropertyDisplayName().c_str()));      
+      if(index.column()==0) return QVariant::fromValue(tr(prop->getDisplayName().c_str()));      
 
       else if(index.column()==1) {
         std::stringstream ss;

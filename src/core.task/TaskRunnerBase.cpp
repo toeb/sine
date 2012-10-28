@@ -50,7 +50,7 @@ bool TaskRunnerBase::step(){
   }
   // todo lock taskqueue
   if(!hasTasks()){
-    debugWarning("Cannot perform step --> no tasks available");
+    debugMessage("Cannot perform step --> no tasks available",5);
     return false;
   }
   ITask * task = nextTask();

@@ -12,11 +12,17 @@ namespace nspace{
     }
   private:
 
-    const void * getConstReference()const{return reinterpret_cast<const void*>(getConstTypedReference());}
-    void * getMutableReference()const{return reinterpret_cast<void*>( getMutableTypedReference());}
+    const void * getConstPointer(const void * object)const{      
+      auto typedObject = reinterpret_cast<const OwningClass*>(object);
+      return reinterpret_cast<const void*>(getConstTypedPointer(typedObject));
+    }
+    void * getMutablePointer(void * object)const{
+      auto typedObject = reinterpret_cast< OwningClass*>(object);
+      return reinterpret_cast<void*>(getMutableTypedPointer(typedObject));
+    }
 
-    virtual const ValueType * getConstTypedReference()const{return 0;}
-    virtual ValueType * getMutableTypedReference()const{return 0;}
+    virtual const ValueType * getConstTypedPointer(const OwningClass*)const{return 0;}
+    virtual ValueType * getMutableTypedPointer(OwningClass* )const{return 0;}
 
 
     

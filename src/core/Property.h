@@ -25,20 +25,30 @@ namespace nspace{
   };
 
 
-  class Property : public virtual Object{
-    TYPED_OBJECT(Property);
-
-    SIMPLE_PROPERTY(std::string, PropertyName){if(getPropertyDisplayName()!="")return; setPropertyDisplayName(newvalue);}
+  class MemberInfo : public virtual Object{
+    TYPED_OBJECT(MemberInfo);
     
-    SIMPLE_PROPERTY(std::string, PropertyDescription){}
-    SIMPLE_PROPERTY(std::string, PropertyDisplayName){}
+    SIMPLE_PROPERTY(std::string, Name){if(getDisplayName()!="")return; setDisplayName(newvalue);}
+    REFERENCE_PROPERTY(std::string, Name);
+    
+    SIMPLE_PROPERTY(std::string, Description){}
+    SIMPLE_PROPERTY(std::string, DisplayName){}
     SIMPLE_PROPERTY(std::string, GroupName){}
     SIMPLE_PROPERTY(bool, IsVisible){}
+  public:
+    MemberInfo():
+      _IsVisible(true)
+    {}
+
+  };
+
+  class Property : public virtual MemberInfo{
+    TYPED_OBJECT(Property);
+    SUBCLASSOF(MemberInfo);
     
     SIMPLE_PROPERTY(bool, HasGetter){}
     SIMPLE_PROPERTY(bool, HasSetter){}
-    SIMPLE_PROPERTY(bool, HasConstReference){}
-    SIMPLE_PROPERTY(bool, HasMutableReference){}
+
 
 
     // the typedata of the property
@@ -51,18 +61,14 @@ namespace nspace{
     SIMPLE_PROPERTY(CustomDeserializer*, CustomDeserializer){}
     
 
-    REFERENCE_PROPERTY(std::string, PropertyName);
   public:
     Property():
       _PropertyType(0),
       _DefaultValue(0),
       _CustomDeserializer(0),
       _CustomSerializer(0),
-      _IsVisible(true),
       _HasGetter(false),
-      _HasSetter(false),
-      _HasMutableReference(false),
-      _HasConstReference(false)
+      _HasSetter(false)
     {}
     // sets this property to the default value
     void setToDefaultValue(void * object)const{setValue(object,getDefaultValue());}
@@ -71,8 +77,8 @@ namespace nspace{
     // gets the value of the property
     virtual void getValue(const void * object, void * value)const=0;  
 
-    virtual void * getMutableReference()const{return 0;}
-    virtual const void * getConstReference()const{return 0;}
+    virtual void * getMutablePointer(void * object)const{return 0;}
+    virtual const void * getConstPointer(const void * object)const{return 0;}
     
     virtual bool deserialize(void * object, std::istream & in)const=0;
     virtual bool serialize(void * object, std::ostream & out)const=0;

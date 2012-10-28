@@ -67,6 +67,7 @@ namespace nspace{
       *this = color;
     }
 
+
     // normalizes the color (sets all color channels to between zero and one)
     void normalize();
     

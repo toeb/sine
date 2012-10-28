@@ -8,6 +8,8 @@
 #include <core/ObservableCollection.h>
 
 namespace nspace{
+  
+
   // a generic set (only unique elements allowed)
   template<typename T>
   class Set : public ObservableCollection<T>{
@@ -48,6 +50,16 @@ namespace nspace{
     // returns the first element
     T first();
     const T  first()const;
+    inline bool set(unsigned int index, const T& value){
+      if(index >= size())return false;
+      _elements[index] = value;
+      return true;
+    }
+    inline bool get(unsigned int index, T & value)const{
+      if(index>=size())return false;
+      value = at(index);
+      return true;
+    }
     // returns the element at index
     T  at(unsigned int index);
     const T at(unsigned  int index)const;
@@ -188,12 +200,12 @@ const T  Set<T>::first()const{
 }
 template<typename T>
 T  Set<T>::at(unsigned int index){
-  if(index >= size())return 0;
+  if(index >= size())return T();
   return _elements[index];
 }
 template<typename T>
 const T Set<T>::at(unsigned  int index)const{
-  if(index >= size())return 0;
+  if(index >= size())return T();
   return _elements[index];
 }
 template<typename T>
