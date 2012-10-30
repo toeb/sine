@@ -44,8 +44,8 @@ namespace nspace{
 
     virtual uint getElementCount(Object * object)const=0;
 
-    template<typename ObjectType, typename T> bool get(T& value, uint i, const ObjectType & object)const{ getValue(&object,i,&value); }
-    template<typename ObjectType, typename T> bool set(const T& value, uint i, ObjectType & object)const{ setValue(&object,i,&value); }   
+    template<typename ObjectType, typename T> bool get(T& value, uint i, const ObjectType & object)const{ return getValue(&object,i,&value); }
+    template<typename ObjectType, typename T> bool set(const T& value, uint i, ObjectType & object)const{ return setValue(&object,i,&value); }
 
 
   };

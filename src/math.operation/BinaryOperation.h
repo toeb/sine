@@ -12,7 +12,7 @@ namespace operation{
   class Operation<T, operation::Binary, code>{
   public:
     static inline void operation(T & c, const T & a, const T & b){
-      ERROR("UNIMPLEMENTED BINARY OPERATION");
+      //ERROR("UNIMPLEMENTED BINARY OPERATION");
     }        
   };
 

@@ -11,7 +11,7 @@ namespace nspace{
       class Operation<T,operation::Unary, code>{
       public:
         static inline void operation(T & b, const T & a){
-          ERROR("USING UNIMPLEMENTED UNARY FUNCTION ");
+          //ERROR("USING UNIMPLEMENTED UNARY FUNCTION ");
         }        
       };
 

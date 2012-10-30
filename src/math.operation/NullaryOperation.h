@@ -14,7 +14,7 @@ namespace operation{
   class Operation<T,operation::Nullary, code>{
   public:
     static inline void operation(T & a){
-      ERROR("UNIMPLEMENTED NULLARY FUNCTION");
+      //ERROR("UNIMPLEMENTED NULLARY FUNCTION");
     }
   };
 

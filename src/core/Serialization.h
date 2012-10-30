@@ -3,6 +3,7 @@
 #include <string>
 #include <config.h>
 #include <core/Set.h>
+#include <sstream>
 namespace nspace{
   // serializers need to use pointers else auto conversion would disrupt everything
   template<typename T>
@@ -25,7 +26,7 @@ namespace nspace{
   template<typename T>
   std::string serializeString(const T & value){
     static std::string defaultString ="";
-    stringstream ss;
+    std::stringstream ss;
     if(!Serializer<T>::serialize(ss,&value))return defaultString;
     return ss.str();
   }

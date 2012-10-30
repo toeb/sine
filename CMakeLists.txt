@@ -24,12 +24,16 @@ set(includeDirectories ${sourceDirectory})
 # 1 for ibds classes 2 for dslib 3 for eigen 
 add_definitions(-DMATRIX_CLASSES=2)
 
-IF (CMAKE_COMPILER_IS_GNUCC)
-  ##use c++0x flags for gcc (needed for the new integrators)
-  add_definitions(" -std=c++0x ")
-  add_definitions(" -std=gnu++0x ")
+if (CMAKE_COMPILER_IS_GNUCC)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x  -std=gnu++0x -fopenmp ")
+  SET(CMAKE_CXX_RELEASE_FLAGS "${CMAKE_CXX_RELEASE_FLAGS} -O3 -msse2 -std=c++0x  -std=gnu++0x -fopenmp  ")
 
-ENDIF(CMAKE_COMPILER_IS_GNUCC)
+endif(CMAKE_COMPILER_IS_GNUCC)
+
+if(MSVC)
+  SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Ob2 /Oi /Ot /GL")
+  SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
+endif(MSVC)
 
 
 include(${cmakeScriptsDirectory}/Common.cmake)

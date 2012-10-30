@@ -8,7 +8,7 @@
 #include <sstream>
 using namespace nspace;
 using namespace std;
-
+namespace nspace{
 class A {
   TYPED_OBJECT(A);
 };
@@ -45,6 +45,7 @@ class F: public virtual E, public virtual C{
 
 };
 TYPEDATAPROVIDER(F);
+}
 TEST(instanceOf1, Object){
   
   A a;
@@ -76,7 +77,6 @@ TEST(instanceOf3, Object){
   F f;
  CHECK(!e.isInstanceOf(typeof(A)));
 }
-
 
 TEST(Create, Object){
   Object o;
