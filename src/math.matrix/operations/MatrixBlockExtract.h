@@ -8,11 +8,11 @@ template<typename BlockType, typename SourceType>
   public:
     static inline void operation(BlockType  & target, const SourceType & source, uint rowOffset, uint colOffset){
       if(target.rows()+rowOffset > source.rows()){
-        ERROR("range exceed matrix dimension");
+        /*ERROR("range exceed matrix dimension");*/
         return;
       }
       if(target.cols()+colOffset > source.cols()){
-        ERROR("range exceed matrix dimension");
+  /*      ERROR("range exceed matrix dimension");*/
         return;
       }
       for(uint i=0; i < target.rows(); i++){

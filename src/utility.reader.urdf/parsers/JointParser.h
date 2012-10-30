@@ -32,7 +32,7 @@ protected:
      // get type string 
      const char * cstr = jointElement->Attribute("type");
      if(!cstr){
-       ERROR(" no type specified for joint " << connection->name() );
+//       ERROR(" no type specified for joint " << connection->name() );
        return false;
      }
      joint->type = cstr;
@@ -44,11 +44,11 @@ protected:
      child.parse(jointElement);
 
      if(!child.node) {
-       ERROR("No child node found joint "<<connection->name());
+     //  ERROR("No child node found joint "<<connection->name());
        return false;
      }
      if(!parent.node) {
-       ERROR("No parent node found joint "<<connection->name());
+//       ERROR("No parent node found joint "<<connection->name());
        return false;
      }
      // get the link structs from parent and child node (not needed currently)

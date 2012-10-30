@@ -74,7 +74,7 @@ namespace nspace{
         if(!prop)return ;
         std::string text = target->text().toUtf8().data();
         std::stringstream ss(text);
-        prop->deserialize((void*)(Object*)source,ss);
+        prop->deserialize(source,ss);
       }
 
 

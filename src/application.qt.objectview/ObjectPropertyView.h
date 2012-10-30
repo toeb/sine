@@ -3,11 +3,15 @@
 #include <core/Object.h>
 #include <core/Reflection.h>
 #include <QWidget>
-#include <application.qt/ObjectPropertyViewModel.h>
+#include <application.qt.objectview/ObjectPropertyViewModel.h>
 class Ui_ObjectPropertyView;
 namespace nspace{
 
-  class ObjectPropertyView : public QWidget, public virtual PropertyChangingObject{
+  class ObjectPropertyView : 
+    public QWidget, 
+    public virtual PropertyChangingObject,
+    public virtual Log
+  {
     Q_OBJECT;
     REFLECTABLE_OBJECT(ObjectPropertyView);
     Ui_ObjectPropertyView * _ui;
@@ -17,6 +21,10 @@ namespace nspace{
 
     PROPERTY(Object*, CurrentObject);
     PROPERTYSET(QWidget* , Widgets,,);
+
+    public slots:
+      void onModelLayoutChanged(const QModelIndex & index);
+      void autoresize();
   };
 
 }

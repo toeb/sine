@@ -6,6 +6,7 @@
 #include <memory>
 namespace nspace{
 class Property;
+class Object;
 typedef const uint TypeId;
 typedef const uint ObjectId;
 
@@ -20,15 +21,26 @@ public:
   PROPERTYSET(const Property*,DirectProperties,,)
 private:  
   //declare copy constructor private.
-  TypeData(const TypeData& original):id(original.id){}
+  TypeData(const TypeData& original):id(original.id){
+    convertToBase=[](void * p){return static_cast<Object*>(0);};
+  }
   // also = operator?
 public:
-
+  bool isSuperClassOf(const TypeData & child)const{
+    // TODO THIS DOES NOT WORK AND I KNOW WHY
+    if(&child == this)return true;
+    for(uint i=0; i < child.predecessors(); i++){
+      auto current = child.predecessor(i);
+      if(isSuperClassOf(*current))return true;
+    }
+    return false;
+  }
 
   static const TypeData & UnknownType;
   // operator for converting this TypeData to its type id
   inline operator const TypeId & ()const{return id;}
 
+  std::function<Object* (void * )> convertToBase;
   // default constructor
   TypeData();  
   // constructor accepting name
@@ -79,13 +91,13 @@ static inline const TypeData & getTypeData(){
 #define typeof(TYPE) (TypeDataProvider<TYPE>::getTypeData())
 
 
-
 // Macro for making an object a typed object.  
 // defines a static meta information structure (TypeData) and virtual access methods @TODO rename TYPED_OBJECT to TYPED_CLASS
 #define TYPED_OBJECT(type) public:\
   static inline const TypeData & ClassType(){static TypeData typeData(#type); return typeData; };\
   virtual inline const TypeId & getType()const {return ClassType().id;}\
   virtual inline const TypeData & getTypeData()const {return ClassType();}\
+  inline bool isInstanceOf(const TypeData & other)const{return other.isSuperClassOf(ClassType());}\
   private:
 
 // sets up inheritance hierarchy

@@ -8,7 +8,7 @@
 #include <core/ObservableCollection.h>
 
 namespace nspace{
-  
+
 
   // a generic set (only unique elements allowed)
   template<typename T>
@@ -50,16 +50,9 @@ namespace nspace{
     // returns the first element
     T first();
     const T  first()const;
-    inline bool set(unsigned int index, const T& value){
-      if(index >= size())return false;
-      _elements[index] = value;
-      return true;
-    }
-    inline bool get(unsigned int index, T & value)const{
-      if(index>=size())return false;
-      value = at(index);
-      return true;
-    }
+    inline bool setValue(unsigned int index, const T& value);
+    inline bool getValue(unsigned int index, T & value)const;
+    uint indexOf(T item)const;
     // returns the element at index
     T  at(unsigned int index);
     const T at(unsigned  int index)const;
@@ -108,8 +101,12 @@ namespace nspace{
     Set<T> & operator /=(const Set<T> & b);
     // returns the symmetric difference (xor)
     Set<T> operator ^(const Set<T> & b)const;
+    // returns the symmetric difference (xor)
+    Set<T>& operator ^=(const Set<T> & b);
     // returns the intersection of this set and set b;
     Set<T> operator &&(const Set<T> & b)const;
+    // assigns intersection of this set and set to this;
+    Set<T> & operator &=(const Set<T> & b);
     // returns true if the sets contain exactly the same elements (symmetric difference has a cardinality of zero)
     bool operator ==(const Set<T> & b)const;
     //static are equal test
@@ -145,7 +142,18 @@ namespace nspace{
     if(test) return remove(test);
     return false;
   }
+  template<typename T>
+  Set<T> & Set<T>::operator &=(const Set<T> & b){
+    *this = *this && b;
+    return *this;
+  }
 
+
+  template<typename T>
+  Set<T>&  Set<T>::operator ^=(const Set<T> & b){
+    *this = *this ^ b;
+    return *this;
+  }
   template<typename T>
   void Set<T>::sort(std::function<bool (const T, const T) > compare){
     std::sort(_elements.begin(),_elements.end(),compare);
@@ -154,263 +162,289 @@ namespace nspace{
   template<typename T>
   void Set<T>::sortByIntValue(std::function<int (const T)> toIntValue, SortDirection direction){
     sort([toIntValue,direction](const T a, const T b){
-         return direction==Set<T>::Ascending?(toIntValue(a)<toIntValue(b)):(toIntValue(a)>toIntValue(b));
-  });
-}
+      return direction==Set<T>::Ascending?(toIntValue(a)<toIntValue(b)):(toIntValue(a)>toIntValue(b));
+    });
+  }
 
 
-// returns last element
-template<typename T>
-T  Set<T>::last(){return at(size()-1);}
-// returns last element
-template<typename T>
-const T  Set<T>::last()const{return at(size()-1);}
+  // returns last element
 
-template<typename T>
-template<typename T2>
-Set<T2> Set<T>::subset()const{
-  return subset([](T t){return dynamic_cast<T2>(t)!=0;}).select([](T t){return dynamic_cast<T2>(t);});
-}
+  template<typename T>
+  inline bool Set<T>::setValue(unsigned int index, const T& value){
+    if(index >= size())return false;
+    if(contains(value)){
+      if(_elements[index]==value)return true;
+      return false;
+    }
+    _elements[index] = value;
+    return true;
+  }
+  template<typename T>
+  inline bool Set<T>::getValue(unsigned int index, T & value)const{
+    if(index>=size())return false;
+    value = at(index);
+    return true;
+  }
+  template<typename T>
+  uint Set<T>::indexOf(T item)const{
+    for(uint i=0; i < size(); i++){
+      if(at(i)==item)return i;
+    }
+    return size();
+  }
 
-template<typename T>
-template<typename ResultType>
-Set<ResultType> Set<T>::select(std::function<ResultType (T)> selector)const{
-  Set<ResultType> result;
-  foreachElement([&result, selector](T element){
-                 result |= selector(element);
-});
-return result;
-}
+  template<typename T>
+  T  Set<T>::last(){return at(size()-1);}
+  // returns last element
+  template<typename T>
+  const T  Set<T>::last()const{return at(size()-1);}
 
-// returns cardinality  (size of the set)
-template<typename T>
-Set<T>::operator unsigned int() const {
-  return size();
-}
+  template<typename T>
+  template<typename T2>
+  Set<T2> Set<T>::subset()const{
+    return subset([](T t){return dynamic_cast<T2>(t)!=0;}).select([](T t){return dynamic_cast<T2>(t);});
+  }
 
-// returns the first element
-template<typename T>
-T Set<T>::first(){
-  return at(0);
-}
+  template<typename T>
+  template<typename ResultType>
+  Set<ResultType> Set<T>::select(std::function<ResultType (T)> selector)const{
+    Set<ResultType> result;
+    foreachElement([&result, selector](T element){
+      result |= selector(element);
+    });
+    return result;
+  }
 
-template<typename T>
-const T  Set<T>::first()const{
-  return at(0);
-}
-template<typename T>
-T  Set<T>::at(unsigned int index){
-  if(index >= size())return T();
-  return _elements[index];
-}
-template<typename T>
-const T Set<T>::at(unsigned  int index)const{
-  if(index >= size())return T();
-  return _elements[index];
-}
-template<typename T>
-T Set<T>::operator()(unsigned int index){
-  return at(index);
-}
-template<typename T>
-const T Set<T>::operator()(unsigned int index)const{
-  return at(index);
-}
+  // returns cardinality  (size of the set)
+  template<typename T>
+  Set<T>::operator unsigned int() const {
+    return size();
+  }
 
-template<typename T>
-template<typename CompareType>
-T Set<T>::operator()(CompareType val)const{
-  return first([&val](T element){
-               return compare(element,val);
-});
-}
+  // returns the first element
+  template<typename T>
+  T Set<T>::first(){
+    return at(0);
+  }
 
+  template<typename T>
+  const T  Set<T>::first()const{
+    return at(0);
+  }
+  template<typename T>
+  T  Set<T>::at(unsigned int index){
+    if(index >= size())return T();
+    return _elements[index];
+  }
+  template<typename T>
+  const T Set<T>::at(unsigned  int index)const{
+    if(index >= size())return T();
+    return _elements[index];
+  }
+  template<typename T>
+  T Set<T>::operator()(unsigned int index){
+    return at(index);
+  }
+  template<typename T>
+  const T Set<T>::operator()(unsigned int index)const{
+    return at(index);
+  }
 
-template<typename T>
-bool Set<T>::empty()const{
-  return size()==0;
-}
-template<typename T>
-uint Set<T>::size()const{
-  return _elements.size();
-}
-template<typename T>
-const std::vector<T> & Set<T>::elements()const{return _elements;}
-template<typename T>
-void Set<T>::clear(){
-  std::vector<T> elements = _elements;
-  std::for_each(elements.begin(), elements.end(), [this](T element){
-                this->remove(element);
-});
-}
-template<typename T>
-bool Set<T>::add(T element){
-  if(contains(element))return false;
-  _elements.push_back(element);
-  this->notifyElementAdded(element);
-  return true;
-}
-template<typename T>
-bool Set<T>::remove(T element){
-  bool result = Query<T>::remove(_elements,element);
-  if(result)this->notifyElementRemoved(element);
-  return result;
-}
-template<typename T>
-void Set<T>::copyFrom(const Set<T> & result){
-  result.foreachElement([this](T t){
-                        this->add(t);
-});
-}
-template<typename T>
-void Set<T>::copyTo(Set<T> & result){
-  foreachElement([&result](T t){
-                 result.add(t);
-});
-}
-template<typename T>
-void Set<T>::insertInto(Set<T> & result, std::function<bool (T) > f)const{
-  Query<T>::select(result._elements,_elements,[f](bool & predicate, bool & cont, T elem){
-                   predicate = f(elem);
-});
-}
-template<typename T>
-bool Set<T>::contains(T  element)const{
-  return !this->subset([element](T e){return compare(e,element);}).empty();
-}
-
-template<typename T>
-Set<T> Set<T>::subset(std::function<bool (T)> f)const{
-  Set<T> result;
-  insertInto(result,f);
-  return result;
-}
+  template<typename T>
+  template<typename CompareType>
+  T Set<T>::operator()(CompareType val)const{
+    return first([&val](T element){
+      return compare(element,val);
+    });
+  }
 
 
+  template<typename T>
+  bool Set<T>::empty()const{
+    return size()==0;
+  }
+  template<typename T>
+  uint Set<T>::size()const{
+    return _elements.size();
+  }
+  template<typename T>
+  const std::vector<T> & Set<T>::elements()const{return _elements;}
+  template<typename T>
+  void Set<T>::clear(){
+    std::vector<T> elements = _elements;
+    std::for_each(elements.begin(), elements.end(), [this](T element){
+      this->remove(element);
+    });
+  }
+  template<typename T>
+  bool Set<T>::add(T element){
+    if(contains(element))return false;
+    _elements.push_back(element);
+    this->notifyElementAdded(element);
+    return true;
+  }
+  template<typename T>
+  bool Set<T>::remove(T element){
+    bool result = Query<T>::remove(_elements,element);
+    if(result)this->notifyElementRemoved(element);
+    return result;
+  }
+  template<typename T>
+  void Set<T>::copyFrom(const Set<T> & result){
+    result.foreachElement([this](T t){
+      this->add(t);
+    });
+  }
+  template<typename T>
+  void Set<T>::copyTo(Set<T> & result){
+    foreachElement([&result](T t){
+      result.add(t);
+    });
+  }
+  template<typename T>
+  void Set<T>::insertInto(Set<T> & result, std::function<bool (T) > f)const{
+    Query<T>::select(result._elements,_elements,[f](bool & predicate, bool & cont, T elem){
+      predicate = f(elem);
+    });
+  }
+  template<typename T>
+  bool Set<T>::contains(T  element)const{
+    return !this->subset([element](T e){return compare(e,element);}).empty();
+  }
 
-template<typename T>
-T Set<T>::first(std::function<bool (T)> f)const{
-  return Query<T>::selectFirst(_elements,f);
-}
+  template<typename T>
+  Set<T> Set<T>::subset(std::function<bool (T)> f)const{
+    Set<T> result;
+    insertInto(result,f);
+    return result;
+  }
 
-template<typename T>
-template<typename Result>
-void Set<T>::reduce(Result & result, std::function<void (Result & , T )> f)const{
-  foreachElement([&result,f](T elem){
-                 f(result,elem);
-});
-}
 
-template<typename T>
-void Set<T>::foreachElement(std::function<void(T)> f)const{
-  for(uint i=0; i < _elements.size();i++){
+
+  template<typename T>
+  T Set<T>::first(std::function<bool (T)> f)const{
+    return Query<T>::selectFirst(_elements,f);
+  }
+
+  template<typename T>
+  template<typename Result>
+  void Set<T>::reduce(Result & result, std::function<void (Result & , T )> f)const{
+    foreachElement([&result,f](T elem){
+      f(result,elem);
+    });
+  }
+
+  template<typename T>
+  void Set<T>::foreachElement(std::function<void(T)> f)const{
+    for(uint i=0; i < _elements.size();i++){
       f(_elements[i]);
     }
-}
-template<typename T>
-Set<T> & Set<T>::operator=(const Set<T>& a){
-  if(&a==this)return*this;
-  clear();
-  copyFrom(a);
-  return *this;
-}
-template<typename T>
-Set<T>::Set(const Set<T> & original){
-  copyFrom(original);
-}
-template<typename T>
-Set<T>::Set(T element){
-  add(element);
-}
+  }
+  template<typename T>
+  Set<T> & Set<T>::operator=(const Set<T>& a){
+    if(&a==this)return*this;
+    clear();
+    copyFrom(a);
+    return *this;
+  }
+  template<typename T>
+  Set<T>::Set(const Set<T> & original){
+    copyFrom(original);
+  }
+  template<typename T>
+  Set<T>::Set(T element){
+    add(element);
+  }
 
-template<typename T>
-Set<T>::Set(){
+  template<typename T>
+  Set<T>::Set(){
 
-}
-template<typename T>
-Set<T>::~Set(){
-  //clear();
-}
-
-
-//union
-template<typename T>
-Set<T> Set<T>::operator|(const Set<T> &b)const{
-  return unite(*this,b);
-}
+  }
+  template<typename T>
+  Set<T>::~Set(){
+    //clear();
+  }
 
 
+  //union
+  template<typename T>
+  Set<T> Set<T>::operator|(const Set<T> &b)const{
+    return unite(*this,b);
+  }
 
-//difference
-template<typename T>
-Set<T> Set<T>::operator/(const Set<T> & b)const{
-  return difference(*this,b);
-}
-template<typename T>
-Set<T> & Set<T>::operator,(const Set<T> & b){
-  *this |= b;
-  return *this;
-}
-template<typename T>
-Set<T> & Set<T>::operator |=(const Set<T> & b){
-  b.reduce<Set<T> >(*this,[](Set<T> & accu,T element){
-                    accu.add(element);
-});
-return *this;
-}
-template<typename T>
-Set<T> & Set<T>::operator /=(const Set<T> & b){
 
-  b.reduce<Set<T> >(*this,[](Set<T> & accu,T element){
-                    accu.remove(element);
-});
-return *this;
-}
 
-template<typename T>
-Set<T> Set<T>::operator ^(const Set<T> & b)const{
-  return symmetricDifference(*this, b);
-}
-template<typename T>
-Set<T> Set<T>::operator &&(const Set<T> & b)const{
-  return intersect(*this,b);
-}
-template<typename T>
-bool Set<T>::operator ==(const Set<T> & b)const{
-  return areEqual(*this,b);
-}
-template<typename T>
-bool Set<T>::areEqual(const Set<T> &a, const Set<T> & b){
-  return symmetricDifference(a,b).size()==0;
-}
-template<typename T>
-Set<T> Set<T>::symmetricDifference(const Set<T> &a , const Set<T> & b){
-  return unite(difference(a,b),difference(b,a));
-}
-template<typename T>
-Set<T> Set<T>::difference(const Set<T> & a, const Set<T> & b){
-  Set<T> result;
-  result.copyFrom(a);
-  b.reduce<Set<T> >(result,[](Set<T> & accu, T element){
-                    accu.remove(element);
-});
-return result;
-}
-template<typename T>
-Set<T> Set<T>::unite(const Set<T> & a, const Set<T> & b){
-  Set<T> result;
-  result.copyFrom(a);
-  b.reduce<Set<T> >(result,[](Set<T>& accu, T element){
-                    if(!accu.contains(element))accu.add(element);
-});
-return result;
-}
-template<typename T>
-Set<T> Set<T>::intersect(const Set<T> & a, const Set<T> & b){
-  Set<T> result;
-  b.reduce<Set<T> >(result,[&a](Set<T> & accu, T element){
-                    if(a.contains(element))accu.add(element);
-});
-}
+  //difference
+  template<typename T>
+  Set<T> Set<T>::operator/(const Set<T> & b)const{
+    return difference(*this,b);
+  }
+  template<typename T>
+  Set<T> & Set<T>::operator,(const Set<T> & b){
+    *this |= b;
+    return *this;
+  }
+  template<typename T>
+  Set<T> & Set<T>::operator |=(const Set<T> & b){
+    b.reduce<Set<T> >(*this,[](Set<T> & accu,T element){
+      accu.add(element);
+    });
+    return *this;
+  }
+  template<typename T>
+  Set<T> & Set<T>::operator /=(const Set<T> & b){
+
+    b.reduce<Set<T> >(*this,[](Set<T> & accu,T element){
+      accu.remove(element);
+    });
+    return *this;
+  }
+
+  template<typename T>
+  Set<T> Set<T>::operator ^(const Set<T> & b)const{
+    return symmetricDifference(*this, b);
+  }
+  template<typename T>
+  Set<T> Set<T>::operator &&(const Set<T> & b)const{
+    return intersect(*this,b);
+  }
+  template<typename T>
+  bool Set<T>::operator ==(const Set<T> & b)const{
+    return areEqual(*this,b);
+  }
+  template<typename T>
+  bool Set<T>::areEqual(const Set<T> &a, const Set<T> & b){
+    return symmetricDifference(a,b).size()==0;
+  }
+  template<typename T>
+  Set<T> Set<T>::symmetricDifference(const Set<T> &a , const Set<T> & b){
+    return unite(difference(a,b),difference(b,a));
+  }
+  template<typename T>
+  Set<T> Set<T>::difference(const Set<T> & a, const Set<T> & b){
+    Set<T> result;
+    result.copyFrom(a);
+    b.reduce<Set<T> >(result,[](Set<T> & accu, T element){
+      accu.remove(element);
+    });
+    return result;
+  }
+  template<typename T>
+  Set<T> Set<T>::unite(const Set<T> & a, const Set<T> & b){
+    Set<T> result;
+    result.copyFrom(a);
+    b.reduce<Set<T> >(result,[](Set<T>& accu, T element){
+      if(!accu.contains(element))accu.add(element);
+    });
+    return result;
+  }
+  template<typename T>
+  Set<T> Set<T>::intersect(const Set<T> & a, const Set<T> & b){
+    Set<T> result;
+    b.reduce<Set<T> >(result,[&a](Set<T> & accu, T element){
+      if(a.contains(element))accu.add(element);
+    });
+    return result;
+  }
 
 }

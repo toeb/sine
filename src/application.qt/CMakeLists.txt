@@ -9,12 +9,6 @@ set(source
  PluginWindow.cpp
 QtInputHandler.h
 QtInputHandler.cpp
-ObjectViewPlugin.h
-ObjectViewPlugin.cpp
-ObjectPropertyView.h
-ObjectPropertyView.cpp
-ObjectPropertyViewModel.h
-ObjectPropertyViewModel.cpp
 DataBinding.h
 DataBinding.cpp
 ../include/application.qt.h
@@ -26,14 +20,9 @@ DataBinding.h
  PluginApplication.h
  PluginWindow.h
  PluginContainer.h
-ObjectViewPlugin.h
-ObjectPropertyView.h
-ObjectPropertyViewModel.h
 )
 set(ui
  plugincontainer.ui
- objectview.ui
- objectpropertyview.ui
 )
 
 source_group("" FILES ${source})

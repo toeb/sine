@@ -4,6 +4,8 @@
 #include <core/TypedProperty.h>
 #include <core/PropertyChangingObject.h>
 #include <core/patterns/Singleton.h>
+#include <core/TypedPropertySetInfo.h>
+#include <core/PropertyAdapter.h>
 
 
 
@@ -56,7 +58,7 @@
   return p;\
   }\
   PropertyAdapter getPropertyAdapter(const std::string & name){\
-    return PropertyAdapter(this,*getProperty(name));\
+    return PropertyAdapter(dynamic_cast<Object*>(this),*getProperty(name));\
   }\
   private:\
 
@@ -78,7 +80,11 @@
   class PROPERTYCLASS(NAME) : public virtual TypedProperty<ReflectableType,TYPE>{\
   TYPED_OBJECT( PROPERTYCLASS(NAME) );\
   public:\
-  SINGLETON( PROPERTYCLASS(NAME) ){setName(#NAME);}\
+  SINGLETON( PROPERTYCLASS(NAME) ){\
+  setName(#NAME);\
+  setHasGetter(true);\
+  setHasSetter(true);\
+}\
     void setTypedValue(ReflectableType *  object , TYPE value)const{ object->SETMETHOD(NAME)(value); }\
     TYPE getTypedValue(const ReflectableType *  object)const{ return object->GETMETHOD(NAME)(); }\
   };\
@@ -109,12 +115,30 @@ private:\
 #define GROUPNAME(NAME,GROUP)\
   STATIC_INITIALIZER(NAME##GroupName,PROPERTYCLASSINSTANCE(NAME)->setGroupName(GROUP))
 
-// sets the property as hidden
-#define HIDDEN(NAME)\
-  STATIC_INITIALIZER(NAME##Visibility,PROPERTYCLASSINSTANCE(NAME)->setIsVisible(false))
+// sets the property or propertyset to navigatable (indicating that the property is a subclass of object)
+#define NAVIGATABLE(CLASS, NAME) \
+  STATIC_INITIALIZER(NAME##Navigatable,PROPERTYCLASSINSTANCE(NAME)->setIsNavigatable(true);PROPERTYCLASSINSTANCE(NAME)->setPropertyClass(&CLASS::ClassType());)
 
+#define ISPOINTER(NAME)\
+  STATIC_INITIALIZER(NAME##Pointer,PROPERTYCLASSINSTANCE(NAME)->setIsPointer(true);)
 
+#define OBJECTPOINTER(TYPE,NAME)\
+  STATIC_INITIALIZER(NAME##ObjectPointer,\
+  PROPERTYCLASSINSTANCE(NAME)->setIsPointer(true);\
+  PROPERTYCLASSINSTANCE(NAME)->setObjectConverter([](void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr));});\
+  );
 
+#define OBJECTPOINTERPROPERTY(TYPE,NAME)\
+  OBJECTPOINTER(TYPE,NAME)\
+  PROPERTY(TYPE*,NAME)
+
+// creates a collection of TYPE* objects which can be navigated
+#define OBJECTPOINTERCOLLECTION(TYPE,NAME,ONADD,ONREMOVE)\
+  PROPERTYCOLLECTION(TYPE*,NAME,ONADD,ONREMOVE);\
+  STATIC_INITIALIZER(NAME##ObjectPointer,\
+  PROPERTYCLASSINSTANCE(NAME)->setIsPointerCollection(true);\
+  PROPERTYCLASSINSTANCE(NAME)->setElementToObjectConverter([](void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr));});\
+  );
 
 #define SERIALIZERARGUMENTS(TYPE) std::ostream & stream, const TYPE * value
 #define DESERIALIZERARGUMENTS(TYPE) TYPE * value, std::istream & stream
@@ -166,3 +190,19 @@ public:\
 #define REF_PROP(TYPE,NAME) REFERENCE_PROPERTY(TYPE,NAME); PROPERTY(TYPE,NAME)
 
 
+
+// Defines a reflectable property collection
+#define PROPERTYCOLLECTION(TYPE,NAME,ONADD,ONREMOVE)\
+private:\
+class PROPERTYCLASS(NAME) : public virtual TypedPropertySetInfo<ReflectableType,TYPE>{\
+public:\
+  SINGLETON( PROPERTYCLASS(NAME) ){setName(#NAME);}\
+  Set<TYPE> & getMutableSetReference( ReflectableType * object )const{\
+  return object->NAME();\
+}\
+  const Set<TYPE> & getConstSetReference(const ReflectableType * object )const{\
+  return object->NAME();\
+}\
+};\
+  STATIC_INITIALIZER(PROPERTYCLASS(NAME), { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);});\
+  PROPERTYSET(TYPE,NAME,ONADD,ONREMOVE);

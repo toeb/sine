@@ -20,6 +20,7 @@ source_group("" FILES ${source})
 add_library(application.sample ${source} CMakeLists.txt)
 target_link_libraries(application.sample 
 	application.qt # add qt plugin application framework
+	application.qt.objectview # add qt objectview plugin 
 	visualization.opengl.qt  # add qt visualization plugin
 	simulation.runner.qt # add qt simulation runner
 	simulation.time 	# add time

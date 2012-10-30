@@ -60,7 +60,7 @@ TEST(Test1, PropertyChanging){
   CHECK(success);
 }
 
-class TestClass2{
+class TestClass2 : public virtual PropertyChangingObject{
   REFLECTABLE_OBJECT(TestClass2);
 public:
   TestClass2():_IntegerProperty(0){}

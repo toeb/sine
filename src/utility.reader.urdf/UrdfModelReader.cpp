@@ -27,7 +27,7 @@ bool UrdfModelReader::parse(IModelBuilder & builder, std::istream & data){
 
   //return false if document could not be parsed (this indicates that xml was not valid
   if(errorCode){
-    ERROR("tinyxml2 Parse error number " <<errorCode);
+//    ERROR("tinyxml2 Parse error number " <<errorCode);
     return false;
   }
 

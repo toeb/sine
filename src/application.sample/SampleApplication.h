@@ -13,7 +13,7 @@
 #include <simulation.integration/IntegratingSystem.h>
 #include <simulation.integration/implementations/RungeKutta4.h>
 #include <simulation.runner.qt/QtPropertyView.h>
-#include <application.qt/ObjectViewPlugin.h>
+#include <application.qt.objectview.h>
 
 namespace nspace{
   class SampleApplication : public virtual NamedObject, public virtual PropertyChangingObject{

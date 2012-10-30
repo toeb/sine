@@ -78,7 +78,7 @@ namespace nspace{
 
     // gets the 0th derivative
     void getX(StateMatrix & x)const{      
-      if(_derivatives==0){ ERROR("There are no derivatives present"); return ;}
+      if(_derivatives==0){/* ERROR("There are no derivatives present"); */return ;}
       //x.resize(_derivatives-1,_dimension,false);
       x.resize(_derivatives-1,_dimension);
       x.setZero();
@@ -91,7 +91,7 @@ namespace nspace{
     void getXDot(StateMatrix & xDot)const{
       //xDot.resize(_derivatives-1,_dimension,false);
       //_stateMatrix->getBlock(xDot,1,_offset);
-      if(_derivatives==0){ ERROR("There are no derivatives present"); return ;}
+      if(_derivatives==0){ /*ERROR("There are no derivatives present");*/ return ;}
       xDot.resize(_derivatives-1,_dimension);
       xDot.setZero();
       matrix::getBlock(xDot,*_stateMatrix,1,_offset);

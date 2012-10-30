@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 #include <math/core.h>
-
+#include <core/Reflection.h>
 namespace nspace{
   // RGB is a vector
   typedef Vector3D RGB;
@@ -13,7 +13,8 @@ namespace nspace{
 
   // represents a color which has a name a rgb value and and alpha value. 
   // static color class contains a map of all collors : a color palette
-  class Color{
+  class Color : public virtual PropertyChangingObject{
+    REFLECTABLE_OBJECT(Color);
   private:
     // the name of the color
     std::string * _colorName;
@@ -118,6 +119,7 @@ namespace nspace{
     // writes the color to the output stream
     friend std::ostream & operator <<(std::ostream & o, const Color & color);
   };
+  TYPEDATAPROVIDER(Color);
 
 
   

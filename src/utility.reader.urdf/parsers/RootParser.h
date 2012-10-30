@@ -29,7 +29,7 @@ protected:
 
     ModelNode * rootNode = model().nodes()(linkString);
     if(!rootNode){
-      ERROR("Could not find Node by name of " << linkString);
+//      ERROR("Could not find Node by name of " << linkString);
       return false;
     }
 

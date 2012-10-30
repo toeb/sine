@@ -125,7 +125,7 @@ void CoordinateSystem::fromObjectCoordinates(const CoordinateSystem & coords_ocs
 }
 void CoordinateSystem::toObjectCoordinates(const CoordinateSystem & coords_wcs,CoordinateSystem & result)const{
   toObjectCoordinates(coords_wcs.position(),result.position());
-  ERROR("method not implemented completely");
+/*  ERROR("method not implemented completely");*/
 }
 
 

@@ -14,7 +14,7 @@
 
 namespace nspace{
  
-// base class including types
+// Base class.  Contains Type information and some standard methods like the streamout operator <<
 class Object{
 TYPED_OBJECT(Object);
 private:

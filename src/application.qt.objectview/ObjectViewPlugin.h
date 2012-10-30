@@ -6,7 +6,7 @@
 #include <application.qt/PluginWindow.h>
 #include <core.hub/ModuleBase.h>
 #include <QListWidgetItem>
-#include <application.qt/ObjectPropertyView.h>
+#include <application.qt.objectview/ObjectPropertyView.h>
 #include <core.logging.h>
 class Ui_ObjectView;
 namespace nspace{

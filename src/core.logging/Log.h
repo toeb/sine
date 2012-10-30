@@ -191,4 +191,5 @@ namespace nspace{
       LogEntries()|=entry;
     }
   };
+  TYPEDATAPROVIDER(Log);
 }

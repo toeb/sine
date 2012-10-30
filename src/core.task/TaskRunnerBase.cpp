@@ -74,4 +74,5 @@ bool TaskRunnerBase::step(){
 
   _NumberOfRunningTasks--;
   notifyNumberOfRunningTasksChanged();
+  return true;
 }

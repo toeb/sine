@@ -166,7 +166,7 @@ void RobotElementParser::convert(){
   ModelNode * root = findRoot();
     
   if(!root){
-   ERROR("could not find root");
+//   ERROR("could not find root");
    return;
   }
   Origin rootOrigin = model().get<Origin>("origin");

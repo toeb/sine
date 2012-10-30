@@ -7,7 +7,7 @@ namespace nspace{
   public:
     static inline void operation(T &  result, const VecA & a, const VecB & b){
       if(a.size()!=b.size()){
-        ERROR("vector sizes donot match");
+   /*     ERROR("vector sizes donot match");*/
         return;
       }
       result = 0.0;

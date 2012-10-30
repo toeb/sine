@@ -20,7 +20,7 @@ protected:
 
     // parent node is neaded
     if(!parent.node){
-      ERROR("could not find parent '"<< parent.name <<"' of connector "<<connectorNode->name());
+//      ERROR("could not find parent '"<< parent.name <<"' of connector "<<connectorNode->name());
       return false;
     }
     
