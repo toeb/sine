@@ -149,8 +149,8 @@
         nspace::Set<TYPE > & NAME(){init##NAME##Observer(); return FIELDNAME(NAME);}\
     private:
 
-#define INITIALIZERNAME(NAME) __##NAME##initializer
-#define INITIALIZERCLASSNAME(NAME) __##NAME##initializer##Class
+#define INITIALIZERNAME(NAME) __##NAME##Initializer
+#define INITIALIZERCLASSNAME(NAME) __##NAME##Initializer##Class
 
 
 // use inside a class definition.  INITIALIZATIONCODE will be executed every time an object the class is instanciated

@@ -89,7 +89,7 @@
     TYPE getTypedValue(const ReflectableType *  object)const{ return object->GETMETHOD(NAME)(); }\
   };\
   private:\
-  STATIC_INITIALIZER(NAME##Property, { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);})\
+  STATIC_INITIALIZER( NAME##Property , { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);})\
 
 
 #define REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,PROPERTYDECLARATION)\
@@ -115,6 +115,9 @@ private:\
 #define GROUPNAME(NAME,GROUP)\
   STATIC_INITIALIZER(NAME##GroupName,PROPERTYCLASSINSTANCE(NAME)->setGroupName(GROUP))
 
+#define HIDDEN(NAME)\
+  STATIC_INITIALIZER(NAME##Hidden,PROPERTYCLASSINSTANCE(NAME)->setIsVisible(false))
+
 // sets the property or propertyset to navigatable (indicating that the property is a subclass of object)
 #define NAVIGATABLE(CLASS, NAME) \
   STATIC_INITIALIZER(NAME##Navigatable,PROPERTYCLASSINSTANCE(NAME)->setIsNavigatable(true);PROPERTYCLASSINSTANCE(NAME)->setPropertyClass(&CLASS::ClassType());)
@@ -132,13 +135,6 @@ private:\
   OBJECTPOINTER(TYPE,NAME)\
   PROPERTY(TYPE*,NAME)
 
-// creates a collection of TYPE* objects which can be navigated
-#define OBJECTPOINTERCOLLECTION(TYPE,NAME,ONADD,ONREMOVE)\
-  PROPERTYCOLLECTION(TYPE*,NAME,ONADD,ONREMOVE);\
-  STATIC_INITIALIZER(NAME##ObjectPointer,\
-  PROPERTYCLASSINSTANCE(NAME)->setIsPointerCollection(true);\
-  PROPERTYCLASSINSTANCE(NAME)->setElementToObjectConverter([](void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr));});\
-  );
 
 #define SERIALIZERARGUMENTS(TYPE) std::ostream & stream, const TYPE * value
 #define DESERIALIZERARGUMENTS(TYPE) TYPE * value, std::istream & stream
@@ -204,5 +200,14 @@ public:\
   return object->NAME();\
 }\
 };\
-  STATIC_INITIALIZER(PROPERTYCLASS(NAME), { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);});\
+  STATIC_INITIALIZER(NAME##PropertyClass, { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);});\
   PROPERTYSET(TYPE,NAME,ONADD,ONREMOVE);
+
+
+// creates a collection of TYPE* objects which can be navigated
+#define OBJECTPOINTERCOLLECTION(TYPE,NAME,ONADD,ONREMOVE)\
+  PROPERTYCOLLECTION(TYPE*,NAME,ONADD,ONREMOVE);\
+  STATIC_INITIALIZER( NAME##ObjectPointer ,\
+  PROPERTYCLASSINSTANCE(NAME)->setIsPointerCollection(true);\
+  PROPERTYCLASSINSTANCE(NAME)->setElementToObjectConverter([](void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr));});\
+  );

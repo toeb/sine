@@ -21,17 +21,19 @@ namespace nspace{
     BASIC_PROPERTY(std::function<Object* (void *)>, ObjectConverter,public,,,);
     SIMPLE_PROPERTY(bool, IsNavigatable){}
     SIMPLE_PROPERTY(bool, IsPointer){}
+    SIMPLE_PROPERTY(bool, IsVisible){}
   public:
     Property():
-      _IsNavigatable(false),
-      _PropertyClass(0),
-      _DefaultValue(0),
-      _CustomDeserializer(0),
-      _CustomSerializer(0),
       _HasGetter(false),
       _HasSetter(false),
+      _PropertyClass(0),
+      _DefaultValue(0),
+      _CustomSerializer(0),
+      _CustomDeserializer(0),
+      _ObjectConverter([](void * ptr){return static_cast<Object*>(0);}),
+      _IsNavigatable(false),
       _IsPointer(false),
-      _ObjectConverter([](void * ptr){return static_cast<Object*>(0);})
+      _IsVisible(true)
     {}
 
 
