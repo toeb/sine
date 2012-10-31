@@ -24,7 +24,7 @@ namespace nspace{
   };
 */
   class Sample : public virtual CompositeHubObject{
-    TYPED_OBJECT(Sample);
+    REFLECTABLE_OBJECT(Sample);
   protected:    
     virtual void setup()=0;  
     Sample();
