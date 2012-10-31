@@ -11,6 +11,7 @@ std::string SetElementTreeItem::getDisplayValue(){
   ss<<"Item{";
   getParentSetItem()->getPropertySetInfo()->serializeElement(getParentSetItem()->getPropertyObject(),getItemIndex(),  ss);
   ss<<"}";
+
   return ss.str();
 }
 

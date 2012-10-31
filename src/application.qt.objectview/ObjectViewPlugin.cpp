@@ -34,8 +34,9 @@ void ObjectViewPlugin::install(PluginContainer & container){
   connect(_ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),this, SLOT(objectDoubleClicked(QListWidgetItem*)));
   
   window->setWidget(w);
-  window->setVisible(true);
   container.setPluginWindow(window);
+
+  container.toggleWindow(true);
  
 
 }
