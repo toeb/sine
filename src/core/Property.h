@@ -38,7 +38,7 @@ namespace nspace{
 
 
     // sets this property to the default value
-    void setToDefaultValue(Object * object)const{setValue(object,getDefaultValue());}
+    void setToDefaultValue(Object * object)const{if(getDefaultValue())setValue(object,getDefaultValue());}
     // sets the value of the property
     virtual void setValue(Object * object, const void * value)const=0;
     // gets the value of the property
@@ -71,5 +71,15 @@ namespace nspace{
       setValue(&object,&value);
     }    
   };
+
+
+
+// sets all properties of the specified object to default
+template <typename T> void setToDefault(T & object){
+  T::ClassType().Properties().foreachElement([&object](const Property * prop){
+    prop->setToDefaultValue(&object);
+      //cout << "setting "<<prop->getName()<<" to default"<<endl;
+  });
+}
 
 }
