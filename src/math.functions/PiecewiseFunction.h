@@ -1,5 +1,6 @@
 #pragma once
 #include <math/Interval.h>
+#include <math.functions/Function.h>
 namespace nspace{
 template <typename TY>
 class PiecewiseFunction : public Function<TY,Real>{

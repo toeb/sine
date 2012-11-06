@@ -1,7 +1,7 @@
 #pragma once
 
 #include <config.h>
-
+#include <core/Serialization.h>
 namespace nspace{
   
 struct Interval{
@@ -65,4 +65,13 @@ struct Interval{
   Real a;
   Real b;
 };
+
+SERIALIZERS(Interval,{
+  stream << "["<<value->a<<", "<<value->b<<"]";
+},{
+  stream>>value->a; stream >> value->b;
+});
+
+
+
 }

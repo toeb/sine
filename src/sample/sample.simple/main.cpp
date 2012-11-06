@@ -2,6 +2,9 @@
 #include <visualization.opengl.renderer.geometry.h>
 #include <simulation.dynamics.h>
 #include <simulation.utility/DynamicsAlgorithm.h>
+#include <fstream>
+#include <utility.reader/Reader.h>
+#include <utility.reader.trajectory.h>
 using namespace nspace;
 using namespace std;
 
@@ -15,7 +18,7 @@ public:
   PROPERTY(Trajectory*, Trajectory){}
   PROPERTY(StatefulObject*, StatefulObject){}
 public:
-  
+
   TrajectorySystemFunction():_Trajectory(0),_StatefulObject(0){
 
   }
@@ -53,11 +56,11 @@ public:
     auto algorithm = new DynamicsAlgorithm();
 
     auto body = new RigidBody();
-    
+
     auto evaluator = new Evaluator(body->kinematics(),algorithm);
     application().getIntegrator()->setEvaluator(evaluator);
     f = new PiecewiseFunction<Vector3D>();
-    
+
     MatrixNxM tmp(3,4);
     auto poly1=new Polynom<Vector3D,MatrixNxM>();
     tmp(0,0)=0;
@@ -102,7 +105,7 @@ public:
     f->add(12,poly1);
     f->add(13,poly2);
     f->add(14,poly1);
-    
+
     // create a sphere with radius 0.5
     sphere = new Sphere(0.5);
 
@@ -127,11 +130,27 @@ public:
   }
 };
 
+
+
 int main(int argc,  char ** argv){  
-  // instanciate sample
-  MySample sample;
-  // create sample application
-  SampleApplication app(argc,argv, sample);
-  // run sample application
-  return app.run();
-}
+  string file1 = "trajectories/piecewiselinear.txt";
+  string file2 = "trajectories/piecewisecubic.txt";
+
+  TrajectoryReader reader;
+  if( reader.read(ifstream(file1)))cout << "read successfull";
+
+  auto piecewise =  reader.getLastTrajectory();
+  for(double t=0; t < 12; t+=0.01){
+    VectorND nd;
+    if(piecewise->evaluate(nd,t)){
+      cout << nd(0)<< endl;
+    }
+  }
+  return 0;
+    // instanciate sample
+    MySample sample;
+    // create sample application
+    SampleApplication app(argc,argv, sample);
+    // run sample application
+    return app.run();
+  }

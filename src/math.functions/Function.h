@@ -1,5 +1,11 @@
+#pragma once
+
+#include <core.h>
+namespace nspace{
 
 class FunctionBase{
+ public:
+ FunctionBase();
 };
 
 template<typename TY, typename TX>
@@ -9,3 +15,5 @@ public:
     return false;
   }
 };
+
+}

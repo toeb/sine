@@ -130,7 +130,7 @@ namespace nspace{
   template<typename T>
   class MatrixAssign<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
   public:
-    static inline void operation(matrix2::DynamicMatrix<T> &  result, const matrix2::DynamicMatrix<T> & val){
+    static inline bool operation(matrix2::DynamicMatrix<T> &  result, const matrix2::DynamicMatrix<T> & val){
       const int rows = val.rows();
       const int cols = val.cols();
       result.resize(rows,cols);
@@ -139,13 +139,15 @@ namespace nspace{
       const int size = rows*cols;
       if(size < 20000){
         memcpy(a,b,result.dataByteSize());
-        return;
+        return true;
       }
 
 #pragma omp parallel for
       for(int i=0; i < size; i++){
         a[i] = b[i];
       }
+      
+        return true;
     }
   };
 

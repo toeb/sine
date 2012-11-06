@@ -1,7 +1,7 @@
 #pragma once
 #include <config.h>
 #include <math/core.h>
-
+#include <math.functions/Function.h>
 namespace nspace{
 
 template<typename TY, typename TCoefficients,typename TXVector = VectorND>
@@ -39,5 +39,6 @@ public:
   }
 
 };
+
 
 }

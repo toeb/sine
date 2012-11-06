@@ -24,6 +24,7 @@ core
  math.matrix.dslib
  math.matrix.eigen
  math.statistics
+ math.functions
  
 )
 

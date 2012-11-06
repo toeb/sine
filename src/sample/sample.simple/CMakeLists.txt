@@ -11,5 +11,5 @@ set(source
 
 add_executable(sample.simple ${source} CMakeLists.txt)
 
-target_link_libraries(sample.simple application.sample simulation.dynamics simulation.dynamics.force simulation.dynamics.textile simulation.utility)
+target_link_libraries(sample.simple application.sample simulation.dynamics simulation.dynamics.force simulation.dynamics.textile simulation.utility utility.reader.trajectory)
 project_folder("samples" sample.simple)

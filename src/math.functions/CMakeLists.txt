@@ -1,5 +1,6 @@
 set(source 
  Function.h
+ Function.cpp
  PiecewiseFunction.h
  Polynom.h
  ../include/math.functions.h 
