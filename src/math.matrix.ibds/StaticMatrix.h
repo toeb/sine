@@ -25,6 +25,10 @@ public:
   inline size_t dataByteSize()const{
     return RowCount*ColumnCount*sizeof(T);
   }
+  inline bool resize(uint rows, uint cols, bool setToZero){
+    if(rows!=RowCount)return false;
+    if(cols!=ColumnCount)return false;
+  }
   inline int index(int i, int j)const{return i* ColumnCount+j;}
   inline T & operator()(int i, int j){return _data[index(i,j)]; }
   inline const T & operator()(int i, int j)const{return _data[index(i,j)]; }

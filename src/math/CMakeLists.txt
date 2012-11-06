@@ -8,6 +8,8 @@ set(source
 	./SimMath.h
 	./core.h
 ../config.h
+Interval.h
+Interval.cpp
 	./CMakeLists.txt 
 )
 source_group("" FILES ${source})

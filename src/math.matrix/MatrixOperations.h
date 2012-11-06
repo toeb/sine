@@ -63,6 +63,10 @@
 #include <math.matrix/operations/MatrixElementWiseBinary.h>
 #include <math.matrix/operations/MatrixPad.h>
 
+#include <math.matrix/operations/MatrixColumnCount.h>
+#include <math.matrix/operations/MatrixRowCount.h>
+#include <math.matrix/operations/MatrixElementAssignment.h>
+
 
 namespace nspace{  
 
@@ -86,8 +90,8 @@ namespace nspace{
     }
 
     template<typename Mat>
-    inline void resize(Mat & mat, uint rows, uint cols, bool setToZero){
-      MatrixResize<Mat>::operation(mat,rows,cols,setToZero);   
+    inline bool resize(Mat & mat, uint rows, uint cols, bool setToZero=false){
+      return MatrixResize<Mat>::operation(mat,rows,cols,setToZero);   
     }
     
 
@@ -201,6 +205,32 @@ namespace nspace{
   void invertMatrix(InvertedMatrixType & inv, const InputMatrixType & matrix){
     MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,matrix);
   }
+  
+  
+template<typename TAssignee, typename TValue>
+inline bool assignMatrix(TAssignee & assignee, const TValue & value){
+  return MatrixAssign<TAssignee,TValue>::operation(assignee,value);
+}
+template<typename TAssignee, typename TValue>
+inline bool assignElement(TAssignee & assignee, uint i, uint j, const TValue & value){
+  return MatrixElementAssignment<TAssignee,TValue>::operation(assignee,i,j,value);
+}
+
+
+
+template<typename MatrixType>
+inline uint rowCount(const MatrixType & matrix){
+  uint result;
+  OperationRowCount<MatrixType>::operation(result,matrix);
+  return result;
+}
+template<typename MatrixType>
+inline uint columnCount(const MatrixType & matrix){
+  uint result;
+  OperationColumnCount<MatrixType>::operation(result,matrix);
+  return result;
+}
+
   
   }
 

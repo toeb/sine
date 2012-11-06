@@ -17,6 +17,8 @@ set(source
  ./MeshGridRenderer.cpp
  ./SkyboxRenderer.h
  ./SkyboxRenderer.cpp
+ ./ShadowMapper.h
+ ./ShadowMapper.cpp
  ../include/visualization.opengl.renderer.h
 )
 source_group("" FILES ${source})

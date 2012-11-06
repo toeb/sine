@@ -88,7 +88,7 @@ public:
 
 
   bool initializeObject(){
-    simulation()->add(&_kinematics);
+    //simulation()->add(&_kinematics);
     return true;
   }
 

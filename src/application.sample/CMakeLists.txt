@@ -27,4 +27,5 @@ target_link_libraries(application.sample
 	 visualization
 	visualization.opengl.renderer  #add general renderers
 	visualization.opengl.renderer.geometry  # add geometry renderer
+  simulation.state.plugin
 )

@@ -193,6 +193,7 @@ public:
   inline const T & operator()(int i, int j)const{return _data[i* _cols+j]; }
   inline T & operator()(int i){return _data[i]; }
   inline const T & operator()(int i)const{return _data[i]; }
+  
   inline int rows()const{return _rows;}
   inline int cols()const{return _cols;}
   T * data(){return _data;}

@@ -7,6 +7,7 @@ SET (source
 	./RigidBody.cpp
 	./DynamicBody.h
 	./DynamicBody.cpp
+	../include/simulation.dynamics.h
 )
 
 source_group("src" FILES ${source})
