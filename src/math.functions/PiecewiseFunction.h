@@ -22,7 +22,7 @@ public:
     return func;
   }
   Function<TY,Real>* PieceFunction(Real x){
-    auto p = getPiecePair(x);
+    auto p = PiecePair(x);
     return p->second;  
   }
 

@@ -35,14 +35,28 @@ public:
 
 class MySample : public Sample{
 public:
+  Sphere * sphere;
+  Time time;
+  PiecewiseFunction<Vector3D> * f;
+  void operator()(Time dt, Time t){
+    if(!sphere)return;
+    time+=dt;
+    Vector3D v;
+    f->evaluate(v,time);
+    sphere->coordinates().position()=v;
+
+  }
+
+  MySample():sphere(0){}
   void setup(){
+    time=0;
     auto algorithm = new DynamicsAlgorithm();
 
     auto body = new RigidBody();
     
     auto evaluator = new Evaluator(body->kinematics(),algorithm);
     application().getIntegrator()->setEvaluator(evaluator);
-    auto f = new PiecewiseFunction<Vector3D>();
+    f = new PiecewiseFunction<Vector3D>();
     
     MatrixNxM tmp(3,4);
     auto poly1=new Polynom<Vector3D,MatrixNxM>();
@@ -90,14 +104,11 @@ public:
     f->add(14,poly1);
     
     // create a sphere with radius 0.5
-    auto sphere = new Sphere(0.5);
-    Time tacc=0;
-    auto task = new ScheduledTaskDelegate<std::function<void(Time,Time)>>([&tacc,f,sphere](Time dt, Time t){
-      tacc+=dt;
-      f->evaluate(sphere->coordinates().position(),tacc);
-    });
-    //task->setInterval(0.001);
-    //task->setIsOneTimeTask(false);
+    sphere = new Sphere(0.5);
+
+    auto task = new ScheduledTaskDelegate<MySample>(*this);
+    task->setInterval(0.001);
+    task->setIsOneTimeTask(false);
     Components()|=task;
 
     Components()|=algorithm;
@@ -113,7 +124,7 @@ public:
     // print setup of sample app
     application().printSetup();
     application().printHierarchy();
-  }  
+  }
 };
 
 int main(int argc,  char ** argv){  
