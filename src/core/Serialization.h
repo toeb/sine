@@ -19,9 +19,27 @@ namespace nspace{
       return true;
     }
   };
+  /*
+  // pointer serializers
+  template<typename T>
+  class Deserializer<T*>{
+  public:
+    static bool deserialize(T ** result, std::istream & in){
+      
+      return false;
+    
+    }
+  };
+  template<typename T>
+  class Serializer<T*>{
+  public:
+    static bool serialize(std::ostream & out, const T ** in){
+      out << *in;
+      return true;
+    }
+  };
 
-
-
+  */
 
   template<typename T>
   std::string serializeString(const T & value){
@@ -37,8 +55,8 @@ namespace nspace{
 
   }
 
-  
-  
+
+
   class CustomSerializer{
   public:
     virtual bool serialize(std::ostream & o, const void * value)=0;
@@ -61,123 +79,125 @@ namespace nspace{
   };
 
 
-// this macro is a shorthand for specialization of Serializer and Deserializer class
+  // this macro is a shorthand for specialization of Serializer and Deserializer class
 #define SERIALIZERS(TYPE,SERIALIZE,DESERIALIZE)\
   template<>\
   class Deserializer<TYPE>{\
   public:\
-    static bool deserialize(TYPE * value, std::istream & stream){DESERIALIZE;return true;}\
+  static bool deserialize(TYPE * value, std::istream & stream){DESERIALIZE;return true;}\
   };\
   template<>\
   class Serializer<TYPE>{\
   public:\
-    static bool serialize(std::ostream & stream,const TYPE* value){SERIALIZE;return true;}\
+  static bool serialize(std::ostream & stream,const TYPE* value){SERIALIZE;return true;}\
   };
 
-  
-// this macro allows easy creation of serializes based on the stream operator << and >>
+
+
+
+  // this macro allows easy creation of serializes based on the stream operator << and >>
 #define DEFAULTSERIALIZERS(TYPE) SERIALIZERS(TYPE,stream<<*value;return true;,stream>>*value;return true;)
-  
-DEFAULTSERIALIZERS(int);
-DEFAULTSERIALIZERS(unsigned int);
-DEFAULTSERIALIZERS(double);
-DEFAULTSERIALIZERS(float);
-SERIALIZERS(bool,{
- if(*value)stream << "true";
- else stream << "false";
- 
 
-
-} ,{
-   std::string s;
- stream >> s;
-  if(s=="true"||s=="1"||s=="yes"||s=="on"){
-    *value = true;
-    return true;
-  }else if(s=="false"||s==""||s=="no"||s=="off"||s=="0"){
-    *value = false;
-    return true;
-  }
-  return false;
-
-});
-SERIALIZERS(std::string,
-{stream << *value;}
-, 
-{
-  //read stream to end
-  std::istreambuf_iterator<char> eos;
-  std::string s(std::istreambuf_iterator<char>(stream), eos);
-  *value = s;
-});
+  DEFAULTSERIALIZERS(int);
+  DEFAULTSERIALIZERS(unsigned int);
+  DEFAULTSERIALIZERS(double);
+  DEFAULTSERIALIZERS(float);
+  SERIALIZERS(bool,{
+    if(*value)stream << "true";
+    else stream << "false";
 
 
 
-
-
-// set serializers
-template <typename T>
-class Serializer<Set<T> >{
-public:
-  static bool serialize(std::ostream & stream, const Set<T> * value){  
-    const Set<T> & val = *value;
-    for(int i=0; i< val; i++){    
-      T v = val.at(i);
-      if(!Serializer<T>::serialize(stream,&v)){
-        stream << "{"<<i<<"}";
-      }
-      if(i<val.size()-1)stream<<", ";
+  } ,{
+    std::string s;
+    stream >> s;
+    if(s=="true"||s=="1"||s=="yes"||s=="on"){
+      *value = true;
+      return true;
+    }else if(s=="false"||s==""||s=="no"||s=="off"||s=="0"){
+      *value = false;
+      return true;
     }
-    return true;
+    return false;
+
+  });
+  SERIALIZERS(std::string,
+  {stream << *value;}
+  , 
+  {
+    //read stream to end
+    std::istreambuf_iterator<char> eos;
+    std::string s(std::istreambuf_iterator<char>(stream), eos);
+    *value = s;
+  });
+
+
+
+
+
+  // set serializers
+  template <typename T>
+  class Serializer<Set<T> >{
+  public:
+    static bool serialize(std::ostream & stream, const Set<T> * value){  
+      const Set<T> & val = *value;
+      for(int i=0; i< val; i++){    
+        T v = val.at(i);
+        if(!Serializer<T>::serialize(stream,&v)){
+          stream << "{"<<i<<"}";
+        }
+        if(i<val.size()-1)stream<<", ";
+      }
+      return true;
+    };
   };
-};
 
-// set serializers
-template <typename T>
-class Deserializer<Set<T> >{
-public:
-  static bool deserialize(Set<T> * value, std::istream & stream){
-    Set<T> tmp;
-    char c= stream.peek();
-    switch(c){
-    case '|':
-    case '&':
-    case '^':
-    case '=':
-      stream >> c;
-      break;
-    default:      
-      c = '=';
+  // set serializers
+  template <typename T>
+  class Deserializer<Set<T> >{
+  public:
+    static bool deserialize(Set<T> * value, std::istream & stream){
+      Set<T> tmp;
+      char c= stream.peek();
+      switch(c){
+      case '|':
+      case '&':
+      case '^':
+      case '=':
+        stream >> c;
+        break;
+      default:      
+        c = '=';
 
-    }
-    while(stream){
-      T i;
-      if(!Deserializer<T>::deserialize(&i,stream)){
-        // if any element could not be serialized
-        return false;
       }
-      tmp|=i;
-    }
+      while(stream){
+        T i;
+        if(!Deserializer<T>::deserialize(&i,stream)){
+          // if any element could not be serialized
+          return false;
+        }
+        tmp|=i;
+      }
 
-    switch(c){
-    case '|':
-    *value |= tmp;
-      break;
-    case '&':
-    *value &= tmp;
-      break;
-    case '^':
-    *value ^= tmp;
-      break;
-    case '=':      
-    default:
-    *value = tmp;
-      break;
-    }
+      switch(c){
+      case '|':
+        *value |= tmp;
+        break;
+      case '&':
+        *value &= tmp;
+        break;
+      case '^':
+        *value ^= tmp;
+        break;
+      case '=':      
+      default:
+        *value = tmp;
+        break;
+      }
 
-    return true;
-  }
-};
+      return true;
+    }
+  };
 
 
 }
