@@ -52,17 +52,33 @@ bool TrajectoryReader::read(std::istream & stream, PiecewiseFunction<VectorND>**
     return false;
   }
   // add a zero polynom as the last element
-  Polynom<VectorND,MatrixNxM>* part = new Polynom<VectorND,MatrixNxM>;
-  MatrixNxM a;
-  a.resize(dim,2);
-  a.setZero();    
+  piecewise->add(d.b,0);
   setLastTrajectory(piecewise);
   if(trajectory)*trajectory=piecewise;
   return true;
 }
 
 bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim){
-  return false;
+  Polynom<VectorND,MatrixNxM> * part=0;
+  for(int i=0; i < doubles.size();i+=(2+dim*4)){
+    part = new Polynom<VectorND,MatrixNxM>;
+    double startTime=doubles[i];
+    double endTime =doubles[i+1];
+
+    MatrixNxM a;
+    a.resize(dim,4);
+    a.setZero();
+    for(int j=0; j < dim; j++){
+        a(j,0)=doubles[i+2+j*4];
+        a(j,1)=doubles[i+3+j*4];
+        a(j,2)=doubles[i+4+j*4];
+        a(j,3)=doubles[i+5+j*4];
+    }
+    part->setCoefficients(a);
+    piecewise->add(startTime,part);
+
+  }
+  return true;
 }
 
 bool TrajectoryReader::parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim){
