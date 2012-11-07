@@ -22,7 +22,7 @@ public:
       xi *= x;    
     }
     math::shorthands::matrix::assignMatrix(result, _Coefficients*xVec);
-    true;
+    return true;
   }
   
   TCoefficients & Coefficients(){

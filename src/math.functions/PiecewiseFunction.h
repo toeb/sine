@@ -18,7 +18,7 @@ public:
    }
   Piece * PiecePair(Real x){    
     auto func = Pieces().first([x](Piece * pair){
-      return pair->first.a<=x && pair->first.b>=x;
+      return pair->first.a<=x && pair->first.b>x;
     });   
     return func;
   }
