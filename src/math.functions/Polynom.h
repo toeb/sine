@@ -7,7 +7,6 @@ namespace nspace{
 template<typename TY, typename TCoefficients,typename TXVector = VectorND>
 class Polynom : public Function<TY,Real> {
   TCoefficients _Coefficients;
-
 public:
   virtual inline bool evaluate(TY & result, const Real & x){
     int n = math::shorthands::matrix::columnCount(_Coefficients); // order of the polynom
@@ -37,6 +36,32 @@ public:
   TCoefficients getCoefficients()const{
     return _Coefficients;
   }
+};
+
+
+// operators needed T a, T b;  a < b, a == b 
+template<typename T>
+class TypedInterval{
+
+};
+
+template<typename TY, typename TX>
+class BoundedFunction : public Function<TY,TX>{
+  BASIC_PROPERTY(Interval, Interval,public,,,);
+
+};
+
+
+
+template<typename TY, typename TCoefficients,typename TXVector = VectorND>
+class NormalizedPolynom : public Polynom<TY,TCoefficients, TXVector>{
+  BASIC_PROPERTY(Interval, Interval,public,,,);
+  virtual inline bool evaluate(TY & result, const Real & x){
+    // normalizes the polyonom
+    Real xTilde = (x - getInterval().a)/getInterval().length();
+    return Polynom<TY,TCoefficients,TXVector>::evaluate(result,x);
+  }
+
 
 };
 
