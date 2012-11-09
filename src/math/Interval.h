@@ -62,6 +62,11 @@ struct Interval{
     if(a <= value && value <= b)return true;
     return false;
   }
+
+  inline Real length()const{
+    return b-a;
+  }
+
   Real a;
   Real b;
 };
