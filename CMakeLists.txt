@@ -26,6 +26,7 @@ set(cmakeScriptsDirectory ${projectPath}/cmake)
 set(resourceDirectory ${projectPath}/resources)
 
 set(includeDirectories ${sourceDirectory})
+
 # 1 for ibds classes 2 for dslib 3 for eigen 
 add_definitions(-DMATRIX_CLASSES=2)
 
@@ -43,6 +44,7 @@ endif(MSVC)
 
 include(${cmakeScriptsDirectory}/Common.cmake)
 include(${cmakeScriptsDirectory}/AntTweakBar.cmake)      
+
 
 include_directories(${sourceDirectory}/include)
 include_directories(${externalsDirectory})
