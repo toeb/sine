@@ -8,7 +8,12 @@ cmake_minimum_required(VERSION 2.4)
 #ds = dynamische simulation
 project(ds)
 
-set(defaultProjectFolder "dslib")
+# set the root project folder for visual studio
+set(rootProjectFolder "")
+# sets which projects not to build
+set(dslibIgnoredProjects)
+
+#causes freeglut to be built as a static lib
 add_definitions(-DFREEGLUT_LIB_PRAGMAS=0)
 add_definitions(-DFREEGLUT_STATIC=1)
 
