@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 2.4)
 project(ds)
 
 # set the root project folder for visual studio
-set(rootProjectFolder "")
+set(dslibProjectFolder "")
 # sets which projects not to build
 set(dslibIgnoredProjects)
 
