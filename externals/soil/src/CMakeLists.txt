@@ -16,7 +16,7 @@ find_package(opengl)
 include_directories(${OPENGL_INCLUDE_DIR})
 add_library(soil ${source} CMakeLists.txt)
 target_link_libraries(soil ${OPENGL_LIBRARIES})
-project_folder("externals" soil)
+project_folder(${dslibExternalsProjectFolder} soil)
 
 
 set(includeDirectories ${includeDirectories} ${CMAKE_CURRENT_SOURCE_DIR} INTERNAL)

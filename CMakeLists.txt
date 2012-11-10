@@ -12,6 +12,8 @@ project(ds)
 set(dslibProjectFolder "")
 # sets which projects not to build
 set(dslibIgnoredProjects)
+#set the project folder for externals
+set(dslibExternalsProjectFolder "externals")
 
 #causes freeglut to be built as a static lib
 add_definitions(-DFREEGLUT_LIB_PRAGMAS=0)

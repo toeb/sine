@@ -14,4 +14,4 @@ TestRegistry.h
 )
 source_group("" FILES ${source})
 add_library(cppunitlite ${source} CMakeLists.txt)
-project_folder("externals" cppunitlite)
+project_folder(${dslibExternalsProjectFolder} cppunitlite)

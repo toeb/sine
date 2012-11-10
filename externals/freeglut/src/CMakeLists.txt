@@ -40,4 +40,4 @@ if(WIN32)
 target_link_libraries(freeglut winmm.lib)
 endif(WIN32)
 
- project_folder("externals" freeglut)
+ project_folder(${dslibExternalsProjectFolder} freeglut)
