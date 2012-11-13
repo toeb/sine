@@ -11,10 +11,11 @@
 #include <string>
 
 
+
 // these macros work within any class that contains a function to a reference called log (Log & log();}
 
 
-#define createLogMessage(level, x) {std::stringstream ss; ss << x ; log().log(level, ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
+#define createLogMessage(level, x) {std::stringstream ss; ss << x ; getLog().log(level, ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
 #define logMessage_0(x) createLogMessage(0,x)
 #define logMessage_1(x) createLogMessage(1,x)
 #define logMessage_2(x) createLogMessage(2,x)
@@ -54,6 +55,9 @@
 namespace nspace{
 
   class Log;
+  // public function which returns the defaul log
+  Log & getLog();
+
   class LogEntry : public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(LogEntry);    
     PROPERTY(std::string, Message){}
@@ -121,7 +125,7 @@ namespace nspace{
     },{})
   protected:
 
-    Log & log()const{return *const_cast<Log*>(this);}
+    Log & getLog()const{return *const_cast<Log*>(this);}
   public:
 
     Log():_LogInfoStream(0),_LogWarningStream(0),_LogErrorStream(0){
@@ -192,4 +196,7 @@ namespace nspace{
     }
   };
   TYPEDATAPROVIDER(Log);
+
+  
+
 }
