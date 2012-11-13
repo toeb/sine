@@ -2,6 +2,8 @@
 set(source
 ./Time.h
 ./Time.cpp
+./MethodInfo.h
+./MethodInfo.cpp
 ./Object.h
 ./Object.cpp
 ./NamedObject.h

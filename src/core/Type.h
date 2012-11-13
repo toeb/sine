@@ -5,6 +5,7 @@
 #include <core/Members.h>
 #include <memory>
 namespace nspace{
+class MemberInfo;
 class Property;
 class Object;
 typedef const uint TypeId;
@@ -17,6 +18,8 @@ public:
   TypeId id;  
   // name of this type
   std::string name;
+  PROPERTYSET(const MemberInfo*, Members,,)
+  PROPERTYSET(const MemberInfo*, DirectMembers,,)
   PROPERTYSET(const Property*,Properties,,)
   PROPERTYSET(const Property*,DirectProperties,,)
 private:  
@@ -49,7 +52,7 @@ public:
   static unsigned int typeCount();
   //void * createInstance();
   const Property * getProperty(const std::string & name)const;
-
+  const MemberInfo * getMember(const std::string & name)const;
 protected:
   void onPredecessorAdded(TypeData* typedata);
   void onPredecessorRemoved(TypeData* typedata);
@@ -93,7 +96,10 @@ static inline const TypeData & getTypeData(){
 
 // Macro for making an object a typed object.  
 // defines a static meta information structure (TypeData) and virtual access methods @TODO rename TYPED_OBJECT to TYPED_CLASS
-#define TYPED_OBJECT(type) public:\
+#define TYPED_OBJECT(type)\
+private:\
+  typedef type CurrentClassType;\
+public:\
   static inline const TypeData & ClassType(){static TypeData typeData(#type); return typeData; };\
   virtual inline const TypeId & getType()const {return ClassType().id;}\
   virtual inline const TypeData & getTypeData()const {return ClassType();}\

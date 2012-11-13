@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/Property.h>
+#include <core/MethodInfo.h>
 #include <core/TypedProperty.h>
 #include <core/PropertyChangingObject.h>
 #include <core/patterns/Singleton.h>
@@ -211,3 +212,31 @@ public:\
   PROPERTYCLASSINSTANCE(NAME)->setIsPointerCollection(true);\
   PROPERTYCLASSINSTANCE(NAME)->setElementToObjectConverter([](void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr));});\
   );
+
+
+
+
+// creates a public method with the signature void <NAME>() and registers it at its typeinfo class
+// only TYPED_OBJECT(<ClassName>) needs to be declared in the class were action is declared because ACTION needs
+// access to Local ClassType function
+#define ACTION(NAME) \
+private:\
+  typedef CurrentClassType Name##ParentClassType;\
+  class NAME##MethodInfo : public virtual MethodInfo{\
+    SINGLETON(NAME##MethodInfo){\
+      setName(#NAME);\
+    }\
+  public:\
+    bool call(Object * object, void * arguments=0, void ** returnvalue=0)const{\
+      auto typedObject = dynamic_cast<Name##ParentClassType*>(object);\
+      if(!typedObject)return false;\
+      typedObject->NAME();\
+      return true;\
+    }\
+  };\
+  STATIC_INITIALIZER(NAME,{\
+    auto typeInfo =  const_cast<TypeData*>( & ClassType());\
+    typeInfo->DirectMembers().add(NAME##MethodInfo::instance());\
+  });\
+public:\
+  void NAME()
