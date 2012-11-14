@@ -122,10 +122,10 @@ bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> *
     MatrixNxM a_k;
     a_k.resize(dim,4);
     a_k.setZero();
-    a_k(i-doubles.size()-dim,0)=doubles[offset];
-    a_k(i-doubles.size()-dim,1)=0;
-    a_k(i-doubles.size()-dim,2)=0;
-    a_k(i-doubles.size()-dim,3)=0;
+    a_k(i,0)=doubles[offset];
+    a_k(i,1)=0;
+    a_k(i,2)=0;
+    a_k(i,3)=0;
     i++ ;
   }
   k++;
