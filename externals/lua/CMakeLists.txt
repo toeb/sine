@@ -10,7 +10,7 @@ set(source
  ./src/lcorolib.c
  ./src/lctype.h
  ./src/lctype.c
- ./src/ldlib.c
+ ./src/ldblib.c
  ./src/ldebug.h
  ./src/ldebug.c
  ./src/ldo.h
@@ -40,7 +40,7 @@ set(source
  ./src/lstate.c
  ./src/lstring.h
  ./src/lstring.c
- ./src/lstrlib.h
+ ./src/lstrlib.c
  ./src/ltable.c
  ./src/ltable.h
  ./src/ltablib.c
