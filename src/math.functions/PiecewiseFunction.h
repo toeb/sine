@@ -44,8 +44,8 @@ public:
   inline bool evaluate(TY & result,  const Real & x){
     auto piece =PiecePair(x);
     if(!piece->second)return false;
-    Real deltaX = x-piece->first.a;
-    return piece->second->evaluate(result,deltaX);    
+    //Real deltaX = x-piece->first.a;
+    return piece->second->evaluate(result,x);    
     
   }
 };
