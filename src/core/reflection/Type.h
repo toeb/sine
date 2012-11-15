@@ -50,18 +50,57 @@ protected:
   void onPredecessorRemoved(Type* type);
 };
 
+template<typename T>
+class RemovePointer{
+public:
+  typedef T Type;
+};
+template<typename T>
+class RemovePointer<T*>{
+public:
+  typedef T Type;
+};
+
+template<typename T>
+struct IsPointer{
+  bool operator()()const{
+    return false;
+  }
+};
+template<typename T>
+struct IsPointer<T*>{
+  bool operator()()const{
+    return true;
+  }
+};
+
+template<typename T>
+struct IsConst{
+  bool operator()()const{
+    return false;
+  }
+};
+template<typename T>
+struct IsConst<const T>{
+  bool operator()()const{
+    return true;
+  }
+};
+
+
+
 
 template<typename T>
 class TypeInfo : public Type{
   TEMPLATEDSINGLETON(TypeInfo, <T>){
-    setName(T::getTypeName());
+    setName(RemovePointer<T>::Type::getTypeName());
   }
 };
 
 // macro allows typeinfo to be declared for primitve types
 #define META(TYPE)\
 template<>\
-class nspace::TypeInfo<TYPE>: public nspace::Type{\
+class /*nspace::*/TypeInfo<TYPE>: public /*nspace::*/Type{\
   TEMPLATEDSINGLETON(TypeInfo, <TYPE>){\
     setName(#TYPE);\
   }\
@@ -87,9 +126,8 @@ META(unsigned char);
 #define TYPED_OBJECT(TYPE)\
 private:\
   typedef TYPE CurrentClassType;\
-  friend class nspace::TypeInfo<TYPE>;\
-  static std::string getTypeName(){return std::string(#TYPE);}\
 public:\
+  static std::string getTypeName(){return std::string(#TYPE);}\
   virtual inline const nspace::Type & getType()const {return *nspace::TypeInfo<TYPE>::instance();}\
   virtual inline bool isInstanceOf(const Type * type)const{ return type->isSuperClassOf(this->getType());}\
   private:

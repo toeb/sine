@@ -26,6 +26,10 @@ typedef unsigned char byte;
 	#define REAL_MIN FLT_MIN
 #endif
 
+
+#ifndef __FUNCSIG__
+#define __FUNCSIG__ __PRETTY_FUNCTION__
+#endif
 #ifndef WIN32 
 #define __FUNCSIG__ __PRETTY_FUNCTION__
 #endif

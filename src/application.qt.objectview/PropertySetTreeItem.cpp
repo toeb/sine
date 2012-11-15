@@ -47,9 +47,9 @@ using namespace nspace;
       logError("object is not an adapter");
       return;
     }
-    auto propertyInfo = &adapter->property();
+    auto propertyInfo = adapter->getPropertyInfo();
     auto propertySetInfo = dynamic_cast<const PropertySetInfo*>(propertyInfo);
-    auto object = reinterpret_cast<Object*>( adapter->object());
+    auto object = reinterpret_cast<Object*>( adapter->getOwner());
     if(!propertySetInfo){
       logError("no property set info available");
       return;

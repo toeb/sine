@@ -2,15 +2,19 @@
 
 #include <core/Object.h>
 #include <core/reflection/MethodInfo.h>
-namespace nspace{
-  class MethodAdapter : public Object{
-    Object * _object;
-    const MethodInfo & _methodInfo;
-  public:
-    const MethodInfo & methodInfo()const;
-    Object * object();
-    MethodAdapter(Object * object, const MethodInfo & method);
-    bool call(void * arguments =0, void **returnvalue=0);
+#include <core/reflection/MemberAdapter.h>
+#include <core/reflection/Action.h>
 
-  };
+namespace nspace{
+  class MethodAdapter : public virtual Action, public virtual MemberAdapter{
+  TYPED_OBJECT(MethodAdapter);
+  SIMPLE_PROPERTY(const MethodInfo *, MethodInfo){}
+public:
+  MethodAdapter();
+  MethodAdapter(Object * object, const std::string & name);
+  MethodAdapter(Object * object, const MethodInfo * methodInfo);
+protected:
+  void executeAction(); 
+  bool call(void * arguments =0, void **returnvalue=0);
+};
 }

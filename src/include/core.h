@@ -5,3 +5,4 @@
 #include <core/NamedObject.h>
 #include <core/PropertyChangingObject.h>
 #include <core/Time.h>
+#include <core.reflection.h>

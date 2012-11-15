@@ -1,6 +1,7 @@
 #pragma once
 #include <math.matrix/MatrixOperations.h>
 #include <math.matrix.dslib/StaticMatrix.h>
+#include <math.scalar/operations.h>
 namespace nspace{
   
   template<typename T>
@@ -11,15 +12,19 @@ namespace nspace{
       const T * b = bMat.data();
       result = false;
       // compare every element 
-      if(abs(a[0]-b[0]) >= eps)return;
-      if(abs(a[1]-b[1]) >= eps)return;
-      if(abs(a[2]-b[2]) >= eps)return;
-      if(abs(a[3]-b[3]) >= eps)return;
-      if(abs(a[4]-b[4]) >= eps)return;
-      if(abs(a[5]-b[5]) >= eps)return;
-      if(abs(a[6]-b[6]) >= eps)return;
-      if(abs(a[7]-b[7]) >= eps)return;
-      if(abs(a[8]-b[8]) >= eps)return;
+      {
+        using namespace math::shorthands::scalar;
+        if(absolute(a[0]-b[0]) >= eps)return;
+        if(absolute(a[1]-b[1]) >= eps)return;
+        if(absolute(a[2]-b[2]) >= eps)return;
+        if(absolute(a[3]-b[3]) >= eps)return;
+        if(absolute(a[4]-b[4]) >= eps)return;
+        if(absolute(a[5]-b[5]) >= eps)return;
+        if(absolute(a[6]-b[6]) >= eps)return;
+        if(absolute(a[7]-b[7]) >= eps)return;
+        if(absolute(a[8]-b[8]) >= eps)return;
+        
+      }
       result = true;
       
     }

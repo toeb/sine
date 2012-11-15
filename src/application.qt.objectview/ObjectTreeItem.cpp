@@ -13,13 +13,13 @@ void ObjectTreeItem::doExpand(){
     auto member = type->Members().at(i);
     auto prop = dynamic_cast<const PropertyInfo*>(member);
     if(prop){
-      auto propertyAdapter = new PropertyAdapter(getObject(),*prop);
+      auto propertyAdapter = new PropertyAdapter(getObject(),prop);
       children()|=getModel()->createItem(propertyAdapter);
       continue;
     }
     auto method = dynamic_cast<const MethodInfo*>(member);
     if(method){
-      auto methodAdapter = new MethodAdapter(getObject(),*method);
+      auto methodAdapter = new MethodAdapter(getObject(),method);
       children()|=getModel()->createItem(methodAdapter);
       continue;
     }

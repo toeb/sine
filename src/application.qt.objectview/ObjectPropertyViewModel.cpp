@@ -27,7 +27,7 @@ TreeItem* ObjectPropertyViewModel::createItem(Object * object){
 
   auto propertyAdapter = dynamic_cast<PropertyAdapter*>(object);
   if(propertyAdapter){
-    auto propertySetInfo =  dynamic_cast<const PropertySetInfo*>(&propertyAdapter->property());
+    auto propertySetInfo =  dynamic_cast<const PropertySetInfo*>(propertyAdapter->getPropertyInfo());
     if(propertySetInfo){
       auto item = new PropertySetTreeItem();
       item->setObject(propertyAdapter);

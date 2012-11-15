@@ -5,7 +5,7 @@
 using namespace std;
 using namespace std::chrono;
 int main(int argc, char ** argv){
-
+  /*
   bool iterate = true;
 
 
@@ -35,6 +35,6 @@ int main(int argc, char ** argv){
   t5.join();
   t6.join();
   t7.join();
-  t8.join();
+  t8.join();*/
   return 0;
 }

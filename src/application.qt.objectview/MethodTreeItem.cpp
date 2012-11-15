@@ -28,8 +28,8 @@ void MethodTreeItem::onObjectChanged(){
       logError("object is not an adapter");
       return;
     }
-  auto methodInfo = &adapter->methodInfo();
-  auto object = adapter->object();
+  auto methodInfo = adapter->getMethodInfo();
+  auto object = adapter->getOwner();
 
   setPropertyOwner(object);
   setMethodInfo(methodInfo);

@@ -13,7 +13,7 @@ public:
 };
 InitTime __initTime;
 
- nspace::Time nspace::systemTime(){
+ nspace::Time systemTime(){
    LARGE_INTEGER time;
    QueryPerformanceCounter(&time);
    if(!frequency.QuadPart)return 0.0;

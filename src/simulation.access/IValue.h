@@ -10,12 +10,15 @@ namespace nspace{
 
 class IValue : public virtual IComponent{
   REFLECTABLE_OBJECT(IValue);
+  SIMPLE_PROPERTY(const Type *, ValueType){};
 public:  
+  IValue():_ValueType(0){}  
+  virtual void get(void * value){};
+  virtual void set(const void * value){};
+
   virtual bool isReadonly()const{return false;}
   virtual void toString(std::ostream & out)const{};
   virtual void fromString(std::istream & stream){};
-  virtual void set(const void * value){};
-  virtual void get(void * value){};
 };
 
 class Group : public virtual IComponent, public virtual Composite<IComponent>{

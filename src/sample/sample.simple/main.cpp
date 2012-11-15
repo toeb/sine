@@ -131,21 +131,15 @@ public:
 };
 
 
+
+
+
+
+
+
 int main(int argc,  char ** argv){  
-  string file1 = "trajectories/piecewiselinear.txt";
-  string file2 = "trajectories/piecewisecubic.txt";
 
-  TrajectoryReader reader;
-  if( reader.read(ifstream(file2)))cout << "read successfull";
 
-  auto piecewise =  reader.getLastTrajectory();
-  for(double t=0; t < 12; t+=0.01){
-    VectorND nd;
-    if(piecewise->evaluate(nd,t)){
-      cout << t<< ": "<< nd(0)<< endl;
-    }
-  }
-  //return 0;
     // instanciate sample
     MySample sample;
     // create sample application

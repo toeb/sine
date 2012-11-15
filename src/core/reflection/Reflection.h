@@ -54,10 +54,10 @@
     return p;\
   }\
   nspace::PropertyAdapter getPropertyAdapter(const std::string & name){\
-    return nspace::PropertyAdapter(dynamic_cast<nspace::Object*>(this),*getProperty(name));\
+    return nspace::PropertyAdapter(dynamic_cast<nspace::Object*>(this),name);\
   }\
   nspace::MethodAdapter getMethodAdapter(const std::string & name){\
-    return nspace::MethodAdapter(dynamic_cast<nspace::Object*>(this),*getMethodInfo(name));\
+    return nspace::MethodAdapter(dynamic_cast<nspace::Object*>(this),name);\
   }\
   static const nspace::MethodInfo * getMethodInfo(const std::string & methodName){\
     return typeof(TYPENAME)->getMethodInfo(methodName);\

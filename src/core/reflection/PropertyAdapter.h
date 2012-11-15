@@ -1,36 +1,30 @@
 #pragma once
-
 #include <core/reflection/PropertyInfo.h>
-#include <core/reflection/MethodInfo.h>
+#include <core/reflection/IModifiableValue.h>
+#include <core/reflection/ISerializable.h>
+#include <core/reflection/MemberAdapter.h>
+
 namespace nspace{
-  class PropertyAdapter : public Object{
-  private:
-    Object * _object;
-    const PropertyInfo & _property;
+  class PropertyAdapter:
+    public virtual IModifiableValue, 
+    public virtual ISerializeable, 
+    public virtual MemberAdapter
+  {
+    TYPED_OBJECT(PropertyAdapter);
+    SIMPLE_PROPERTY(const PropertyInfo *, PropertyInfo);
   public:
-    const PropertyInfo & property()const;
-    Object * object();
-
-    PropertyAdapter(Object * object,const PropertyInfo & prop);
-    
-    template< typename T>
-    void get(T& value){
-      this-> _property.getValue(object(),&value);
-    }
-    template< typename T>
-    T get(){
-      T t;
-      this->_property.getValue(object(),&t);
-      return t;
-    }
-    template< typename T>
-    void set(const T& value){
-      this->_property.setValue(object(),&value);
-    }
-
-    void deserialize(std::istream & in);
-    void serialize(std::ostream & out);
-
+    //TODO use factorymethod
+    PropertyAdapter();
+    PropertyAdapter(Object * object, const std::string & name);
+    PropertyAdapter(Object * object, const PropertyInfo * info);
     void setToDefault();
+    // implementation of IModifiableValue
+    bool retrieveValue(void * value)const;
+    bool storeValue(const void * value);
+    // implementation of ISerializable
+    bool toStream(std::ostream & stream, Format format);
+    bool fromStream(std::istream & stream, Format format);
   };
+
+
 }

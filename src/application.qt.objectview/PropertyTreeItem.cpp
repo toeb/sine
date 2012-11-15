@@ -39,8 +39,8 @@ void PropertyTreeItem::onObjectChanged(){
       logError("object is not an adapter");
       return;
     }
-  auto propertyInfo = &adapter->property();
-  auto object = adapter->object();
+  auto propertyInfo = adapter->getPropertyInfo();
+  auto object = adapter->getOwner();
 
   setPropertyOwner(object);
   setPropertyInfo(propertyInfo);

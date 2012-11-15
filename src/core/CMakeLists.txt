@@ -20,6 +20,31 @@ set(reflectionSource
 ./reflection/Type.h
 ./reflection/Type.cpp
 ./reflection/Reflection.h
+./reflection/Action.h
+./reflection/Action.cpp
+./reflection/DelegateAction.h
+./reflection/DelegateAction.cpp
+./reflection/DelegateValue.h
+./reflection/DelegateValue.cpp
+./reflection/IModifiableValue.h
+./reflection/IModifiableValue.cpp
+./reflection/IReadableValue.h
+./reflection/IReadableValue.cpp
+./reflection/ISerializable.h
+./reflection/ISerializable.cpp
+./reflection/ITypedModifiableValue.h
+./reflection/ITypedModifiableValue.cpp
+./reflection/ITypedReadableValue.h
+./reflection/ITypedReadableValue.cpp
+./reflection/MethodAction.h
+./reflection/MethodAction.cpp
+./reflection/ReferenceValue.h
+./reflection/ReferenceValue.cpp
+./reflection/ITypedSerializableValue.h
+./reflection/ITypedSerializableValue.cpp
+./reflection/MemberAdapter.h
+./reflection/MemberAdapter.cpp
+../include/core.reflection.h
 )
 source_group("reflection" FILES ${reflectionSource})
 

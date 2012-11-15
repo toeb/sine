@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <core/Type.h>
+#include <core/reflection/Type.h>
 
 namespace nspace{
   

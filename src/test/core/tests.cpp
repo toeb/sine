@@ -6,6 +6,8 @@
 #include "conversion.h"
 #include <string>
 #include <sstream>
+#include <core.h>
+
 using namespace nspace;
 using namespace std;
 namespace nspace{
@@ -37,7 +39,60 @@ int main(int argc,  char ** argv){
   c.getMethodAdapter("SuperAction").call();
 }
 */
+  
 
+class TestClass  : public PropertyChangingObject{
+  REFLECTABLE_OBJECT(TestClass);
+public:
+  TestClass():_IntegerValue(0){}
+  PROPERTY(int, IntegerValue){}
+  PROPERTY(std::string, StringValue){}
+  ACTION(PrintALineOfText){cout << "LOL"<<endl;}
+};
+void testvalueAndAction(){
+  //todo... make a test out of this method
+  TestClass theobject;
+  PropertyAdapter prop1(&theobject,"IntegerValue");
+  PropertyAdapter prop2(&theobject,"StringValue");
+  MethodAdapter act1(&theobject, "PrintALineOfText");
+  prop1.serialize(cout);
+  cout <<endl;
+  prop1.deserialize(cin);
+  cout <<endl;
+  prop1.serialize(cout);
+  cout <<endl;
+
+  prop2.serialize(cout);
+  cout << endl;
+  std::string str;
+  cin >> str;
+  stringstream sss(str);
+
+
+  act1.execute();
+
+  prop2.deserialize(sss);
+  prop2.serialize(cout);
+  cout << endl;
+  
+
+  int aNumber=3;
+  auto value = new ReferenceValue<int>(aNumber);
+  cout << value->get<int>()<<endl;
+  value->set(5);
+
+  cout << aNumber<<endl; 
+
+  stringstream ss;
+  ss << "54";
+
+  value->deserialize(cin);
+
+  cout << value->get<int>();
+
+  value->serialize(cout);
+
+}
 
 class A {
   TYPED_OBJECT(A);

@@ -9,7 +9,7 @@ namespace nspace{
     SIMPLE_PROPERTY(bool, HasGetter){}
     SIMPLE_PROPERTY(bool, HasSetter){}
     // the typedata of the property
-    SIMPLE_PROPERTY(const Type *, PropertyClass){}
+    SIMPLE_PROPERTY(const Type *, PropertyType){}
     // access to the default value
     SIMPLE_PROPERTY(const void *, DefaultValue){}
     // custom serializer
@@ -24,7 +24,7 @@ namespace nspace{
     PropertyInfo():
       _HasGetter(false),
       _HasSetter(false),
-      _PropertyClass(0),
+      _PropertyType(0),
       _DefaultValue(0),
       _CustomSerializer(0),
       _CustomDeserializer(0),
@@ -74,7 +74,7 @@ namespace nspace{
 
 // sets all properties of the specified object to default
 template <typename T> void setToDefault(T & object){
-  T::ClassType().Properties().foreachElement([&object](const Property * prop){
+  T::ClassType().Properties().foreachElement([&object](const PropertyInfo * prop){
     prop->setToDefaultValue(&object);
       //cout << "setting "<<prop->getName()<<" to default"<<endl;
   });
