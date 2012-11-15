@@ -9,22 +9,16 @@
 #include <core/Node.h>
 #include <core/Comparator.h>
 #include <core/Members.h>
-#include <core/Type.h>
-
+#include <core/reflection/Type.h>
 
 namespace nspace{
-
-
 // Base class.  Contains Type information and some standard methods like the streamout operator <<
 class Object{
 TYPED_OBJECT(Object);
 private:
-  static uint _idCounter;
-  ObjectId _id;  
 public:  
   Object();
   ~Object();
-  inline const ObjectId & objectId()const{return _id;}
   // tostring method which converts this object to a string representation (should be overridden by subclasses)
   virtual void toString(std::ostream & out)const;
   
@@ -40,11 +34,4 @@ public:
     return &a==&b;
   }
 };
-TYPEDATAPROVIDER(Object)
-
-
-
-
-
-
 }

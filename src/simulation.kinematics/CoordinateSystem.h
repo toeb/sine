@@ -65,7 +65,7 @@ public:
   void toObjectCoordinates(const CoordinateSystem & coords_wcs,CoordinateSystem & result)const;
 
 };
-TYPEDATAPROVIDER(CoordinateSystem)
+
 SERIALIZERS(CoordinateSystem,
 {
   stream << value->position()(0)<<" " << value->position()(1)<<" " << value->position()(2);  

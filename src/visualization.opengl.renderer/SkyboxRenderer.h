@@ -4,8 +4,7 @@
 #include <core.initialization/Initializable.h>
 #include <core.hub/CompositeHubObject.h>
 #include <visualization.opengl/GlTexture.h>
-#include <core/Reflection.h>
-#include <core/PropertyChangingObject.h>
+#include <core.h>
 
 #define PROP(TYPE,NAME) REFERENCE_PROPERTY(TYPE,NAME); REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME)
 

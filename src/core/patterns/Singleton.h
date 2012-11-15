@@ -1,6 +1,17 @@
 #pragma once
 #include <config.h>
 
+
+#define TEMPLATEDSINGLETON(CLASS, TEMPLATEARGUMENTS)\
+  public:\
+  static CLASS TEMPLATEARGUMENTS* instance(){\
+  static CLASS TEMPLATEARGUMENTS* _instance;\
+  if(!_instance)_instance = new CLASS TEMPLATEARGUMENTS();\
+  return _instance;\
+  }\
+  private:\
+  CLASS()
+
 //defines a the class as a singleton
 #define SINGLETON(CLASSNAME)\
   public: \

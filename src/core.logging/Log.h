@@ -1,8 +1,6 @@
 #pragma once
 #include <config.h>
-#include <core/Object.h>
-#include <core/NamedObject.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <core/Time.h>
 #include <core/Set.h>
 
@@ -188,15 +186,13 @@ namespace nspace{
         return;
       }
       entry->setOwner(this);
-      const TypeData & td = getTypeData();
-      if(entry->getClassName()=="")entry->setClassName(getTypeData().name);
+      const Type& td = getType();
+      if(entry->getClassName()=="")entry->setClassName(getType().getName());
       if(entry->getObjectName()=="")entry->setObjectName(name(this));
 
       LogEntries()|=entry;
     }
   };
-  TYPEDATAPROVIDER(Log);
-
   
 
 }

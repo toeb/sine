@@ -3,7 +3,7 @@
 #include <application.qt.objectview/ObjectTreeItem.h>
 #include <application.qt.objectview/PropertyTreeItem.h>
 #include <application.qt.objectview/PropertySetTreeItem.h>
-
+#include <application.qt.objectview/MethodTreeItem.h>
 using namespace nspace;
 
 
@@ -16,27 +16,37 @@ void  ObjectPropertyViewModel::onPropertyChanged(const std::string  & name){
   if(name=="RootItem") reset();      
 }
 TreeItem* ObjectPropertyViewModel::createItem(Object * object){
-  auto propertyAdapter = dynamic_cast<PropertyAdapter*>(object);
-  if(!propertyAdapter) {
-    auto item = new ObjectTreeItem();
-    item->setObject(object);
+  auto methodAdpater = dynamic_cast<MethodAdapter*>(object);
+  if(methodAdpater){
+    auto item = new MethodTreeItem();
+    item->setObject(methodAdpater);
     item->setModel(this);
     return item;
   }
 
-  auto propertySetInfo =  dynamic_cast<const PropertySetInfo*>(&propertyAdapter->property());
-  if(propertySetInfo){
-    auto item = new PropertySetTreeItem();
+
+  auto propertyAdapter = dynamic_cast<PropertyAdapter*>(object);
+  if(propertyAdapter){
+    auto propertySetInfo =  dynamic_cast<const PropertySetInfo*>(&propertyAdapter->property());
+    if(propertySetInfo){
+      auto item = new PropertySetTreeItem();
+      item->setObject(propertyAdapter);
+      item->setModel(this);
+      return item;
+    }
+    
+    auto item = new PropertyTreeItem();
     item->setObject(propertyAdapter);
     item->setModel(this);
     return item;
   }
+  
 
-
-  auto item = new PropertyTreeItem();
-  item->setObject(propertyAdapter);
-    item->setModel(this);
+  auto item = new ObjectTreeItem();
+  item->setObject(object);
+  item->setModel(this);
   return item;
+
 }
 
 void ObjectPropertyViewModel::propertyChanging(TreeItem*, RootItem){
@@ -62,17 +72,17 @@ void ObjectPropertyViewModel::propertyChanging(Object *,CurrentObject){
 }
 
 
-    void ObjectPropertyViewModel::itemChanged(TreeItem * treeItem){
-      emit layoutChanged();
-      //reset();
-      
-    }
+void ObjectPropertyViewModel::itemChanged(TreeItem * treeItem){
+  emit layoutChanged();
+  //reset();
+
+}
 TreeItem* ObjectPropertyViewModel::getItem(const QModelIndex & index)const{
   TreeItem* item=0;
   if(index.isValid()){
     item = static_cast<TreeItem*>(index.internalPointer());
   }
-  
+
   if(!item)item = getRootItem();
   if(item)item->setModelIndex(index);
   return item;
@@ -95,12 +105,12 @@ bool  ObjectPropertyViewModel:: hasChildren(const QModelIndex& parent)const{
   return !getItem(parent)->successors().empty();
 
 }
-const Property*   ObjectPropertyViewModel::getProperty(const QModelIndex & index)const{
+const PropertyInfo*   ObjectPropertyViewModel::getProperty(const QModelIndex & index)const{
   if(!index.isValid())return 0;
   auto object = getCurrentObject();
   if(!object)return 0;
   int row = index.row();
-  auto prop = object->getTypeData().Properties().at(row);      
+  auto prop = object->getType().Properties().at(row);      
   return prop;
 }
 
@@ -116,7 +126,7 @@ bool  ObjectPropertyViewModel::setData(const QModelIndex & index, const QVariant
 
 Qt::ItemFlags  ObjectPropertyViewModel::flags(const QModelIndex & index)const{
   auto item = getItem(index);
-  
+
   if(index.column()==1 && item&&item->isEditable()){
     Qt::ItemFlags result = QAbstractItemModel::flags(index)|Qt::ItemIsEditable;
     return result;
@@ -150,13 +160,19 @@ QVariant  ObjectPropertyViewModel::data(const QModelIndex & index, int role)cons
     case Qt::ToolTipRole:
       return QVariant::fromValue(tr(item->getDescription().c_str()));
     }
-    
+
   }
   if(index.column()==1){
-    
+
     switch(role){
-    case Qt::DisplayRole:      
+    case Qt::DisplayRole:    {  
+      // todo return custom qvariant if needed
+      auto type = item->getValueType();
+      if(type){
+        return QVariant();
+      }
       return QVariant::fromValue(tr(item->getDisplayValue().c_str()));
+                             }
     case Qt::EditRole:
       return QVariant::fromValue(tr(item->getEditValue().c_str()));
     case Qt::WhatsThisRole:
@@ -171,7 +187,7 @@ QVariant  ObjectPropertyViewModel::data(const QModelIndex & index, int role)cons
 void ObjectPropertyViewModel::onPropertyChanged(Object * sender, const std::string & name){
   //if(result)emit dataChanged(index,index);
   auto object = getCurrentObject();
-  const Set<const Property*> properties = object->getTypeData().Properties();
+  const Set<const PropertyInfo*> properties = object->getType().Properties();
 
   for(int i=0; i < properties; i++){
     if(properties.at(i)->getName()==name){

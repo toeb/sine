@@ -1,10 +1,10 @@
 #pragma once
-#include <core/Property.h>
+#include <core/reflection/PropertyInfo.h>
 #include <core/Serialization.h>
 namespace nspace{
 
   template<typename OwningClass, typename ValueType>
-  class TypedProperty : public virtual Property{
+  class TypedProperty : public virtual PropertyInfo{
     TYPED_OBJECT(TypedProperty);
   public:
     TypedProperty();

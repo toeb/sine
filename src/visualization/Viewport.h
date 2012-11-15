@@ -1,9 +1,7 @@
 #pragma once
-#include <core/NamedObject.h>
+#include <core.h>
 #include <visualization/Renderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
-#include <core/Reflection.h>
-#include <core/PropertyChangingObject.h>
 namespace nspace{
 
   class Viewport : virtual public NamedObject, public virtual PropertyChangingObject{

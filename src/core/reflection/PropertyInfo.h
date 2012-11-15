@@ -1,35 +1,15 @@
 #pragma once
 #include <core/Object.h>
 #include <core/Serialization.h>
-#include <core/MemberInfo.h>
+#include <core/reflection/MemberInfo.h>
 namespace nspace{
-  /*
-  class Attribute : public virtual Object{
-    TYPED_OBJECT(Attribute);
-  };
-
-  class DisplayAttribute :public virtual Attribute{
-    TYPED_OBJECT(DisplayAttribute);
-    SUBCLASSOF(Attribute);
-    SIMPLE_PROPERTY(std::string, DisplayName);
-    SIMPLE_PROPERTY(std::string, GroupName);
-    SIMPLE_PROPERTY(uint, Order);
-  };
-
-  class NavigatableAttribute:
-    public virtual Attribute{
-    TYPED_OBJECT(NavigatableAttribute);
-    
-  };*/
-
-
-  class Property : public virtual MemberInfo{
-    TYPED_OBJECT(Property);
+  class PropertyInfo : public virtual MemberInfo{
+    TYPED_OBJECT(PropertyInfo);
     SUBCLASSOF(MemberInfo);    
     SIMPLE_PROPERTY(bool, HasGetter){}
     SIMPLE_PROPERTY(bool, HasSetter){}
     // the typedata of the property
-    SIMPLE_PROPERTY(const TypeData *, PropertyClass){}
+    SIMPLE_PROPERTY(const Type *, PropertyClass){}
     // access to the default value
     SIMPLE_PROPERTY(const void *, DefaultValue){}
     // custom serializer
@@ -41,7 +21,7 @@ namespace nspace{
     SIMPLE_PROPERTY(bool, IsPointer){}
     SIMPLE_PROPERTY(bool, IsVisible){}
   public:
-    Property():
+    PropertyInfo():
       _HasGetter(false),
       _HasSetter(false),
       _PropertyClass(0),

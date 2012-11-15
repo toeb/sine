@@ -1,11 +1,34 @@
+set(reflectionSource
+./reflection/MethodInfo.h
+./reflection/MethodInfo.cpp
+./reflection/Attribute.h
+./reflection/Attribute.cpp
+./reflection/PropertyInfo.h
+./reflection/PropertyInfo.cpp
+./reflection/PropertySetInfo.h
+./reflection/PropertySetInfo.cpp
+./reflection/TypedPropertySetInfo.h
+./reflection/TypedPropertySetInfo.cpp
+./reflection/TypedProperty.h
+./reflection/TypedProperty.cpp
+./reflection/MemberInfo.h
+./reflection/MemberInfo.cpp
+./reflection/PropertyAdapter.h
+./reflection/PropertyAdapter.cpp
+./reflection/MethodAdapter.h
+./reflection/MethodAdapter.cpp
+./reflection/Type.h
+./reflection/Type.cpp
+./reflection/Reflection.h
+)
+source_group("reflection" FILES ${reflectionSource})
 
 set(source
 ./Time.h
 ./Time.cpp
-./MethodInfo.h
-./MethodInfo.cpp
 ./Object.h
 ./Object.cpp
+./Members.h
 ./NamedObject.h
 ./NamedObject.cpp
 ./TypedNode.h
@@ -27,30 +50,13 @@ set(source
 ./PairMap.cpp
 ./PropertyChangingObject.h
 ./PropertyChangingObject.cpp
-./Property.h
-./Property.cpp
-./PropertySetInfo.h
-./PropertySetInfo.cpp
-./TypedPropertySetInfo.h
-./TypedPropertySetInfo.cpp
-./TypedProperty.h
-./TypedProperty.cpp
-./MemberInfo.h
-./MemberInfo.cpp
-./PropertyAdapter.h
-./PropertyAdapter.cpp
 ./Observable.h
 ./Observable.cpp
-./Reflection.h
 ./Serialization.h
-./Members.h
-./Type.h
-./Type.cpp
 ../config.h
 ../include/core.h
 )
-source_group("" FILES ${source})
-
+source_group("" FILES ${source} )
 set(patternsSource
 ./patterns/Derivable.h
 ./patterns/ValueHolder.h
@@ -61,5 +67,5 @@ set(patternsSource
 ./patterns/Decorator.h
 )
 source_group("src\\patterns" FILES ${patternsSource})
-add_library(core ${source} ${patternsSource} CMakeLists.txt)
+add_library(core ${source} ${patternsSource} ${reflectionSource}  CMakeLists.txt)
 

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <application.qt/Plugin.h>
-#include <core/PropertyChangingObject.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <application.qt/PluginWindow.h>
 #include <core.hub/ModuleBase.h>
 #include <QListWidgetItem>

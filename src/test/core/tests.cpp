@@ -9,42 +9,66 @@
 using namespace nspace;
 using namespace std;
 namespace nspace{
+
+  /*class SomeClass : public nspace::PropertyChangingObject{
+  REFLECTABLE_OBJECT(SomeClass);
+  PROPERTY(int, Val){};
+  ACTION(SuperAction){cout << "val = "<<getVal()<<endl;};
+};
+
+class SomeDerivedClass : public SomeClass{
+  REFLECTABLE_OBJECT(SomeDerivedClass);
+  SUBCLASSOF(SomeClass);
+  PROPERTY(std::string, SomeStringVar){};
+  ACTION(TestAction){cout << "lololo"<<endl;}
+
+};
+
+int main(int argc,  char ** argv){  
+  SomeDerivedClass c;
+  c.setVal(234);
+  cout << c.getPropertyValue<int>("Val")<<endl;
+
+  c.setSomeStringVar("asdasd");
+  cout << c.getSomeStringVar()<<endl;
+  cout << c.getPropertyValue<std::string>("SomeStringVar")<<endl;
+  
+  c.getMethodAdapter("TestAction").call();
+  c.getMethodAdapter("SuperAction").call();
+}
+*/
+
+
 class A {
   TYPED_OBJECT(A);
 };
-TYPEDATAPROVIDER(A);
 class B:public virtual A{
   TYPED_OBJECT(B);
   SUBCLASSOF(A);
 
 
 };
-TYPEDATAPROVIDER(B);
 
 class C:public virtual B{
   TYPED_OBJECT(C);
   SUBCLASSOF(B);
 
 };
-TYPEDATAPROVIDER(C);
 class D : public virtual A{
   TYPED_OBJECT(D);
   SUBCLASSOF(A);
 
 };
-TYPEDATAPROVIDER(D);
 class E {
   TYPED_OBJECT(E);
 
 };
-TYPEDATAPROVIDER(E);
 class F: public virtual E, public virtual C{
   TYPED_OBJECT(F);
   SUBCLASSOF(E);
   SUBCLASSOF(C);
 
 };
-TYPEDATAPROVIDER(F);
 }
 TEST(instanceOf1, Object){
   
@@ -80,7 +104,7 @@ TEST(instanceOf3, Object){
 
 TEST(Create, Object){
   Object o;
-  CHECK(o.getType()==Object::ClassType());
+  CHECK(o.getType()==*typeof(Object));
   
 }
 

@@ -27,8 +27,8 @@ void ImpulseBasedCollisionHandler::handleCollisions(){
 		_collisionsCount = 0;
 		reset();
 		detector().foreachCollision([this](Collision * collision){
-      if(collision->getObjectA().getType() != DynamicCollidable::ClassType())return;
-			if(collision->getObjectB().getType() != DynamicCollidable::ClassType())return;
+      if(collision->getObjectA().getType() != *typeof(DynamicCollidable))return;
+			if(collision->getObjectB().getType() != *typeof(DynamicCollidable))return;
 			DynamicCollidable & collidableA = static_cast<DynamicCollidable&>(collision->getObjectA());
 			DynamicCollidable & collidableB = static_cast<DynamicCollidable&>(collision->getObjectB());
 			Contact combinedContact;

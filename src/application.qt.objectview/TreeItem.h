@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Node.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <application.qt.objectview/ObjectPropertyViewModel.h>
 
 namespace nspace{
@@ -28,6 +28,8 @@ namespace nspace{
     virtual std::string getDisplayValue();
     virtual std::string getEditValue();
     virtual std::string getDescription();
+    virtual Type * getValueType();
+    virtual std::string getDisplayHint();
     virtual bool isEditable();
     virtual bool setEditValue(std::string str);
     // gets the parent tree item

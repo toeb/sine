@@ -54,7 +54,7 @@ public:
   ~RigidBody();
 
 
-  const TypeId getBodyType()const{return ClassType();}
+  const TypeId getBodyType()const{return typeof(RigidBody)->getId();}
   
   const Vector3D &  getCenterOfGravity()const {return kinematics().position();};
 

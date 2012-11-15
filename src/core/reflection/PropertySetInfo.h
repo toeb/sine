@@ -1,12 +1,12 @@
 #pragma once
-#include <core/Property.h>
+#include <core/reflection/PropertyInfo.h>
 
 namespace nspace{
   // describes a class property which is a set /collection
-  class PropertySetInfo : public virtual Object, public virtual Property{  
+  class PropertySetInfo : public virtual Object, public virtual PropertyInfo{  
     TYPED_OBJECT(PropertySetInfo);
 
-    SIMPLE_PROPERTY(const TypeData*, ElementType){}
+    SIMPLE_PROPERTY(const Type*, ElementType){}
 
     // custom serializer
     SIMPLE_PROPERTY(CustomSerializer*, CustomElementSerializer){}

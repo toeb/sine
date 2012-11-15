@@ -1,10 +1,7 @@
 #pragma once
-
-
 #include <application.qt/Plugin.h>
 #include <application.qt/PluginContainer.h>
-
-#include <core/Reflection.h>
+#include <core.h>
 #include <simulation.runner.qt/QtTimeControl.h>
 namespace nspace{
 

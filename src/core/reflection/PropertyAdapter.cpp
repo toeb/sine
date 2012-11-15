@@ -2,12 +2,12 @@
 
 using namespace nspace;
 
-const Property & PropertyAdapter::property()const{
+const PropertyInfo & PropertyAdapter::property()const{
   return _property;
 }
 Object * PropertyAdapter::object(){return _object;}
 
-PropertyAdapter::PropertyAdapter(Object * object,const Property & prop):_object(object),_property(prop){
+PropertyAdapter::PropertyAdapter(Object * object,const PropertyInfo & prop):_object(object),_property(prop){
 
 }
 

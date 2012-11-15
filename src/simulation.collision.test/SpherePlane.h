@@ -7,7 +7,7 @@
 namespace nspace{
 class SpherePlane : public CollisionTest{
 public:
-  SpherePlane():CollisionTest(Sphere::ClassType(),Plane::ClassType()){}
+  SpherePlane():CollisionTest(typeof(Sphere)->getId(),typeof(Plane)->getId()){}
   bool testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const;
   bool testCollision(const Sphere & sphere, const Plane & plane, Collision * col)const;
 };

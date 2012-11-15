@@ -1,7 +1,7 @@
 #include "Object.h"
 #include <sstream>
 #include <string>
-#include <core/Property.h>
+#include <core/reflection/PropertyInfo.h>
 using namespace nspace;
 using namespace std;
 
@@ -13,11 +13,10 @@ std::string Object::toString()const{
 }
 
   
-uint Object::_idCounter=0;
 void Object::toString(std::ostream & out)const{
-  out << "<object typeid=\""<<getType()<<"\" typename=\""<< getTypeData().name <<"\" id=\""<<_id<<"\"/>";
-};
-Object::Object():_id(++_idCounter){
+  out << "<object typeid=\""<<getType()<<"\" typename=\""<< getType().getName() << "\"/>";
+}
+Object::Object(){
 
 }
 Object::~Object(){

@@ -5,7 +5,7 @@
 #include <simulation.time/SimulationTimeController.h>
 #include <application.qt/PluginWindow.h>
 
-#include <core/Reflection.h>
+#include <core.h>
 
 class Ui_TimeControl;
 namespace nspace{

@@ -5,8 +5,7 @@
  * \file src/vis/opengl/GeneralRenderers/GridRenderer.h
  */
 #include <visualization/Renderer.h>
-#include <core/Reflection.h>
-#include <core/PropertyChangingObject.h>
+#include <core.h>
 #include <simulation.kinematics/CoordinateSystem.h>
 #include <visualization/Material.h>
 

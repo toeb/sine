@@ -3,7 +3,7 @@
 #include <simulation.time/SimulationTimeProvider.h>
 #include <core.task/ScheduledTask.h>
 #include <math.statistics/core.h>
-#include <core/Reflection.h>
+#include <core.h>
 namespace nspace{
 
   class SimulationTimeController : 

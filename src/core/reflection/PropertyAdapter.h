@@ -1,17 +1,17 @@
 #pragma once
 
-#include <core/Property.h>
+#include <core/reflection/PropertyInfo.h>
+#include <core/reflection/MethodInfo.h>
 namespace nspace{
-  
   class PropertyAdapter : public Object{
   private:
     Object * _object;
-    const Property & _property;
+    const PropertyInfo & _property;
   public:
-    const Property & property()const;
+    const PropertyInfo & property()const;
     Object * object();
 
-    PropertyAdapter(Object * object,const Property & prop);
+    PropertyAdapter(Object * object,const PropertyInfo & prop);
     
     template< typename T>
     void get(T& value){

@@ -1,8 +1,7 @@
 #pragma once
 #include <string>
 #include <config.h>
-#include <core/NamedObject.h>
-#include <core/Reflection.h>
+#include <core.h>
 
 namespace nspace{
 

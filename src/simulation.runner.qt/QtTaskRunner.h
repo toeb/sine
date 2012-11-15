@@ -1,7 +1,6 @@
 #pragma once
 
 #include <simulation.runner/SimulationRunner.h>
-#include <core/NamedObject.h>
 #include <QObject>
 #include <application.qt/Plugin.h>
 #include <application.qt/PluginApplication.h>
@@ -9,7 +8,7 @@
 #include <core.task/ScheduledTaskRunner.h>
 #include <core.hub/CompositeHubObject.h>
 #include <QTimer>
-#include <core/Reflection.h>
+#include <core.h>
 #include <core.logging.h>
 class Ui_TaskWidget;
 namespace nspace{

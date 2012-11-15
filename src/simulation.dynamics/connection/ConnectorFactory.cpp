@@ -25,13 +25,13 @@ DynamicConnector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody 
 
 DynamicConnector * ConnectorFactory::createWithWorldConnectionPoint(DynamicBody & body, const Vector3D & p_wcs){
   TypeId type =  body.getBodyType();
-  if(type==RigidBody::ClassType()){
+  if(type==typeof(RigidBody)->getId()){
    RigidBody * rigidBody = static_cast<RigidBody*>(&body);
    return  RigidBodyConnector::createWithWorldConnectionPoint(*rigidBody,p_wcs);
 
   
   }
-  if(type==Particle::ClassType()){
+  if(type==typeof(Particle)->getId()){
     Particle * particle = static_cast<Particle*>(&body);
     return new ParticleConnector(*particle);
   }  

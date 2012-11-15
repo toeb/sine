@@ -145,7 +145,7 @@ int main(int argc,  char ** argv){
       cout << t<< ": "<< nd(0)<< endl;
     }
   }
-  return 0;
+  //return 0;
     // instanciate sample
     MySample sample;
     // create sample application

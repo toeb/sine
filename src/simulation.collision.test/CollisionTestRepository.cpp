@@ -38,7 +38,7 @@ void CollisionTestRepository::addTest(const CollisionTest* test){
 
 
 bool CollisionTestRepository::hasTestFor(const ISimulationObject & a)const{
-  return hasTestFor(a.getType());
+  return hasTestFor(a.getType().getId());
 }
 
 
@@ -54,5 +54,5 @@ bool CollisionTestRepository::hasTestFor(const TypeId  a)const{
 }
 
 const CollisionTest* CollisionTestRepository::getTest(const ISimulationObject & a,const ISimulationObject & b)const{
-  return getTest(a.getType(),b.getType());
+  return getTest(a.getType().getId(),b.getType().getId());
 }

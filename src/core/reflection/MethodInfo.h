@@ -1,4 +1,5 @@
-#include <core/MemberInfo.h>
+#pragma once
+#include <core/reflection/MemberInfo.h>
 
 
 namespace nspace{

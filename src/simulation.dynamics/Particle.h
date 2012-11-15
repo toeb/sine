@@ -55,7 +55,7 @@ class Particle : public DynamicBody, public virtual StatefulObject
     }
 
     static const TypeId type;
-    const TypeId getBodyType()const{return Particle::ClassType();}
+    const TypeId getBodyType()const{return typeof(Particle)->getId();}
 
 
    

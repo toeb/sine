@@ -1,7 +1,6 @@
 #pragma once
 
-#include <core/Object.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <QWidget>
 #include <application.qt.objectview/ObjectPropertyViewModel.h>
 class Ui_ObjectPropertyView;

@@ -14,7 +14,7 @@ void TreeItem::expand(){
 
 
 string TreeItem::getDisplayName(){
-  return getObject()->getTypeData().name;
+  return getObject()->getType().getName();
 }
 string TreeItem::getDisplayValue(){
   return "";
@@ -24,6 +24,12 @@ string TreeItem::getEditValue(){
 
 }
 string TreeItem::getDescription(){
+  return "";
+}
+Type* TreeItem::getValueType(){
+  return 0;
+}
+std::string TreeItem::getDisplayHint(){
   return "";
 }
 bool TreeItem::isEditable(){

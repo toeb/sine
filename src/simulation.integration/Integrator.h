@@ -29,7 +29,7 @@
 #include <simulation.state/StatefulObject.h>
 #include <simulation.integration/ISystemFunction.h>
 #include <simulation.integration/Evaluator.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <core.logging/Log.h>
 namespace nspace{
   /**

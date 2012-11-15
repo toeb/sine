@@ -1,8 +1,7 @@
 #pragma once
 
 
-#include <core/Object.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <QAbstractItemModel>
 #include <core.logging/Log.h>
 #include <sstream>
@@ -33,7 +32,7 @@ namespace nspace{
 
     QModelIndex parent( const QModelIndex& index ) const ;
     bool hasChildren(const QModelIndex& parent)const;
-    const Property*  getProperty(const QModelIndex & index)const;
+    const PropertyInfo*  getProperty(const QModelIndex & index)const;
 
     bool setData(const QModelIndex & index, const QVariant & value, int role=Qt::EditRole);
 

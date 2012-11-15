@@ -2,7 +2,7 @@
 #pragma once;
 #include <application.qt.objectview/TreeItem.h>
 #include <core.logging/Log.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <application.qt.objectview/PropertySetTreeItem.h>
 
 namespace nspace{

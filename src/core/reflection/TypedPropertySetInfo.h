@@ -1,7 +1,7 @@
 #pragma once
 
-#include <core/PropertySetInfo.h>
-#include <core/TypedProperty.h>
+#include <core/reflection/PropertySetInfo.h>
+#include <core/reflection/TypedProperty.h>
 
 namespace nspace{
   template<typename OwningClass, typename ValueType>
@@ -42,7 +42,7 @@ namespace nspace{
 
   template<typename OwningClass, typename ValueType>
   TypedPropertySetInfo<OwningClass,ValueType>::TypedPropertySetInfo(){
-    setElementType(&typeof(ValueType));
+    setElementType(typeof(ValueType));
   }
 
   template<typename OwningClass, typename ValueType>

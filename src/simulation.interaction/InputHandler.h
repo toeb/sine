@@ -7,7 +7,7 @@
 #include <math/core.h>
 #include <simulation.interaction/IInputListener.h>
 #include <core.hub/ModuleBase.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <core.logging/Log.h>
 namespace nspace{
   //an inputhandler is a module which translates input into events for IInputListeners and keeps track of keyboard / mouse input state

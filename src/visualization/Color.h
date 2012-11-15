@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 #include <math/core.h>
-#include <core/Reflection.h>
+#include <core.h>
 namespace nspace{
   // RGB is a vector
   typedef Vector3D RGB;
@@ -119,7 +119,7 @@ namespace nspace{
     // writes the color to the output stream
     friend std::ostream & operator <<(std::ostream & o, const Color & color);
   };
-  TYPEDATAPROVIDER(Color);
+
 
 
   

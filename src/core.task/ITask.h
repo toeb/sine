@@ -2,7 +2,7 @@
 #include <core/Object.h>
 #include <core/NamedObject.h>
 #include <core/PropertyChangingObject.h>
-#include <core/Reflection.h>
+#include <core.h>
 namespace nspace{
   /**
   * represents a task.  The Run Method needs to be implemented

@@ -7,11 +7,23 @@ ObjectTreeItem::ObjectTreeItem(){
 }
 void ObjectTreeItem::doExpand(){
   debugInfo("Expanding ObjectTreeItem --> "<<*getObject());
-  auto type =& getObject()->getTypeData();
+  auto type =& getObject()->getType();
 
-  for(int i=0; i < type->Properties(); i++){
-    auto propertyAdapter = new PropertyAdapter(getObject(),*type->Properties().at(i));
-    children()|=getModel()->createItem(propertyAdapter);
+  for(int i=0; i < type->Members(); i++){
+    auto member = type->Members().at(i);
+    auto prop = dynamic_cast<const PropertyInfo*>(member);
+    if(prop){
+      auto propertyAdapter = new PropertyAdapter(getObject(),*prop);
+      children()|=getModel()->createItem(propertyAdapter);
+      continue;
+    }
+    auto method = dynamic_cast<const MethodInfo*>(member);
+    if(method){
+      auto methodAdapter = new MethodAdapter(getObject(),*method);
+      children()|=getModel()->createItem(methodAdapter);
+      continue;
+    }
+
   }
 
 }

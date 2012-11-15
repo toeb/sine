@@ -4,7 +4,7 @@
 #include <simulation.integration/ISystemFunction.h>
 #include <simulation.integration/Evaluator.h>
 #include <simulation.integration/StepIntegrator.h>
-#include <core/Reflection.h>
+#include <core.h>
 #include <core.hub/CompositeHubObject.h>
 
 #include <simulation.time/SimulationTimeProvider.h>

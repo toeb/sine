@@ -1,12 +1,13 @@
 #pragma once
 
-#include <core/Property.h>
-#include <core/MethodInfo.h>
-#include <core/TypedProperty.h>
+#include <core/reflection/PropertyInfo.h>
+#include <core/reflection/MethodInfo.h>
+#include <core/reflection/TypedProperty.h>
+#include <core/reflection/TypedPropertySetInfo.h>
+#include <core/reflection/PropertyAdapter.h>
+#include <core/reflection/MethodAdapter.h>
 #include <core/PropertyChangingObject.h>
 #include <core/patterns/Singleton.h>
-#include <core/TypedPropertySetInfo.h>
-#include <core/PropertyAdapter.h>
 
 
 
@@ -25,43 +26,43 @@
 // - REFLECTABLE_PROPERTY
 // - REFLECTABLE_NOTIFYING_PROPERTY
 #define REFLECTABLE(TYPENAME)\
-  typedef TYPENAME ReflectableType;\
-  private:\
-  static Set<const Property*> & propertiesSet(){\
-  static Set<const Property*> * _propertiesSet=0;\
-    if(!_propertiesSet){\
-    const TypeData & type = ClassType();\
-    TypeData* unconstType= const_cast<TypeData*>(&type);\
-    _propertiesSet = &unconstType->Properties();\
-    }\
-  return *_propertiesSet;\
-  };\
   public:\
   template<typename T>\
-  T getPropertyValue(const std::string & propertyname)const{T val; getPropertyValue(propertyname,val);return val;}\
+  T getPropertyValue(const std::string & propertyname)const{\
+    T val;\
+    getPropertyValue(propertyname,val);\
+    return val;\
+  }\
   template<typename T>\
   void getPropertyValue(const std::string & propertyname,T & value)const{\
-  auto prop = getProperty(propertyname);\
-  if(!prop)return;\
-  prop->get(value,*this);\
+    auto prop = getProperty(propertyname);\
+    if(!prop)return;\
+    prop->get(value,*this);\
   }\
   template<typename T>\
   void setPropertyValue(const std::string & propertyname,const T & value){\
-  auto prop = getProperty(propertyname);\
-  if(!prop)return;\
-  prop->set(value,*this);\
+    auto prop = getProperty(propertyname);\
+    if(!prop)return;\
+    prop->set(value,*this);\
   }\
-  static const Set<const Property*> &properties(){\
-  return propertiesSet();\
+  static const nspace::Set<const nspace::PropertyInfo*> & properties(){\
+  static nspace::Set<const nspace::PropertyInfo*> _properties = typeof(TYPENAME)->Properties();\
+    return _properties;\
   }\
-  static const Property * getProperty(const std::string & propertyname){\
-  auto p = properties().first([&propertyname](const Property * p ){return p->Name()==propertyname;});\
-  return p;\
+  static const nspace::PropertyInfo * getProperty(const std::string & propertyname){\
+    auto p = typeof(TYPENAME)->getProperty(propertyname);\
+    return p;\
   }\
-  PropertyAdapter getPropertyAdapter(const std::string & name){\
-    return PropertyAdapter(dynamic_cast<Object*>(this),*getProperty(name));\
+  nspace::PropertyAdapter getPropertyAdapter(const std::string & name){\
+    return nspace::PropertyAdapter(dynamic_cast<nspace::Object*>(this),*getProperty(name));\
   }\
-  private:\
+  nspace::MethodAdapter getMethodAdapter(const std::string & name){\
+    return nspace::MethodAdapter(dynamic_cast<nspace::Object*>(this),*getMethodInfo(name));\
+  }\
+  static const nspace::MethodInfo * getMethodInfo(const std::string & methodName){\
+    return typeof(TYPENAME)->getMethodInfo(methodName);\
+  }\
+  private:
 
 
 
@@ -77,20 +78,29 @@
 // this may only be used in a class which has been declared as REFLECTABLE and has both the set<NAME>(<TYPE>) and <TYPE> get<NAME>()const methods
 //
 #define ENABLE_PROPERTY_REFLECTION(TYPE,NAME)\
-  private:\
-  class PROPERTYCLASS(NAME) : public virtual TypedProperty<ReflectableType,TYPE>{\
-  TYPED_OBJECT( PROPERTYCLASS(NAME) );\
+private:\
+  typedef CurrentClassType NAME##OwningClassType;\
+  class PROPERTYCLASS(NAME) : public virtual nspace::TypedProperty<NAME##OwningClassType,TYPE>{\
+    TYPED_OBJECT( PROPERTYCLASS(NAME) );\
   public:\
-  SINGLETON( PROPERTYCLASS(NAME) ){\
-  setName(#NAME);\
-  setHasGetter(true);\
-  setHasSetter(true);\
-}\
-    void setTypedValue(ReflectableType *  object , TYPE value)const{ object->SETMETHOD(NAME)(value); }\
-    TYPE getTypedValue(const ReflectableType *  object)const{ return object->GETMETHOD(NAME)(); }\
+    SINGLETON( PROPERTYCLASS(NAME) ){\
+      setName(#NAME);\
+      setHasGetter(true);\
+      setHasSetter(true);\
+    }\
+    void setTypedValue(NAME##OwningClassType *  object , TYPE value)const{\
+      object->SETMETHOD(NAME)(value);\
+    }\
+    TYPE getTypedValue(const NAME##OwningClassType *  object)const{\
+      return object->GETMETHOD(NAME)();\
+    }\
   };\
-  private:\
-  STATIC_INITIALIZER( NAME##Property , { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);})\
+private:\
+  STATIC_INITIALIZER( NAME##Property , { \
+    auto type = typeof(NAME##OwningClassType);\
+    auto unconst = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(type));\
+    unconst->Members()|=PROPERTYCLASSINSTANCE(NAME);\
+  })
 
 
 #define REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,PROPERTYDECLARATION)\
@@ -121,7 +131,7 @@ private:\
 
 // sets the property or propertyset to navigatable (indicating that the property is a subclass of object)
 #define NAVIGATABLE(CLASS, NAME) \
-  STATIC_INITIALIZER(NAME##Navigatable,PROPERTYCLASSINSTANCE(NAME)->setIsNavigatable(true);PROPERTYCLASSINSTANCE(NAME)->setPropertyClass(&CLASS::ClassType());)
+  STATIC_INITIALIZER(NAME##Navigatable,PROPERTYCLASSINSTANCE(NAME)->setIsNavigatable(true);PROPERTYCLASSINSTANCE(NAME)->setPropertyClass(typeof(CurrenClassType));)
 
 #define ISPOINTER(NAME)\
   STATIC_INITIALIZER(NAME##Pointer,PROPERTYCLASSINSTANCE(NAME)->setIsPointer(true);)
@@ -191,17 +201,20 @@ public:\
 // Defines a reflectable property collection
 #define PROPERTYCOLLECTION(TYPE,NAME,ONADD,ONREMOVE)\
 private:\
-class PROPERTYCLASS(NAME) : public virtual TypedPropertySetInfo<ReflectableType,TYPE>{\
+  typedef CurrentClassType NAME##OwningClassType;\
+class PROPERTYCLASS(NAME) : public virtual TypedPropertySetInfo<NAME##OwningClassType,TYPE>{\
 public:\
   SINGLETON( PROPERTYCLASS(NAME) ){setName(#NAME);}\
-  Set<TYPE> & getMutableSetReference( ReflectableType * object )const{\
+  Set<TYPE> & getMutableSetReference( NAME##OwningClassType * object )const{\
   return object->NAME();\
 }\
-  const Set<TYPE> & getConstSetReference(const ReflectableType * object )const{\
+  const Set<TYPE> & getConstSetReference(const NAME##OwningClassType * object )const{\
   return object->NAME();\
 }\
 };\
-  STATIC_INITIALIZER(NAME##PropertyClass, { ReflectableType::propertiesSet() |= PROPERTYCLASSINSTANCE(NAME);});\
+  STATIC_INITIALIZER(NAME##PropertyClass, {  auto constType =  typeof(NAME##OwningClassType);\
+  auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(NAME##OwningClassType)));\
+  type->Members()|= PROPERTYCLASSINSTANCE(NAME);});\
   PROPERTYSET(TYPE,NAME,ONADD,ONREMOVE);
 
 
@@ -221,22 +234,22 @@ public:\
 // access to Local ClassType function
 #define ACTION(NAME) \
 private:\
-  typedef CurrentClassType Name##ParentClassType;\
-  class NAME##MethodInfo : public virtual MethodInfo{\
+  typedef CurrentClassType NAME##ParentClassType;\
+  class NAME##MethodInfo : public virtual nspace::MethodInfo{\
     SINGLETON(NAME##MethodInfo){\
       setName(#NAME);\
     }\
   public:\
-    bool call(Object * object, void * arguments=0, void ** returnvalue=0)const{\
-      auto typedObject = dynamic_cast<Name##ParentClassType*>(object);\
+    bool call(nspace::Object * object, void * arguments=0, void ** returnvalue=0)const{\
+      auto typedObject = dynamic_cast<NAME##ParentClassType*>(object);\
       if(!typedObject)return false;\
       typedObject->NAME();\
       return true;\
     }\
   };\
   STATIC_INITIALIZER(NAME,{\
-    auto typeInfo =  const_cast<TypeData*>( & ClassType());\
-    typeInfo->DirectMembers().add(NAME##MethodInfo::instance());\
+    auto typeInfo =  const_cast<nspace::Type*>(dynamic_cast<const nspace::Type * >(typeof(NAME##ParentClassType)));\
+    typeInfo->Members().add(NAME##MethodInfo::instance());\
   });\
 public:\
   void NAME()

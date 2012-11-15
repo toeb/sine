@@ -5,20 +5,17 @@
 
 namespace nspace{
 
-class PropertyTreeItem :
+class MethodTreeItem :
   public TreeItem, 
   public virtual Log{
-  REFLECTABLE_OBJECT(PropertyTreeItem);
-  // the propertyinfo object
-  PROPERTY(const PropertyInfo*, PropertyInfo){}
+  REFLECTABLE_OBJECT(MethodTreeItem);
+  // the method info object
+  PROPERTY(const MethodInfo*, MethodInfo){}
   // the ownign object of the property
   PROPERTY(Object *, PropertyOwner){}
 public:
-  PropertyTreeItem();
+  MethodTreeItem();
   
-  virtual bool isEditable();
-  virtual std::string getEditValue();
-  virtual bool setEditValue(std::string value);
   virtual std::string getDescription();
   virtual std::string getDisplayName();
   virtual std::string getDisplayValue();

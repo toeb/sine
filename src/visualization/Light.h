@@ -1,10 +1,8 @@
 #pragma once
 #include <visualization/Color.h>
 #include <simulation.kinematics/CoordinateSystem.h>
-#include <core/Reflection.h>
-#include <core/PropertyChangingObject.h>
+#include <core.h>
 #include <core.logging.h>
-#include <core/NamedObject.h>
 
 namespace nspace{
   class Light : public virtual NamedObject, public virtual PropertyChangingObject,public virtual Log{

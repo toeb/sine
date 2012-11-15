@@ -1,8 +1,6 @@
 #include <CppUnitLite/TestHarness.h>
 #include "conversion.h"
-#include <core/Object.h>
-#include <core/PropertyChangingObject.h>
-#include <core/Reflection.h>
+#include <core.h>
 
 #include <string>
 #include <sstream>

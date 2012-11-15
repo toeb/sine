@@ -1,8 +1,7 @@
 #pragma once
 #include <config.h>
 #include <visualization/Color.h>
-#include <core/Reflection.h>
-#include <core/PropertyChangingObject.h>
+#include <core.h>
 
 
 namespace nspace{

@@ -3,7 +3,7 @@
 #include <application.qt/Plugin.h>
 #include <application.qt/PluginWindow.h>
 #include <application.qt/PluginContainer.h>
-#include <core/Reflection.h>
+#include <core.h>
 
 namespace nspace{
   class QtObjectViewPlugin : public Plugin{
