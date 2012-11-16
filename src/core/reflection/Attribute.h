@@ -16,6 +16,7 @@ namespace nspace{
     SIMPLE_PROPERTY(std::string, DisplayName);
     SIMPLE_PROPERTY(std::string, Description);
     SIMPLE_PROPERTY(std::string, GroupName);
+
     SIMPLE_PROPERTY(uint, Order);
   };
   class StringAttribute:public virtual Attribute{
