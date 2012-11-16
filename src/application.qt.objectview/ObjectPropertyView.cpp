@@ -4,6 +4,7 @@
 #include "ui_objectpropertyview.h"
 #include <QLabel>
 #include <QTreeView>
+#include <application.qt.objectview/CustomItemDelegate.h>
 using namespace nspace;
 
 ObjectPropertyView::ObjectPropertyView(QWidget*parent):QWidget(parent),_CurrentObject(0){
@@ -15,6 +16,7 @@ ObjectPropertyView::ObjectPropertyView(QWidget*parent):QWidget(parent),_CurrentO
   connect(_ui->treeView,SIGNAL(collapsed(const QModelIndex &)),this,SLOT(onModelLayoutChanged(const QModelIndex &)));
   QTreeView* tv =_ui->treeView;
   tv->setModel(_model);
+  _ui->treeView->setItemDelegateForColumn(1,new CustomItemDelegate(_ui->treeView));
 }
 
 void ObjectPropertyView::propertyChanging(Object*, CurrentObject){

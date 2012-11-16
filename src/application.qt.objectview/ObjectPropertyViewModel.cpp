@@ -165,6 +165,9 @@ QVariant  ObjectPropertyViewModel::data(const QModelIndex & index, int role)cons
   if(index.column()==1){
 
     switch(role){
+    case (Qt::UserRole+5):
+      return qVariantFromValue((void*)item->getObject());
+      break;
     case Qt::DisplayRole:    {  
       // todo return custom qvariant if needed
       auto type = item->getValueType();

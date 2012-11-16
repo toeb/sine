@@ -99,9 +99,10 @@ namespace nspace{
     PROPERTY(int, LoggingLevel){};
     DEFAULTVALUE(LoggingLevel, int(3));
 
-    PROPERTY(std::ostream *, LogInfoStream){}
-    PROPERTY(std::ostream *, LogWarningStream){}
-    PROPERTY(std::ostream *, LogErrorStream){}    
+    SIMPLE_PROPERTY(std::ostream *, LogInfoStream){}
+    SIMPLE_PROPERTY(std::ostream *, LogWarningStream){}
+    SIMPLE_PROPERTY(std::ostream *, LogErrorStream){}    
+
     PROPERTYSET(LogEntry*,LogEntries,{
       std::ostream * out=0;
       switch(item->getLogLevel()){

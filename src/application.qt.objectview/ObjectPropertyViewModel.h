@@ -22,7 +22,7 @@ namespace nspace{
   public:
     TreeItem * createItem(Object * object);
     PROPERTY(Object *, CurrentObject);
-    PROPERTY(TreeItem*, RootItem);
+    SIMPLE_PROPERTY(TreeItem*, RootItem);
   protected:
     void onPropertyChanged(Object * sender, const std::string & name);
   public:

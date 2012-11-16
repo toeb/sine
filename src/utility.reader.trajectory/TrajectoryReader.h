@@ -33,7 +33,7 @@ class TrajectoryReader : public virtual PropertyChangingObject, public virtual L
   SUBCLASSOF(Log);
 
   PROPERTYSET( PiecewiseFunction<VectorND>*, Trajectories,{},{});
-  PROPERTY( PiecewiseFunction<VectorND>*, LastTrajectory){Trajectories().add(newvalue);};
+  SIMPLE_PROPERTY( PiecewiseFunction<VectorND>*, LastTrajectory){Trajectories().add(newvalue);};
 public:
   // reads a trajectory.  the format of the stream must be as used in DirCol
   bool read(std::istream & stream, PiecewiseFunction<VectorND>** trajectory=0);

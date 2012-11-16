@@ -48,5 +48,5 @@ source_group("ui" FILES ${ui})
 add_library(application.qt.objectview ${source} ${mocFiles} ${uiFiles} CMakeLists.txt)
 
 target_link_libraries(application.qt.objectview
-  application.qt)
+  application.qt userinterface.qt.controls)
 	   

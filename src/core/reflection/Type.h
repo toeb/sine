@@ -89,7 +89,6 @@ struct IsConst<const T>{
 
 
 
-
 template<typename T>
 class TypeInfo : public Type{
   TEMPLATEDSINGLETON(TypeInfo, <T>){
@@ -109,7 +108,6 @@ class /*nspace::*/TypeInfo<TYPE>: public /*nspace::*/Type{\
 META(int);
 META(double);
 META(bool);
-META(std::string);
 META(float);
 META(char);
 META(short);
@@ -118,8 +116,18 @@ META(long);
 META(long long);
 META(unsigned char);
 
+
+META(std::string);
+META(std::ostream);
+META(std::istream);
+META(std::iostream);
+META(std::ifstream);
+META(std::ofstream);
+
 // this macro returns the Type * instance for TYPENAME
 #define typeof(TYPENAME) nspace::TypeInfo<TYPENAME>::instance()
+
+
 
 // Macro for making an object a typed object.  
 // defines a static meta information structure (TypeData) and virtual access methods @TODO rename TYPED_OBJECT to TYPED_CLASS

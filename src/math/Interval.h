@@ -66,7 +66,9 @@ struct Interval{
   inline Real length()const{
     return b-a;
   }
-
+  friend bool operator == (const Interval & a, const Interval &  b){
+    return a.a==b.a&&a.b==b.b;
+  }
   Real a;
   Real b;
 };

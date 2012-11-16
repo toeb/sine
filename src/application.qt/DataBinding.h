@@ -9,6 +9,12 @@
 #include <QObject>
 #include <QLineEdit>
 namespace nspace{
+  enum BindingType{
+    OneWay,
+    TwoWay,
+    OneWayToSource
+  };
+  META(BindingType);
   class LineEditDataBinding : 
     public QObject, 
     public virtual PropertyChangingObject, 
@@ -18,13 +24,8 @@ namespace nspace{
     Q_OBJECT;
     REFLECTABLE_OBJECT(LineEditDataBinding);
   public:
-    enum BindingType{
-      OneWay,
-      TwoWay,
-      OneWayToSource
-    };
 
-    PROPERTY(QLineEdit * , Target){      
+    SIMPLE_PROPERTY(QLineEdit * , Target){      
       if(oldvalue)disconnect();
       if(newvalue)connect(newvalue,SIGNAL(editingFinished()),this,SLOT(targetChanged()));
       if(newvalue)connect(newvalue,SIGNAL(textEdited(const QString& )),this,SLOT(targetChanged()));

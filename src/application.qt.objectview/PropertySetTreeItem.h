@@ -1,9 +1,9 @@
 #pragma once
+
 #include <application.qt.objectview/TreeItem.h>
 #include <core.logging/Log.h>
 
 namespace nspace{
-
   // TODO: make set item inherit from treeitem
   class PropertySetTreeItem : public TreeItem, public virtual Log, public virtual ObjectObserver{
     REFLECTABLE_OBJECT(PropertySetTreeItem);

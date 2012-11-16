@@ -8,10 +8,12 @@ namespace nspace{
   * represents a task.  The Run Method needs to be implemented
   */
   class ITaskRunner;
+  META(ITaskRunner);
+
 class ITask: public virtual NamedObject, public virtual PropertyChangingObject{
   REFLECTABLE_OBJECT(ITask);
-  PROPERTY(ITaskRunner*, TaskRunner){}
-  PROPERTY(uint, NumberOfTimes){}
+  SIMPLE_PROPERTY(ITaskRunner*, TaskRunner);
+  PROPERTY(uint, NumberOfTimes);
 public:
   ITask():_TaskRunner(0),_NumberOfTimes(0){}
   // run may do anything.  if the task ongoing you need to make sure, that the implementation of run is fast

@@ -15,8 +15,8 @@ class TrajectorySystemFunction : public virtual ISystemFunction, public virtual 
   REFLECTABLE_OBJECT(TrajectorySystemFunction);
 public:
   typedef Function<StateMatrix,Real> Trajectory;
-  PROPERTY(Trajectory*, Trajectory){}
-  PROPERTY(StatefulObject*, StatefulObject){}
+  SIMPLE_PROPERTY(Trajectory*, Trajectory){}
+  SIMPLE_PROPERTY(StatefulObject*, StatefulObject){}
 public:
 
   TrajectorySystemFunction():_Trajectory(0),_StatefulObject(0){
@@ -36,8 +36,11 @@ public:
   }
 };
 
-class MySample : public Sample{
+class MySample : public Sample, public virtual PropertyChangingObject{
+  REFLECTABLE_OBJECT(MySample);
+  PROPERTY(Real, value){}
 public:
+  
   Sphere * sphere;
   Time time;
   PiecewiseFunction<Vector3D> * f;

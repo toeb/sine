@@ -84,6 +84,7 @@ private:\
     TYPED_OBJECT( PROPERTYCLASS(NAME) );\
   public:\
     SINGLETON( PROPERTYCLASS(NAME) ){\
+      setPropertyType(typeof(TYPE));\
       setName(#NAME);\
       setHasGetter(true);\
       setHasSetter(true);\
