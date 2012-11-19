@@ -12,19 +12,17 @@ QWidget * CustomItemDelegate::createEditor(QWidget * parent, const QStyleOptionV
   auto value = dynamic_cast<IReadableValue*>(object);
   auto action = dynamic_cast<Action*>(object);
 
-  if(value){ 
-    auto type = value->getValueType();
-    if(type->getId()==typeof(double)->getId()){
-      debugInfo("double");
-      DoubleSpinBoxWidget * doubleWidget = new DoubleSpinBoxWidget(parent);
-      connect(doubleWidget,SIGNAL(editFinished()),this,SLOT(saveAndCloseEditor()));
-      return doubleWidget;
-    }
+  auto control = ControlFactoryRepository::defaultInstance()->createInstanceForType(value->getValueType(),"");
 
+  if(control){
+    control->setDataContext(value);
+    control->setParent(parent);
+    connect(control,SIGNAL(editFinished()),this,SLOT(saveAndCloseEditor()));
+    return control;
   }
   return QStyledItemDelegate::createEditor(parent,option,index);
 }
-bool  CustomItemDelegate::editorEvent(QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index){
+bool CustomItemDelegate::editorEvent(QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index){
   debugInfo("editorEvent");
   return false;
 }
@@ -44,11 +42,20 @@ void CustomItemDelegate::setEditorData( QWidget * editor, const QModelIndex & in
 }
 void CustomItemDelegate::setModelData( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const{
   debugInfo("setModelData");
-
   auto valueWidget = dynamic_cast<ValueWidget*>(editor);
-  if(!valueWidget)return;
+  if(!valueWidget){
+    QStyledItemDelegate::setModelData(editor,model,index);
+    return;
+  }
+  
   valueWidget->updateValueHolder();
 }
+
+ void CustomItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const{
+   //painter->setBrush(option.palette.background());
+   //painter->drawRect(option.rect);
+   QStyledItemDelegate::paint(painter,option,index);
+ }
 
 void CustomItemDelegate::saveAndCloseEditor(){
   auto widget = sender();
@@ -56,4 +63,10 @@ void CustomItemDelegate::saveAndCloseEditor(){
   if(!valueWidget)return;
   emit commitData(valueWidget);
   emit closeEditor(valueWidget);
+}
+
+void CustomItemDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const{
+  //debugInfo(option.rect.size().width() << " x " << option.rect.size().height()<<" @ "<< option.rect.left() <<", "<<option.rect.top());
+  editor->setGeometry(option.rect);
+  
 }

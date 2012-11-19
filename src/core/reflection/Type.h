@@ -45,6 +45,7 @@ public:
   const PropertyInfo * getProperty(const std::string & name)const;
   // returns true if othe class is super class of this type
   bool isSuperClassOf(const Type & other)const;
+
 protected:
   void onPredecessorAdded(Type* type);
   void onPredecessorRemoved(Type* type);

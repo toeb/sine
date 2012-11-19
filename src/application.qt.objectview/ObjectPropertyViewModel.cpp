@@ -11,6 +11,17 @@ using namespace nspace;
 
 
 
+QVariant	ObjectPropertyViewModel::headerData ( int section, Qt::Orientation orientation, int role) const{
+  if(role!=Qt::DisplayRole)return QVariant();
+  if(orientation==Qt::Horizontal){
+    if(section==0)return QVariant::fromValue(tr("Property"));
+    if(section==1)return QVariant::fromValue(tr("Value"));
+  }
+  if(orientation==Qt::Vertical){
+    return QVariant::fromValue(tr("lol"));
+  }
+  return QVariant();
+}
 
 void  ObjectPropertyViewModel::onPropertyChanged(const std::string  & name){
   if(name=="RootItem") reset();      

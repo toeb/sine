@@ -29,7 +29,7 @@ namespace nspace{
     void onPropertyChanged(const std::string  & name);
 
     ObjectPropertyViewModel();
-
+    QVariant	headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
     QModelIndex parent( const QModelIndex& index ) const ;
     bool hasChildren(const QModelIndex& parent)const;
     const PropertyInfo*  getProperty(const QModelIndex & index)const;

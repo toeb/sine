@@ -18,9 +18,15 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTreeView" name="treeView">
-       <property name="headerHidden">
-        <bool>true</bool>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
        </property>
+       <property name="headerHidden">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>true</bool>
+       </attribute>
       </widget>
      </item>
     </layout>
