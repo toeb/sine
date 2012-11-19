@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Object.h>
-
+#include <core/reflection/IModifiableValue.h>
 namespace nspace{
   
 template<typename T>
