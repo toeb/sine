@@ -74,7 +74,7 @@ namespace nspace{
 
 // sets all properties of the specified object to default
 template <typename T> void setToDefault(T & object){
-  T::ClassType().Properties().foreachElement([&object](const PropertyInfo * prop){
+    typeof(T)->Properties().foreachElement([&object](const PropertyInfo * prop){
     prop->setToDefaultValue(&object);
       //cout << "setting "<<prop->getName()<<" to default"<<endl;
   });
