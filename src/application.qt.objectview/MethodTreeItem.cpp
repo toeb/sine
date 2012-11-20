@@ -3,6 +3,9 @@
 using namespace nspace;
 
 
+bool MethodTreeItem::isEditable(){
+  return true;  
+}
 std::string MethodTreeItem::getDescription(){
   std::stringstream ss;
   auto info = getMethodInfo();

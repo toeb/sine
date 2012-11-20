@@ -9,32 +9,22 @@ using namespace std;
   instance = new ControlFactoryRepository;
 
   
-  instance->Factories() |= new DynamicWidget::Factory<DoubleSpinBoxWidget, double>();
-  instance->Factories() |= new DynamicWidget::Factory<BoolCheckboxWidget, bool>();
-
+  instance->Factories() |= new ValueWidget::Factory<DoubleSpinBoxWidget, double>();
+  instance->Factories() |= new ValueWidget::Factory<BoolCheckboxWidget, bool>();
+  instance->Factories() |= new ActionWidget::Factory();
 
 
   return instance;
 }
-Set<ControlFactory*> ControlFactoryRepository::getFactoriesForType(const Type * type, const std::string & hints){
-  Set<ControlFactory*> factories =Factories().subset([type](ControlFactory * factory){return factory->getDataType()->isSuperClassOf(*type);});
-  //
-  
-
-  return factories;  
+Set<ControlFactory*> ControlFactoryRepository::getApplicableFactories(const Type * type,Object * object, const std::string & hints){  
+  auto factories = Factories().subset([ type,object,&hints](ControlFactory * factory){
+    return factory->match(type,object,hints);
+  });
+  return factories;
 }
 
-DynamicWidget * ControlFactoryRepository::createInstanceForType(const Type * type, const  string & hints){
-  auto factories = Factories().subset([ type](ControlFactory * factory){return factory->getDataType()==type;});
-  debugInfo("found "<< factories.size() << " factories matching type "<< *type); 
-  // TODO match hints --> need min max function for set
-  if(!factories)return 0;
+DynamicWidget * ControlFactoryRepository::createWidget(const Type * type,Object * object, const std::string & hints){
+  auto factories = getApplicableFactories(type,object,hints);
+  if(!factories.size())return 0;
   return factories.first()->createInstance();
-}
-DynamicWidget * ControlFactoryRepository::createInstanceForObject(Object * object, const std::string & hints){
-  if(!object)return 0;
-  auto control = createInstanceForType(&object->getType(),hints);
-  if(!control)return 0;
-  control->setDataContext(object);
-  return control;
 }

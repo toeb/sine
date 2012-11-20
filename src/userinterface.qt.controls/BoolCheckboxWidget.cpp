@@ -1,10 +1,19 @@
 #include "BoolCheckboxWidget.h"
-
+#include <QBoxLayout>
 
 using namespace nspace;
 
 BoolCheckboxWidget::BoolCheckboxWidget(QWidget * parent):ValueWidget(parent){
-  _checkbox = new QCheckBox(this);   
+  auto layout = new QHBoxLayout(this);
+  setAutoFillBackground(true);
+  //layout->setSpacing(1);
+  _checkbox = new QCheckBox();
+  _checkbox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+  setFocusProxy(_checkbox);
+  layout->addWidget(_checkbox);
+  layout->setSpacing(0);
+  layout->setMargin(0);
+
   connect(_checkbox,SIGNAL(stateChanged(int)),this,SLOT(checkboxStateChanged(int)));
 }
 

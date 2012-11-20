@@ -3,19 +3,20 @@
 using namespace nspace;
 
 CustomItemDelegate::CustomItemDelegate(QObject * object):QStyledItemDelegate(object){
+
 }
 QWidget * CustomItemDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index)const{
   // return something else for custom handling
   debugInfo("createEditor");
   auto object= objectFromIndex(index);
 
-  auto value = dynamic_cast<IReadableValue*>(object);
-  auto action = dynamic_cast<Action*>(object);
 
-  auto control = ControlFactoryRepository::defaultInstance()->createInstanceForType(value->getValueType(),"");
-
+  auto control = ControlFactoryRepository::defaultInstance()->createWidget(0,object,"");
+  
   if(control){
-    control->setDataContext(value);
+    //control->setGeometry(option.rect);
+    control->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
+    control->setDataContext(object);
     control->setParent(parent);
     connect(control,SIGNAL(editFinished()),this,SLOT(saveAndCloseEditor()));
     return control;
@@ -24,6 +25,7 @@ QWidget * CustomItemDelegate::createEditor(QWidget * parent, const QStyleOptionV
 }
 bool CustomItemDelegate::editorEvent(QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index){
   debugInfo("editorEvent");
+
   return false;
 }
 
@@ -37,7 +39,10 @@ void CustomItemDelegate::setEditorData( QWidget * editor, const QModelIndex & in
   debugInfo("set editor data");
   auto object = objectFromIndex(index);
   auto dynamicWidget = dynamic_cast<DynamicWidget*>(editor);
-  if(!dynamicWidget)return;
+  if(!dynamicWidget){
+    QStyledItemDelegate::setEditorData(editor,index);
+    return;
+  }
   dynamicWidget->setDataContext(object);
 }
 void CustomItemDelegate::setModelData( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const{
@@ -67,6 +72,8 @@ void CustomItemDelegate::saveAndCloseEditor(){
 
 void CustomItemDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const{
   //debugInfo(option.rect.size().width() << " x " << option.rect.size().height()<<" @ "<< option.rect.left() <<", "<<option.rect.top());
+  QRect rect =  option.rect;
   editor->setGeometry(option.rect);
-  
+  editor->update();
+ // debugInfo(editor->geometry().width()<<" vs "<<option.rect.size().width());
 }

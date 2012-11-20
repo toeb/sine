@@ -8,19 +8,15 @@ namespace nspace{
   class ControlFactory{
     TYPED_OBJECT(ControlFactory);
   public:
-    SIMPLE_PROPERTY(std::string, Hints){};
-    SIMPLE_PROPERTY(const Type *, DataType){};
-  public:
+    virtual bool match(const Type * type, Object * object=0, const std::string& hints="")=0;
     virtual DynamicWidget * createInstance()=0;
   };
   class ControlFactoryRepository  : public virtual PropertyChangingObject, public virtual Log{
-    REFLECTABLE_OBJECT(ControlFactory);
-    
+    REFLECTABLE_OBJECT(ControlFactory);    
     PROPERTYSET(ControlFactory* , Factories,{},{});
   public:
     static  ControlFactoryRepository * defaultInstance();
-    Set<ControlFactory*> getFactoriesForType(const Type * type, const std::string & hints ="");
-    DynamicWidget *  createInstanceForType(const Type * type, const std::string & hints="");
-    DynamicWidget * createInstanceForObject(Object * object, const std::string & hints="");
+    Set<ControlFactory*> getApplicableFactories(const Type * type,Object * object, const std::string & hints ="");
+    DynamicWidget * createWidget(const Type * type,Object * object, const std::string & hints ="");
   };
 }

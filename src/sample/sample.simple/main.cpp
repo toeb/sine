@@ -36,9 +36,12 @@ public:
   }
 };
 
-class MySample : public Sample, public virtual PropertyChangingObject{
+class MySample : public Sample, public virtual PropertyChangingObject, public virtual NamedObject{
   REFLECTABLE_OBJECT(MySample);
   PROPERTY(Real, value){}
+  ACTION(TestAction){
+    cout << " test message " <<endl;
+  }
 public:
   
   Sphere * sphere;
@@ -53,7 +56,9 @@ public:
 
   }
 
-  MySample():sphere(0){}
+  MySample():sphere(0){
+    setName("MySample");
+  }
   void setup(){
     time=0;
     auto algorithm = new DynamicsAlgorithm();

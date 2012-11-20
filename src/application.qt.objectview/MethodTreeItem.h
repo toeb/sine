@@ -19,6 +19,7 @@ public:
   virtual std::string getDescription();
   virtual std::string getDisplayName();
   virtual std::string getDisplayValue();
+  virtual bool isEditable();
   
   void onObjectChanged();
   void doExpand();

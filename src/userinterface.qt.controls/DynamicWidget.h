@@ -10,18 +10,8 @@ namespace nspace{
   public:
     DynamicWidget(QWidget * parent):QWidget(parent),_DataContext(0){}
      
-    template<typename T, typename DataType>
-    class Factory : public virtual ControlFactory{
-    public:
-      Factory(){
-        setDataType(typeof(DataType));
-      }
-      DynamicWidget * createInstance(){
-        T * t= new T(0);
-        return t;
-      }
 
-    };
+
 
 
   protected:

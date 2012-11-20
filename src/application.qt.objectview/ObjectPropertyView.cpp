@@ -10,6 +10,7 @@ using namespace nspace;
 ObjectPropertyView::ObjectPropertyView(QWidget*parent):QWidget(parent),_CurrentObject(0){
   _ui = new Ui_ObjectPropertyView();
   _ui->setupUi(this);
+  _ui->treeView->header()->setResizeMode(QHeaderView::ResizeToContents);
   _model = new ObjectPropertyViewModel();
     connect(_model,SIGNAL(modelReset()),this,SLOT(autoresize()));
   connect(_ui->treeView,SIGNAL(expanded(const QModelIndex &)),this,SLOT(onModelLayoutChanged(const QModelIndex &)));
