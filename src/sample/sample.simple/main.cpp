@@ -144,12 +144,8 @@ public:
 
 
 
-int main(int argc,  char ** argv){  
-  testAdapter1();
+int main(int argc,  char ** argv){
 
-
-
-  return 0;
     // instanciate sample
     MySample sample;
     // create sample application

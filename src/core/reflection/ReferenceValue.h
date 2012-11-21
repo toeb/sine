@@ -13,7 +13,7 @@ private:
 public:
   ReferenceValue(T & value):_underylingValue(value){setValueType(typeof(T));}
   void notifyValueChanged(){
-    raiseObjectChanged();
+    this->raiseObjectChanged();
   }
 protected:  
   

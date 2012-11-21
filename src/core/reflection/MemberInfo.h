@@ -7,13 +7,14 @@ namespace nspace{
     
     SIMPLE_PROPERTY(std::string, Name){if(getDisplayName()!="")return; setDisplayName(newvalue);}
     REFERENCE_PROPERTY(std::string, Name);
+
+    SIMPLE_PROPERTY(bool, IsVisible){}
     SIMPLE_PROPERTY(Type *, OwningType ){};
 
     
     SIMPLE_PROPERTY(std::string, Description){}
     SIMPLE_PROPERTY(std::string, DisplayName){}
     SIMPLE_PROPERTY(std::string, GroupName){}
-    SIMPLE_PROPERTY(bool, IsVisible){}
   public:
     MemberInfo():
       _IsVisible(true),
