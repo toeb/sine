@@ -10,6 +10,8 @@ void PropertyAdapter::onOwnerChanged(){
 }
 void PropertyAdapter::onPropertyInfoChanged(){
     installObserver();
+    if(!getPropertyInfo())return ;
+    setValueType(getPropertyInfo()->getPropertyType());
 }
 void PropertyAdapter::onChange(Observable * observable){
     raiseObjectChanged();
