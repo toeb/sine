@@ -4,9 +4,11 @@
 namespace nspace{
   class MemberAdapter : public virtual Object{
     TYPED_OBJECT(Object);
-    SIMPLE_PROPERTY(Object *, Owner){}
+    BASIC_PROPERTY(Object*,Owner,public,,onBeforeOwnerChanged();,onOwnerChanged());
   protected:
     MemberAdapter():_Owner(0){}
+    virtual void onOwnerChanged(){}
+    virtual void onBeforeOwnerChanged(){}
   };
 
 }

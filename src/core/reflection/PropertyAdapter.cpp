@@ -2,6 +2,31 @@
 
 using namespace nspace;
 
+void PropertyAdapter::onBeforeOwnerChanged(){
+  uninstallObserver();
+}
+void PropertyAdapter::onOwnerChanged(){
+  installObserver();
+}
+void PropertyAdapter::onPropertyInfoChanged(){
+  installObserver();
+}
+void PropertyAdapter::onChange(Observable * observable){
+  raiseObjectChanged();
+}
+void PropertyAdapter::onBeforePropertyInfoChanged(){
+  uninstallObserver();
+}
+void PropertyAdapter::installObserver(){
+  if(!getPropertyInfo())return;
+  if(!getOwner())return;
+  bool result = getPropertyInfo()->addObserver(getOwner(),this);
+}
+void PropertyAdapter::uninstallObserver(){
+  if(!getPropertyInfo())return;
+  if(!getOwner())return;
+  bool result = getPropertyInfo()->removeObserver(getOwner(),this);
+}
 
 void PropertyAdapter::setToDefault(){
   auto object = getOwner();
@@ -11,18 +36,16 @@ void PropertyAdapter::setToDefault(){
   info->setToDefaultValue(object);
 }
 
-void PropertyAdapter::propertyChanging(const PropertyInfo *, PropertyInfo){
-  setValueType(newvalue->getPropertyType());
-}
 PropertyAdapter:: PropertyAdapter():_PropertyInfo(0){
 
+
 }
-PropertyAdapter::PropertyAdapter(Object * object, const std::string & name){
+PropertyAdapter::PropertyAdapter(Object * object, const std::string & name):_PropertyInfo(0){
   setOwner(object);
   auto prop = object->getType().getProperty(name);
   if(prop)setPropertyInfo(prop);
 }
-PropertyAdapter::PropertyAdapter(Object * object, const PropertyInfo * info){
+PropertyAdapter::PropertyAdapter(Object * object, const PropertyInfo * info):_PropertyInfo(0){
   setOwner(object);
   setPropertyInfo(info);
 }

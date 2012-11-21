@@ -94,5 +94,6 @@ target_link_libraries(simulation.runner.qt
    simulation.integration 
    simulation.history 
    simulation.access 
+   userinterface.qt.controls
    ${QT_LIBRARIES})
 	   

@@ -5,11 +5,11 @@
 #include <fstream>
 #include <utility.reader/Reader.h>
 #include <utility.reader.trajectory.h>
+
+#include <QDeclarativeView>
+
 using namespace nspace;
 using namespace std;
-
-
-
 
 class TrajectorySystemFunction : public virtual ISystemFunction, public virtual PropertyChangingObject{
   REFLECTABLE_OBJECT(TrajectorySystemFunction);
@@ -144,10 +144,12 @@ public:
 
 
 
-
 int main(int argc,  char ** argv){  
+  testAdapter1();
 
 
+
+  return 0;
     // instanciate sample
     MySample sample;
     // create sample application

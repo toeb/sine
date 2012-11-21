@@ -2,12 +2,27 @@
 
 #include <config.h>
 #include <vector>
+#include <functional>
 namespace nspace{
     // TODO REWORK OBSERVABLE OBJECTS for performance
   class Observable;
   class ObjectObserver{
-  public:
+  protected:
     virtual void onChange(Observable * sender)=0;
+    friend class Observable;
+  };
+
+  
+  template <typename T=std::function<void (Observable*)> >
+  class DelegateObjectObserver:public ObjectObserver{
+    T _callback;
+  public:
+    DelegateObjectObserver(T callback):_callback(callback){
+
+    }
+    void onChange(Observable * sender){
+      _callback(sender);
+    }
   };
 
   class Observable{
@@ -17,10 +32,11 @@ namespace nspace{
   public:
     Observable();
     ~Observable();
-  protected:
     bool hasObservers()const;
+  protected:
     ObserverList & observers();
     void raiseObjectChanged();
+    virtual void onChange(){}
   public:
     void addObjectObserver(ObjectObserver* oo);
     void removeObjectObserver(ObjectObserver * oo);

@@ -56,8 +56,8 @@ namespace nspace{
     virtual bool serialize(Object * object, std::ostream & out)const=0;
 
     
-    virtual bool addObserver(Object * object,ObjectObserver* observer)const{return false;};
-    virtual bool removeObserver(Object * object,ObjectObserver* observer)const{return false;};
+    virtual bool addObserver(Object * object,ObjectObserver* observer)const;
+    virtual bool removeObserver(Object * object,ObjectObserver* observer)const;
 
 
     template<typename ObjectType, typename T>

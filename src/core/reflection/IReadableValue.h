@@ -1,10 +1,10 @@
 #pragma once
 
 #include <core/Object.h>
-
+#include <core/Observable.h>
 namespace nspace{
   
-class IReadableValue : public  virtual Object{
+class IReadableValue : public  virtual Object, public virtual Observable{
   TYPED_OBJECT(IReadableValue);
   SIMPLE_PROPERTY(const Type *, ValueType){};
 protected:
@@ -25,4 +25,5 @@ public:
     return getByPointer(&result);    
   }
 };
+
 }

@@ -6,7 +6,7 @@ bool IModifiableValue::changeValue(const void * value){
   valueChanging(value,cancel);
   if(cancel)return false;    
   bool success = storeValue(value);
-  if(success) valueChanged(value);
+  if(success) raiseObjectChanged();
   return success;
 }
 bool IModifiableValue::setByPointer(const void * value){return changeValue(value);};

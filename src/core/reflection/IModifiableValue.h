@@ -8,7 +8,6 @@ private:
 protected:
   virtual bool storeValue(const void * value)=0;
   virtual void valueChanging(const void * newvalue, bool & cancel){}
-  virtual void valueChanged(const void * newvalue){}
 public:
   bool setByPointer(const void * value);
   template<typename T> bool set(const T & value){ return setByPointer(&value); }

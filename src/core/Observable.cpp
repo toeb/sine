@@ -13,6 +13,7 @@ Observable::ObserverList & Observable::observers(){
   return * _observers;
 }
 void Observable::raiseObjectChanged(){
+  onChange();
   if(!hasObservers())return;
   std::for_each(observers().begin(),observers().end(),[this](ObjectObserver * observer){
     observer->onChange(this);

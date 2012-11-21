@@ -12,7 +12,9 @@ private:
   T & _underylingValue;
 public:
   ReferenceValue(T & value):_underylingValue(value){setValueType(typeof(T));}
-
+  void notifyValueChanged(){
+    raiseObjectChanged();
+  }
 protected:  
   
   virtual bool retrieveTypeValue(T & value)const{value = _underylingValue; return true;}

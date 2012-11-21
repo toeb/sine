@@ -6,14 +6,15 @@
 
 namespace nspace{
   class PropertyAdapter:
-    public virtual IModifiableValue, 
-    public virtual ISerializeable, 
-    public virtual MemberAdapter
+    public virtual IModifiableValue,
+    public virtual ISerializeable,
+    public virtual MemberAdapter,
+    public virtual ObjectObserver
   {
     TYPED_OBJECT(PropertyAdapter);
-    SIMPLE_PROPERTY(const PropertyInfo *, PropertyInfo);
+    BASIC_PROPERTY(const PropertyInfo *, PropertyInfo,public,,onBeforePropertyInfoChanged();,onPropertyInfoChanged(););
   public:
-    //TODO use factorymethod
+    //TODO use factorymethods instead.  i hate constructors
     PropertyAdapter();
     PropertyAdapter(Object * object, const std::string & name);
     PropertyAdapter(Object * object, const PropertyInfo * info);
@@ -24,7 +25,14 @@ namespace nspace{
     // implementation of ISerializable
     bool toStream(std::ostream & stream, Format format);
     bool fromStream(std::istream & stream, Format format);
+  protected:
+    void onChange(Observable * sender);
+    void onOwnerChanged();
+    void onBeforeOwnerChanged();
+  private:
+    void onBeforePropertyInfoChanged();
+    void onPropertyInfoChanged();
+    void uninstallObserver();
+    void installObserver();
   };
-
-
 }

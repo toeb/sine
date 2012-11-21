@@ -9,7 +9,33 @@ using namespace std;
 
 
 
+class Tmp : public virtual PropertyChangingObject{
+  REFLECTABLE_OBJECT(Tmp);
+  PROPERTY(int,IntValue){}
+  PROPERTY(std::string,StringValue){}
+};
+void testAdapter1(){
+  Tmp t;
+  PropertyAdapter adapter1(&t,"IntValue");
+  PropertyAdapter adapter2(&t, "StringValue");
+  auto observer = new DelegateObjectObserver<std::function<void (Observable *)>>([](Observable* observable){
+    auto a = dynamic_cast<PropertyAdapter*>(observable);
+    if(!a)return ; //fail
+    std::cout << a->getPropertyInfo()->getName() << " changed to ";
+    a->serialize(std::cout);
+    cout << endl;
+  });
+  adapter1.addObjectObserver(observer);
+  adapter2.addObjectObserver(observer);
 
+
+  t.setIntValue(3);
+  t.setStringValue("Lol");
+
+
+  adapter1.set(42);
+
+}
 
 TEST(Create, Prop){
   class TestClass{
