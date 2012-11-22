@@ -63,6 +63,10 @@
 #include <math.matrix/operations/MatrixElementWiseBinary.h>
 #include <math.matrix/operations/MatrixPad.h>
 
+#include <math.matrix/operations/MatrixEquals.h>
+#include <math.matrix/operations/MatrixLessThan.h>
+#include <math.matrix/operations/MatrixGreaterThan.h>
+
 #include <math.matrix/operations/MatrixColumnCount.h>
 #include <math.matrix/operations/MatrixRowCount.h>
 #include <math.matrix/operations/MatrixElementAssignment.h>
@@ -73,6 +77,15 @@ namespace nspace{
   namespace math{
   namespace shorthands{
   namespace matrix{
+
+    template<typename MatA, typename MatB, typename Elem>
+    inline bool matricesEqual(const MatA & a,const MatA & b,const Elem & eps){
+      bool result=false;
+      OperationMatrixEquals<MatA,MatB,Elem>::operation(result,a,b,eps);
+      return result;
+    }
+
+
 
     template<typename MatA, typename Vec>
     inline void crossProductMatrix(MatA & a_star, const Vec& a){

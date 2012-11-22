@@ -91,6 +91,10 @@ namespace nspace{
     return a;
   }
 
+  template<typename T, int rows, int cols>
+  inline bool operator == (const StaticMatrix<T,rows,cols> & a, const StaticMatrix<T,rows,cols> & b){
+    return math::shorthands::matrix::matricesEqual<StaticMatrix<T,rows,cols>,StaticMatrix<T,rows,cols>,T>(a,b,T(0));
+  }
 
 }
 }
