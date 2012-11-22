@@ -84,6 +84,7 @@ Color::operator const float*()const{
 } 
 
 
+
 Color Color::alpha(Real al){
   return Color(_rgb,al);
 }

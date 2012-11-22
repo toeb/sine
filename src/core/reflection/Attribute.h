@@ -3,16 +3,19 @@
 
 #include <core/reflection/Type.h>
 #include <core/Object.h>
+
+
 #include <math/Interval.h>
 namespace nspace{
   
   class Attribute{
     TYPED_OBJECT(Attribute);
+    SIMPLE_PROPERTY(std::string, AttributeName){}
   };
 
   class AttributeTarget : public virtual Object{
     TYPED_OBJECT(AttributeTarget);
-
+    PROPERTYSET(Attribute*,Attributes,{},{})
   };
 
 
