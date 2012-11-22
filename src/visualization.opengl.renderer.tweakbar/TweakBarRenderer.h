@@ -1,6 +1,6 @@
 #pragma once
 #include <visualization/Renderer.h>
-#include <anttweakbar/AntTweakBar.h>
+//#include <anttweakbar/AntTweakBar.h>
 #include <simulation.interaction/InputHandler.h>
 #include <simulation/ISimulationModule.h>
 #include <simulation/SimulationModuleBase.h>
@@ -23,7 +23,7 @@ class TweakBarRenderer
   TYPED_OBJECT(TweakBarRenderer)
   private:
     bool _initialized;
-    TwBar  * _tweakBar;
+ //   TwBar  * _tweakBar;
     std::vector<ISimulationObject * > _unprocessedObjects;
     std::map<std::string, IAction*> _actions;
     std::vector<IValue * > _values;

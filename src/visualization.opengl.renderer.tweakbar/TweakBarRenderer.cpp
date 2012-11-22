@@ -1,5 +1,5 @@
 #include "TweakBarRenderer.h"
-#include <anttweakbar/AntTweakBar.h>
+//#include <anttweakbar/AntTweakBar.h>
 #include <GL/glut.h>
 #include <sstream>
 #include <iostream>
@@ -7,11 +7,11 @@
 #include <simulation.access/TypedMatrixValue.h>
 using namespace nspace;
 using namespace std;
-
+/*
 void TW_CALL setValueCallback(const void *value, void *clientData){
   IValue * callback = reinterpret_cast<IValue *>(clientData);
   callback->set(value);
-}
+
 void TW_CALL getValueCallback(void *value, void *clientData){
   IValue * callback = reinterpret_cast<IValue *>(clientData);
   callback->get(value);  
@@ -173,3 +173,4 @@ void TweakBarRenderer::render(){
   TwRefreshBar(_tweakBar);
   TwDraw(); 
 }
+*/
