@@ -19,6 +19,7 @@ void ObjectViewPlugin::objectDoubleClicked(QListWidgetItem * qobject){
 
 void ObjectViewPlugin::install(PluginContainer & container){
   PluginWindow * window = new PluginWindow();
+  window->setWindowTitle(tr("Object View"));
   QWidget * w = new QWidget();
   _ui= new Ui_ObjectView();
   _ui->setupUi(w);
