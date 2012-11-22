@@ -1,8 +1,11 @@
 #pragma once
+#include <core/reflection/Attribute.h>
 #include <core/Object.h>
 
 namespace nspace{
-  class MemberInfo : public virtual Object{
+
+
+  class MemberInfo : public virtual AttributeTarget{
     TYPED_OBJECT(MemberInfo);
     
     SIMPLE_PROPERTY(std::string, Name){if(getDisplayName()!="")return; setDisplayName(newvalue);}

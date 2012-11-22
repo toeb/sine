@@ -18,6 +18,7 @@ namespace nspace{
     PropertyAdapter();
     PropertyAdapter(Object * object, const std::string & name);
     PropertyAdapter(Object * object, const PropertyInfo * info);
+    ~PropertyAdapter();
     void setToDefault();
     // implementation of IModifiableValue
     bool retrieveValue(void * value)const;

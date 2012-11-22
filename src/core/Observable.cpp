@@ -15,9 +15,13 @@ Observable::ObserverList & Observable::observers(){
 void Observable::raiseObjectChanged(){
   onChange();
   if(!hasObservers())return;
+  for(int i=0; i < observers().size(); i++){
+    observers().at(i)->onChange(this);
+  }
+  /*
   std::for_each(observers().begin(),observers().end(),[this](ObjectObserver * observer){
     observer->onChange(this);
-  });
+  });*/
 }
 void Observable::addObjectObserver(ObjectObserver* oo){
   observers().push_back(oo);

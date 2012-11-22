@@ -38,7 +38,9 @@ void PropertyAdapter::setToDefault(){
     if(!info)return;
     info->setToDefaultValue(object);
 }
-
+PropertyAdapter::~PropertyAdapter(){
+  uninstallObserver();
+}
 PropertyAdapter:: PropertyAdapter():_PropertyInfo(0){
 
 

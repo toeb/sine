@@ -5,10 +5,16 @@
 #include <core/Object.h>
 #include <math/Interval.h>
 namespace nspace{
-
+  
   class Attribute{
     TYPED_OBJECT(Attribute);
   };
+
+  class AttributeTarget : public virtual Object{
+    TYPED_OBJECT(AttributeTarget);
+
+  };
+
 
   class DisplayAttribute :public virtual Attribute{
     TYPED_OBJECT(DisplayAttribute);
