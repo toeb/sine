@@ -43,6 +43,7 @@ namespace nspace{
   template<typename OwningClass, typename ValueType>
   TypedPropertySetInfo<OwningClass,ValueType>::TypedPropertySetInfo(){
     setElementType(typeof(ValueType));
+    setPropertyType(typeof(Set<ValueType>));
   }
 
   template<typename OwningClass, typename ValueType>

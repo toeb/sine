@@ -94,8 +94,11 @@ template<typename T>
 class TypeInfo : public Type{
   TEMPLATEDSINGLETON(TypeInfo, <T>){
     setName(RemovePointer<T>::Type::getTypeName());
+    
   }
 };
+
+
 
 // macro allows typeinfo to be declared for primitve types
 #define META(TYPE)\
@@ -105,6 +108,15 @@ class /*nspace::*/TypeInfo<TYPE>: public /*nspace::*/Type{\
     setName(#TYPE);\
   }\
 };
+
+
+template<typename T>
+class TypeInfo<Set<T>>: public Type{
+  TEMPLATEDSINGLETON(TypeInfo, <Set<T>>){
+    setName("Set<T>");
+  }
+};
+
 
 META(int);
 META(double);

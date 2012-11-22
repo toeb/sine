@@ -205,7 +205,9 @@ private:\
   typedef CurrentClassType NAME##OwningClassType;\
 class PROPERTYCLASS(NAME) : public virtual TypedPropertySetInfo<NAME##OwningClassType,TYPE>{\
 public:\
-  SINGLETON( PROPERTYCLASS(NAME) ){setName(#NAME);}\
+  SINGLETON( PROPERTYCLASS(NAME) ){\
+    setName(#NAME);\
+  }\
   Set<TYPE> & getMutableSetReference( NAME##OwningClassType * object )const{\
   return object->NAME();\
 }\
