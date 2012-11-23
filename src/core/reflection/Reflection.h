@@ -134,10 +134,10 @@ private:\
 
 // sets the groupname of the property specified by NAME
 #define GROUPNAME(NAME,GROUP)\
-  STATIC_INITIALIZER(NAME##GroupName,MEMBERCLASSINSTANCE(NAME)->setGroupName(GROUP))
+  STATIC_INITIALIZER(NAME##GroupName,MEMBERCLASSINSTANCE(NAME)->setGroupName(GROUP);)
 
 #define HIDDEN(NAME)\
-  STATIC_INITIALIZER(NAME##Hidden,PROPERTYCLASSINSTANCE(NAME)->setIsVisible(false))
+  STATIC_INITIALIZER(NAME##Hidden,PROPERTYCLASSINSTANCE(NAME)->setIsVisible(false);)
 
 // sets the property or propertyset to navigatable (indicating that the property is a subclass of object)
 #define NAVIGATABLE(CLASS, NAME) \

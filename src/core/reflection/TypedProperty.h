@@ -26,6 +26,7 @@ namespace nspace{
 
   template<typename OwningClass, typename ValueType>
   TypedProperty<OwningClass,ValueType>::TypedProperty(){
+    setOwningType(typeof(OwningClass));    
     //setPropertyType(&TypeDataProvider<ValueType>::getTypeData());
   }
   template<typename OwningClass, typename ValueType>
