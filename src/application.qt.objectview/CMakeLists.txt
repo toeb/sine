@@ -17,6 +17,8 @@ PropertySetTreeItem.h
 PropertySetTreeItem.cpp
 PropertySetElementTreeItem.h
 PropertySetElementTreeItem.cpp
+PropertyGroupTreeItem.h
+PropertyGroupTreeItem.cpp
 CustomItemDelegate.h
 CustomItemDelegate.cpp
 ../include/application.qt.objectview.h
