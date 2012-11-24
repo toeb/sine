@@ -11,7 +11,8 @@ namespace nspace{
     public QAbstractItemModel, 
     public virtual PropertyChangingObject, 
     public virtual Log, 
-    public virtual PropertyChangedListener
+    public virtual PropertyChangedListener,
+    public virtual ObjectObserver
   {
       Q_OBJECT;
       REFLECTABLE_OBJECT(ObjectPropertyViewModel);
@@ -20,6 +21,7 @@ namespace nspace{
 
     TreeItem* getItem(const QModelIndex& index )const;
   public:
+    void onChange(Observable * observer);
     TreeItem * createItem(Object * object);
     PROPERTY(Object *, CurrentObject);
     SIMPLE_PROPERTY(TreeItem*, RootItem);

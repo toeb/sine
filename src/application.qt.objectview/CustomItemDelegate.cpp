@@ -14,7 +14,6 @@ QWidget * CustomItemDelegate::createEditor(QWidget * parent, const QStyleOptionV
   auto control = ControlFactoryRepository::defaultInstance()->createWidget(0,object,"");
   
   if(control){
-    //control->setGeometry(option.rect);
     control->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     control->setDataContext(object);
     control->setParent(parent);

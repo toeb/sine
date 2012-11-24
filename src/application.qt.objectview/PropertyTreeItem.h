@@ -7,7 +7,9 @@ namespace nspace{
 
 class PropertyTreeItem :
   public TreeItem, 
-  public virtual Log{
+  public virtual Log,
+  public virtual ObjectObserver
+{
   REFLECTABLE_OBJECT(PropertyTreeItem);
   // the propertyinfo object
   PROPERTY(const PropertyInfo*, PropertyInfo){}
@@ -23,6 +25,9 @@ public:
   virtual std::string getDisplayName();
   virtual std::string getDisplayValue();
   
+  
+
+  void onChange(Observable* sender);
   void onObjectChanged();
   void doExpand();
 };

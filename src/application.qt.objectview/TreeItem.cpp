@@ -6,6 +6,13 @@ using namespace std;
 
 TreeItem::TreeItem():_Object(0),_IsExpanded(false),_Model(0){}
 
+TreeItem::~TreeItem(){
+  successors().foreachElement([](TreeItem* item){
+    delete item;
+  });
+  successors().clear();
+}
+
 void TreeItem::expand(){
   if(getIsExpanded())return; 
   doExpand();

@@ -53,7 +53,23 @@ PropertyTreeItem::PropertyTreeItem(){
 void PropertyTreeItem::doExpand(){
   debugInfo("expanding PropertyTreeItem "<< *this<<" " <<*getPropertyOwner());
 
+  getPropertyInfo()->addObserver(getPropertyOwner(), this);
+
   Object * ptr =  getPropertyInfo()->asObjectPointer(getPropertyOwner());
+  
+  onChange(0);
+  /*
+  if(!ptr)return;
+  auto item = getModel()->createItem(ptr);
+  item->expand();
+  successors()|=item->successors();*/
+}
+
+
+
+void PropertyTreeItem::onChange(Observable* sender){
+  Object * ptr =  getPropertyInfo()->asObjectPointer(getPropertyOwner());
+  successors().clear();
   if(!ptr)return;
   auto item = getModel()->createItem(ptr);
   item->expand();

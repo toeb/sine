@@ -8,7 +8,8 @@ namespace nspace{
   
   class TreeItem : 
     public Node<TreeItem>, 
-    public virtual PropertyChangingObject{    
+    public virtual PropertyChangingObject    
+  {    
     REFLECTABLE_OBJECT(TreeItem);
     // the object which this tree item wraps
     PROPERTY(Object*, Object){}
@@ -23,6 +24,8 @@ namespace nspace{
     void expand();
     //default constructor
     TreeItem();
+    ~TreeItem();
+
     // some data access method
     virtual std::string getDisplayName();
     virtual std::string getDisplayValue();
