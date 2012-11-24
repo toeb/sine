@@ -164,9 +164,17 @@ public:\
 
 //use inside a class definition INITIALIZATIONCODE will be executed for this type.  It will be called when the first object of that type is constructed
 #define STATIC_INITIALIZER(NAME,INITIALIZATIONCODE)\
-  INITIALIZER(NAME##Static, static bool __isInitialized=false; if(__isInitialized)return; __isInitialized=true; INITIALIZATIONCODE)
+INITIALIZER(NAME##Static, static bool __isInitialized=false; if(__isInitialized)return; __isInitialized=true; INITIALIZATIONCODE)
 
 
+/*  Possbile Alternative:  problem is that the static field ...Instance needs to be initialized in a source files
+static class __##NAME##StaticInitializer  {\
+public: \
+  __##NAME##StaticInitializer(){\
+  INITIALIZATIONCODE;\
+  }\
+}  __##NAME##StaticInitializerInstance; \
+  */
 
 /*
 #define READONLY_REFERENCE(TYPE,NAME,FIELDNAME)\

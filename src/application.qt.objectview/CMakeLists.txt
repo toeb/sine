@@ -1,6 +1,8 @@
 set(source
 ObjectViewPlugin.h
 ObjectViewPlugin.cpp
+PropertyViewPlugin.h
+PropertyViewPlugin.cpp
 ObjectPropertyView.h
 ObjectPropertyView.cpp
 ObjectPropertyViewModel.h
@@ -24,6 +26,7 @@ CustomItemDelegate.cpp
 ../include/application.qt.objectview.h
 )
 set(moc
+PropertyViewPlugin.h
 ObjectViewPlugin.h
 ObjectPropertyView.h
 ObjectPropertyViewModel.h
