@@ -20,7 +20,7 @@ namespace nspace{
       if(getParent()){
         out << ", "<<*getParent();
       }else{
-        out << 0 ;
+        out << "0" ;
       }
       out <<"'}";
       
