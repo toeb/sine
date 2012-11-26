@@ -2,8 +2,6 @@
 #include <ostream>
 #include <math/core.h>
 
-
-
 namespace nspace{
 
   typedef MatrixNxM StateMatrix;
@@ -126,5 +124,5 @@ namespace nspace{
   };
 
   // prints the state
-  std::ostream & operator << (std::ostream & o, const State & state);
+  std::ostream & operator << (std::ostream & o, const nspace::State & state);
 }

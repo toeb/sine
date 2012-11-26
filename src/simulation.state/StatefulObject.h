@@ -10,7 +10,7 @@ namespace nspace{
   private:
     uint _stateDimension;
     uint _stateDerivatives;
-    State * _state;
+    nspace::State * _state;
   public:
     // is called when the state of the object was changed. clients can then 
     // set their objects internal data to the data specified by state()
