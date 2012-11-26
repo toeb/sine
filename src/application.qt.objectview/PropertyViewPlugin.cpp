@@ -2,7 +2,7 @@
 
 using namespace nspace;
 
-PropertyViewPlugin::PropertyViewPlugin():_ObjectPropertyView(0){
+PropertyViewPlugin::PropertyViewPlugin():_ObjectPropertyView(0),_StartVisible(false),_Object(0){
 
 }
 void PropertyViewPlugin::propertyChanging(ObjectPropertyView*, ObjectPropertyView){
@@ -31,12 +31,11 @@ void PropertyViewPlugin::install(PluginContainer & container){
   }
   auto view = getObjectPropertyView();
   PluginWindow * window = new PluginWindow();
-  window->show();
 
   window->setWindowTitle(tr("Property View Window"));
   window->setWidget(view);
 
   container.setPluginWindow(window);
-
+  if(getStartVisible())container.toggleWindow(true);
 
 }

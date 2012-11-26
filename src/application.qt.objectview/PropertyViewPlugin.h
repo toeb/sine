@@ -14,6 +14,7 @@ namespace nspace{
     REFLECTABLE_OBJECT(PropertyViewPlugin);
     SUBCLASSOF(Log);
     PROPERTY(Object*, Object);
+    PROPERTY(bool, StartVisible){}
     SIMPLE_PROPERTY(ObjectPropertyView*, ObjectPropertyView);
   public:
     PropertyViewPlugin();
