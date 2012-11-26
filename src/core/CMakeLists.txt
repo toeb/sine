@@ -1,3 +1,12 @@
+set(bindingSource
+ ./binding/Binding.h
+ ./binding/Binding.cpp
+ ./binding/ValueConverter.h
+ ./binding/ValueConverter.cpp
+)
+
+source_group("binding" FILES ${bindingSource})
+
 set(reflectionSource
 ./reflection/MethodInfo.h
 ./reflection/MethodInfo.cpp
@@ -44,6 +53,9 @@ set(reflectionSource
 ./reflection/ITypedSerializableValue.cpp
 ./reflection/MemberAdapter.h
 ./reflection/MemberAdapter.cpp
+
+./reflection/Converter.h
+./reflection/Converter.cpp
 ../include/core.reflection.h
 )
 source_group("reflection" FILES ${reflectionSource})
@@ -92,5 +104,5 @@ set(patternsSource
 ./patterns/Decorator.h
 )
 source_group("src\\patterns" FILES ${patternsSource})
-add_library(core ${source} ${patternsSource} ${reflectionSource}  CMakeLists.txt)
+add_library(core ${source} ${patternsSource} ${reflectionSource} ${bindingSource} CMakeLists.txt)
 
