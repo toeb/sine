@@ -34,7 +34,10 @@ void QtTaskRunner::onElementAdded(ITask * task){
   _serialTaskRunner.addTask(task);
 }
 void QtTaskRunner::onElementRemoved(ITask * task){
+    _scheduledTaskRunner.removeTask(task);
+    _serialTaskRunner.removeTask(task);
 }
+
 
 void QtTaskRunner::enable(){
   _taskTimer->start();
