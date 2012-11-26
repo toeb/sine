@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include <core/reflection/PropertyInfo.h>
+#include <core/NamedObject.h>
 using namespace nspace;
 using namespace std;
 
@@ -14,6 +15,10 @@ std::string Object::toString()const{
 
   
 void Object::toString(std::ostream & out)const{
+    if(nspace::hasObjectName(this)){
+        out << name(this);
+        return;
+    }
   out << "<object typeid=\""<<getType()<<"\" typename=\""<< getType().getName() << "\"/>";
 }
 Object::Object(){
