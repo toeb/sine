@@ -14,5 +14,7 @@ namespace nspace{
   public slots:
     void updateWidgetValue();
     void updateValueHolder();
+  protected slots:
+    void onValueChanged(double);
   };
 }
