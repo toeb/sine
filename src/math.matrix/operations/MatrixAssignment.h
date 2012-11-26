@@ -1,15 +1,16 @@
 #pragma once
 #include <config.h>
-
+#include <math.matrix/operations/MatrixResize.h>
 namespace nspace{
   template<typename MatA, typename MatB>
   class MatrixAssign{
   public:
     static inline bool operation(MatA &  result, const MatB & val){
-      if(!result.resize(val.rows(), val.cols())){
+        if(!MatrixResize<MatA>::operation(result,val.rows(),val.cols(),false))return false;
+      /*if(!result.resize(val.rows(), val.cols())){
         std::cout << "MatrixAssign: could not resize result matrix "<<std::endl;
         return false;
-      }
+      }*/
       for(int i=0; i < result.rows(); i++){
         for(int j=0; j < result.cols(); j++){
           result(i,j)=val(i,j);

@@ -1,5 +1,6 @@
+#pragma once
 #include <config.h>
-
+#include <math.matrix/operations/MatrixSetConstant.h>
 namespace nspace{
   
 template<typename TargetType>
