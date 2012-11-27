@@ -5,11 +5,9 @@
 
 namespace nspace{
   
-class IReadableValue : public  virtual Object, public virtual Observable{
+class IReadableValue : public virtual Object, public virtual Observable{
   TYPED_OBJECT(IReadableValue);
-  SIMPLE_PROPERTY(const Type *, ValueType){
-      std::cout << "new value typer set" <<std::endl;
-  };
+  SIMPLE_PROPERTY(const Type *, ValueType){};
 protected:
   virtual bool retrieveValue(void * value)const=0;
 public:
@@ -28,5 +26,7 @@ public:
     return getByPointer(&result);    
   }
 };
+
+
 
 }

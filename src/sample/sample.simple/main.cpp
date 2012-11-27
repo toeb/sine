@@ -5,9 +5,13 @@
 #include <fstream>
 #include <utility.reader/Reader.h>
 #include <utility.reader.trajectory.h>
-
+#include <userinterface.qt.controls/DoubleRangeWidget.h>
 #include <QDeclarativeView>
-
+#include <QApplication>
+#include <userinterface.qt.controls/DoubleSliderWidget.h>
+#include <userinterface.qt.controls/StringWidget.h>
+#include <core/binding/Binding.h>
+#include <userinterface.qt.controls/BoolWidget.h>
 using namespace nspace;
 using namespace std;
 
@@ -133,8 +137,8 @@ public:
     *sphereRenderer |= sphere;
 
     // print setup of sample app
-    application().printSetup();
-    application().printHierarchy();
+   // application().printSetup();
+   // application().printHierarchy();
   }
 };
 
@@ -143,13 +147,55 @@ public:
 
 
 
-
 int main(int argc,  char ** argv){
+  QApplication qapp(argc,argv);
+  DoubleRangeWidget rangeWidget;
+  DoubleRangeWidget rangeWidget2;
+  DoubleSliderWidget slider;
+  StringWidget w1;
+  StringWidget w2;
+  BoolWidget b1;
+  BoolWidget b2;
 
-    // instanciate sample
-    MySample sample;
-    // create sample application
-    SampleApplication app(argc,argv, sample);
-    // run sample application
-    return app.run();
+  b1.show();
+  b2.show();
+  
+  slider.setOrientation(Qt::Horizontal);
+  
+  w1.show();
+  w2.show();
+  rangeWidget2.show();
+  rangeWidget.show();
+  slider.show();
+  double theValue=0;
+
+
+  ReferenceValue<double> val(theValue);
+  
+  val.addObjectObserver(new DelegateObjectObserver<std::function<void(Observable*)> >([&val](Observable* obs){
+    cout << val.get<double>()<<endl;
+  }));
+
+  Binding::create(&rangeWidget,&val);
+  Binding::create(&rangeWidget2,&rangeWidget);
+  Binding::create(&rangeWidget,&rangeWidget2);
+  Binding::create(&rangeWidget,&slider);
+  Binding::create(&slider,&rangeWidget);
+  Binding::create(&w1,&w2);
+  Binding::create(&w2,&w1);
+  
+  Binding::create(&b1,&b2);
+  Binding::create(&b2,&b1);
+
+
+  return qapp.exec();
+  
+
+  return 0;
+  // instanciate sample
+  MySample sample;
+  // create sample application
+  SampleApplication app(argc,argv, sample);
+  // run sample application
+  return app.run();
   }

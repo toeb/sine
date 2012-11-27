@@ -2,6 +2,37 @@
 #include <QPainter>
 using namespace nspace;
 
+class Creator{
+public:
+  virtual bool match(Object * obj)=0;
+  virtual QWidget * create()=0;
+};
+
+template<typename T, typename TWidget>
+class TCreator:public Creator{
+public:
+  bool match(Object * obj){
+
+  }
+  QWidget * create(){
+    return new TWidget();
+  }
+
+};
+
+
+class ControlFactory2{
+  TYPED_OBJECT(ControlFactory2);
+  PROPERTYSET(Creator*, Creators,{},{});
+
+
+
+  Set<Creator*> Creators(Object * object){
+    
+  }
+
+};
+
 CustomItemDelegate::CustomItemDelegate(QObject * object):QStyledItemDelegate(object){
 
 }
@@ -23,7 +54,7 @@ QWidget * CustomItemDelegate::createEditor(QWidget * parent, const QStyleOptionV
   return QStyledItemDelegate::createEditor(parent,option,index);
 }
 bool CustomItemDelegate::editorEvent(QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index){
-  debugInfo("editorEvent");
+  //debugInfo("editorEvent");
 
   return false;
 }

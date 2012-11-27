@@ -3,6 +3,9 @@
 #include <math/core.h>
 #include <core/Node.h>
 #include <core/ValueLookup.h>
+#include <core.logging.h>
+#include <core/binding/Binding.h>
+#include <core/binding/ValueConverter.h>
 using namespace nspace;
 using namespace std;
 
@@ -118,12 +121,26 @@ class AutoConnector{
 public:
   AutoConnector(Body & body):p_wcs(p_ocs,body.orientation,body.position){}
   TypedValue<Vector3D> p_ocs;
-  VectorTransform p_wcs;
-
-  
+  VectorTransform p_wcs;  
 };
+
+
+class TestClass : public virtual PropertyChangingObject{
+  REFLECTABLE_OBJECT(TestClass);
+  PROPERTY(nspace::Vector3D,Vec){cout << "value changed from "<<oldvalue <<" "<<newvalue<<endl;}
+  PROPERTY(int, IntegerValue){cout << "value changed from "<<oldvalue <<" "<<newvalue<<endl;}
+  PROPERTY(int, OtherInt){cout << "value changed from "<<oldvalue <<" "<<newvalue<<endl;}
+};
+
+
+
 int main(int argc, const char ** argv){
+  TestClass c1,c2;
   
+  auto binding1 = Binding::create(&c1,"IntegerValue", &c2, "OtherInt");
+  auto binding2 = Binding::create(&c2,"OtherInt", &c1, "IntegerValue");
+  
+  c1.setIntegerValue(3);
 
   TypedObservableValue<int> a =0;
   ValueHistory<int>  history(a);

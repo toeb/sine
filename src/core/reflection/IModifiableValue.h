@@ -12,4 +12,6 @@ public:
   bool setByPointer(const void * value);
   template<typename T> bool set(const T & value){ return setByPointer(&value); }
 };
+
+
 }

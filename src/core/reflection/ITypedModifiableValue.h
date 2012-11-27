@@ -6,6 +6,10 @@ namespace nspace{
   
 template<typename T>
 class ITypedModifiableValue :  public virtual IModifiableValue{
+public:
+  ITypedModifiableValue(){
+    setValueType(typeof(T));
+  }
 protected:
   virtual bool storeTypedValue(const T  & value)=0;
   virtual bool retrieveTypeValue(T & value)const=0;

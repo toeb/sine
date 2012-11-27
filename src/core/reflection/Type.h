@@ -34,7 +34,7 @@ public:
   friend std::ostream & operator <<(std::ostream & out, const Type & type);
   friend std::ostream & operator <<(std::ostream & out, const Type * type);
   void * createInstance()const;
-  BASIC_PROPERTY(std::function<void * ()> , CreateInstanceFunction, private,,,); 
+  BASIC_PROPERTY(std::function<void * ()> , CreateInstanceFunction, protected,,,); 
   BASIC_PROPERTY(TypeId, Id,public,,,);
   BASIC_PROPERTY(std::string,Name,public,,,);
   PROPERTYSET(const MemberInfo *, Members,,);
@@ -109,6 +109,15 @@ class /*nspace::*/TypeInfo<TYPE>: public /*nspace::*/Type{\
   }\
 };
 
+#define META_DEFAULTCONSTRUCTOR(TYPE)\
+template<>\
+class /*nspace::*/TypeInfo<TYPE>: public /*nspace::*/Type{\
+  TEMPLATEDSINGLETON(TypeInfo, <TYPE>){\
+    setCreateInstanceFunction([](){return new TYPE;});\
+    setName(#TYPE);\
+  }\
+};
+
 
 template<typename T>
 class TypeInfo<Set<T>>: public Type{
@@ -118,19 +127,20 @@ class TypeInfo<Set<T>>: public Type{
 };
 
 
-META(int);
-META(double);
-META(bool);
-META(float);
-META(char);
-META(short);
-META(unsigned int);
-META(long);
-META(long long);
-META(unsigned char);
+META_DEFAULTCONSTRUCTOR(int);
+META_DEFAULTCONSTRUCTOR(double);
+META_DEFAULTCONSTRUCTOR(bool);
+META_DEFAULTCONSTRUCTOR(float);
+META_DEFAULTCONSTRUCTOR(char);
+META_DEFAULTCONSTRUCTOR(short);
+META_DEFAULTCONSTRUCTOR(unsigned int);
+META_DEFAULTCONSTRUCTOR(long);
+META_DEFAULTCONSTRUCTOR(long long);
+META_DEFAULTCONSTRUCTOR(unsigned char);
 
 
-META(std::string);
+META_DEFAULTCONSTRUCTOR(std::string);
+
 META(std::ostream);
 META(std::istream);
 META(std::iostream);

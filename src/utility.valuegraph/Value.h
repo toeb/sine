@@ -1,7 +1,7 @@
 #pragma once
 
 #include <config.h>
-
+#include <core/reflection/IReadableValue.h>
 namespace nspace{ 
 
 /**
@@ -12,7 +12,7 @@ typedef long ValueVersionId;
 /**
  * \brief Value class. 
  */
-class Value{
+class Value : public Object {
 private:
   ///< The version
   ValueVersionId _version;

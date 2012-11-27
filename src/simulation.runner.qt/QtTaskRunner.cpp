@@ -46,11 +46,11 @@ void QtTaskRunner::disable(){
   _taskTimer->stop();
 }
 void QtTaskRunner::install(PluginContainer & container){
-  logWarning("not implemented");
+  //logWarning("not implemented");
 }
 
 void QtTaskRunner::uninstall(PluginContainer & container){
-  logError("Function Not implemented");
+  //logError("Function Not implemented");
 }
 
 

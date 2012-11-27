@@ -89,7 +89,7 @@ void Type::itemRemoved(const MemberInfo * , Members){
 
 void Type::onPredecessorAdded(Type* type){
   Members()|=type->Members();
-  std::cout << this->getName() << "  is subclass of "<<type->getName()<<std::endl;
+  //std::cout << this->getName() << "  is subclass of "<<type->getName()<<std::endl;
 }
 void Type::onPredecessorRemoved(Type* type){  
   Members()/=type->Members();

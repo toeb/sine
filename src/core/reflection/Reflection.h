@@ -68,6 +68,8 @@
 
 
 // shorthand for a typed object which is also reflectable
+// TYPED_OBJECT enables that metadata about the class can be generated (getType method for instances of TYPE)
+// Reflectable creates access methods to the objects members
 #define REFLECTABLE_OBJECT(TYPE) TYPED_OBJECT(TYPE); REFLECTABLE(TYPE);
 
 

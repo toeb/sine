@@ -8,7 +8,7 @@ bool  ITaskRunner::addTask(ITask * task){
     return false;
   }
   if(task==this){
-    logError("Attempt was made to add this task runner as its own subtask");
+    logWarning("Attempt was made to add this task runner as its own subtask");
     return false;
   }
   debugInfo("Adding task '"<<*task<<"' to task runner");
