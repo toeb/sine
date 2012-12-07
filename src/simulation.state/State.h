@@ -1,4 +1,5 @@
 #pragma once
+#include <config.h>
 #include <ostream>
 #include <math/core.h>
 
@@ -10,8 +11,8 @@ namespace nspace{
   // this class manages the vectors for each derivative by putting them into one large matrix
   // state is a recursive datatype allowing substates which have the same data as the parent state
   // TODO: error checking needs to be done so that no unintended behaviour occurs when the state is empty
-  class State{
-    State * _parent;
+  class SystemState{
+    SystemState * _parent;
     StateMatrix *_stateMatrix;
     uint _offset;
     // number of state vars = dimension of state
@@ -20,13 +21,13 @@ namespace nspace{
     uint _derivatives;
 
     // private constructor
-    State(uint offset, uint dimension, uint derivatives, State & parent);
+    SystemState(uint offset, uint dimension, uint derivatives, SystemState & parent);
   public:
     // public constructor initializes state to an empty state
     // clients need to resize it to their needs
-    State();
+    SystemState();
 
-    ~State(){
+    ~SystemState(){
       //if(!_parent)delete &_stateMatrix;
     }
 
@@ -117,12 +118,12 @@ namespace nspace{
     }
 
     // returns a state range 
-    State * range(uint offset, uint dim ,uint derivatives){
-      State * result = new State(offset,dim,derivatives,*this);
+    SystemState * range(uint offset, uint dim ,uint derivatives){
+      SystemState * result = new SystemState(offset,dim,derivatives,*this);
       return result;
     }
+
+    friend std::ostream & operator << (std::ostream & o, const SystemState & state);
   };
 
-  // prints the state
-  std::ostream & operator << (std::ostream & o, const nspace::State & state);
 }

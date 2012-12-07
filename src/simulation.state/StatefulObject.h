@@ -6,11 +6,11 @@
 namespace nspace{
   // stateful object allows an object access to state.  the objects must implement notifyStateChanged,notifyStateNeeded
   class StatefulObject : public virtual ISimulationObject{
-    TYPED_OBJECT(StatefulObject);
+    TYPED_OBJECT(StatefulObject)
   private:
     uint _stateDimension;
     uint _stateDerivatives;
-    nspace::State * _state;
+    SystemState * _state;
   public:
     // is called when the state of the object was changed. clients can then 
     // set their objects internal data to the data specified by state()
@@ -21,7 +21,7 @@ namespace nspace{
     // is called when the state * is changed and state() returns a new isntance
     virtual void onStateAssigned(){}    
     // access to the state
-    inline State & state(){return *_state;}
+    inline SystemState & state(){return *_state;}
   public:
     // returns true if this object has  a state assigned and thus state() can return a correct reference
     bool hasAssignedState()const;
@@ -32,7 +32,7 @@ namespace nspace{
     // default constructor
     StatefulObject();
     // assign this object a state var
-    void assignState(State * state);
+    void assignState(SystemState * state);
     // resize this state
     void resizeState(uint dimension, uint derivatives);
     // returns the number of derivatives (including 0th derivative)

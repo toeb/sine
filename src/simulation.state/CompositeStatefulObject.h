@@ -17,7 +17,7 @@ namespace nspace{
         }
         uint currentDimension = obj->dimension();
         uint currentDerivatives = obj->derivatives();        
-        State * currentState = state().range(currentOffset,currentDimension,currentDerivatives);
+        SystemState * currentState = state().range(currentOffset,currentDimension,currentDerivatives);
         obj->assignState(currentState);
         currentOffset+=currentDimension;
       });

@@ -6,7 +6,7 @@ using namespace nspace;
   StatefulObject::StatefulObject(uint dimension, uint derivatives):_stateDimension(dimension),_stateDerivatives(derivatives),_state(0){}
   StatefulObject::StatefulObject():_stateDimension(0),_stateDerivatives(0),_state(0){}
 
-  void StatefulObject::assignState(State * state){
+  void StatefulObject::assignState(SystemState * state){
     _state = state;
     if(_state) _state->resize(dimension(),derivatives());
     onStateAssigned();

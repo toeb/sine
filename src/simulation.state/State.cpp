@@ -6,7 +6,7 @@ using namespace std;
 
 
 namespace nspace{
-std::ostream& operator<<(std::ostream & out, const State & state){
+std::ostream& operator<<(std::ostream & out, const SystemState & state){
   
   int width = 16;
   out << std::setw(20)<<"index\\derivative";
@@ -32,7 +32,7 @@ std::ostream& operator<<(std::ostream & out, const State & state){
 
 }
 
-State::State(uint offset, uint dimension, uint derivatives, State & parent):
+SystemState::SystemState(uint offset, uint dimension, uint derivatives, SystemState & parent):
   _parent(&parent),_stateMatrix(parent._stateMatrix),_offset(offset),_dimension(dimension),_derivatives(derivatives){ }
 
-State::State():_parent(0),_stateMatrix(0),_offset(0),_dimension(0),_derivatives(0){ }
+SystemState::SystemState():_parent(0),_stateMatrix(0),_offset(0),_dimension(0),_derivatives(0){ }
