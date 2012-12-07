@@ -52,18 +52,32 @@ namespace nspace{
 }
 #endif
 
-namespace nspace{
-  
+  namespace nspace{
 SERIALIZERS(Vector3D, 
   stream<<(*value)(0) <<" "<< (*value)(1)<<" " << (*value)(2),
   stream >> (*value)(0) >> (*value)(1) >> (*value)(2) 
   )
-SERIALIZERS(Vector2D, stream<<(*value)(0) <<" "<< (*value)(1), stream >> (*value)(0) >> (*value)(1) )
+SERIALIZERS(Vector2D, 
+  stream<<(*value)(0) <<" "<< (*value)(1), 
+  stream >> (*value)(0) >> (*value)(1) 
+)
+SERIALIZERS(Matrix3x3, 
+{
+  const Matrix3x3 & matrix = *value;
+  stream << "["<<matrix(0,0)<<", "<<matrix(0,1)<<", "<<matrix(0,2)<<"; "
+              << matrix(1,0)<<", "<<matrix(1,1)<<", "<<matrix(1,2)<<"; "
+              << matrix(2,0)<<", "<<matrix(2,1)<<", "<<matrix(2,2)<<"]";
+},
+{
+  Matrix3x3 & matrix = *value;
+  for(int i=0; i < 9; i++){
+    stream >> matrix(i);
+  }
+}
+);
+
   
   namespace math{
-
-
-
     namespace operators{
       inline Vector3D operator ^ (const Vector3D & a, const Vector3D & b){
         Vector3D result;

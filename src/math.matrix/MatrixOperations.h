@@ -71,6 +71,8 @@
 #include <math.matrix/operations/MatrixRowCount.h>
 #include <math.matrix/operations/MatrixElementAssignment.h>
 
+#include <math.matrix/operations/MatrixTypeSelector.h>
+
 
 namespace nspace{  
 
@@ -79,7 +81,7 @@ namespace nspace{
   namespace matrix{
 
     template<typename MatA, typename MatB, typename Elem>
-    inline bool matricesEqual(const MatA & a,const MatA & b,const Elem & eps){
+    inline bool matricesEqual(const MatA & a,const MatB & b,const Elem & eps){
       bool result=false;
       OperationMatrixEquals<MatA,MatB,Elem>::operation(result,a,b,eps);
       return result;
