@@ -22,7 +22,7 @@ namespace nspace{
   {
     REFLECTABLE_OBJECT(IntegratingSystem);
     PROPERTY(ITask*, Task);
-    PROPERTY(StatefulObject*, State);
+    PROPERTY(StatefulObject*, SystemState);
     PROPERTY(ISystemFunction*, SystemFunction);
     PROPERTY(Evaluator*, Evaluator);
     PROPERTY(SimulationTimeProvider *, TimeProvider);

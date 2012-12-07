@@ -12,7 +12,7 @@ IntegratingSystem::IntegratingSystem(SimulationTimeProvider * timeProvider):
   _TimeProvider(0),
   _Evaluator(0),
   _Task(0),
-  _State(0),
+  _SystemState(0),
   _SystemFunction(0),
   _EvaluationCount(0)
 {
@@ -74,11 +74,11 @@ void IntegratingSystem::propertyChanging(ITask *, Task){
 }
 void IntegratingSystem::propertyChanging(ISystemFunction *, SystemFunction){
   logInfo("System Function Changing");
-  setupEvaluator(getState(),newvalue);
+  setupEvaluator(getSystemState(),newvalue);
   Components()/=oldvalue;
   Components()|=newvalue;
 }
-void IntegratingSystem::propertyChanging(StatefulObject *, State){
+void IntegratingSystem::propertyChanging(StatefulObject *, SystemState){
   logInfo("Stateful Object Changing");
   setupEvaluator(newvalue,getSystemFunction());
   Components()/=oldvalue;

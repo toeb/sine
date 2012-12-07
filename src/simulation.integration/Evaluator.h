@@ -11,7 +11,7 @@ namespace nspace{
   // which allows an Integrator to integrate its state
   class Evaluator : public virtual ISimulationObject{
   private:
-    State _state;
+    SystemState _state;
     StateMatrix _x;
     StateMatrix _xDot;
     StatefulObject & _statefulObject;
