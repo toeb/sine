@@ -45,7 +45,7 @@ namespace nspace{
       snapshot->_simulationTime = t_sim;
       snapshot->_systemTime = t_sys;
       if(!statefulObject.hasAssignedState()){
-        State state;
+        SystemState state;
         statefulObject.assignState(&state);
         statefulObject.notifyStateNeeded();
         statefulObject.state().getState(snapshot->_state);
