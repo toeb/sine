@@ -25,6 +25,7 @@
 #include <config.h>
 #include <math.matrix/Matrix.h>
 
+#include <math.matrix/MatrixOperations.h>
 namespace nspace
 {
 	/** Vector ist die Oberklasse aller Vektorklassen
@@ -34,6 +35,8 @@ namespace nspace
 	class Vector : public Matrix<T >
 	{
 	public:    
+    
+
     virtual T & operator()(int i)=0;
     virtual const T & operator()(int i)const=0;
     virtual int size()const=0;

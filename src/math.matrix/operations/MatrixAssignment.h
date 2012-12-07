@@ -1,18 +1,24 @@
 #pragma once
 #include <config.h>
 #include <math.matrix/operations/MatrixResize.h>
+#include <math.matrix/operations/MatrixRowCount.h>
+#include <math.matrix/operations/MatrixColumnCount.h>
 namespace nspace{
   template<typename MatA, typename MatB>
   class MatrixAssign{
   public:
     static inline bool operation(MatA &  result, const MatB & val){
-        if(!MatrixResize<MatA>::operation(result,val.rows(),val.cols(),false))return false;
-      /*if(!result.resize(val.rows(), val.cols())){
-        std::cout << "MatrixAssign: could not resize result matrix "<<std::endl;
-        return false;
-      }*/
-      for(int i=0; i < result.rows(); i++){
-        for(int j=0; j < result.cols(); j++){
+      
+      uint rowCount , columnCount;
+      if(!OperationRowCount<MatB>::operation(rowCount,val))return false;
+      if(!OperationColumnCount<MatB>::operation(columnCount,val))return false;
+
+      
+      if(!MatrixResize<MatA>::operation(result,rowCount,columnCount,false))return false;
+      
+
+      for(int i=0; i < rowCount; i++){
+        for(int j=0; j < columnCount; j++){
           result(i,j)=val(i,j);
         }
       }

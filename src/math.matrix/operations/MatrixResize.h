@@ -14,11 +14,13 @@ static inline bool operation(TargetType  & target, uint rows, uint cols, bool se
 };
 
 
+
 template<>
 class MatrixResize<double>{
 public:
 static inline bool operation(double  & target, uint rows, uint cols, bool setToZero){
   if(rows!=1&& cols!=1)return false;
+  if(setToZero)target=0.0;
   return true;
 }
 };
@@ -27,6 +29,7 @@ class MatrixResize<float>{
 public:
 static inline bool operation(float  & target, uint rows, uint cols, bool setToZero){
   if(rows!=1&& cols!=1)return false;
+  if(setToZero)target=0.0f;
   return true;
 }
 };

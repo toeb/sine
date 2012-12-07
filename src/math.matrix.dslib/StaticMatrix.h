@@ -120,6 +120,7 @@ public:
     return matrix;    
   }
   //convert this matrix to any other type
+  /*
   template<typename MatType>
 inline operator MatType()const{
   MatType other;
@@ -130,7 +131,7 @@ inline operator MatType()const{
     }
   }
   return other;
-}
+}*/
   
   inline T & w(){return _data[0];}
   inline const T & w()const{return _data[0];} 

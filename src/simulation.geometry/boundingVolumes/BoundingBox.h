@@ -22,6 +22,18 @@ public:
   const Vector3D & maxValue()const{
     return _max;
   }
+    
+  template<typename T>
+  inline void extendBy(const T & vector){
+     if(vector(0)<_min(0)) _min(0) = vector(0);
+     if(vector(0)>_max(0)) _max(0) = vector(0);
+     
+     if(vector(1)<_min(1)) _min(1) = vector(1);
+     if(vector(1)>_max(1)) _max(1) = vector(1);
+     
+     if(vector(2)<_min(2)) _min(2) = vector(2);
+     if(vector(2)>_max(2)) _max(2) = vector(2);
+  }
 
 
   BoundingBox():BoundingVolume(CoordinateSystem::identity()){

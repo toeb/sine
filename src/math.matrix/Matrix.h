@@ -24,6 +24,7 @@
 #pragma once
 #include <config.h>
 #include <iostream>
+#include <math.matrix/MatrixOperations.h>
 
 namespace nspace
 {
@@ -35,6 +36,15 @@ namespace nspace
     typedef IndexType Index;
     typedef SizeType Size;
   public:
+    Matrix(){}
+
+    template<typename MatrixType>
+    operator MatrixType()const{
+      MatrixType result;
+      MatrixAssign<MatrixType,Matrix<T>>::operation(result,*this);
+      return result;
+    }
+
     virtual void toStream(std::ostream & s)const{
       for(Index i=0; i < rows(); i++){
         for(Index j=0; j < cols(); j++){
@@ -49,6 +59,10 @@ namespace nspace
       if(r==rows()&&c==cols())return true;
       return false;
     };
+
+
+
+    
 
 
 
