@@ -246,7 +246,7 @@ public:\
 // creates a public method with the signature void <NAME>() and registers it at its typeinfo class
 // only TYPED_OBJECT(<ClassName>) needs to be declared in the class were action is declared because ACTION needs
 // access to Local ClassType function
-#define ACTION(NAME) \
+#define ACTION(NAME)\
 private:\
   typedef CurrentClassType NAME##ParentClassType;\
   class MEMBERCLASSNAME(NAME) : public virtual nspace::MethodInfo{\
@@ -267,3 +267,5 @@ private:\
   });\
 public:\
   void NAME()
+
+

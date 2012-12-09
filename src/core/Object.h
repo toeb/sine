@@ -18,7 +18,7 @@ TYPED_OBJECT(Object);
 private:
 public:  
   Object();
-  ~Object();
+  virtual ~Object();
   // tostring method which converts this object to a string representation (should be overridden by subclasses)
   virtual void toString(std::ostream & out)const;
   

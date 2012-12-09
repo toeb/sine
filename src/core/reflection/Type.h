@@ -34,8 +34,8 @@ public:
   friend std::ostream & operator <<(std::ostream & out, const Type & type);
   friend std::ostream & operator <<(std::ostream & out, const Type * type);
   void * createInstance()const;
-  BASIC_PROPERTY(std::function<void * ()> , CreateInstanceFunction, protected,,,); 
   BASIC_PROPERTY(TypeId, Id,public,,,);
+  BASIC_PROPERTY(std::function<void * ()> , CreateInstanceFunction, protected,,,);
   BASIC_PROPERTY(std::string,Name,public,,,);
   PROPERTYSET(const MemberInfo *, Members,,);
 public:

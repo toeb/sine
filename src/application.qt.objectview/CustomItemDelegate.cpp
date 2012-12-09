@@ -66,7 +66,7 @@ Object* CustomItemDelegate::objectFromIndex(const QModelIndex & index)const{
 }
 
 void CustomItemDelegate::setEditorData( QWidget * editor, const QModelIndex & index ) const{
-  debugInfo("set editor data");
+  //debugInfo("set editor data");
   auto object = objectFromIndex(index);
   auto dynamicWidget = dynamic_cast<DynamicWidget*>(editor);
   if(!dynamicWidget){

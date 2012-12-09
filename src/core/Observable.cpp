@@ -15,7 +15,7 @@ Observable::ObserverList & Observable::observers(){
 void Observable::raiseObjectChanged(){
   onChange();
   if(!hasObservers())return;
-  for(int i=0; i < observers().size(); i++){
+  for(uint i=0; i < observers().size(); i++){
     observers().at(i)->onChange(this);
   }
   /*

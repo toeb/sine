@@ -22,13 +22,13 @@ void PropertyAdapter::onBeforePropertyInfoChanged(){
 void PropertyAdapter::installObserver(){
     if(!getPropertyInfo())return;
     if(!getOwner())return;
-    bool result = getPropertyInfo()->addObserver(getOwner(),this);
+    /*bool result =*/ getPropertyInfo()->addObserver(getOwner(),this);
 
 }
 void PropertyAdapter::uninstallObserver(){
     if(!getPropertyInfo())return;
     if(!getOwner())return;
-    bool result = getPropertyInfo()->removeObserver(getOwner(),this);
+    /*bool result = */getPropertyInfo()->removeObserver(getOwner(),this);
 }
 
 void PropertyAdapter::setToDefault(){
