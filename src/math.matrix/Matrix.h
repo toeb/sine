@@ -29,13 +29,14 @@
 namespace nspace
 {
 
-
   template<typename T, typename IndexType=int, typename SizeType = int>
   class Matrix
   {
+  public:
     typedef IndexType Index;
     typedef SizeType Size;
-  public:
+    typedef T ElementType;
+    
     Matrix(){}
 
     template<typename MatrixType>
@@ -73,5 +74,22 @@ namespace nspace
     virtual inline Size size()const{
       return rows()*cols();
     }
+  };
+
+  //template<typename T, typename IndexType=int, typename SizeType = int>
+  template<typename T, typename IndexType, typename SizeType>
+  class MatrixCoefficient<Matrix<T,IndexType,SizeType>>{
+  public:
+    typedef T Type;
+  };
+  template<typename T, typename IndexType, typename SizeType>
+  class MatrixIndex<Matrix<T,IndexType,SizeType>>{
+  public:
+    typedef IndexType Type;
+  };
+  template<typename T, typename IndexType, typename SizeType>
+  class MatrixSize<Matrix<T,IndexType,SizeType>>{
+  public:
+    typedef SizeType Type;
   };
 }

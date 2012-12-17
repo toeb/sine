@@ -16,9 +16,10 @@ namespace nspace{
       
       if(!MatrixResize<MatA>::operation(result,rowCount,columnCount,false))return false;
       
+      
 
       for(int i=0; i < rowCount; i++){
-        for(int j=0; j < columnCount; j++){
+        for(int j=0; j < columnCount; j++){          
           result(i,j)=val(i,j);
         }
       }
