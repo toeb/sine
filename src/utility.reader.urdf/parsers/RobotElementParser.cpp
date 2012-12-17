@@ -10,7 +10,7 @@ using namespace nspace;
 using namespace std;
 
 
-RobotElementParser::RobotElementParser(IModelBuilder & builder):ModelBuilderHolder(builder),NamedElementParser("robot"){
+RobotElementParser::RobotElementParser(IModelBuilder & builder):NamedElementParser("robot"),ModelBuilderHolder(builder){
   _children.composite().add(new UrdfExtensionParser(builder));
   //order is important because joint parser needs the links to be present
   _children.composite().add(new LinkParser(builder));

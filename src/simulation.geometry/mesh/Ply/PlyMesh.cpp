@@ -95,14 +95,14 @@ void PlyMesh::createGeometry(){
   if (!plyFile) return;
   if (!ply_read_header(plyFile)) return ;
   
-  long vertexCount = ply_set_read_cb(plyFile, "vertex", "x", vertexX, this, 0);
+  //long vertexCount = ply_set_read_cb(plyFile, "vertex", "x", vertexX, this, 0);
   ply_set_read_cb(plyFile, "vertex", "y", vertexY, this, 0);
   ply_set_read_cb(plyFile, "vertex", "z", vertexZ, this, 0);
   ply_set_read_cb(plyFile, "vertex","nx",normalX, this, 0);
   ply_set_read_cb(plyFile, "vertex","ny",normalY, this, 0);
   ply_set_read_cb(plyFile, "vertex","nz",normalZ, this, 0);
 
-  long faceCount = ply_set_read_cb(plyFile, "face", "vertex_indices", faceIndex, this, 0);
+  //long faceCount = ply_set_read_cb(plyFile, "face", "vertex_indices", faceIndex, this, 0);
   
   if (!ply_read(plyFile)) return ;
   ply_close(plyFile);

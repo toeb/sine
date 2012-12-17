@@ -17,7 +17,6 @@ public:
   StaticMatrix(const Real * dataPtr);
   StaticMatrix(const T& w,const T& x,const T& y,const T& z);
   StaticMatrix();
-  ~StaticMatrix();
   
   StaticMatrix<T,ColumnCount,1> row(uint i)const;
   StaticMatrix<T,RowCount,1>col(uint j)const;
@@ -123,8 +122,6 @@ StaticMatrix<T,RowCount,ColumnCount> & StaticMatrix<T,RowCount,ColumnCount>::ope
 }
 template<typename T, int RowCount, int ColumnCount>
 StaticMatrix<T,RowCount,ColumnCount>::StaticMatrix(){}
-template<typename T, int RowCount, int ColumnCount>
-StaticMatrix<T,RowCount,ColumnCount>::~StaticMatrix(){}
 template<typename T, int RowCount, int ColumnCount>
 inline size_t StaticMatrix<T,RowCount,ColumnCount>::dataByteSize()const{
   return RowCount*ColumnCount*sizeof(T);

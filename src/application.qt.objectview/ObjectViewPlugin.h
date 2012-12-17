@@ -23,7 +23,7 @@ namespace nspace{
   public slots:
     void objectDoubleClicked(QListWidgetItem * object);
   public:
-    ObjectViewPlugin():_ui(0),_SearchString(""){
+    ObjectViewPlugin():_SearchString(""),_ui(0){
       setName("ObjectViewPlugin");
     }
     void onPropertyChanged(const std::string & name);

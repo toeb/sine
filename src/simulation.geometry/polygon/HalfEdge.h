@@ -6,7 +6,7 @@ struct Edge;
 struct Face;
 struct Vertex;
 struct HalfEdge :public Element{
-  HalfEdge():next(0),edge(0),face(0),previous(0){}
+  HalfEdge():next(0),previous(0),edge(0),face(0){}
   HalfEdge* next;
   HalfEdge * previous;
   Edge * edge;

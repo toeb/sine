@@ -1,37 +1,37 @@
 #pragma once
 #include <simulation.kinematics/CoordinateSystem.h>
 namespace nspace{
-  
+
 enum Classification{
-  UNCLASSIFIED=0,
-  INSIDE=1,
-  OUTSIDE=2,
-  BOTH=3
+    UNCLASSIFIED=0,
+    INSIDE=1,
+    OUTSIDE=2,
+    BOTH=3
 };
 
 class BoundingVolume{
 private:
-  bool _colliding;
-  bool _updated;
-  const CoordinateSystem & _coordinateSystem;
+    bool _colliding;
+    bool _updated;
+    const CoordinateSystem & _coordinateSystem;
 public:
-  BoundingVolume(const CoordinateSystem & parentObject);
-
-  bool isColliding()const;
-  void setColliding(bool val);
-  void update();
-  void reset();
-  bool isUpToDate()const;
-  const CoordinateSystem & parentCoordinates()const;
+    BoundingVolume(const CoordinateSystem & parentObject);
+    virtual ~BoundingVolume();
+    bool isColliding()const;
+    void setColliding(bool val);
+    void update();
+    void reset();
+    bool isUpToDate()const;
+    const CoordinateSystem & parentCoordinates()const;
 protected:
-  virtual void updateBoundingVolume()=0;
+    virtual void updateBoundingVolume()=0;
 };
 
 
 class BoundingVolumeFactory{
 public:
 
-  /**
+    /**
    * \brief Creates a BoundingVolume that includes min and max and all points in between.
    *
    * \param min          The minimum point.
@@ -40,7 +40,7 @@ public:
    *
    * \return null if it fails, else.
    */
-  virtual BoundingVolume * create(const Vector3D & min, const Vector3D & max,const CoordinateSystem & parentObject)=0;
+    virtual BoundingVolume * create(const Vector3D & min, const Vector3D & max,const CoordinateSystem & parentObject)=0;
 };
 
 }

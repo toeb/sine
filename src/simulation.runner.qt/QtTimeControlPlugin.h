@@ -16,7 +16,7 @@ namespace nspace{
 
     QtTimeControl * _timeControl;
   public:
-    QtTimeControlPlugin():_timeControl(0),_TimeController(0){
+    QtTimeControlPlugin():_TimeController(0),_timeControl(0){
       setName("Time Control");
     }
 

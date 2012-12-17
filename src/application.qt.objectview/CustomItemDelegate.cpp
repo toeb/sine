@@ -102,7 +102,7 @@ void CustomItemDelegate::saveAndCloseEditor(){
 
 void CustomItemDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const{
   //debugInfo(option.rect.size().width() << " x " << option.rect.size().height()<<" @ "<< option.rect.left() <<", "<<option.rect.top());
-  QRect rect =  option.rect;
+  //QRect rect =  option.rect;
   editor->setGeometry(option.rect);
   editor->update();
  // debugInfo(editor->geometry().width()<<" vs "<<option.rect.size().width());

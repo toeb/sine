@@ -301,8 +301,8 @@ void TextileModel::createFlexors(TextileNode * node){
 }
 
 void TextileModel::createNodeMesh(const Vector3D & p, const Matrix3x3 & orientation){
-  int n = _rows*_columns;
-  Real particleMass=_mass/n;
+  //int n = _rows*_columns;
+  //Real particleMass=_mass/n;
 
 
   Real spacingWidth = _width/_columns;

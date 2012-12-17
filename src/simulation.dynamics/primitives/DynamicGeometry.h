@@ -14,8 +14,8 @@ public:
   KinematicBody & kinematics(){return _body.kinematics();}
   CoordinateSystem & coordinates(){return _body.kinematics();}
   DynamicGeometry(T & geometry, Real mass, const Matrix3x3 & inertiaTensor):
-    _body(mass,inertiaTensor),
-    _geometry(geometry)
+      _geometry(geometry),
+    _body(mass,inertiaTensor)
   {
     Geometry & geom = static_cast<Geometry&>(geometry);
     geom.coordinates().position << kinematics().position;

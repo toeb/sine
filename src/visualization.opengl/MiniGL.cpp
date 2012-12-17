@@ -488,6 +488,7 @@ float MiniGL::hat(Real x){
   if(x > 2)return 0;
   if(x < 1)return x;
   if(x >= 1)return 2-x;
+  return 0;
 }
 
 /** Wird aufgerufen, wenn das Programm beendet wird und das Glut-Fenster geschlossen werden soll.

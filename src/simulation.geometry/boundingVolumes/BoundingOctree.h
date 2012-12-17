@@ -22,9 +22,11 @@ enum OctreeNodeId{
 
 
 class Octree : public ISimulationObject{
-  TYPED_OBJECT(Octree);
+  TYPED_OBJECT(Octree)
 private:
   Geometry & _geometry;
+  ///< The bounding volume factory is same for all nodes of an octree
+  BoundingVolumeFactory & _boundingVolumeFactory;
   ///< The id of the node
   const OctreeNodeId _id;
   ///< The depth of the tree from this node ( 0 => leaf leaf !=> 0)
@@ -37,8 +39,6 @@ private:
   BoundingBox _aabb;
   ///< The bounding volume used for collision and classification
   BoundingVolume * _boundingVolume;
-  ///< The bounding volume factory is same for all nodes of an octree
-  BoundingVolumeFactory & _boundingVolumeFactory;
   ///< The children
   Octree ** _children;
 

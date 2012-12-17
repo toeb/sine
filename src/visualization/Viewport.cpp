@@ -7,7 +7,7 @@ using namespace nspace;
 Real Viewport::aspectRatio()const {
   return (Real)_Width / (Real)_Height;
 }
-Viewport::Viewport():_Width(1),_Height(1),_ViewportRenderer(0){
+Viewport::Viewport():_ViewportRenderer(0),_Width(1),_Height(1){
   setName("Viewport");
 }
 

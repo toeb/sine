@@ -20,7 +20,7 @@ public:
   }
 protected:
   virtual bool parseNamedElement(XMLElement * node){
-    bool result = _childParser.parse(node);
+    _childParser.parse(node);
     return true;
   }
 };

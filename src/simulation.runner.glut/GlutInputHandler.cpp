@@ -89,6 +89,7 @@ case GLUT_KEY_INSERT        : return      KEY_INSERT      ;
 case GLUT_KEY_NUM_LOCK      : return      KEY_NUM_LOCK    ;
 case GLUT_KEY_BEGIN         : return      KEY_BEGIN       ;
 case GLUT_KEY_DELETE        : return      KEY_DELETE      ;
+    default: return KEY_UNKNOWN;
   }
 }
 void modifierDown(){

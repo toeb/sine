@@ -2,7 +2,7 @@
 
 using namespace nspace;
 
-PropertyViewPlugin::PropertyViewPlugin():_ObjectPropertyView(0),_StartVisible(false),_Object(0){
+PropertyViewPlugin::PropertyViewPlugin():_Object(0),_StartVisible(false),_ObjectPropertyView(0){
 
 }
 void PropertyViewPlugin::propertyChanging(ObjectPropertyView*, ObjectPropertyView){

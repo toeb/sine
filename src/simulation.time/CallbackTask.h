@@ -5,8 +5,8 @@ namespace nspace{
   class CallbackTask : public SimulationTask{
   private:
     const ITimeProvider & _provider;
-    Time _callbackTime;
     bool _executed;
+    Time _callbackTime;
   public:
     CallbackTask(Time callbackTime, const ITimeProvider & timeProvider):
         _provider(timeProvider),

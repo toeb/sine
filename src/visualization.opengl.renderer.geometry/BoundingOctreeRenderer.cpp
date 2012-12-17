@@ -19,7 +19,7 @@ void OctreeRenderer::render(){
     
     Vector3D center;
     octree->getCenter(center);
-    const BoundingBox & aabb =octree->getBoundingBox();
+    //const BoundingBox & aabb =octree->getBoundingBox();
     float color [4];
     const float * baseColor = MiniGL::cyan;
     BoundingVolume * volume = &(octree->getBoundingVolume());

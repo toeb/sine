@@ -41,7 +41,7 @@ public:
     Time t_app= applicationTime();
     //Time dt_app = t_app - _lastTargetAdvance;
     _lastTargetAdvance = t_app;
-    Time dt = t-_t_target;
+    //Time dt = t-_t_target;
     _averageTargetSpeed.addSample(t);
     _t_target = t;
 

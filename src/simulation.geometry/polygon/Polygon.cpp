@@ -136,7 +136,7 @@ void Polygon::projectOCS(const Axis & axis_ocs, Interval & interval)const{
 
 
 bool Polygon::isInsideOCS(const Vector3D & p_ocs)const{
-  bool inside = true;
+  //bool inside = true;
   for(int i=0; i < faces().size(); i++){
     Face * f = face(i);
     Vector3D f_c ;

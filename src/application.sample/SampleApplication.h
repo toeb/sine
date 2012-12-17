@@ -32,12 +32,12 @@ public:
   PROPERTY(GlViewport * ,Viewport){cancel = true;}
   PROPERTY(RenderSet * ,RenderSet){cancel = true;}
   PROPERTY(QtTaskRunner * ,QtTaskRunner){cancel = true;}
-  PROPERTY(GridRenderer * ,Grid){cancel = true;}
   PROPERTY(QtTimeControlPlugin * ,QtTimeControlPlugin){cancel = true;}
   PROPERTY(DefaultLightSetup * ,DefaultLightSetup){cancel = true;}
   PROPERTY(SimulationTimeController * ,SimulationTimeController){cancel = true;}
   PROPERTY(Simulation * ,Simulation){cancel = true;}
   PROPERTY(StepIntegrator * ,Integrator){cancel = true;}
+  PROPERTY(GridRenderer * ,Grid){cancel = true;}
 
 
 
@@ -49,7 +49,8 @@ public:
   int run();
   void printSetup();
   void printHierarchy();  
-private:  Sample & _sample;
+private:
+  Sample & _sample;
 
 
 

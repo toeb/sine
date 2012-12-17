@@ -55,7 +55,7 @@ void PropertyTreeItem::doExpand(){
 
   getPropertyInfo()->addObserver(getPropertyOwner(), this);
 
-  Object * ptr =  getPropertyInfo()->asObjectPointer(getPropertyOwner());
+  //Object * ptr =  getPropertyInfo()->asObjectPointer(getPropertyOwner());
   
   onChange(0);
   /*

@@ -4,7 +4,10 @@
 using namespace std;
 using namespace nspace;
 
-QtTimeControl::QtTimeControl(QWidget * parent):_TimeController(0),PluginWindow(parent){
+QtTimeControl::QtTimeControl(QWidget * parent):
+    PluginWindow(parent),
+    _TimeController(0)
+{
   _ui = new Ui_TimeControl();
   _ui->setupUi(this);
   _refreshTimer = new QTimer();

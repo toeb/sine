@@ -7,13 +7,13 @@
 namespace nspace{
 
 struct Face: public Element{
-  Face():first(0),valid(false){}
-  bool valid;
-  Vector3D n_ocs;
-  int vertexCount;
-  HalfEdge * first;
-  void getCenter(Vector3D & c)const;
-  void getVertices(std::vector<Vertex *> & vertices)const;
+    Vector3D n_ocs;
+    int vertexCount;
+    HalfEdge * first;
+    bool valid;
+    Face():first(0),valid(false){}
+    void getCenter(Vector3D & c)const;
+    void getVertices(std::vector<Vertex *> & vertices)const;
 };
 
 }

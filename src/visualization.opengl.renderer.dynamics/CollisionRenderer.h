@@ -10,33 +10,33 @@
 namespace nspace{
 class CollidableRenderer : public virtual Renderer{
 private:
-  Collidable & _collidable;
+    Collidable & _collidable;
 public:
-  CollidableRenderer(Collidable & collidable):_collidable(collidable){
+    CollidableRenderer(Collidable & collidable):_collidable(collidable){
 
-  }
-  void render();
+    }
+    void render();
 };
 struct RenderContact : public Contact{
-  Real startTime;
-  Real timeAlive;
+    Real startTime;
+    Real timeAlive;
 };
 class CollisionRenderer : public virtual Renderer{
 private:
-CollisionDetector & _detector;
-std::vector<RenderContact* > collisions;
-Real _timeout;
-bool _render;
-bool _trace;
+    std::vector<RenderContact* > collisions;
+    CollisionDetector & _detector;
+    Real _timeout;
+    bool _trace;
+    bool _render;
 public:
-  
-    bool & renderCollisions(){return _render;}
-  bool & renderCollisionTrace(){return _trace;}
-  Real & timeout(){return _timeout;}
-  CollisionRenderer(CollisionDetector & detector):_detector(detector),_timeout(2),_trace(false),_render(true){
 
-  }
-  void render();
-  void afterStep(Real t, Real h);
+    bool & renderCollisions(){return _render;}
+    bool & renderCollisionTrace(){return _trace;}
+    Real & timeout(){return _timeout;}
+    CollisionRenderer(CollisionDetector & detector):_detector(detector),_timeout(2),_trace(false),_render(true){
+
+    }
+    void render();
+    void afterStep(Real t, Real h);
 };
 }

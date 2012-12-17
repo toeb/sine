@@ -6,7 +6,7 @@ namespace nspace{
 
 class ChildLinkParser : public NamedChildParser, public ModelBuilderHolder{
 public:
-  ChildLinkParser(IModelBuilder & builder):node(0),ModelBuilderHolder(builder), NamedChildParser("child"){
+  ChildLinkParser(IModelBuilder & builder):NamedChildParser("child"),ModelBuilderHolder(builder), node(0){
 
   }
   std::string name;

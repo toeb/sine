@@ -16,7 +16,7 @@ ObjLoader * ObjLoader::_instance = 0;
 bool ObjLoader::load(IMeshBuilder & builder, istream & instream){
   builder.begin();
   string line;
-  char delimiter;
+  //char delimiter;
   bool groupStarted = false;
   while(getline(instream,line)){
     stringstream lineStream(line);

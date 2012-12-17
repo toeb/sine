@@ -34,7 +34,7 @@ namespace nspace{
     }
     void snapshotAt(Time t_sim){
       
-      Time timeout = t_sim-_simulationTime.time();
+      //Time timeout = t_sim-_simulationTime.time();
       std::function<void (Time)> f = [this](Time timePassed){
         snapshot();        
       };

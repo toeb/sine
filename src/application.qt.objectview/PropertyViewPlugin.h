@@ -11,7 +11,7 @@ namespace nspace{
     public virtual PropertyChangingObject,
     public virtual Log {
     Q_OBJECT;    
-    REFLECTABLE_OBJECT(PropertyViewPlugin);
+    REFLECTABLE_OBJECT(PropertyViewPlugin)
     SUBCLASSOF(Log);
     PROPERTY(Object*, Object);
     PROPERTY(bool, StartVisible){}

@@ -34,8 +34,8 @@ namespace nspace{
     bool initializeObject();
   private:
     void recordCallback(Time actualTime);
-
     void addSnapshot(StateSnapshot & snapshot);
+
     QStandardItemModel * _itemModel;
     Ui_SnapshotControl * _ui;
     PeriodicTask & _recordingTask;

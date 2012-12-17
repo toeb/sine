@@ -4,9 +4,10 @@
 using namespace std;
 using namespace nspace;
 
+
 BoxRenderer::BoxRenderer(const Hexahedron & box):
+    _textRenderer(0),
 _box(box),
-_textRenderer(0), 
 _p(box.coordinates().position()){
   boxExtent(0) = box.getXExtent();
   boxExtent(1) = box.getYExtent();

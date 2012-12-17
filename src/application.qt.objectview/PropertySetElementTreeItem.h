@@ -1,5 +1,4 @@
 #pragma once
-#pragma once;
 #include <application.qt.objectview/TreeItem.h>
 #include <core.logging/Log.h>
 #include <core.h>
@@ -8,7 +7,7 @@
 namespace nspace{
   
 class SetElementTreeItem :public TreeItem, public virtual PropertyChangingObject, public virtual Log{
-  REFLECTABLE_OBJECT(SetElementTreeItem);
+  REFLECTABLE_OBJECT(SetElementTreeItem)
   PROPERTY(PropertySetTreeItem*, ParentSetItem){}
   PROPERTY(uint, ItemIndex){}
 public:

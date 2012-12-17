@@ -21,6 +21,7 @@ DynamicConnector * ConnectorFactory::createWithLocalConnectionPoint(DynamicBody 
   if(particle){
     return new ParticleConnector(*particle);
   }
+  return 0;
 }
 
 DynamicConnector * ConnectorFactory::createWithWorldConnectionPoint(DynamicBody & body, const Vector3D & p_wcs){

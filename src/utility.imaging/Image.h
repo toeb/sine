@@ -10,9 +10,9 @@ namespace nspace{
 
   class Image : public virtual Object{
   private:
+      Pixel * _data;
     uint _width;
     uint _height;
-    Pixel * _data;
   public:  
     Image();
     Image(uint width, uint height);
@@ -40,14 +40,14 @@ namespace nspace{
   };  
   class PixelWindow{
   public:
+      Image & _image;
+      uint _width;
+      uint _height;
+      uint _x;
+      uint _y;
     PixelWindow(Image & img , uint x, uint y, uint width, uint height):_image(img),_width(width),_height(height),_x(x),_y(y){
 
     }
-    Image & _image;
-    uint _x;
-    uint _y;
-    uint _width;
-    uint _height;
 
     const Pixel & operator()(int i, int j)const{
       return _image(_x+i,_y+j);

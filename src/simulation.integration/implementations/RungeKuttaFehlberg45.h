@@ -38,20 +38,18 @@ namespace nspace{
  */
 class RungeKuttaFehlberg45 : public StepIntegrator{ 
 private:
-  StateMatrix k1,k2,k3,k4,k5,k6,y,z;
-  Real currentErrorEstimate;  
-  Real maximumStepSize;
-  Real minimumStepSize;
   ///< The tolerance
   Real tolerance;
   /// <summary> alpha in (0,1] default 0.9 (reduction of new step size) </summary>
   Real alpha;
-
   /// <summary> beta in (0,1) default 0.5 lower bound of new step size h_new >= beta*h_old </summary>
   Real beta;
-
   ///< gamma in (1,infinity) default 1.5 upper bound of new step size h_new <= gamma * h_old
   Real gamma;
+  Real maximumStepSize;
+  Real minimumStepSize;
+  Real currentErrorEstimate;
+  StateMatrix k1,k2,k3,k4,k5,k6,y,z;
 public:
 
   /**

@@ -90,19 +90,19 @@ Color Color::alpha(Real al){
 }
 
 Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha, const std::string & name):
-  _rgb(r/255.0, g/255.0, b/255.0), _alpha(alpha/255.0),_colorName(new std::string(name)){
+  _colorName(new std::string(name)),_rgb(r/255.0, g/255.0, b/255.0), _alpha(alpha/255.0){
 
 }
-Color::Color():_rgb(0,0,0),_alpha(0),_colorName(0) {
+Color::Color():_colorName(0),_rgb(0,0,0),_alpha(0){
 
 }
-Color::Color(const RGB & rgb, Real alpha):_rgb(rgb),_alpha(alpha),_colorName(0){
+Color::Color(const RGB & rgb, Real alpha):_colorName(0),_rgb(rgb),_alpha(alpha){
 
 }
-Color::Color(const Vector3D &  col):_alpha(1),_colorName(0),_rgb(col){
+Color::Color(const Vector3D &  col):_colorName(0),_rgb(col),_alpha(1){
   normalize();
 }
-Color::Color(Real r, Real g, Real b, Real alpha):_rgb(r,g,b),_alpha(alpha),_colorName(0){
+Color::Color(Real r, Real g, Real b, Real alpha):_colorName(0),_rgb(r,g,b),_alpha(alpha){
 
 }
 void Color::normalize(){

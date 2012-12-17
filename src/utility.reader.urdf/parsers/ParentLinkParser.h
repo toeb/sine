@@ -12,7 +12,7 @@ public:
   std::string name;
   ModelNode * node;
 
-  ParentLinkParser(IModelBuilder & builder):node(0),ModelBuilderHolder(builder), NamedChildParser("parent"){
+  ParentLinkParser(IModelBuilder & builder):NamedChildParser("parent"),ModelBuilderHolder(builder),node(0){
 
   }
 protected:

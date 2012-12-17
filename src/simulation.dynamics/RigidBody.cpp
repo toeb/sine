@@ -141,7 +141,7 @@ RigidBody* RigidBody::createCylinder(Real m, Real r, Real l){
     return;
   }
   const Vector3D & s_wcs = _kinematics.position();
-  const Matrix3x3 & E_3 = Matrix3x3::Identity();
+  //const Matrix3x3 & E_3 = Matrix3x3::Identity();
   
   Vector3D r_a_wcs = a_wcs - s_wcs;
   Vector3D r_b_wcs = b_wcs - s_wcs;

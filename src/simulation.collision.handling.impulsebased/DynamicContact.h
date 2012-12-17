@@ -13,12 +13,10 @@ enum ContactType {COLLISION, RESTING_CONTACT, DRIFTING_APART, UNKNOWN};
 class DynamicContact{
 	private:
 		Contact _contact;
-
-		DynamicConnector *_cA;
-		DynamicConnector *_cB;
-
 		DynamicCollidable & _collidableA;
 		DynamicCollidable & _collidableB;
+        DynamicConnector *_cA;
+        DynamicConnector *_cB;
     
 		Vector3D _accumulatedImpulse;
   public:
