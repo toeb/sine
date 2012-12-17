@@ -36,8 +36,8 @@ set(includeDirectories ${sourceDirectory})
 add_definitions(-DMATRIX_CLASSES=2)
 
 if (CMAKE_COMPILER_IS_GNUCC)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x  -std=gnu++0x -fopenmp ")
-  SET(CMAKE_CXX_RELEASE_FLAGS "${CMAKE_CXX_RELEASE_FLAGS} -O3 -msse2 -std=c++0x  -std=gnu++0x -fopenmp  ")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x  -std=gnu++0x -fopenmp -Wno-sign-compare ")
+  SET(CMAKE_CXX_RELEASE_FLAGS "${CMAKE_CXX_RELEASE_FLAGS} -O3 -msse2 -std=c++0x  -std=gnu++0x -fopenmp -Wno-sign-compare ")
 
 endif(CMAKE_COMPILER_IS_GNUCC)
 
