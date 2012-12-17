@@ -5,6 +5,35 @@ set(bindingSource
  ./binding/ValueConverter.cpp
 )
 
+set(operationSource
+./operation/Operation.h
+../include/core.operation.h
+)
+
+source_group("operation" FILES ${operationSource})
+
+set(collectionSource
+  ./collection/operations/OperationCollectionSetItem.h
+  ./collection/operations/OperationCollectionItemType.h
+  ./collection/operations/OperationCollectionGetItem.h  
+  ./collection/operations/OperationCollectionItemAccess.h
+  ./collection/operations/OperationCollectionItemAccessMutable.h
+  ./collection/operations/OperationCollectionSize.h
+  ./collection/operations/OperationCollectionAddElement.h
+  ./collection/operations/OperationCollectionRemoveElement.h
+  ./collection/operations/OperationCollectionSwapElement.h
+  ./collection/operations/OperationCollectionForeach.h
+  ./collection/operations/OperationCollectionCopyRange.h
+  ./collection/Operators.h
+  ./collection/Operations.h
+  ./collection/specialization/array.h
+  ./collection/specialization/stdcontainer.h
+  ./collection/specialization/dslib.h
+  ../include/core.collection.h
+)
+
+source_group("collection" FILES ${collectionSource})
+
 source_group("binding" FILES ${bindingSource})
 
 set(reflectionSource
@@ -104,5 +133,5 @@ set(patternsSource
 ./patterns/Decorator.h
 )
 source_group("src\\patterns" FILES ${patternsSource})
-add_library(core ${source} ${patternsSource} ${reflectionSource} ${bindingSource} CMakeLists.txt)
+add_library(core ${source} ${patternsSource} ${reflectionSource} ${bindingSource} ${collectionSource} ${operationSource} CMakeLists.txt)
 

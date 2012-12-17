@@ -1,7 +1,8 @@
 #include <CppUnitLite/TestHarness.h>
 #include <string>
 #include <math.matrix/types.h>
-
+#include <core.logging.h>
+#include <core.task.h>
 #include <core/Serialization.h>
 namespace nspace{
 
@@ -26,6 +27,30 @@ namespace nspace{
 };
 
 
+template<typename Operation>
+class OperationTest : public virtual Log{
+public:
+  virtual bool execute()=0;
+};
+
+
+class UnitTest : 
+  public virtual Log, 
+  public virtual Task
+{
+  REFLECTABLE_OBJECT(UnitTest);
+  SUBCLASSOF(Log);
+
+  PROPERTY(bool, Result){}
+  ACTION(ExecuteTest){runTask();}
+
+protected:
+  void runTask(){
+    setResult(runTest());
+  }
+  virtual bool runTest()=0;
+};
+
 
 
 #define MATRIX_EQUALS_TEST(NAME,TYPE_A,TYPE_B,STRING_A,STRING_B,EPS,RESULT)\
@@ -47,10 +72,6 @@ namespace nspace{
 MATRIX_EQUALS_TEST(eq1,Vector3D,Vector3D,"1 2 3","1 2 3",0.001,true);
 MATRIX_EQUALS_TEST(eq2,Vector3D,Vector3D,"1 2 3","1.0001 2.0001 3.0001",0.001,true);
 MATRIX_EQUALS_TEST(eq3,Vector3D,Vector3D,"1 2 3","1.0001 2.0001 3.001001",0.001,false);
-
-
-
-
 
 BINARYOP_TEST(add1,MatrixAddition,Vector3D,Vector3D,Vector3D,"1 2 3", "4 5 6", "5 7 9");
 BINARYOP_TEST(add2,MatrixAddition,Vector3D,Vector3D,Vector3D,"0 0 0", "0 0 0", "0 0 0");

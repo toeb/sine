@@ -1,4 +1,5 @@
-
+#pragma once
+namespace nspace{
   template<typename T, typename SourceType>
   class MatrixCopyToPointer{
   public:
@@ -9,3 +10,4 @@
       }
     }
   };
+}

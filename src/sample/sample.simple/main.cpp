@@ -12,6 +12,7 @@
 #include <userinterface.qt.controls/StringWidget.h>
 #include <core/binding/Binding.h>
 #include <userinterface.qt.controls/BoolWidget.h>
+#include <csignal>
 using namespace nspace;
 using namespace std;
 
@@ -142,60 +143,119 @@ public:
   }
 };
 
+class NumberRangeAttribute{
 
+};
+class ValidationAttribute{
 
+};
 
+#define ATTRIBUTE(TARGET,ATTRIBUTENAME,CODE)\
+  STATIC_INITIALIZER(TARGET##ATTRIBUTENAME,  {auto attribute = new ATTRIBUTENAME##Attribute(); { CODE;} })
 
-
-int main(int argc,  char ** argv){
-  QApplication qapp(argc,argv);
-  DoubleRangeWidget rangeWidget;
-  DoubleRangeWidget rangeWidget2;
-  DoubleSliderWidget slider;
-  StringWidget w1;
-  StringWidget w2;
-  BoolWidget b1;
-  BoolWidget b2;
-
-  b1.show();
-  b2.show();
-  
-  slider.setOrientation(Qt::Horizontal);
-  
-  w1.show();
-  w2.show();
-  rangeWidget2.show();
-  rangeWidget.show();
-  slider.show();
-  double theValue=0;
-
-
-  ReferenceValue<double> val(theValue);
-  
-  val.addObjectObserver(new DelegateObjectObserver<std::function<void(Observable*)> >([&val](Observable* obs){
-    cout << val.get<double>()<<endl;
-  }));
-
-  Binding::create(&rangeWidget,&val);
-  Binding::create(&rangeWidget2,&rangeWidget);
-  Binding::create(&rangeWidget,&rangeWidget2);
-  Binding::create(&rangeWidget,&slider);
-  Binding::create(&slider,&rangeWidget);
-  Binding::create(&w1,&w2);
-  Binding::create(&w2,&w1);
-  
-  Binding::create(&b1,&b2);
-  Binding::create(&b2,&b1);
-
-
-  return qapp.exec();
+class Test : public virtual PropertyChangingObject{
+  TYPED_OBJECT(Test);
   
 
-  return 0;
+  //ATTRIBUTE(IntValue, new NumberRangeAttribute(-5,5));
+  //ATTRIBUTE(IntValue, new ValidationAttribute([](bool & valid){}));
+  //ATTRIBUTE(IntValue, new DisplayAttribute()
+  
+  PROPERTY(int, IntValue){}
+
+
+};
+
+/*
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionConstAccess{
+public:
+  static bool operation(ElementType& element, const CollectionType & collection, const IndexType & index){    
+    element = list[index];
+    return true;
+  }
+};
+
+
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionInsert{
+public:
+  static bool operation(CollectionType & collection, ElementType& element, const IndexType & index){
+    return false;
+  }
+};
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionRemove{
+public:
+  static bool operation(CollectionType & collection, const ElementType& element,const IndexType & index){
+    return false;
+  }
+};
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionSwap{
+public:
+  static bool operation(CollectionType & collection, const IndexType & indexOld,const IndexType & indexNew){
+    return false;  
+  }
+};
+
+template<typename ElementType, typename CollectionType, typename IndexType, typename Function>
+class CollectionIterate{
+public:
+  static bool operation(Function & function, CollectionType & collection){
+    for(IndexType i =0; i < size(collection); i++){
+      function(element(collection,i));
+    }
+  }
+};
+template<typename ElementType, typename CollectionType, typename IndexType, typename Function>
+bool iterate(Function & function, CollectionType & container){
+  return CollectionIterate<ElementType,CollectionType,IndexType,Function>::operation(function,container);
+}
+
+template<typename ListIndex, typename IndexType=uint, IndexType RowCount=0, IndexType ColumnCount=0>
+class RowMajorIndex{
+public:
+  static inline ListIndex operation(const IndexType & i, const IndexType& j){
+    return 
+  }
+};
+
+template<typename Coefficient, typename Mat, typename Index>
+class MatrixCoefficentMutableAccess{
+public:
+  static Coefficient & operation(Mat & mat, const Index &i, const Index & j){
+    return mat(i,j);
+  }  
+};
+template<typename Coefficient, typename Mat, typename Index>
+class MatrixCoefficentConstAccess{
+public:
+  static const Coefficient & operation(const Mat & mat, const Index &i, const Index & j){
+    return mat[Index(i,j)]
+  }  
+};
+
+
+template<typename T,typename Mat, typename Index>
+T & coefficient(Mat & mat, const Index & i, const Index & j){
+  return MatrixCoefficentMutableAccess<T,Mat,Index>::operation(mat)
+}
+template<typename T,typename Mat, typename Index>
+const T & coefficient(const Mat & mat, const Index & i, const Index & j){
+  return MatrixCoefficentConstAccess<T,Mat,Index>::operation(mat);
+}
+
+
+
+*/
+
+int main(int argc,  char ** argv)
+{
   // instanciate sample
   MySample sample;
   // create sample application
   SampleApplication app(argc,argv, sample);
   // run sample application
   return app.run();
-  }
+}

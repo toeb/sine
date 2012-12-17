@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.4)
    cmake_policy(SET CMP0003 NEW)
  endif(COMMAND cmake_policy)
  
+ 
 #SET(CMAKE_SUPPRESS_REGENERATION "1")
 
 #ds = dynamische simulation
@@ -28,6 +29,8 @@ set(cmakeScriptsDirectory ${projectPath}/cmake)
 set(resourceDirectory ${projectPath}/resources)
 
 set(includeDirectories ${sourceDirectory})
+
+ SET(CMAKE_MODULE_PATH "${cmakeScriptsDirectory}")
 
 # 1 for ibds classes 2 for dslib 3 for eigen 
 add_definitions(-DMATRIX_CLASSES=2)
@@ -55,6 +58,10 @@ include_directories(${externalsDirectory}/soil/src)
 include_directories(${externalsDirectory}/lodepng)
 include_directories(${externalsDirectory}/eigen3)
 include_directories(${externalsDirectory}/cppunitlite)
+
+
+include_directories(${externalsDirectory}/v8/include)
+
 
 subdirs(externals)
 

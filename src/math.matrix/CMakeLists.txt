@@ -11,6 +11,7 @@ set(source
  ./core.h
  ./types.h 
  ./types.cpp 
+ ./Index.h
  ./CMakeLists.txt 
  ../config.h
 )

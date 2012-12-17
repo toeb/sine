@@ -1,7 +1,7 @@
 #include "CustomItemDelegate.h"
 #include <QPainter>
 using namespace nspace;
-
+/*
 class Creator{
 public:
   virtual bool match(Object * obj)=0;
@@ -12,7 +12,7 @@ template<typename T, typename TWidget>
 class TCreator:public Creator{
 public:
   bool match(Object * obj){
-
+    if(typeof(
   }
   QWidget * create(){
     return new TWidget();
@@ -31,7 +31,7 @@ class ControlFactory2{
     
   }
 
-};
+};*/
 
 CustomItemDelegate::CustomItemDelegate(QObject * object):QStyledItemDelegate(object){
 

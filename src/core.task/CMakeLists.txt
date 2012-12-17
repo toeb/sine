@@ -23,6 +23,7 @@ set(source
  ./TaskDelegate.cpp
  ./TaskRunnerBase.h
  ./TaskRunnerBase.cpp
+ ../include/core.task.h
 )
 
 source_group("" FILES ${source})
