@@ -35,7 +35,7 @@ using namespace nspace;
   //else test collision of the children of the larger octree or the octree which isnot   leaf;
   bool collisionDetected = false;
   // if b is leaf split a, else split the octree with the larger radius if a is no a leaf
-  if(b.isLeaf() || sphereA.radius() > sphereB.radius()&& !a.isLeaf()){
+  if(b.isLeaf() ||( sphereA.radius() > sphereB.radius()&& !a.isLeaf())){
     //refine a
     for(int i = 0; i < 8; i ++){
       const Octree * child_i = a.child(static_cast<OctreeNodeId>(i));

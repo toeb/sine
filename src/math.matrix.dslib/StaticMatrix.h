@@ -17,6 +17,7 @@ public:
   StaticMatrix(const Real * dataPtr);
   StaticMatrix(const T& w,const T& x,const T& y,const T& z);
   StaticMatrix();
+  virtual ~StaticMatrix(){}
   
   StaticMatrix<T,ColumnCount,1> row(uint i)const;
   StaticMatrix<T,RowCount,1>col(uint j)const;

@@ -16,6 +16,7 @@ class Matrix
 public:
     //default constructor
     Matrix();
+    virtual ~Matrix(){}
     // converts this matrix to a matrix of MatrixType
     template<typename MatrixType> operator MatrixType()const;
     //  prints this matrix

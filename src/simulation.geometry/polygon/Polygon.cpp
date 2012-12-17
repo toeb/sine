@@ -209,7 +209,7 @@ void Polygon::cleanupObject(){
   Edge * Polygon::getEdge(const Vertex * a, const Vertex * b)const{
     for(int i=0; i < edges().size(); i++){
       Edge * e = edges().at(i);
-      if(e->A == a  && e->B == b|| e->A == b && e->B==a)return e;
+      if((e->A == a  && e->B == b)||( e->A == b && e->B==a))return e;
     }
     return 0;
    }
