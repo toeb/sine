@@ -118,23 +118,7 @@ void Octree::deleteChildren(){
         _children =0;
     }
 }
-Geometry & _geometry;
-///< The bounding volume factory is same for all nodes of an octree
-BoundingVolumeFactory & _boundingVolumeFactory;
-///< The id of the node
-const OctreeNodeId _id;
-///< The depth of the tree from this node ( 0 => leaf leaf !=> 0)
-unsigned int _depth;
-///< The level at which this node is (0 is root)
-unsigned int _level;
-///< The classfication (inside, outside or both)
-Classification _classfication;
-///< The aabb representing the dimension of this octree node
-BoundingBox _aabb;
-///< The bounding volume used for collision and classification
-BoundingVolume * _boundingVolume;
-///< The children
-Octree ** _children;
+
 
 Octree::Octree( Geometry & geometry,int depth, BoundingVolumeFactory & boundingVolumeFactory)
     :
