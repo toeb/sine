@@ -73,7 +73,7 @@ bool Type::isSuperClassOf(const Type & other)const{
 
 Set<const PropertyInfo*> Type::Properties()const{
     Set<const PropertyInfo*> result;
-    for(int i=0; i < Members(); i++){
+    for(uint i=0; i < Members(); i++){
       auto prop = dynamic_cast<const PropertyInfo*>(Members().at(i));
       if(!prop)continue;
       result|=prop;

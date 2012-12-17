@@ -50,9 +50,9 @@ public:
     advanceTo(targetTime()+dt);
   }
   inline void notifyTimeReached(Time t){
-    Time dt=t-_t_actual;
+    //Time dt=t-_t_actual;
     Time t_app = applicationTime();
-    Time dt_app = t_app - _lastActualAdvance;
+    //Time dt_app = t_app - _lastActualAdvance;
     _lastActualAdvance = t_app;
     _averageActualSpeed.addSample(t);
     _t_actual = t;

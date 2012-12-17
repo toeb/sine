@@ -16,7 +16,7 @@ public:
   
   void cache(){
     //sets cache to to current value of underlying var
-    set(_value.get());
+    this->set(_value.get());
     access();
   }
 

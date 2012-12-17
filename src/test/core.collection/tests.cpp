@@ -79,7 +79,7 @@ TEST(PointerAccess2, Collection){
   CHECK(pointer<int>(arr2,2)==&arr[2]);
 };
 
-TEST(Copy1){
+TEST(Copy1,Collection){
   Set<int> source;
   source = 7,1,2,3,4,5;
   int arr[6];

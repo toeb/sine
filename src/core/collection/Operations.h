@@ -55,7 +55,7 @@ namespace nspace{
 
     template<typename ItemType, typename CollectionType, typename IndexType>
     inline ItemType & reference(CollectionType & collection, const IndexType & index){
-      *pointer();
+      *pointer(collection,index);
 
     }
 

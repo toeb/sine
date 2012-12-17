@@ -19,10 +19,10 @@ namespace nspace{
       const IndexType & startTarget){
         IndexType j=startTarget;
         IndexType i =startSource;
-        CollectionItemType<DestinationCollectionType>::ItemType it ;
+        typename CollectionItemType<DestinationCollectionType>::ItemType it;
         while(i < endSource){
-          item(it,source,i);
-          setItem(target,it,j);
+          collection::item(it,source,i);
+          collection::setItem(target,it,j);
           i++;
           j++;
         }  

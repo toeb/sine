@@ -11,7 +11,9 @@ class ReferenceValue:public virtual ITypedSerializableValue<T>{
 private:
   T & _underylingValue;
 public:
-  ReferenceValue(T & value):_underylingValue(value){setValueType(typeof(T));}
+  ReferenceValue(T & value):_underylingValue(value){
+      this->setValueType(typeof(T));
+  }
   void notifyValueChanged(){
     this->raiseObjectChanged();
   }

@@ -24,13 +24,13 @@ namespace nspace{
   template<typename Coeff, typename Mat>
   class MatrixAccessElement{
   public:
-    inline static inline const Coeff & operation(
+    inline static const Coeff & operation(
       const Mat&  mat,
       const uint & i, 
       const uint & j){
       return mat(i,j);
     }
-    inline static inline  Coeff & operation(
+    inline static  Coeff & operation(
       Mat&  mat,
       const uint& i, 
       const uint & j){

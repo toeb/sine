@@ -36,7 +36,7 @@ public:
 
   void update(){
     if(dirty());
-    set(calculate());
+    this->set(calculate());
   }
 
 protected:

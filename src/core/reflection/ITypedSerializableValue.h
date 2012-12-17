@@ -10,16 +10,16 @@ protected:
   virtual bool toStream(std::ostream & stream, Format format){
     if(format!=0)return false;
     T value;
-    get(value);
+    this->get(value);
     return Serializer<T>::serialize(stream, &value);
   }
   virtual bool fromStream(std::istream & stream, Format format){
     if(format!=0)return false;
     T value;
-    if(!get(value))return false;
+    if(!this->get(value))return false;
     bool success = Deserializer<T>::deserialize(&value,stream);
     if(!success)return false;
-    set(value);
+    this->set(value);
     return true;
   }
 
