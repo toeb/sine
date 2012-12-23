@@ -4,10 +4,55 @@
 #include <core/collection/operations/OperationCollectionSize.h>
 #include <core/collection/operations/OperationCollectionItemAccess.h>
 #include <core/collection/operations/OperationCollectionSetItem.h>
+#include <core/collection/operations/OperationCollectionCopyRange.h>
 
 namespace nspace{
 
   namespace collection{
+    // returns true if size of collection could be determined.  then n is set to the number if items in colleciton
+    template<typename SizeType,typename CollectionType>    
+    bool size(SizeType & n, const CollectionType & collection);
+    // returns the size of the collection.  if the size cannot be determined the result is undefined
+    template<typename SizeType,typename CollectionType> 
+    SizeType size(const CollectionType & collection);
+    // returns the size of the collection (size_t)
+    template<typename CollectionType> size_t size(const CollectionType & collection);    
+    // returns true if the item at index could be accessed. then the item is assigned th ith item
+    template<typename ItemType, typename CollectionType, typename IndexType>
+    inline bool item(ItemType & item, CollectionType & collection, const IndexType & i);
+    // returns th ith item of the collection
+    template<typename ItemType, typename CollectionType, typename IndexType>
+    inline ItemType item(CollectionType & collection, const IndexType & i);
+    // returns true if the collection supports returning pointers to the item. if it does ptr is assign the pointer to the ith item in the collection
+    template<typename ItemType, typename CollectionType, typename IndexType>
+    inline bool pointer(ItemType ** ptr, CollectionType & collection, const IndexType & i);
+    // return the pointer to the ith item in the collection (returns null if the colleciton is not capable of returning pointers)
+    template<typename ItemType, typename CollectionType, typename IndexType>
+    inline ItemType* pointer(CollectionType & collection, const IndexType & i);
+    // returns a reference to the ith item.  this method will cause a failure if the item is invalid or the collection does not support returning pointers
+    template<typename ItemType, typename CollectionType, typename IndexType>
+    inline ItemType & reference(CollectionType & collection, const IndexType & i);    
+    // returns true if item i of the collection could be successfully set
+    template<typename ItemType, typename CollectionType, typename IndexType>
+    inline bool setItem(CollectionType & collection, const ItemType & item, const IndexType & i);  
+    // copies elements from source[i...j-1] to target[k...k+(j-i)-1]
+    template<typename CollectionTypeA, typename CollectionTypeB, typename IndexType>
+    inline bool copyRange(CollectionTypeA & target, const CollectionTypeB & source, const IndexType & i, const IndexType & j, const IndexType & k);
+    // copies elements from source[0,n-1] to target[0,n-1]  you need to ensure that target has at least n slots
+    template<typename CollectionTypeA, typename CollectionTypeB>
+    inline bool copy(CollectionTypeA & target, const CollectionTypeB & source);
+    //returns the collections underyling array structure (if the collection has one) else nullptr is returned,
+    template<typename CollectionType>
+    inline typename CollectionItemType<CollectionType>::ItemType* underlyingArray(CollectionType & collection){
+      return nullptr;
+    };
+
+
+    
+    //IMPLEMENTATION
+
+
+    
     template<typename SizeType,typename CollectionType>
     bool size(SizeType & n, const CollectionType & collection){  
       return OperationCollectionSize<CollectionType,SizeType>::operation(n,collection);
@@ -20,11 +65,7 @@ namespace nspace{
       return n;
     }
     template<typename CollectionType> size_t size(const CollectionType & collection){
-      size_t n;
-      if(!size(n,collection)){
-        n=0; return n;
-      }
-      return n;
+      return size<size_t,CollectionType>(collection);
     }
 
 
@@ -64,15 +105,7 @@ namespace nspace{
     inline bool setItem(CollectionType & collection, const ItemType & item, const IndexType & index){
       return OperationCollectionSetItem<ItemType,CollectionType,IndexType>::operation(collection,item,index);
     }
-  }
-}
-
-
-// copy range needs access to previous functions
-#include <core/collection/operations/OperationCollectionCopyRange.h>
-
-namespace nspace{
- namespace collection{   
+  
    // copies elements from sourceStart to sourceEnd-1 to target from index targetStart
     template<typename CollectionTypeA, typename CollectionTypeB, typename IndexType>
     inline bool copyRange(CollectionTypeA & destination, const CollectionTypeB & source, const IndexType & sourceStart, const IndexType & sourceEnd, const IndexType & destinationStart){
@@ -88,14 +121,6 @@ namespace nspace{
 
 
 
-    
-    
-    /*template<typename ItemType, typename CollectionType, typename IndexType>
-    inline ItemType & item(CollectionType & collection, const IndexType & index){
-      ItemType ** ptr;
-      OperationCollectionItemAccessMutable<ItemType,CollectionType,IndexType>::operation(ptr,collection,index);
-      return **ptr;
-    }*/
 
 
 

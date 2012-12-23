@@ -9,6 +9,28 @@ using namespace std;
 
 using namespace nspace::collection;
 
+TEST(DataPointerAccess1, Collection){
+  int arr[4]= {2,3,4,1};
+  auto ptr= underlyingArray(arr);
+  CHECK(arr==ptr);
+};
+TEST(DataPointerAccess2, Collection){
+  std::list<int> arr;  
+  arr.push_back(2);
+  arr.push_back(3);
+  auto ptr= underlyingArray(arr);
+  CHECK(0==ptr);
+};
+TEST(DataPointerAccess3, Collection){
+  std::vector<int> arr;
+  arr.push_back(2);
+  arr.push_back(3);
+  
+  auto ptr= underlyingArray(arr);
+  CHECK(&arr[0]==ptr);
+};
+
+
 TEST(Size1, Collection){
   int someArray[5];
   CHECK(size(someArray)==5);

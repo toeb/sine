@@ -13,6 +13,7 @@
 #include <core/binding/Binding.h>
 #include <userinterface.qt.controls/BoolWidget.h>
 #include <csignal>
+#include <algorithm>
 using namespace nspace;
 using namespace std;
 
@@ -48,7 +49,7 @@ class MySample : public Sample, public virtual PropertyChangingObject, public vi
     cout << " test message " <<endl;
   }
 public:
-  
+
   Sphere * sphere;
   Time time;
   PiecewiseFunction<Vector3D> * f;
@@ -138,8 +139,8 @@ public:
     *sphereRenderer |= sphere;
 
     // print setup of sample app
-   // application().printSetup();
-   // application().printHierarchy();
+    // application().printSetup();
+    // application().printHierarchy();
   }
 };
 
@@ -155,12 +156,12 @@ class ValidationAttribute{
 
 class Test : public virtual PropertyChangingObject{
   TYPED_OBJECT(Test);
-  
+
 
   //ATTRIBUTE(IntValue, new NumberRangeAttribute(-5,5));
   //ATTRIBUTE(IntValue, new ValidationAttribute([](bool & valid){}));
   //ATTRIBUTE(IntValue, new DisplayAttribute()
-  
+
   PROPERTY(int, IntValue){}
 
 
@@ -170,88 +171,98 @@ class Test : public virtual PropertyChangingObject{
 template<typename ElementType, typename CollectionType, typename IndexType>
 class CollectionConstAccess{
 public:
-  static bool operation(ElementType& element, const CollectionType & collection, const IndexType & index){    
-    element = list[index];
-    return true;
-  }
+static bool operation(ElementType& element, const CollectionType & collection, const IndexType & index){    
+element = list[index];
+return true;
+}
 };
 
 
 template<typename ElementType, typename CollectionType, typename IndexType>
 class CollectionInsert{
 public:
-  static bool operation(CollectionType & collection, ElementType& element, const IndexType & index){
-    return false;
-  }
+static bool operation(CollectionType & collection, ElementType& element, const IndexType & index){
+return false;
+}
 };
 template<typename ElementType, typename CollectionType, typename IndexType>
 class CollectionRemove{
 public:
-  static bool operation(CollectionType & collection, const ElementType& element,const IndexType & index){
-    return false;
-  }
+static bool operation(CollectionType & collection, const ElementType& element,const IndexType & index){
+return false;
+}
 };
 template<typename ElementType, typename CollectionType, typename IndexType>
 class CollectionSwap{
 public:
-  static bool operation(CollectionType & collection, const IndexType & indexOld,const IndexType & indexNew){
-    return false;  
-  }
+static bool operation(CollectionType & collection, const IndexType & indexOld,const IndexType & indexNew){
+return false;  
+}
 };
 
 template<typename ElementType, typename CollectionType, typename IndexType, typename Function>
 class CollectionIterate{
 public:
-  static bool operation(Function & function, CollectionType & collection){
-    for(IndexType i =0; i < size(collection); i++){
-      function(element(collection,i));
-    }
-  }
+static bool operation(Function & function, CollectionType & collection){
+for(IndexType i =0; i < size(collection); i++){
+function(element(collection,i));
+}
+}
 };
 template<typename ElementType, typename CollectionType, typename IndexType, typename Function>
 bool iterate(Function & function, CollectionType & container){
-  return CollectionIterate<ElementType,CollectionType,IndexType,Function>::operation(function,container);
+return CollectionIterate<ElementType,CollectionType,IndexType,Function>::operation(function,container);
 }
 
 template<typename ListIndex, typename IndexType=uint, IndexType RowCount=0, IndexType ColumnCount=0>
 class RowMajorIndex{
 public:
-  static inline ListIndex operation(const IndexType & i, const IndexType& j){
-    return 
-  }
+static inline ListIndex operation(const IndexType & i, const IndexType& j){
+return 
+}
 };
 
 template<typename Coefficient, typename Mat, typename Index>
 class MatrixCoefficentMutableAccess{
 public:
-  static Coefficient & operation(Mat & mat, const Index &i, const Index & j){
-    return mat(i,j);
-  }  
+static Coefficient & operation(Mat & mat, const Index &i, const Index & j){
+return mat(i,j);
+}  
 };
 template<typename Coefficient, typename Mat, typename Index>
 class MatrixCoefficentConstAccess{
 public:
-  static const Coefficient & operation(const Mat & mat, const Index &i, const Index & j){
-    return mat[Index(i,j)]
-  }  
+static const Coefficient & operation(const Mat & mat, const Index &i, const Index & j){
+return mat[Index(i,j)]
+}  
 };
 
 
 template<typename T,typename Mat, typename Index>
 T & coefficient(Mat & mat, const Index & i, const Index & j){
-  return MatrixCoefficentMutableAccess<T,Mat,Index>::operation(mat)
+return MatrixCoefficentMutableAccess<T,Mat,Index>::operation(mat)
 }
 template<typename T,typename Mat, typename Index>
 const T & coefficient(const Mat & mat, const Index & i, const Index & j){
-  return MatrixCoefficentConstAccess<T,Mat,Index>::operation(mat);
+return MatrixCoefficentConstAccess<T,Mat,Index>::operation(mat);
 }
 
 
 
 */
+#include <iostream> // u.a. fuer cin/cout
+#include <string> // fuer Datentyp string
+#include <fstream> // fuer Dateiverarbeitung
+#include <sstream> // fuer Stringverarbeitung
+using namespace std;
+
+
+
 
 int main(int argc,  char ** argv)
 {
+
+//  return 0;
   // instanciate sample
   MySample sample;
   // create sample application
