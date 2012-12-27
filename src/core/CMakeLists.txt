@@ -26,6 +26,7 @@ set(collectionSource
   ./collection/operations/OperationCollectionCopyRange.h
   ./collection/Operators.h
   ./collection/Operations.h
+  ./collection/Enumerable.h
   ./collection/specialization/array.h
   ./collection/specialization/stdcontainer.h
   ./collection/specialization/dslib.h

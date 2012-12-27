@@ -10,5 +10,8 @@ namespace nspace{
   template<typename T, typename IndexType> OperationCollectionSizeSpecialization(Set<T>,IndexType, size=collection.size(););
   template<typename T, typename IndexType> CollectionItemAccessSpecialization(T,Set<T>,IndexType,item=collection.at(index));
   template<typename T, typename IndexType> CollectionItemAccessSpecialization(T,const Set<T>,IndexType,item=collection.at(index));
+
+  
+
   //template<typename T, typename IndexType> CollectionSetItemSpecialization(Set<T>,T,IndexType,collection.set(index,item));
 }

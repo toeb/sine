@@ -4,7 +4,25 @@
 #include <core/collection/operations/OperationCollectionItemAccess.h>
 namespace nspace{
 
+
+  // this class wraps an pointer into a structure with number of elements
+  template<typename T>
+  class Array{
+  private:Array():data(0),size(0){}
+
+  public:
+    Array(T * data, size_t size):data(data),size(size){}
+    Array(size_t size){}
+    size_t size;
+    T * data;
+  };
+
+
   SpecializeCollectionItemType(T*);
+
+  SpecializeCollectionItemType(Array<T>);
+
+
   template<typename T,size_t n>
   class CollectionItemType<T[n]>{
   public:
@@ -18,6 +36,12 @@ namespace nspace{
     }
   };
 
+  template<typename T, typename SizeType> OPERATION_SPECIALIZATION(CollectionSize)<Array<T>,SizeType >{
+    SPECIALIZATION(SizeType & thesize, const Array<T> & arr){
+      thesize = arr.size;
+    }
+  };
+  
   template<typename T, typename IndexType, size_t n> OPERATION_SPECIALIZATION(CollectionSetItem)<T,T[n],IndexType>{
     SPECIALIZATION(T* arr, const T & it, const IndexType & index){
       arr[index]=it;
@@ -25,6 +49,7 @@ namespace nspace{
     }
   };
 
+  
 template<typename T, typename IndexType> OPERATION_SPECIALIZATION(CollectionSetItem)<T,T*,IndexType>{
     SPECIALIZATION(T* arr, const T & it, const IndexType & index){
       arr[index]=it;
@@ -32,7 +57,12 @@ template<typename T, typename IndexType> OPERATION_SPECIALIZATION(CollectionSetI
     }
   };
 
-
+template<typename T, typename IndexType> OPERATION_SPECIALIZATION(CollectionSetItem)<T,Array<T> &,IndexType>{
+    SPECIALIZATION(Array<T> & arr, const T & it, const IndexType & index){
+      OperationCollectionSetItem::operation(arr.data,it,index);
+      return true;
+    }
+  };
 
 
 

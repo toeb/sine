@@ -7,8 +7,18 @@
 #include <core/collection/operations/OperationCollectionCopyRange.h>
 
 namespace nspace{
-
+  template <typename EnumerableType>
+class EnumerableItemType{
+public:
+  typedef typename CollectionItemType<EnumerableType>::ItemType ItemType;
+};
+template<typename IndexableType>
+class IndexableIndexType{
+public:
+  typedef size_t IndexType;
+};
   namespace collection{
+
     // returns true if size of collection could be determined.  then n is set to the number if items in colleciton
     template<typename SizeType,typename CollectionType>    
     bool size(SizeType & n, const CollectionType & collection);
@@ -16,7 +26,7 @@ namespace nspace{
     template<typename SizeType,typename CollectionType> 
     SizeType size(const CollectionType & collection);
     // returns the size of the collection (size_t)
-    template<typename CollectionType> size_t size(const CollectionType & collection);    
+    template<typename CollectionType> auto size(const CollectionType & collection)->typename IndexableIndexType<CollectionType>::IndexType;    
     // returns true if the item at index could be accessed. then the item is assigned th ith item
     template<typename ItemType, typename CollectionType, typename IndexType>
     inline bool item(ItemType & item, CollectionType & collection, const IndexType & i);
@@ -27,8 +37,8 @@ namespace nspace{
     template<typename ItemType, typename CollectionType, typename IndexType>
     inline bool pointer(ItemType ** ptr, CollectionType & collection, const IndexType & i);
     // return the pointer to the ith item in the collection (returns null if the colleciton is not capable of returning pointers)
-    template<typename ItemType, typename CollectionType, typename IndexType>
-    inline ItemType* pointer(CollectionType & collection, const IndexType & i);
+    template<typename CollectionType, typename IndexType>
+    inline auto pointer(CollectionType & collection, const IndexType & index)->typename CollectionItemType<CollectionType>::ItemType*;
     // returns a reference to the ith item.  this method will cause a failure if the item is invalid or the collection does not support returning pointers
     template<typename ItemType, typename CollectionType, typename IndexType>
     inline ItemType & reference(CollectionType & collection, const IndexType & i);    
@@ -64,8 +74,9 @@ namespace nspace{
       }
       return n;
     }
-    template<typename CollectionType> size_t size(const CollectionType & collection){
-      return size<size_t,CollectionType>(collection);
+    
+    template<typename CollectionType> auto size(const CollectionType & collection)->typename IndexableIndexType<CollectionType>::IndexType{
+      return size<typename IndexableIndexType<CollectionType>::IndexType,CollectionType>(collection);
     }
 
 
@@ -86,18 +97,17 @@ namespace nspace{
     inline bool pointer(ItemType ** ptr, CollectionType & collection, const IndexType & index){
       return OperationCollectionPointerAccess<ItemType,CollectionType,IndexType>::operation(ptr,collection,index);
     }
-    template<typename ItemType, typename CollectionType, typename IndexType>
-    inline ItemType* pointer(CollectionType & collection, const IndexType & index){
-      ItemType* ptr;
+    template<typename CollectionType, typename IndexType>
+    inline auto pointer(CollectionType & collection, const IndexType & index)->typename CollectionItemType<CollectionType>::ItemType*{
+      typename CollectionItemType<CollectionType>::ItemType* ptr;
       pointer(&ptr,collection,index);
       return ptr;
     }
 
 
-    template<typename ItemType, typename CollectionType, typename IndexType>
-    inline ItemType & reference(CollectionType & collection, const IndexType & index){
-      *pointer(collection,index);
-
+    template<typename CollectionType, typename IndexType>
+    inline auto  reference(CollectionType & collection, const IndexType & index)->typename CollectionItemType<CollectionType>::ItemType&{
+      return *pointer(collection,index);
     }
 
     
