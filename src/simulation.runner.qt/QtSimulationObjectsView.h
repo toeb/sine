@@ -9,14 +9,9 @@ namespace nspace{
   class QtObjectViewPlugin : public Plugin{
     Q_OBJECT;
     REFLECTABLE_OBJECT(QtObjectViewPlugin);
-    
+
   public:
     QtObjectViewPlugin(){
-    
     }
-
-
-  
   };
-
 }

@@ -4,27 +4,25 @@
 
 using namespace nspace;
 
-
 void Hub::onElementAdded(Object * object){
   auto node = dynamic_cast<DataNode<Object *>* >(object);
   if(!node) node = new DataNode<Object*>(object);
   successors() |= node;
 }
 
-
 void Hub::onElementRemoved(Object * object){
   auto result = successors().subset([object](DataNode<Object *> * o){return o->data() == object;});
   successors() |= result;
 }
 
-Hub::Hub():DataNode<Object*>(this),_processing(false){}    
+Hub::Hub():DataNode<Object*>(this),_processing(false){}
 Hub::~Hub(){
   foreachElement([this](Object * object){
     auto ho = dynamic_cast<HubObject*>(object);
     if(!ho)return;
     ho->_hubs /= this;
   });
-}    
+}
 const Set<Module*> & Hub::modules()const{return _modules;}
 
 bool Hub::add(Object * object){
@@ -63,14 +61,12 @@ void Hub::processObjects(){
   _processing = false;
 }
 void Hub::processObjectAnnounce(Object  *object){
-  
   if(!Set<Object*>::add(object))return;
-  
+
   // add object to all modules
   _modules.foreachElement([object](Module * module){
     module->announce(object);
   });
-
 
   auto module = dynamic_cast<Module * > (object);
   // process module
@@ -81,7 +77,7 @@ void Hub::processObjectAnnounce(Object  *object){
     foreachElement([module](Object * o){
       if(module==o)return;
       module->announce(o);
-    });    
+    });
   }
 
   //
@@ -90,15 +86,11 @@ void Hub::processObjectAnnounce(Object  *object){
     hubObject->_hubs |=this;
     hubObject->onAddedToHub(*this);
   }
-
-
-
 }
-
 
 void Hub::processObjectRenounce(Object  *object){
   // important to stop recursion
-   if(!Set<Object*>::remove(object))return;
+  if(!Set<Object*>::remove(object))return;
 
   auto module = dynamic_cast<Module * > (object);
   if(module){
@@ -115,8 +107,4 @@ void Hub::processObjectRenounce(Object  *object){
     hubObject->_hubs /=this;
     hubObject->onRemovedFromHub(*this);
   }
-
-  
 }
-
-

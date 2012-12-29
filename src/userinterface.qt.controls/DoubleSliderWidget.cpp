@@ -2,8 +2,7 @@
 
 using namespace nspace;
 
-
-DoubleSliderWidget::DoubleSliderWidget(){      
+DoubleSliderWidget::DoubleSliderWidget(){
   setMinValue(-1000);
   setMaxValue(1000);
   setSteps(2000);
@@ -11,7 +10,7 @@ DoubleSliderWidget::DoubleSliderWidget(){
   connect(this,SIGNAL(valueChanged(int)),this, SLOT(valueChanged(int)));
 }
 void DoubleSliderWidget::valueChanged(int i){
-  raiseObjectChanged();      
+  raiseObjectChanged();
 }
 bool DoubleSliderWidget::retrieveTypeValue(double & value)const{
   double factor = ((double)sliderPosition())/((double)getSteps());

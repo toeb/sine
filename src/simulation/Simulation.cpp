@@ -6,7 +6,6 @@
 using namespace nspace;
 using namespace std;
 
-
 Simulation::Simulation():_processing(false)
 {
 }
@@ -20,7 +19,7 @@ ISimulationObject * Simulation::find(const std::string & name){
   return 0;
 }
 
-bool Simulation::removeSimulationModule(ISimulationModule * module){   
+bool Simulation::removeSimulationModule(ISimulationModule * module){
   //find simulation module
   auto pos = std::find(_modules.begin(), _modules.end(), module);
   // if the object wasn't found then it cannot be removed thus return false
@@ -33,13 +32,11 @@ bool Simulation::removeSimulationModule(ISimulationModule * module){
   return true;
 }
 
-
-
 void Simulation::add(ISimulationObject * object){
   if(!object){
-		std::cerr << "tried to add null object to simulation" << std::endl;
-		return ;
-	}
+    std::cerr << "tried to add null object to simulation" << std::endl;
+    return ;
+  }
   //set the simulation for the object added
   object->setSimulation(this);
   //add object to uninitialized objects queue
@@ -63,7 +60,7 @@ void Simulation::remove(ISimulationObject * object){
   //remove the object
   _objects.erase(pos);
   //call extension point
-  onSimulationObjectRemoved(object);  
+  onSimulationObjectRemoved(object);
 }
 
 bool Simulation::initializeObject(){
@@ -79,24 +76,23 @@ bool Simulation::processObject(ISimulationObject * object){
   }
 
   //initialize object
-    if(!object->initialize()){
-     cerr << "could not initialize object" <<object->name()<< endl;
-      // remove object from the valid objects set
-      auto it = _objects.find(object);
-      _objects.erase(it);
-        return false;
-  }  
+  if(!object->initialize()){
+    cerr << "could not initialize object" <<object->name()<< endl;
+    // remove object from the valid objects set
+    auto it = _objects.find(object);
+    _objects.erase(it);
+    return false;
+  }
   if(!processComposite(object))return false;
   if(!processModule(object))return false;
- 
+
   //call extension point method
   onSimulationObjectAdded(object);
- object->accepted();
+  object->accepted();
   return true;
 }
 
-
-bool Simulation::processComposite(ISimulationObject * object){  
+bool Simulation::processComposite(ISimulationObject * object){
   //add all components of the composite to the simulation
   CompositeSimulationObject* composite = dynamic_cast<CompositeSimulationObject*>(object);
   //if object is not a composite return true indicating that nothing went wrong
@@ -104,13 +100,13 @@ bool Simulation::processComposite(ISimulationObject * object){
   //go through each component of the composite and add it to the simulation
   composite->foreachComponent([this](ISimulationObject* component){
     add(component);
-  });  
+  });
   return true;
 }
 
 bool Simulation::processModule(ISimulationObject *  object){
-  //announce object(which could be a module) to every valid module 
-  foreachModule([object](ISimulationModule * module){ 
+  //announce object(which could be a module) to every valid module
+  foreachModule([object](ISimulationModule * module){
     module->announce(object);
   });
   auto module = dynamic_cast<ISimulationModule*>(object);
@@ -134,62 +130,59 @@ bool Simulation::processQueuedObjects(){
     _queue.pop();
     //if any object was not processable return false
     if(!processObject(object)){
-        cout << "could not add "<< object->name()<<" because it was not initializable"<<endl;
-        return false;
+      cout << "could not add "<< object->name()<<" because it was not initializable"<<endl;
+      return false;
     }
   }
   //else everything went ok
   _processing = false;
-  return true; 
+  return true;
 }
 
 /**
-  * \brief indexer operator returns the simulation object with the name.
-  *
-  * \param name The name.
-  *
-  * \return The indexed value.
-  */
+* \brief indexer operator returns the simulation object with the name.
+*
+* \param name The name.
+*
+* \return The indexed value.
+*/
 ISimulationObject * Simulation::operator[](const std::string & name){
   return find(name);
 }
 
 /**
-  * \brief adds a object to the simulation
-  */
-Simulation & Simulation::operator <<(ISimulationObject * object){  
+* \brief adds a object to the simulation
+*/
+Simulation & Simulation::operator <<(ISimulationObject * object){
   if(!object){
-		std::cerr << "tried to add null object to simulation" << std::endl;
-		return *this;
-	}
+    std::cerr << "tried to add null object to simulation" << std::endl;
+    return *this;
+  }
   add(object);
-	return *this;
+  return *this;
 }
-  /**
-  * \brief adds a object to the simulation
-  */
+/**
+* \brief adds a object to the simulation
+*/
 Simulation & Simulation::operator <<(ISimulationObject & object){
   add(&object);
-	return *this;
+  return *this;
 }
 /**
-  * \brief remove the simulationobject from the simulation
-  */
+* \brief remove the simulationobject from the simulation
+*/
 Simulation & Simulation::operator >>(ISimulationObject * object){
-  
   remove(object);
-	return *this;
+  return *this;
 }
 /**
-  * \brief remove the simulationobject from the simulation
-  */
+* \brief remove the simulationobject from the simulation
+*/
 Simulation & Simulation::operator >>(ISimulationObject & object){
   remove(&object);
-	return *this;
+  return *this;
 }
 
-
-  
 void Simulation::foreachModule(std::function<void(ISimulationModule*)> f){
   for_each(_modules.begin(), _modules.end(),f);
 }

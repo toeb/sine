@@ -3,5 +3,4 @@
 using namespace nspace;
 
 FunctionBase::FunctionBase(){
-
 }

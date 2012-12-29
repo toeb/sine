@@ -4,21 +4,14 @@
 using namespace std;
 using namespace nspace;
 
-
-
-
 Collidable::Collidable(ISimulationObject & collisionObject):
   _collisionObject(collisionObject),_collisionType(collisionObject.getType().getId())
 {
 }
 
-
-
 const TypeId Collidable::getCollisionType()const{
   return _collisionType ;
 }
-
-
 
 void Collidable::addCollision(Collision* col){
   _collisions.push_back(col);
@@ -38,5 +31,3 @@ void Collidable::foreachCollision(function<void (Collision*)> f){
 bool Collidable::isColliding()const{
   return _collisions.size()!=0;
 }
-
-

@@ -2,15 +2,15 @@
 #include <config.h>
 
 namespace nspace{
- template<typename Result, typename VecA, typename VecB>
- class VectorOuterProduct{
+  template<typename Result, typename VecA, typename VecB>
+  class VectorOuterProduct{
   public:
     static inline void operation(Result &  result, const VecA & a, const VecB & b){
       if(result.rows()!=a.size()){
         //ERROR("incompatible sizes");
         return;
       }
-      if(result.cols()!=b.size()){        
+      if(result.cols()!=b.size()){
         //ERROR("incompatible sizes");
         return;
       }
@@ -23,4 +23,3 @@ namespace nspace{
     }
   };
 }
-

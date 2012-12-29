@@ -3,14 +3,11 @@
 using namespace std;
 using namespace nspace;
 
-
-
 bool SeparatingAxes::testCollision(const ISimulationObject & collidableA, const ISimulationObject & collidableB, Collision * collision)const{
-  
   const Polygon & a = dynamic_cast<const Polygon &>(collidableA);
   const Polygon & b = dynamic_cast<const Polygon &>(collidableB);
-  
-  vector<Axis> axes;  
+
+  vector<Axis> axes;
   for(int i = 0; i < a.faces().size(); i++){
     Axis axis;
     const Vector3D & n_ocs = a.face(i)->n_ocs;
@@ -35,10 +32,9 @@ bool SeparatingAxes::testCollision(const ISimulationObject & collidableA, const 
       b.coordinates().fromObjectCoordinates(dirB,dirB);
       e2->getDirection(dirB);
       Axis axis;
-      
+
       vectorop::crossProduct(axis.n,dirA,dirB);
       axis.n.normalize();
-
     }
   }
 

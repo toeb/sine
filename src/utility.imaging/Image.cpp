@@ -6,7 +6,7 @@ using namespace nspace;
 
 Image::~Image(){
   ArrayPool<Pixel>::freeArray(&_data, _width*_height);}
-void Image::resize(uint width, uint height){  
+void Image::resize(uint width, uint height){
   ArrayPool<Pixel>::freeArray(&_data,_width*_height);
   _width=width;
   _height=height;
@@ -23,7 +23,6 @@ void Image::load(uint width, uint height, const void * dataPtr){
 Image::Image():_data(0),_width(0),_height(0){resize(0,0);}
 Image::Image(uint width, uint height):_data(0),_width(0),_height(0){resize(width,height);}
 Image::Image(uint width, uint height,Pixel * data):_data(0),_width(0),_height(0){load(width,height,data);}
-
 
 bool PngImage::load(const std::string & filename){
   vector<unsigned char> imageBuffer;

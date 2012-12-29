@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/Set.h>
+#include <core.collection.h>
 #include <core.hub/Module.h>
 
 namespace nspace{
@@ -20,7 +20,6 @@ namespace nspace{
 
     void announce(Object * object);
     void renounce(Object * object);
-
   };
 
   template<typename T>
@@ -36,8 +35,6 @@ namespace nspace{
     }
     void onRenounce(Object * object){
       *this /= dynamic_cast<T*>(object);
-    }    
-
+    }
   };
-
 }

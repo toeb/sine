@@ -3,7 +3,6 @@
 #include <core/Node.h>
 #include <core/StringTools.h>
 namespace nspace{
-
   template<typename T, typename Derived>
   class DerivableDataNode: public Node<Derived>{
     T _data;
@@ -24,7 +23,7 @@ namespace nspace{
       return _data;
     }
 
-    virtual void toStream(std::ostream & out)const{     
+    virtual void toStream(std::ostream & out)const{
       out << "node{";
       this->toStream(out);
       out << "}";
@@ -37,8 +36,5 @@ namespace nspace{
         std::cout << *current<<"\n";
       });
     }
-
-
   };
-
 }

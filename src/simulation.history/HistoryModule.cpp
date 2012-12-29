@@ -2,4 +2,3 @@
 using namespace nspace;
 
 StateSnapshotId StateSnapshot::_currentId=0;
-

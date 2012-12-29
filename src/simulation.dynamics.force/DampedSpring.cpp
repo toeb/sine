@@ -1,7 +1,6 @@
 #include "DampedSpring.h"
 using namespace nspace;
 
-
 const Vector3D & DampedSpring::getForce()const{
   return _f_wcs;
 }
@@ -18,33 +17,33 @@ DampedSpring::~DampedSpring()
 
 DampedSpring::DampedSpring(DynamicConnector &cA, DynamicConnector &cB, Real k_s, Real k_d, Real restLength) :
   _cA(cA),_cB(cB){
-	_k_s = k_s;
-	_k_d = k_d;
-  _lastLength  =_currentLength=restLength;
-	_l0 = restLength;
+    _k_s = k_s;
+    _k_d = k_d;
+    _lastLength  =_currentLength=restLength;
+    _l0 = restLength;
 }
 
 void DampedSpring::act (std::vector<DynamicBody*> & target, Real time) {
   calculateSpringAndDampeningForce();
-	_cA.addExternalForce(_f_wcs);
-	_cB.addExternalForce(-_f_wcs);
+  _cA.addExternalForce(_f_wcs);
+  _cB.addExternalForce(-_f_wcs);
 }
- void DampedSpring::calculateSpringAndDampeningForce(){
+void DampedSpring::calculateSpringAndDampeningForce(){
   _lastLength = _currentLength;
 
-   //_cA.calculateCachedValues();
-   //_cB.calculateCachedValues();
+  //_cA.calculateCachedValues();
+  //_cB.calculateCachedValues();
   const Vector3D & a_wcs = _cA.getCachedWorldPosition();
   const Vector3D & b_wcs = _cB.getCachedWorldPosition();
-  Vector3D v_a_wcs,v_b_wcs;  
+  Vector3D v_a_wcs,v_b_wcs;
   _cA.calculateWorldVelocity(v_a_wcs);
   _cB.calculateWorldVelocity(v_b_wcs);
 
-	Vector3D n_wcs;	
-//  Vector3D::subtract(b_wcs,a_wcs,n_wcs);
-	n_wcs=b_wcs-a_wcs;
+  Vector3D n_wcs;
+  //  Vector3D::subtract(b_wcs,a_wcs,n_wcs);
+  n_wcs=b_wcs-a_wcs;
   //n_wcs = b_wcs - a_wcs;
-	_currentLength = n_wcs.norm();
+  _currentLength = n_wcs.norm();
   //Vector3D::multiplyScalar(1/_currentLength,n_wcs,n_wcs);
   n_wcs /= _currentLength;
   //n_wcs = (1/amount)*n_wcs;
@@ -55,7 +54,7 @@ void DampedSpring::act (std::vector<DynamicBody*> & target, Real time) {
   //if spring force is 0 reuturn 0
   if(_currentLength ==0){
     _f_s_wcs=Vector3D::Zero();
-    _f_d_wcs=Vector3D::Zero();//this is wrong. 
+    _f_d_wcs=Vector3D::Zero();//this is wrong.
   }else{
     //Vector3D::multiplyScalar( _k_s * (_currentLength - _l0), n_wcs,_f_s_wcs);
     _f_s_wcs = (_k_s*(_currentLength-_l0))*n_wcs;
@@ -86,9 +85,8 @@ void DampedSpring::setStiffnessConstant(Real k_s){
   _k_s=k_s;
 }
 
-
 Real DampedSpring::getCurrentLength()const {
-	//_cA.calculateCachedValues();
-	//_cB.calculateCachedValues();
-	return (_cA.getWorldPosition() - _cB.getWorldPosition()).norm();
+  //_cA.calculateCachedValues();
+  //_cB.calculateCachedValues();
+  return (_cA.getWorldPosition() - _cB.getWorldPosition()).norm();
 }

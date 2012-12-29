@@ -1,17 +1,13 @@
 #include "CompositeHubObject.h"
 
-
 using namespace nspace;
-
 
 CompositeHubObject::CompositeHubObject(){
   data()=this;
 }
 CompositeHubObject::~CompositeHubObject(){
   // TODO remove components from hub without exceptions being thrown
-
 }
-
 
 void CompositeHubObject::itemAdded(Object*, Components){
   addObject(item);
@@ -29,7 +25,6 @@ void CompositeHubObject::itemRemoved(Object *, References){
   removeObject(item,false);
   onReferenceRemoved(item);
 }
-
 
 void CompositeHubObject::addObject(Object * object){
   _hubs.foreachElement([this,object](Hub * hub){
@@ -56,8 +51,6 @@ void CompositeHubObject::removeObject(Object * object, bool fromHub){
   successors() /= element;
   onObjectRemoved(object);
 }
-
-
 
 void CompositeHubObject::onAddedToHub(Hub & hub){
   hub |= Components();

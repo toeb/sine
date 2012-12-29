@@ -3,21 +3,20 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-#include <string> 
+#include <string>
 using namespace std;
 using namespace nspace::stringtools;
 
 std::string nspace::stringtools::toLowerCase(const std::string & original){
-  std::string data = original; 
+  std::string data = original;
   std::transform(data.begin(), data.end(), data.begin(), ::tolower);
   return data;
 }
 std::string nspace::stringtools::toUpperCase(const std::string & original){
-  std::string data = original; 
+  std::string data = original;
   std::transform(data.begin(), data.end(), data.begin(), ::toupper);
   return data;
 }
-
 
 bool nspace::stringtools::contains(const std::string & original, const std::string & search){
   if( original.find(search) > original.size())return false;
@@ -55,7 +54,6 @@ std::string nspace::stringtools::replace(std::string  original, const std::strin
   if( original.find(search) > original.size())return original;
   return  original.replace(original.find(search), replacement.size()-1, replacement);
 }
-
 
 std::string nspace::stringtools::spaces(unsigned int n){
   return repeat(" ",n);

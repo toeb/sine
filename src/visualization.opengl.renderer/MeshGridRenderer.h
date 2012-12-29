@@ -13,7 +13,6 @@ namespace nspace{
     Real _spacing;
   public:
     MeshGridRenderer():_origin(CoordinateSystem::identity()),_points(20),_stride(5),_spacing(5.0){
-
     }
     uint & points(){return _points;}
     uint & stride(){return _stride;}

@@ -5,7 +5,6 @@
 #include <userinterface.qt.controls/ControlFactory.h>
 #include <QPushButton>
 namespace nspace{
-  
   class ActionWidget : public DynamicWidget, public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(ActionWidget);
     Q_OBJECT;
@@ -13,9 +12,9 @@ namespace nspace{
     PROPERTY(Action *, Action){}
   public:
     ActionWidget(QWidget * parent);
-    
+
     class Factory : public virtual ControlFactory{
-    public:      
+    public:
       virtual bool match(const Type * type, Object * object, const std::string& hints=""){
         auto action = dynamic_cast<Action*>(object);
         if(!action )return false;
@@ -25,13 +24,11 @@ namespace nspace{
         return new ActionWidget(0);
       }
     };
-       
-  protected slots:
-    void performAction();
+
+    protected slots:
+      void performAction();
 
   protected:
     void onDataContextChanging(Object * oldvalue, Object * newvalue);
-
   };
-
 }

@@ -1,18 +1,22 @@
+set(source ../include/core.h )
 set(bindingSource
  ./binding/Binding.h
  ./binding/Binding.cpp
  ./binding/ValueConverter.h
  ./binding/ValueConverter.cpp
 )
+set(source ${source} ${bindingSource})
+source_group("binding" FILES ${bindingSource})
 
 set(operationSource
 ./operation/Operation.h
 ../include/core.operation.h
 )
+set(source ${source} ${operationSource})
 
 source_group("operation" FILES ${operationSource})
 
-set(collectionSource
+set(collectionOperationsSource
   ./collection/operations/OperationCollectionSetItem.h
   ./collection/operations/OperationCollectionItemType.h
   ./collection/operations/OperationCollectionGetItem.h  
@@ -24,18 +28,74 @@ set(collectionSource
   ./collection/operations/OperationCollectionSwapElement.h
   ./collection/operations/OperationCollectionForeach.h
   ./collection/operations/OperationCollectionCopyRange.h
+  ./collection/operations/OperationEnumerableGetEnumerator.h
+  ./collection/operations/OperationEnumerableGetEnumerable.h
+
+
+)
+source_group("collection\\operations" FILES ${collectionOperationsSource})
+set(source ${source} ${collectionOperationsSource})
+set(collectionContainersSource
+ ./collection/containers/LinkedList.h
+ ./collection/containers/Array.h
+ ./collection/containers/Set.h
+	
+)
+source_group("collection\\containers" FILES ${collectionContainersSource})
+set(source ${source} ${collectionContainersSource})
+
+set(linkedListSpecializationSource
+  ./collection/specialization/linkedlist/Enumerator.h
+  ./collection/specialization/linkedlist/AddItem.h
+  ./collection/specialization/linkedlist/RemoveItem.h
+
+)
+set(source ${source} ${linkedListSpecializationSource})
+source_group("collection\\specialization\\linkedlist" FILES ${linkedListSpecializationSource})
+set(managedarraySpecializationSource
+
+
+)
+set(source ${source} ${managedarraySpecializationSource})
+source_group("collection\\specialization\\managedarray" FILES ${managedarraySpecializationSource})
+
+
+set(setSpecializationSource
+
+  ./collection/specialization/dslib.h
+
+)
+set(source ${source} ${setSpecializationSource})
+source_group("collection\\specialization\\set" FILES ${setSpecializationSource})
+
+
+set(arraySpecializationSource
+
+  ./collection/specialization/array.h
+
+)
+set(source ${source} ${arraySpecializationSource})
+source_group("collection\\specialization\\array" FILES ${arraySpecializationSource})
+
+
+set(stdSpecializationSource
+  ./collection/specialization/std/Enumerator.h
+  ./collection/specialization/std/AddItem.h
+  ./collection/specialization/stdcontainer.h
+)
+set(source ${source} ${stdSpecializationSource})
+source_group("collection\\specialization\\std" FILES ${stdSpecializationSource})
+
+
+set(collectionSource
   ./collection/Operators.h
   ./collection/Operations.h
   ./collection/Enumerable.h
-  ./collection/specialization/array.h
-  ./collection/specialization/stdcontainer.h
-  ./collection/specialization/dslib.h
   ../include/core.collection.h
 )
 
 source_group("collection" FILES ${collectionSource})
-
-source_group("binding" FILES ${bindingSource})
+set(source ${source} ${collectionSource})
 
 set(reflectionSource
 ./reflection/MethodInfo.h
@@ -89,8 +149,8 @@ set(reflectionSource
 ../include/core.reflection.h
 )
 source_group("reflection" FILES ${reflectionSource})
-
-set(source
+set(source ${source} ${reflectionSource})
+set(rootSource
 ./Time.h
 ./Time.cpp
 ./Object.h
@@ -108,7 +168,6 @@ set(source
 ./Comparator.h
 ./ObservableCollection.h
 ./Query.h
-./Set.h
 ./StringTools.h
 ./StringTools.cpp
 ./ValueLookup.h
@@ -123,7 +182,8 @@ set(source
 ../config.h
 ../include/core.h
 )
-source_group("" FILES ${source} )
+source_group("" FILES ${rootSource} )
+set(source ${source} ${rootSource})
 set(patternsSource
 ./patterns/Derivable.h
 ./patterns/ValueHolder.h
@@ -133,6 +193,7 @@ set(patternsSource
 ./patterns/Singleton.h
 ./patterns/Decorator.h
 )
+set(source ${source} ${patternsSource})
 source_group("src\\patterns" FILES ${patternsSource})
-add_library(core ${source} ${patternsSource} ${reflectionSource} ${bindingSource} ${collectionSource} ${operationSource} CMakeLists.txt)
+add_library(core  ${source} CMakeLists.txt)
 

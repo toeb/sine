@@ -2,10 +2,10 @@
 
 using namespace nspace;
 
-  Log & nspace::getLog(){
-    static Log * log=0;
-    if(!log){
-     log = new Log();
-    }
-    return *log;
+Log & nspace::getLog(){
+  static Log * log=0;
+  if(!log){
+    log = new Log();
   }
+  return *log;
+}

@@ -7,39 +7,36 @@
 #include <utility.reader.urdf/parsers/ConnectParser.h>
 #include <utility.reader.urdf/structs/ExtendedUrdfSpring.h>
 namespace nspace{
+  class ConnectionParser: public NamedElementParser, public ModelBuilderHolder{
+  public:
+    ConnectionParser(IModelBuilder & builder) : NamedElementParser("connection"), ModelBuilderHolder(builder){
+    }
+  protected:
+    bool parseNamedElement(XMLElement * element){
+      ModelNode * connectionNode = new ModelNode;
+      parseName(connectionNode,element);
 
-class ConnectionParser: public NamedElementParser, public ModelBuilderHolder{
-public:
-  ConnectionParser(IModelBuilder & builder) : NamedElementParser("connection"), ModelBuilderHolder(builder){
-    
-  }
-protected:
-   bool parseNamedElement(XMLElement * element){
-     ModelNode * connectionNode = new ModelNode;
-     parseName(connectionNode,element);
+      ConnectParser p(builder(),*connectionNode);
+      p.parseChildrenOf(element);
 
-     ConnectParser p(builder(),*connectionNode);
-     p.parseChildrenOf(element);
+      XMLElement * typeElement = element->FirstChildElement("type");
+      if(typeElement){
+        XMLElement * springElement = typeElement->FirstChildElement("spring");
+        if(springElement){
+          ExtendedUrdfSpring * urdfSpring = new ExtendedUrdfSpring;
 
-     XMLElement * typeElement = element->FirstChildElement("type");
-     if(typeElement){
-       XMLElement * springElement = typeElement->FirstChildElement("spring");
-       if(springElement){
-         ExtendedUrdfSpring * urdfSpring = new ExtendedUrdfSpring;
-         
-         if(springElement->Attribute("length")){
-           urdfSpring->length = springElement->DoubleAttribute("length");
-         }
-         urdfSpring->k = springElement->DoubleAttribute("k");
-         urdfSpring->d = springElement->DoubleAttribute("d");
+          if(springElement->Attribute("length")){
+            urdfSpring->length = springElement->DoubleAttribute("length");
+          }
+          urdfSpring->k = springElement->DoubleAttribute("k");
+          urdfSpring->d = springElement->DoubleAttribute("d");
 
-         connectionNode->set("urdfspring",urdfSpring);
-       }
-     }
-     
-     model().nodes()|=connectionNode;
-     return true;
-   }
-};
+          connectionNode->set("urdfspring",urdfSpring);
+        }
+      }
 
+      model().nodes()|=connectionNode;
+      return true;
+    }
+  };
 }

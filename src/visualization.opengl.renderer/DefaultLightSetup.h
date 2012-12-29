@@ -4,7 +4,6 @@
 #include <visualization.opengl.renderer/LightRenderer.h>
 
 namespace nspace{
-  
   class DefaultLightSetup : public virtual CompositeHubObject{
     TYPED_OBJECT(DefaultLightSetup)
   private:
@@ -18,7 +17,6 @@ namespace nspace{
     Light & light3(){return _light3;};
     LightRenderer & lightRenderer(){return _lightRenderer;}
     DefaultLightSetup(){
-      
       _light1.Coordinates().position() = Vector3D(-10,10,10);
       _light2.Coordinates().position() = Vector3D(-10,10,-10);
       _light2.Coordinates().position() = Vector3D(10,10,10);
@@ -31,9 +29,5 @@ namespace nspace{
       _lightRenderer |= &_light2;
       _lightRenderer |= &_light3;
     }
-    
-
-
   };
-
 }

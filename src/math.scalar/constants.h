@@ -42,4 +42,3 @@
 #ifndef M_SQRT1_2
 #define M_SQRT1_2   0.707106781186547524401
 #endif
-

@@ -14,5 +14,4 @@ void ConnectorForceRenderer::render(){
   p2 = p+p2;
   MiniGL::drawVector(p,p+_offset,0.1,MiniGL::green);
   MiniGL::drawVector(_offset+p,_offset+p2,0.2*forceLength,MiniGL::darkMagenta);
-
 }

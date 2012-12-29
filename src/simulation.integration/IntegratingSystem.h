@@ -9,8 +9,7 @@
 
 #include <simulation.time/SimulationTimeProvider.h>
 #include <core.logging/Log.h>
-namespace nspace{	
-
+namespace nspace{
   /**
   *
   */

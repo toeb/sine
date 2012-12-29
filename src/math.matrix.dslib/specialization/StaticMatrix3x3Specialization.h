@@ -3,7 +3,6 @@
 #include <math.matrix.dslib/StaticMatrix.h>
 #include <math.scalar/operations.h>
 namespace nspace{
-  
   template<typename T>
   class MatrixCompare<matrix2::StaticMatrix<T,3,3>, matrix2::StaticMatrix<T,3,3>, Real>{
   public:
@@ -11,7 +10,7 @@ namespace nspace{
       const T * a = aMat.data();
       const T * b = bMat.data();
       result = false;
-      // compare every element 
+      // compare every element
       {
         using namespace math::shorthands::scalar;
         if(absolute(a[0]-b[0]) >= eps)return;
@@ -23,10 +22,8 @@ namespace nspace{
         if(absolute(a[6]-b[6]) >= eps)return;
         if(absolute(a[7]-b[7]) >= eps)return;
         if(absolute(a[8]-b[8]) >= eps)return;
-        
       }
       result = true;
-      
     }
   };
 
@@ -47,9 +44,8 @@ namespace nspace{
       //T m21 = mData[7];
       T m22 = mData[8];
 
-      
       //precalculate products
-      T e2_df = m12*m12 - m11*m22;  // e^2 - d*f      
+      T e2_df = m12*m12 - m11*m22;  // e^2 - d*f
       T bf = m01*m22;
       T ce = m02*m12;
       T c2 = m02*m02;
@@ -70,7 +66,6 @@ namespace nspace{
       T e = (ae - bc) * Div;
       T f = (b2 - ad) * Div;
 
-      
       //set result
       T * data = inv.data();
       data[0] = a;
@@ -119,9 +114,4 @@ namespace nspace{
     m_inverted(2,1)=e;
     m_inverted(2,2)=f;*/
   };
-
-
-
-
-
 }

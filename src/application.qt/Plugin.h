@@ -22,6 +22,5 @@ namespace nspace{
     virtual void saveSettings(QSettings & settings){}
     friend class PluginApplication;
     friend class PluginContainer;
-
   };
 }

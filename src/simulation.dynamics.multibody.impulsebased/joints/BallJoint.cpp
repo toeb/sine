@@ -6,7 +6,7 @@ BallJoint::~BallJoint(void)
 }
 
 BallJoint::BallJoint(DynamicConnector &c1, DynamicConnector &c2, Real pTol, Real vTol):
- _cA(c1),_cB(c2),_positionTolerance(pTol), _velocityTolerance(vTol)
+  _cA(c1),_cB(c2),_positionTolerance(pTol), _velocityTolerance(vTol)
 {}
 
 void BallJoint::calculateDistancePreview(Real h, Vector3D & d)const{
@@ -18,7 +18,7 @@ void BallJoint::calculateDistancePreview(Real h, Vector3D & d)const{
 void BallJoint::correctPosition(Real h) {
   // get approximation of next distance
   Vector3D d;
-  calculateDistancePreview(h,d);  
+  calculateDistancePreview(h,d);
   // store length of distance vector
   _positionError = d.norm();
   //abort if positions are within tolerance
@@ -32,7 +32,6 @@ void BallJoint::correctPosition(Real h) {
   //apply correction impulse
   _cA.applyImpulse(p_a);
   _cB.applyImpulse(p_b);
-
 }
 bool BallJoint::arePositionsCorrect(){
   return _positionError < _positionTolerance;
@@ -44,7 +43,7 @@ void BallJoint::correctVelocity() {
 
   Vector3D v_rel;
   v_rel = v_a_wcs - v_b_wcs;
-  
+
   Vector3D p_a = _KInverse * v_rel;
   Vector3D p_b = -p_a;
   //apply velocity correction impulse
@@ -66,9 +65,9 @@ void BallJoint::evaluateKInverse() {
   // if the sum of the matrices is 0, do not invert it: use 0 for the inverse matrix, too, instead
   if (K.isZero())
     _KInverse = Matrix3x3::Zero();
-  else 
+  else
     matrix::invertSymmetricMatrix(_KInverse,K);
-    //Matrix3x3::symmInverse(K,_KInverse);//_KInverse = K.symmInverse();
+  //Matrix3x3::symmInverse(K,_KInverse);//_KInverse = K.symmInverse();
 }
 
 void BallJoint::precompute(){

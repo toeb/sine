@@ -17,6 +17,5 @@ namespace nspace{
   public:
     TaskDelegate(std::function<void()> callback):_callback(callback){}
     void run(){_callback();}
-
   };
 }

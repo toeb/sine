@@ -33,11 +33,10 @@
 
 #include <visualization/ViewportController.h>
 
-
 namespace nspace{
   class FpsViewportController:
     public virtual ViewportController,
-    public virtual CompositeHubObject, 
+    public virtual CompositeHubObject,
     public virtual ScheduledTask,
     public virtual IInputListener,
     public virtual Log
@@ -49,7 +48,7 @@ namespace nspace{
 
     PROPERTY(Real, Roll){}
     CUSTOMSERIALIZER(Real,Roll,);
-    CUSTOMDESERIALIZER(Real,Roll,);  
+    CUSTOMDESERIALIZER(Real,Roll,);
 
     PROPERTY(Real, Pitch){}
     CUSTOMSERIALIZER(Real,Pitch,);
@@ -61,12 +60,9 @@ namespace nspace{
 
     DESCRIPTION(MovementSpeed,"The speed at which to translate when pressing keys");
     PROPERTY(Real,MovementSpeed){}
-    
+
     DESCRIPTION(RotationSpeed,"The speed at which to rotate");
     PROPERTY(Real,RotationSpeed){}
-
-
-
 
   public:
     FpsViewportController();

@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include <config.h>
 #include <visualization/Renderer.h>
 #include <visualization.opengl/GlTexture.h>
@@ -15,6 +15,4 @@ namespace nspace{
     bool initializeObject();
     void cleanupObject();
   };
-
-
 }

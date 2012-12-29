@@ -1,6 +1,5 @@
 #pragma once
 
-
 //#include <visualization.opengl.renderer/BillboardRenderer.h>
 //#include <visualization.opengl.renderer/CameraRenderer.h>
 #include <visualization.opengl.renderer/DefaultLightSetup.h>

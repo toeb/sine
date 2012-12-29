@@ -3,20 +3,18 @@
 using namespace nspace;
 using namespace std;
 
- ControlFactoryRepository * ControlFactoryRepository::defaultInstance(){
+ControlFactoryRepository * ControlFactoryRepository::defaultInstance(){
   static ControlFactoryRepository * instance =0;
   if(instance)return instance;
   instance = new ControlFactoryRepository;
 
-  
   instance->Factories() |= new ValueWidget::Factory<DoubleSpinBoxWidget, double>();
   instance->Factories() |= new ValueWidget::Factory<BoolCheckboxWidget, bool>();
   instance->Factories() |= new ActionWidget::Factory();
 
-
   return instance;
 }
-Set<ControlFactory*> ControlFactoryRepository::getApplicableFactories(const Type * type,Object * object, const std::string & hints){  
+Set<ControlFactory*> ControlFactoryRepository::getApplicableFactories(const Type * type,Object * object, const std::string & hints){
   auto factories = Factories().subset([ type,object,&hints](ControlFactory * factory){
     return factory->match(type,object,hints);
   });

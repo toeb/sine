@@ -4,7 +4,6 @@
 #include <core.h>
 
 namespace nspace{
-
   class IComponent : public virtual NamedObject, public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(IComponent);
   private:
@@ -23,8 +22,6 @@ namespace nspace{
         out << "0" ;
       }
       out <<"'}";
-      
     }
-
   };
 }

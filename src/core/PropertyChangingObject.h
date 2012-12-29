@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Object.h>
-#include <core/Set.h>
+#include <core/collection/containers/Set.h>
 
 // may only be used inside class which has the a raisePropertyChanged(string) method
 // a private raise<NAME>Changed() method is created which allows this class to control additionally raise the changed event
@@ -11,8 +11,7 @@
   inline void notify##NAME##Changed(){static std::string propertyName=#NAME; raisePropertyChanged(propertyName);}\
   EXTENDED_PROPERTY(TYPE, NAME,public,,,{notify##NAME##Changed();})
 
-
-namespace nspace{ 
+namespace nspace{
   // forward declaration of PropertyChangingObject
   class PropertyChangingObject;
 
@@ -39,8 +38,8 @@ namespace nspace{
 
   // an object which allows listeners to listen for property change events
   class PropertyChangingObject : public virtual Object{
-    TYPED_OBJECT(PropertyChangingObject); 
-  private:    
+    TYPED_OBJECT(PropertyChangingObject);
+  private:
     Set<PropertyChangedListener*> _listeners;
   public:
     Set<PropertyChangedListener*> & listeners();
@@ -48,5 +47,4 @@ namespace nspace{
     void raisePropertyChanged(const std::string & propertyname);
     virtual void onPropertyChanged(const std::string & propertyname);
   };
-
 }

@@ -1,8 +1,7 @@
 #pragma once
 #include <simulation/ISimulationObject.h>
 #include <math/core.h>
-namespace nspace{  
-
+namespace nspace{
   class Connector : public ISimulationObject{
     Vector3D _offset;
   public:
@@ -12,7 +11,5 @@ namespace nspace{
     Vector3D & offset(){
       return _offset;
     }
-
-
   };
 }

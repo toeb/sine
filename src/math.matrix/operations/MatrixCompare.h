@@ -3,12 +3,11 @@
 #include <config.h>
 
 namespace nspace{
-
   /**
-   * \brief Matrix compare. Compares every element of the two matrices for equality and
-   * 				 assigns the result to true if every element aij is no more than epsilon apart from bij
-   * 				 if dimensions mismatch then the matrix cannot be equal
-   */
+  * \brief Matrix compare. Compares every element of the two matrices for equality and
+  * 				 assigns the result to true if every element aij is no more than epsilon apart from bij
+  * 				 if dimensions mismatch then the matrix cannot be equal
+  */
   template<typename MatA, typename MatB, typename TEpsilon=Real>
   class MatrixCompare{
   public:
@@ -34,5 +33,4 @@ namespace nspace{
       }
     }
   };
-
 }

@@ -3,7 +3,7 @@
 namespace nspace{
   template<typename OutputMat, typename InputMat>
   class MatrixPad{
-  public: 
+  public:
     static inline void operation(OutputMat & out, const InputMat & input, uint rowsTop, uint rowsBottom, uint colsLeft, uint colsRight){
       out.resize(input.rows()+rowsTop+rowsBottom,input.cols()+colsLeft+colsRight);
       MatrixSetConstant<Real, OutputMat>::operation(out,0.0);

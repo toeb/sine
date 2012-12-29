@@ -15,10 +15,8 @@ namespace nspace{
     ExtendedTask();
     virtual void toString(std::ostream & o)const;
   protected:
-    
+
     void onBeforeRun();
     void onAfterRun();
-
   };
-
 }

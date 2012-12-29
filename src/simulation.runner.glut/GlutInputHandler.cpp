@@ -15,7 +15,7 @@ GlutInputHandler & GlutInputHandler::instance(){
 GlutInputHandler::GlutInputHandler(){}
 GlutInputHandler::~GlutInputHandler(){}
 Keys charToKeyCode(char c){
-   c = toupper(c);
+  c = toupper(c);
   switch(c){
   case 'A':   return KEY_A; break;
   case 'B':   return KEY_B; break;
@@ -89,8 +89,8 @@ case GLUT_KEY_INSERT        : return      KEY_INSERT      ;
 case GLUT_KEY_NUM_LOCK      : return      KEY_NUM_LOCK    ;
 case GLUT_KEY_BEGIN         : return      KEY_BEGIN       ;
 case GLUT_KEY_DELETE        : return      KEY_DELETE      ;
-    default: return KEY_UNKNOWN;
-  }
+default: return KEY_UNKNOWN;
+}
 }
 void modifierDown(){
   int modifier = glutGetModifiers();
@@ -100,7 +100,7 @@ void modifierDown(){
   if(modifier & GLUT_ACTIVE_ALT) instance.onKeyDown(Keys::KEY_ALT);
   if(modifier & GLUT_ACTIVE_SHIFT) instance.onKeyDown(Keys::KEY_SHIFT);
 }
-void modifierUp(){  
+void modifierUp(){
   int modifier = glutGetModifiers();
   GlutInputHandler & instance = GlutInputHandler::instance();
   if(instance.isAnyKeyDown())return;
@@ -110,7 +110,6 @@ void modifierUp(){
 }
 
 void keyDown(unsigned char c, int x, int y){
-  
   GlutInputHandler::instance().onKeyDown(charToKeyCode(c));
   modifierDown();
 }
@@ -132,26 +131,25 @@ void mouseWheelFunc(int btn, int dir, int x, int y){
 void mousePress(int btn, int state, int x, int y){
   MouseButtons button;
   switch(btn){
-    case GLUT_LEFT_BUTTON: button=MouseButtons::BUTTON_LEFT;break;
-    case GLUT_RIGHT_BUTTON: button=MouseButtons::BUTTON_RIGHT;break;
-    case GLUT_MIDDLE_BUTTON: button=MouseButtons::BUTTON_MIDDLE;break;
+  case GLUT_LEFT_BUTTON: button=MouseButtons::BUTTON_LEFT;break;
+  case GLUT_RIGHT_BUTTON: button=MouseButtons::BUTTON_RIGHT;break;
+  case GLUT_MIDDLE_BUTTON: button=MouseButtons::BUTTON_MIDDLE;break;
   default:
     button = MouseButtons::BUTTON_UNKNOWN;
     return;
   }
- switch(state){
- case GLUT_DOWN:
-   GlutInputHandler::instance().onMouseButtonDown(button);
-   modifierDown();
-   break;
- case GLUT_UP:
-   GlutInputHandler::instance().onMouseButtonUp(button);
-  modifierUp();
-   break;
- default:
-   break;
- }
-  
+  switch(state){
+  case GLUT_DOWN:
+    GlutInputHandler::instance().onMouseButtonDown(button);
+    modifierDown();
+    break;
+  case GLUT_UP:
+    GlutInputHandler::instance().onMouseButtonUp(button);
+    modifierUp();
+    break;
+  default:
+    break;
+  }
 }
 int lastX,lastY;
 bool firstStep=true;
@@ -169,11 +167,11 @@ void mouseMove(int x, int y){
 bool GlutInputHandler::initializeObject(){
   glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
   glutKeyboardFunc(keyDown);
-  glutKeyboardUpFunc(keyUp);  
-	glutMouseWheelFunc(mouseWheelFunc);  
-	glutMouseFunc (mousePress);  
-	glutMotionFunc (mouseMove);
-	glutSpecialFunc (specialDown);
+  glutKeyboardUpFunc(keyUp);
+  glutMouseWheelFunc(mouseWheelFunc);
+  glutMouseFunc (mousePress);
+  glutMotionFunc (mouseMove);
+  glutSpecialFunc (specialDown);
   glutSpecialUpFunc(specialUp);
   glutPassiveMotionFunc(mouseMove);
   return true;

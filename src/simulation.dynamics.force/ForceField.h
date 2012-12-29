@@ -7,12 +7,11 @@
 
 namespace nspace{
   class ForceField : public virtual Force{
-  TYPED_OBJECT(ForceField);
+    TYPED_OBJECT(ForceField);
   private:
     std::function<void (Vector3D &, Vector3D & ,const  Vector3D& , Time)> _f;
   public:
     ForceField(std::function<void (Vector3D &, Vector3D & , const  Vector3D& , Time)> f):_f(f){
-
     }
     void act( std::vector<DynamicBody*> & targets, Real time ){
       std::for_each(targets.begin(), targets.end(), [this,time](DynamicBody * target){
@@ -22,12 +21,7 @@ namespace nspace{
         _f(force,torque, cog,time);
         target->addExternalForce(force);
         target->addExternalTorque(torque);
-      
       });
-
-
     }
-  
   };
-
 }

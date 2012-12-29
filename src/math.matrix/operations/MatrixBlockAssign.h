@@ -3,7 +3,7 @@
 #include <config.h>
 
 namespace nspace{
-template<typename BlockType, typename SourceType>
+  template<typename BlockType, typename SourceType>
   class MatrixBlockAssign{
   public:
     static inline void operation(SourceType  & target, const BlockType & source, uint rowOffset, uint colOffset){
@@ -12,7 +12,7 @@ template<typename BlockType, typename SourceType>
         return;
       }
       if(source.cols()+colOffset > target.cols()){
-/*        ERROR("range exceed matrix dimension");*/
+        /*        ERROR("range exceed matrix dimension");*/
         return;
       }
       for(uint i=rowOffset; i < rowOffset+source.rows(); i++){

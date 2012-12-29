@@ -4,6 +4,4 @@
 
 #include <core/Set.h>
 namespace nspace{
-  
-
 }

@@ -12,9 +12,8 @@
 #include "VectorND.h"
 #include "Quaternion.h"
 namespace nspace{
-namespace math{
-namespace ibds{
-
-}
-}
+  namespace math{
+    namespace ibds{
+    }
+  }
 }

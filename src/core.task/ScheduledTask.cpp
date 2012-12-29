@@ -21,7 +21,6 @@ void ScheduledTask::run(){
 
 void ScheduledTask::timeout(Time dt, Time t){}
 
-
 ScheduledTask::ScheduledTask():_Interval(0.0),_IsOneTimeTask(true),_lastTimeoutTime(REAL_MAX),_nextExecutionTime(REAL_MAX){
   setName("ScheduledTask");
 }

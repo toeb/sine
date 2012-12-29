@@ -22,7 +22,7 @@ int CollisionDetector::getContactCount(){
   return count;
 }
 int CollisionDetector::getCollisionCount(){
-  return _collisions.size();  
+  return _collisions.size();
 }
 
 const vector<Collision*>& CollisionDetector::getCollisions()const{
@@ -54,7 +54,6 @@ void CollisionDetector::addCollision(Collision * collision){
   collision->getObjectB().addCollision(collision);
 }
 
-
 void CollisionDetector::foreachCollidable(std::function<void( ICollidable*)> f){
   for_each(_collidables.begin(), _collidables.end(), f);
 }
@@ -72,16 +71,15 @@ void CollisionDetector::foreachCombination(std::function<void (ICollidable * , I
   }
 }
 
-
 void CollisionDetector::foreachCollision(std::function<void (Collision* )>f){
- for_each(_collisions.begin(), _collisions.end(), f);
+  for_each(_collisions.begin(), _collisions.end(), f);
 }
 
 void CollisionDetector::foreachContact(std::function<void(Collision* ,Contact*)>f){
   foreachCollision([f](Collision * collision){
     function<void(Collision* ,Contact*)> f2 =f;
     collision->foreachContact([collision, f2](Contact* contact){
-     f2(collision,contact); 
+      f2(collision,contact);
     });
   });
 }

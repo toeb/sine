@@ -12,10 +12,10 @@ namespace nspace{
     Real effortLimit;
     Real velocityLimit;
   };
-struct UrdfJoint : public UrdfElement{
-  UrdfJoint():limits(0){}
-  Vector3D axis;
-  std::string type;
-  UrdfJointLimits * limits;
-};
+  struct UrdfJoint : public UrdfElement{
+    UrdfJoint():limits(0){}
+    Vector3D axis;
+    std::string type;
+    UrdfJointLimits * limits;
+  };
 }

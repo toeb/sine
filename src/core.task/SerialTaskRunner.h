@@ -18,11 +18,10 @@ namespace nspace{
       ITask * task = _taskqueue.front();
       _taskqueue.pop();
       return task;
-    }  
+    }
     virtual bool accept(ITask * task){
       _taskqueue.push(task);
       return true;
     }
   };
-
 }

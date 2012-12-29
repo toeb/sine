@@ -13,28 +13,24 @@ bool SimulationRunner::initializeObject(){
   return true;
 }
 SimulationRunner::SimulationRunner(){
-
 }
 SimulationRunner::~SimulationRunner(){
-
 }
 void SimulationRunner::stop(){
   stopRunner();
 }
 int SimulationRunner::run(){
   if(!simulation()){
-     cerr << "SimulationRunner: Simulation is not set" << endl;
+    cerr << "SimulationRunner: Simulation is not set" << endl;
     return 1;
   }
   if(!simulation()->initialize()){
     cerr << "SimulationRunner: Simulation could not be initialized" << endl;
     return 1;
   }
-  
+
   return executeRunner();
 }
-
-
 
 void SimulationRunner::executeTasks(){
   //this could be extended to use a scheduler and multithreading

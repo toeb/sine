@@ -3,7 +3,6 @@
 using namespace nspace;
 
 PropertyViewPlugin::PropertyViewPlugin():_Object(0),_StartVisible(false),_ObjectPropertyView(0){
-
 }
 void PropertyViewPlugin::propertyChanging(ObjectPropertyView*, ObjectPropertyView){
   if(oldvalue){
@@ -17,13 +16,11 @@ void PropertyViewPlugin::propertyChanging(Object*, Object){
   if(nspace::hasObjectName(newvalue)){
     std::stringstream ss;
     ss << "Properties of ";
-    ss << nspace::name(newvalue);    
+    ss << nspace::name(newvalue);
     setName(ss.str());
   }else{
     setName("Property View");
   }
-  
-
 }
 void PropertyViewPlugin::install(PluginContainer & container){
   if(!getObjectPropertyView()){
@@ -37,5 +34,4 @@ void PropertyViewPlugin::install(PluginContainer & container){
 
   container.setPluginWindow(window);
   if(getStartVisible())container.toggleWindow(true);
-
 }

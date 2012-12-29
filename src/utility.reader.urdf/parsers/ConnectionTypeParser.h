@@ -1,6 +1,6 @@
 #pragma once
 namespace mbslib{
-class ConnectionTypeParser{
-public:
-};
+  class ConnectionTypeParser{
+  public:
+  };
 }

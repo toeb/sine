@@ -6,7 +6,6 @@
 
 using namespace nspace;
 
-
 void MeshGridRenderer::render(){
   glTransformation(_origin);
 
@@ -28,5 +27,4 @@ void MeshGridRenderer::render(){
       }
     }
   }
-  
 }

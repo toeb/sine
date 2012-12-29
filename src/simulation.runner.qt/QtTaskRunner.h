@@ -12,7 +12,6 @@
 #include <core.logging.h>
 class Ui_TaskWidget;
 namespace nspace{
-
   class QtTaskRunner : public Plugin, public virtual CompositeHubObject, public virtual TypedModuleBase<ITask>,public virtual Log{
     Q_OBJECT;
     REFLECTABLE_OBJECT(QtTaskRunner);
@@ -33,14 +32,12 @@ namespace nspace{
     void onComponentAdded(Object * o);
     void onComponentRemoved(Object * o);
     bool accept(ITask * task);
-  public slots:
-    void timeout();
+    public slots:
+      void timeout();
   public:
     void install(PluginContainer & container);
     void uninstall(PluginContainer & container);
     void enable();
     void disable();
-
-
   };
 }

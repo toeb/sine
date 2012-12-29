@@ -4,8 +4,7 @@
 #include <math.scalar/core.h>
 #include <math.statistics/IAverage.h>
 namespace nspace{
-
-class AverageRate : public IAverage{
+  class AverageRate : public IAverage{
   private:
     IAverage & _average;
     bool _initialized;
@@ -13,7 +12,6 @@ class AverageRate : public IAverage{
     Real _lastSample;
   public:
     AverageRate(IAverage & average):_average(average),_initialized(false){
-
     }
     void addSample( Real sample ){
       if(!_initialized){
@@ -21,8 +19,8 @@ class AverageRate : public IAverage{
         _lastSample = sample;
         _initialized = true;
         return;
-      }      
-      
+      }
+
       Time t_sys = systemTime();
       Time dt = t_sys - _lastSampleTime;
       Real delta = sample-_lastSample;
@@ -32,12 +30,10 @@ class AverageRate : public IAverage{
 
       _lastSample = sample;
       _lastSampleTime =t_sys;
-
     }
 
     Real calculate(){
       return _average.calculate();
     }
-
   };
-  }
+}

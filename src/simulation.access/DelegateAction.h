@@ -5,11 +5,11 @@
 
 namespace nspace{
   /*
-class DelegateAction : public virtual IAction{
-private:
+  class DelegateAction : public virtual IAction{
+  private:
   std::function<void()>  _function;
-public:
+  public:
   DelegateAction(const std::string & name, std::function<void()>  function);
   void execute();
-};*/
+  };*/
 }

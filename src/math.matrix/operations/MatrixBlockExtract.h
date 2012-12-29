@@ -3,7 +3,7 @@
 #include <config.h>
 
 namespace nspace{
-template<typename BlockType, typename SourceType>
+  template<typename BlockType, typename SourceType>
   class MatrixBlockExtract{
   public:
     static inline void operation(BlockType  & target, const SourceType & source, uint rowOffset, uint colOffset){
@@ -12,7 +12,7 @@ template<typename BlockType, typename SourceType>
         return;
       }
       if(target.cols()+colOffset > source.cols()){
-  /*      ERROR("range exceed matrix dimension");*/
+        /*      ERROR("range exceed matrix dimension");*/
         return;
       }
       for(uint i=0; i < target.rows(); i++){
@@ -22,9 +22,7 @@ template<typename BlockType, typename SourceType>
       }
     }
   };
-  
-  
-  
+
   template<typename OutputMatrix, typename InputMatrix>
   class MatrixExtractBlock{
   public:
@@ -39,5 +37,4 @@ template<typename BlockType, typename SourceType>
       }
     }
   };
-
 }

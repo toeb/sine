@@ -27,7 +27,6 @@ namespace nspace{
       item->push(*arr);
       *arr =0;
     }
-   
   };
   template<typename T>
   std::map<int,std::queue<T*> *> ArrayPool<T>::_arrays = *new std::map<int, std::queue<T*> *>();

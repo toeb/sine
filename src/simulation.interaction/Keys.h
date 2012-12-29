@@ -5,7 +5,6 @@
 #define MAX_MOUSE_BUTTONS 3
 
 namespace nspace{
-	
   enum MouseButtons{
     BUTTON_UNKNOWN=99,
     BUTTON_LEFT=0,
@@ -83,6 +82,4 @@ namespace nspace{
     KEY_PERIOD,
     KEY_BACKSPACE
   };
-
-
 }

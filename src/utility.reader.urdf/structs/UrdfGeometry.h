@@ -1,16 +1,13 @@
 #pragma once
 
-
 #include <config.h>
 
 #include <core/Object.h>
 
 namespace nspace{
-  
-
   class UrdfGeometry : public virtual Object{
     TYPED_OBJECT;
-  private:    
+  private:
   public:
   };
 
@@ -26,7 +23,7 @@ namespace nspace{
     Real radius;
     Real length;
   };
-  
+
   class UrdfSphere : public UrdfGeometry{
     TYPED_OBJECT;
   public:
@@ -38,5 +35,4 @@ namespace nspace{
     std::string filename;
     Vector3D scale;
   };
-
 }

@@ -21,21 +21,19 @@ bool UrdfModelReader::parse(IModelBuilder & builder, std::istream & data){
   string s = readToEnd(data);
   const char * text = s.c_str();
 
-  // parse tinyxml2 document 
+  // parse tinyxml2 document
   tinyxml2::XMLDocument document;
   int errorCode = document.Parse(text);
 
   //return false if document could not be parsed (this indicates that xml was not valid
   if(errorCode){
-//    ERROR("tinyxml2 Parse error number " <<errorCode);
+    //    ERROR("tinyxml2 Parse error number " <<errorCode);
     return false;
   }
 
-
-  
   // create a robot parser and parse all nodes of document
   RobotElementParser robotParser(builder);
   robotParser.parseSiblingsOf(document.FirstChildElement());
- 
+
   return true;
 }

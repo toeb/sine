@@ -21,7 +21,6 @@ namespace nspace{
     }
   };
 
-
   template<typename TValue>
   class MatrixElementAssignment<double,TValue>{
   public:

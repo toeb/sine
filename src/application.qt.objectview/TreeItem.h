@@ -5,11 +5,10 @@
 #include <application.qt.objectview/ObjectPropertyViewModel.h>
 
 namespace nspace{
-  
-  class TreeItem : 
-    public Node<TreeItem>, 
-    public virtual PropertyChangingObject    
-  {    
+  class TreeItem :
+    public Node<TreeItem>,
+    public virtual PropertyChangingObject
+  {
     REFLECTABLE_OBJECT(TreeItem);
     // the object which this tree item wraps
     PROPERTY(Object*, Object){}
@@ -19,7 +18,7 @@ namespace nspace{
     PROPERTY(ObjectPropertyViewModel*, Model){}
     // index model index of this item
     SIMPLE_PROPERTY(QModelIndex, ModelIndex){}
-  public:      
+  public:
     // expands the this item. this method must be called before accessing children
     void expand();
     //default constructor
@@ -40,10 +39,10 @@ namespace nspace{
     // gets the children
     Set<TreeItem*> & children();
     // gets the index of this element in reference to its parent
-    int childNumber();    
+    int childNumber();
     void onPropertyChanged(const std::string & name);
   protected:
-    virtual void onObjectChanged(){};    
+    virtual void onObjectChanged(){};
     virtual void doExpand()=0;
   };
 }

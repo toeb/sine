@@ -3,5 +3,4 @@
 #include <core/Object.h>
 
 namespace nspace{
-
 }

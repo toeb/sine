@@ -2,8 +2,6 @@
 
 using namespace nspace;
 
-
-
 Light::Light():
   _AmbientColor(1,1,1,1)
   ,_AmbientIntensity(0.2)
@@ -13,6 +11,6 @@ Light::Light():
   ,_SpecularIntensity(1)
   ,_Coordinates(CoordinateSystem::identity())
 {
-    setName("Light");
-    Coordinates().position()=Vector3D(-10,10,10);
+  setName("Light");
+  Coordinates().position()=Vector3D(-10,10,10);
 }

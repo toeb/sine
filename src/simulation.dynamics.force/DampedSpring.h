@@ -47,10 +47,9 @@ namespace nspace{
     const Vector3D & getSpringForce()const;
     const Vector3D & getDampeningForce()const;
 
-
     /**
-                        * Creates a string with the specified stiffness, damping and rest length, which is attached to the specified connectors.
-                        */
+    * Creates a string with the specified stiffness, damping and rest length, which is attached to the specified connectors.
+    */
     DampedSpring(DynamicConnector & c1, DynamicConnector &c2, Real k_s, Real k_d, Real restLength);
 
     inline void act (std::vector<DynamicBody*> & target, Real time);

@@ -9,5 +9,3 @@
 #include <application.qt.objectview/PropertySetTreeItem.h>
 #include <application.qt.objectview/PropertyTreeItem.h>
 #include <application.qt.objectview/TreeItem.h>
-
-

@@ -1,10 +1,7 @@
 #include "DynamicsAlgorithm.h"
 
-
-
 using namespace std;
 using namespace nspace;
-
 
 DynamicsAlgorithm::DynamicsAlgorithm()//:
   // multiBodyDynamics(20),
@@ -24,9 +21,8 @@ DynamicsAlgorithm::DynamicsAlgorithm()//:
   addComponent(&timingModule);
 }
 
-
 void DynamicsAlgorithm::preIntegration(Real t, Real h){
-  //   dynamicBodyModule.calculateCachedValues(); 
+  //   dynamicBodyModule.calculateCachedValues();
   //   connectorModule.calculateConnectorPositions();
   //   updatablesModule.update(t,h);
   //   collisionHandler.reset();
@@ -40,21 +36,20 @@ void DynamicsAlgorithm::preIntegration(Real t, Real h){
 }
 
 void DynamicsAlgorithm::evaluate(Real t, Real h){
-  dynamicBodyModule.calculateCachedValues(); 
+  dynamicBodyModule.calculateCachedValues();
   connectorModule.calculateConnectorPositions();
 
   forceModule.setForces(t);
 
   if(doMultiBody)multiBodyDynamics.correctPositions(h);
 
-  dynamicBodyModule.calculateDynamics(); 
+  dynamicBodyModule.calculateDynamics();
   if(doMultiBody)multiBodyDynamics.correctVelocities();
-
 }
 
 void DynamicsAlgorithm::postIntegration(Real t,Real h){
   //   if(doMultiBody)multiBodyDynamics.correctVelocities();
   //   textilesModule.normalize();
-  // 
+  //
   //   updatablesModule.afterStep(t,h);
 }

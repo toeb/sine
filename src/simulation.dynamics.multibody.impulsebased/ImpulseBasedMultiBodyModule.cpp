@@ -16,9 +16,9 @@ ImpulseBasedMultiBodyModule::ImpulseBasedMultiBodyModule(int maxIterations, Real
 }
 
 void ImpulseBasedMultiBodyModule::correctPositions(Real h){
-   tick();
+  tick();
 
-   bool toleranceSatisfied;  
+  bool toleranceSatisfied;
   _iterations  = 0;
   // do steps before correction
   foreachJoint([](Joint* joint){
@@ -29,7 +29,7 @@ void ImpulseBasedMultiBodyModule::correctPositions(Real h){
     toleranceSatisfied = true;
     foreachJoint([&toleranceSatisfied, &h](Joint* joint){
       joint->correctPosition(h);
-      // if correctPosition returns false for some joint, toleranceSatisfied remains false for the rest of the loop 
+      // if correctPosition returns false for some joint, toleranceSatisfied remains false for the rest of the loop
       if(!joint->arePositionsCorrect())toleranceSatisfied=false;
     });
     _iterations++;

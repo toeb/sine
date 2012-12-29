@@ -9,10 +9,9 @@ SpringRenderer::SpringRenderer(DampedSpring & spring):_spring(spring){
   _maxForceAmount = 0.0001;
 }
 
-
 void SpringRenderer::render(){
   _spring.calculateSpringAndDampeningForce();
-  
+
   DynamicConnector & cA = _spring.getConnectorA();
   DynamicConnector & cB = _spring.getConnectorB();
 
@@ -22,9 +21,8 @@ void SpringRenderer::render(){
   const Vector3D & f=_spring.getSpringForce();
   Real amount = f.length();
   if(amount > _maxForceAmount)_maxForceAmount = amount;
-  MiniGL::valueToColor(amount,color,0,_maxForceAmount);  
+  MiniGL::valueToColor(amount,color,0,_maxForceAmount);
   MiniGL::drawVector(a_wcs,b_wcs,1,color);
-  
-  //cout << amount << " " << color[0] << " " <<color[1] << " " << color[2] << endl;
 
+  //cout << amount << " " << color[0] << " " <<color[1] << " " << color[2] << endl;
 }

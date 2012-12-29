@@ -4,7 +4,7 @@
 #include <vector>
 #include <functional>
 namespace nspace{
-    // TODO REWORK OBSERVABLE OBJECTS for performance
+  // TODO REWORK OBSERVABLE OBJECTS for performance
   class Observable;
   class ObjectObserver{
   protected:
@@ -12,13 +12,11 @@ namespace nspace{
     friend class Observable;
   };
 
-  
   template <typename T=std::function<void (Observable*)> >
   class DelegateObjectObserver:public ObjectObserver{
     T _callback;
   public:
     DelegateObjectObserver(T callback):_callback(callback){
-
     }
     void onChange(Observable * sender){
       _callback(sender);

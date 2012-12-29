@@ -1,31 +1,31 @@
 /*
- * IBDS - Impulse-Based Dynamic Simulation Library
- * Copyright (c) 2003-2008 Jan Bender http://www.impulse-based.de
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event will the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Permission is granted to anyone to use this software for any purpose,
- * including commercial applications, and to alter it and redistribute it
- * freely, subject to the following restrictions:
- *
- * 1. The origin of this software must not be misrepresented; you must not
- *    claim that you wrote the original software. If you use this software
- *    in a product, an acknowledgment in the product documentation would be
- *    appreciated but is not required.
- * 2. Altered source versions must be plainly marked as such, and must not be
- *    misrepresented as being the original software.
- * 3. This notice may not be removed or altered from any source distribution.
- *
- * Jan Bender - Jan.Bender@impulse-based.de
- */
-// 
+* IBDS - Impulse-Based Dynamic Simulation Library
+* Copyright (c) 2003-2008 Jan Bender http://www.impulse-based.de
+*
+* This software is provided 'as-is', without any express or implied
+* warranty. In no event will the authors be held liable for any damages
+* arising from the use of this software.
+*
+* Permission is granted to anyone to use this software for any purpose,
+* including commercial applications, and to alter it and redistribute it
+* freely, subject to the following restrictions:
+*
+* 1. The origin of this software must not be misrepresented; you must not
+*    claim that you wrote the original software. If you use this software
+*    in a product, an acknowledgment in the product documentation would be
+*    appreciated but is not required.
+* 2. Altered source versions must be plainly marked as such, and must not be
+*    misrepresented as being the original software.
+* 3. This notice may not be removed or altered from any source distribution.
+*
+* Jan Bender - Jan.Bender@impulse-based.de
+*/
+//
 // #include "CDMath.h"
 // #include <math.h>
-// 
+//
 // using namespace nspace;
-// 
+//
 // /** Gibt zurück, ob sich die Punkte p1, p2 auf der gleichen Seite der Linie von a nach b befinden.
 //   */
 // bool CDMath::sameSide (const Vector3D &p1, const Vector3D &p2, const Vector3D &a, const Vector3D &b)
@@ -37,8 +37,8 @@
 // 	else
 // 		return false;
 // }
-// 
-// /** Gibt zurück, ob sich der Punkt p innerhalb des Dreiecks a,b,c befindet. 
+//
+// /** Gibt zurück, ob sich der Punkt p innerhalb des Dreiecks a,b,c befindet.
 //   */
 // bool CDMath::pointInTriangle(const Vector3D &p, const Vector3D &a, const Vector3D &b, const Vector3D &c)
 // {
@@ -47,8 +47,8 @@
 // 	else
 // 		return false;
 // }
-// 
-// /** Gibt zurück, wie weit die übergebene Kante e1, e2 in das Dreieck a,b,c eindringt. 
+//
+// /** Gibt zurück, wie weit die übergebene Kante e1, e2 in das Dreieck a,b,c eindringt.
 //   * Wenn die Kante das Dreieck nicht schneidet, dann wird -1 zurückgegeben.
 //   * Die Ebene, in der das Dreieck liegt hat die Hessische Normalform hnf.
 //   * In iPoint wird ggf. der Schnittpunkt zurückgegeben.
@@ -60,19 +60,19 @@
 //   \param hnf Hessische Normalform der Ebene, in der das Dreieck liegt
 //   \param iPoint Rückgabe des Schnittpunkts
 //   */
-// Real CDMath::intersectionEdgeTriangle (const Vector3D &e1, const Vector3D &e2, const Vector3D &a, 
+// Real CDMath::intersectionEdgeTriangle (const Vector3D &e1, const Vector3D &e2, const Vector3D &a,
 // 									   const Vector3D &b, const Vector3D &c, HesseNormalForm *hnf, Vector3D &iPoint)
 // {
 // 	// Distanz der Punkte e1, e2 zur Dreiecksebene berechnen: a*x+b*y+c*z+d
 // 	Real d1 = hnf->a*e1(0) + hnf->b*e1(1) + hnf->c*e1(2) + hnf->d;
 // 	Real d2 = hnf->a*e2(0) + hnf->b*e2(1) + hnf->c*e2(2) + hnf->d;
-// 
+//
 // 	// Nur bei unterschiedlichen Vorzeichen ist Schnitt möglich.
 // 	if (((d1 < 0) && (d2 < 0)) || ((d1 > 0) && (d2 > 0)))
 // 		return -1;
-// 
+//
 // 	// Bei d1=0 bzw. d2=0 liegen e1 bzw. e2 in der Ebene und bilden den Schnittpunkt
-// 	if (d1==0) 
+// 	if (d1==0)
 // 	{
 // 		if (pointInTriangle (e1, a, b, c))
 // 		{
@@ -88,21 +88,21 @@
 // 			return 0;
 // 		}
 // 	}
-// 
+//
 // 	// Schnittpunkt der Geraden mit der Ebene bestimmen
 // 	Vector3D v = e2 - e1;			// Richtungsvektor der Geraden, als Aufpunkt dient e1
 // 	Real div = hnf->a*v(0) + hnf->b*v(1) + hnf->c*v(2);
-// 
+//
 // 	// Division durch 0 verhindern: In diesem Fall wäre die Gerade
 // 	// parallel zur Ebene und würde diese damit nicht schneiden.
 // 	if (div == 0)
 // 		return -1;
-// 
+//
 // 	Real lambda = -d1 / div;
-// 
+//
 // 	// Schnittpunkt mit der Ebene
 // 	Vector3D ip = e1 + lambda*v;
-// 
+//
 // 	// Bestimmen, ob Schnittpunkt in Dreieck liegt
 // 	if (pointInTriangle (ip, a, b, c))
 // 	{
@@ -115,7 +115,7 @@
 // 	else
 // 		return -1;
 // }
-// 
+//
 // /** Bestimmt den Abstand der Kante e1, e2 zu dem Punkt p.
 //   * Berechnet zunächst den Lotpunkt l auf der Kante. Falls
 //   * der Lotpunkt nicht zwischen den Punkten e1 und e2 liegt,
@@ -131,12 +131,12 @@
 // {
 // 	// Richtungsvektor der Kante
 // 	Vector3D v = e2 - e1;
-// 	
+//
 // 	// Lotpunkt bestimen
 // 	Real v2 = v*v;
 // 	if (v2 == 0)
 // 		return false;
-// 
+//
 // 	Real lambda = ((p*v - v*e1) / v2);
 // 	// Überprüfen, ob Lotpunkt zwischen e1 und e2 liegt.
 // 	if ((lambda >= 0) && (lambda <= 1))
@@ -149,11 +149,11 @@
 // 	else
 // 		return false;
 // }
-// 
+//
 // /** Bestimmt den quadratischen Abstand der Kante e1, e2 zu dem
-//   * Punkt p. Berechnet zunächst den Lotpunkt l auf der Kante. 
+//   * Punkt p. Berechnet zunächst den Lotpunkt l auf der Kante.
 //   * Falls der Lotpunkt nicht zwischen den Punkten e1 und e2 liegt,
-//   * dann wird kein Abstand zurückgegeben und die Funktion gibt 
+//   * dann wird kein Abstand zurückgegeben und die Funktion gibt
 //   * false zurück.
 //   \param p Punkt für den der Abstand bestimmt werden soll
 //   \param e1 Erster Eckpunkt der Kante
@@ -165,12 +165,12 @@
 // {
 // 	// Richtungsvektor der Kante
 // 	Vector3D v = e2 - e1;
-// 	
+//
 // 	// Lotpunkt bestimen
 // 	Real v2 = v*v;
 // 	if (v2 == 0)
 // 		return false;
-// 
+//
 // 	Real lambda = ((p*v - v*e1) / v2);
 // 	// Überprüfen, ob Lotpunkt zwischen e1 und e2 liegt.
 // 	if ((lambda >= 0) && (lambda <= 1))
@@ -183,9 +183,9 @@
 // 	else
 // 		return false;
 // }
-// 
-// /** Berechnet den Abstand zwischen zwei Kanten nach dem Algorithmus von V. J. Lumelsky, der 
-//   * in "Impulsbasierte Dynamiksimulation starrer Körper unter Verwendung von Hüllkörperhierarchien" 
+//
+// /** Berechnet den Abstand zwischen zwei Kanten nach dem Algorithmus von V. J. Lumelsky, der
+//   * in "Impulsbasierte Dynamiksimulation starrer Körper unter Verwendung von Hüllkörperhierarchien"
 //   * (Christian Lennerz) ausführlich beschrieben ist.
 //   \param a1 erster Eckpunkt der ersten Kante
 //   \param b1 zweiter Eckpunkt der ersten Kante
@@ -193,7 +193,7 @@
 //   \param b2 zweiter Eckpunkt der zweiten Kante
 //   \param np1 Rückgabe des nahesten Punktes auf der ersten Kante
 //   \param np2 Rückgabe des nahesten Punktes auf der zweiten Kante
-//   \param vv Gibt true zurück, wenn es sich um einen Vertex-Vertex- oder Vertex-Edge-Fall handelt. Also, wenn sich der nächste Punkt 
+//   \param vv Gibt true zurück, wenn es sich um einen Vertex-Vertex- oder Vertex-Edge-Fall handelt. Also, wenn sich der nächste Punkt
 // 		    auf einer Kante in einem Endpunkt befindet.
 //   */
 // Real CDMath::distanceEdgeEdge (Vector3D *a1, Vector3D *b1, Vector3D *a2, Vector3D *b2, Vector3D &np1, Vector3D &np2, bool &vv)
@@ -202,16 +202,16 @@
 // 	Vector3D v2 = *b2-*a2;
 // 	Vector3D v12 = *a2-*a1;
 // 	vv = false;
-// 
+//
 // 	Real V12 = v1 * v2;
 // 	Real V1 = v1 * v1;
 // 	Real V2 = v2 * v2;
 // 	Real W1 = v1 * v12;
 // 	Real W2 = v2 * v12;
-// 
+//
 // 	Real u1 = 0;
 // 	Real lambda1 = 0;
-// 
+//
 // 	if (V1*V2-V12*V12 == 0)
 // 	{
 // 		vv = true;
@@ -230,7 +230,7 @@
 // 			vv = true;
 // 			u1 = 1;
 // 		}
-// 		else 
+// 		else
 // 			u1 = lambda1;
 // 	}
 // 	Real u2 = (u1*V12 - W2) / V2;
@@ -247,7 +247,7 @@
 // 		if (u2 < 0)
 // 			u2 = 0;
 // 		else if (u2 > 1)
-// 			u2 = 1;	
+// 			u2 = 1;
 // 		u1 = (u2*V12 + W1) / V1;
 // 		if ((u1 >= 0) && (u1 <= 1))
 // 		{
@@ -256,7 +256,7 @@
 // 			Vector3D h = u1*v1 - u2*v2 - v12;
 // 			return h*h;
 // 		}
-// 		else 
+// 		else
 // 		{
 // 			if (u1 < 0)
 // 				u1 = 0;
@@ -269,25 +269,25 @@
 // 		}
 // 	}
 // }
-// 
-// /** Bestimmt den Schnitt von zwei Liniensegmenten (a,b) und (c,d) und gibt das Ergebnis in intersection zurück. 
+//
+// /** Bestimmt den Schnitt von zwei Liniensegmenten (a,b) und (c,d) und gibt das Ergebnis in intersection zurück.
 //   * Der Rückgabewert hat folgende Bedeutung: \n
 //   * 0: Es existiert kein Schnittpunkt.\n
 //   * 1: Es wurde ein Schnittpunkt gefunden.\n
 //   * 2: Segmente sind parallel.\n
 //   * 3: Linien liegen übereinander.
-//   */ 
+//   */
 // int CDMath::lineSegmentIntersection2D (Vector2D *a, Vector2D *b, Vector2D *c, Vector2D *d, Vector2D &intersection)
 // {
 // 	Vector2D v1 = *b-*a;
 // 	Vector2D v2 = *d-*c;
 // 	Vector2D delta = *c-*a;
-// 
+//
 // 	Real denom = v1(0)*v2(1) - v1(1)*v2(0);
-// 
+//
 //   Real num1 = delta(0)*v2(1) - delta(1)*v2(0);
 //   Real num2 = delta(0)*v1(1) - delta(1)*v1(0);
-// 
+//
 // 	// Linien parallel
 // 	if (fabs(denom) < 1.0e-6)
 // 	{
@@ -297,10 +297,10 @@
 // 		}
 // 		return 2;
 // 	}
-// 
+//
 // 	Real s = num1 / denom;
 // 	Real t = num2 / denom;
-// 
+//
 // 	if ((s >= 0) && (s <= 1) && (t >= 0) && (t <= 1))
 // 	{
 // 		intersection = *a + s*v1;

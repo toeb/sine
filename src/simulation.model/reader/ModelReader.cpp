@@ -6,10 +6,9 @@
 using namespace std;
 using namespace nspace;
 
-
 string ModelReader::readToEnd(istream & instream)const{
   istreambuf_iterator<char> eos;
-  string s(std::istreambuf_iterator<char>(instream), eos);  
+  string s(std::istreambuf_iterator<char>(instream), eos);
   return s;
 }
 

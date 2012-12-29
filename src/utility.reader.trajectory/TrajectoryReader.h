@@ -8,39 +8,34 @@ namespace nspace{
   template<typename T, uint Format=0>
   class FormatSerializer : public Serializer<T>{
   public:
-    static bool serialize(std::ostream & stream, const T & value);
+  static bool serialize(std::ostream & stream, const T & value);
   };
   template<typename T, uint Format=0>
   class FormatDeserializer : public Serializer<T>{
   public:
-    static bool deserialize(T& value, std::ostream & stream);
+  static bool deserialize(T& value, std::ostream & stream);
   };
-
 
   template<>
   class FormatSerializer<PiecewiseFunction<VectorND>, 0>{
   public:
-    static bool serialize(std::ostream & stream,const PiecewiseFunction<VectorND> & value){
-
-    }
-
+  static bool serialize(std::ostream & stream,const PiecewiseFunction<VectorND> & value){
+  }
   };*/
 
-
   //TODO Implement cubic reader
-class TrajectoryReader : public virtual PropertyChangingObject, public virtual Log{
-  REFLECTABLE_OBJECT(TrajectoryReader);
-  SUBCLASSOF(Log);
+  class TrajectoryReader : public virtual PropertyChangingObject, public virtual Log{
+    REFLECTABLE_OBJECT(TrajectoryReader);
+    SUBCLASSOF(Log);
 
-  PROPERTYSET( PiecewiseFunction<VectorND>*, Trajectories,{},{});
-  SIMPLE_PROPERTY( PiecewiseFunction<VectorND>*, LastTrajectory){Trajectories().add(newvalue);};
-public:
-  // reads a trajectory.  the format of the stream must be as used in DirCol
-  bool read(std::istream & stream, PiecewiseFunction<VectorND>** trajectory=0);
-private:
+    PROPERTYSET( PiecewiseFunction<VectorND>*, Trajectories,{},{});
+    SIMPLE_PROPERTY( PiecewiseFunction<VectorND>*, LastTrajectory){Trajectories().add(newvalue);};
+  public:
+    // reads a trajectory.  the format of the stream must be as used in DirCol
+    bool read(std::istream & stream, PiecewiseFunction<VectorND>** trajectory=0);
+  private:
 
-  bool parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim);
-  bool parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim);
-
-};
+    bool parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim);
+    bool parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim);
+  };
 }

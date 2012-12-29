@@ -19,7 +19,7 @@
 //  * Any violation of the rights and restrictions mentioned above will be prosecuted by civil and penal law.
 //  * Any expenses associated with the prosecution will be charged against the violator.
 //  */
-// 
+//
 // /**
 //  * \file src/mbs/integrators/implementations/SemiImplicitEuler.h
 //  * Declaration of mbslib::ExplicitEuler
@@ -27,13 +27,13 @@
 // #pragma once
 // #include <simulation/integration/StepIntegrator.h>
 // namespace nspace{
-// 
+//
 // /**
-//  * \brief The semi implicit Euler integrator 
+//  * \brief The semi implicit Euler integrator
 //  */
 // class SemiImplicitEuler : public StepIntegrator{
 // public:
-// 
+//
 //   /**
 //    * \brief Constructor.
 //    *
@@ -41,7 +41,7 @@
 //    * \param stepSize          (optional) size of the step (default is 0.01).
 //    */
 //   SemiImplicitEuler(Real stepSize = 0.01);
-// 
+//
 //   /**
 //    * \brief does a semi implicit Euler step.
 //    *
@@ -51,7 +51,7 @@
 //    * \return  .
 //    */
 //  void doStep(Real t_i, Real h);
-// 
+//
 //   int getErrorOrder()const;
 // };//class ExplicitEulerIntegrator
 // }//namespace mbslib;

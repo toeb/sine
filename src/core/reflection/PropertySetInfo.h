@@ -3,7 +3,7 @@
 
 namespace nspace{
   // describes a class property which is a set /collection
-  class PropertySetInfo : public virtual Object, public virtual PropertyInfo{  
+  class PropertySetInfo : public virtual Object, public virtual PropertyInfo{
     TYPED_OBJECT(PropertySetInfo);
 
     SIMPLE_PROPERTY(const Type*, ElementType){}
@@ -13,7 +13,7 @@ namespace nspace{
     // custom deserializer
     SIMPLE_PROPERTY(CustomDeserializer*, CustomElementDeserializer){}
     SIMPLE_PROPERTY(bool, IsPointerCollection){}
-    
+
     BASIC_PROPERTY(std::function<Object* (void *)>, ElementToObjectConverter,public,,,);
   public:
     PropertySetInfo():
@@ -26,7 +26,7 @@ namespace nspace{
     // sets the value of the property set at i
     virtual bool setElement(Object * object, uint i, const void * value)const=0;
     // gets the value of the property set at i
-    virtual bool getElement(const Object * object, uint i, void * value)const=0;  
+    virtual bool getElement(const Object * object, uint i, void * value)const=0;
 
     Object * elementAsObjectPointer(Object * object, uint i)const{
       if(!getIsPointerCollection())return 0;
@@ -40,13 +40,10 @@ namespace nspace{
 
     virtual bool deserializeElement(Object * object, uint i,std::istream & in)const=0;
     virtual bool serializeElement(Object * object, uint i,std::ostream & out)const=0;
-    
 
     virtual uint getElementCount(Object * object)const=0;
 
     template<typename ObjectType, typename T> bool get(T& value, uint i, const ObjectType & object)const{ return getValue(&object,i,&value); }
     template<typename ObjectType, typename T> bool set(const T& value, uint i, ObjectType & object)const{ return setValue(&object,i,&value); }
-
-
   };
 }

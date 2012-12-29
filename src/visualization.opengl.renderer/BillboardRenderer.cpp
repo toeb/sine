@@ -17,25 +17,24 @@ bool BillboardRenderer::initializeObject(){
     //res.color.b = 255;
     //res.color.a =128;
     return;/*
-    byte val = currentPixel.toGrayscale();
-  //  std::cout<<(Real)val<<endl;
-    if(currentPixel.color.a>127){
-      res.fromGrayscale(255);
-    }else{
-      res.fromGrayscale(0);
-    }
-     res.fromGrayscale(255);*/
+           byte val = currentPixel.toGrayscale();
+           //  std::cout<<(Real)val<<endl;
+           if(currentPixel.color.a>127){
+           res.fromGrayscale(255);
+           }else{
+           res.fromGrayscale(0);
+           }
+           res.fromGrayscale(255);*/
   });
- _texture = new Texture(*result);
- //<TODO *hub()<<_texture;
+  _texture = new Texture(*result);
+  //<TODO *hub()<<_texture;
   return true;
 }
 void BillboardRenderer::cleanupObject(){
-
 }
 void BillboardRenderer::render(){
- _texture->bind();
- 
+  _texture->bind();
+
   glBegin (GL_QUADS);
   glNormal3f(0,0,1);
   glTexCoord2f (0.0, 0.0);
@@ -51,5 +50,4 @@ void BillboardRenderer::render(){
 }
 
 BillboardRenderer::BillboardRenderer(){
-
 }

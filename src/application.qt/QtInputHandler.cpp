@@ -40,8 +40,6 @@ void QtInputHandler::mouseReleaseEvent(QMouseEvent* me){
   }
 };
 
-
-
 QtInputHandler::QtInputHandler(){
   setName("QtInputHandler");
   logInfo("Creating Inputhandler");
@@ -84,7 +82,7 @@ QtInputHandler::QtInputHandler(){
   _keys.addMapping(Qt::Key_W, nspace::KEY_W);
   _keys.addMapping(Qt::Key_X, nspace::KEY_X);
   _keys.addMapping(Qt::Key_Y, nspace::KEY_Y);
-  _keys.addMapping(Qt::Key_Z, nspace::KEY_Z);	
+  _keys.addMapping(Qt::Key_Z, nspace::KEY_Z);
   _keys.addMapping(Qt::Key_Space				, nspace::KEY_SPACE			);
   _keys.addMapping(Qt::Key_Tab					, nspace::KEY_TAB			  );
   _keys.addMapping(Qt::Key_Enter				, nspace::KEY_ENTER			);
@@ -117,6 +115,4 @@ QtInputHandler::QtInputHandler(){
   _keys.addMapping(Qt::Key_Shift				, nspace::KEY_SHIFT			);
   _keys.addMapping(Qt::Key_Period			  , nspace::KEY_PERIOD		);
   _keys.addMapping(Qt::Key_Backspace		, nspace::KEY_BACKSPACE	);
-
-
 }

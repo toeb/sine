@@ -4,7 +4,6 @@
 
 using namespace nspace;
 
-
 const Set< const Type * > & Types::allTypes(){ return instance()->_types; }
 bool Types::registerType(const Type * type){
   auto existingType = getType(type->getName());
@@ -17,8 +16,6 @@ const Type * Types::getType(const std::string & name){
   auto type = instance()->_types.first([&name](const Type * type){ return type->getName()==name;  });
   return type;
 }
-
-
 
 TypeId Type::_typeCounter=0;
 Type::Type():_Id(_typeCounter++),_CreateInstanceFunction([](){return static_cast<void*>(0);}){
@@ -38,7 +35,6 @@ namespace nspace{
   }
 }
 
-
 void * Type::createInstance()const{
   return getCreateInstanceFunction()();
 }
@@ -48,10 +44,10 @@ const MemberInfo * Type::getMember(const std::string & name)const{
   return member;
 }
 
-  const MethodInfo * Type::getMethodInfo(const std::string & name)const{
-    auto method = dynamic_cast<const MethodInfo*>(getMember(name));
-    return method;
-  }
+const MethodInfo * Type::getMethodInfo(const std::string & name)const{
+  auto method = dynamic_cast<const MethodInfo*>(getMember(name));
+  return method;
+}
 
 const PropertyInfo * Type::getProperty(const std::string & name)const{
   auto member = getMember(name);
@@ -68,29 +64,25 @@ bool Type::isSuperClassOf(const Type & other)const{
   return false;
 }
 
-
-
-
 Set<const PropertyInfo*> Type::Properties()const{
-    Set<const PropertyInfo*> result;
-    for(uint i=0; i < Members(); i++){
-      auto prop = dynamic_cast<const PropertyInfo*>(Members().at(i));
-      if(!prop)continue;
-      result|=prop;
-    }
-    return result;
+  Set<const PropertyInfo*> result;
+  for(uint i=0; i < Members(); i++){
+    auto prop = dynamic_cast<const PropertyInfo*>(Members().at(i));
+    if(!prop)continue;
+    result|=prop;
   }
+  return result;
+}
 
 void Type::itemAdded(const MemberInfo * , Members){
 }
 void Type::itemRemoved(const MemberInfo * , Members){
-
 }
 
 void Type::onPredecessorAdded(Type* type){
   Members()|=type->Members();
   //std::cout << this->getName() << "  is subclass of "<<type->getName()<<std::endl;
 }
-void Type::onPredecessorRemoved(Type* type){  
+void Type::onPredecessorRemoved(Type* type){
   Members()/=type->Members();
 }

@@ -8,7 +8,7 @@ void Particle::setForce(const Vector3D & f){
 }
 void Particle::addExternalForce(const Vector3D & f){
   _f += f;
- // _f += f;
+  // _f += f;
 }
 void Particle::resetForce(){
   _f.setZero();
@@ -29,40 +29,34 @@ void Particle::calculateDynamics(){
 }
 
 void Particle::notifyStateChanged(){
-//    Real * x = state().stateVector(0);
-//    Real * xDot = state().stateVector(1);  
-
+  //    Real * x = state().stateVector(0);
+  //    Real * xDot = state().stateVector(1);
 
   // position().assign(_x);
-   //velocity().assign(_xDot);
+  //velocity().assign(_xDot);
   matrix::assign(position(),_x);
   matrix::assign(velocity(),_xDot);
+}
+void Particle::notifyStateNeeded(){
+  //    Real * x = state().stateVector(0);
+  //    Real * xDot = state().stateVector(1);
+  //    Real * xDotDot = state().stateVector(2);
 
- }
- void Particle::notifyStateNeeded(){
-//    Real * x = state().stateVector(0);
-//    Real * xDot = state().stateVector(1);  
-//    Real * xDotDot = state().stateVector(2);  
+  //position().copyTo(_x);
+  //velocity().copyTo(_xDot);
+  //acceleration().copyTo(_xDotDot);
 
+  matrix::copyTo(_x,position());
+  matrix::copyTo(_xDot,velocity());
+  matrix::copyTo(_xDotDot,acceleration());
+}
 
-   //position().copyTo(_x);
-   //velocity().copyTo(_xDot);
-   //acceleration().copyTo(_xDotDot);
-
-
-   matrix::copyTo(_x,position());
-   matrix::copyTo(_xDot,velocity());
-   matrix::copyTo(_xDotDot,acceleration());
- }
-
-
-
- void Particle::applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs){
-   Real m = getMass();
-   if(m==0)return;
-   Vector3D vDelta = 1/m*p_wcs;
-   velocity() += vDelta;
- }
+void Particle::applyImpulse(const Vector3D& a_wcs, const Vector3D& p_wcs){
+  Real m = getMass();
+  if(m==0)return;
+  Vector3D vDelta = 1/m*p_wcs;
+  velocity() += vDelta;
+}
 
 void Particle::calculateK(Matrix3x3& K, const Vector3D & a_wcs, const Vector3D & b_wcs)const{
   Real m = getMass();

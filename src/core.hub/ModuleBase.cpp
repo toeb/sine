@@ -2,7 +2,6 @@
 
 using namespace nspace;
 
-
 const Set<Object*> & ModuleBase::objects()const{return _objects;}
 
 void ModuleBase::announce(Object * object){
@@ -12,7 +11,7 @@ void ModuleBase::announce(Object * object){
     onAcception(object);
   }else{
     onRejection(object);
-  }     
+  }
 }
 void ModuleBase::renounce(Object * object){
   if(_objects.contains(object)){

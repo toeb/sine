@@ -40,27 +40,27 @@ void GlViewport::onBeforeRender(){
   glClearColor(_ClearColor.r(),_ClearColor.g(),_ClearColor.b(),_ClearColor.a());
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 }
-void GlViewport::viewportTransform(){		
+void GlViewport::viewportTransform(){
   // set viewport
   glViewport (0, 0, Width(), Height());
 
   // set perspectvive
-  glMatrixMode(GL_PROJECTION); 
-  glLoadIdentity(); 
-  gluPerspective (FieldOfViewAngle()/M_PI*180, aspectRatio(), NearCutOffPlane(), FarCutOffPlane()); 
-  
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective (FieldOfViewAngle()/M_PI*180, aspectRatio(), NearCutOffPlane(), FarCutOffPlane());
+
   // move viewport to correct position/orientation
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
   glScale(ZoomFactor());
-  glTransformation(Coordinates()); 
+  glTransformation(Coordinates());
 }
 
 bool GlViewport::initializeObject(){
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
   glShadeModel(GL_SMOOTH);
-  glEnable(GL_BLEND); 
+  glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   return true;

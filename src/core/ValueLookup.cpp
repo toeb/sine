@@ -34,6 +34,3 @@ Entry * ValueLookup::require(const std::string & name){
   }
   return currentEntry;
 }
-
-
-

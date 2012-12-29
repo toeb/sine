@@ -19,7 +19,7 @@
 //  * Any violation of the rights and restrictions mentioned above will be prosecuted by civil and penal law.
 //  * Any expenses associated with the prosecution will be charged against the violator.
 //  */
-// 
+//
 // /**
 //  * \file src/mbs/integrators/implementations/Trapezoidal.h
 //  * Declaration of mbslib::Trapezoidal
@@ -28,14 +28,14 @@
 // #define __mbslib_Trapezoidal_h__
 // #include "../IStepIntegrator.h"
 // namespace mbslib{
-// 
+//
 // /**
 //  * \brief Trapezoidal integrator.
 //  */
-// 
+//
 // class Trapezoidal : public StepIntegrator{
 // public:
-// 
+//
 // protected:
 //   void doStep(Real t_i, Real h){}
 // private:

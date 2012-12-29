@@ -18,11 +18,10 @@ namespace nspace{
     virtual void setModelData( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const;
     virtual void updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
     virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-   // virtual QSize sizeHint(const QStyleOptionViewItem &option,const QModelIndex &index) const;
-  private:    
-    Object* objectFromIndex(const QModelIndex & index)const;    
-  protected slots:
-    void saveAndCloseEditor();
+    // virtual QSize sizeHint(const QStyleOptionViewItem &option,const QModelIndex &index) const;
+  private:
+    Object* objectFromIndex(const QModelIndex & index)const;
+    protected slots:
+      void saveAndCloseEditor();
   };
-
 }

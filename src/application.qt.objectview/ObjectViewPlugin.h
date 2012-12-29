@@ -10,18 +10,18 @@
 class Ui_ObjectView;
 namespace nspace{
   class ObjectViewPlugin : public Plugin, public virtual PropertyChangingObject, public virtual TypedModuleBase<Object>,public virtual Log {
-    Q_OBJECT;    
+    Q_OBJECT;
     REFLECTABLE_OBJECT(ObjectViewPlugin);
     SUBCLASSOF(Log)
-    PROPERTY(std::string,SearchString){
-      debugMessage("SearchString changing to"<<newvalue,6);
+      PROPERTY(std::string,SearchString){
+        debugMessage("SearchString changing to"<<newvalue,6);
     }
     PROPERTYSET(Object *, Objects,,)
   private:
     Ui_ObjectView * _ui;
     ObjectPropertyView * _objectPropertyView;
-  public slots:
-    void objectDoubleClicked(QListWidgetItem * object);
+    public slots:
+      void objectDoubleClicked(QListWidgetItem * object);
   public:
     ObjectViewPlugin():_SearchString(""),_ui(0){
       setName("ObjectViewPlugin");

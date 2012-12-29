@@ -2,8 +2,8 @@
 
 using namespace nspace;
 ITaskRunner::ITaskRunner():_NumberOfTasks(0){setLoggingLevel(2);}
-bool  ITaskRunner::addTask(ITask * task){ 
-  if(!task){        
+bool  ITaskRunner::addTask(ITask * task){
+  if(!task){
     debugWarning("Attempt was made to add null task to taskrunner");
     return false;
   }
@@ -12,7 +12,7 @@ bool  ITaskRunner::addTask(ITask * task){
     return false;
   }
   debugInfo("Adding task '"<<*task<<"' to task runner");
-  task->setTaskRunner(this); 
+  task->setTaskRunner(this);
   if(!task->getNumberOfTimes())setNumberOfTasks(getNumberOfTasks()+1);
   task->setNumberOfTimes(task->getNumberOfTimes()+1);
 
@@ -20,33 +20,31 @@ bool  ITaskRunner::addTask(ITask * task){
   if(!result){
     task->setTaskRunner(0);
     std::string name = nspace::name(task);
-    debugInfo("Failed to add task '"<<*task<<"' to task runner");        
+    debugInfo("Failed to add task '"<<*task<<"' to task runner");
   }else{
     setNumberOfTasks(getNumberOfTasks()+1);
     task->setTaskRunner(this);
     debugInfo("Successfull added task '"<<*task<<"' to task runner");
-  }      
+  }
   return result;
 }
 bool  ITaskRunner::removeTask(ITask * task){
   if(!task){
     debugWarning("Attempt was made to remove null task from taskrunner");
-    return false; 
+    return false;
   }
   if(task->getTaskRunner()!=this){
     debugWarning("Attempt was made to remove extraneous task from taskrunner: "<<*task);
-    return false; 
+    return false;
   }
   bool result =doRemoveTask(task);
   if(!result){
     debugInfo("failed to remove "<<*task);
-
   }else{
     debugInfo("Successfully removed "<<*task );
-    setNumberOfTasks(getNumberOfTasks()-1);        
+    setNumberOfTasks(getNumberOfTasks()-1);
     if(!task->getNumberOfTimes())setNumberOfTasks(getNumberOfTasks()-1);
     if(!task->getNumberOfTimes())task->setTaskRunner(0);
   }
   return result;
-
 }

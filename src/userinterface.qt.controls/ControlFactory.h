@@ -12,7 +12,7 @@ namespace nspace{
     virtual DynamicWidget * createInstance()=0;
   };
   class ControlFactoryRepository  : public virtual PropertyChangingObject, public virtual Log{
-    REFLECTABLE_OBJECT(ControlFactory);    
+    REFLECTABLE_OBJECT(ControlFactory);
     PROPERTYSET(ControlFactory* , Factories,{},{});
   public:
     static  ControlFactoryRepository * defaultInstance();

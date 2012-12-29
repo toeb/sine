@@ -8,7 +8,6 @@
   }
 
 namespace nspace{
-  template<typename ItemType, typename CollectionType, typename IndexType> 
+  template<typename ItemType, typename CollectionType, typename IndexType>
   BINARY_OPERATION(CollectionSetItem, CollectionType & collection ,const ItemType & item, const IndexType& index,{return false;});
-  
 }

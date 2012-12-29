@@ -26,7 +26,7 @@ namespace nspace{
     int _mouseY;
     // the mouse wheel position of this inputhandler
     Real _mouseWheel;
-  public:    
+  public:
     Time lastChange()const{return _lastChange;}
     // override of ModuleBase.  this module only accepts iinputlistener objects
     bool accept(Object * object);
@@ -60,6 +60,4 @@ namespace nspace{
     void onAcception(Object * object);
     void onRenounce(Object * object);
   };
-
-
 }

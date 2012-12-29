@@ -2,8 +2,7 @@
 
 #include <config.h>
 namespace nspace{
-
-  template<typename MatrixType> 
+  template<typename MatrixType>
   class OperationColumnCount{
   public:
     static inline bool operation(uint & columnCount, const MatrixType & matrix){
@@ -13,7 +12,7 @@ namespace nspace{
   };
 
   // specialization
-  template<> 
+  template<>
   class OperationColumnCount<double>{
   public:
     static inline bool operation(uint & columnCount, const double & matrix){
@@ -22,7 +21,7 @@ namespace nspace{
     }
   };
 
-  template<> 
+  template<>
   class OperationColumnCount<float>{
   public:
     static inline bool operation(uint & columnCount, const float & matrix){

@@ -19,16 +19,16 @@ namespace nspace{
     void onObjectAdded(HistoryModule * historyModule);
     void onObjectRemoved(HistoryModule * historyModule);
     void onPotentialSimulationObjectAdd(ISimulationObject * object);
-    
-  public slots:
-    void restoreSelectedSnapshot();
-    void captureNow();
-    void captureAt();
-    void captureAt(Time targetTime);
-    void moduleIndexChanged(int i);
-    void setRecording(bool value);
-    void snapshotDoubleClicked(const QModelIndex & index );
-    void restoreSnapshot(const QModelIndex &);
+
+    public slots:
+      void restoreSelectedSnapshot();
+      void captureNow();
+      void captureAt();
+      void captureAt(Time targetTime);
+      void moduleIndexChanged(int i);
+      void setRecording(bool value);
+      void snapshotDoubleClicked(const QModelIndex & index );
+      void restoreSnapshot(const QModelIndex &);
 
   protected:
     bool initializeObject();
@@ -42,5 +42,4 @@ namespace nspace{
     bool _isRecording;
     HistoryModule * _currentHistoryModule;
   };
-
 }

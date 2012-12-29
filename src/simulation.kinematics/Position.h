@@ -5,5 +5,4 @@
 
 namespace nspace{
   typedef ValueHolder<Vector3D> Position;
-
 }

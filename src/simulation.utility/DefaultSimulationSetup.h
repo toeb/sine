@@ -7,13 +7,13 @@
 
 #include <simulation.integration/IntegratingSystem.h>
 namespace nspace{
-class DefaultSimulationSetup : public ISimulationObject{
-  TYPED_OBJECT(DefaultSimulationSetup);
-public:  
-  IntegratingSystem defaultSystem;
-  SimulationTimeProvider simulationTimeProvider;
-  TimingModule timings;
-  bool initializeObject();
-  DefaultSimulationSetup();
-};
+  class DefaultSimulationSetup : public ISimulationObject{
+    TYPED_OBJECT(DefaultSimulationSetup);
+  public:
+    IntegratingSystem defaultSystem;
+    SimulationTimeProvider simulationTimeProvider;
+    TimingModule timings;
+    bool initializeObject();
+    DefaultSimulationSetup();
+  };
 }

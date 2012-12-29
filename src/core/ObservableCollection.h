@@ -3,7 +3,6 @@
 #include <core/Observable.h>
 
 namespace nspace{
-
   /**
   * \brief A collection that will notify its observers if elements were added or removed
   */
@@ -40,7 +39,7 @@ namespace nspace{
       void elementRemoved(ObservableCollection<T> * sender, T element){_elementRemovedCallback(sender,element);}
     };
 
-  private:  
+  private:
     std::vector<Observer*> _observers;
     //std::vector<ObjectObserver*> _objectObservers;
   protected:
@@ -59,7 +58,7 @@ namespace nspace{
     *
     * \param element The element.
     */
-    virtual void onElementRemoved(T element){}  
+    virtual void onElementRemoved(T element){}
 
     /**
     * \brief Notifies observers that an element was added.
@@ -68,22 +67,22 @@ namespace nspace{
     * \param element The element.
     */
     void notifyElementAdded(T element){
-      onElementAdded(element);    
+      onElementAdded(element);
       Query<Observer* >::foreachElement(_observers,[this,&element](Observer * observer){
         observer->elementAdded(this,element);
         observer->collectionChanged(this);
       });
       raiseObjectChanged();
-/*      Query<ObjectObserver* >::foreachElement(_objectObservers,[this,&element](ObjectObserver * observer){
-        observer->onChange(static_cast<void*>(this));
+      /*      Query<ObjectObserver* >::foreachElement(_objectObservers,[this,&element](ObjectObserver * observer){
+      observer->onChange(static_cast<void*>(this));
       });
-*/
+      */
     }
 
     /**
     * \brief Notifies observers that an element was removed.
     * 				subclasses should call this
-    *      
+    *
     * \param element The element.
     */
     void notifyElementRemoved(T element){
@@ -95,7 +94,7 @@ namespace nspace{
       raiseObjectChanged();
       /*
       Query<ObjectObserver* >::foreachElement(_objectObservers,[this,&element](ObjectObserver * observer){
-        observer->onChange(static_cast<void*>(this));
+      observer->onChange(static_cast<void*>(this));
       });
       */
     }
@@ -111,7 +110,7 @@ namespace nspace{
     }
     /*
     void addObserver(ObjectObserver * observer){
-      _objectObservers.push_back(observer);
+    _objectObservers.push_back(observer);
     }*/
 
     /**
@@ -121,11 +120,11 @@ namespace nspace{
     */
 
     void removeObserver(Observer * observer){
-      Query<Observer*>::remove(_observers,observer);      
+      Query<Observer*>::remove(_observers,observer);
     }
     /*
     void removeObserver(ObjectObserver * observer){
-      Query<ObjectObserver*>::remove(_objectObservers,observer);      
+    Query<ObjectObserver*>::remove(_objectObservers,observer);
     }*/
   };
 }

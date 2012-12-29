@@ -6,9 +6,9 @@ HubObject::HubObject(){}
 
 HubObject::~HubObject(){
   // remove hub object from every hub it is part of
-/*  Set<Hub*> h = hubs();
+  /*  Set<Hub*> h = hubs();
   h.foreachElement([this](Hub * hub){
-    hub->remove(this);
+  hub->remove(this);
   });*/
 }
 

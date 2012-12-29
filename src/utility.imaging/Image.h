@@ -6,14 +6,12 @@
 #include <iostream>
 #include <functional>
 namespace nspace{
-
-
   class Image : public virtual Object{
   private:
-      Pixel * _data;
+    Pixel * _data;
     uint _width;
     uint _height;
-  public:  
+  public:
     Image();
     Image(uint width, uint height);
     Image(uint width, uint height,Pixel * data);
@@ -37,16 +35,15 @@ namespace nspace{
     const Pixel & operator()(uint i, uint j)const{
       return _data[_width*i+j];
     }
-  };  
+  };
   class PixelWindow{
   public:
-      Image & _image;
-      uint _width;
-      uint _height;
-      uint _x;
-      uint _y;
+    Image & _image;
+    uint _width;
+    uint _height;
+    uint _x;
+    uint _y;
     PixelWindow(Image & img , uint x, uint y, uint width, uint height):_image(img),_width(width),_height(height),_x(x),_y(y){
-
     }
 
     const Pixel & operator()(int i, int j)const{
@@ -69,12 +66,10 @@ namespace nspace{
     }
   }
 
-
   class PngImage : public Image{
   public:
     PngImage();
     PngImage(const std::string & filename);
     bool load(const std::string & filename);
   };
-
 }

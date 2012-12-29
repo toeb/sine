@@ -10,4 +10,3 @@
 #include <math.statistics/core.h>
 #include <math.functions.h>
 #include <math/Interval.h>
-

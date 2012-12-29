@@ -18,30 +18,27 @@ namespace nspace{
   protected:
     virtual void onElementAdded(NodeType * element);
     virtual void onElementRemoved(NodeType * element);
-    
+
     virtual void elementAdded(ObservableCollection<NodeType*> * sender, NodeType* element){
       nodes()|=element;
     }
     virtual void elementRemoved(ObservableCollection<NodeType*> * sender, NodeType* element){
-      
     }
   };
-
-
 
   //implementation of templated methods
 
   template<typename NodeType>
-   void Graph<NodeType>::onElementAdded(NodeType * element){
+  void Graph<NodeType>::onElementAdded(NodeType * element){
     element->addObserver(this);
     element->neighbors().foreachElement([this](NodeType * node){
       this->nodes()|=node;
     });
   }
-    template<typename NodeType>
-     void Graph<NodeType>::onElementRemoved(NodeType * element){
-      element->removeObserver(this);
-    }
+  template<typename NodeType>
+  void Graph<NodeType>::onElementRemoved(NodeType * element){
+    element->removeObserver(this);
+  }
 
   // gets a single node by comparison with id
   template<typename NodeType>
@@ -49,8 +46,6 @@ namespace nspace{
   NodeType * Graph<NodeType>::operator()(const T id)const{
     return *this(id);
   }
-
-
 
   // returns all nodes of the graph
   template<typename NodeType>
@@ -69,6 +64,5 @@ namespace nspace{
     return nodes().subset([](NodeType * n){
       return (bool)!n->successors();
     });
-  }  
-
+  }
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include <config.h>
 
-
 #define TEMPLATEDSINGLETON(CLASS, TEMPLATEARGUMENTS)\
   public:\
   static CLASS TEMPLATEARGUMENTS* instance(){\
@@ -25,11 +24,9 @@ private:\
 /*  Example of a class using the singleton macro
 
 class TestClass{
- SINGLETON(TestClass){
-   // constructor code here
- }
+SINGLETON(TestClass){
+// constructor code here
+}
 };
 
 */
-
-

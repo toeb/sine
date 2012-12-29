@@ -14,7 +14,7 @@ void GridRenderer::render(){
 
   //glDisable(GL_LIGHTING);
   //glDisable(GL_COLOR_MATERIAL);
-  
+
   glMaterial(GridMaterial());
 
   glTransformation(Coordinates());
@@ -22,7 +22,6 @@ void GridRenderer::render(){
   Real w2 = Width()/2;
   Real h2 = Height()/2;
 
- 
   Vector3D a,b;
   glLineWidth(0.1);
   for(int i = 0; i <= Sections(); i++){
@@ -32,7 +31,7 @@ void GridRenderer::render(){
     b(0) = Width()*((double)i/(double)Sections()-0.5);
     b(1) = 0;
     b(2) = h2;
-    
+
     glLine(a,b);
 
     a(0) = -w2;
@@ -41,12 +40,10 @@ void GridRenderer::render(){
     b(0) = w2;
     b(1) = 0;
     b(2) = Height()*((double)i/(double)Sections()-0.5);
-    
+
     glLine(a,b);
-  
   }
 
   glPopMatrix();
- // glPopAttrib();
-
+  // glPopAttrib();
 };

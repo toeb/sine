@@ -2,16 +2,13 @@
 #include <config.h>
 #include <core.h>
 #include <core/Time.h>
-#include <core/Set.h>
+#include <core.collection.h>
 
 #include <iostream>
 #include <sstream>
 #include <string>
 
-
-
 // these macros work within any class that contains a function to a reference called log (Log & log();}
-
 
 #define createLogMessage(level, x) {std::stringstream ss; ss << x ; getLog().log(level, ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
 #define logMessage_0(x) createLogMessage(0,x)
@@ -27,9 +24,8 @@
 // default level
 #define logMessage_(x) logMessage_3(x)
 
-// macro for logging a message 
+// macro for logging a message
 #define logMessage(message,level) logMessage_##level(message)
-
 
 #define logInfo(x) logMessage(x,3);
 #define logWarning(x) logMessage(x,2)
@@ -39,25 +35,24 @@
 //TODO move to cmake
 #define DEBUG
 #ifdef  DEBUG
-#define debugInfo(x)           logInfo(x) 
+#define debugInfo(x)           logInfo(x)
 #define debugWarning(x)        logWarning(x)
 #define debugError(x)          logError(x)
 #define debugMessage(x,level)  logMessage(x,level)
-#else 
-#define debugInfo(x) 
-#define debugWarning(x) 
-#define debugError(x) 
-#define debugMessage(level,x) 
+#else
+#define debugInfo(x)
+#define debugWarning(x)
+#define debugError(x)
+#define debugMessage(level,x)
 #endif //  DEBUG
 
 namespace nspace{
-
   class Log;
   // public function which returns the defaul log
   Log & getLog();
 
   class LogEntry : public virtual PropertyChangingObject{
-    REFLECTABLE_OBJECT(LogEntry);    
+    REFLECTABLE_OBJECT(LogEntry);
     PROPERTY(std::string, Message){}
     PROPERTY(int, SourceLineNumber){}
     PROPERTY(std::string, SourceFileName){}
@@ -68,7 +63,6 @@ namespace nspace{
     PROPERTY(Time, SystemTimeStamp){}
     PROPERTY(std::string, ObjectName){}
   public:
-
 
   public:
     LogEntry():_LogLevel(100),_Owner(0){
@@ -101,7 +95,7 @@ namespace nspace{
 
     SIMPLE_PROPERTY(std::ostream *, LogInfoStream){}
     SIMPLE_PROPERTY(std::ostream *, LogWarningStream){}
-    SIMPLE_PROPERTY(std::ostream *, LogErrorStream){}    
+    SIMPLE_PROPERTY(std::ostream *, LogErrorStream){}
 
     PROPERTYSET(LogEntry*,LogEntries,{
       std::ostream * out=0;
@@ -115,12 +109,9 @@ namespace nspace{
       default:
         out = getLogInfoStream();
         break;
-
       }
       if(!out)return;
       *out << *item << std::endl;
-
-
     },{})
   protected:
 
@@ -133,7 +124,6 @@ namespace nspace{
       setLogWarningStream(&std::cout);
       setLoggingLevelToDefault();
       setLoggingEnabledToDefault();
-
     }
     void log(
       int level,
@@ -148,7 +138,6 @@ namespace nspace{
         entry->setSourceFileName(sourcefile);
         entry->setSourceLineNumber(sourcelinenumber);
         addEntry(entry);
-
     }
     void info(
       const std::string & message,
@@ -174,7 +163,6 @@ namespace nspace{
         log(1,message,functionsignature,sourcefile,sourcelinenumber);
     }
 
-
     void addEntry(LogEntry * entry){
       if(!getLoggingEnabled()){
         delete entry;
@@ -194,6 +182,4 @@ namespace nspace{
       LogEntries()|=entry;
     }
   };
-  
-
 }

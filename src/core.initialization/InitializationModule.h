@@ -14,7 +14,6 @@ namespace nspace{
     }
 
     virtual void onAcception(Object * object){
-
       auto initializeable = dynamic_cast<Initializable*>(object);
       if(isInitialized() && !processObject(initializeable)){
         renounce(initializeable);
@@ -22,36 +21,34 @@ namespace nspace{
       }
 
       _initializeables |= initializeable;
-
     }
     virtual void onRenounce(Object * object){
       _initializeables /= dynamic_cast<Initializable*>(object);
     }
 
-    
-   void cleanupObject(){
-     _initializeables.foreachElement([](Initializable * initializeable){initializeable->cleanup();});
-   };
-   bool processObject(Initializable * initializeable){
-     if(initializeable->isInitialized())return true;
-       std::cout<< "Initializing " << nspace::name(initializeable) << " ";
-       std::cout << ". . . . . . . . . . ";
-       bool s = initializeable->initialize() ;
-       if(s)std::cout << "successful" ;
-       else std::cout<< "failed";
-       std::cout << std::endl;
+    void cleanupObject(){
+      _initializeables.foreachElement([](Initializable * initializeable){initializeable->cleanup();});
+    };
+    bool processObject(Initializable * initializeable){
+      if(initializeable->isInitialized())return true;
+      std::cout<< "Initializing " << nspace::name(initializeable) << " ";
+      std::cout << ". . . . . . . . . . ";
+      bool s = initializeable->initialize() ;
+      if(s)std::cout << "successful" ;
+      else std::cout<< "failed";
+      std::cout << std::endl;
       return s;
-   }
-   bool processUninitializedObjects(){
+    }
+    bool processUninitializedObjects(){
       bool success = true;
-     _initializeables.foreachElement([&success,this](Initializable * initializeable){
-      success |= processObject(initializeable);       
-     });
-     return success;
-   }
+      _initializeables.foreachElement([&success,this](Initializable * initializeable){
+        success |= processObject(initializeable);
+      });
+      return success;
+    }
 
-   bool initializeObject(){
-    return processUninitializedObjects();
-   }
+    bool initializeObject(){
+      return processUninitializedObjects();
+    }
   };
 }

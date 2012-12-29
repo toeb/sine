@@ -2,8 +2,6 @@
 
 using namespace nspace;
 
-
-
 void Geometry::getBoundingBoxOCS(BoundingBox & aabb)const{
   Axis x,y,z;
   x.n = Vector3D::UnitX();
@@ -14,15 +12,14 @@ void Geometry::getBoundingBoxOCS(BoundingBox & aabb)const{
   projectOCS(x,ix);
   projectOCS(y,iy);
   projectOCS(z,iz);
-  
+
   aabb.minValue()(0)= ix.a;
   aabb.minValue()(1)= iy.a;
   aabb.minValue()(2)= iz.a;
-  
+
   aabb.maxValue()(0)= ix.b;
   aabb.maxValue()(1)= iy.b;
   aabb.maxValue()(2)= iz.b;
-
 
   Real min =DBL_MAX;
   Real max=-DBL_MAX;
@@ -34,7 +31,6 @@ void Geometry::getBoundingBoxOCS(BoundingBox & aabb)const{
   aabb.maxValue() = Vector3D::Ones()*max;
 }
 
-
 void Geometry::getBoundingBox(BoundingBox & aabb)const{
   Axis x,y,z;
   x.n = Vector3D::UnitX();
@@ -45,11 +41,11 @@ void Geometry::getBoundingBox(BoundingBox & aabb)const{
   project(x,ix);
   project(y,iy);
   project(z,iz);
-  
+
   aabb.minValue()(0)= ix.a;
   aabb.minValue()(1)= iy.a;
   aabb.minValue()(2)= iz.a;
-  
+
   aabb.maxValue()(0)= ix.b;
   aabb.maxValue()(1)= iy.b;
   aabb.maxValue()(2)= iz.b;
@@ -61,7 +57,6 @@ void Geometry::project(const Axis & axis_wcs, Interval & interval)const{
   coordinates().toObjectCoordinates(axis_wcs.n+coordinates().position(),axis_ocs.n);
   axis_ocs.n.normalize();
   projectOCS(axis_ocs,interval);
-
 }
 
 Real Geometry::calculateBoundingSphereRadius()const{
@@ -69,6 +64,6 @@ Real Geometry::calculateBoundingSphereRadius()const{
   getBoundingBoxOCS(bb);
   Vector3D delta = bb.maxValue()-bb.minValue();
   Real l=  delta.norm();
-  
+
   return l/2;
 }

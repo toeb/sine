@@ -4,46 +4,38 @@ using namespace nspace;
 /*
 class Creator{
 public:
-  virtual bool match(Object * obj)=0;
-  virtual QWidget * create()=0;
+virtual bool match(Object * obj)=0;
+virtual QWidget * create()=0;
 };
 
 template<typename T, typename TWidget>
 class TCreator:public Creator{
 public:
-  bool match(Object * obj){
-    if(typeof(
-  }
-  QWidget * create(){
-    return new TWidget();
-  }
-
+bool match(Object * obj){
+if(typeof(
+}
+QWidget * create(){
+return new TWidget();
+}
 };
 
-
 class ControlFactory2{
-  TYPED_OBJECT(ControlFactory2);
-  PROPERTYSET(Creator*, Creators,{},{});
+TYPED_OBJECT(ControlFactory2);
+PROPERTYSET(Creator*, Creators,{},{});
 
-
-
-  Set<Creator*> Creators(Object * object){
-    
-  }
-
+Set<Creator*> Creators(Object * object){
+}
 };*/
 
 CustomItemDelegate::CustomItemDelegate(QObject * object):QStyledItemDelegate(object){
-
 }
 QWidget * CustomItemDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index)const{
   // return something else for custom handling
   debugInfo("createEditor");
   auto object= objectFromIndex(index);
 
-
   auto control = ControlFactoryRepository::defaultInstance()->createWidget(0,object,"");
-  
+
   if(control){
     control->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     control->setDataContext(object);
@@ -59,7 +51,7 @@ bool CustomItemDelegate::editorEvent(QEvent * event, QAbstractItemModel * model,
   return false;
 }
 
-Object* CustomItemDelegate::objectFromIndex(const QModelIndex & index)const{      
+Object* CustomItemDelegate::objectFromIndex(const QModelIndex & index)const{
   QVariant variant = index.model()->data(index,Qt::UserRole+5);
   Object * object = reinterpret_cast<Object*>(variant.value<void*>());
   return object;
@@ -82,15 +74,15 @@ void CustomItemDelegate::setModelData( QWidget * editor, QAbstractItemModel * mo
     QStyledItemDelegate::setModelData(editor,model,index);
     return;
   }
-  
+
   valueWidget->updateValueHolder();
 }
 
- void CustomItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const{
-   //painter->setBrush(option.palette.background());
-   //painter->drawRect(option.rect);
-   QStyledItemDelegate::paint(painter,option,index);
- }
+void CustomItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const{
+  //painter->setBrush(option.palette.background());
+  //painter->drawRect(option.rect);
+  QStyledItemDelegate::paint(painter,option,index);
+}
 
 void CustomItemDelegate::saveAndCloseEditor(){
   auto widget = sender();
@@ -105,5 +97,5 @@ void CustomItemDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOp
   //QRect rect =  option.rect;
   editor->setGeometry(option.rect);
   editor->update();
- // debugInfo(editor->geometry().width()<<" vs "<<option.rect.size().width());
+  // debugInfo(editor->geometry().width()<<" vs "<<option.rect.size().width());
 }

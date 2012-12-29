@@ -2,8 +2,8 @@
 #include <simulation/ISimulationObject.h>
 
 namespace nspace{
-class Wrapper : public ISimulationObject{
-public:
-  virtual ISimulationObject* wrap(ISimulationObject * object)=0;
-};
+  class Wrapper : public ISimulationObject{
+  public:
+    virtual ISimulationObject* wrap(ISimulationObject * object)=0;
+  };
 }

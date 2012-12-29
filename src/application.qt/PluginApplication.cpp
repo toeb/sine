@@ -7,13 +7,13 @@ using namespace nspace;
 Set<Plugin*> & PluginApplication::plugins(){return _plugins;}
 
 PluginApplication::PluginApplication(int & argc,  char ** argv):
-_ui(0),
+  _ui(0),
   _mainWindow(0),
   _application(0),
- _settings("application.ini",QSettings::IniFormat)
+  _settings("application.ini",QSettings::IniFormat)
 {
   auto fn = _settings.fileName();
-  
+
   _application = new QApplication(argc,argv);
   plugins().addObserver(this);
 
@@ -22,11 +22,10 @@ _ui(0),
   _ui->setupUi(_mainWindow);
   _mainWindow->show();
   loadSettings();
-  
+
   connect(_ui->actionClose, SIGNAL(triggered()), this, SLOT(close()));
   connect(_ui->actionLoadSettings,SIGNAL(triggered()),this,SLOT(loadSettings()));
   connect(_ui->actionSaveSettings,SIGNAL(triggered()),this,SLOT(saveSettings()));
-
 }
 int PluginApplication::run(){
   return _application->exec();
@@ -47,33 +46,27 @@ bool PluginApplication::accept(Object * object){
 }
 
 void PluginApplication::saveSettings(){
-   // store window layout
+  // store window layout
   _settings.beginGroup("MainWindow");
   _settings.setValue("geometry", _mainWindow->saveGeometry());
   //_settings.setValue("state", _mainWindow->saveState());
   _settings.endGroup();
-  
-  
+
   _containers.foreachElement([this](PluginContainer * container){
     savePluginSettings(container);
   });
-  
 }
 void PluginApplication::loadSettings(){
-    // load window layout
+  // load window layout
   _settings.beginGroup("MainWindow");
   _mainWindow->restoreGeometry(_settings.value("geometry").toByteArray());
- // _mainWindow->restoreState(_settings.value("state").toByteArray());
+  // _mainWindow->restoreState(_settings.value("state").toByteArray());
   _settings.endGroup();
 
-  
   _containers.foreachElement([this](PluginContainer * container){
     loadPluginSettings( container);
   });
-
-
 }
-
 
 void PluginApplication::pluginEnabledChanged(PluginContainer * container, bool enabled){
   if(enabled){
@@ -88,7 +81,7 @@ void PluginApplication::pluginEnabledChanged(PluginContainer * container, bool e
 }
 void PluginApplication::elementRemoved(ObservableCollection<Plugin*> * sender, Plugin* element){
   uninstall(*element);
-} 
+}
 const Set<Plugin * > & PluginApplication::enabledPlugins()const{
   return _enabledPlugins;
 }
@@ -110,9 +103,6 @@ void PluginApplication::rebuildMenu(){
     if(!menu)return;
     _ui->menuBar->addMenu(menu);
   });
-
-
-  
 }
 void PluginApplication::rebuildWindowMenu(){
   _ui->menuWindows->clear();
@@ -123,7 +113,6 @@ void PluginApplication::rebuildWindowMenu(){
     auto toggleWindowAction = c->togglePluginWindowAction();
 
     _ui->menuWindows->addAction(toggleWindowAction);
-  
   });
 }
 
@@ -134,9 +123,8 @@ void PluginApplication::loadPluginSettings(PluginContainer * container){
   container->loadSettings(_settings);
 }
 
-void PluginApplication::connectContainer(PluginContainer * c){  
+void PluginApplication::connectContainer(PluginContainer * c){
   connect(c,SIGNAL(enabledChanged(PluginContainer * ,bool)),this,SLOT(pluginEnabledChanged(PluginContainer *, bool)) );
-
 }
 void PluginApplication::disconnectContainer(PluginContainer * c){
   disconnect(c,SIGNAL(enabledChanged(PluginContainer * ,bool)),this,SLOT(pluginEnabledChanged(PluginContainer *, bool)) );
@@ -151,7 +139,6 @@ void PluginApplication::uninstall(Plugin & plugin){
   _containers /= container;
   _plugins.remove(&plugin);
   delete container;
-
 }
 
 void PluginApplication::onNameChanged(const std::string & name){
@@ -159,8 +146,8 @@ void PluginApplication::onNameChanged(const std::string & name){
 }
 
 void PluginApplication::install(Plugin & plugin, bool enable ){
-   // create a container for the added plugin
-  PluginContainer * container = new PluginContainer(plugin,*this);  
+  // create a container for the added plugin
+  PluginContainer * container = new PluginContainer(plugin,*this);
   // add the plugin container to the containers set
   _containers |= container;
   // add action to plugin menu which can enable or disable it
@@ -170,5 +157,4 @@ void PluginApplication::install(Plugin & plugin, bool enable ){
   if(enable)  container->enable();
 
   loadPluginSettings(container);
-
 }

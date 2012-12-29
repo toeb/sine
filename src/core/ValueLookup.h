@@ -1,8 +1,7 @@
 #pragma once
-#include <core/Set.h>
+#include <core.collection.h>
 
 namespace nspace{
-
   // struct which combines a void pointer and a name
   struct Entry{
     void * value;
@@ -12,7 +11,7 @@ namespace nspace{
 
   //a value lookup which has easy to use methods for getting and setting / iterating the values.
   class ValueLookup{
-  private:    
+  private:
     Set<Entry*> _entries;
   public:
     // returns the immutable set of entries
@@ -39,49 +38,46 @@ namespace nspace{
     Entry * require(const std::string & name);
   };
 
-
-
   //Implementation of templated functions
-  
-template<typename T>
-T ValueLookup::operator()(const std::string & parametername){
-  return this->get<T>(parametername);
-}
 
-//returns true if parameter hasValue
-template<typename T>
-bool ValueLookup::get(T & result, const std::string & parametername){
-  if(!hasValue(parametername))return false;
-  result = get<T>(parametername);
-  return true;
-}
-
-template<typename T>
-T ValueLookup::get(const std::string & parametername){
-  T* result = getPointer<T>(parametername);
-  //return default value
-  if(!result)return T();
-  return *result;
-}
-template<typename T>
-T * ValueLookup::getPointer(const std::string & parametername){
-  if(!hasValue(parametername))return 0;
-  Entry * currentEntry = entry(parametername);
-  T*result=0;
-  result = static_cast<T*>(currentEntry->value);
-  return result;
-}
-
-template<typename T>
-void ValueLookup::set(const std::string & parametername,T value){
-  Entry * entry = _entries.first([parametername](Entry* entry){return entry->name == parametername;});
-  if(!entry){
-    entry = new Entry;
-    entry->name = parametername;
-    _entries.add(entry);
+  template<typename T>
+  T ValueLookup::operator()(const std::string & parametername){
+    return this->get<T>(parametername);
   }
-  if(!entry->value)entry->value = new T();
-  *static_cast<T*>(entry->value) = value;      
-}
 
+  //returns true if parameter hasValue
+  template<typename T>
+  bool ValueLookup::get(T & result, const std::string & parametername){
+    if(!hasValue(parametername))return false;
+    result = get<T>(parametername);
+    return true;
+  }
+
+  template<typename T>
+  T ValueLookup::get(const std::string & parametername){
+    T* result = getPointer<T>(parametername);
+    //return default value
+    if(!result)return T();
+    return *result;
+  }
+  template<typename T>
+  T * ValueLookup::getPointer(const std::string & parametername){
+    if(!hasValue(parametername))return 0;
+    Entry * currentEntry = entry(parametername);
+    T*result=0;
+    result = static_cast<T*>(currentEntry->value);
+    return result;
+  }
+
+  template<typename T>
+  void ValueLookup::set(const std::string & parametername,T value){
+    Entry * entry = _entries.first([parametername](Entry* entry){return entry->name == parametername;});
+    if(!entry){
+      entry = new Entry;
+      entry->name = parametername;
+      _entries.add(entry);
+    }
+    if(!entry->value)entry->value = new T();
+    *static_cast<T*>(entry->value) = value;
+  }
 }

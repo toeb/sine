@@ -18,15 +18,12 @@ GlWidgetPluginWindow::GlWidgetPluginWindow(Set<GlViewport*> & viewports):PluginW
 
   layout->addWidget(_glWidget);
 
-  
-
   viewports.foreachElement([this](GlViewport * viewport){
     elementAdded(&_viewports,viewport);
   });
   connect(_ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT( viewportIndexChanged(int)));
 
   Components()|=_glWidget;
-
 }
 
 void GlWidgetPluginWindow::viewportIndexChanged(int idx){
@@ -36,13 +33,8 @@ void GlWidgetPluginWindow::viewportIndexChanged(int idx){
   _glWidget->setViewport(viewport);
 }
 
-
 void GlWidgetPluginWindow::elementAdded(ObservableCollection<GlViewport*> * sender, GlViewport* element){
   _ui->comboBox->addItem(element->name().c_str(), qVariantFromValue<void*>(element));
-  
-
 }
 void GlWidgetPluginWindow::elementRemoved(ObservableCollection<GlViewport*> * sender, GlViewport* element){
-
-
 }

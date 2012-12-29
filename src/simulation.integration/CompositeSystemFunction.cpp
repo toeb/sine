@@ -17,4 +17,3 @@ void CompositeSystemFunction::postIntegration(Time t, Time h){
     f->evaluate(t,h);
   });
 };
-

@@ -4,7 +4,6 @@ using namespace std;
 bool SetElementTreeItem::setEditValue(std::string value){
   std::stringstream ss(value);
   return getParentSetItem()->getPropertySetInfo()->deserializeElement(getParentSetItem()->getPropertyObject(),getItemIndex(),  ss);
-
 }
 std::string SetElementTreeItem::getDisplayValue(){
   std::stringstream ss;
@@ -20,7 +19,6 @@ SetElementTreeItem::SetElementTreeItem(PropertySetTreeItem & parent, uint index)
   logInfo("creating SetElementTreeItem for item "<<index);
 }
 void SetElementTreeItem::doExpand(){
-
   auto setItem = getParentSetItem();
   auto setInfo = setItem->getPropertySetInfo();
   if(!setInfo->getIsPointerCollection())return;
@@ -30,9 +28,6 @@ void SetElementTreeItem::doExpand(){
   auto item = getModel()->createItem(object);
   item->expand();
   successors()|=item->successors();
-
-
-  
 }
 bool SetElementTreeItem::isEditable(){
   return true;
@@ -40,7 +35,6 @@ bool SetElementTreeItem::isEditable(){
 std::string SetElementTreeItem::getEditValue(){
   return "";
 }
-
 
 std::string SetElementTreeItem::getDescription(){
   std::stringstream ss;

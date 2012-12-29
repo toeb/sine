@@ -18,7 +18,6 @@ namespace nspace{
     }
   };
 
-
   template <>
   class ScheduledTaskDelegate<std::function<void(Time ,Time)> > : public virtual ScheduledTask{
     std::function<void(Time ,Time)> _callback;

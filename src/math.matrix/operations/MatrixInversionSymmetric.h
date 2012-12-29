@@ -9,7 +9,4 @@ namespace nspace{
       //assert(false);
     }
   };
-
-
-  
 }

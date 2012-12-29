@@ -2,7 +2,6 @@
 #include <core/reflection/PropertyInfo.h>
 #include <core/Serialization.h>
 namespace nspace{
-
   template<typename OwningClass, typename ValueType>
   class TypedProperty : public virtual PropertyInfo{
     TYPED_OBJECT(TypedProperty);
@@ -12,25 +11,24 @@ namespace nspace{
     const void * getConstPointer(const Object * object)const;
     void * getMutablePointer(Object * object)const;
     virtual const ValueType * getConstTypedPointer(const OwningClass*)const{return 0;}
-    virtual ValueType * getMutableTypedPointer(OwningClass* )const{return 0;}   
+    virtual ValueType * getMutableTypedPointer(OwningClass* )const{return 0;}
     void setValue(Object * object, const void * value)const;
-    void getValue(const  Object * ptr, void * value)const;    
+    void getValue(const  Object * ptr, void * value)const;
     virtual bool deserialize(Object * ptr, std::istream & in)const;
     virtual bool serialize(Object * object, std::ostream & out)const;
     virtual void setTypedValue(OwningClass *  object , ValueType value)const=0;
     virtual ValueType getTypedValue(const OwningClass *  object)const=0;
   };
 
-
   // Implementation
 
   template<typename OwningClass, typename ValueType>
   TypedProperty<OwningClass,ValueType>::TypedProperty(){
-    setOwningType(typeof(OwningClass));    
+    setOwningType(typeof(OwningClass));
     //setPropertyType(&TypeDataProvider<ValueType>::getTypeData());
   }
   template<typename OwningClass, typename ValueType>
-  const void * TypedProperty<OwningClass,ValueType>::getConstPointer(const Object * object)const{      
+  const void * TypedProperty<OwningClass,ValueType>::getConstPointer(const Object * object)const{
     auto typedObject = dynamic_cast<const OwningClass*>(object);
     return reinterpret_cast<const void*>(getConstTypedPointer(typedObject));
   }
@@ -39,11 +37,6 @@ namespace nspace{
     auto typedObject = dynamic_cast< OwningClass*>(object);
     return reinterpret_cast<void*>(getMutableTypedPointer(typedObject));
   }
-
-
-
-
-
 
   template<typename OwningClass, typename ValueType>
   void TypedProperty<OwningClass,ValueType>::setValue(Object * object, const void * value)const{

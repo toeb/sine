@@ -29,12 +29,10 @@ void BoolCheckboxWidget::updateValueHolder(){
   bool value = _checkbox->isChecked();
   getValueHolder()->set(value);
   emit editFinished();
-}   
-
+}
 
 void BoolCheckboxWidget::onValueHolderChanging(IModifiableValue * oldvalue,IModifiableValue * newvalue){
   if(oldvalue){
-
   }
   if(newvalue){
   }

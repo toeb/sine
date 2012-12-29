@@ -9,12 +9,11 @@ void ObjectTreeItem::doExpand(){
   debugInfo("Expanding ObjectTreeItem --> "<<*getObject());
   auto type =& getObject()->getType();
 
-  
   Set<PropertyGroupTreeItem*> groups;
   Set<TreeItem*> directChildren;
   for(int i=0; i < type->Members(); i++){
     auto member = type->Members().at(i);
-    
+
     TreeItem * child=0;
     auto prop = dynamic_cast<const PropertyInfo*>(member);
     auto method = dynamic_cast<const MethodInfo*>(member);
@@ -23,12 +22,11 @@ void ObjectTreeItem::doExpand(){
       child =getModel()->createItem(propertyAdapter);
     }else if(method){
       auto methodAdapter = new MethodAdapter(getObject(),method);
-      child=getModel()->createItem(methodAdapter);      
+      child=getModel()->createItem(methodAdapter);
     }
     if(!child)continue;
 
-    
-    std::string groupName = "";    
+    std::string groupName = "";
     if(member->getGroupName()!=""){
       groupName = member->getGroupName();
     }
@@ -44,7 +42,7 @@ void ObjectTreeItem::doExpand(){
     if(groupName != "" && !group){
       group = new PropertyGroupTreeItem();
       group->setModel(getModel());
-      group->setGroupName(groupName);      
+      group->setGroupName(groupName);
       groups|=group;
     }
     if(group){

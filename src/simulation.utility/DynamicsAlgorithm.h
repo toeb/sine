@@ -13,23 +13,20 @@
 
 #include <simulation.timing/TimingModule.h>
 namespace nspace{
-
-
-
   /**
-  * \brief Dynamics algorithm. 
+  * \brief Dynamics algorithm.
   * 				Represents the algorithm setup for the simulation
 
-  * 				
+  *
   * 				it currently combines
-  * 				* ImpulseBasedDynamicsAlgorithm  
-  * 				* Force (Spring)  
-  * 				* Connectors  
-  * 				* Rigid Body Dynamics  
-  * 				* 
+  * 				* ImpulseBasedDynamicsAlgorithm
+  * 				* Force (Spring)
+  * 				* Connectors
+  * 				* Rigid Body Dynamics
+  * 				*
   */
-  class DynamicsAlgorithm  :  
-    public virtual ISystemFunction, 
+  class DynamicsAlgorithm  :
+    public virtual ISystemFunction,
     public virtual CompositeSimulationObject
   {
   public:
@@ -44,7 +41,6 @@ namespace nspace{
     TimingModule timingModule;
     DynamicsAlgorithm();
 
-
     bool detectCollisions;
     bool handleCollisions;
     bool doMultiBody;
@@ -52,6 +48,5 @@ namespace nspace{
     void evaluate(Real t, Real h);
     void postIntegration(Real t, Real h);
     void preIntegration(Real t, Real h);
-
   };
 }

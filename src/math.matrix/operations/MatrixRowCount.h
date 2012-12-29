@@ -1,7 +1,7 @@
 #pragma once
 #include <config.h>
- namespace nspace{
-  template<typename MatrixType> 
+namespace nspace{
+  template<typename MatrixType>
   class OperationRowCount{
   public:
     static inline bool operation(uint & rowCount, const MatrixType & matrix){
@@ -10,7 +10,7 @@
     }
   };
   //specialization
-  template<> 
+  template<>
   class OperationRowCount<double>{
   public:
     static inline bool operation(uint & rowCount, const double & matrix){
@@ -19,7 +19,7 @@
     }
   };
 
-  template<> 
+  template<>
   class OperationRowCount<float>{
   public:
     static inline bool operation(uint & rowCount, const float & matrix){

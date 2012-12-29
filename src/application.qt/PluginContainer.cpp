@@ -3,47 +3,34 @@
 #include "ui_plugincontainer.h"
 using namespace nspace;
 
-
-
 // allows the plugin container to load its settings
 void PluginContainer::loadSettings(QSettings & settings){
   settings.beginGroup(_plugin.name().c_str());
 
-  if(_pluginWindow){    
-    
+  if(_pluginWindow){
     auto mainWindow = application()._mainWindow;
 
     mainWindow->addDockWidget((Qt::DockWidgetArea)settings.value("dockarea", Qt::RightDockWidgetArea).toInt(), _pluginWindow);
-  
-    
 
     _pluginWindow->setFloating(settings.value("docked").toBool());
     auto size = settings.value("size", QSize(1, 1)).toSize();
     _pluginWindow->resize(size);
     _pluginWindow->move(settings.value("position", QPoint(200, 200)).toPoint());
-    
-    
-  
-    
-
   }
   _plugin.loadSettings(settings);
   settings.endGroup();
 }
 // allows the plugin container to save its settings
 void PluginContainer::saveSettings(QSettings & settings){
-  settings.beginGroup(_plugin.name().c_str());  
-  if(_pluginWindow){    
+  settings.beginGroup(_plugin.name().c_str());
+  if(_pluginWindow){
     auto mainWindow = application()._mainWindow;
-    
+
     settings.setValue("dockarea",  mainWindow->dockWidgetArea(_pluginWindow));
     settings.setValue("docked", _pluginWindow->isFloating());
     settings.setValue("size", _pluginWindow->size());
     settings.setValue("position", _pluginWindow->pos());
-
   }
-
-
 
   _plugin.saveSettings(settings);
   settings.endGroup();
@@ -58,7 +45,6 @@ PluginContainer::PluginContainer(Plugin & plugin, PluginApplication & app):_plug
   connect(_enableDisableAction,SIGNAL(toggled(bool)),this,SLOT(setEnabled(bool)));
 
   plugin.install(*this);
-
 }
 
 PluginContainer::~PluginContainer(){
@@ -74,7 +60,7 @@ void PluginContainer::setEnabled(bool enabledFlag){
     emit enabled(this);
   }
   else {
-     _plugin.disable();
+    _plugin.disable();
     emit disabled(this);
     toggleWindow(false);
   }
@@ -110,7 +96,6 @@ void PluginContainer::setPluginWindow(PluginWindow * window){
     _pluginWindow->setVisible(false);
     _pluginWindow->setObjectName(_plugin.name().c_str());
   }
-
 }
 QMenu * PluginContainer::pluginMenu(){
   return _pluginMenu;
@@ -122,10 +107,8 @@ QAction * PluginContainer::togglePluginWindowAction(){
     _togglePluginWindowAction->setText(_plugin.pluginName().c_str());
     _togglePluginWindowAction->setCheckable(true);
     connect(_togglePluginWindowAction, SIGNAL(toggled(bool)),this, SLOT(toggleWindow(bool)));
-
   }
   return _togglePluginWindowAction;
-
 }
 void PluginContainer::uninstall(){
   application().uninstall(plugin());
@@ -135,10 +118,10 @@ void PluginContainer::disable(){
 }
 
 void PluginContainer::setPluginMenu(QMenu * menu){
-  if(_pluginMenu == menu)return;  
+  if(_pluginMenu == menu)return;
   _pluginMenu = menu;
 
-  application().rebuildMenu();  
+  application().rebuildMenu();
 }
 
 void PluginContainer::toggleWindow(bool showFlag){

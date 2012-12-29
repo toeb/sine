@@ -14,7 +14,4 @@ namespace nspace{
     void run();
     virtual void runTask()=0;
   };
-
-
-
 }

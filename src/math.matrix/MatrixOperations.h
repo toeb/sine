@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include <stdio.h>
 #include <iostream>
 #include <functional>
@@ -73,186 +73,172 @@
 
 #include <math.matrix/operations/MatrixTypeSelector.h>
 
-
-namespace nspace{  
-
+namespace nspace{
   namespace math{
-  namespace shorthands{
-  namespace matrix{
+    namespace shorthands{
+      namespace matrix{
+        template<typename MatA, typename MatB, typename Elem>
+        inline bool matricesEqual(const MatA & a,const MatB & b,const Elem & eps){
+          bool result=false;
+          OperationMatrixEquals<MatA,MatB,Elem>::operation(result,a,b,eps);
+          return result;
+        }
 
-    template<typename MatA, typename MatB, typename Elem>
-    inline bool matricesEqual(const MatA & a,const MatB & b,const Elem & eps){
-      bool result=false;
-      OperationMatrixEquals<MatA,MatB,Elem>::operation(result,a,b,eps);
-      return result;
-    }
+        template<typename MatA, typename Vec>
+        inline void crossProductMatrix(MatA & a_star, const Vec& a){
+          VectorToCrossProductMatrix<MatA,Vec>::operation(a_star,a);
+        }
 
+        template<typename MatA, typename MatB>
+        inline void negate(MatA & result, const MatB & orig){
+          MatrixNegation<MatA,MatB>::operation(result,orig);
+        }
 
+        template<typename Vec3A ,typename Vec3B, typename Vec3C>
+        inline void crossProduct(Vec3C & c, const Vec3A & a, const Vec3B & b){
+          VectorCrossProduct<Vec3C,Vec3A,Vec3B>::operation(c,a,b);
+        }
 
-    template<typename MatA, typename Vec>
-    inline void crossProductMatrix(MatA & a_star, const Vec& a){
-      VectorToCrossProductMatrix<MatA,Vec>::operation(a_star,a);
-    }
+        template<typename Mat>
+        inline bool resize(Mat & mat, uint rows, uint cols, bool setToZero=false){
+          return MatrixResize<Mat>::operation(mat,rows,cols,setToZero);
+        }
 
-    template<typename MatA, typename MatB>
-    inline void negate(MatA & result, const MatB & orig){
-      MatrixNegation<MatA,MatB>::operation(result,orig);
-    }
+        template<typename MatType,typename BlockType>
+        inline void setBlock(MatType & target, const BlockType & source, uint rowoffset, uint coloffset){
+          MatrixBlockAssign<BlockType,MatType>::operation(target,source,rowoffset,coloffset);
+        }
 
-    template<typename Vec3A ,typename Vec3B, typename Vec3C>
-    inline void crossProduct(Vec3C & c, const Vec3A & a, const Vec3B & b){
-      VectorCrossProduct<Vec3C,Vec3A,Vec3B>::operation(c,a,b);
-    }
+        template<typename BlockType, typename MatType>
+        inline void getBlock(BlockType & block, const MatType & mat, uint rowoffset, uint coloffset){
+          MatrixBlockExtract<BlockType,MatType>::operation(block,mat,rowoffset,coloffset);
+        }
 
-    template<typename Mat>
-    inline bool resize(Mat & mat, uint rows, uint cols, bool setToZero=false){
-      return MatrixResize<Mat>::operation(mat,rows,cols,setToZero);   
-    }
-    
+        template<typename T, typename TargetType>
+        inline void assign(TargetType & target, const T* source){
+          MatrixAssignData<T,TargetType>::operation(target,source);
+        }
 
-    template<typename MatType,typename BlockType>
-    inline void setBlock(MatType & target, const BlockType & source, uint rowoffset, uint coloffset){
-      MatrixBlockAssign<BlockType,MatType>::operation(target,source,rowoffset,coloffset);
-    }
+        template<typename T, typename SourceType>
+        inline void copyTo(T * target, const SourceType & source){
+          MatrixCopyToPointer<T,SourceType>::operation(target,source);
+        }
+        template<typename T, typename VectorTypeA, typename VectorTypeB>
+        inline void innerProduct(T & result, const VectorTypeA & a, const VectorTypeB & b){
+          VectorInnerProduct<T,VectorTypeA,VectorTypeB>::operation(result,a,b);
+        }
 
-    template<typename BlockType, typename MatType>
-    inline void getBlock(BlockType & block, const MatType & mat, uint rowoffset, uint coloffset){
-      MatrixBlockExtract<BlockType,MatType>::operation(block,mat,rowoffset,coloffset);
-    }
+        template<typename Result,typename Mat>
+        inline void maximum(Result & result, const Mat & mat){
+          MatrixMaximumElement<Result,Mat>::operation(result,mat);
+        }
+        template<typename Mat>
+        inline Real maximum(const Mat & mat){
+          Real result;
+          maximum(result,mat);
+          return result;
+        }
 
-    template<typename T, typename TargetType>
-    inline void assign(TargetType & target, const T* source){
-      MatrixAssignData<T,TargetType>::operation(target,source);
-    }
+        template<typename C, typename A, typename B>
+        inline void elementWiseMultiply(C & result, const A & a, const B& b ){
+          MatrixElementWiseMultiply<C,A,B>::operation(result,a,b);
+        }
+        template<typename C, typename A, typename B>
+        inline void elementWiseDivide(C & result, const A & a, const B& b ){
+          MatrixElementWiseDivide<C,A,B>::operation(result,a,b);
+        }
+        template<typename OutputMatrix, typename InputMatrix>
+        void padMatrix(OutputMatrix & out, const InputMatrix & inputMatrix,uint rowsTop, uint rowsBottom, uint colsLeft, uint colsRight){
+          MatrixPad<OutputMatrix,InputMatrix>::operation(out,inputMatrix, rowsTop,  rowsBottom,  colsLeft,  colsRight);
+        }
 
-    template<typename T, typename SourceType>
-    inline void copyTo(T * target, const SourceType & source){
-      MatrixCopyToPointer<T,SourceType>::operation(target,source);
-    }
-    template<typename T, typename VectorTypeA, typename VectorTypeB>
-    inline void innerProduct(T & result, const VectorTypeA & a, const VectorTypeB & b){
-      VectorInnerProduct<T,VectorTypeA,VectorTypeB>::operation(result,a,b);
-    }
+        template<typename OutputMatrix, typename InputMatrix, typename KernelMatrix>
+        void convolve(OutputMatrix & result, const InputMatrix & original, const KernelMatrix & kernel){
+          MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,original,kernel);
+        }
 
-    template<typename Result,typename Mat>
-    inline void maximum(Result & result, const Mat & mat){
-      MatrixMaximumElement<Result,Mat>::operation(result,mat);
-    }
-    template<typename Mat>
-    inline Real maximum(const Mat & mat){
-      Real result;
-      maximum(result,mat);
-      return result;
-    }
+        template<typename MatA, typename MatB>
+        void compareMatrix(bool & result, const MatA & a, const MatB & b, Real epsilon = EPSILON){
+          MatrixCompare<MatA,MatB,Real>::operation(result,a,b,epsilon);
+        }
 
-    template<typename C, typename A, typename B>
-    inline void elementWiseMultiply(C & result, const A & a, const B& b ){
-      MatrixElementWiseMultiply<C,A,B>::operation(result,a,b);
-    }
-    template<typename C, typename A, typename B>
-    inline void elementWiseDivide(C & result, const A & a, const B& b ){
-      MatrixElementWiseDivide<C,A,B>::operation(result,a,b);
-    }
-    template<typename OutputMatrix, typename InputMatrix>
-    void padMatrix(OutputMatrix & out, const InputMatrix & inputMatrix,uint rowsTop, uint rowsBottom, uint colsLeft, uint colsRight){
-      MatrixPad<OutputMatrix,InputMatrix>::operation(out,inputMatrix, rowsTop,  rowsBottom,  colsLeft,  colsRight);
-    }
+        template<typename OutputMatrix, typename InputMatrix, typename KernelMatrix>
+        void convolveSame(OutputMatrix & result, const InputMatrix & original, const KernelMatrix & kernel, int borderStrategy=0){
+          uint rowsTop = kernel.rows()/2-1+kernel.rows()%2;
+          uint rowsBottom = kernel.rows()/2;
+          uint colsLeft = kernel.cols()/2-1+kernel.cols()%2;
+          uint colsRight = kernel.cols()/2;
+          InputMatrix padded;
+          padMatrix(padded,original,rowsTop,rowsBottom,colsLeft,colsRight);
+          MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,padded,kernel);
+        }
 
-  template<typename OutputMatrix, typename InputMatrix, typename KernelMatrix>
-  void convolve(OutputMatrix & result, const InputMatrix & original, const KernelMatrix & kernel){
-    MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,original,kernel);
+        template<typename OutputMatrix, typename InputMatrix, typename FilterFunction, typename FilterArgument>
+        void filter(OutputMatrix & result, const InputMatrix & original, FilterFunction filter,uint width, uint height){
+          MatrixFilter<OutputMatrix,InputMatrix,FilterFunction,FilterArgument>::operation(result,original,filter,width,height);
+        }
+
+        template<typename C, typename A, typename B>
+        void add(C & c, const A& a, const B & b){
+          MatrixAddition<C,A,B>::operation(c,a,b);
+        }
+        template<typename C, typename A, typename B>
+        void subtract(C & c, const A& a, const B & b){
+          MatrixSubtraction<C,A,B>::operation(c,a,b);
+        }
+        template<typename C, typename A, typename B>
+        void multiplyMatrix(C & c, const A& a, const B & b){
+          MatrixMultiplication<Real,C,A,B>::operation(c,a,b);
+        }
+        template<typename C, typename A, typename B>
+        void multiplyScalar(C & c, const A& a, const B & s){
+          MatrixScalarMultiplication<C,A,B>::operation(c,a,s);
+        }
+
+        template<typename A, typename B>
+        inline void cart2hom(A & hom, const B & car){
+          MatrixCartesianToHomogenousCoordinates<A,B>::operation(hom,car);
+        }
+
+        template<typename A, typename B>
+        inline void hom2car(A & cart, const B & hom){
+          MatrixHomogenousToCartesianCoordinates<A,B>::operation(cart,hom);
+        }
+
+        template<typename InvertedMatrixType, typename InputMatrixType>
+        void invertSymmetricMatrix(InvertedMatrixType & inv, const InputMatrixType & symmetricMatrix){
+          MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,symmetricMatrix);
+        }
+        template<typename InvertedMatrixType, typename InputMatrixType>
+        void invertMatrix(InvertedMatrixType & inv, const InputMatrixType & matrix){
+          MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,matrix);
+        }
+
+        template<typename TAssignee, typename TValue>
+        inline bool assignMatrix(TAssignee & assignee, const TValue & value){
+          return MatrixAssign<TAssignee,TValue>::operation(assignee,value);
+        }
+        template<typename TAssignee, typename TValue>
+        inline bool assignElement(TAssignee & assignee, uint i, uint j, const TValue & value){
+          return MatrixElementAssignment<TAssignee,TValue>::operation(assignee,i,j,value);
+        }
+
+        template<typename MatrixType>
+        inline uint rowCount(const MatrixType & matrix){
+          uint result;
+          OperationRowCount<MatrixType>::operation(result,matrix);
+          return result;
+        }
+        template<typename MatrixType>
+        inline uint columnCount(const MatrixType & matrix){
+          uint result;
+          OperationColumnCount<MatrixType>::operation(result,matrix);
+          return result;
+        }
+      }
+    }
   }
 
-  template<typename MatA, typename MatB>
-  void compareMatrix(bool & result, const MatA & a, const MatB & b, Real epsilon = EPSILON){
-    MatrixCompare<MatA,MatB,Real>::operation(result,a,b,epsilon);
-  }
-
-
-  template<typename OutputMatrix, typename InputMatrix, typename KernelMatrix>
-  void convolveSame(OutputMatrix & result, const InputMatrix & original, const KernelMatrix & kernel, int borderStrategy=0){
-    uint rowsTop = kernel.rows()/2-1+kernel.rows()%2;
-    uint rowsBottom = kernel.rows()/2;
-    uint colsLeft = kernel.cols()/2-1+kernel.cols()%2;
-    uint colsRight = kernel.cols()/2;
-    InputMatrix padded;
-    padMatrix(padded,original,rowsTop,rowsBottom,colsLeft,colsRight);
-    MatrixConvolution<OutputMatrix,InputMatrix,KernelMatrix,Real>::operation(result,padded,kernel);
-  }
-
-  template<typename OutputMatrix, typename InputMatrix, typename FilterFunction, typename FilterArgument>
-  void filter(OutputMatrix & result, const InputMatrix & original, FilterFunction filter,uint width, uint height){
-    MatrixFilter<OutputMatrix,InputMatrix,FilterFunction,FilterArgument>::operation(result,original,filter,width,height);
-  }
-
-  template<typename C, typename A, typename B>
-  void add(C & c, const A& a, const B & b){
-    MatrixAddition<C,A,B>::operation(c,a,b);
-  }
-  template<typename C, typename A, typename B>
-  void subtract(C & c, const A& a, const B & b){
-    MatrixSubtraction<C,A,B>::operation(c,a,b);
-  }
-  template<typename C, typename A, typename B>
-  void multiplyMatrix(C & c, const A& a, const B & b){
-    MatrixMultiplication<Real,C,A,B>::operation(c,a,b);
-  }
-  template<typename C, typename A, typename B>
-  void multiplyScalar(C & c, const A& a, const B & s){
-    MatrixScalarMultiplication<C,A,B>::operation(c,a,s);
-  }
-
-  template<typename A, typename B>
-  inline void cart2hom(A & hom, const B & car){
-    MatrixCartesianToHomogenousCoordinates<A,B>::operation(hom,car);
-  }
-
-  template<typename A, typename B>
-  inline void hom2car(A & cart, const B & hom){
-    MatrixHomogenousToCartesianCoordinates<A,B>::operation(cart,hom);
-  }
-  
-  template<typename InvertedMatrixType, typename InputMatrixType> 
-  void invertSymmetricMatrix(InvertedMatrixType & inv, const InputMatrixType & symmetricMatrix){
-    MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,symmetricMatrix);
-  }
-  template<typename InvertedMatrixType, typename InputMatrixType>
-  void invertMatrix(InvertedMatrixType & inv, const InputMatrixType & matrix){
-    MatrixInversion<InvertedMatrixType,InputMatrixType,MatrixProperty::Symmetric>::operation(inv,matrix);
-  }
-  
-  
-template<typename TAssignee, typename TValue>
-inline bool assignMatrix(TAssignee & assignee, const TValue & value){
-  return MatrixAssign<TAssignee,TValue>::operation(assignee,value);
-}
-template<typename TAssignee, typename TValue>
-inline bool assignElement(TAssignee & assignee, uint i, uint j, const TValue & value){
-  return MatrixElementAssignment<TAssignee,TValue>::operation(assignee,i,j,value);
-}
-
-
-
-template<typename MatrixType>
-inline uint rowCount(const MatrixType & matrix){
-  uint result;
-  OperationRowCount<MatrixType>::operation(result,matrix);
-  return result;
-}
-template<typename MatrixType>
-inline uint columnCount(const MatrixType & matrix){
-  uint result;
-  OperationColumnCount<MatrixType>::operation(result,matrix);
-  return result;
-}
-
-  
-  }
-
-  
-}
-}
-
-//create shortcut for matrix operations
-namespace matrix = nspace::math::shorthands::matrix;
+  //create shortcut for matrix operations
+  namespace matrix = nspace::math::shorthands::matrix;
 }

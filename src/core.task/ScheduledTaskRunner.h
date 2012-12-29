@@ -8,11 +8,11 @@ namespace nspace{
   class ScheduledTaskRunner : public virtual TaskRunnerBase{
     REFLECTABLE_OBJECT(ScheduledTaskRunner);
     SUBCLASSOF(TaskRunnerBase)
-  private:    
+  private:
     std::priority_queue<ScheduledTask*,std::vector<ScheduledTask*>,ScheduledTask::CompareTaskPriority> _taskqueue;
   public:
-    ScheduledTaskRunner();  
-  protected:    
+    ScheduledTaskRunner();
+  protected:
     virtual ITask * nextTask();
     virtual void onBeforeTaskRun(ITask * task);
     virtual void onAfterTaskRun(ITask * task);

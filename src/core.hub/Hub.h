@@ -4,17 +4,16 @@
 #include <stack>
 #include <iostream>
 
-#include <core/Set.h>
+//#include <core/Set.h>
 #include <core/NamedObject.h>
 #include <core.hub/Module.h>
 #include <core/StringTools.h>
 #include <core/DataNode.h>
 namespace nspace{
-
   typedef DataNode<Object*> HubNode;
-  class Hub : 
-    public virtual NamedObject , 
-    public virtual Module, 
+  class Hub :
+    public virtual NamedObject ,
+    public virtual Module,
     public virtual HubNode,
     public virtual Set<Object*>
   {
@@ -24,14 +23,10 @@ namespace nspace{
     Set<Object *> _waitingAnnouncedObjects;
     Set<Object *> _waitingRenouncedObjects;
     bool _processing;
-    
 
   public:
-    
 
-
-
-    Hub();    
+    Hub();
     ~Hub();
     const Set<Module*> & modules()const;
 
@@ -49,6 +44,5 @@ namespace nspace{
   protected:
     void onElementAdded(Object * object);
     void onElementRemoved(Object * object);
-
   };
 }

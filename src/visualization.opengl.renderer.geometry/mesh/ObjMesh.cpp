@@ -6,12 +6,9 @@
 using namespace nspace;
 using namespace std;
 
-
 ObjLoader::ObjLoader(){
-
 }
 ObjLoader * ObjLoader::_instance = 0;
-
 
 bool ObjLoader::load(IMeshBuilder & builder, istream & instream){
   builder.begin();
@@ -45,17 +42,15 @@ bool ObjLoader::load(IMeshBuilder & builder, istream & instream){
       string name;
       getline(lineStream,name);
       builder.setGroupName(name);
-      
     }else if(type == "f"){
       VertexList faceVertices;
-      
 
       while(lineStream){
         string vertexString;
         lineStream >> vertexString;
         string token;
         stringstream vertexStream(vertexString);
-        
+
         vector<unsigned int> indices;
         string part;
         while(getline(vertexStream,part,'/')){
@@ -72,8 +67,8 @@ bool ObjLoader::load(IMeshBuilder & builder, istream & instream){
         if(indices.size()>1) vertex.normalIndex = indices[1];
         if(indices.size()>2) vertex.textureCoordinateIndex = indices[2];
         if(indices.size()>3) cout << "obj loader does not know the vertex type" << endl;
-                
-        faceVertices.push_back(vertex);      
+
+        faceVertices.push_back(vertex);
       }
       builder.addFace(faceVertices);
     }
@@ -88,4 +83,3 @@ bool ObjLoader::load(IMeshBuilder & builder, const string & filename){
   if(!file)return false;
   return load(builder,file);
 }
-

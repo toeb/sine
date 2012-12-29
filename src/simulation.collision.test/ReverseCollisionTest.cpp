@@ -4,14 +4,13 @@ using namespace nspace;
 using namespace std;
 
 ReverseCollisionTest::ReverseCollisionTest(CollisionTest & test):CollisionTest(test.getTypeB(),test.getTypeA()),forwardTest(test){
-
 }
 
 bool ReverseCollisionTest::testCollision(const ISimulationObject & a, const ISimulationObject & b, Collision * collision)const{
   if(!collision) {
     return forwardTest.testCollision(b,a,0);
   }
-  if(!forwardTest.testCollision(b,a,collision))return false;  
+  if(!forwardTest.testCollision(b,a,collision))return false;
   Vector3D tmp;
   if(collision){
     collision->foreachContact([&tmp](Contact* contact){
@@ -23,4 +22,3 @@ bool ReverseCollisionTest::testCollision(const ISimulationObject & a, const ISim
   }
   return true;
 }
-  

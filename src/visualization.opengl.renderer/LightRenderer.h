@@ -5,12 +5,11 @@
 #include <visualization/Material.h>
 #include <visualization/Color.h>
 
-#include <core/Set.h>
+#include <core.collection.h>
 namespace nspace{
-
-  class LightRenderer : 
-    public virtual Renderer, 
-    public virtual Log, 
+  class LightRenderer :
+    public virtual Renderer,
+    public virtual Log,
     public virtual Set<Light*>,
     public virtual NamedObject
   {

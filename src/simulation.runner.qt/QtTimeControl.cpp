@@ -5,8 +5,8 @@ using namespace std;
 using namespace nspace;
 
 QtTimeControl::QtTimeControl(QWidget * parent):
-    PluginWindow(parent),
-    _TimeController(0)
+  PluginWindow(parent),
+  _TimeController(0)
 {
   _ui = new Ui_TimeControl();
   _ui->setupUi(this);
@@ -32,12 +32,11 @@ void QtTimeControl::refresh(){
   QTime actualTime = QTime().addMSecs(int(_TimeController->simulationTimeProvider().actualTime()*1000));
   _ui->actualSimulationTimeEdit->setTime(actualTime);
 
-
   QTime targetTime = QTime().addMSecs(int(_TimeController->simulationTimeProvider().targetTime()*1000));
   if(!_ui->targetSimulationTimeEdit->hasFocus()){
-  _ui->targetSimulationTimeEdit->blockSignals(true);
-  _ui->targetSimulationTimeEdit->setTime(targetTime);
-  _ui->targetSimulationTimeEdit->blockSignals(false);
+    _ui->targetSimulationTimeEdit->blockSignals(true);
+    _ui->targetSimulationTimeEdit->setTime(targetTime);
+    _ui->targetSimulationTimeEdit->blockSignals(false);
   }
   QTime appTime = QTime().addMSecs(int(applicationTime()*1000));
   _ui->applicationTimeEdit->setTime(appTime);
@@ -46,19 +45,16 @@ void QtTimeControl::refresh(){
   _ui->actualSpeedValue->setValue(_TimeController->simulationTimeProvider().averageActualSpeed());
 }
 
-
 void QtTimeControl::pauseCalled(){
   if(!_TimeController)return;
 
   _TimeController->togglePause();
-  
 }
 void QtTimeControl::step(){
- if(!_TimeController)return;
- _TimeController->setPaused(true);
- _TimeController->simulationTimeProvider().advanceBy(_ui->stepSizeValue->value());
+  if(!_TimeController)return;
+  _TimeController->setPaused(true);
+  _TimeController->simulationTimeProvider().advanceBy(_ui->stepSizeValue->value());
 }
-
 
 void QtTimeControl::setSpeed(double value){
   if(!_TimeController)return;
@@ -70,4 +66,3 @@ void QtTimeControl::setSpeed(double value){
 
   _TimeController->setDesiredSpeed(value);
 }
-

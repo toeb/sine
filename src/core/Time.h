@@ -1,6 +1,6 @@
 #pragma once
 #include <config.h>
-namespace nspace{  
+namespace nspace{
   //alias for a time
   typedef Real Time;
   // returns the system time

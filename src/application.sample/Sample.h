@@ -5,28 +5,27 @@
 namespace nspace{
   class SampleApplication;
 
-  // the sample class needs to be derived and implemented 
-  // the client needs to override setup in which he can add 
+  // the sample class needs to be derived and implemented
+  // the client needs to override setup in which he can add
   // to the Samples components() set.
-  // e.g.  
-/*
+  // e.g.
+  /*
   class MySample{
-    protected:
-    void setup(){
-      Sphere * sphere = new Sphere(0.5);
-      SphereRenderer * sphereRenderer = new SphereRenderer();
-      sphereRenderer->add(sphere);
+  protected:
+  void setup(){
+  Sphere * sphere = new Sphere(0.5);
+  SphereRenderer * sphereRenderer = new SphereRenderer();
+  sphereRenderer->add(sphere);
 
-      components()|=sphere;
-      components()|=sphereRenderer;
-
-    }
+  components()|=sphere;
+  components()|=sphereRenderer;
+  }
   };
-*/
+  */
   class Sample : public virtual CompositeHubObject{
     REFLECTABLE_OBJECT(Sample);
-  protected:    
-    virtual void setup()=0;  
+  protected:
+    virtual void setup()=0;
     Sample();
     void setApplication(SampleApplication & application);
     SampleApplication & application();

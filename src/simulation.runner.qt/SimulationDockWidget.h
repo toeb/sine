@@ -4,8 +4,6 @@
 #include <QDockWidget>
 
 namespace nspace{
-
-
   class SimulationDockWidget : public QDockWidget{
     Q_OBJECT;
   private:
@@ -16,8 +14,5 @@ signals:
   public:
 
     SimulationDockWidget(QWidget * parent=0);
-
-
   };
-
 }

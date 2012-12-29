@@ -1,5 +1,5 @@
 #pragma once
-#include <core/Set.h>
+#include <core.collection.h>
 
 #include <visualization/Renderer.h>
 #include <simulation.geometry/primitives/Sphere.h>

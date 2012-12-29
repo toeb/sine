@@ -6,15 +6,14 @@
 #include <core.logging.h>
 #include <simulation.access/IValue.h>
 
-
 #include <QStandardItem>
 #include <QStandardItemModel>
 
 class Ui_PropertyWindow;
 namespace nspace{
   class ValueItem;
-  class QtPropertyView : 
-    public Plugin, 
+  class QtPropertyView :
+    public Plugin,
     public virtual TypedModuleBase<IComponent>,
     public virtual Log
   {
@@ -34,12 +33,12 @@ namespace nspace{
     public slots:
       void refreshProperties();
   protected:
-     void install(PluginContainer & container);
-     void enable();
-     void disable();
-     void uninstall(PluginContainer & container);
-     void loadSettings(QSettings & settings);
-     void saveSettings(QSettings & settings);
+    void install(PluginContainer & container);
+    void enable();
+    void disable();
+    void uninstall(PluginContainer & container);
+    void loadSettings(QSettings & settings);
+    void saveSettings(QSettings & settings);
 
     void onElementAdded(IComponent * component);
     void onElementRemoved(IComponent * component);

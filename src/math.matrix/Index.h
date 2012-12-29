@@ -2,14 +2,12 @@
 
 #include <config.h>
 namespace nspace{
-
-
-  // recursive data structure for indexing 
+  // recursive data structure for indexing
   // gives access to row major and (later on column major) indexing for n dimensions
-  // initialization: Idx<4> idx = {4,2,3,1} 
+  // initialization: Idx<4> idx = {4,2,3,1}
   // note: in visual studio a maximum initializer depth of 5 is possible... that kinda sux
   template<size_t n>
-  struct Idx{  
+  struct Idx{
     union{
       struct{
         size_t first;
@@ -74,6 +72,4 @@ namespace nspace{
       return out;
     }
   };
-
-
 }

@@ -34,7 +34,6 @@ namespace nspace{
 
     virtual bool initializeRunner(){return true;}
 
-
   protected:
 
     void onPotentialSimulationObjectAdd(ISimulationObject * object){

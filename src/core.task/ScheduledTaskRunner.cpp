@@ -2,7 +2,6 @@
 
 using namespace nspace;
 
-
 ScheduledTaskRunner::ScheduledTaskRunner(){
   setName("ScheduledTaskRunner");
 }
@@ -11,9 +10,8 @@ ITask * ScheduledTaskRunner::nextTask(){
   auto task = _taskqueue.top();
   _taskqueue.pop();
   return task;
-}  
+}
 void ScheduledTaskRunner::onBeforeTaskRun(ITask * task){
-
 }
 void ScheduledTaskRunner::onAfterTaskRun(ITask * task){
   auto scheduledTask = dynamic_cast<ScheduledTask*>(task);

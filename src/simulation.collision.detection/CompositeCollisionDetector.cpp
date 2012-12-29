@@ -6,9 +6,6 @@ using namespace std;
 CompositeCollisionDetector::CompositeCollisionDetector(){
 }
 
-
-
-
 void CompositeCollisionDetector::doCollisionDetection(Real time, Real h){
   //iterate through all potential collisions
   CollisionTestRepository & repository = CollisionTestRepository::instance();
@@ -26,7 +23,6 @@ void CompositeCollisionDetector::doCollisionDetection(Real time, Real h){
     }
   });
 }
-  
 
 bool CompositeCollisionDetector::accepts(ICollidable * c){
   bool result=  CollisionTestRepository::instance().hasTestFor(c->getCollisionObjectType());
@@ -37,4 +33,3 @@ bool CompositeCollisionDetector::accepts(ICollidable * c){
     return false;
   }
 }
-

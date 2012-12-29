@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include <simulation/SimulationModuleBase.h>
 #include <simulation.timing/Timeable.h>
 namespace nspace{
@@ -8,13 +8,13 @@ namespace nspace{
       foreachObject([&out](Timeable * timeable){
         //if(!timeable->getName())return;
 
-          out << timeable->name() << " time used: " << timeable->accumulatedTime() << " s"<< std::endl ;
+        out << timeable->name() << " time used: " << timeable->accumulatedTime() << " s"<< std::endl ;
       });
       std::cout << std::endl;
     }
     void resetAccumulatedTimes(){
-        foreachObject([](Timeable * timeable){
-          timeable->resetAccumulatedTime();
+      foreachObject([](Timeable * timeable){
+        timeable->resetAccumulatedTime();
       });
     }
   };

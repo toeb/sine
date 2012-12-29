@@ -10,5 +10,4 @@ namespace nspace{
     Color color;
     std::string texturefile;
   };
-
 }

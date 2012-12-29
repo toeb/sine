@@ -1,8 +1,7 @@
 #pragma once
 #include <config.h>
 #include <math.matrix/operations/MatrixSetConstant.h>
-namespace nspace{ 
-
+namespace nspace{
   template< typename OutputMatrix, typename InputMatrix, typename KernelMatrix,typename T>
   class MatrixConvolution{
   public:
@@ -24,14 +23,8 @@ namespace nspace{
             }
           }
           r(i,j)=sum;
-
         }
       }
-
     }
   };
-  
-
-
-
 }

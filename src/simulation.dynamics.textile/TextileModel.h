@@ -11,23 +11,22 @@
 #include <simulation.dynamics/connection/ParticleConnector.h>
 
 namespace nspace{
-
-/**
- * \brief a Textile node has links to the north south east and west node as well as to the 12 connected springs.
- *
- *
- */
-struct TextileNode{
+  /**
+  * \brief a Textile node has links to the north south east and west node as well as to the 12 connected springs.
+  *
+  *
+  */
+  struct TextileNode{
     TextileNode():
-        connector(0),
-        particle(0),
-        i(0),j(0),
-        north(0), south(0), east(0), west(0),
-        northElongator(0),eastElongator(0),
-        westElongator(0), southElongator(0),
-        northEastShearer(0), southEastShearer(0),
-        southWestShearer(0), northWestShearer(0),
-        northFlexor(0), southFlexor(0), westFlexor(0), eastFlexor(0){}
+      connector(0),
+      particle(0),
+      i(0),j(0),
+      north(0), south(0), east(0), west(0),
+      northElongator(0),eastElongator(0),
+      westElongator(0), southElongator(0),
+      northEastShearer(0), southEastShearer(0),
+      southWestShearer(0), northWestShearer(0),
+      northFlexor(0), southFlexor(0), westFlexor(0), eastFlexor(0){}
 
     ParticleConnector * connector;
     Particle * particle;
@@ -37,7 +36,6 @@ struct TextileNode{
     TextileNode * south;
     TextileNode * east;
     TextileNode * west;
-
 
     DampedSpring * northElongator;
     DampedSpring * eastElongator;
@@ -53,15 +51,15 @@ struct TextileNode{
     DampedSpring * southFlexor;
     DampedSpring * westFlexor;
     DampedSpring * eastFlexor;
-};
+  };
 
-/**
- * \brief Textile model.
- *
- *
- */
-class TextileModel : public ISimulationObject{
-private:
+  /**
+  * \brief Textile model.
+  *
+  *
+  */
+  class TextileModel : public ISimulationObject{
+  private:
     int _rows;
     int _columns;
 
@@ -71,7 +69,6 @@ private:
 
     std::vector<ISimulationObject *> _simulationObjects;
     std::vector<TextileNode*> _nodes;
-
 
     Real _k_d_elongation;
     Real _k_d_shear;
@@ -83,7 +80,7 @@ private:
     Real _maximumElongation;
     bool _normalize;
 
-public:
+  public:
     static TextileModel * createTextileModel( const Vector3D & p,     const Matrix3x3 & orientation, Real mass,   Real width, Real height,    int rows, int cols);
     void normalize();
 
@@ -110,13 +107,11 @@ public:
     void setElongationDampeningConstant(Real k_d_e);
     Real getElongationDampeningConstant()const;
 
-
     void setShearDampeningConstant(Real k_d_s);
     Real getShearDampeningConstant()const;
 
     void setShearSpringConstant(Real k_d_s);
     Real getShearSpringConstant()const;
-
 
     void setFlexionDampeningConstant(Real k_d_f);
     Real getFlexionDampeningConstant()const;
@@ -124,9 +119,7 @@ public:
     void setFlexionSpringConstant(Real k_d_f);
     Real getFlexionSpringConstant()const;
 
-
-
-private:
+  private:
     void normalizeEachSpring(Real maxElongationRate);
 
     void for_each_spring(std::function<void (TextileNode * , TextileNode * , DampedSpring * )> f);
@@ -150,17 +143,16 @@ private:
     void createSprings();
     void setupNodeConnectivity();
 
-
     void addSimulationObject(ISimulationObject *  object);
 
     void buildModel(
-            const Vector3D & p,
-            const Matrix3x3 & orientation,
-            Real mass,
-            Real width, Real height,
-            int rows, int cols);
+      const Vector3D & p,
+      const Matrix3x3 & orientation,
+      Real mass,
+      Real width, Real height,
+      int rows, int cols);
 
     void normalizeShearers(Real maxElongationRate);
     void normalizeElongators(Real maxElongationRate);
-};
+  };
 }

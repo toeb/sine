@@ -1,8 +1,6 @@
-
 #include "IInputListener.h"
 #include <simulation.interaction/InputHandler.h>
 using namespace nspace;
-
 
 InputHandler * IInputListener::currentHandler()const{
   if(_currentHandler)return _currentHandler;
@@ -11,11 +9,9 @@ InputHandler * IInputListener::currentHandler()const{
     return a->lastChange() > b->lastChange();
   });
   return tmp.first();
-
 }
-    IInputListener::IInputListener():_currentHandler(0){
-
-    }
+IInputListener::IInputListener():_currentHandler(0){
+}
 
 void IInputListener::setCurrentHandler(InputHandler * handler){
   _currentHandler = handler;

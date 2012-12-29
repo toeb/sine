@@ -3,13 +3,13 @@
 #include <userinterface.qt.controls/DynamicWidget.h>
 #include <core/reflection/IModifiableValue.h>
 
-namespace nspace{  
+namespace nspace{
   class ValueWidget : public DynamicWidget{
     Q_OBJECT;
     SIMPLE_PROPERTY(IModifiableValue * , ValueHolder);
-  public slots:
-    virtual void updateWidgetValue(){};
-    virtual void updateValueHolder(){};
+    public slots:
+      virtual void updateWidgetValue(){};
+      virtual void updateValueHolder(){};
   public:
 
     template<typename T,typename ValueType>
@@ -24,15 +24,15 @@ namespace nspace{
         return result;
       }
       DynamicWidget * createInstance(){
-        return new T(0);  
+        return new T(0);
       }
     };
 
     ValueWidget(QWidget * parent);
-  protected:    
+  protected:
     void onDataContextChanging(Object * oldvalue, Object * newvalue);
     virtual void onValueHolderChanging(IModifiableValue * oldvalue,IModifiableValue * newvalue){}
-  signals:
-    void editFinished();    
+signals:
+    void editFinished();
   };
 }

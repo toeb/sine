@@ -5,9 +5,8 @@
 #include <application.qt.objectview/ObjectPropertyViewModel.h>
 class Ui_ObjectPropertyView;
 namespace nspace{
-
-  class ObjectPropertyView : 
-    public QWidget, 
+  class ObjectPropertyView :
+    public QWidget,
     public virtual PropertyChangingObject,
     public virtual Log
   {
@@ -25,5 +24,4 @@ namespace nspace{
       void onModelLayoutChanged(const QModelIndex & index);
       void autoresize();
   };
-
 }

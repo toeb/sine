@@ -20,23 +20,23 @@ void CompositeSimulationObject::foreachSuccessor(std::function<void (ISimulation
 /*
 
 bool CompositeSimulationObject::isEmpty()const{
-  return _components.empty();
+return _components.empty();
 }
 const std::vector<ISimulationObject*> & CompositeSimulationObject::components()const{
-  return _components;
+return _components;
 }
 void CompositeSimulationObject::foreachComponent(std::function<void(ISimulationObject*)> action){
-  for_each(_components.begin(), _components.end(), action);
+for_each(_components.begin(), _components.end(), action);
 }
 void CompositeSimulationObject::foreachComponent(std::function<void(ISimulationObject*)> action) const{
-   for_each(_components.begin(), _components.end(), action);
+for_each(_components.begin(), _components.end(), action);
 }
 bool CompositeSimulationObject::addComponent(ISimulationObject* component){
-  _components.push_back(component);
-  return true;
+_components.push_back(component);
+return true;
 }
 void CompositeSimulationObject::removeComponent(ISimulationObject* component){
-  std::remove(_components.begin(), _components.end(), component);
+std::remove(_components.begin(), _components.end(), component);
 }
 
 */

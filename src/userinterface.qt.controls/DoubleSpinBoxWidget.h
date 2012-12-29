@@ -11,10 +11,10 @@ namespace nspace{
     QDoubleSpinBox * _spinbox;
   public:
     DoubleSpinBoxWidget(QWidget * parent);
-  public slots:
-    void updateWidgetValue();
-    void updateValueHolder();
-  protected slots:
-    void onValueChanged(double);
+    public slots:
+      void updateWidgetValue();
+      void updateValueHolder();
+      protected slots:
+        void onValueChanged(double);
   };
 }

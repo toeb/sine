@@ -15,10 +15,10 @@ namespace nspace{
 
   public:
     DoubleSliderWidget();
-  protected slots:
-    void valueChanged(int i);
+    protected slots:
+      void valueChanged(int i);
   protected:
-    
+
     bool storeTypedValue(const double  & value);
     bool retrieveTypeValue(double & value)const;
   };

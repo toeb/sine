@@ -3,7 +3,6 @@
 #include <config.h>
 
 namespace nspace{
-  
   template<typename MatCart,typename MatHom>
   class MatrixHomogenousToCartesianCoordinates{
   public:
@@ -16,5 +15,4 @@ namespace nspace{
       }
     }
   };
-
 }

@@ -19,10 +19,10 @@ void MeshRenderer::render(){
   glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, 100.0);
 
   glColor3fv(_color);
-  
+
   glBegin(GL_TRIANGLES);
-  
-  _mesh.foreachFace([](Face * face){   
+
+  _mesh.foreachFace([](Face * face){
     if(face->vertices.size()==3){
       for(int i=0; i < 3; i++){
         glNormal(face->vertices[i]->normal);

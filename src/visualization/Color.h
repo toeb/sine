@@ -11,7 +11,7 @@ namespace nspace{
   // YUV is a vector
   typedef Vector3D YUV;
 
-  // represents a color which has a name a rgb value and and alpha value. 
+  // represents a color which has a name a rgb value and and alpha value.
   // static color class contains a map of all collors : a color palette
   class Color : public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(Color);
@@ -44,13 +44,11 @@ namespace nspace{
     // assigns this color the value of the color specified by name
     Color & operator=(const std::string & name);
 
-
     //not thread safe
     operator const float*()const;
     friend bool operator==(const Color& a, const Color & b);
     friend bool operator!=(const Color & a, const Color & b);
 
-    
     // loads all colors from the color file specified by filename
     static int loadColors(const std::string & filename);
     // returns the color from the palette by name
@@ -68,10 +66,9 @@ namespace nspace{
       *this = color;
     }
 
-
     // normalizes the color (sets all color channels to between zero and one)
     void normalize();
-    
+
     // byte value of the red channel (0-255)
     unsigned char r8bit()const;
     // byte value of the green channel (0-255)
@@ -96,12 +93,12 @@ namespace nspace{
     // read/write access to the  color vector
     RGB & rgb();
     // read access to the color vector
-    const RGB & rgb()const;    
+    const RGB & rgb()const;
 
     // read/write access to the color values
     Real & r();
     Real & g();
-    Real & b(); 
+    Real & b();
     Real & a();
 
     // read access to the color values
@@ -120,24 +117,21 @@ namespace nspace{
     friend std::ostream & operator <<(std::ostream & o, const Color & color);
   };
 
-
-
-  
-SERIALIZERS(Color,{
-  if(value->hasName())stream << value->colorName();
-  else stream << value->r() << " "<<value->g() <<" "<<value->b()<<" " <<value->a();
-  return true;
-},{
-  std::string colorname;
-  stream>>colorname;
-  auto color = Color::getColorByName(colorname);
-  if(&color!=&Color::UnknownColor()){
-    *value = color;
+  SERIALIZERS(Color,{
+    if(value->hasName())stream << value->colorName();
+    else stream << value->r() << " "<<value->g() <<" "<<value->b()<<" " <<value->a();
     return true;
-  }  
-  std::stringstream ss(colorname);
-  stream>>value->r()>>value->g()>>value->b()>>value->a();
-  value->setColorNameNull();
-  return true;
-});
+  },{
+    std::string colorname;
+    stream>>colorname;
+    auto color = Color::getColorByName(colorname);
+    if(&color!=&Color::UnknownColor()){
+      *value = color;
+      return true;
+    }
+    std::stringstream ss(colorname);
+    stream>>value->r()>>value->g()>>value->b()>>value->a();
+    value->setColorNameNull();
+    return true;
+  });
 }

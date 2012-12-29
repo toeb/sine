@@ -18,41 +18,35 @@
 namespace nspace{
   class SampleApplication : public virtual NamedObject, public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(SampleApplication);
-public:
-  PROPERTY(SkyboxRenderer * ,Skybox){cancel = true;}
-  PROPERTY(ViewportController * ,Camera){cancel = true;}
-  PROPERTY(std::string  ,ResourceDirectory){}
-  PROPERTY(SimulationTimeProvider * ,SimulationTimeProvider){cancel = true;}
-  PROPERTY(ObjectViewPlugin * ,ObjectViewPlugin){cancel = true;}
-  PROPERTY(QtPropertyView * ,QtPropertyView){cancel = true;}
-  PROPERTY(ViewportPlugin * ,ViewportPlugin){cancel = true;}
-  PROPERTY(InitializationModule * ,Initializer){cancel = true;}
-  PROPERTY(Hub * ,Hub){cancel = true;}
-  PROPERTY(PluginApplication * ,Application){cancel = true;}
-  PROPERTY(GlViewport * ,Viewport){cancel = true;}
-  PROPERTY(RenderSet * ,RenderSet){cancel = true;}
-  PROPERTY(QtTaskRunner * ,QtTaskRunner){cancel = true;}
-  PROPERTY(QtTimeControlPlugin * ,QtTimeControlPlugin){cancel = true;}
-  PROPERTY(DefaultLightSetup * ,DefaultLightSetup){cancel = true;}
-  PROPERTY(SimulationTimeController * ,SimulationTimeController){cancel = true;}
-  PROPERTY(Simulation * ,Simulation){cancel = true;}
-  PROPERTY(StepIntegrator * ,Integrator){cancel = true;}
-  PROPERTY(GridRenderer * ,Grid){cancel = true;}
+  public:
+    PROPERTY(SkyboxRenderer * ,Skybox){cancel = true;}
+    PROPERTY(ViewportController * ,Camera){cancel = true;}
+    PROPERTY(std::string  ,ResourceDirectory){}
+    PROPERTY(SimulationTimeProvider * ,SimulationTimeProvider){cancel = true;}
+    PROPERTY(ObjectViewPlugin * ,ObjectViewPlugin){cancel = true;}
+    PROPERTY(QtPropertyView * ,QtPropertyView){cancel = true;}
+    PROPERTY(ViewportPlugin * ,ViewportPlugin){cancel = true;}
+    PROPERTY(InitializationModule * ,Initializer){cancel = true;}
+    PROPERTY(Hub * ,Hub){cancel = true;}
+    PROPERTY(PluginApplication * ,Application){cancel = true;}
+    PROPERTY(GlViewport * ,Viewport){cancel = true;}
+    PROPERTY(RenderSet * ,RenderSet){cancel = true;}
+    PROPERTY(QtTaskRunner * ,QtTaskRunner){cancel = true;}
+    PROPERTY(QtTimeControlPlugin * ,QtTimeControlPlugin){cancel = true;}
+    PROPERTY(DefaultLightSetup * ,DefaultLightSetup){cancel = true;}
+    PROPERTY(SimulationTimeController * ,SimulationTimeController){cancel = true;}
+    PROPERTY(Simulation * ,Simulation){cancel = true;}
+    PROPERTY(StepIntegrator * ,Integrator){cancel = true;}
+    PROPERTY(GridRenderer * ,Grid){cancel = true;}
 
-
-
-
-public:
-  SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = ".");
-  Hub & hub();
-  void setup();
-  int run();
-  void printSetup();
-  void printHierarchy();  
-private:
-  Sample & _sample;
-
-
-
-};
+  public:
+    SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory = ".");
+    Hub & hub();
+    void setup();
+    int run();
+    void printSetup();
+    void printHierarchy();
+  private:
+    Sample & _sample;
+  };
 }

@@ -4,52 +4,44 @@
 #include <core.h>
 #include <core.collection.h>
 #include <vector>
+#include <core/collection/Enumerable.h>
 using namespace nspace;
 using namespace std;
 
 using namespace nspace::collection;
 
-#define ITEMTYPE(COLLECTIONTYPE) typename EnumerableItemType<COLLECTIONTYPE>::ItemType
 
 
-template<typename T>
-class Enumerator{
-public:
-  typedef T Item;
-  // returns true if this enumerator is valid . ergo points to a valid item
-  virtual operator bool()const=0;
-  // returns a reference to the item
-  virtual const Item& operator*()const=0;
-  virtual Item& operator*()=0;
-  // increments this enumerator
-  virtual Enumerator<Item> & operator++()=0;
 
-};
+
 // enumerabletype need to have item() and size operation defined
 // IndexType needs to have less than operator defined
 template<typename IndexableType>
-class IndexEnumerator : public Enumerator<ITEMTYPE(IndexableType) >{
+class IndexEnumeratorImplementation : public EnumeratorImplementation<ITEMTYPE(IndexableType) >{
   // Index type of indexable type
   typedef typename IndexableIndexType< IndexableType>::IndexType Index;
   IndexableType & _indexable;
   Index _index;
-  //decalre friend so Indexabletype may instaciate IndexEnumerator
 public:
-  IndexEnumerator(IndexableType & indexable):_indexable(indexable),_index(0){}
-  IndexEnumerator(IndexableType & indexable, const Index && index):_indexable(indexable),_index(index){}
-
-  Enumerator<Item> & operator++(){
+  //decalre friend so Indexabletype may instaciate IndexEnumerator
+  IndexEnumeratorImplementation(IndexableType & indexable):_indexable(indexable),_index(0){}
+  IndexEnumeratorImplementation(IndexableType & indexable, const Index & index):_indexable(indexable),_index(index){}
+  
+protected:
+  void moveNext(){
     _index++;
-    return *this;
   }
-  operator bool()const{
+  std::shared_ptr<EnumeratorImplementation<Item> >clone(){
+    return std::shared_ptr<IndexEnumeratorImplementation<IndexableType>>(new IndexEnumeratorImplementation(_indexable, _index));
+  }
+  bool isValid()const{
     auto n = size<Index>(_indexable);
     return _index < n;
   }
-  const Item & operator*()const{
+  const Item & currentItem()const{
     return reference(_indexable, _index);
   }
-  Item & operator*(){
+  Item & currentItem(){
     return reference(_indexable,_index);
   }
 };
@@ -59,7 +51,7 @@ public:
 template<typename EnumerableType>
 class EnumerableEnumeratorType{
 public:
-  typedef IndexEnumerator<EnumerableType> EnumeratorType;
+  typedef IndexEnumeratorImplementation<EnumerableType> EnumeratorType;
 };
 
 
@@ -71,21 +63,58 @@ public:
     return typename EnumerableEnumeratorType<EnumerableType>::EnumeratorType(enumerable);
   }
 };
+template<typename EnumerableType>
+class OperationGetEnumeratorImplementation{
+public:
+  typedef ITEMTYPE(EnumerableType) Item;
+  static inline auto operation(EnumerableType  & enumerable)-> EnumeratorImplementation<Item> *{
+    return new IndexEnumeratorImplementation<EnumerableType>(enumerable);
+  }
+};
+
+
+template<typename T>
+class OperationGetEnumeratorImplementation<SimpleLinkedList<T>>{
+public:
+  typedef T Item;
+  static inline auto operation(SimpleLinkedList<T>  & enumerable)-> EnumeratorImplementation<Item> *{
+    return new SimpleLinkedListEnumerator<T>(enumerable);
+  }
+};
+
+
+template<typename EnumerableType>
+class EnumerableImplementationWrapper : public EnumerableImplementation<ITEMTYPE(EnumerableType)>{
+private:
+  EnumerableType & _enumerable;
+public:
+  typedef ITEMTYPE(EnumerableType) Item;
+  EnumerableImplementationWrapper(EnumerableType & enumerable):_enumerable(enumerable){
+    
+  }
+  
+  virtual Enumerator<Item> getEnumerator(){
+    return Enumerator<Item>(std::shared_ptr<std::remove_pointer<decltype(OperationGetEnumeratorImplementation<EnumerableType>::operation(_enumerable))>::type>(OperationGetEnumeratorImplementation<EnumerableType>::operation(_enumerable)));
+  }
+
+};
 
 
 
-
-
+template<typename EnumerableType>
+auto enumerable(EnumerableType & items)->Enumerable<ITEMTYPE(EnumerableType)>{
+  return OperationGetEnumerableImplementation<EnumerableType>::operation(items);
+};
 // creates the default enumerator for the EnumerableType
 template<typename EnumerableType>
-inline auto enumerator(EnumerableType & enumerable)->typename EnumerableEnumeratorType<EnumerableType>::EnumeratorType{
-  return OperationGetEnumerator<EnumerableType>::operation(enumerable);
+inline auto enumerator(EnumerableType & items)->Enumerator<ITEMTYPE(EnumerableType)>{
+  return enumerable(items).getEnumerator();
 }
 
 template<typename CollectionType>
 class OperationCollectionAddItem{
 public:
-  static inline bool operation(CollectionType & collection, ITEMTYPE(CollectionType) item){
+  static inline bool operation(CollectionType & collection, const ITEMTYPE(CollectionType) & item){
     return false;
   }
 
@@ -93,7 +122,7 @@ public:
 template<typename T>
 class OperationCollectionAddItem<std::vector<T>>{
 public:
-  static inline bool operation(std::vector<T> & collection, T item){
+  static inline bool operation(std::vector<T> & collection,const T &item){
     collection.push_back(item);
     return true;
   }
@@ -103,24 +132,137 @@ public:
 template<typename T>
 class OperationCollectionAddItem<Set<T>>{
 public:
-  static inline bool operation(Set<T> & collection, T item){
+  static inline bool operation(Set<T> & collection,const T & item){
     return collection.add(item);
+  }
+
+};
+template<typename T>
+class OperationCollectionAddItem<SimpleLinkedList<T>>{
+public:
+  static inline bool operation(SimpleLinkedList<T> & collection,const T &item){
+    collection.add(item);
+    return true;
   }
 
 };
 
 
 template<typename CollectionType>
-bool addItem(CollectionType & collection, ITEMTYPE(CollectionType) item){
+bool addItem(CollectionType & collection, const ITEMTYPE(CollectionType) & item){
   return OperationCollectionAddItem<CollectionType>::operation(collection,item);
 }
 
 
+template<typename EnumerableType>
+class OperationGetEnumerableImplementation{
+public:
+  typedef ITEMTYPE(EnumerableType) Item;
+  static EnumerableImplementation<Item>* operation(EnumerableType & enumerable){
+    return new EnumerableImplementationWrapper<EnumerableType>(enumerable);
+  }
+};
+
+/*
+template<typename T>
+class OperationGetEnumerableImplementation<std::vector<T>>{
+public:
+  static EnumerableImplementation<T>* operation(std::vector<T> & enumerable){
+    return 0;
+  }
+};
+
+template<typename T>
+class OperationGetEnumerableImplementation<T*>{
+public:
+  static EnumerableImplementation<T> *operation(T* enumerable){
+    return 0;
+  }
+};
+template<typename T, size_t n> 
+class OperationGetEnumerableImplementation<T[n]>{
+public:
+  static EnumerableImplementation<T>* operation(T (&enumerable)[n]){
+    return new EnumerableImplementationWrapper<T[n]>(enumerable);
+  }
+};
+*/
+
+
+
+
 template<typename T>
 class Concatenation{
+  std::vector<Enumerable<T>*> _enumerators;
 public:
+  class ConcatEnumerator : public Enumerator<T>{
+    Concatenation<T> & _concatenation;
+  public:
 
+  };
+  ConcatEnumerator getEnumerator(){
+    return ConcatEnumerator(*this);
+  }
 };
+
+TEST(add1,SimpleLinkedList){
+  SimpleLinkedList<std::string> list;
+  addItem(list,"hello");
+}
+TEST(enumerable1, SimpleLinkedList){
+  
+  SimpleLinkedList<std::string> list;
+  addItem(list,"hello");
+  addItem(list,"world");
+  auto w = enumerator(list);
+  stringstream ss;
+  while(w){
+    ss<<*w;
+    w++;
+  }
+  CHECK(ss.str()=="helloworld");
+}
+
+TEST(enumerable1,arr){
+  int arr[4]={1,3,4,2};
+  auto w = enumerable(arr);
+  auto enumerat=w.getEnumerator();
+  CHECK(enumerat);
+}
+TEST(enumerable1, stdvec){
+  std::vector<string> vec;
+  addItem(vec,"hello");
+  addItem(vec,"world");
+
+  auto w = enumerable(vec);
+  auto x = w.getEnumerator();
+  CHECK(x);
+  stringstream ss;
+  while(x){
+    ss << *x;
+    x++;
+  }
+  CHECK(ss.str()=="helloworld");
+}
+
+
+TEST(enumerable2,arr){
+  int arr[4]={1,3,4,2};
+  auto w = enumerable(arr);
+  auto enumerat=w.getEnumerator();
+  stringstream ss;
+  while(enumerat){
+    ss << *enumerat;
+    enumerat++;
+  }
+  CHECK(ss.str()=="1342");
+}
+
+
+
+
+
+
 TEST(rvalue2, Tech){
   //Concatenation<int> con;
   //auto en=enumerator(con);
@@ -128,14 +270,12 @@ TEST(rvalue2, Tech){
 
 
   auto f1 = []()->const int &{return int(3);};
-  auto f2 =[&aBefore]()->const int &{return *aBefore;};
+  auto f2 = [&aBefore]()->const int &{return *aBefore;};
 
   const int & a = f1();
- const  int & b = f2();
+  const int & b = f2();
   *aBefore = 5;
-  cout <<aBefore<<endl;
-  cout <<a<<endl;
-  cout <<b<<endl;
+
 }
 
 TEST(rvalue1, Tech){
@@ -148,9 +288,7 @@ TEST(rvalue1, Tech){
   auto a = f1();
   auto b = f2();
   *aBefore = 5;
-  cout <<aBefore<<endl;
-  cout <<a<<endl;
-  cout <<b<<endl;
+
 }
 
 TEST(addItem1, Array){
@@ -182,9 +320,10 @@ TEST(addItem1, dsset){
 
 TEST(enumerator1,Array){
   int arr[4] ={3,2,1,4};
-  IndexEnumerator<int[4]> enumerator(arr);
+  Enumerator<int> enumerator(shared_ptr<IndexEnumeratorImplementation<int[4]>>(new IndexEnumeratorImplementation<int[4]>(arr)));
   CHECK(enumerator);
 }
+/*
 TEST(enumerator2,Array){
   int arr[4] ={3,2,1,4};
   IndexEnumerator<int[4]> enumerator(arr);
@@ -233,7 +372,7 @@ TEST(enumerator1, dslibSet){
  // CHECK(*en++++==55);
 
 }
-
+*/
 
 
 template<typename T>

@@ -12,23 +12,23 @@ namespace nspace{
     uint _stateDerivatives;
     SystemState * _state;
   public:
-    // is called when the state of the object was changed. clients can then 
+    // is called when the state of the object was changed. clients can then
     // set their objects internal data to the data specified by state()
     virtual void notifyStateChanged()=0;
     // is called when the state of this object is needed
     // implementing clients musst set the state of this object
     virtual void notifyStateNeeded()=0;
     // is called when the state * is changed and state() returns a new isntance
-    virtual void onStateAssigned(){}    
+    virtual void onStateAssigned(){}
     // access to the state
     inline SystemState & state(){return *_state;}
   public:
     // returns true if this object has  a state assigned and thus state() can return a correct reference
     bool hasAssignedState()const;
-    // instanciates stateful object  the dimension is the number of state this object requires and derivitaves is the number of 
-    // of derivatives this object this object can supply 
+    // instanciates stateful object  the dimension is the number of state this object requires and derivitaves is the number of
+    // of derivatives this object this object can supply
     // you need to count the zeroth derivative . so for a constant this would result in 1 derivative. when the first derivative is available set to 2
-    StatefulObject(uint dimension, uint derivatives);    
+    StatefulObject(uint dimension, uint derivatives);
     // default constructor
     StatefulObject();
     // assign this object a state var
@@ -40,5 +40,4 @@ namespace nspace{
     // returns the nubmer of available dimensions
     inline uint dimension(){return _stateDimension;}
   };
-
 }

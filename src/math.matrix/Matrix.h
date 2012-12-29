@@ -6,14 +6,14 @@
 
 namespace nspace
 {
-// Matrix is a base class for all matrices.  it has a very slim interface
-template<typename T, typename IndexType=int, typename SizeType = int>
-class Matrix
-{
+  // Matrix is a base class for all matrices.  it has a very slim interface
+  template<typename T, typename IndexType=int, typename SizeType = int>
+  class Matrix
+  {
   public:
     typedef IndexType Index;
     typedef SizeType Size;
-public:
+  public:
     //default constructor
     Matrix();
     virtual ~Matrix(){}
@@ -34,39 +34,37 @@ public:
     virtual T& operator () (Index i,Index j) = 0;
     // returns a const reference to the element at i,j
     virtual const T& operator () (Index i, Index j) const = 0;
-};
+  };
 
+  template<typename T, typename IndexType, typename SizeType>
+  Matrix<T,IndexType,SizeType>::Matrix(){}
 
-template<typename T, typename IndexType, typename SizeType>
-Matrix<T,IndexType,SizeType>::Matrix(){}
-
-template<typename T, typename IndexType, typename SizeType>
-template<typename MatrixType>
-Matrix<T,IndexType,SizeType>::operator MatrixType()const{
+  template<typename T, typename IndexType, typename SizeType>
+  template<typename MatrixType>
+  Matrix<T,IndexType,SizeType>::operator MatrixType()const{
     MatrixType result;
     MatrixAssign<MatrixType,Matrix<T>>::operation(result,*this);
     return result;
-}
+  }
 
-template<typename T, typename IndexType, typename SizeType>
-void Matrix<T,IndexType,SizeType>::toStream(std::ostream & s)const{
+  template<typename T, typename IndexType, typename SizeType>
+  void Matrix<T,IndexType,SizeType>::toStream(std::ostream & s)const{
     for(Index i=0; i < rows(); i++){
-        for(Index j=0; j < cols(); j++){
-            s << (*this)(i,j) << ", ";
-        }
-        s << std::endl;
+      for(Index j=0; j < cols(); j++){
+        s << (*this)(i,j) << ", ";
+      }
+      s << std::endl;
     }
-}
+  }
 
-template<typename T, typename IndexType, typename SizeType>
-bool Matrix<T,IndexType,SizeType>::resize(Index r, Index c){
+  template<typename T, typename IndexType, typename SizeType>
+  bool Matrix<T,IndexType,SizeType>::resize(Index r, Index c){
     if(r==rows()&&c==cols())return true;
     return false;
-}
+  }
 
-template<typename T, typename IndexType, typename SizeType>
-SizeType Matrix<T,IndexType,SizeType>::size()const{
+  template<typename T, typename IndexType, typename SizeType>
+  SizeType Matrix<T,IndexType,SizeType>::size()const{
     return rows()*cols();
-}
-
+  }
 }

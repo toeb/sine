@@ -3,22 +3,19 @@
 
 using namespace nspace;
 
-
-
-
- void  Plane::getNormal(Vector3D & n)const{
+void  Plane::getNormal(Vector3D & n)const{
   Matrix3x3 RT;
   coordinates().orientation().toTransposedRotationMatrix(RT);
   n = RT.row(1);
   n.normalize();
 }
- void  Plane::getUAxis(Axis & a)const{
+void  Plane::getUAxis(Axis & a)const{
   Matrix3x3 RT;
   coordinates().orientation().toTransposedRotationMatrix(RT);
   a.n = RT.row(0);
   a.p =coordinates().position();
 }
- void  Plane::getVAxis(Axis & b)const{
+void  Plane::getVAxis(Axis & b)const{
   Matrix3x3 RT;
   coordinates().orientation().toTransposedRotationMatrix(RT);
   b.n = RT.row(2);
@@ -29,45 +26,41 @@ Vector3D Plane::getPositionFromUV(const Vector2D & uv)const{
   getPositionFromUV(uv,p);
   return p;
 }
- void  Plane::getPositionFromUV(const Vector2D & uv, Vector3D & p)const{
+void  Plane::getPositionFromUV(const Vector2D & uv, Vector3D & p)const{
   Axis u,v;
   getUAxis(u);
-  getVAxis(v);  
-  
+  getVAxis(v);
+
   p = coordinates().position()+u.n*uv(0)+v.n*uv(1);
 }
- Vector3D Plane::getNormal()const{
+Vector3D Plane::getNormal()const{
   Vector3D result;
   getNormal(result);
   return result;
 }
 
- bool Plane::isInFront(const Vector3D & p)const{
+bool Plane::isInFront(const Vector3D & p)const{
   Real val = projectOnNormal(p);
   if(val > 0)return true;
   else return false;
 }
 
-
- void Plane::projectOnPlane(const Vector3D & p, Vector2D & result)const{
+void Plane::projectOnPlane(const Vector3D & p, Vector2D & result)const{
   Axis uAxis, vAxis;
   getUAxis(uAxis);
   getVAxis(vAxis);
 
   result(0) = uAxis.projectOnAxis(p);
   result(1) = vAxis.projectOnAxis(p);
-
 }
 
- 
 void Plane::projectOnPlane(const Vector3D & p, Vector3D & p_plane)const{
   Vector2D uv;
   projectOnPlane(p,uv);
   getPositionFromUV(uv,p_plane);
 }
 
-
- Real Plane::projectOnNormal(const Vector3D & p)const{
+Real Plane::projectOnNormal(const Vector3D & p)const{
   Axis axis;
   getNormal(axis.n);
   axis.p = coordinates().position();
@@ -75,7 +68,7 @@ void Plane::projectOnPlane(const Vector3D & p, Vector3D & p_plane)const{
   return val;
 }
 
- void Plane::getNormalAxis(Axis & nAxis)const{
+void Plane::getNormalAxis(Axis & nAxis)const{
   nAxis.n = getNormal();
   nAxis.p = coordinates().position();
 }

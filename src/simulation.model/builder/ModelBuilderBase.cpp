@@ -2,7 +2,6 @@
 
 using namespace nspace;
 
-
 ModelNode * ModelBuilderBase::createNode(){return new ModelNode;};
 Connection * ModelBuilderBase::createConnection(){return new Connection;}
 Connector * ModelBuilderBase::createConnector(){return new Connector;}
@@ -22,7 +21,7 @@ Model * ModelBuilderBase::currentModel(){
   return _currentModel;
 }
 Model * ModelBuilderBase::beginModel(){
-  _currentModel = new Model();            
+  _currentModel = new Model();
   addElement(_currentModel);
   _models.add(_currentModel);
   return _currentModel;
@@ -30,7 +29,7 @@ Model * ModelBuilderBase::beginModel(){
 Model * ModelBuilderBase::endModel(){
   buildModel(*_currentModel);
   Model * model = _currentModel;
-  
+
   _currentModel =0;
   return model;
 }
@@ -38,7 +37,7 @@ ModelNode * ModelBuilderBase::addNode(){
   ModelNode * node = createNode();
   //addElement(node);
   _currentModel->nodes().add(node);
-  return node;   
+  return node;
 }
 Connector * ModelBuilderBase::addConnector(const std::string & nodeName){
   return 0;
@@ -57,4 +56,3 @@ void ModelBuilderBase::addElement(ModelElement * element){
   _currentElement = element;
   Set<ModelElement*>::add(element);
 }
-

@@ -6,7 +6,7 @@ namespace nspace{
   class HubObject : public virtual Object{
     TYPED_OBJECT(HubObject);
   private:
-    friend class Hub;    
+    friend class Hub;
     friend class CompositeHubObject;
     Set<Hub*> _hubs;
   public:
@@ -16,7 +16,5 @@ namespace nspace{
   protected:
     virtual void onAddedToHub(Hub & hub){}
     virtual void onRemovedFromHub(Hub & hub){}
-
   };
-
 }

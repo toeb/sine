@@ -10,12 +10,12 @@
 
 namespace nspace{
   class ViewportPlugin : public Plugin,
-    public virtual ModuleBase, 
+    public virtual ModuleBase,
     public virtual CompositeHubObject{
-    Q_OBJECT;
-    TYPED_OBJECT(ViewportPlugin);
+      Q_OBJECT;
+      TYPED_OBJECT(ViewportPlugin);
   private:
-    // pointer to the currently displaying viewport 
+    // pointer to the currently displaying viewport
     GlViewport * _glViewport;
     // set of possible viewports
     Set<GlViewport *> _viewports;
@@ -23,7 +23,7 @@ namespace nspace{
     GlWidgetPluginWindow * _pluginWindow;
 
   public:
-    GlWidget * glWidget();    
+    GlWidget * glWidget();
     ViewportPlugin();
     bool accept(Object * object);
     void onAcception(Object * object);
@@ -33,6 +33,5 @@ namespace nspace{
     virtual void enable();
     virtual void disable();
     virtual void uninstall(PluginContainer & container);
-
   };
 }

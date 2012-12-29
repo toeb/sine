@@ -1,13 +1,10 @@
 #pragma once
 
-
 #include <core/reflection/Type.h>
 #include <core/Object.h>
 
-
 #include <math/Interval.h>
 namespace nspace{
-  
   class Attribute{
     TYPED_OBJECT(Attribute);
     SIMPLE_PROPERTY(std::string, AttributeName){}
@@ -17,7 +14,6 @@ namespace nspace{
     TYPED_OBJECT(AttributeTarget);
     PROPERTYSET(Attribute*,Attributes,{},{})
   };
-
 
   class DisplayAttribute :public virtual Attribute{
     TYPED_OBJECT(DisplayAttribute);
@@ -34,7 +30,6 @@ namespace nspace{
     SIMPLE_PROPERTY(int, MaximalLength){}
     SIMPLE_PROPERTY(int, MinimalLength){}
     SIMPLE_PROPERTY(std::string, Format){}
-
   };
   class DecimalAttribute : public virtual Attribute{
     TYPED_OBJECT(DecimalAttribute);
@@ -42,17 +37,12 @@ namespace nspace{
 
     SIMPLE_PROPERTY(Interval,Range){}
     SIMPLE_PROPERTY(double, StepSize){}
-
   };
 
   class NavigatableAttribute: public virtual Attribute{
     TYPED_OBJECT(NavigatableAttribute);
     SUBCLASSOF(Attribute);
-
   };
 
-
-
-#define ATTRIBUTE(TARGET, NAME, CUSTOMCODE) 
-
+#define ATTRIBUTE(TARGET, NAME, CUSTOMCODE)
 }

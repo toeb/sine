@@ -7,15 +7,15 @@ namespace nspace{
     Q_OBJECT;
     TYPED_OBJECT(StringWidget);
   public:
-    StringWidget(){      
+    StringWidget(){
       connect(this,SIGNAL(textChanged(const QString &)),this,SLOT(raiseTextChanged(const QString &)));
     }
-    
+
     protected slots:
       void raiseTextChanged(const QString& qstring){
         raiseObjectChanged();
       }
-  protected:    
+  protected:
     bool storeTypedValue(const std::string  & value){
       setText(tr(value.c_str()));
       return true;
@@ -24,6 +24,5 @@ namespace nspace{
       value = text().toUtf8().constData();
       return true;
     }
-
   };
 }

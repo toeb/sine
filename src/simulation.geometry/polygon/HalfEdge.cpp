@@ -4,7 +4,6 @@
 
 using namespace nspace;
 
-
 bool HalfEdge::isForwardHalfEdge()const{
   if(edge->forward == this)return true;
   return false;
@@ -23,8 +22,6 @@ HalfEdge * HalfEdge::getPrevious()const{
   }
 }
 
-
-
 Vertex * HalfEdge::getStartVertex()const{
   if(isForwardHalfEdge()){
     return edge->A;
@@ -38,7 +35,6 @@ Vertex * HalfEdge::getEndVertex()const{
   }else{
     return edge->A;
   }
-
 }
 HalfEdge * HalfEdge::getNextHalfEdgeOf(const Vertex * c)const{
   if(getStartVertex()==c)return edge->getHalfEdgeTo(c);

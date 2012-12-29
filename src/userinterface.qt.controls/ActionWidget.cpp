@@ -7,13 +7,13 @@ ActionWidget::ActionWidget(QWidget * parent):DynamicWidget(parent){
   _button = new QPushButton;
   _button->setText("Execute");
   auto layout = new QHBoxLayout(this);
-    
+
   _button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
   setFocusProxy(_button);
   layout->addWidget(_button);
   layout->setSpacing(0);
   layout->setMargin(0);
-  
+
   connect(_button,SIGNAL(clicked()),this,SLOT(performAction()));
   setAutoFillBackground(true);
 }

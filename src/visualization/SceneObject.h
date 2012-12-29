@@ -19,9 +19,7 @@ namespace nspace{
     const Color& color()const{return _color;}
     const Texture & texture()const{return _texture;}
     const CoordinateSpace & coordinates()const{return _coordinates;}
-    
+
     void render();
-
   };
-
 }

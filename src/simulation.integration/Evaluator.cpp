@@ -2,11 +2,10 @@
 
 using namespace nspace;
 
-
 Evaluator::Evaluator(StatefulObject & stateful, ISystemFunction * systemFunction):
   _statefulObject(stateful),
   _systemFunction(systemFunction){
-    _statefulObject.assignState(&_state);  
+    _statefulObject.assignState(&_state);
     _statefulObject.notifyStateNeeded();
 }
 void Evaluator::setX(const StateMatrix & x){

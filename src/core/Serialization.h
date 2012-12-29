@@ -2,7 +2,7 @@
 
 #include <string>
 #include <config.h>
-#include <core/Set.h>
+#include <core/collection/containers/Set.h>
 #include <sstream>
 namespace nspace{
   // serializers need to use pointers else auto conversion would disrupt everything
@@ -24,19 +24,17 @@ namespace nspace{
   template<typename T>
   class Deserializer<T*>{
   public:
-    static bool deserialize(T ** result, std::istream & in){
-      
-      return false;
-    
-    }
+  static bool deserialize(T ** result, std::istream & in){
+  return false;
+  }
   };
   template<typename T>
   class Serializer<T*>{
   public:
-    static bool serialize(std::ostream & out, const T ** in){
-      out << *in;
-      return true;
-    }
+  static bool serialize(std::ostream & out, const T ** in){
+  out << *in;
+  return true;
+  }
   };
 
   */
@@ -52,10 +50,7 @@ namespace nspace{
   bool deserializeString(T & value, const std::string& serialized){
     std::stringstream ss(serialized);
     return Deserializer<T>::deserialize(&value,ss);
-
   }
-
-
 
   class CustomSerializer{
   public:
@@ -78,7 +73,6 @@ namespace nspace{
     virtual bool deserializeType(T*value, std::istream & i)=0;
   };
 
-
   // this macro is a shorthand for specialization of Serializer and Deserializer class
 #define SERIALIZERS(TYPE,SERIALIZE,DESERIALIZE)\
   template<>\
@@ -92,9 +86,6 @@ namespace nspace{
   static bool serialize(std::ostream & stream,const TYPE* value){SERIALIZE;return true;}\
   };
 
-
-
-
   // this macro allows easy creation of serializes based on the stream operator << and >>
 #define DEFAULTSERIALIZERS(TYPE) SERIALIZERS(TYPE,stream<<*value;return true;,stream>>*value;return true;)
 
@@ -105,9 +96,6 @@ namespace nspace{
   SERIALIZERS(bool,{
     if(*value)stream << "true";
     else stream << "false";
-
-
-
   } ,{
     std::string s;
     stream >> s;
@@ -119,11 +107,10 @@ namespace nspace{
       return true;
     }
     return false;
-
   });
   SERIALIZERS(std::string,
   {stream << *value;}
-  , 
+  ,
   {
     //read stream to end
     std::istreambuf_iterator<char> eos;
@@ -131,17 +118,13 @@ namespace nspace{
     *value = s;
   });
 
-
-
-
-
   // set serializers
   template <typename T>
   class Serializer<Set<T> >{
   public:
-    static bool serialize(std::ostream & stream, const Set<T> * value){  
+    static bool serialize(std::ostream & stream, const Set<T> * value){
       const Set<T> & val = *value;
-      for(int i=0; i< val; i++){    
+      for(int i=0; i< val; i++){
         T v = val.at(i);
         if(!Serializer<T>::serialize(stream,&v)){
           stream << "{"<<i<<"}";
@@ -166,9 +149,8 @@ namespace nspace{
       case '=':
         stream >> c;
         break;
-      default:      
+      default:
         c = '=';
-
       }
       while(stream){
         T i;
@@ -189,7 +171,7 @@ namespace nspace{
       case '^':
         *value ^= tmp;
         break;
-      case '=':      
+      case '=':
       default:
         *value = tmp;
         break;
@@ -198,6 +180,4 @@ namespace nspace{
       return true;
     }
   };
-
-
 }

@@ -8,9 +8,9 @@
 #include <visualization/ViewportController.h>
 #include <core.logging.h>
 namespace nspace{
-  class GlWidget : 
-    public QGLWidget, 
-    public virtual NamedObject, 
+  class GlWidget :
+    public QGLWidget,
+    public virtual NamedObject,
     public virtual CompositeHubObject,
     public virtual Log
   {
@@ -34,7 +34,7 @@ namespace nspace{
 
     void onComponentAdded(Object * object);
     void onComponentRemoved(Object * object);
-    
+
     bool eventFilter(QObject *object, QEvent *event);
     void keyPressEvent(QKeyEvent* ke);
     void keyReleaseEvent(QKeyEvent* ke);

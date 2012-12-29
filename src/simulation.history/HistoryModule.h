@@ -24,7 +24,6 @@ namespace nspace{
   public:
     StatefulObject & statefulObject(){return _statefulObject;}
     HistoryModule(StatefulObject & stateobject, SimulationTimeProvider & simulationTime):_statefulObject(stateobject),_simulationTime(simulationTime){
-
     }
     StateSnapshot * snapshot(){
       auto snapshot = StateSnapshot::create(_simulationTime.actualTime(),applicationTime(),systemTime(),_statefulObject);
@@ -33,10 +32,9 @@ namespace nspace{
       return snapshot;
     }
     void snapshotAt(Time t_sim){
-      
       //Time timeout = t_sim-_simulationTime.time();
       std::function<void (Time)> f = [this](Time timePassed){
-        snapshot();        
+        snapshot();
       };
 
       CallbackTaskDelegate * del = new CallbackTaskDelegate(f,t_sim,_simulationTime);
@@ -44,7 +42,6 @@ namespace nspace{
       *simulation()<<del;
     }
 
-    
     StateSnapshot * restoreState(Real simulationTime){
       StateSnapshot * result=findSnapshot(simulationTime);
       if(!result)return result;
@@ -80,10 +77,6 @@ namespace nspace{
     void restoreState(StateSnapshot & snapshot){
       snapshot.restore();
       _simulationTime.resetTo(snapshot.simulationTime());
-      
     }
-
-
-
   };
 }

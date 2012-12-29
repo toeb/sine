@@ -6,8 +6,8 @@
 
 namespace nspace{
   class ScheduledTaskRunner;
-  class ScheduledTask : 
-    public virtual ITask, 
+  class ScheduledTask :
+    public virtual ITask,
     public virtual PropertyChangingObject,
     public virtual Log,
     public virtual NamedObject
@@ -21,7 +21,7 @@ namespace nspace{
 
     DESCRIPTION(IsOneTimeTask, "This flag Indicates whether to run the task repeatedly or only once");
     DISPLAYNAME(IsOneTimeTask, "Run Task Only Once")
-    PROPERTY(bool, IsOneTimeTask){logMessage("setting IsOneTimeTask to: "<<newvalue,4);}
+      PROPERTY(bool, IsOneTimeTask){logMessage("setting IsOneTimeTask to: "<<newvalue,4);}
 
     // the last time this task has timed out
     Time _lastTimeoutTime;
@@ -32,7 +32,7 @@ namespace nspace{
     ScheduledTask();
     // returns the requested next execution time
     Time nextExecutionTime()const;
-    // overridable method which is called to calculate the next execution time 
+    // overridable method which is called to calculate the next execution time
     virtual void calculateNextTimeout(Time time);
     // implementation of the run method. Class the virtual timeout method
     void run();
@@ -43,10 +43,8 @@ namespace nspace{
     public :
       bool operator ()(const ScheduledTask * a,const ScheduledTask * b);
     };
-    // compares two tasks to and returns true if a comes before b 
+    // compares two tasks to and returns true if a comes before b
     static bool comp(const ScheduledTask * a, const ScheduledTask * b);
     friend class ScheduledTaskRunner;
   };
-
-
 }

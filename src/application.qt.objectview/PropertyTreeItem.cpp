@@ -2,7 +2,6 @@
 #include <application.qt.objectview/ObjectTreeItem.h>
 using namespace nspace;
 
-
 bool PropertyTreeItem::isEditable(){
   return getPropertyInfo()->getHasSetter();
 }
@@ -19,8 +18,8 @@ std::string PropertyTreeItem::getDescription(){
   auto info = getPropertyInfo();
   ss << info->getDescription();
   /* if(info->getDefaultValue()){
-       ss << "(Default Value: '"<< <<"')";
-     }*/
+  ss << "(Default Value: '"<< <<"')";
+  }*/
   return ss.str();
 
   return getPropertyInfo()->getDescription();
@@ -36,15 +35,14 @@ std::string PropertyTreeItem::getDisplayValue(){
 void PropertyTreeItem::onObjectChanged(){
   auto adapter = dynamic_cast<PropertyAdapter*>(getObject());
   if(!adapter){
-      logError("object is not an adapter");
-      return;
-    }
+    logError("object is not an adapter");
+    return;
+  }
   auto propertyInfo = adapter->getPropertyInfo();
   auto object = adapter->getOwner();
 
   setPropertyOwner(object);
   setPropertyInfo(propertyInfo);
-
 }
 
 PropertyTreeItem::PropertyTreeItem(){
@@ -56,7 +54,7 @@ void PropertyTreeItem::doExpand(){
   getPropertyInfo()->addObserver(getPropertyOwner(), this);
 
   //Object * ptr =  getPropertyInfo()->asObjectPointer(getPropertyOwner());
-  
+
   onChange(0);
   /*
   if(!ptr)return;
@@ -64,8 +62,6 @@ void PropertyTreeItem::doExpand(){
   item->expand();
   successors()|=item->successors();*/
 }
-
-
 
 void PropertyTreeItem::onChange(Observable* sender){
   Object * ptr =  getPropertyInfo()->asObjectPointer(getPropertyOwner());

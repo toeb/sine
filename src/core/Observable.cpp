@@ -2,7 +2,6 @@
 #include <core/Query.h>
 using namespace nspace;
 
-
 Observable::Observable():_observers(0){}
 Observable::~Observable(){if(hasObservers())delete _observers; _observers=0;}
 bool Observable::hasObservers()const{
@@ -20,7 +19,7 @@ void Observable::raiseObjectChanged(){
   }
   /*
   std::for_each(observers().begin(),observers().end(),[this](ObjectObserver * observer){
-    observer->onChange(this);
+  observer->onChange(this);
   });*/
 }
 void Observable::addObjectObserver(ObjectObserver* oo){

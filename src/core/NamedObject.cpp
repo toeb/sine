@@ -3,7 +3,6 @@
 using namespace nspace;
 using namespace std;
 
-
 NamedObject::~NamedObject(){
   if(_name)delete _name;
   _name=0;
@@ -13,7 +12,7 @@ const string & NamedObject::DefaultName=*new string("<DEFAULTOBJECTNAME>");
 NamedObject::NamedObject(const string & name):_name(new string(name)){}
 NamedObject::NamedObject():_name(0){}
 const string & NamedObject::name()const{
-  if(!_name)return NamedObject::DefaultName;  
+  if(!_name)return NamedObject::DefaultName;
   return *_name;
 }
 void NamedObject::setName(const std::string & name){
@@ -46,13 +45,13 @@ namespace nspace{
 
   const std::string & name(const Object * object){
     static std::string nullString="null-object";
-    static std::string notNamed="unnamed-object";    
+    static std::string notNamed="unnamed-object";
     if(!object)return nullString;
     const NamedObject* no = dynamic_cast<const NamedObject*>(object);
     if(!no)return notNamed;
     return no->name();
   }
-  
+
   bool hasObjectName(const Object * object){
     if(!isObjectNameable(object))return false;
     const NamedObject* no = dynamic_cast<const NamedObject*>(object);
@@ -65,8 +64,8 @@ namespace nspace{
     no->setName(name);
     return true;
   }
-  
-  bool isObjectNameable(const Object * object){    
+
+  bool isObjectNameable(const Object * object){
     const NamedObject* no = dynamic_cast<const NamedObject*>(object);
     return no !=0;
   }

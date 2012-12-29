@@ -3,10 +3,9 @@
 #include <cstring>
 #include <math.matrix.dslib/DynamicMatrix.h>
 namespace nspace{
-
   template<typename T>
   class MatrixAddition<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
-  public: 
+  public:
     static inline void operation(matrix2::DynamicMatrix<T> & sumMat,const matrix2::DynamicMatrix<T> & aMat, const matrix2::DynamicMatrix<T> & bMat){
       int rows = aMat.rows();
       int cols = bMat.cols();
@@ -20,7 +19,6 @@ namespace nspace{
       const T* a=aMat.data();
       const T* b = bMat.data();
       T* c=sumMat.data();
-
 
 #pragma omp parallel for
       for(int i=0; i < size; ++i){
@@ -30,7 +28,7 @@ namespace nspace{
   } ;
   template<typename T>
   class MatrixSubtraction<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
-  public: 
+  public:
     static inline void operation(matrix2::DynamicMatrix<T> & sumMat,const matrix2::DynamicMatrix<T> & aMat, const matrix2::DynamicMatrix<T> & bMat){
       int rows = aMat.rows();
       int cols = bMat.cols();
@@ -44,7 +42,6 @@ namespace nspace{
       const T* a=aMat.data();
       const T* b = bMat.data();
       T* c=sumMat.data();
-
 
 #pragma omp parallel for
       for(int i=0; i < size; ++i){
@@ -68,14 +65,13 @@ namespace nspace{
         for(int i=0; i < s; i++){
           t[i]=value;
         }
-        return ; 
+        return ;
       }
-      //go parallel 
+      //go parallel
 #pragma omp parallel for
       for(int i=0; i < s; i++){
         t[i]=value;
       }
-
     }
   };
 
@@ -92,14 +88,13 @@ namespace nspace{
         for(int i=0; i < s; i++){
           f(t[i], i/cols, i%cols);
         }
-        return ; 
+        return ;
       }
-      //go parallel 
+      //go parallel
 #pragma omp parallel for
       for(int i=0; i < s; i++){
         f(t[i], i/cols, i%cols);
       }
-
     }
   };
 
@@ -116,14 +111,13 @@ namespace nspace{
         for(int i=0; i < s; i++){
           c[i]=b*a[i];
         }
-        return ; 
+        return ;
       }
-      //go parallel 
+      //go parallel
 #pragma omp parallel for
       for(int i=0; i < s; i++){
         c[i]=b*a[i];
       }
-
     }
   };
 
@@ -146,21 +140,18 @@ namespace nspace{
       for(int i=0; i < size; i++){
         a[i] = b[i];
       }
-      
-        return true;
+
+      return true;
     }
   };
-
 
   template<typename T>
   class MatrixExtractBlock<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
   public:
     static inline void operation(matrix2::DynamicMatrix<T> & result, const matrix2::DynamicMatrix<T> & original, uint startRow, uint startCol, uint rows, uint cols){
-
       uint srcCols = original.cols();
       uint srcRows = original.rows();
       if(startRow + rows > srcRows){
-
         std::cerr << __FUNCSIG__ << " rows out of range"<<std::endl;
         return;
       }
@@ -173,16 +164,13 @@ namespace nspace{
       Real * dst = result.data();
       size_t length=sizeof(T)*cols;
       const  Real * srcOffset = src+ startRow * srcCols;
-      
+
       for(uint i=0; i < rows; i++){
         memcpy(dst+i*cols,srcOffset+i*srcCols,length); //saved one operation
         //memcpy(dst+i*cols,src+(startRow+i)*(srcCols),length);
       }
     }
   };
-
-
-  
 
   template<typename KernelMatrix,typename T>
   class MatrixConvolution<matrix2::DynamicMatrix<T>,matrix2::DynamicMatrix<T>,KernelMatrix,T>{
@@ -203,9 +191,9 @@ namespace nspace{
       for(int i=0; i< kernel.size(); i++)f[i]=kernel(i);
       const Real * gOffset;
       const Real * fOffset;
-      T  sum=0.0;          
+      T  sum=0.0;
       for(int i=0; i < ry; i++){
-        for(int j=0; j < rx; j++){          
+        for(int j=0; j < rx; j++){
           sum = 0.0;
           for(int l = 0; l < fy; ++l){
             gOffset = g+(i+l)*gCols+j;
@@ -222,5 +210,4 @@ namespace nspace{
       delete f;
     }
   };
-
 }

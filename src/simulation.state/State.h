@@ -4,7 +4,6 @@
 #include <math/core.h>
 
 namespace nspace{
-
   typedef MatrixNxM StateMatrix;
 
   // represents the state and its derivatives.
@@ -17,7 +16,7 @@ namespace nspace{
     uint _offset;
     // number of state vars = dimension of state
     uint _dimension;
-    // number of derivatives x => 1;  x xDot => 2; x, xDot, xDotDot => 3 
+    // number of derivatives x => 1;  x xDot => 2; x, xDot, xDotDot => 3
     uint _derivatives;
 
     // private constructor
@@ -54,7 +53,7 @@ namespace nspace{
     }
 
     // files the state matrix with the state ( it will resize the matrix accordingly)
-    inline void getState(StateMatrix & state){      
+    inline void getState(StateMatrix & state){
       if(_derivatives == 0 && _dimension==0)return;
       state.resize(_derivatives,_dimension);
       //state.resize(_derivatives,_dimension,false);
@@ -69,14 +68,14 @@ namespace nspace{
         std::cerr << "State::Could not set state " << std::endl;
         return;
       }
-      
+
       matrix::setBlock(*_stateMatrix,state,0,_offset);
       //_stateMatrix->block(0,_offset,_derivatives,_dimension) = state;
       //_stateMatrix->setBlock(0,_offset,state);
     }
 
     // gets the 0th derivative
-    void getX(StateMatrix & x)const{      
+    void getX(StateMatrix & x)const{
       if(_derivatives==0){/* ERROR("There are no derivatives present"); */return ;}
       //x.resize(_derivatives-1,_dimension,false);
       x.resize(_derivatives-1,_dimension);
@@ -95,7 +94,6 @@ namespace nspace{
       xDot.setZero();
       matrix::getBlock(xDot,*_stateMatrix,1,_offset);
       //x = _stateMatrix->block(1,_offset,_derivatives-1,_dimension);
-      
     }
 
     // sets the 0th derivative
@@ -117,7 +115,7 @@ namespace nspace{
       //_stateMatrix->resize(newDerivs,newDim,false);
     }
 
-    // returns a state range 
+    // returns a state range
     SystemState * range(uint offset, uint dim ,uint derivatives){
       SystemState * result = new SystemState(offset,dim,derivatives,*this);
       return result;
@@ -125,5 +123,4 @@ namespace nspace{
 
     friend std::ostream & operator << (std::ostream & o, const SystemState & state);
   };
-
 }

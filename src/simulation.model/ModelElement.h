@@ -8,13 +8,11 @@
 #include <core/TypedNode.h>
 
 namespace nspace{
-
   class NodeDataClass : public ValueLookup, public NamedObject{
-
   };
 
   typedef TypedNode<NodeDataClass> ModelNode;
-  
+
   class NodeData{
     ModelNode * _node;
   public:
@@ -26,8 +24,8 @@ namespace nspace{
     const ModelNode * node()const{return _node;}
   };
 
-  class ModelElement: 
-    public virtual ValueLookup, 
+  class ModelElement:
+    public virtual ValueLookup,
     public virtual NamedObject,
     public virtual NodeData
   {
@@ -35,6 +33,4 @@ namespace nspace{
   public:
     ModelElement(){}
   };
-
-
 }

@@ -2,7 +2,6 @@
 
 #include <config.h>
 
-
 #include <math.operation/NullaryOperation.h>
 #include <math.operation/UnaryOperation.h>
 #include <math.operation/BinaryOperation.h>
@@ -40,33 +39,31 @@
   template<typename T> void NAME(T & result, const T & a){math::operation::Operation<T,math::operation::Unary,math::operation::scalar::opcodes::OP>::operation(result, a);}\
   template<typename T> T NAME(const T & a){T result; NAME(result,a); return result;}
 
-
 #define BINARY_SHORTHAND(NAME , OP)  \
   template<typename T> void NAME(T & result, const T & a,const T & b){T result; math::operation::Operation<T,math::operation::Binary,math::operation::scalar::opcodes::OP>::operation(result, a,b); }\
-template<typename T> T NAME(const T & a,const T & b){T result; NAME(result, a,b); return result; }
+  template<typename T> T NAME(const T & a,const T & b){T result; NAME(result, a,b); return result; }
 
 namespace nspace{
-namespace math{
-namespace shorthands{
-namespace scalar{
-    // define shorthand functions for all operations
-    UNARY_SHORTHAND(signum,Signum);
-    UNARY_SHORTHAND(cosine,Cosinus);
-    UNARY_SHORTHAND(sine,Sinus);
-    UNARY_SHORTHAND(absolute,Absolute);
-    UNARY_SHORTHAND(arcusSinus,ArcusSinus);
-    UNARY_SHORTHAND(arcusCosinus,ArcusSinus);
-    UNARY_SHORTHAND(squareRoot,SquareRoot);
-    UNARY_SHORTHAND(reciprocal,Reciprocal);
+  namespace math{
+    namespace shorthands{
+      namespace scalar{
+        // define shorthand functions for all operations
+        UNARY_SHORTHAND(signum,Signum);
+        UNARY_SHORTHAND(cosine,Cosinus);
+        UNARY_SHORTHAND(sine,Sinus);
+        UNARY_SHORTHAND(absolute,Absolute);
+        UNARY_SHORTHAND(arcusSinus,ArcusSinus);
+        UNARY_SHORTHAND(arcusCosinus,ArcusSinus);
+        UNARY_SHORTHAND(squareRoot,SquareRoot);
+        UNARY_SHORTHAND(reciprocal,Reciprocal);
 
-    NULLARY_SHORTHAND(e,EulersNumber);
-    NULLARY_SHORTHAND(pi,Pi);
-    NULLARY_SHORTHAND(squareRootOfTwo,SquareRootOfTwo);
-    NULLARY_SHORTHAND(zero,Zero);
+        NULLARY_SHORTHAND(e,EulersNumber);
+        NULLARY_SHORTHAND(pi,Pi);
+        NULLARY_SHORTHAND(squareRootOfTwo,SquareRootOfTwo);
+        NULLARY_SHORTHAND(zero,Zero);
+      }
+    }
+  }
+  //create shortcut for scalar operation
+  namespace scalar = nspace::math::shorthands::scalar;
 }
-}
-}
-//create shortcut for scalar operation
-namespace scalar = nspace::math::shorthands::scalar;
-}
-

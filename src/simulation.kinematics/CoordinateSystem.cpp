@@ -3,7 +3,6 @@
 using namespace nspace;
 using namespace std;
 
-
 CoordinateSystem::CoordinateSystem():
   _R(0),
   _RT(0),
@@ -21,7 +20,7 @@ CoordinateSystem::CoordinateSystem(const CoordinateSystem & original):
   _R(0),_RT(0),
   position(Vector3D::Zero(),true),
   orientation(Quaternion::Identity(),true){
-  assign(original);
+    assign(original);
 }
 CoordinateSystem & CoordinateSystem::operator=(const CoordinateSystem & original){
   this->assign(original);
@@ -30,7 +29,6 @@ CoordinateSystem & CoordinateSystem::operator=(const CoordinateSystem & original
 void CoordinateSystem::assign(const CoordinateSystem & original){
   position() = original.position();
   orientation() = original.orientation();
-
 }
 CoordinateSystem::~CoordinateSystem(){
   if(_R)delete _R;
@@ -42,7 +40,6 @@ const CoordinateSystem & CoordinateSystem::identity(){
   return system;
 }
 
-
 void CoordinateSystem::mirror(CoordinateSystem & original){
   position.mirror(original.position);
   orientation.mirror(original.orientation);
@@ -51,8 +48,6 @@ void CoordinateSystem::unshare(){
   position.unshare();
   orientation.unshare();
 }
-
-
 
 const Matrix3x3 * CoordinateSystem::getCachedRotationMatrix()const{
   return _R;
@@ -71,7 +66,7 @@ const Matrix3x3 & CoordinateSystem::getTransposedRotationMatrix(){
 
 void CoordinateSystem::toObjectCoordinates(const Vector3D & r_wcs, Vector3D & r_ocs){
   Vector3D r = r_wcs - position();
-  const Matrix3x3 & RT = getTransposedRotationMatrix();  
+  const Matrix3x3 & RT = getTransposedRotationMatrix();
   r_ocs=RT*r;
 }
 void CoordinateSystem::fromObjectCoordinates(const Vector3D & r_ocs, Vector3D & r_wcs){
@@ -93,7 +88,7 @@ void CoordinateSystem::fromObjectCoordinates(const Vector3D & r_ocs, Vector3D & 
 
 void CoordinateSystem::toObjectCoordinatesCached(const Vector3D & r_wcs, Vector3D & r_ocs)const{
   Vector3D r = r_wcs - position();
-  const Matrix3x3 * RT = getCachedTransposedRotationMatrix();  
+  const Matrix3x3 * RT = getCachedTransposedRotationMatrix();
   if(!RT)cout<<"RT not cached"<<endl;
   r_ocs = *RT*r;
 }
@@ -103,8 +98,6 @@ void CoordinateSystem::fromObjectCoordinatesCached(const Vector3D & r_ocs, Vecto
   r_wcs= position() + *R* r_ocs;
 }
 
-
-
 namespace nspace{
   std::ostream & operator << (std::ostream & o, const CoordinateSystem & coordinates){
     o << "position: (" <<coordinates.position().x()  <<", "<<coordinates.position().y()  <<", "<<coordinates.position().z()<< ") orientation: ";
@@ -112,22 +105,20 @@ namespace nspace{
     o << "(" <<ori.w()<<", "<<ori.x()<<", "<<ori.y()<<", "<<ori.z()<<")";
     return o;
   }
-  
+
   bool operator ==(const CoordinateSystem & a, const CoordinateSystem & b){
     return &a==&b;
   }
 }
 
-
 void CoordinateSystem::fromObjectCoordinates(const CoordinateSystem & coords_ocs,CoordinateSystem & result)const{
   fromObjectCoordinates(coords_ocs.position(),result.position());
-  result.orientation() = coords_ocs.orientation()*orientation();  
+  result.orientation() = coords_ocs.orientation()*orientation();
 }
 void CoordinateSystem::toObjectCoordinates(const CoordinateSystem & coords_wcs,CoordinateSystem & result)const{
   toObjectCoordinates(coords_wcs.position(),result.position());
-/*  ERROR("method not implemented completely");*/
+  /*  ERROR("method not implemented completely");*/
 }
-
 
 void CoordinateSystem::calculateRotationMatrices(){
   if(!_R){
@@ -138,4 +129,3 @@ void CoordinateSystem::calculateRotationMatrices(){
   *_RT=*_R;
   _RT->transpose();
 }
-

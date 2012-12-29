@@ -3,7 +3,6 @@
 using namespace nspace;
 using namespace std;
 
-
 TreeItem::TreeItem():_Object(0),_IsExpanded(false),_Model(0){}
 
 TreeItem::~TreeItem(){
@@ -14,11 +13,10 @@ TreeItem::~TreeItem(){
 }
 
 void TreeItem::expand(){
-  if(getIsExpanded())return; 
+  if(getIsExpanded())return;
   doExpand();
   setIsExpanded(true);
 }
-
 
 string TreeItem::getDisplayName(){
   return getObject()->getType().getName();
@@ -28,7 +26,6 @@ string TreeItem::getDisplayValue(){
 }
 string TreeItem::getEditValue(){
   return "";
-
 }
 string TreeItem::getDescription(){
   return "";

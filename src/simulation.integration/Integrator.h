@@ -38,8 +38,8 @@ namespace nspace{
   * <remarks> Tobias Becker, 13.04.2012.</remarks>
   */
 
-  class Integrator : 
-    public virtual NamedObject, 
+  class Integrator :
+    public virtual NamedObject,
     public virtual PropertyChangingObject,
     public virtual Log
   {
@@ -63,8 +63,7 @@ namespace nspace{
     if(!getEvaluator()){
       logWarning(" No evaluator set. call to f(x,t,h) is returning invalid matrix!!");
       return *reinterpret_cast<StateMatrix*>(0);
-    }    
+    }
     return getEvaluator()->f(x,t,h);
   }
-
 }//namespace mbslib

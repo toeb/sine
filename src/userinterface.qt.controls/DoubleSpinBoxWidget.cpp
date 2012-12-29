@@ -13,13 +13,13 @@ DoubleSpinBoxWidget::DoubleSpinBoxWidget(QWidget * parent):ValueWidget(parent){
   layout->setMargin(0);
 
   setAutoFillBackground(true);
-  
+
   _spinbox->setDecimals(3);
   _spinbox->setRange(-DBL_MAX,DBL_MAX);
   _spinbox->setSingleStep(0.01);
   connect(_spinbox,SIGNAL(editingFinished()),this,SLOT(updateValueHolder()));
   connect(_spinbox,SIGNAL(valueChanged(double)),this, SLOT(onValueChanged(double)));
-  
+
   //setLayout(layout);
 }
 
@@ -37,6 +37,6 @@ void DoubleSpinBoxWidget::updateValueHolder(){
 
 void DoubleSpinBoxWidget::onValueChanged(double){
   //  debugInfo("ValueChanged")
-    double value = _spinbox->value();
-    if(getValueHolder()) getValueHolder()->set(value);
+  double value = _spinbox->value();
+  if(getValueHolder()) getValueHolder()->set(value);
 }

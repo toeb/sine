@@ -7,7 +7,7 @@ namespace nspace{
   template<typename OwningClass, typename ValueType>
   class TypedPropertySetInfo:public virtual TypedProperty<OwningClass, Set<ValueType> >, public virtual PropertySetInfo{
     TYPED_OBJECT(TypedPropertySetInfo);
-  public:   
+  public:
     virtual Set<ValueType> & getMutableSetReference( OwningClass * object )const=0;
     virtual const Set<ValueType> & getConstSetReference(const OwningClass * object )const=0;
     virtual uint getElementCount(Object * ptr)const;
@@ -21,7 +21,6 @@ namespace nspace{
     bool removeObserver(Object * ptr,ObjectObserver* observer)const;
     const Set<ValueType> * getConstTypedPointer(const OwningClass * object)const;
     Set<ValueType> * getMutableTypedPointer(OwningClass * object)const;
-
 
     bool addTypedElement(OwningClass & object, ValueType & value)const;
     bool removeTypedElement(OwningClass & object, const ValueType & value)const;
@@ -139,7 +138,7 @@ namespace nspace{
   }
   template<typename OwningClass, typename ValueType>
   bool  TypedPropertySetInfo<OwningClass,ValueType>::deserializeElement(Object * object, uint i, std::istream & in)const{
-    OwningClass * owningClass = dynamic_cast<OwningClass*>(object); 
+    OwningClass * owningClass = dynamic_cast<OwningClass*>(object);
     if(!owningClass)return false;
     ValueType value;
     if(getCustomDeserializer()){
@@ -164,6 +163,4 @@ namespace nspace{
     }
     return true;
   }
-
-
 }

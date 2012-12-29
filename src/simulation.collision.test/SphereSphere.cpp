@@ -2,7 +2,6 @@
 
 using namespace nspace;
 using namespace std;
-  
 
 bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision * collision)const{
   Vector3D collisionNormal;
@@ -15,7 +14,7 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   Real length = collisionNormal.norm();
 
   // if lenth is near zero numerical instability might occur
-  if(length==0){  
+  if(length==0){
     collisionNormal = Vector3D::UnitX();
   }
 
@@ -27,10 +26,10 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
 
   //add radii of the spheres
   Real combinedRadii = radiusA+radiusB;
-  
-  // calculate penetration depth 
+
+  // calculate penetration depth
   Real penetrationDepth = combinedRadii-length;
-  
+
   //positive penetration means the objects are inside each other, negative--> no collision
   if(penetrationDepth<0)return false;
 
@@ -47,14 +46,14 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
   contact->penetrationDepth = penetrationDepth;
   contact->normal = collisionNormal;
 
-  //set point of collision A:  collision->pA_wcs = pA + n * radiusA 
+  //set point of collision A:  collision->pA_wcs = pA + n * radiusA
   contact->pA_wcs = contact->normal * radiusA;
   contact->pA_wcs += pA ;
 
   //set point of collision B:  collision->pB_wcs = pB - n * radiusB
   contact->pB_wcs = contact->normal * (-radiusA);
   contact->pB_wcs += pB ;
-  
+
   //add contact point to collision
   collision->addContact(contact);
 
@@ -62,8 +61,7 @@ bool SphereSphere::testCollision(const Sphere & A, const Sphere & B, Collision *
 }
 
 bool SphereSphere::testCollision(const ISimulationObject & objA, const ISimulationObject & objB, Collision * collision)const{
-  
   const Sphere & A = static_cast<const Sphere&>(objA);
   const Sphere & B = static_cast<const Sphere&>(objB);
-  return testCollision(A,B,collision);  
+  return testCollision(A,B,collision);
 }

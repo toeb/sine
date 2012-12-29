@@ -1,9 +1,8 @@
 #pragma once
 #include <core/reflection/MemberInfo.h>
 
-
 namespace nspace{
-  // MethodInfo represents a method of a class 
+  // MethodInfo represents a method of a class
   // TODO:  allow multiple arguments and return values
   // TODO get away from inheritance and use std::functions or something similar
   class MethodInfo : public virtual MemberInfo{

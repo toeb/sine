@@ -2,8 +2,6 @@
 
 #include <visualization/Viewport.h>
 
-
-
 namespace nspace{
   class PerspectiveViewport : public virtual Viewport{
     REFLECTABLE_OBJECT(PerspectiveViewport);
@@ -23,10 +21,9 @@ namespace nspace{
   public:
     PerspectiveViewport();
 
-
     void onBeginRender(){viewportTransform();}
 
   protected:
     virtual void viewportTransform()=0;
   };
-  }
+}

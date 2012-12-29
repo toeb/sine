@@ -4,19 +4,15 @@
 #include <math.scalar/operationcodes.h>
 #include <cmath>
 namespace nspace{
-namespace math{
-namespace operation{
-
-  template<typename T>
-  class Operation<T,operation::Unary, scalar::opcodes::Reciprocal>{
-  public:
-    static inline void  operation(T & b, const T &  a){
-      b = 1.0/a;
+  namespace math{
+    namespace operation{
+      template<typename T>
+      class Operation<T,operation::Unary, scalar::opcodes::Reciprocal>{
+      public:
+        static inline void  operation(T & b, const T &  a){
+          b = 1.0/a;
+        }
+      };
     }
-  };
-
+  }
 }
-
-}
-}
-

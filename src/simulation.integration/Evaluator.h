@@ -7,7 +7,7 @@
 #include <simulation.integration/ISystemFunction.h>
 
 namespace nspace{
-  // class combines a stateful object with a system function 
+  // class combines a stateful object with a system function
   // which allows an Integrator to integrate its state
   class Evaluator : public virtual ISimulationObject{
   private:

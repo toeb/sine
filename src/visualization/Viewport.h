@@ -3,7 +3,6 @@
 #include <visualization/Renderer.h>
 #include <simulation.kinematics/CoordinateSystem.h>
 namespace nspace{
-
   class Viewport : virtual public NamedObject, public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(Viewport);
   public:
@@ -16,10 +15,8 @@ namespace nspace{
 
     Real aspectRatio()const;
 
-
     Viewport();
     void resize(int width, int height);
-
 
     //renders the renderer into of viewport
     void render();
@@ -35,6 +32,4 @@ namespace nspace{
   private:
     void doResize(int width,int height);
   };
-
-
 }

@@ -3,8 +3,8 @@
 #include <simulation.collision.handling.impulsebased/DynamicContact.h>
 
 namespace nspace {
-class ContactJoint : public Joint {
-private:
+  class ContactJoint : public Joint {
+  private:
     DynamicContact &_contact;
     // contact normal
     Vector3D _normal;
@@ -18,7 +18,7 @@ private:
     void simulateDynamicFriction(Vector3D &p_a_n, Vector3D &u_rel_t, Matrix3x3 &K_gc);
     void applyTangentialImpulses(Real h, Vector3D& d, Vector3D& v_n, Vector3D& p_a_n);
 
-public: 
+  public:
     ContactJoint(DynamicContact &contact, const Real pTol, const Vector3D &normal);
     inline DynamicContact & contact(){return _contact;}
     inline const DynamicContact & contact()const{return _contact;}
@@ -31,6 +31,5 @@ public:
     bool arePositionsCorrect();
     void correctVelocity();
     void precompute();
-
-};
+  };
 }

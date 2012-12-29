@@ -2,13 +2,12 @@
 
 #include <simulation.model/builder/IModelBuilder.h>
 
-#include <core/Set.h>
+#include <core.collection.h>
 
 namespace nspace{
-
   class ModelBuilderBase : public IModelBuilder, public Set<ModelElement*> {
     TYPED_OBJECT(ModelBuilderBase);
-  private:  
+  private:
     Set<Model*> _models;
     Model * _currentModel;
     ModelElement * _currentElement;
@@ -16,7 +15,7 @@ namespace nspace{
     virtual ModelNode * createNode();
     virtual Connection * createConnection();
     virtual Connector * createConnector();
-  public:    
+  public:
     virtual void buildModel(Model & model)=0;
 
     ModelBuilderBase();
@@ -42,6 +41,4 @@ namespace nspace{
   T * ModelBuilderBase::select(const std::string & name){
     return dynamic_cast<T*>(selectFirst([&name](T* element){element->name() == name;}));
   }
-
-
 }

@@ -17,10 +17,8 @@ namespace nspace{
 
     ModelNode * addBody(const std::string & name);
     ModelNode * addConnection(const std::string & name, const std::string  & bodyA, const std::string & bodyB);
-    
 
-    virtual ModelNode* addNode()=0;   
-
+    virtual ModelNode* addNode()=0;
 
     virtual Connector* addConnector(const std::string &nodeName)=0;
     virtual Connection* addConnection(const std::string & nodeNameA, const std::string & nodeNameB)=0;
@@ -34,12 +32,7 @@ namespace nspace{
       T * res = dynamic_cast<T*>(me);
       return res;
     }
-  
+
     virtual ModelElement * element(const std::string & name)=0;
-
   };
-
-
-
-
 }

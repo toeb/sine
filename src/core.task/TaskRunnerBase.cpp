@@ -2,12 +2,11 @@
 
 using namespace nspace;
 
-
 TaskRunnerBase::TaskRunnerBase():
   _IsRunning(false),
   _NumberOfRunningTasks(0),
   _IsHalting(false){
-  setName("TaskRunnerBase");
+    setName("TaskRunnerBase");
 }
 
 void TaskRunnerBase::halt(){
@@ -42,7 +41,7 @@ void TaskRunnerBase::run(){
   }
   _IsRunning = false;
   notifyIsRunningChanged();
-}    
+}
 bool TaskRunnerBase::step(){
   if(!canStep()){
     debugWarning("Cannot perform step --> canstep() returned false");
@@ -64,12 +63,11 @@ bool TaskRunnerBase::step(){
   onBeforeTaskRun(task);
   debugMessage("Task Starting: "<<*task,6);
 
-
   task->run();
-  
+
   debugMessage("Task Ended: "<<*task,6);
-  onAfterTaskRun(task);  
-  
+  onAfterTaskRun(task);
+
   removeTask(task);
 
   _NumberOfRunningTasks--;

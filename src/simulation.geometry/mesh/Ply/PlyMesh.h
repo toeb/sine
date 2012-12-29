@@ -2,44 +2,43 @@
 #include <simulation.geometry/polygon/Polygon.h>
 #include <math/core.h>
 namespace nspace{
-
-/**
-* \brief Ply mesh. Represents a Mesh loaded from a ply file.
-* 				
-*/
-struct PlyVertex : public Vertex{
-  Vector3D normal;
-  Vector2D textureCoordinates;
-  float color[4];
-};
-
-class PlyMesh : public Polygon {  
- public:
-
   /**
-   * \brief Constructor.
-   * 				
-   * \param _filename Filename of the .ply file.
-   */
-  PlyMesh(const std::string & _filename):
-       filename(_filename){};
+  * \brief Ply mesh. Represents a Mesh loaded from a ply file.
+  *
+  */
+  struct PlyVertex : public Vertex{
+    Vector3D normal;
+    Vector2D textureCoordinates;
+    float color[4];
+  };
 
-  /**
-   * \brief Constructor.
-   *
-   * 
-   * \param _filename Filename of the file.
-   */
-  PlyMesh(const char * _filename):filename(*(new std::string(_filename))){}
+  class PlyMesh : public Polygon {
+  public:
 
-  PlyVertex * addPlyVertex();
-  void createFace(Index a,Index b,Index c);
-protected:
-  Vertex * createVertex();
+    /**
+    * \brief Constructor.
+    *
+    * \param _filename Filename of the .ply file.
+    */
+    PlyMesh(const std::string & _filename):
+      filename(_filename){};
 
-  void createGeometry();
+    /**
+    * \brief Constructor.
+    *
+    *
+    * \param _filename Filename of the file.
+    */
+    PlyMesh(const char * _filename):filename(*(new std::string(_filename))){}
 
-  ///< Filename of the file
-  const std::string & filename;
-};//class PlyMesh
+    PlyVertex * addPlyVertex();
+    void createFace(Index a,Index b,Index c);
+  protected:
+    Vertex * createVertex();
+
+    void createGeometry();
+
+    ///< Filename of the file
+    const std::string & filename;
+  };//class PlyMesh
 }

@@ -30,17 +30,15 @@
 #include <visualization/Color.h>
 namespace nspace{
   class GlViewport:
-    public virtual PerspectiveViewport, 
+    public virtual PerspectiveViewport,
     public virtual Initializable{
-
-    REFLECTABLE_OBJECT(GlViewport);
-    PROPERTY(Color,ClearColor){};
+      REFLECTABLE_OBJECT(GlViewport);
+      PROPERTY(Color,ClearColor){};
   public:
-    GlViewport();    
+    GlViewport();
     void viewportTransform();
   protected:
     void onBeforeRender();
     bool initializeObject();
   };//class GlViewport
-
 }//namespace mbslib

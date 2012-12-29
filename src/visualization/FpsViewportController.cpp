@@ -15,8 +15,6 @@ void FpsViewportController::onViewportRemoved(Viewport * viewport){
   auto v = dynamic_cast<PerspectiveViewport*>(viewport);
   if(!v)return;
   // v->coordinates().unshare();
-
-
 }
 Real degToRad(Real deg){
   return deg*scalar::pi<Real>()/180;
@@ -45,7 +43,7 @@ bool FpsViewportController::deserializeProperty(Real,Roll){
   deserializeDeg2Rad(*value,stream);
   return true;
 }
-bool FpsViewportController::serializeProperty(Real,Roll){  
+bool FpsViewportController::serializeProperty(Real,Roll){
   serializeRad2Deg(stream,*value);
   return true;
 }
@@ -67,7 +65,6 @@ bool FpsViewportController::serializeProperty(Real,Pitch){
   return true;
 }
 
-
 FpsViewportController::FpsViewportController():_Roll(0),_Pitch(0),_Yaw(0){
   setName("FpsViewportController");
   setIsOneTimeTask(false);
@@ -80,8 +77,6 @@ FpsViewportController::FpsViewportController():_Roll(0),_Pitch(0),_Yaw(0){
   eulerIntegrator.setUpperBound(0.0);
   eulerIntegrator.setEvaluator(new Evaluator(kinematicBody()));
   Components()|=&eulerIntegrator;
-
-
 }
 
 void FpsViewportController::timeout(Time timePassed,Time time){
@@ -91,11 +86,10 @@ void FpsViewportController::timeout(Time timePassed,Time time){
   Real speed = getMovementSpeed();
 
   body.velocity().setZero();
-  body.angularVelocity().setZero();  
-  
-      calculateRotation();
-  Matrix3x3 R = body.orientation().toRotationMatrix();
+  body.angularVelocity().setZero();
 
+  calculateRotation();
+  Matrix3x3 R = body.orientation().toRotationMatrix();
 
   Vector3D direction;
   Vector3D normal;
@@ -104,8 +98,6 @@ void FpsViewportController::timeout(Time timePassed,Time time){
   normal=  R.col(1);
   binormal=  R.col(0);
 
-
-
   if(handler->isKeyDown(KEY_W))body.velocity() += direction * speed;
   if(handler->isKeyDown(KEY_S))body.velocity() -= direction * speed;
   if(handler->isKeyDown(KEY_A))body.velocity() += binormal * speed;
@@ -113,13 +105,8 @@ void FpsViewportController::timeout(Time timePassed,Time time){
   if(handler->isKeyDown(KEY_CTRL))body.velocity() += normal * speed;
   if(handler->isKeyDown(KEY_SPACE))body.velocity() -= normal * speed;
 
-  
-
   eulerIntegrator.setUpperBound(eulerIntegrator.getUpperBound()+timePassed);
   eulerIntegrator.integrate();
-
-
-
 }
 
 void FpsViewportController::onMouseMove(InputHandler * inputhandler, int x , int y, int dx, int dy){
@@ -132,7 +119,6 @@ void FpsViewportController::onMouseMove(InputHandler * inputhandler, int x , int
   Real ySpeed = speed*dy;
 
   Matrix3x3 R = body.orientation().toRotationMatrix();
-
 
   Vector3D direction;
   Vector3D normal;
@@ -151,13 +137,13 @@ void FpsViewportController::onMouseMove(InputHandler * inputhandler, int x , int
     body.position() += -binormal*xSpeed;
   }
 
-  if(inputhandler->isKeyDown(KEY_1)){    
+  if(inputhandler->isKeyDown(KEY_1)){
     body.position() += binormal*length*speed;
-  } 
-  if(inputhandler->isKeyDown(KEY_2)){    
+  }
+  if(inputhandler->isKeyDown(KEY_2)){
     body.position() +=normal*length*speed;
   }
-  if(inputhandler->isKeyDown(KEY_3)){    
+  if(inputhandler->isKeyDown(KEY_3)){
     body.position() +=direction* length*speed;
   }
   if(inputhandler->isKeyDown(KEY_R)){
@@ -173,23 +159,19 @@ void FpsViewportController::onMouseMove(InputHandler * inputhandler, int x , int
     notifyPitchChanged();
     calculateRotation();
   }
-
-
-
 }
 
 void FpsViewportController::calculateRotation(){
-    Quaternion qx;
-    Quaternion qy;
-    Quaternion qz;
+  Quaternion qx;
+  Quaternion qy;
+  Quaternion qz;
 
-    qx.fromAxisAngle(Vector3D::UnitX(),_Pitch);
-    qy.fromAxisAngle(Vector3D::UnitY(),_Yaw);
-    qz.fromAxisAngle(Vector3D::UnitZ(),_Roll);
-    qx.normalize();
-    qy.normalize();
-    qz.normalize();
-    body.orientation() = qy*qx*qz;
-    body.orientation().normalize();
-  
+  qx.fromAxisAngle(Vector3D::UnitX(),_Pitch);
+  qy.fromAxisAngle(Vector3D::UnitY(),_Yaw);
+  qz.fromAxisAngle(Vector3D::UnitZ(),_Roll);
+  qx.normalize();
+  qy.normalize();
+  qz.normalize();
+  body.orientation() = qy*qx*qz;
+  body.orientation().normalize();
 }

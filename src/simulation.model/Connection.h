@@ -1,12 +1,11 @@
 #pragma once
 
-#include <core/Set.h>
+#include <core.collection.h>
 #include <math/core.h>
 
 #include <simulation.model/ModelElement.h>
 #include <simulation.model/Connector.h>
 namespace nspace{
-
   class Connection :public NamedObject{
     TYPED_OBJECT(Connection)
   public:
@@ -30,7 +29,7 @@ namespace nspace{
 
   namespace model{
     class Spring : public Connection{
-        TYPED_OBJECT(Spring);
+      TYPED_OBJECT(Spring);
     private:
       Real _dampeningCoefficient;
       Real _springCoefficient;

@@ -2,7 +2,6 @@
 
 using namespace nspace;
 
-
 void Edge::getDirection(Vector3D & dir){
   dir= B->p_ocs - A->p_ocs;
 }

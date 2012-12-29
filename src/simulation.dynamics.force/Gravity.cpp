@@ -5,14 +5,14 @@ using namespace std;
 using namespace nspace;
 
 Gravity::Gravity(void) {
-	setGravity(Vector3D(0,-9.81,0));
+  setGravity(Vector3D(0,-9.81,0));
 }
 
 Gravity::~Gravity(void)	{
 }
 
 Gravity::Gravity(Real g) {
-	setGravity(Vector3D(0,-g,0));
+  setGravity(Vector3D(0,-g,0));
 }
 
 Gravity::Gravity(const Vector3D & gravity){
@@ -51,6 +51,6 @@ void Gravity::act (std::vector<DynamicBody*> & target, Real time) {
 
   for_each(target.begin(),target.end(),[this](DynamicBody* body){
     Vector3D amount = body->getMass() * _g;
-		body->addExternalForce(amount);
+    body->addExternalForce(amount);
   });
 }

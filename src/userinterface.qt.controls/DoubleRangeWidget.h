@@ -15,7 +15,7 @@ namespace nspace{
       setMinimum(-REAL_MAX);
       setMaximum(REAL_MAX);
     }
-    bool storeValue(const void * value){      
+    bool storeValue(const void * value){
       double dvalue = *static_cast<const double*>(value);
       this->setValue(dvalue);
       return true;
@@ -25,10 +25,9 @@ namespace nspace{
       *dvalue = this->value();
       return true;
     }
-  protected slots:
-    void valueChanged(double value){
-      raiseObjectChanged();
-    }
+    protected slots:
+      void valueChanged(double value){
+        raiseObjectChanged();
+      }
   };
-
 }

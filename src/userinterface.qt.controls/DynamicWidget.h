@@ -6,13 +6,9 @@
 namespace nspace{
   class DynamicWidget : public QWidget{
     Q_OBJECT;
-   SIMPLE_PROPERTY(Object *, DataContext){onDataContextChanging(oldvalue,newvalue);}
+    SIMPLE_PROPERTY(Object *, DataContext){onDataContextChanging(oldvalue,newvalue);}
   public:
     DynamicWidget(QWidget * parent):QWidget(parent),_DataContext(0){}
-     
-
-
-
 
   protected:
     virtual void onDataContextChanging(Object * oldvalue, Object * newvalue)=0;

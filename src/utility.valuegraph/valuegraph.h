@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <utility.valuegraph/Value.h>
 #include <utility.valuegraph/TypedValue.h>
 #include <utility.valuegraph/Value.h>

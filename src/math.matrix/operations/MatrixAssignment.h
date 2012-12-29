@@ -8,18 +8,14 @@ namespace nspace{
   class MatrixAssign{
   public:
     static inline bool operation(MatA &  result, const MatB & val){
-      
       uint rowCount , columnCount;
       if(!OperationRowCount<MatB>::operation(rowCount,val))return false;
       if(!OperationColumnCount<MatB>::operation(columnCount,val))return false;
 
-      
       if(!MatrixResize<MatA>::operation(result,rowCount,columnCount,false))return false;
-      
-      
 
       for(int i=0; i < rowCount; i++){
-        for(int j=0; j < columnCount; j++){          
+        for(int j=0; j < columnCount; j++){
           result(i,j)=val(i,j);
         }
       }
@@ -61,52 +57,52 @@ namespace nspace{
     }
   };
   /*
-template<typename TAssignee, typename TValue>
-class OperationAssignMatrix{
-public:
+  template<typename TAssignee, typename TValue>
+  class OperationAssignMatrix{
+  public:
   static inline bool operation(TAssignee & assignee,const TValue & value){
-    assignee = value;
-    return true;
+  assignee = value;
+  return true;
   }
-};
+  };
 
-template<typename TValue>
-class OperationAssignMatrix<double,TValue>{
-public:
+  template<typename TValue>
+  class OperationAssignMatrix<double,TValue>{
+  public:
   static inline bool operation(double & assignee,const TValue & value){
-    if(value.rows()>1||value.cols()>1)return false;
-    assignee = value(0,0);
-    return true;
+  if(value.rows()>1||value.cols()>1)return false;
+  assignee = value(0,0);
+  return true;
   }
-};
+  };
 
-template<>
-class OperationAssignMatrix<double,double>{
-public:
+  template<>
+  class OperationAssignMatrix<double,double>{
+  public:
   static inline bool operation(double & assignee,const double & value){
-    assignee = value;
-    return true;
+  assignee = value;
+  return true;
   }
-};
+  };
 
-template<>
-class OperationAssignMatrix<float,float>{
-public:
+  template<>
+  class OperationAssignMatrix<float,float>{
+  public:
   static inline bool operation(float & assignee,const float & value){
-    assignee = value;
-    return true;
+  assignee = value;
+  return true;
   }
-};
+  };
 
-template<typename TValue>
-class OperationAssignMatrix<float,TValue>{
-public:
+  template<typename TValue>
+  class OperationAssignMatrix<float,TValue>{
+  public:
   static inline bool operation(float & assignee,const TValue & value){
-    if(value.rows()>1||value.cols()>1)return false;
-    assignee = value(0,0);
-    return true;
+  if(value.rows()>1||value.cols()>1)return false;
+  assignee = value(0,0);
+  return true;
   }
-};
+  };
 
-*/
+  */
 }

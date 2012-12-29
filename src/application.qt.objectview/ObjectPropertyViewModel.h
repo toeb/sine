@@ -1,22 +1,21 @@
 #pragma once
 
-
 #include <core.h>
 #include <QAbstractItemModel>
 #include <core.logging/Log.h>
 #include <sstream>
 namespace nspace{
   class TreeItem;
-  class ObjectPropertyViewModel : 
-    public QAbstractItemModel, 
-    public virtual PropertyChangingObject, 
-    public virtual Log, 
+  class ObjectPropertyViewModel :
+    public QAbstractItemModel,
+    public virtual PropertyChangingObject,
+    public virtual Log,
     public virtual PropertyChangedListener,
     public virtual ObjectObserver
   {
-      Q_OBJECT;
-      REFLECTABLE_OBJECT(ObjectPropertyViewModel);
-      SUBCLASSOF(Log);
+    Q_OBJECT;
+    REFLECTABLE_OBJECT(ObjectPropertyViewModel);
+    SUBCLASSOF(Log);
   private:
 
     TreeItem* getItem(const QModelIndex& index )const;
@@ -46,6 +45,5 @@ namespace nspace{
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole)const;
 
     void itemChanged(TreeItem * treeItem);
-
   };
 }

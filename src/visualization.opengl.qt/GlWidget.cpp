@@ -33,7 +33,7 @@ void GlWidget::propertyChanging(ViewportController *, ViewportController){
   }
   if(newvalue){
     newvalue->setViewport(_Viewport);
-    Components()|=newvalue; 
+    Components()|=newvalue;
   }
 }
 
@@ -54,13 +54,11 @@ void GlWidget::propertyChanging(GlViewport *, Viewport){
   if(_ViewportController)_ViewportController->setViewport(newvalue);
 }
 
-
 void GlWidget::initializeGL(){
   auto view = getViewport();
   safe(view)->resize(QGLWidget::size().width(),  QGLWidget::size().height());
 }
 void GlWidget::resizeGL(int w, int h){
-
   auto view = getViewport();
   safe(view)->resize(w,h);
 }

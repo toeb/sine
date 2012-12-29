@@ -7,10 +7,8 @@ void InputHandler::itemAdded(IInputListener*,InputListeners){
   item->_handlers|=this;
 }
 void InputHandler::itemRemoved(IInputListener*,InputListeners){
-  
   item->_handlers/=this;
 }
-
 
 void InputHandler::onAcception(Object * object){
   auto listener = dynamic_cast<IInputListener*>(object);
@@ -19,7 +17,7 @@ void InputHandler::onAcception(Object * object){
 }
 void InputHandler::onRenounce(Object * object){
   auto listener = dynamic_cast<IInputListener*>(object);
-  if(!listener)return;  
+  if(!listener)return;
   InputListeners()/=listener;
 }
 
@@ -42,11 +40,10 @@ void InputHandler::onMouseMove(int x, int y){
   InputListeners().foreachElement([this,&dx,&dy](IInputListener * l){
     l->onMouseMove(this,_mouseX, _mouseY, dx,dy);
   });
-
 }
 void InputHandler::onMouseButtonDown(MouseButtons b){
   _lastChange = systemTime();
-  _mouseButtonsDown[b] = true;	
+  _mouseButtonsDown[b] = true;
   InputListeners().foreachElement([this,&b](IInputListener * l){
     l->onMouseDown(this,b);
   });
@@ -57,7 +54,7 @@ bool InputHandler::accept(Object * object){
 }
 void InputHandler::onMouseButtonUp(MouseButtons b){
   _lastChange = systemTime();
-  _mouseButtonsDown[b] = false;	
+  _mouseButtonsDown[b] = false;
 
   InputListeners().foreachElement([this,&b](IInputListener * l){
     l->onMouseUp(this,b);
@@ -65,14 +62,14 @@ void InputHandler::onMouseButtonUp(MouseButtons b){
 }
 void InputHandler::onKeyDown(Keys key){
   _lastChange = systemTime();
-  _keysDown[key] = true;	
+  _keysDown[key] = true;
   InputListeners().foreachElement([this,&key](IInputListener * l){
     l->onKeyDown(this,key);
   });
 }
 void InputHandler::onKeyUp(Keys key){
   _lastChange = systemTime();
-  _keysDown[key] = false;	
+  _keysDown[key] = false;
   InputListeners().foreachElement([this,&key](IInputListener * l){
     l->onKeyUp(this,key);
   });

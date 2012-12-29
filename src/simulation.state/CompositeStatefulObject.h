@@ -2,9 +2,6 @@
 #include <core/patterns/Composite.h>
 #include <simulation.state/StatefulObject.h>
 namespace nspace{
-
-
-
   class CompositeStatefulObject : public virtual StatefulObject, public virtual Composite<StatefulObject>{
   public:
 
@@ -16,7 +13,7 @@ namespace nspace{
           return;
         }
         uint currentDimension = obj->dimension();
-        uint currentDerivatives = obj->derivatives();        
+        uint currentDerivatives = obj->derivatives();
         SystemState * currentState = state().range(currentOffset,currentDimension,currentDerivatives);
         obj->assignState(currentState);
         currentOffset+=currentDimension;
@@ -32,7 +29,7 @@ namespace nspace{
         obj->notifyStateNeeded();
       });
     }
-    void onAfterComponentAdded( StatefulObject* component ) 
+    void onAfterComponentAdded( StatefulObject* component )
     {
       uint d = derivatives();
       if(component->derivatives()>d)d= component->derivatives();
@@ -48,10 +45,9 @@ namespace nspace{
       });
       return result;
     }
-    void onBeforeComponentRemoved( StatefulObject* component ) 
+    void onBeforeComponentRemoved( StatefulObject* component )
     {
       resizeState(getMaximumDerivative(),component->dimension()-dimension());
     }
-
   };
 }

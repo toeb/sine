@@ -3,8 +3,6 @@
 using namespace std;
 using namespace nspace;
 
-
-
 Classification classifyBoundingBox(const BoundingBox & aabb_ocs, const Sphere & sphere){
   Real radius = sphere.radius();
 
@@ -20,31 +18,29 @@ Classification classifyBoundingBox(const BoundingBox & aabb_ocs, const Sphere & 
   Interval sphereInterval(-radius,radius);
 
   aabb_ocs.projectOCS(axis,aabbInterval);
-  
+
   if(aabbInterval.disjoint(sphereInterval))return Classification::OUTSIDE;
 
   if(aabbInterval.isSubsetOf(sphereInterval)){
     return Classification::INSIDE;
   }
   return Classification::BOTH;
-
 }
 
 Classification classifySphere(const BoundingSphere & boundingSphere, const Sphere & sphere){
   Axis direction;
   // the axis on which to project is boundingSphere.p_ocs-sphere.p_ocs/|| boundingSphere.p_ocs-sphere.p_ocs||
-  direction.n = boundingSphere.getPositionPCS();   
+  direction.n = boundingSphere.getPositionPCS();
   direction.n.normalize();
 
   Interval boundingSphereInterval, sphereInterval;
-  
+
   //project both spheres on the axis
   sphere.projectOCS(direction,sphereInterval);
 
   //bounding sphere needs custom projection
-  
+
   boundingSphere.projectPCS(direction,boundingSphereInterval);
-    
 
   // if the spheres do not overlap at all the bounding sphere is outside
   if(boundingSphereInterval.disjoint(sphereInterval))return Classification::OUTSIDE;
@@ -75,11 +71,9 @@ Sphere::Sphere(Real radius){
   _radius = radius;
 }
 
-
 Real Sphere::calculateBoundingSphereRadius()const{
   return _radius;
 }
-
 
 void Sphere::setRadius(Real radius){
   if(radius < 0){
@@ -90,8 +84,6 @@ void Sphere::setRadius(Real radius){
   onRadiusChanged();
 }
 
-
-  
 void Sphere::projectOCS(const Axis & axis_ocs, Interval & result)const{
   Real val = axis_ocs.projectOnAxis(Vector3D::Zero());
 

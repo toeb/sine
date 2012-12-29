@@ -1,7 +1,6 @@
 #include "Average.h"
 using namespace nspace;
 
-
 Average::Average(int samples):_samples(samples){}
 
 void Average::addSample(Real sample){
@@ -18,7 +17,6 @@ Real Average::calculate(){
   }
   return result / _samples;
 }
-
 
 int & Average::numberOfSamples(){return _samples;}
 const int & Average::numberOfSamples()const{return _samples;}

@@ -2,5 +2,4 @@
 #include <config.h>
 
 namespace nspace{
-
 }

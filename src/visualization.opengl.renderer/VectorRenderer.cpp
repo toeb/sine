@@ -6,7 +6,6 @@ using namespace nspace;
 
 VectorRenderer::VectorRenderer(Vector3D & position, Vector3D & vector,Vector3D & color)
   :_position(position), _vector(vector),_color(color){
-  
 };
 
 void VectorRenderer::render(){

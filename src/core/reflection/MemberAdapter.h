@@ -10,5 +10,4 @@ namespace nspace{
     virtual void onOwnerChanged(){}
     virtual void onBeforeOwnerChanged(){}
   };
-
 }

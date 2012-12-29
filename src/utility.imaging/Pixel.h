@@ -2,7 +2,6 @@
 #include <config.h>
 
 namespace nspace{
-
   union Pixel{
     struct{
       byte r;
@@ -21,5 +20,4 @@ namespace nspace{
       color.a = 255;
     }
   };
-
 }

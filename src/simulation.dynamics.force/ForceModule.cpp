@@ -14,24 +14,19 @@ void ForceAlgorithm::announce(ISimulationObject *object){
 
   if(force){
     _forces.push_back(force);
-
   }
   DynamicBody * body = dynamic_cast<DynamicBody*>(object);
   if(body){
     _forceAccumulators.push_back(body);
-
   }
-
 }
 void ForceAlgorithm::renounce(ISimulationObject * object){
- 
 }
 
-void ForceAlgorithm::resetForces(){  
-  
+void ForceAlgorithm::resetForces(){
   /*
   for(auto it = _forceAccumulators.begin(); it != _forceAccumulators.end(); it++){
-    (*it)->resetForce();
+  (*it)->resetForce();
   }  */
   for_each(_forceAccumulators.begin(),_forceAccumulators.end(),[](DynamicBody * b){b->resetForce();});
 }
@@ -40,7 +35,7 @@ void ForceAlgorithm::setForces(Real time){
 
   resetForces();
   applyForces(time);
-  
+
   tock();
 }
 void ForceAlgorithm::applyForces(Real time){
@@ -50,6 +45,6 @@ void ForceAlgorithm::applyForces(Real time){
     [&time, this](Force * force){
       force->act(_forceAccumulators,time);
   });
- 
+
   tock();
 }

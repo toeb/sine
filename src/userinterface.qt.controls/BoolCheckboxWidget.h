@@ -11,12 +11,12 @@ namespace nspace{
     QCheckBox * _checkbox;
   public:
     BoolCheckboxWidget(QWidget * parent);
-  public slots:
-    void checkboxStateChanged(int state);
-    void updateWidgetValue();
-    void updateValueHolder();
+    public slots:
+      void checkboxStateChanged(int state);
+      void updateWidgetValue();
+      void updateValueHolder();
   protected:
-    
+
     void onValueHolderChanging(IModifiableValue * oldvalue,IModifiableValue * newvalue);
   };
 }

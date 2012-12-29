@@ -5,19 +5,15 @@
 #include <cmath>
 
 namespace nspace{
-namespace math{
-namespace operation{
-
-  template<typename T>
-  class Operation<T,Unary, scalar::opcodes::ArcusSinus>{
-  public:
-    static inline void operation(T & b, const T & a){
-      b = std::asin(a);
+  namespace math{
+    namespace operation{
+      template<typename T>
+      class Operation<T,Unary, scalar::opcodes::ArcusSinus>{
+      public:
+        static inline void operation(T & b, const T & a){
+          b = std::asin(a);
+        }
+      };
     }
-  };
-
-
+  }
 }
-}
-}
-

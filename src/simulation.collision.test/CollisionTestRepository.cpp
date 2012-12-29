@@ -8,7 +8,6 @@
 #include <simulation.collision.test/SpherePlane.h>
 #include <simulation.collision.test/SeparatingAxes.h>
 
-
 using namespace nspace;
 
 CollisionTestRepository::CollisionTestRepository(){
@@ -16,13 +15,12 @@ CollisionTestRepository::CollisionTestRepository(){
   addTest(new SpherePlane());
   addTest(new OctreeOctree());
   addTest(new ReverseCollisionTest(*(new SpherePlane())));
-  addTest(new OctreePlane());  
+  addTest(new OctreePlane());
   addTest(new ReverseCollisionTest(*(new OctreePlane())));
   addTest(new SphereOctree());
   addTest(new ReverseCollisionTest(*(new SphereOctree())));
-  addTest(new SeparatingAxes());  
+  addTest(new SeparatingAxes());
 }
-
 
 CollisionTestRepository & CollisionTestRepository::instance(){
   static CollisionTestRepository * instance = new CollisionTestRepository();
@@ -31,16 +29,14 @@ CollisionTestRepository & CollisionTestRepository::instance(){
 
 void CollisionTestRepository::addTest(const CollisionTest* test){
   if(getTest(test->getTypeA(),test->getTypeB())){
-   return; 
+    return;
   }
   _tests.push_back(test);
 }
 
-
 bool CollisionTestRepository::hasTestFor(const ISimulationObject & a)const{
   return hasTestFor(a.getType().getId());
 }
-
 
 bool CollisionTestRepository::hasTestFor(const TypeId  a)const{
   const CollisionTest * current=0;

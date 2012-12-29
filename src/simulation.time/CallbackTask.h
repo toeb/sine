@@ -1,7 +1,6 @@
 #pragma once
 #include <simulation.time/ITimeProvider.h>
 namespace nspace{
-
   class CallbackTask : public SimulationTask{
   private:
     const ITimeProvider & _provider;
@@ -9,10 +8,9 @@ namespace nspace{
     Time _callbackTime;
   public:
     CallbackTask(Time callbackTime, const ITimeProvider & timeProvider):
-        _provider(timeProvider),
-          _executed(false),
-          _callbackTime(callbackTime){
-
+      _provider(timeProvider),
+      _executed(false),
+      _callbackTime(callbackTime){
     }
     void runTask(){
       if(_executed )return;
@@ -20,7 +18,6 @@ namespace nspace{
       if(_callbackTime >actualTime)return;
       executeCallback(actualTime);
       _executed = true;
-
     }
   protected:
     virtual void executeCallback(Time actualTime)=0;
@@ -30,13 +27,11 @@ namespace nspace{
     std::function<void (Time )> _callback;
   public:
     CallbackTaskDelegate(std::function<void(Time)> callback, Time callbackTime, const ITimeProvider & provider):
-    CallbackTask(callbackTime,provider),_callback(callback){
-      
+      CallbackTask(callbackTime,provider),_callback(callback){
     }
 
     void executeCallback( Time actualTime ){
       _callback(actualTime);
     }
-
   };
 }

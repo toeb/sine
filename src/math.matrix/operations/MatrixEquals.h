@@ -1,9 +1,9 @@
 #pragma once
 #include <config.h>
 #include <math.scalar/operations.h>
- namespace nspace{
-   //implementation requires MatrixTypeA (rows() operator(int) cols() size() ) 
-  template<typename MatrixTypeA, typename MatrixTypeB, typename ElementType> 
+namespace nspace{
+  //implementation requires MatrixTypeA (rows() operator(int) cols() size() )
+  template<typename MatrixTypeA, typename MatrixTypeB, typename ElementType>
   class OperationMatrixEquals{
   public:
     static inline bool operation(bool &result, const MatrixTypeA & matrixA, const MatrixTypeB & matrixB , const ElementType & epsilon){
@@ -25,5 +25,4 @@
       return true;
     }
   };
-
 }

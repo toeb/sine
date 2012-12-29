@@ -3,99 +3,93 @@
 #include <core.logging.h>
 
 namespace nspace{
-  
+  class Binding : public virtual PropertyChangingObject, public virtual Log, public virtual ObjectObserver{
+    REFLECTABLE_OBJECT(Binding);
+    OBJECTPOINTERPROPERTY(IModifiableValue,Source){
+      if(oldvalue){
+        oldvalue->removeObjectObserver(this);
+      }
+      if(newvalue){
+        newvalue->addObjectObserver(this);
+      }
+      auto sink = getSink();
+      if(!sink)return;
+      if(newvalue && newvalue->getValueType()!=  sink->getValueType()){
+        cancel = true;
+        logWarning("trying to bind different value types!");
+        return;
+      }
+    }
+    void onChange(Observable * observable){
+      //debugInfo("Source object changed");
+      update();
+    }
+    OBJECTPOINTERPROPERTY(IModifiableValue,Sink){
+      auto source = getSource();
+      if(!source)return;
+      if(newvalue->getValueType()!=  source->getValueType()){
+        cancel = true;
+        logWarning("trying to bind different value types!");
+        return;
+      }
 
-class Binding : public virtual PropertyChangingObject, public virtual Log, public virtual ObjectObserver{
-  REFLECTABLE_OBJECT(Binding);
-  OBJECTPOINTERPROPERTY(IModifiableValue,Source){
-    if(oldvalue){
-      oldvalue->removeObjectObserver(this);
+      if(newvalue)setBindingType(newvalue->getValueType());
     }
-    if(newvalue){    
-      newvalue->addObjectObserver(this);
-    }
-    auto sink = getSink();
-    if(!sink)return;
-    if(newvalue && newvalue->getValueType()!=  sink->getValueType()){
-      cancel = true;
-      logWarning("trying to bind different value types!");
-      return;
+    SIMPLE_PROPERTY(const Type*, BindingType){
+      debugInfo("Binding type changed to "<<newvalue->getName());
     }
 
-  }
-  void onChange(Observable * observable){
-    //debugInfo("Source object changed");
-    update();
-  }
-  OBJECTPOINTERPROPERTY(IModifiableValue,Sink){
-    auto source = getSource();
-    if(!source)return;
-    if(newvalue->getValueType()!=  source->getValueType()){
-      cancel = true;
-      logWarning("trying to bind different value types!");
-      return;
-    }
-    
-    if(newvalue)setBindingType(newvalue->getValueType());
-  }
-  SIMPLE_PROPERTY(const Type*, BindingType){
-    debugInfo("Binding type changed to "<<newvalue->getName());
-  }
+    PROPERTY(bool, IsUpdating){}
 
-  PROPERTY(bool, IsUpdating){}
-  
-  
-  
-public:
-  virtual bool update(){
-    if(getIsUpdating()){
-      //debugWarning("already updating - wait for finish");
-      return false;
+  public:
+    virtual bool update(){
+      if(getIsUpdating()){
+        //debugWarning("already updating - wait for finish");
+        return false;
+      }
+      setIsUpdating(true);
+      auto source = getSource();
+      auto sink = getSink();
+      if(!(sink&&source))return false;
+      auto type = getBindingType();
+      void * instance = type->createInstance();
+      if(!instance){
+        logError("Type does not allow instanciation");
+      }
+      if(!source->getByPointer(instance)){
+        logError("Source was not readable");
+      }
+      if(!sink->setByPointer(instance)){
+        logError("Sink was not writable");
+      }
+      delete instance;
+      instance = 0;
+      setIsUpdating(false);
     }
-    setIsUpdating(true);
-    auto source = getSource();
-    auto sink = getSink();
-    if(!(sink&&source))return false;
-    auto type = getBindingType();
-    void * instance = type->createInstance();
-    if(!instance){
-      logError("Type does not allow instanciation");
+    bool isValid(){
+      if(!getSource())return false;
+      if(!getSink())return false;
+      return true;
     }
-    if(!source->getByPointer(instance)){
-      logError("Source was not readable");
+    static Binding * create(Object * a,  const std::string &  propertyNameA, Object * b, const std::string & propertyNameB){
+      auto infoA = a->getType().getProperty(propertyNameA);
+      auto infoB = b->getType().getProperty(propertyNameB);
+      return create(a,infoA,b,infoB);
     }
-    if(!sink->setByPointer(instance)){
-      logError("Sink was not writable");
+    static Binding * create(Object * a, const PropertyInfo * infoA, Object * b, const PropertyInfo*infoB){
+      auto valueA = new PropertyAdapter(a,infoA);
+      auto valueB = new PropertyAdapter(b,infoB);
+      return create(valueA,valueB);
     }
-    delete instance;
-    instance = 0;
-    setIsUpdating(false);
-  }
-  bool isValid(){
-    if(!getSource())return false;
-    if(!getSink())return false;
-    return true;
-  }
-  static Binding * create(Object * a,  const std::string &  propertyNameA, Object * b, const std::string & propertyNameB){    
-    auto infoA = a->getType().getProperty(propertyNameA); 
-    auto infoB = b->getType().getProperty(propertyNameB); 
-    return create(a,infoA,b,infoB);
-  }
-  static Binding * create(Object * a, const PropertyInfo * infoA, Object * b, const PropertyInfo*infoB){
-    auto valueA = new PropertyAdapter(a,infoA);
-    auto valueB = new PropertyAdapter(b,infoB);
-    return create(valueA,valueB);
-  }
-  static Binding * create(IModifiableValue * a, IModifiableValue * b){
-    auto binding = new Binding();
-    binding->setSource(a);
-    binding->setSink(b);
-    return binding;
-  }
+    static Binding * create(IModifiableValue * a, IModifiableValue * b){
+      auto binding = new Binding();
+      binding->setSource(a);
+      binding->setSink(b);
+      return binding;
+    }
 
-private:
-  Binding():_Source(0),_Sink(0),_BindingType(0),_IsUpdating(false){
-
-  }
-};
+  private:
+    Binding():_Source(0),_Sink(0),_BindingType(0),_IsUpdating(false){
+    }
+  };
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <config.h>
 #include <core/Object.h>
 #include <QObject>
@@ -19,7 +18,7 @@ namespace nspace{
     Plugin & _plugin;
     // reference to the plugin application
     PluginApplication & _pluginApplication;
-    // pointer to the plugin window 
+    // pointer to the plugin window
     PluginWindow * _pluginWindow;
     //pointer to the plugin's menu
     QMenu * _pluginMenu;
@@ -55,20 +54,20 @@ signals:
     void disabled(PluginContainer * container);
     // signal is emitted when the enabled state is changed
     void enabledChanged(PluginContainer * container, bool isEnabled);
-public slots:
-    // uninstalls this plugin from its plugin application
-    void uninstall();
-    // enables the plugin
-    void enable();
-    // disables the plugin
-    void disable();
-    // sets the plugin to enabled or disabled
-    void setEnabled(bool enabledDisabled);
-    // toggles the window of the plugin if it exists
-    void toggleWindow(bool show);
-    // called when plugin window is closed
-    void windowClosed();
-private:
+    public slots:
+      // uninstalls this plugin from its plugin application
+      void uninstall();
+      // enables the plugin
+      void enable();
+      // disables the plugin
+      void disable();
+      // sets the plugin to enabled or disabled
+      void setEnabled(bool enabledDisabled);
+      // toggles the window of the plugin if it exists
+      void toggleWindow(bool show);
+      // called when plugin window is closed
+      void windowClosed();
+  private:
     // enableDisable action
     QAction * _enableDisableAction;
     // toggles the windows visibility
