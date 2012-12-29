@@ -12,13 +12,13 @@ namespace nspace{
       const SourceCollectionType & source,
       const IndexType & startSource,
       const IndexType & endSource,
-      const IndexType & startTarget){
+      const IndexType & startTarget){        
         IndexType j=startTarget;
         IndexType i =startSource;
         typename CollectionItemType<DestinationCollectionType>::ItemType it;
         while(i < endSource){
-          collection::item(it,source,i);
-          collection::setItem(target,it,j);
+          nspace::collection::item(it,source,i);
+          nspace::collection::setItem(target,it,j);
           i++;
           j++;
         }

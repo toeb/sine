@@ -24,6 +24,6 @@ namespace nspace{
       }
       bool empty()const{return _tail==0;}
     };
-    SpecializeCollectionItemType(SimpleLinkedList<T>);
   }
+  SpecializeCollectionItemType(nspace::collection::SimpleLinkedList<T>);
 }

@@ -48,7 +48,7 @@ namespace nspace{
       }
       Enumerator<T> & operator++(){
         _implementation->moveNext();
-        retunr * this;
+        return * this;
       }
     private:
       std::shared_ptr<EnumeratorImplementation<T>> _implementation;
