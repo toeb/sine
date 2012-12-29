@@ -44,13 +44,6 @@
  */
 #define FIELDNAME(NAME) _ ## NAME
 
-/**
- * \brief A macro that defines comment.  this Macro used to make comments inside of macros which are pasted by the preprocessor.
- *        this is needed by documentation generators like doxygen
- *
- * \param CONTENT The content of the comment.
- */
-#define COMMENT(CONTENT) / ## *** ## /
 
 /**
  * \brief macro for get method (SomeName --> getSomeName)
@@ -77,7 +70,6 @@
  */
 #define FIELD(TYPE,NAME,_MODIFIER) \
 private: \
-  COMMENT(\ brief the field storing NAME) \
   MODIFIER(_MODIFIER) TYPE NAME;
 
 /**
@@ -89,7 +81,7 @@ private: \
  * \param NAME      The name.
  * \param _MODIFIER The modifier.
  */
-#define GET(TYPE,NAME,_MODIFIER) public: COMMENT(\ brief the get-accessor for NAME \ returns the value of NAME) MODIFIER(_MODIFIER) inline TYPE GETMETHOD(NAME) () const
+#define GET(TYPE,NAME,_MODIFIER) public:  MODIFIER(_MODIFIER) inline TYPE GETMETHOD(NAME) () const
 
 /**
  * \brief defines a setter method for a property name <NAME> of type <TYPE> which is public by
@@ -100,7 +92,7 @@ private: \
  * \param NAME      The name.
  * \param _MODIFIER The modifier.
  */
-#define SET(TYPE,NAME,_MODIFIER) public: COMMENT(\ brief the set-accessor for NAME \ param value the value that NAME is to be set to) MODIFIER(_MODIFIER) inline void SETMETHOD(NAME) (TYPE value)
+#define SET(TYPE,NAME,_MODIFIER) public: MODIFIER(_MODIFIER) inline void SETMETHOD(NAME) (TYPE value)
 
 //#define FIELD(MODIFIER, TYPE,NAME) MODIFIER: TYPE FIELDNAME(NAME);
 
