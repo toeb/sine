@@ -122,9 +122,30 @@ public:
      */
     void * createInstance() const;
 
+    /**
+     * \brief Property Id.
+     *
+     */
     BASIC_PROPERTY(TypeId, Id,public,,,);
+    
+    /**
+     * \brief Property CreateInstanceFunction.
+     *        may contain a function which creates an instance of the specified type
+     *
+     */
     BASIC_PROPERTY(std::function<void * ()>, CreateInstanceFunction, protected,,,);
+    
+    /**
+     * \brief Property Name.
+     *        the name of this type
+     *
+     */
     BASIC_PROPERTY(std::string,Name,public,,,);
+
+    /**
+     * \brief The Set of Members this type can reflect over
+     *
+     */
     PROPERTYSET(const MemberInfo *, Members,,);
 public:
 

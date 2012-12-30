@@ -2,8 +2,6 @@ set(source
 ./MiniGL.h
 ./MiniGL.cpp
 ./opengl.h
-./OpenGLRenderModule.h
-./OpenGLRenderModule.cpp
 ./GlViewport.h
 ./GlViewport.cpp
 ./Utility.h
