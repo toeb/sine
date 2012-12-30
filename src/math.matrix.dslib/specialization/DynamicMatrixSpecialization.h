@@ -3,6 +3,12 @@
 #include <cstring>
 #include <math.matrix.dslib/DynamicMatrix.h>
 namespace nspace{
+
+  template<typename T>
+  BeginSpecializeMatrixResize(matrix2::DynamicMatrix<T>)
+    return matrix.resize(rowcount,colcount);
+  EndSpecializeMatrixResize
+
   template<typename T>
   class MatrixAddition<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
   public:
@@ -121,29 +127,29 @@ namespace nspace{
     }
   };
 
-  template<typename T>
-  class MatrixAssign<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{
-  public:
-    static inline bool operation(matrix2::DynamicMatrix<T> &  result, const matrix2::DynamicMatrix<T> & val){
-      const int rows = val.rows();
-      const int cols = val.cols();
-      result.resize(rows,cols);
-      T * a = result.data();
-      const T * b = val.data();
-      const int size = rows*cols;
-      if(size < 20000){
-        memcpy(a,b,result.dataByteSize());
-        return true;
-      }
-
-#pragma omp parallel for
-      for(int i=0; i < size; i++){
-        a[i] = b[i];
-      }
-
+  template<typename T> 
+  BeginSpecializeMatrixAssign(matrix2::DynamicMatrix<T>,  matrix2::DynamicMatrix<T>)
+  {
+    const int rows = rhs.rows();
+    const int cols = rhs.cols();
+    lhs.resize(rows,cols);
+    T * a = lhs.data();
+    const T * b = rhs.data();
+    const int size = rows*cols;
+    if(size < 20000){
+      memcpy(a,b,lhs.dataByteSize());
       return true;
     }
-  };
+#pragma omp parallel for
+    for(int i=0; i < size; i++){
+      a[i] = b[i];
+    }
+
+    return true;    
+  }
+  EndSpecializeMatrixAssign;
+
+
 
   template<typename T>
   class MatrixExtractBlock<matrix2::DynamicMatrix<T>, matrix2::DynamicMatrix<T> >{

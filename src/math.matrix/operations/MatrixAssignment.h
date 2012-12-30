@@ -1,198 +1,85 @@
+/**
+ * Copyright (C) 2013 Tobias P. Becker
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the  rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * More information at: https://dslib.assembla.com/
+ *
+ */
 #pragma once
 #include <config.h>
-#include <math.matrix/operations/MatrixResize.h>
+
+#include <math.matrix/operations/MatrixIndexType.h>
 #include <math.matrix/operations/MatrixRowCount.h>
 #include <math.matrix/operations/MatrixColumnCount.h>
-#include <math.matrix/operations/MatrixElementAssignment.h>
-namespace nspace{
+#include <math.matrix/operations/MatrixDimensionCheck.h>
+#include <math.matrix/operations/MatrixCoefficientAccess.h>
 
-  
-/**
- * \brief Matrix index type.  has one typedef Type which contains the type used for MatrixType's Indices 
- *        the default is unsigned int
- */
-template<typename MatrixType>
-class MatrixIndexType{
-public:
-  typedef unsigned int Type;
-};
-
-#define DefineMatrixIndexType(MATRIXTYPE,INDEXTYPE) class MatrixIndexType<MATRIXTYPE>{public: typedef INDEXTYPE Type;};
-#define indexTypeOfType(MATRIXTYPE) typename MatrixIndexType<MATRIXTYPE>::Type
-#define indexTypeOfInstance(MATRIXINSTANCE) indexTypeOfType(typename decltype(MATRIXINSTANCE))
-
-
-
-
+namespace nspace {
   /**
-   * \brief Matrix coefficient type. template class which has a typedef Type specifing the coefficient type of a MatrixType
-   *        The default is double
+   * \brief Matrix assign.
+   *        the default implementation checks for dimension match and returns false if the dimensions do not match
+   *        then every coefficient is copied in a boxed for loop
    */
-  template<typename MatrixType>
-  class MatrixCoefficientType{
-  public:
-    typedef double Type;
-  };
+  template<typename LHS, typename RHS>
+  class OperationMatrixAssign {
+public:
 
-#define SpecializeMatrixCoefficientType(MATRIXTYPE,COEFFICIENTTYPE) class MatrixCoefficientType<MATRIXTYPE>{public:typedef COEFFICIENTTYPE Type;};
-#define coefficientTypeOfType(MATRIXTYPE) typename MatrixCoefficientType<MATRIXTYPE>::Type
-#define coefficientTypeOfInstance(MATRIXINSTANCE) typename coefficientTypeOfType( decltype(MATRIXINSTANCE))
-
-
-  //specialization for scalar types
-template<> SpecializeMatrixCoefficientType(double,double);
-template<> SpecializeMatrixCoefficientType(float,float);
-template<> SpecializeMatrixCoefficientType(int,int);
-template<> SpecializeMatrixCoefficientType(unsigned int,unsigned int);
-template<> SpecializeMatrixCoefficientType(char,char);
-template<> SpecializeMatrixCoefficientType(unsigned char,unsigned char);
-// specialization for 2d array
-template<typename T, size_t n, size_t m> SpecializeMatrixCoefficientType(T[n][m],T);
-
-template<typename MatrixType>
-  class OperationMatrixCoefficientAccess{
-  public:
-    // the next two lines do not work in vs2010
-     //typedef typename indexTypeOfType(MatrixType) Index;
-     // typedef typename coefficientTypeOfType(MatrixType) Coefficient;
-    static inline coefficientTypeOfType(MatrixType) & operation(MatrixType & matrix,const  indexTypeOfType(MatrixType) & i,const  indexTypeOfType(MatrixType) & j){
-      return matrix(i,j);
-    }  
-    
-    static inline const coefficientTypeOfType(MatrixType) & operation(const MatrixType & matrix,const  indexTypeOfType(MatrixType) &i, const indexTypeOfType(MatrixType) & j){
-      return matrix(i,j);
-    }  
-  };
-
-#define SpecializeCoefficientAccess(TYPE,ACCESSCODE)class OperationMatrixCoefficientAccess<TYPE>{\
-  public:\
-      coefficientTypeOfType(TYPE) & operation(TYPE & matrix, const indexTypeOfType(TYPE) & i,const  indexTypeOfType(TYPE) & j){return ACCESSCODE;}\
-      const coefficientTypeOfType(TYPE) & operation(const TYPE & matrix, const indexTypeOfType(TYPE) & i,const indexTypeOfType(TYPE) & j){return ACCESSCODE;}\
-  };
-
-  /*  template<> SpecializeCoefficientAccess(double,        matrix);
-    template<> SpecializeCoefficientAccess(float,         matrix);
-    template<> SpecializeCoefficientAccess(int,           matrix);
-    template<> SpecializeCoefficientAccess(unsigned int,  matrix);
-    template<> SpecializeCoefficientAccess(char,          matrix);
-    template<> SpecializeCoefficientAccess(unsigned char, matrix);*/
-
-    //specialization for const size 2d array
-//    template<typename T, size_t n, size_t m> SpecializeCoefficientAccess(T[n][m], matrix[i][j]);
-    
-
-  template<typename MatrixType>
-  auto coefficient(MatrixType & matrix, const indexTypeOfType(MatrixType) & i,const indexTypeOfType(MatrixType) & j)->coefficientTypeOfType(MatrixType)&{
-    return OperationMatrixElementAccess<MatrixType>::operation(matrix,i,j);
-  }
-  template<typename MatrixType>
-  auto coefficient(const MatrixType & matrix, const indexTypeOfType(MatrixType) & i,const indexTypeOfType(MatrixType) & j)->const coefficientTypeOfType(MatrixType)&{
-    return OperationMatrixElementAccess<MatrixType>::operation(matrix,i,j);
-  }
-
-  
-
-
-  template<typename MatA, typename MatB>
-  class MatrixAssign{
-  public:    
-    static inline bool operation(MatA &  result, const MatB & val){
-      uint rowCount , columnCount;
-      if(!OperationRowCount<MatB>::operation(rowCount,val))return false;
-      if(!OperationColumnCount<MatB>::operation(columnCount,val))return false;
-      
-      if(!MatrixResize<MatA>::operation(result,rowCount,columnCount,false))return false;
-
-      for(int i=0; i < rowCount; i++){
-        for(int j=0; j < columnCount; j++){
-          
-          result(i,j)=val(i,j);
+    /**
+     * \brief Operations.
+     *
+     * \param [in,out]  lhs The left hand side.
+     * \param rhs           The right hand side.
+     *
+     * \return  true if it succeeds, false if it fails.
+     */
+    static inline bool operation(LHS &  lhs, const RHS & rhs){
+      if(!dimensionsMatch(lhs,rhs)) return false;
+      indexTypeOfType(RHS) rowCount = rows(rhs);
+      indexTypeOfType(RHS) colCount = cols(rhs);
+      for(indexTypeOfType(RHS) i=0; i < rowCount; i++) {
+        for(indexTypeOfType(RHS) j=0; j < colCount; j++) {
+          coefficient(lhs,i,j) = coefficient(rhs,i,j);
         }
       }
       return true;
     }
   };
-  template<typename MatB>
-  class MatrixAssign<double,MatB>{
-  public:
-    static inline bool operation(double &  result, const MatB & val){
-      if(val.rows()!=1 || val.cols()!=1)return false;
-      result=val(0,0);
-      return true;
-    }
-  };
-  template<typename MatB>
-  class MatrixAssign<float,MatB>{
-  public:
-    static inline bool operation(float &  result, const MatB & val){
-      if(val.rows()!=1 || val.cols()!=1)return false;
-      result=val(0,0);
-      return true;
-    }
-  };
-  template<>
-  class MatrixAssign<double,double>{
-  public:
-    static inline bool operation(double &  result, const double & value){
-      result = value;
-      return true;
-    }
-  };
-  template<>
-  class MatrixAssign<float,float>{
-  public:
-    static inline bool operation(float &  result, const float & value){
-      result = value;
-      return true;
-    }
-  };
-  /*
-  template<typename TAssignee, typename TValue>
-  class OperationAssignMatrix{
-  public:
-  static inline bool operation(TAssignee & assignee,const TValue & value){
-  assignee = value;
-  return true;
-  }
-  };
 
-  template<typename TValue>
-  class OperationAssignMatrix<double,TValue>{
-  public:
-  static inline bool operation(double & assignee,const TValue & value){
-  if(value.rows()>1||value.cols()>1)return false;
-  assignee = value(0,0);
-  return true;
+  /**
+   * \brief Assign matrix. operation for assigning matrices
+   *
+   * \tparam  typename LHS  Type of the typename left hand side.
+   * \tparam  typename RHS  Type of the typename right hand side.
+   * \param [in,out]  lhs The left hand side.
+   * \param rhs           The right hand side.
+   *
+   * \return  true if it succeeds, false if it fails.
+   */
+  template<typename LHS,typename RHS> inline bool assignMatrix(LHS & lhs, const RHS & rhs){
+    return OperationMatrixAssign<LHS,RHS>::operation(lhs,rhs);
   }
-  };
 
-  template<>
-  class OperationAssignMatrix<double,double>{
-  public:
-  static inline bool operation(double & assignee,const double & value){
-  assignee = value;
-  return true;
-  }
-  };
+/**
+ * \brief A macro that specializes the OperationMatrixAssign for LHS and RHS types.
+ *        be sure to return true if the assignement was successfull . else false is returned by default
+ *        this only works for types that do not contains commas
+ *
+ * \param LHS             The left hand side matrix.
+ * \param RHS             The right hand side matrix.
+ * \param ASSIGNMENTCODE  The assignmentcode.
+ */
+#define BeginSpecializeMatrixAssign(LHS,RHS) class OperationMatrixAssign<LHS,RHS>{public: static inline bool operation(LHS & lhs, const RHS &rhs)
+#define EndSpecializeMatrixAssign };
 
-  template<>
-  class OperationAssignMatrix<float,float>{
-  public:
-  static inline bool operation(float & assignee,const float & value){
-  assignee = value;
-  return true;
-  }
-  };
-
-  template<typename TValue>
-  class OperationAssignMatrix<float,TValue>{
-  public:
-  static inline bool operation(float & assignee,const TValue & value){
-  if(value.rows()>1||value.cols()>1)return false;
-  assignee = value(0,0);
-  return true;
-  }
-  };
-
-  */
 }

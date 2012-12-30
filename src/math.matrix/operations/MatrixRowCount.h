@@ -1,30 +1,84 @@
+/**
+ * Copyright (C) 2013 Tobias P. Becker
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the  rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * More information at: https://dslib.assembla.com/
+ *
+ */
 #pragma once
 #include <config.h>
-namespace nspace{
+#include <math.matrix/operations/MatrixIndexType.h>
+namespace nspace {
+
+  /**
+   * \brief Operation row count.  a template class returning the rowcount of a matrix of type MatrixType
+   *        the default implementation returns MatrixType::rows();
+   *        matrix types should specialize this class
+   */
   template<typename MatrixType>
-  class OperationRowCount{
-  public:
-    static inline bool operation(uint & rowCount, const MatrixType & matrix){
-      rowCount = matrix.rows();
-      return true;
-    }
-  };
-  //specialization
-  template<>
-  class OperationRowCount<double>{
-  public:
-    static inline bool operation(uint & rowCount, const double & matrix){
-      rowCount = 1;
-      return true;
+  class OperationRowCount {
+public:
+
+    /**
+     * \brief operation for getting the rowcount of a matrix
+     *
+     * \param matrix  the matrix of which the rowcoutn is to be queried
+     *
+     * \return  the rowcount.
+     */
+    static inline typename indexTypeOfType(MatrixType) operation(const MatrixType &matrix){
+      return matrix.rows();
     }
   };
 
-  template<>
-  class OperationRowCount<float>{
-  public:
-    static inline bool operation(uint & rowCount, const float & matrix){
-      rowCount = 1;
+  /**
+   * \brief A macro that is replaced by the specialization class of OperationRowCount.
+   *        Remeber to add template<> or template<...> before macros for complete or partial specialization
+   *
+   * \param TYPE          The type for which to specialize.
+   * \param ROWCOUNTCODE  The rowcountcode.
+   */
+  #define SpecializeRowCount(TYPE, ROWCOUNTCODE) class OperationRowCount<TYPE>{public: static inline indexTypeOfType(TYPE) operation(const TYPE &matrix){return ROWCOUNTCODE; }};
+
+  template<typename MatrixType> auto rows(const MatrixType & matrix)->typename indexTypeOfType(MatrixType){
+    return OperationRowCount<MatrixType>::operation(matrix);
+  }
+
+  //specialization
+
+  //2d array
+  template<typename T, size_t n, size_t m>
+  class OperationRowCount<T[n][m]>{
+public:
+    static inline typename indexTypeOfType(T[n][m]) operation(const T(&matrix)[n][m]){
+      rowCount = n;
       return true;
     }
   };
+  //1d array  - a column vector 
+  template<typename T, size_t n>
+  class OperationRowCount<T[n]>{
+public:
+    static inline typename indexTypeOfType(T[n]) operation( const T(&matrix)[n]){
+      return n;
+    }
+  };
+  // scalars
+  template<> SpecializeRowCount(double,1);
+  template<> SpecializeRowCount(float,1);
+  template<> SpecializeRowCount(int,1);
+  template<> SpecializeRowCount(unsigned int,1);
+  template<> SpecializeRowCount(char,1);
+  template<> SpecializeRowCount(unsigned char,1);
 }

@@ -112,8 +112,7 @@ namespace nspace{
     }
     template<typename T, int RowCount, int ColumnCount>
     StaticMatrix<T,RowCount,ColumnCount> & StaticMatrix<T,RowCount,ColumnCount>::operator=(const StaticMatrix<T,RowCount,ColumnCount> & orig ){
-      MatrixAssign<StaticMatrix<T,RowCount,ColumnCount>,StaticMatrix<T,RowCount,ColumnCount> >::operation(*this,orig);
-      //memcpy(_data,orig._data,dataByteSize());
+      assignMatrix(*this,orig);
       return *this;
     }
     template<typename T, int RowCount, int ColumnCount>

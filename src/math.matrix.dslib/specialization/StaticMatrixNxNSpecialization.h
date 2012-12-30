@@ -162,31 +162,33 @@ namespace nspace{
       c[2] = a[2]-b[2];
     }
   };
-  template<typename T, int rows, int cols>
-  class MatrixAssign<matrix2::StaticMatrix<T,rows,cols>, matrix2::StaticMatrix<T,rows,cols> >{
-  public:
-    static inline void operation(matrix2::StaticMatrix<T,rows,cols> & aMat, const matrix2::StaticMatrix<T,rows,cols> & bMat)  {
-      memcpy(aMat.data(),bMat.data(),aMat.dataByteSize());
+  
+  
+  template<typename T, int rows, int cols>  
+  class OperationMatrixAssign<matrix2::StaticMatrix<T,rows,cols>,matrix2::StaticMatrix<T,rows,cols> >{
+  public:    
+    static inline bool operation(matrix2::StaticMatrix<T,rows,cols> &  lhs, const matrix2::StaticMatrix<T,rows,cols> & rhs){
+      memcpy(lhs.data(),rhs.data(),lhs.dataByteSize());     
+      return true;
     }
   };
 
-  template<typename T>
-  class MatrixAssign<matrix2::StaticMatrix<T,3,1>, matrix2::StaticMatrix<T,3,1> >{
-  public:
-    static inline void operation(matrix2::StaticMatrix<T,3,1> & aMat, const matrix2::StaticMatrix<T,3,1> & bMat)  {
-      Real * a = aMat.data();
-      const Real * b = bMat.data();
-      a[0] = b[0];
-      a[1] = b[1];
-      a[2] = b[2];
+  
+  template<typename T>  
+  class OperationMatrixAssign<matrix2::StaticMatrix<T,3,1> ,matrix2::StaticMatrix<T,3,1> >{
+  public:    
+    static inline bool operation(matrix2::StaticMatrix<T,3,1> &  lhs, const matrix2::StaticMatrix<T,3,1> & rhs){
+      memcpy(lhs.data(),rhs.data(),lhs.dataByteSize());     
+      return true;
     }
   };
-  template<typename T>
-  class MatrixAssign<matrix2::StaticMatrix<T,3,3>, matrix2::StaticMatrix<T,3,3> >{
-  public:
-    static inline void operation(matrix2::StaticMatrix<T,3,3> & aMat, const matrix2::StaticMatrix<T,3,3> & bMat)  {
-      Real * a = aMat.data();
-      const Real * b = bMat.data();
+  
+  template<typename T>  
+  class OperationMatrixAssign<matrix2::StaticMatrix<T,3,3> , matrix2::StaticMatrix<T,3,3>>{
+  public:    
+    static inline bool operation(matrix2::StaticMatrix<T,3,3> &  lhs, const matrix2::StaticMatrix<T,3,3> & rhs){      
+      Real * a = lhs.data();
+      const Real * b = rhs.data();
       a[0]=b[0];
       a[1]=b[1];
       a[2]=b[2];
@@ -196,7 +198,9 @@ namespace nspace{
       a[6]=b[6];
       a[7]=b[7];
       a[8]=b[8];
+      return true;
     }
   };
+
 #endif
 }

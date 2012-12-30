@@ -23,7 +23,7 @@
 #include <math.matrix/operations/MatrixMultiplication.h>
 #include <math.matrix/operations/MatrixAllocate.h>
 #include <math.matrix/operations/MatrixDeallocate.h>
-#include <math.matrix/operations/MatrixAccessElement.h>
+#include <math.matrix/operations/MatrixCoefficientAccess.h>
 #include <math.matrix/operations/MatrixScalarDivisionInPlace.h>
 #include <math.matrix/operations/MatrixScalarDivision.h>
 #include <math.matrix/operations/MatrixScalarMultiplicationInPlace.h>
@@ -99,10 +99,6 @@ namespace nspace{
           VectorCrossProduct<Vec3C,Vec3A,Vec3B>::operation(c,a,b);
         }
 
-        template<typename Mat>
-        inline bool resize(Mat & mat, uint rows, uint cols, bool setToZero=false){
-          return MatrixResize<Mat>::operation(mat,rows,cols,setToZero);
-        }
 
         template<typename MatType,typename BlockType>
         inline void setBlock(MatType & target, const BlockType & source, uint rowoffset, uint coloffset){
@@ -216,25 +212,14 @@ namespace nspace{
 
         template<typename TAssignee, typename TValue>
         inline bool assignMatrix(TAssignee & assignee, const TValue & value){
-          return MatrixAssign<TAssignee,TValue>::operation(assignee,value);
+          return nspace::assignMatrix(assignee,value);
         }
         template<typename TAssignee, typename TValue>
         inline bool assignElement(TAssignee & assignee, uint i, uint j, const TValue & value){
           return MatrixElementAssignment<TAssignee,TValue>::operation(assignee,i,j,value);
         }
 
-        template<typename MatrixType>
-        inline uint rowCount(const MatrixType & matrix){
-          uint result;
-          OperationRowCount<MatrixType>::operation(result,matrix);
-          return result;
-        }
-        template<typename MatrixType>
-        inline uint columnCount(const MatrixType & matrix){
-          uint result;
-          OperationColumnCount<MatrixType>::operation(result,matrix);
-          return result;
-        }
+        
       }
     }
   }

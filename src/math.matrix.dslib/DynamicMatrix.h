@@ -106,12 +106,12 @@ namespace nspace{
     }
     template<typename T>
     inline void DynamicMatrix<T>::assign(const DynamicMatrix<T> & mat){
-      MatrixAssign<DynamicMatrix<T>,DynamicMatrix<T> >::operation(*this,mat);
+      assignMatrix(*this,mat);
     }
     template<typename T>
     template<typename SourceType>
     inline void DynamicMatrix<T>::assign(const DynamicMatrix<SourceType> & mat){
-      MatrixAssign<DynamicMatrix<T>,DynamicMatrix<SourceType> >::operation(*this,mat);
+      assignMatrix(*this,mat);
     }
     template<typename T>
     template<typename TargetType>
