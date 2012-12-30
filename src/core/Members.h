@@ -16,6 +16,12 @@
  * More information at: https://dslib.assembla.com/
  *
  */
+
+/**
+ * \file  src\core\Members.h
+ *
+ * \brief Declares Macros for defining standard Members.
+ */
 #pragma once
 
 #include <config.h>
@@ -182,7 +188,7 @@ private: \
 #define READONLY_REFERENCE(MODIFIER, TYPE,NAME) MODIFIER : inline const TYPE &NAME() const {return FIELDNAME(NAME); }
 
 /**
- * \brief A macro that defines reference.
+ * \brief A macro that defines a reference.
  *
  * \param MODIFIER  The modifier.
  * \param TYPE      The type.
@@ -191,13 +197,22 @@ private: \
 #define REFERENCE(MODIFIER,TYPE,NAME) MODIFIER : inline TYPE &NAME(){return FIELDNAME(NAME); }
 
 /**
+ * \brief A macro that defines the modifiable and readonly references.
+ *
+ * \param MODIFIER  The modifier.
+ * \param TYPE      The type.
+ * \param NAME      The name.
+ */
+#define REFERENCES(MODIFIER,TYPE,NAME) REFERENCE(MODIFIER, TYPE,NAME); READONLY_REFERENCE(MODIFIER,TYPE,NAME);
+
+/**
  * \brief A macro that defines field reference.
  *
  * \param MODIFIER  The modifier.
  * \param TYPE      The type.
  * \param NAME      The name.
  */
-#define FIELD_REFERENCE(MODIFIER,TYPE,NAME) FIELD(TYPE,FIELDNAME(NAME),private) READONLY_REFERENCE(MODIFIER,TYPE,NAME); REFERENCE(MODIFIER, TYPE,NAME);
+#define FIELD_REFERENCE(MODIFIER,TYPE,NAME) FIELD(TYPE,FIELDNAME(NAME),private) REFERENCES(MODIFIER,TYPE,NAME);
 
 /**
  * \brief A macro that defines public field reference.

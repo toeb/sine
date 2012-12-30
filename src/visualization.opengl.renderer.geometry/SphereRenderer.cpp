@@ -5,14 +5,17 @@
 
 using namespace nspace;
 
+SphereRenderer::SphereRenderer():_LatitudeSegments(20),_LongitudeSegments(20){
+  setColor(Color("green"));
+  setName("SphereRenderer");
+}
 
 void SphereRenderer::render(){
-  Material material("Silver");
-  foreachElement([&material](Sphere * sphere){
+  foreachElement([this](Sphere * sphere){
     glPushMatrix();
-    glMaterial(material);
+    glMaterial(getMaterial());
     glTransformation(sphere->coordinates());
-    glSphere(sphere->radius(),20,20);
+    glSphere(sphere->radius(),getLatitudeSegments(),getLongitudeSegments());
     glPopMatrix();
   });
 }
