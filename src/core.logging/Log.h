@@ -51,7 +51,7 @@ namespace nspace{
   // public function which returns the defaul log
   Log & getLog();
 
-  class LogEntry : public virtual PropertyChangingObject{
+  class LogEntry : public  PropertyChangingObject{
     REFLECTABLE_OBJECT(LogEntry);
     PROPERTY(std::string, Message){}
     PROPERTY(int, SourceLineNumber){}

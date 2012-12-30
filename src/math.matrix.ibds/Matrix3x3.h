@@ -59,6 +59,7 @@ namespace nspace{
       ret(0,0)=value;
       ret(1,1)=value;
       ret(2,2)=value;
+      return ret;
     }
     static Matrix3x3 Diagonal(const Vector3D & value){
       Matrix3x3 ret;
@@ -66,6 +67,7 @@ namespace nspace{
       ret(0,0)=value(0);
       ret(1,1)=value(1);
       ret(2,2)=value(2);
+      return ret;
     }
     Matrix3x3(Real a11, Real a22, Real a33);
     Matrix3x3(const Matrix3x3 & rhs);

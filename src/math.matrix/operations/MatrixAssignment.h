@@ -45,10 +45,10 @@ public:
      */
     static inline bool operation(LHS &  lhs, const RHS & rhs){
       if(!dimensionsMatch(lhs,rhs)) return false;
-      indexTypeOfType(RHS) rowCount = rows(rhs);
-      indexTypeOfType(RHS) colCount = cols(rhs);
-      for(indexTypeOfType(RHS) i=0; i < rowCount; i++) {
-        for(indexTypeOfType(RHS) j=0; j < colCount; j++) {
+      typename indexTypeOfType(RHS) rowCount = rows(rhs);
+      typename indexTypeOfType(RHS) colCount = cols(rhs);
+      for(typename indexTypeOfType(RHS) i=0; i < rowCount; i++) {
+        for(typename indexTypeOfType(RHS) j=0; j < colCount; j++) {
           coefficient(lhs,i,j) = coefficient(rhs,i,j);
         }
       }
@@ -59,8 +59,8 @@ public:
   /**
    * \brief Assign matrix. operation for assigning matrices
    *
-   * \tparam  typename LHS  Type of the typename left hand side.
-   * \tparam  typename RHS  Type of the typename right hand side.
+   * \tparam  typename LHS  Type of the left hand side.
+   * \tparam  typename RHS  Type of the right hand side.
    * \param [in,out]  lhs The left hand side.
    * \param rhs           The right hand side.
    *

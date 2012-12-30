@@ -35,6 +35,7 @@ namespace nspace{
   template<typename T, typename SizeType> OPERATION_SPECIALIZATION(CollectionSize)<Array<T>,SizeType >{
     SPECIALIZATION(SizeType & thesize, const Array<T> & arr){
       thesize = arr.size;
+      return true;
     }
   };
 

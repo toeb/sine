@@ -62,8 +62,7 @@ public:
   class OperationRowCount<T[n][m]>{
 public:
     static inline typename indexTypeOfType(T[n][m]) operation(const T(&matrix)[n][m]){
-      rowCount = n;
-      return true;
+      return n;
     }
   };
   //1d array  - a column vector 

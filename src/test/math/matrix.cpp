@@ -80,10 +80,10 @@ public:
   ~MatrixFunction(){
     
   }
-  inline auto operator()(size_t i, size_t j)->typename decltype(_function(i,j))&&{
+  inline auto operator()(size_t i, size_t j)-> decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
     return std::move(_function(i,j));
   }
-  inline auto operator()(size_t i, size_t j)const->const typename decltype(_function(i,j))&&{
+  inline auto operator()(size_t i, size_t j)const->const decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
     return std::move(_function(i,j));
   }
   MatrixFunction(size_t rows, size_t cols, BinaryFunction   function):_rows(rows),_cols(cols),_function(function){
