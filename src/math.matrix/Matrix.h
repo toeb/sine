@@ -43,7 +43,7 @@ namespace nspace
   template<typename MatrixType>
   Matrix<T,IndexType,SizeType>::operator MatrixType()const{
     MatrixType result;
-    MatrixAssign<MatrixType,Matrix<T>>::operation(result,*this);
+    assignMatrix(result,*this);
     return result;
   }
 

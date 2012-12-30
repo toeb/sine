@@ -43,7 +43,7 @@ public:
     /**
      * \brief virtual Destructor.
      */
-    virtual ~Object();
+    /*virtual ~Object(){}*/
 
     /**
      * \brief toString method converts this object to a string representation (should be

@@ -38,7 +38,6 @@ void Object::toString(std::ostream & out) const {
   out << "<object typeid=\""<<getType()<<"\" typename=\""<< getType().getName() << "\"/>";
 }
 Object::Object(){}
-Object::~Object(){}
 namespace nspace {
   std::ostream & operator << (std::ostream & out, const Object & obj){
     obj.toString(out);
