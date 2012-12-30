@@ -1,6 +1,9 @@
 #pragma once
 #include <config.h>
 namespace nspace{
+
+  
+
   template<typename TAssignee, typename TValue>
   class MatrixElementAssignment{
   public:
