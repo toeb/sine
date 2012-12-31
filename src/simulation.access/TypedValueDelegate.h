@@ -6,8 +6,8 @@ namespace nspace{
   class TypedValueDelegate : public IValue{
     TYPED_OBJECT(TypedValueDelegate)
   private:
-    std::function<void (const T & )> _setter;
     std::function<T ()> _getter;
+    std::function<void (const T & )> _setter;
   public:
     TypedValueDelegate(
       std::function<T  ()> getter,

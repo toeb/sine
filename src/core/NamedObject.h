@@ -18,7 +18,7 @@ namespace nspace{
     // default constructor
     NamedObject();
     // default destructor
-    ~NamedObject();
+    virtual ~NamedObject();
     // returns the name of this object
     const std::string & name()const;
     // returns true iff the object has a name
