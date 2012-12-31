@@ -56,6 +56,20 @@ public:
     return OperationMatrixResize<MatrixType>::operation(matrix,newRowCount,newColCount);
   }
 
+  /**
+   * \brief Resizes the matrix lhs to the same dimension as the matrix rhs.
+   *
+   * \tparam  typename MatrixTypeA  Type of the typename matrix type a.
+   * \tparam  typename MatrixTypeB  Type of the typename matrix type b.
+   * \param [in,out]  lhs The left hand side.
+   * \param rhs           The right hand side.
+   *
+   * \return  true if it succeeds, false if it fails.
+   */
+  template<typename MatrixTypeA, typename MatrixTypeB> inline bool resize(MatrixTypeA & lhs, const MatrixTypeB & rhs){
+    return resize(lhs,rows(rhs),cols(rhs));
+  }
+
 /**
  * \brief A macro that defines begin specialize matrix resize. the code for resizeing the matrix "matrix"
  *        to have "rowcount" and "colcount" dimensions needs to be written directly afterwards

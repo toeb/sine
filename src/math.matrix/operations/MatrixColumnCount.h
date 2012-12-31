@@ -57,6 +57,8 @@ public:
 #define SpecializeColumnCount(TYPE, COLCOUNTCODE) class OperationColumnCount<TYPE>{public: static inline  indexTypeOfType(TYPE) operation(const TYPE &matrix){return COLCOUNTCODE; }};
 
 
+
+
   // specializations
 
   //2d array
@@ -79,10 +81,10 @@ public:
     }
   };
   // scalar types
-  template<>SpecializeColumnCount(double,1);
-  template<>SpecializeColumnCount(float,1);
-  template<>SpecializeColumnCount(int,1);
-  template<>SpecializeColumnCount(unsigned int,1);
-  template<>SpecializeColumnCount(char,1);
-  template<>SpecializeColumnCount(unsigned char,1);
+  template<>  SpecializeColumnCount(double,1);
+  template<> SpecializeColumnCount(float,1);
+  template<> SpecializeColumnCount(int,1);
+  template<> SpecializeColumnCount(unsigned int,1);
+  template<> SpecializeColumnCount(char,1);
+  template<> SpecializeColumnCount(unsigned char,1);
 }

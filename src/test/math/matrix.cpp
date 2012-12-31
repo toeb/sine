@@ -4,9 +4,32 @@
 #include <core.logging.h>
 #include <core.task.h>
 #include <core/Serialization.h>
+#include <math.matrix.h>
 namespace nspace{
-
   
+
+  TEST(MatrixAssign2, Func){
+    Vector3D vec;
+    assignMatrixFunction(vec,[](int i, int j){return  3.0-i;});
+    for(int i=0; i < 3; i++){
+      CHECK(3-i==vec(i));
+    }
+  }
+
+  TEST(MatrixAssign, Func){
+    MatrixNxM matrix(4,4);    
+    assignMatrixBlindly(matrix,std::function<double(size_t,size_t)>([](size_t i, size_t j){return i==j?1.0:0.0;}));
+    for(int i=0; i < 4; i++){
+      for(int j=0; j < 4;j++){
+        if(i==j){
+          CHECK(matrix(i,j)==1.0);
+        }else{
+          CHECK(matrix(i,j)==0.0);
+        }
+      }
+    }
+
+  }
 
   TEST(MatrixResize4, staticMatrix){
     Matrix3x3 mat;

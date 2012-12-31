@@ -13,7 +13,9 @@ set(source
  ./types.cpp 
  ./Index.h
  ./CMakeLists.txt 
+ ./functional/MatrixFunction.h
  ../config.h
+ ../include/math.matrix.h
 )
 source_group("" FILES ${source})
 

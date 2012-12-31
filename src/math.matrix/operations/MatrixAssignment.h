@@ -36,7 +36,12 @@ namespace nspace {
 public:
 
     /**
-     * \brief Operations.
+     * \brief Operation  copies all coefficients from rhs to lhs.  disregards any dimension mismatch
+     *        if the rowcount of rhs is 0 then operaiton tries to get the ros from the left hand side
+     *        same for colcount.  the reasoning is as follows:  there are matrices where the dimensions are unknown
+     *        for example lazy matrices were every element is calculated only when needed: f: N xN -> B.  
+     *        in such a case the left hand side's dimension is used for defining the dimension
+     *        @TODO: Use Row and Columntraits for correct behaviour
      *
      * \param [in,out]  lhs The left hand side.
      * \param rhs           The right hand side.
@@ -44,9 +49,10 @@ public:
      * \return  true if it succeeds, false if it fails.
      */
     static inline bool operation(LHS &  lhs, const RHS & rhs){
-      if(!dimensionsMatch(lhs,rhs)) return false;
       typename indexTypeOfType(RHS) rowCount = rows(rhs);
+      if(!rowCount)rowCount = rows(lhs);
       typename indexTypeOfType(RHS) colCount = cols(rhs);
+      if(!colCount)colCount = cols(lhs);
       for(typename indexTypeOfType(RHS) i=0; i < rowCount; i++) {
         for(typename indexTypeOfType(RHS) j=0; j < colCount; j++) {
           coefficient(lhs,i,j) = coefficient(rhs,i,j);
@@ -57,6 +63,20 @@ public:
   };
 
   /**
+   * \brief Blind assign matrix. assigns matrix lhs:=rhs.  disregards any dimension mismatches
+   *
+   * \tparam  typename LHS  Type of the  left hand side.
+   * \tparam  typename RHS  Type of the  right hand side.
+   * \param [in,out]  lhs The left hand side.
+   * \param rhs           The right hand side.
+   *
+   * \return  true if it succeeds, false if it fails.
+   */
+  template<typename LHS,typename RHS> inline bool assignMatrixBlindly(LHS & lhs, const RHS & rhs){
+    return OperationMatrixAssign<LHS,RHS>::operation(lhs,rhs);
+  }
+
+  /**
    * \brief Assign matrix. operation for assigning matrices
    *
    * \tparam  typename LHS  Type of the left hand side.
@@ -64,11 +84,32 @@ public:
    * \param [in,out]  lhs The left hand side.
    * \param rhs           The right hand side.
    *
-   * \return  true if it succeeds, false if it fails.
+   * \return  true if it succeeds, false if it fails (e.g. The dimensions mismatch).
    */
   template<typename LHS,typename RHS> inline bool assignMatrix(LHS & lhs, const RHS & rhs){
-    return OperationMatrixAssign<LHS,RHS>::operation(lhs,rhs);
+    if(!dimensionsMatch(lhs,rhs))return false;
+    assignMatrixBlindly(lhs,rhs);
   }
+
+  /**
+   * \brief Force assign matrix. assigns lhs := rhs
+   *        if the left hand side matrix does not have the same dimensions as rhs it is resized.
+   *        if anything fails along the way false is returned
+   *
+   * \tparam  typename LHS  Type of the typename left hand side.
+   * \tparam  typename RHS  Type of the typename right hand side.
+   * \param [in,out]  lhs The left hand side.
+   * \param rhs           The right hand side.
+   *
+   * \return  true if it succeeds, false if it fails.
+   */
+  template<typename LHS,typename RHS> inline bool assingMatrixForced(LHS & lhs, const RHS & rhs){
+    if(!resize(lhs,rhs))return false;
+    return assignMatrixBlindly(lhs,rhs);
+  }
+
+  
+
 
 /**
  * \brief A macro that specializes the OperationMatrixAssign for LHS and RHS types.
