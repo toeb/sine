@@ -5,6 +5,7 @@
 #include <math.matrix/MatrixOperations.h>
 #include <math.matrix/VectorOperations.h>
 
+
 namespace nspace{
   namespace matrix2{
     template<typename T>
@@ -102,16 +103,16 @@ namespace nspace{
     template<typename T>
     inline void DynamicMatrix<T>::setZero(){
       MatrixSetConstant<T, DynamicMatrix<T> >::operation(*this,0.0);
-      //memset(_data,0,dataByteSize());
+
     }
     template<typename T>
     inline void DynamicMatrix<T>::assign(const DynamicMatrix<T> & mat){
-      assignMatrix(*this,mat);
+      assignMatrixForced(*this,mat);
     }
     template<typename T>
     template<typename SourceType>
     inline void DynamicMatrix<T>::assign(const DynamicMatrix<SourceType> & mat){
-      assignMatrix(*this,mat);
+      assignMatrixForced(*this,mat);
     }
     template<typename T>
     template<typename TargetType>

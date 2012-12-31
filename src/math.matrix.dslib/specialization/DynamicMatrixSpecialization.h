@@ -26,7 +26,7 @@ namespace nspace{
       const T* b = bMat.data();
       T* c=sumMat.data();
 
-#pragma omp parallel for
+//#pragma omp parallel for
       for(int i=0; i < size; ++i){
         c[i]=a[i]+b[i];
       }
@@ -49,7 +49,7 @@ namespace nspace{
       const T* b = bMat.data();
       T* c=sumMat.data();
 
-#pragma omp parallel for
+//#pragma omp parallel for
       for(int i=0; i < size; ++i){
         c[i]=a[i]-b[i];
       }
@@ -74,7 +74,7 @@ namespace nspace{
         return ;
       }
       //go parallel
-#pragma omp parallel for
+//#pragma omp parallel for
       for(int i=0; i < s; i++){
         t[i]=value;
       }
@@ -97,7 +97,7 @@ namespace nspace{
         return ;
       }
       //go parallel
-#pragma omp parallel for
+//#pragma omp parallel for
       for(int i=0; i < s; i++){
         f(t[i], i/cols, i%cols);
       }
@@ -120,7 +120,7 @@ namespace nspace{
         return ;
       }
       //go parallel
-#pragma omp parallel for
+//#pragma omp parallel for
       for(int i=0; i < s; i++){
         c[i]=b*a[i];
       }
@@ -140,7 +140,7 @@ namespace nspace{
       memcpy(a,b,lhs.dataByteSize());
       return true;
     }
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i < size; i++){
       a[i] = b[i];
     }

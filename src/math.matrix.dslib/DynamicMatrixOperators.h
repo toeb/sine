@@ -7,7 +7,7 @@ namespace nspace{
     template<typename T>
     inline DynamicMatrix<T>  operator * (const DynamicMatrix<T> & a, const DynamicMatrix<T> & b){
       DynamicMatrix<T> result;
-      result.resize(a.rows(),b.cols());
+      resize(result,a.rows(),b.cols());
       MatrixMultiplication<T,DynamicMatrix<T>,DynamicMatrix<T>,DynamicMatrix<T>>::operation(result,a,b);
       return result;
     }
@@ -19,20 +19,21 @@ namespace nspace{
     template<typename T>
     inline DynamicMatrix<T>  operator * (const DynamicMatrix<T> & a, const T & b){
       DynamicMatrix<T> result;
+      resize(result,a);
       MatrixScalarMultiplication<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(result,a,b);
       return result;
     }
     template<typename T>
     inline DynamicMatrix<T>  operator / (const DynamicMatrix<T> & a, const T & b){
       DynamicMatrix<T> result;
-      result.resize(a.rows(),a.cols());
+      resize(result,a);
       MatrixScalarDivisionInPlace<DynamicMatrix<T>,DynamicMatrix<T>, T>::operation(result,a,b);
       return result;
     }
     template<typename T>
     inline DynamicMatrix<T>  operator * (const T & b,const DynamicMatrix<T> & a){
       DynamicMatrix<T> result;
-      result.resize(a.rows(),a.cols());
+      resize(result,a);
       MatrixScalarMultiplication<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(result,a,b);
       return result;
     }
@@ -44,12 +45,14 @@ namespace nspace{
     template<typename T>
     inline DynamicMatrix<T>  operator + (const DynamicMatrix<T> & a, const DynamicMatrix<T> & b){
       DynamicMatrix<T> result;
+      resize(result,a);
       MatrixAddition<DynamicMatrix<T>,DynamicMatrix<T>, DynamicMatrix<T> >::operation(result,a,b);
       return result;
     }
     template<typename T>
     inline DynamicMatrix<T>  operator - (const DynamicMatrix<T> & a, const DynamicMatrix<T> & b){
       DynamicMatrix<T> result;
+      resize(result,a);
       MatrixSubtraction<DynamicMatrix<T>,DynamicMatrix<T>,DynamicMatrix<T> >::operation(result,a,b);
       return result;
     }
@@ -60,13 +63,14 @@ namespace nspace{
     }
 
     template<typename T>
-    inline DynamicMatrix<T> & operator += (DynamicMatrix<T> & a, const T& b){
+    inline DynamicMatrix<T> & operator += (DynamicMatrix<T> & a, const T& b){      
       MatrixAdditionConstant<DynamicMatrix<T>,DynamicMatrix<T>, T>::operation(a,a,b);
       return a;
     }
     template<typename T>
     inline DynamicMatrix<T> operator +(const DynamicMatrix<T> & a, const T & b){
       DynamicMatrix<T> result;
+      resize(result,a);
       MatrixAdditionConstant<DynamicMatrix<T>,DynamicMatrix<T>, T>::operation(result,a,b);
       return result;
     }
@@ -85,6 +89,7 @@ namespace nspace{
     template<typename T>
     inline DynamicMatrix<T>  operator -(const DynamicMatrix<T> & a, const T & b){
       DynamicMatrix<T> c;
+      resize(c,a);
       MatrixSubtractionConstant<DynamicMatrix<T>,DynamicMatrix<T>,T>::operation(c,a,b);
       return c;
     }

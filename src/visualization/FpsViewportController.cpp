@@ -105,6 +105,8 @@ void FpsViewportController::timeout(Time timePassed,Time time){
   if(handler->isKeyDown(KEY_CTRL))body.velocity() += normal * speed;
   if(handler->isKeyDown(KEY_SPACE))body.velocity() -= normal * speed;
 
+ // logInfo(body.velocity());
+
   eulerIntegrator.setUpperBound(eulerIntegrator.getUpperBound()+timePassed);
   eulerIntegrator.integrate();
 }

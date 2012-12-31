@@ -103,7 +103,7 @@ public:
    *
    * \return  true if it succeeds, false if it fails.
    */
-  template<typename LHS,typename RHS> inline bool assingMatrixForced(LHS & lhs, const RHS & rhs){
+  template<typename LHS,typename RHS> inline bool assignMatrixForced(LHS & lhs, const RHS & rhs){
     if(!resize(lhs,rhs))return false;
     return assignMatrixBlindly(lhs,rhs);
   }
