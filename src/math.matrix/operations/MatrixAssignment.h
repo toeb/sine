@@ -88,7 +88,7 @@ public:
    */
   template<typename LHS,typename RHS> inline bool assignMatrix(LHS & lhs, const RHS & rhs){
     if(!dimensionsMatch(lhs,rhs))return false;
-    assignMatrixBlindly(lhs,rhs);
+    return assignMatrixBlindly(lhs,rhs);
   }
 
   /**
