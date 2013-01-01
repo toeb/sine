@@ -8,9 +8,15 @@
 #include <math.matrix/operations/MatrixMultiplication.h>
 #include <math.matrix/operations/MatrixSubtraction.h>
 #include <math.matrix/operations/MatrixTypeSelector.h>
+#include <math.matrix/operations/MatrixBinaryOperation.h>
 
 namespace nspace{
 
+  /**
+   * \brief  cross product operation for 3x1 vectors
+   *
+   */
+  BinaryMatrixOperation(cross);
 
   /**
    * \brief performs the cross product .
@@ -25,29 +31,17 @@ namespace nspace{
 
       typedef typename indexTypeOfType(VecC) Index;
       Index rowCount = rows(c);
-      //Index colCount = cols(c);
+      //assert(rowCount==3) 
       Index i = 0;
-      //for(Index i=0; i < colCount; i++){
-        subtract(coefficient(c,0,i),multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,1,i),coefficient(b,2,i)), multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,2,i),coefficient(b,1,i)));
-        subtract(coefficient(c,1,i),multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,2,i),coefficient(b,0,i)), multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,0,i),coefficient(b,2,i)));
-        subtract(coefficient(c,2,i),multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,0,i),coefficient(b,1,i)), multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,1,i),coefficient(b,0,i)));
-      //}
+      subtract(coefficient(c,0,i),multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,1,i),coefficient(b,2,i)), multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,2,i),coefficient(b,1,i)));
+      subtract(coefficient(c,1,i),multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,2,i),coefficient(b,0,i)), multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,0,i),coefficient(b,2,i)));
+      subtract(coefficient(c,2,i),multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,0,i),coefficient(b,1,i)), multiply<CoeffC,CoeffA,CoeffB>(coefficient(a,1,i),coefficient(b,0,i)));
+      
     }
   };
 
-  template<typename C, typename A, typename B>
-  inline void cross(C & c, const A & a, const B & b){
-    VectorCrossProduct<C,A,B>::operation(c,a,b);
-  }
-  template<typename C, typename A, typename B>
-  inline C cross(const A & a, const B & b){
-    C result;
-    cross(result,a,b);
-    reutrn result
-  }
-  template<typename A, typename B>
-  inline auto cross(const A & a, const B & b) -> typename returnType(A,B){
-    return cross<typename returnType(A,B), A,B>(a,b);
-  }
+  //Implementation
+
+  BinaryOperationImplementation(cross){VectorCrossProduct<C,A,B>::operation(c,a,b);}
   
 }

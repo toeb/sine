@@ -17,8 +17,8 @@ namespace nspace{
  * \brief A macro that defines return type for an operation with two types
  *        e.g. returnType(int,double) should return double
  *
- * \param A The void to process.
- * \param B The void to process.
+ * \param A The first type
+ * \param B The second type.
  */
 #define returnType(A,B) MatrixTypeSelector<A,B>::Type
 
@@ -29,11 +29,16 @@ namespace nspace{
  * \param TYPEB       The typeb.
  * \param RESULTTYPE  The resulttype.
  */
-#define SpecializeTypeSelector(TYPEA, TYPEB, RESULTTYPE) template<> class MatrixTypeSelector<TYPEA,TYPEB> {public: typedef RESULTTYPE Type;};
+#define SpecializeTypeSelector(TYPEA, TYPEB, RESULTTYPE) template<> class MatrixTypeSelector<TYPEA,TYPEB> {public: typedef RESULTTYPE Type;}
 #define SpecializeTypeSelectorPartially(TYPEA,TYPEB, RESULTTYPE) class MatrixTypeSelector<TYPEA,TYPEB> {public: typedef typename RESULTTYPE Type;};
 
-  
-template<typename MatrixType> SpecializeTypeSelectorPartially(MatrixType, double, MatrixType);
-template<typename MatrixType> SpecializeTypeSelectorPartially(double , MatrixType, MatrixType);
+  /**
+   * \brief Default specialization .  the result type of T and T is T
+   *
+   * \param parameter1  The first parameter.
+   * \param parameter2  The second parameter.
+   * \param parameter3  The third parameter.
+   */
+  template<typename T>SpecializeTypeSelectorPartially(T,T,T);
 
 }

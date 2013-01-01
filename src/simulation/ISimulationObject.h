@@ -20,6 +20,7 @@ namespace nspace{
 
     ISimulationObject();
     ISimulationObject(const std::string & name);
+    virtual ~ISimulationObject(){}
 
     inline void setParent(ISimulationModule * parent){_parent=parent;}
     inline virtual void accepted(){};

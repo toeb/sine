@@ -81,10 +81,9 @@ public:
    * \tparam  T     Generic type parameter.
    * \tparam  Index Type of the index.
    */
-  template<typename T,typename Index> class MatrixCoefficientType<std::function<T(Index,Index)> >{
-public:
-    typedef T Type;
-  };
-
+  template<typename T,typename Index> class MatrixCoefficientType<std::function<T(Index,Index)> >{public: typedef T Type;  };
+  
+  template<typename T, typename Index> class MatrixRowTraits<std::function<T(Index,Index)> >{public: static const DimensionTraits Traits=Infinite;  };
+  template<typename T, typename Index> class MatrixColumnTraits<std::function<T(Index,Index)> >{public: static const DimensionTraits Traits=Infinite;  };
 
 }

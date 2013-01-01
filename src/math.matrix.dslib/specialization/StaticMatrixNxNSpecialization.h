@@ -4,6 +4,12 @@
 namespace nspace{
 #define USE_SPECIALIZATION
 #ifdef USE_SPECIALIZATION
+
+  
+  template<typename T,int N, int M> class MatrixColumnTraits<matrix2::StaticMatrix<T,N,M> >{public: static const DimensionTraits Traits = Fixed; };
+  template<typename T,int N, int M> class MatrixRowTraits<matrix2::StaticMatrix<T,N,M> >{public: static const DimensionTraits Traits = Fixed; };
+  template<typename T,int N, int M> class MatrixCoefficientType<matrix2::StaticMatrix<T,N,M> >{public: typedef T Type;};
+
   /**
   * \brief specialization for the 3x3 Matrix Product
   *

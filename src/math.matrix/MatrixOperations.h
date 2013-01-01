@@ -72,7 +72,14 @@
 #include <math.matrix/operations/MatrixElementAssignment.h>
 
 #include <math.matrix/operations/MatrixTypeSelector.h>
-#include <math.matrix/operations/MatrixScalar.h>
+#include <math.matrix/operations/MatrixTraits.h>
+#include <math.matrix/operations/MatrixRowTraits.h>
+#include <math.matrix/operations/MatrixColumnTraits.h>
+
+#include <math.matrix/specialization/Scalars.h>
+#include <math.matrix/specialization/Array1D.h>
+#include <math.matrix/specialization/Array2D.h>
+#include <math.matrix/specialization/StdVector.h>
 
 namespace nspace{
   namespace math{

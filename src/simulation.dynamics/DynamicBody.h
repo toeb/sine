@@ -11,6 +11,8 @@ namespace nspace {
   class DynamicBody : public virtual ISimulationObject{
   public:
 
+    virtual ~DynamicBody(){}
+
     /**
     * \brief Calculates the dynamics equation.
     *

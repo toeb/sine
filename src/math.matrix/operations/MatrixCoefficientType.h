@@ -29,7 +29,7 @@ namespace nspace {
   template<typename MatrixType>
   class MatrixCoefficientType {
 public:
-    typedef double Type;
+    typedef void Type;
   };
 
 /**
@@ -54,7 +54,7 @@ public:
  */
 #define coefficientTypeOfInstance(MATRIXINSTANCE)  coefficientTypeOfType( decltype(MATRIXINSTANCE))
 
-
+  
   //specializations for scalar types
   template<> SpecializeMatrixCoefficientType(double,double);
   template<> SpecializeMatrixCoefficientType(float,float);

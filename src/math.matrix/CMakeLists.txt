@@ -1,3 +1,4 @@
+
 set(source
  ./Matrix.h
  ./Vector.h
@@ -19,13 +20,21 @@ set(source
 )
 source_group("" FILES ${source})
 
+set(specializationsSource
+./specialization/Array1D.h
+./specialization/Scalars.h
+./specialization/StdVector.h
+
+)
+source_group("specialization" FILES ${specializationsSource})
+set(source ${source} ${specializationsSource})
+
 file(GLOB_RECURSE operationsSource 
     "operations/*.h"
     "operations/*.cpp"
 )
 source_group("operations" FILES ${operationsSource})
-
-
 set(source ${source} ${operationsSource})
+
 add_library(math.matrix ${source} )
 target_link_libraries(math.matrix math.operation)

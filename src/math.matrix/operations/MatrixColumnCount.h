@@ -23,6 +23,18 @@
 namespace nspace {
 
   /**
+   * \brief gets the number of columns for the matrix
+   *
+   * \tparam  typename MatrixType Type of the  matrix .
+   * \param matrix  The matrix.
+   *
+   * \return  number of columns.
+   */
+  template<typename MatrixType> auto cols(const MatrixType & matrix)->typename indexTypeOfType(MatrixType);
+
+
+
+  /**
    * \brief Operation column count. a template class that should be specialized by MatrixType classes.
    *        the default implementations calls MatrixType::cols()
    *        other types of access need to be specialized
@@ -44,10 +56,6 @@ public:
     }
   };
   
-
-  template<typename MatrixType> auto cols(const MatrixType & matrix)->typename indexTypeOfType(MatrixType){
-    return OperationColumnCount<MatrixType>::operation(matrix);
-  }
 
 /**
  * \brief A macro that defines the specialization for OperationColumnCount.
@@ -97,11 +105,10 @@ public:
       return 1;
     }
   };
-  // scalar types
-  template<> SpecializeColumnCount(double,1);
-  template<> SpecializeColumnCount(float,1);
-  template<> SpecializeColumnCount(int,1);
-  template<> SpecializeColumnCount(unsigned int,1);
-  template<> SpecializeColumnCount(char,1);
-  template<> SpecializeColumnCount(unsigned char,1);
+
+
+  //implementation 
+  template<typename MatrixType> auto cols(const MatrixType & matrix)->typename indexTypeOfType(MatrixType){
+    return OperationColumnCount<MatrixType>::operation(matrix);
+  }
 }

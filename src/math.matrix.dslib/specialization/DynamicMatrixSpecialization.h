@@ -4,6 +4,11 @@
 #include <math.matrix.dslib/DynamicMatrix.h>
 namespace nspace{
 
+
+  template<typename T> SpecializeMatrixDynamicSizeColumns(matrix2::DynamicMatrix<T>);
+  template<typename T> SpecializeMatrixDynamicSizeRows(matrix2::DynamicMatrix<T>);
+  template<typename T> SpecializeMatrixCoefficientType(matrix2::DynamicMatrix<T>,T);
+
   template<typename T>
   BeginSpecializeMatrixResize(matrix2::DynamicMatrix<T>)
     return matrix.resize(rowcount,colcount);

@@ -5,8 +5,10 @@
 #include <math.matrix/operations/MatrixTypeSelector.h>
 #include <math.matrix/operations/MatrixAddition.h>
 #include <math.matrix/operations/MatrixMultiplication.h>
+#include <math.matrix/operations/MatrixBinaryOperation.h>
 namespace nspace{
   
+  BinaryMatrixOperationOtherReturnType(dot,coefficientTypeOfType(typename returnType(A,B)));
 
 
   template<typename T, typename VecA, typename VecB>
@@ -24,9 +26,7 @@ namespace nspace{
       }
     }
   };
-  template<typename VecA,typename VecB>
-  inline auto dot(const VecA & a, const VecB & b)-> typename coefficientTypeOfType(typename returnType(VecA,VecB)){
-    return VectorInnerProduct<VecA,VecB>::operation(a,b);  
-  }
+
+  BinaryOperationImplementation(dot){VectorInnerProduct<C,A,B>::operation(c,a,b);}
 
 }

@@ -20,6 +20,7 @@ namespace nspace {
     DynamicBody & _body;
   protected:
     DynamicConnector(DynamicBody & body);
+    virtual ~DynamicConnector(){}
   public:
     friend class ConnectorFactory;
 

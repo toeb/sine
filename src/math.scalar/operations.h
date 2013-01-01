@@ -31,6 +31,18 @@
 #include <math.scalar/operation/Sinus.h>
 #include <math.scalar/operation/SquareRoot.h>
 
+
+#define FOR_ALL_UNARY_SCALAR_OPERATIONCODES(DEFINITION) \
+DEFINITION(ArcusCosinus);\
+DEFINITION(Signum);\
+DEFINITION(Cosinus);\
+DEFINITION(Sine);\
+DEFINITION(ArcusSinus);\
+DEFINITION(Absolute);\
+DEFINITION(Sinus);\
+DEFINITION(SquareRoot);
+
+
 #define NULLARY_SHORTHAND(NAME , OP)  \
   template<typename T> void NAME(T & result){ math::operation::Operation<T,math::operation::Nullary,math::operation::scalar::opcodes::OP>::operation(result); }\
   template<typename T> T NAME(){ T result; NAME(result); return result; }\

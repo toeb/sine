@@ -5,8 +5,199 @@
 #include <core.task.h>
 #include <core/Serialization.h>
 #include <math.matrix.h>
+
 namespace nspace{
+  TEST(1, OperationMatrixElementWiseUnary){
+    double a[3]={9,81,64};
+    elementWiseSquareRootInPlace(a);
+    CHECK(a[0]==3&&a[1]==9&&a[2]==8);
+  }
+  TEST(2, OperationMatrixElementWiseUnary){
+    MatrixNxM mat(100,100);
+    assignMatrixFunction(mat,[](int i,int j)->double{return (i-50)*(j-50);});
+    elementWiseSignumInPlace(mat);
+  }
+  TEST(3, OperationMatrixElementWiseUnary){
+    matrix2::StaticMatrix<double,10,10> mat;
+    assignMatrixFunction(mat,[](int i,int j)->double{return (i-5)*(j-5);});
+    elementWiseSignumInPlace(mat);
+
+  }
+
+  TEST(4,MatrixElementWiseUnaryRuntimeOperation){
+    matrix2::StaticMatrix<double,10,10> mat;
+    assignMatrixFunction(mat,[](int i, int j)->double{return (i-5)*(j-5);});
+    elementWiseUnaryInPlace(mat,[](double d)->double{return d*2;});
+    
+  }
+
+
   
+  TEST(1, OperationMatrixCoefficientAccess){
+    double a[3]={4,5,6};
+    auto a1 = coefficient(a,0,0);
+    auto a2 = coefficient(a,1,0);
+    auto a3 = coefficient(a,2,0);
+
+    double d;
+    auto sameType = isSameType(a1,d);
+
+    CHECK(a1==4);
+    CHECK(a2==5);
+    CHECK(a3==6);
+
+
+  }
+  TEST(2, OperationMatrixCoefficientAccess){
+    double a[3]={4,5,6};
+    const auto & constA = a;
+
+    auto a1 = coefficient(constA,0,0);
+    auto a2 = coefficient(constA,1,0);
+    auto a3 = coefficient(constA,2,0);
+
+    double d;
+    auto sameType = isSameType(a1,d);
+
+    CHECK(a1==4);
+    CHECK(a2==5);
+    CHECK(a3==6);
+
+
+  }
+  
+  TEST(1, CrossProduct){
+    double a[3]={1,0,0};
+    Vector3D b(0,1,0);
+    {
+    auto c = cross(a,b);
+    CHECK(c(0)==0);
+    CHECK(c(1)==0);
+    CHECK(c(2)==1);
+    }
+    {
+    auto c=cross(b,a);
+    CHECK(c(0)==0);
+    CHECK(c(1)==0);
+    CHECK(c(2)==-1);
+    }    
+  }
+
+  TEST(1,innerProduct){
+    double a[3]={2,3,1};
+    Vector3D b(1,2,3);
+
+    {
+      auto c = dot(a,b);
+      auto type = isSameType(c,double(0));
+      CHECK(type);
+      CHECK(c==11);
+    }
+  }
+
+  TEST(1,MatrixCoefficientType){
+    Matrix2x2 matA[2][2];
+    auto a= isSameType<coefficientTypeOfInstance(matA), Matrix2x2>();   
+    CHECK(a);
+  }
+
+  
+  TEST(2,MatrixElementWiseMultiply){
+    matrix2::StaticMatrix<Matrix2x2,2,2> matA,matB;
+    matA(0,0)=Matrix2x2::Identity();
+    matA(0,1)=Matrix2x2::Identity();
+    matA(1,0)=Matrix2x2::Identity();
+    matA(1,1)=Matrix2x2::Identity();
+    matB(0,0)=Matrix2x2::Identity();
+    matB(0,1)=Matrix2x2::Zero();
+    matB(1,0)=Matrix2x2::Zero();
+    matB(1,1)=Matrix2x2::Identity();
+
+    auto result = multiply(matA,matB);
+    auto sameType = isSameType(result,matA);
+    CHECK(sameType);
+    
+    for(int i=0; i < 2;i++)for(int j=0; j < 2; j++)for(int k=0;k < 2; k++)for(int l=0; l< 2;l++){
+      bool r=false;
+      auto val = result(i,j)(k,l);
+      if(i==j&&k==l)r=val==1;
+      else r = val==0;
+      CHECK(r);
+    }
+    
+  }
+
+
+  TEST(1,MatrixElementWiseMultiply){
+    double a=4;
+    double b = 0.5;
+    auto result  =multiply(a,b);
+    auto sameType=isSameType(a,result);
+    CHECK(sameType);
+    CHECK(result==2.0);
+  }
+
+  TEST(MatrixTraitIsScalar1, Traits){
+    CHECK(isScalarMatrix(2));
+    CHECK(isScalarMatrix<double>());
+  }
+  TEST(MatrixTraitIsScalar2, Traits){
+    Matrix3x3 mat;
+    CHECK(!isScalarMatrix(mat));
+    CHECK(!isScalarMatrix<Matrix3x3>());
+
+  }
+  
+  TEST(RowTraits, MatrixTraits){
+    double d;
+    CHECK(rowTraits(d)==Fixed);
+    CHECK(rowTraits<int>()==Fixed);
+  }
+  TEST(RowTraits2,MatrixTraits){
+    matrix2::DynamicMatrix<double> mat;
+    CHECK(rowTraits(mat)==Dynamic);
+    CHECK(rowTraits<matrix2::DynamicMatrix<double> >()==Dynamic);
+  }
+  TEST(RowTraits3,MatrixTraits){
+    matrix2::StaticMatrix<double,1,1> mat;
+    CHECK(rowTraits(mat)==Fixed);
+    auto traits = rowTraits<matrix2::StaticMatrix<double,1,1> >();
+    CHECK(traits==Fixed);
+  }
+  TEST(RowTraits4,MatrixTraits){
+    std::function<double(int,int)> foo=[](int i, int j){return i==j?1.0:0.0;};
+    CHECK(rowTraits(foo)==Infinite);
+    CHECK(rowTraits<std::function<double(int,int)> >()==Infinite);
+  }
+
+
+
+  TEST(ColTraits, MatrixTraits){
+    double d;
+    CHECK(columnTraits(d)==Fixed);
+    CHECK(columnTraits<int>()==Fixed);
+  }
+  TEST(ColTraits2,MatrixTraits){
+    matrix2::DynamicMatrix<double> mat;
+    CHECK(columnTraits(mat)==Dynamic);
+    CHECK(columnTraits<matrix2::DynamicMatrix<double> >()==Dynamic);
+  }
+
+
+  
+  TEST(ColTraits3,MatrixTraits){
+    matrix2::StaticMatrix<double,1,1> mat;
+    CHECK(columnTraits(mat)==Fixed);
+    auto traits = columnTraits<matrix2::StaticMatrix<double,1,1> >();
+    CHECK(traits==Fixed);
+  }
+  TEST(ColTraits4,MatrixTraits){
+    std::function<double(int,int)> foo=[](int i, int j){return i==j?1.0:0.0;};
+    CHECK(columnTraits(foo)==Infinite);
+    CHECK(columnTraits<std::function<double(int,int)> >()==Infinite);
+  }
+
+
 
   TEST(MatrixAssign2, Func){
     Vector3D vec;
@@ -28,7 +219,6 @@ namespace nspace{
         }
       }
     }
-
   }
 
   TEST(MatrixResize4, staticMatrix){
@@ -100,6 +290,7 @@ class MatrixFunction{
   BinaryFunction  _function;
  
 public:
+
   ~MatrixFunction(){
     
   }
@@ -115,6 +306,8 @@ public:
   inline size_t rows()const{return _rows;}
   inline size_t cols()const{return _cols;}
 };
+// todo... double is wrong
+template<typename BinaryFunction> SpecializeMatrixCoefficientType(MatrixFunction<BinaryFunction>, double);
 
 template<typename BinaryFunction>
 auto lazyMatrix(size_t rows, size_t cols, BinaryFunction f)->MatrixFunction<BinaryFunction>{

@@ -1,10 +1,28 @@
+/**
+ * Copyright (C) 2013 Tobias P. Becker
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the  rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * More information at: https://dslib.assembla.com/
+ *
+ */
 #pragma once
 #include <config.h>
 #include <math.matrix/operations/MatrixCoefficientAccess.h>
 #include <math.matrix/operations/MatrixRowCount.h>
 #include <math.matrix/operations/MatrixColumnCount.h>
 
-namespace nspace{
+namespace nspace {
 
   /**
    * \brief Adds. lhs1:= rhs1+rhs2.
@@ -30,8 +48,8 @@ namespace nspace{
    * \brief Matrix addition .
    */
   template<typename Sum, typename Summand1, typename Summand2>
-  class MatrixAddition{
-  public:
+  class MatrixAddition {
+public:
 
     /**
      * \brief Operation adds the a and b into sum.  this is done recursively if need be until scalars are reached
@@ -43,12 +61,13 @@ namespace nspace{
     static inline void operation(Sum & sum, const Summand1 & a, const Summand2 & b){
       auto rowCount = rows(a);
       auto colCount = cols(a);
-      // recursion anchor. //@TODO is scalar test
-      if(rowCount==1 && colCount==1) {
+      // recursion anchor. 
+      if(isScalarMatrix<Sum>()) {
         coefficient(sum,0,0)=coefficient(a,0,0)+coefficient(b,0,0);
+        return;
       }
-      for(int i=0; i < rowCount; i++){
-        for(int j=0; j < colCount; j++){
+      for(int i=0; i < rowCount; i++) {
+        for(int j=0; j < colCount; j++) {
           add(coefficient(sum,i,j),coefficient(a,i,j),coefficient(b,i,j));
         }
       }
@@ -60,7 +79,7 @@ namespace nspace{
   void add(LHS & lhs, const RHS1 & rhs1, const RHS2 & rhs2){
     MatrixAddition<LHS,RHS1,RHS2>::operation(lhs,rhs1,rhs2);
   }
-  
+
   template<typename T>
   T add(const T & rhs1, const T& rhs2){
     T lhs;
@@ -68,13 +87,6 @@ namespace nspace{
     add(lhs,rhs1,rhs2);
     return lhs;
   }
-  
-
-
-
-
-
-
 
 
 }

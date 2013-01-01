@@ -20,7 +20,7 @@ public:
     Index colCount =cols(c);
 
     // template recursion anchor 
-    if(isScalarMatrix<C>()){
+    if(isScalarMatrix<C>()){   
       coefficient(c,0,0)=coefficient(a,0,0)*coefficient(b,0,0);
       return;
     }

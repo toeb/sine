@@ -22,6 +22,16 @@
 namespace nspace {
 
   /**
+   * \brief returns number of Rows of the given matrix.
+   *
+   * \tparam  typename MatrixType Type of the  matrix .
+   * \param matrix  The matrix.
+   *
+   * \return  number of rows.
+   */
+  template<typename MatrixType> auto rows(const MatrixType & matrix)->typename indexTypeOfType(MatrixType);
+
+  /**
    * \brief Operation row count.  a template class returning the rowcount of a matrix of type MatrixType
    *        the default implementation returns MatrixType::rows();
    *        matrix types should specialize this class
@@ -51,9 +61,6 @@ public:
    */
   #define SpecializeRowCount(TYPE, ROWCOUNTCODE) class OperationRowCount<TYPE>{public: static inline indexTypeOfType(TYPE) operation(const TYPE &matrix){return ROWCOUNTCODE; }};
 
-  template<typename MatrixType> auto rows(const MatrixType & matrix)->typename indexTypeOfType(MatrixType){
-    return OperationRowCount<MatrixType>::operation(matrix);
-  }
 
   //specialization
 
@@ -93,12 +100,8 @@ public:
   };
 
 
-
-  // scalars
-  template<> SpecializeRowCount(double,1);
-  template<> SpecializeRowCount(float,1);
-  template<> SpecializeRowCount(int,1);
-  template<> SpecializeRowCount(unsigned int,1);
-  template<> SpecializeRowCount(char,1);
-  template<> SpecializeRowCount(unsigned char,1);
+  //implementation
+   template<typename MatrixType> auto rows(const MatrixType & matrix)->typename indexTypeOfType(MatrixType){
+    return OperationRowCount<MatrixType>::operation(matrix);
+  }
 }

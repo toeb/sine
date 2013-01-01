@@ -32,5 +32,6 @@ namespace nspace{
         }
       }
     }
+    typedef nspace::math::operation::scalar::opcodes::OperationCodes OperationCode;
   }
 }
