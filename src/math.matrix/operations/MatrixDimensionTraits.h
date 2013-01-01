@@ -5,6 +5,7 @@ namespace nspace{
   enum DimensionTraits{
     Unknown,
     Fixed,
-    Dynamic
+    Dynamic,
+    Infinite
   };
 }

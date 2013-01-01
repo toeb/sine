@@ -72,6 +72,7 @@
 #include <math.matrix/operations/MatrixElementAssignment.h>
 
 #include <math.matrix/operations/MatrixTypeSelector.h>
+#include <math.matrix/operations/MatrixScalar.h>
 
 namespace nspace{
   namespace math{
@@ -121,7 +122,7 @@ namespace nspace{
         }
         template<typename T, typename VectorTypeA, typename VectorTypeB>
         inline void innerProduct(T & result, const VectorTypeA & a, const VectorTypeB & b){
-          VectorInnerProduct<T,VectorTypeA,VectorTypeB>::operation(result,a,b);
+          VectorInnerProduct<T, VectorTypeA,VectorTypeB>::operation(result,a,b);
         }
 
         template<typename Result,typename Mat>

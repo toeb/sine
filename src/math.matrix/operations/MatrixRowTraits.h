@@ -7,7 +7,8 @@ namespace nspace{
   template<typename MatrixType>
   class MatrixRowTraits{
   public:
-    DimensionTraits Traits = Unknown;
+    static const DimensionTraits Traits = Dynamic;
   };
+  #define RowTraits(TYPE) MatrixColumnTraits<TYPE>::Traits;
 
 }

@@ -73,6 +73,27 @@ public:
       return n;
     }
   };
+
+  //2d array  - 
+  template<typename T>
+  class OperationRowCount<T**>{
+public:
+    static inline typename indexTypeOfType(T**) operation(const T **  matrix){
+      return 0;
+    }
+  };
+
+  //1d array  - 
+  template<typename T>
+  class OperationRowCount<T*>{
+public:
+    static inline typename indexTypeOfType(T*) operation(const T *  matrix){
+      return 0;
+    }
+  };
+
+
+
   // scalars
   template<> SpecializeRowCount(double,1);
   template<> SpecializeRowCount(float,1);

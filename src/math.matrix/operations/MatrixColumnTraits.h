@@ -6,7 +6,9 @@ namespace nspace{
   template<typename MatrixType>
   class MatrixColumnTraits{
   public:
-    DimensionTraits Traits = Unknown;
+    static const DimensionTraits Traits = Dynamic;
   };
+
+#define ColumnTraits(TYPE) MatrixColumnTraits<TYPE>::Traits;
 
 }

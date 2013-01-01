@@ -1,3 +1,7 @@
+#pragma once
+
+namespace nspace{
+
 template<typename T,typename Mat>
 class MatrixSum{
 public:
@@ -10,3 +14,4 @@ public:
     }
   }
 };
+}

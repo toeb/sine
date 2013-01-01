@@ -1,4 +1,12 @@
 set(source ../include/core.h )
+
+set(templateSource
+./template/TemplateUtilities.h
+)
+
+set(source ${source} ${templateSource})
+source_group("template" FILES ${templateSource})
+
 set(bindingSource
  ./binding/Binding.h
  ./binding/Binding.cpp

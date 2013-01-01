@@ -164,7 +164,17 @@ public: \
   DefineCoefficientAccess(char,          matrix);
   DefineCoefficientAccess(unsigned char, matrix);
 
-  //specialization for const size 2d array
+  // 2d array of unspecified size
+  template<typename T> SpecializeCoefficientAccess(T**,matrix[i][j]);
+
+  // 1d array of unspecified size
+  template<typename T> SpecializeCoefficientAccess(T*, matrix[i]);
+  
+  /**
+   * \brief specialization for const size 2d array.
+   *
+   * \tparam  T[n][m] Type of the [n][m].
+   */
   template<typename T, size_t n, size_t m>
   class OperationMatrixCoefficientAccess<T[n][m]>{
 public:
@@ -176,6 +186,8 @@ public:
       return matrix[i][j];
     }
   };
+
+
 
   /**
    * \brief specialization for 1d array which is understood as a column  vector ie 1 column.

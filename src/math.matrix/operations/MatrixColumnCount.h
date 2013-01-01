@@ -43,6 +43,7 @@ public:
       return matrix.cols();
     }
   };
+  
 
   template<typename MatrixType> auto cols(const MatrixType & matrix)->typename indexTypeOfType(MatrixType){
     return OperationColumnCount<MatrixType>::operation(matrix);
@@ -65,9 +66,8 @@ public:
   template<typename T, size_t n, size_t m>
   class OperationColumnCount<T[n][m]>{
 public:
-    static inline bool operation(uint& rowCount, const T(&matrix)[n][m]){
-      rowCount = m;
-      return true;
+    static inline typename indexTypeOfType(T[n][m]) operation(const T(&matrix)[n][m]){
+      return m;
     }
   };
 
@@ -75,13 +75,30 @@ public:
   template<typename T, size_t n>
   class OperationColumnCount<T[n]>{
 public:
-    static inline bool operation(uint& rowCount, const T(&matrix)[n]){
-      rowCount= 1;
-      return true;
+    static inline typename indexTypeOfType(T[n]) operation(const T(&matrix)[n]){
+      return 1;
+    }
+  };
+
+  //2d array  - 
+  template<typename T>
+  class OperationColumnCount<T**>{
+public:
+    static inline typename indexTypeOfType(T**) operation( const T **  matrix){
+      return 0;
+    }
+  };
+  
+  //1d array  - 
+  template<typename T>
+  class OperationColumnCount<T*>{
+public:
+    static inline typename indexTypeOfType(T*) operation( const T *  matrix){
+      return 1;
     }
   };
   // scalar types
-  template<>  SpecializeColumnCount(double,1);
+  template<> SpecializeColumnCount(double,1);
   template<> SpecializeColumnCount(float,1);
   template<> SpecializeColumnCount(int,1);
   template<> SpecializeColumnCount(unsigned int,1);
