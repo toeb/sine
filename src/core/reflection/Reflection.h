@@ -422,8 +422,7 @@ public: \
       return object->NAME(); \
     } \
   }; \
-  STATIC_INITIALIZER(NAME ## PropertyClass, {  auto constType =  typeof(NAME ## OwningClassType); \
-                                               auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(NAME ## OwningClassType))); \
+  STATIC_INITIALIZER(NAME ## PropertyClass, {  auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(NAME ## OwningClassType))); \
                                                type->Members()|= PROPERTYCLASSINSTANCE(NAME); }); \
   PROPERTYSET(TYPE,NAME,ONADD,ONREMOVE);
 

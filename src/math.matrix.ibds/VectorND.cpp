@@ -30,13 +30,13 @@ using namespace nspace;
 
 /** Konstruktor: Erzeugt einen Vektor mit der Dimension 0.
 */
-VectorND::VectorND():n(0),v(0)
+VectorND::VectorND():v(0),n(0)
 {
 }
 
 /** Konstruktor: Erzeugt einen Vektor mit der übergebenen Dimension.
 */
-VectorND::VectorND(const int dim):n(0),v(0)
+VectorND::VectorND(const int dim):v(0),n(0)
 {
   resize(dim);
 }

@@ -33,13 +33,13 @@
 
 
 #define FOR_ALL_UNARY_SCALAR_OPERATIONCODES(DEFINITION) \
-DEFINITION(ArcusCosinus);\
 DEFINITION(Signum);\
 DEFINITION(Cosinus);\
-DEFINITION(Sine);\
-DEFINITION(ArcusSinus);\
-DEFINITION(Absolute);\
 DEFINITION(Sinus);\
+DEFINITION(ArcusSinus);\
+DEFINITION(ArcusCosinus);\
+DEFINITION(Absolute);\
+DEFINITION(Reciprocal);\
 DEFINITION(SquareRoot);
 
 
@@ -65,7 +65,7 @@ namespace nspace{
         UNARY_SHORTHAND(sine,Sinus);
         UNARY_SHORTHAND(absolute,Absolute);
         UNARY_SHORTHAND(arcusSinus,ArcusSinus);
-        UNARY_SHORTHAND(arcusCosinus,ArcusSinus);
+        UNARY_SHORTHAND(arcusCosinus,ArcusCosinus);
         UNARY_SHORTHAND(squareRoot,SquareRoot);
         UNARY_SHORTHAND(reciprocal,Reciprocal);
 

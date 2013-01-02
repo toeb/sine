@@ -26,7 +26,7 @@ namespace nspace{
       _rows = 0;
       _cols = 0;
     }
-    DynamicMatrix():_rows(0),_cols(0),_data(0){resize(0,0);};
+    DynamicMatrix():_data(0),_rows(0),_cols(0){resize(0,0);};
     inline size_t dataByteSize()const{
       return _rows*_cols*sizeof(T);
     }

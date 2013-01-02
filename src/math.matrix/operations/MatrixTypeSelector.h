@@ -30,7 +30,7 @@ namespace nspace{
  * \param RESULTTYPE  The resulttype.
  */
 #define SpecializeTypeSelector(TYPEA, TYPEB, RESULTTYPE) template<> class MatrixTypeSelector<TYPEA,TYPEB> {public: typedef RESULTTYPE Type;}
-#define SpecializeTypeSelectorPartially(TYPEA,TYPEB, RESULTTYPE) class MatrixTypeSelector<TYPEA,TYPEB> {public: typedef typename RESULTTYPE Type;};
+#define SpecializeTypeSelectorPartially(TYPEA,TYPEB, RESULTTYPE) class MatrixTypeSelector<TYPEA,TYPEB> {public: typedef RESULTTYPE Type;};
 
   /**
    * \brief Default specialization .  the result type of T and T is T
@@ -39,6 +39,6 @@ namespace nspace{
    * \param parameter2  The second parameter.
    * \param parameter3  The third parameter.
    */
-  template<typename T>SpecializeTypeSelectorPartially(T,T,T);
+  template<typename T>SpecializeTypeSelectorPartially(T,T,T)
 
 }

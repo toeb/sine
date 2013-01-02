@@ -134,7 +134,7 @@ TEST(renounce,Module){
 
 TEST(compositeAdd1, CompositeHubObject){
   CompositeHubObject obj;
-  CompositeHubObject * o = &obj;
+  //CompositeHubObject * o = &obj;
   auto o1 = new Object;
   auto o2 = new Object;
 
@@ -154,7 +154,7 @@ TEST(compositeAdd1, CompositeHubObject){
 
 TEST(compositeAdd2, CompositeHubObject){
   CompositeHubObject obj;
-  CompositeHubObject * o = &obj;
+  //CompositeHubObject * o = &obj;
   auto o1 = new Object;
   auto o2 = new Object;
 
@@ -177,7 +177,7 @@ TEST(compositeAdd2, CompositeHubObject){
 
 TEST(compositeRemove1, CompositeHubObject){
   CompositeHubObject obj;
-  CompositeHubObject * o = &obj;
+  //CompositeHubObject * o = &obj;
   auto o1 = new Object;
   auto o2 = new Object;
 
@@ -199,7 +199,7 @@ TEST(compositeRemove1, CompositeHubObject){
 
 TEST(compositeAdd3, CompositeHubObject){
   CompositeHubObject obj;
-  CompositeHubObject * o = &obj;
+  //CompositeHubObject * o = &obj;
   auto o1 = new Object;
   auto o2 = new Object;
 
@@ -219,7 +219,7 @@ TEST(compositeAdd3, CompositeHubObject){
 
 TEST(compositeRemove3, CompositeHubObject){
   CompositeHubObject obj;
-  CompositeHubObject * o = &obj;
+  //CompositeHubObject * o = &obj;
   auto o1 = new Object;
   auto o2 = new Object;
 

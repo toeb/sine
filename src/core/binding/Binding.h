@@ -62,9 +62,10 @@ namespace nspace{
       if(!sink->setByPointer(instance)){
         logError("Sink was not writable");
       }
-      delete instance;
+      type->deleteInstance(instance);
       instance = 0;
       setIsUpdating(false);
+      return true;
     }
     bool isValid(){
       if(!getSource())return false;

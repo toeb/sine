@@ -11,7 +11,7 @@ namespace nspace{
     std::list<T> _historyQueue;
     TypedObservableValue<T> & _value;
   public:
-    ValueHistory(TypedObservableValue<T> & value,unsigned int maxHistory=3):_value(value),_maxHistory(maxHistory),_n(0){
+    ValueHistory(TypedObservableValue<T> & value,unsigned int maxHistory=3):_n(0),_maxHistory(maxHistory),_value(value){
       _value.addObserver(this);
       valueChanged(&_value);
     }

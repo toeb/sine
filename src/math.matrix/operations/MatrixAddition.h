@@ -21,7 +21,7 @@
 #include <math.matrix/operations/MatrixCoefficientAccess.h>
 #include <math.matrix/operations/MatrixRowCount.h>
 #include <math.matrix/operations/MatrixColumnCount.h>
-
+#include <math.matrix/operations/MatrixTraits.h>
 namespace nspace {
 
   /**

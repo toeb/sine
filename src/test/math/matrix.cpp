@@ -26,7 +26,7 @@ namespace nspace{
 
   TEST(4,MatrixElementWiseUnaryRuntimeOperation){
     matrix2::StaticMatrix<double,10,10> mat;
-    assignMatrixFunction(mat,[](int i, int j)->double{return (i-5)*(j-5);});
+    assignMatrixFunction(mat,std::function<double(int,int)>([](int i, int j)->double{return (i-5)*(j-5);}));
     elementWiseUnaryInPlace(mat,[](double d)->double{return d*2;});
     
   }
@@ -41,7 +41,7 @@ namespace nspace{
 
     double d;
     auto sameType = isSameType(a1,d);
-
+    CHECK(sameType)
     CHECK(a1==4);
     CHECK(a2==5);
     CHECK(a3==6);
@@ -58,7 +58,7 @@ namespace nspace{
 
     double d;
     auto sameType = isSameType(a1,d);
-
+    CHECK(sameType);
     CHECK(a1==4);
     CHECK(a2==5);
     CHECK(a3==6);
@@ -201,7 +201,7 @@ namespace nspace{
 
   TEST(MatrixAssign2, Func){
     Vector3D vec;
-    assignMatrixFunction(vec,[](int i, int j){return  3.0-i;});
+    assignMatrixFunction(vec,[](int i, int j)->double{return  3.0-i;});
     for(int i=0; i < 3; i++){
       CHECK(3-i==vec(i));
     }

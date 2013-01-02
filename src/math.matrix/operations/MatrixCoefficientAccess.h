@@ -147,28 +147,26 @@ public: \
  */
 #define SpecializeCoefficientAccess(TYPE,ACCESSCODE)class OperationMatrixCoefficientAccess<TYPE>{ \
 public: \
-    typedef typename TYPE MatrixType; \
-  \
-    static inline typename coefficientTypeOfType(MatrixType) & operation(MatrixType & matrix, const typename indexTypeOfType(MatrixType) & i,const typename indexTypeOfType(MatrixType) & j){return ACCESSCODE; } \
-    static inline typename coefficientTypeOfType(MatrixType)   operation(const MatrixType &matrix, const typename indexTypeOfType(MatrixType) & i,const typename indexTypeOfType(MatrixType) & j){return ACCESSCODE; } \
+    static inline typename coefficientTypeOfType(TYPE) & operation(TYPE & matrix, const typename indexTypeOfType(TYPE) & i,const typename indexTypeOfType(TYPE) & j){return ACCESSCODE; } \
+    static inline typename coefficientTypeOfType(TYPE)   operation(const TYPE &matrix, const typename indexTypeOfType(TYPE) & i,const typename indexTypeOfType(TYPE) & j){return ACCESSCODE; } \
 };
   
 
   // specializations
 
   //scalar
-  DefineCoefficientAccess(double,        matrix);
-  DefineCoefficientAccess(float,         matrix);
-  DefineCoefficientAccess(int,           matrix);
-  DefineCoefficientAccess(unsigned int,  matrix);
-  DefineCoefficientAccess(char,          matrix);
-  DefineCoefficientAccess(unsigned char, matrix);
+  DefineCoefficientAccess(double,        matrix)
+  DefineCoefficientAccess(float,         matrix)
+  DefineCoefficientAccess(int,           matrix)
+  DefineCoefficientAccess(unsigned int,  matrix)
+  DefineCoefficientAccess(char,          matrix)
+  DefineCoefficientAccess(unsigned char, matrix)
 
   // 2d array of unspecified size
-  template<typename T> SpecializeCoefficientAccess(T**,matrix[i][j]);
+  template<typename T> SpecializeCoefficientAccess(T**,matrix[i][j])
 
   // 1d array of unspecified size
-  template<typename T> SpecializeCoefficientAccess(T*, matrix[i]);
+  template<typename T> SpecializeCoefficientAccess(T*, matrix[i])
   
   /**
    * \brief specialization for const size 2d array.
@@ -208,10 +206,10 @@ public:
   template<typename T, size_t n>
   class OperationMatrixCoefficientAccess<T[n]>{
   public:
-    static inline typename coefficientTypeOfType(T[n]) & operation(T (&matrix)[n],const typename indexTypeOfType(T[n]) & i,const typename indexTypeOfType(T[n]) & j){
+    static inline  T & operation(T (&matrix)[n],const typename indexTypeOfType(T[n]) & i,const typename indexTypeOfType(T[n]) & j){
       return matrix[i];
     }
-    static inline typename T operation(const T (&matrix )[n],const typename indexTypeOfType(T[n]) &i, const typename indexTypeOfType(T[n]) & j){
+    static inline T operation(const T (&matrix )[n],const typename indexTypeOfType(T[n]) &i, const typename indexTypeOfType(T[n]) & j){
       return matrix[i];
     }
   };
@@ -220,10 +218,10 @@ public:
   template<typename T, size_t n>
   class OperationMatrixCoefficientAccess<const T[n]>{
   public:
-    static inline typename coefficientTypeOfType(T[n]) & operation(T (&matrix)[n],const typename indexTypeOfType(T[n]) & i,const typename indexTypeOfType(T[n]) & j){
+    static inline T & operation(T (&matrix)[n],const typename indexTypeOfType(T[n]) & i,const typename indexTypeOfType(T[n]) & j){
       return matrix[i];
     }
-    static inline typename T operation(const T (&matrix )[n],const typename indexTypeOfType(T[n]) &i, const typename indexTypeOfType(T[n]) & j){
+    static inline  T operation(const T (&matrix )[n],const typename indexTypeOfType(T[n]) &i, const typename indexTypeOfType(T[n]) & j){
       return matrix[i];
     }
   };

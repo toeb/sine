@@ -52,7 +52,7 @@ namespace nspace{
   public:
     VectorND();
     //copy constructor
-    VectorND(const VectorND & vec):n(0),v(0){
+    VectorND(const VectorND & vec):v(0),n(0){
       resize(vec.n);
       for(int i=0; i < n; i++){
         v[i] = vec(i);

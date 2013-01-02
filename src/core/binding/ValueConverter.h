@@ -16,6 +16,7 @@ namespace nspace{
   public:
 
     bool convert(void * from, void * to){
+        return false;
     }
   };
   class ValueConverter : public virtual IModifiableValue, private virtual ObjectObserver{

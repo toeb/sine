@@ -122,18 +122,27 @@ public:
      */
     void * createInstance() const;
 
+    void deleteInstance(void * instance)const;
+
     /**
      * \brief Property Id.
      *
      */
     BASIC_PROPERTY(TypeId, Id,public,,,);
-    
+
     /**
      * \brief Property CreateInstanceFunction.
      *        may contain a function which creates an instance of the specified type
      *
      */
     BASIC_PROPERTY(std::function<void * ()>, CreateInstanceFunction, protected,,,);
+
+    /**
+     * \brief Property DeleteInstanceFunction.
+     *        may contain a function which deletes an instance of the specified type
+     *
+     */
+    BASIC_PROPERTY(std::function< void(void*)>, DeleteInstanceFunction, protected,,,);
     
     /**
      * \brief Property Name.
@@ -313,6 +322,7 @@ public:
   class /*nspace::*/ TypeInfo<TYPE>: public /*nspace::*/ Type { \
     TEMPLATEDSINGLETON(TypeInfo, <TYPE>){ \
       setCreateInstanceFunction([] (){return new TYPE; }); \
+      setDeleteInstanceFunction([](void * v){delete static_cast<TYPE*>(v);});\
       setName(# TYPE); \
     } \
   };

@@ -31,9 +31,13 @@ namespace nspace {
    *
    * \return  true if it succeeds, false if it fails.
    */
-  template<typename LHS> bool assignMatrixFunction(LHS & lhs, std::function<typename coefficientTypeOfType(LHS) (typename indexTypeOfType(LHS),typename indexTypeOfType(LHS))> f){
+  template<typename LHS> bool assignMatrixFunction(LHS & lhs, const std::function<typename coefficientTypeOfType(LHS) (typename indexTypeOfType(LHS),typename indexTypeOfType(LHS))> & f){
     return assignMatrixBlindly(lhs,f);
   }
+    template<typename LHS,typename Functor> bool assignMatrixFunction(LHS & lhs, const Functor & f){
+    return assignMatrixBlindly(lhs,std::function<typename coefficientTypeOfType(LHS) (typename indexTypeOfType(LHS),typename indexTypeOfType(LHS))>(f));
+    }
+
 
   // specializations for matrix framework
   template<typename T, typename Index> class MatrixIndexType<std::function<T(Index,Index)> >{

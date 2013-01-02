@@ -5,10 +5,11 @@
 #include <math.matrix/operations/MatrixRowCount.h>
 #include <math.matrix/operations/MatrixColumnCount.h>
 #include <math.matrix/operations/MatrixDimensionCheck.h>
-#include <math.matrix/operations/MatrixMultiplication.h>
+#include <math.matrix/operations/MatrixElementWiseMultiplication.h>
 #include <math.matrix/operations/MatrixSubtraction.h>
 #include <math.matrix/operations/MatrixTypeSelector.h>
 #include <math.matrix/operations/MatrixBinaryOperation.h>
+
 
 namespace nspace{
 

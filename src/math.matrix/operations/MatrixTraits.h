@@ -61,7 +61,7 @@ public:
    * \return  true if scalar matrix, false if not.
    */
   template<typename MatrixType> inline bool isScalarMatrix(){
-    return MatrixTraitIsScalar<typename MatrixType>::isScalar;
+    return MatrixTraitIsScalar<MatrixType>::isScalar;
   }
 
   /**
@@ -72,8 +72,8 @@ public:
    *
    * \return  true if matrix is scalar matrix, false if not.
    */
-  template<typename MatrixType> inline bool isScalarMatrix(const MatrixType & matrix){
-    return isScalarMatrix<typename MatrixType>();
+  template<typename MatrixType> inline bool isScalarMatrix(const MatrixType & ){
+    return isScalarMatrix<MatrixType>();
   }
 
 

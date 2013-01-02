@@ -9,7 +9,7 @@ namespace nspace{
   private:
     TypedValue<T> & _value;
   public:
-    CachedValue(TypedValue<T> & value):_value(value),ChangeTracker(value){cache();}
+    CachedValue(TypedValue<T> & value):ChangeTracker(value),_value(value){cache();}
 
     void cache(){
       //sets cache to to current value of underlying var

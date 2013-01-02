@@ -137,8 +137,8 @@ class TestClass : public virtual PropertyChangingObject{
 int main(int argc, const char ** argv){
   TestClass c1,c2;
   
-  auto binding1 = Binding::create(&c1,"IntegerValue", &c2, "OtherInt");
-  auto binding2 = Binding::create(&c2,"OtherInt", &c1, "IntegerValue");
+  /*auto binding1 =*/ Binding::create(&c1,"IntegerValue", &c2, "OtherInt");
+  /*auto binding2 = */Binding::create(&c2,"OtherInt", &c1, "IntegerValue");
   
   c1.setIntegerValue(3);
 

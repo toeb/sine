@@ -150,10 +150,10 @@ class NumberRangeAttribute{
 class ValidationAttribute{
 
 };
-
+/*
 #define ATTRIBUTE(TARGET,ATTRIBUTENAME,CODE)\
   STATIC_INITIALIZER(TARGET##ATTRIBUTENAME,  {auto attribute = new ATTRIBUTENAME##Attribute(); { CODE;} })
-
+*/
 class Test : public virtual PropertyChangingObject{
   TYPED_OBJECT(Test);
 

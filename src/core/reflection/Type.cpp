@@ -18,7 +18,7 @@ const Type * Types::getType(const std::string & name){
 }
 
 TypeId Type::_typeCounter=0;
-Type::Type():_Id(_typeCounter++),_CreateInstanceFunction([](){return static_cast<void*>(0);}){
+Type::Type():_Id(_typeCounter++),_CreateInstanceFunction([](){return static_cast<void*>(0);}),_DeleteInstanceFunction([](void *){}){
   Types::registerType(this);
 }
 namespace nspace{
@@ -37,6 +37,11 @@ namespace nspace{
 
 void * Type::createInstance()const{
   return getCreateInstanceFunction()();
+}
+
+
+void Type::deleteInstance(void * instance)const{
+    getDeleteInstanceFunction()(instance);
 }
 
 const MemberInfo * Type::getMember(const std::string & name)const{
