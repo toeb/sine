@@ -24,12 +24,13 @@ namespace nspace {
 
   /**
    * \brief Matrix coefficient type. template class which has a typedef Type containing the coefficient type of a MatrixType
-   *        The default is double.  MatrixTypes should specialize this template
+   *        The default is double.  MatrixTypes need to specialize this template
+   * \todo :remove double
    */
   template<typename MatrixType>
   class MatrixCoefficientType {
 public:
-    typedef void Type;
+    typedef double /*void*/ Type;
   };
 
 /**

@@ -4,6 +4,11 @@
 #include <Eigen/Geometry>
 
 namespace nspace{
+
+    template<typename T, int Rows,int Cols> class MatrixCoefficientType<Eigen::Matrix<T,Rows,Cols> >{public: typedef T Type; };
+template<typename T, int Rows,int Cols>class MatrixIndexType<Eigen::Matrix<T,Rows,Cols> >{public: typedef int Type;};
+//template<typename T, int Rows, int Cols> class MatrixRowCount<Eigen::Matrix<T,Rows,Cols> >{public : int operation(const Eigen::Matrix<T,Rows,Cols>  & matrix){return matrix.rows();});
+
   namespace math{
     namespace eigen{
       // it is significant that the NxM matrix format is set to RowMajor . Else simulation.state will not work
@@ -23,7 +28,6 @@ namespace nspace{
       typedef Eigen::Quaternion<Real> Quaternion;
     }
   }
-
   //specialization
   template<>
   class VectorCrossProduct<math::eigen::Vector3D,math::eigen::Vector3D,math::eigen::Vector3D>{

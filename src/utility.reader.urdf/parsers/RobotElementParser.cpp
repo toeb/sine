@@ -112,10 +112,10 @@ void RobotElementParser::convertJoint(ModelNode * node){
   connectorNodeB->set("connector",connectorB);
 
   ModelNode * bodyA = connectorNodeA->predecessors().first();
-  ModelNode * bodyB = connectorNodeB->successors().first();
+  //ModelNode * bodyB = connectorNodeB->successors().first();
 
   CoordinateSystem bodyCoordinatesA;
-  CoordinateSystem bodyCoordinatesB;
+  //CoordinateSystem bodyCoordinatesB;
   CoordinateSystem connectorCoordinatesA;
   CoordinateSystem connectorCoordinatesB;
   CoordinateSystem coordinatesJ;
