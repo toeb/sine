@@ -6,11 +6,176 @@
 #include <core/Serialization.h>
 #include <math.matrix.h>
 
+
 namespace nspace{
+
+
+  template<typename MatrixType>
+  class MatrixWrapper{
+  private:
+    MatrixType & matrix; 
+  public:
+    inline MatrixWrapper(MatrixType & matrix):matrix(matrix){}
+    typedef typename indexTypeOfType(MatrixType) Index;
+    typedef typename coefficientTypeOfType(MatrixType) Coefficient;
+    inline Coefficient & operator()(const Index & i, const Index & j){
+      return coefficient(matrix,i,j);
+    }
+    inline Coefficient operator()(const Index & i, const Index & j)const{
+      return coefficient(matrix,i,j);
+    }
+
+    inline Index rows()const{return nspace::rows(matrix);}
+    inline Index cols()const{return nspace::cols(matrix);}
+  };
+  template<typename VectorType>
+  class VectorWrapper{
+  private:
+    VectorType & vector;
+  public:
+    inline  VectorWrapper(VectorType & vector):vector(vector){}
+    CoefficientAndIndexAliasForType(VectorType);
+    inline  Coefficient & operator()(const Index & i){
+      return coefficient(vector,i);
+    }
+    inline  Coefficient operator()(const Index & i)const{
+      return coefficient(vector,i);
+    }
+    inline Coefficient & operator()(const Index & i, const Index & j){
+      return coefficient(vector,i);
+    }
+    inline Coefficient operator()(const Index & i, const Index & j)const{
+      return coefficient(vector,i);
+    }
+    inline Index size()const{return rows(vector);}
+    inline Index rows()const{return nspace::rows(vector);}
+    inline Index cols()const{return nspace::cols(vector);}
+  };
+
+  
+
+
+
+  template<typename MatrixType>
+  auto wrapMatrix(MatrixType & mat)->MatrixWrapper<MatrixType>{return MatrixWrapper<MatrixType>(mat);}
+  template<typename VectorType>
+  auto wrapVector(VectorType & vector)->VectorWrapper<VectorType>{return VectorWrapper<VectorType>(vector);}
+  TEST(1 , indexOfRowMaximum){
+
+    auto matrix = Matrix3x3::Identity();
+    auto index = indexOfColumnMaximum(matrix, 1, [](const Matrix3x3 & mat, int i, int j){return coefficient(mat,i,j);});
+    CHECK(index==1);
+     index = indexOfColumnMaximum(matrix, 2, [](const Matrix3x3 & mat, int i, int j){return coefficient(mat,i,j);});
+    CHECK(index==2);
+  }
+
+  TEST(1 , rowIndexOfMaximumColumnValue){
+
+    auto matrix = Matrix3x3::Identity();
+    auto index = indexOfColumnMaximum(matrix, 1, [](const Matrix3x3 & mat, int i, int j){return coefficient(mat,i,j);});
+    CHECK(index==1);
+     index = indexOfColumnMaximum(matrix, 2, [](const Matrix3x3 & mat, int i, int j){return coefficient(mat,i,j);});
+    CHECK(index==2);
+  }
+  
+  
+  
+  TEST(1, MaxMatrixElemnt){
+    auto matrix = Matrix3x3::Identity();
+    matrix(1,2)=2;
+
+    int i; int j;
+    indexOfMaximum(matrix,i,j,[](const Matrix3x3 & matrix, int i, int j){return coefficient(matrix,i,j);});
+
+    CHECK(i==1 && j==2);
+
+  }
+  
+
+
+  TEST(1, swapRows){
+    Matrix3x3 matrix = Matrix3x3::Identity();
+    swapRows(matrix,0,2);
+    CHECK(matrix(0,2)==1 && matrix(2,0)==1);
+  }
+
+  
+  TEST(1, SwapCols){
+    Matrix3x3 matrix = Matrix3x3::Identity();
+    swapColumns(matrix,0,1);
+    CHECK(matrix(0,1)==1 && matrix(1,0)==1);
+  }
+
+
+
+  TEST(1, MachinCodeRowCOunt){
+    int arr[]={1,2,3};
+   auto r = rows(arr);
+   auto c = coefficient(arr,1);
+   CHECK(c==2);
+   CHECK(r==3);
+  }
+   TEST(5, GaussJordanElimination){
+    Matrix3x3 A; Matrix3x3 b;
+    A(0,0) = 3;  A(0,1) = 1;   A(0,2)=2; 
+    A(1,0) = 3;  A(1,1) = 1;  A(1,2)=4;  
+    A(2,0) = 5; A(2,1) = 2; A(2,2)=1; 
+    b = Matrix3x3::Identity();
+    
+    //OperationMatrixGaussJordan<Matrix3x3, Matrix3x3>::operation(A,b);
+//    GaussJordanElimination<Matrix3x3,Matrix3x3,matrix2::StaticMatrix<int,3,1>>::gaussJordanEleminitation(A,b);
+
+  }
+
+    TEST(4, GaussJordanElimination){
+    Matrix3x3 A; Matrix3x3 b;
+    A(0,0) = 3;  A(0,1) = 2;   A(0,2)=-1; 
+    A(1,0) = 2;  A(1,1) = -2;  A(1,2)=4;  
+    A(2,0) = -1; A(2,1) = 0.5; A(2,2)=-1; 
+    b = Matrix3x3::Identity();
+
+    
+   // GaussJordanElimination<Matrix3x3,Matrix3x3,matrix2::StaticMatrix<int,3,1>>::gaussJordanEleminitation(A,b);
+
+  }
+  TEST(3,GaussJordanElimination){
+    Matrix3x3 A; Vector3D b;
+    A = Matrix3x3::Identity();
+    b(0)=1;
+    b(1)=3;
+    b(2)=2;
+    
+    //GaussJordanElimination<Matrix3x3,Vector3D,matrix2::StaticMatrix<int,3,1>>::gaussJordanEleminitation(A,b);
+  }
+
+  TEST(2, GaussJordanElimination){
+    Matrix3x3 A; Vector3D b;
+    A(0,0) = 3;  A(0,1) = 2;   A(0,2)=-1; b(0)=1;
+    A(1,0) = 2;  A(1,1) = -2;  A(1,2)=4;  b(1)=-2;
+    A(2,0) = -1; A(2,1) = 0.5; A(2,2)=-1; b(2)=0;
+
+    
+   // GaussJordanElimination<Matrix3x3,Vector3D,matrix2::StaticMatrix<int,3,1>>::gaussJordanEleminitation(A,b);
+
+  }
+
+  TEST(1, GaussJordanElimination){
+    auto identity =Matrix3x3::Identity();
+    auto b = Matrix3x3::Identity();
+    //GaussJordanElimination<Matrix3x3,Matrix3x3,matrix2::StaticMatrix<int,3,1> >::gaussJordanEleminitation(identity,b);
+
+  }
+  TEST(1, RowColCount){
+    auto identity = Matrix3x3::Identity();
+    auto rowCount = rows(identity);
+    auto colCount = cols(identity);
+    CHECK(rowCount==3);
+  }
   TEST(1, OperationMatrixElementWiseUnary){
     double a[3]={9,81,64};
     elementWiseSquareRootInPlace(a);
     CHECK(a[0]==3&&a[1]==9&&a[2]==8);
+
   }
   TEST(2, OperationMatrixElementWiseUnary){
     MatrixNxM mat(100,100);
@@ -28,11 +193,11 @@ namespace nspace{
     matrix2::StaticMatrix<double,10,10> mat;
     assignMatrixFunction(mat,std::function<double(int,int)>([](int i, int j)->double{return (i-5)*(j-5);}));
     elementWiseUnaryInPlace(mat,[](double d)->double{return d*2;});
-    
+
   }
 
 
-  
+
   TEST(1, OperationMatrixCoefficientAccess){
     double a[3]={4,5,6};
     auto a1 = coefficient(a,0,0);
@@ -42,7 +207,7 @@ namespace nspace{
     double d;
     auto sameType = isSameType(a1,d);
     CHECK(sameType)
-    CHECK(a1==4);
+      CHECK(a1==4);
     CHECK(a2==5);
     CHECK(a3==6);
 
@@ -65,21 +230,21 @@ namespace nspace{
 
 
   }
-  
+
   TEST(1, CrossProduct){
     double a[3]={1,0,0};
     Vector3D b(0,1,0);
     {
-    auto c = cross(a,b);
-    CHECK(c(0)==0);
-    CHECK(c(1)==0);
-    CHECK(c(2)==1);
+      auto c = cross(a,b);
+      CHECK(c(0)==0);
+      CHECK(c(1)==0);
+      CHECK(c(2)==1);
     }
     {
-    auto c=cross(b,a);
-    CHECK(c(0)==0);
-    CHECK(c(1)==0);
-    CHECK(c(2)==-1);
+      auto c=cross(b,a);
+      CHECK(c(0)==0);
+      CHECK(c(1)==0);
+      CHECK(c(2)==-1);
     }    
   }
 
@@ -101,7 +266,7 @@ namespace nspace{
     CHECK(a);
   }
 
-  
+
   TEST(2,MatrixElementWiseMultiply){
     matrix2::StaticMatrix<Matrix2x2,2,2> matA,matB;
     matA(0,0)=Matrix2x2::Identity();
@@ -116,7 +281,7 @@ namespace nspace{
     auto result = multiply(matA,matB);
     auto sameType = isSameType(result,matA);
     CHECK(sameType);
-    
+
     for(int i=0; i < 2;i++)for(int j=0; j < 2; j++)for(int k=0;k < 2; k++)for(int l=0; l< 2;l++){
       bool r=false;
       auto val = result(i,j)(k,l);
@@ -124,7 +289,7 @@ namespace nspace{
       else r = val==0;
       CHECK(r);
     }
-    
+
   }
 
 
@@ -147,7 +312,7 @@ namespace nspace{
     CHECK(!isScalarMatrix<Matrix3x3>());
 
   }
-  
+
   TEST(RowTraits, MatrixTraits){
     double d;
     CHECK(rowTraits(d)==Fixed);
@@ -184,7 +349,7 @@ namespace nspace{
   }
 
 
-  
+
   TEST(ColTraits3,MatrixTraits){
     matrix2::StaticMatrix<double,1,1> mat;
     CHECK(columnTraits(mat)==Fixed);
@@ -232,7 +397,7 @@ namespace nspace{
     CHECK(result);
     CHECK(matrix.rows()==5 && matrix.cols()==5);
   }
-  
+
   TEST(MatrixResize1,double){
     double d =32;
     CHECK(!resize(d,2,2))
@@ -245,7 +410,7 @@ namespace nspace{
   TEST(MatrixCoefficientType,double){
     // only compilation matters
     double d = coefficientTypeOfType(double)(0.0);
-     d = coefficientTypeOfInstance(d)(0.0);
+    d = coefficientTypeOfInstance(d)(0.0);
     CHECK(true);
   }
   TEST(MatrixCoefficientType,int){
@@ -263,87 +428,87 @@ namespace nspace{
   }
 
 
-TEST(MatrixCoefficientAccess1,doubleArr){
-  double matrix[3][3] = {{1.0,2.0,3.0},{1.0,2.0,3.0},{1.0,5.0,3.0}};
-  auto & coeff = coefficient(matrix,2,1);
-  coeff = 2.3;
-  CHECK(matrix[2][1]==2.3);
-}
-TEST(MatrixCoefficientAccess2,doubleArr){
-  double matrix[3][2] = {{1.0,2.0},{1.0,2.0},{1.0,5.0}};
-  auto & coeff = coefficient(matrix,1,1);
-  coeff = 2.3;
-  CHECK(matrix[1][1]==2.3);
-}
-TEST(MatrixCoefficientAccess2,doubleArr1d){
-  double matrix[3]={1.0,5.0,3.0};
-  auto & coeff = coefficient(matrix,1,0);
-  CHECK(coeff==5.0);
-  coeff = 2.3;
-  CHECK(matrix[1]==2.3);
-}
-
-template<typename BinaryFunction>
-class MatrixFunction{
-  size_t _rows;
-  size_t _cols;
-  BinaryFunction  _function;
- 
-public:
-
-  ~MatrixFunction(){
-    
+  TEST(MatrixCoefficientAccess1,doubleArr){
+    double matrix[3][3] = {{1.0,2.0,3.0},{1.0,2.0,3.0},{1.0,5.0,3.0}};
+    auto & coeff = coefficient(matrix,2,1);
+    coeff = 2.3;
+    CHECK(matrix[2][1]==2.3);
   }
-  inline auto operator()(size_t i, size_t j)-> decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
-    return std::move(_function(i,j));
+  TEST(MatrixCoefficientAccess2,doubleArr){
+    double matrix[3][2] = {{1.0,2.0},{1.0,2.0},{1.0,5.0}};
+    auto & coeff = coefficient(matrix,1,1);
+    coeff = 2.3;
+    CHECK(matrix[1][1]==2.3);
   }
-  inline auto operator()(size_t i, size_t j)const->const decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
-    return std::move(_function(i,j));
+  TEST(MatrixCoefficientAccess2,doubleArr1d){
+    double matrix[3]={1.0,5.0,3.0};
+    auto & coeff = coefficient(matrix,1,0);
+    CHECK(coeff==5.0);
+    coeff = 2.3;
+    CHECK(matrix[1]==2.3);
   }
-  MatrixFunction(size_t rows, size_t cols, BinaryFunction   function):_rows(rows),_cols(cols),_function(function){
 
+  template<typename BinaryFunction>
+  class MatrixFunction{
+    size_t _rows;
+    size_t _cols;
+    BinaryFunction  _function;
+
+  public:
+
+    ~MatrixFunction(){
+
+    }
+    inline auto operator()(size_t i, size_t j)-> decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
+      return std::move(_function(i,j));
+    }
+    inline auto operator()(size_t i, size_t j)const->const decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
+      return std::move(_function(i,j));
+    }
+    MatrixFunction(size_t rows, size_t cols, BinaryFunction   function):_rows(rows),_cols(cols),_function(function){
+
+    }
+    inline size_t rows()const{return _rows;}
+    inline size_t cols()const{return _cols;}
+  };
+  // todo... double is wrong
+  template<typename BinaryFunction> SpecializeMatrixCoefficientType(MatrixFunction<BinaryFunction>, double);
+
+  template<typename BinaryFunction>
+  auto lazyMatrix(size_t rows, size_t cols, BinaryFunction f)->MatrixFunction<BinaryFunction>{
+    return MatrixFunction<BinaryFunction>(rows, cols,f);
   }
-  inline size_t rows()const{return _rows;}
-  inline size_t cols()const{return _cols;}
-};
-// todo... double is wrong
-template<typename BinaryFunction> SpecializeMatrixCoefficientType(MatrixFunction<BinaryFunction>, double);
-
-template<typename BinaryFunction>
-auto lazyMatrix(size_t rows, size_t cols, BinaryFunction f)->MatrixFunction<BinaryFunction>{
-  return MatrixFunction<BinaryFunction>(rows, cols,f);
-}
 
 
-TEST(MatrixCoefficientAccess1, StandardMatrix){
-  matrix2::StaticMatrix<double,5,2> mat;
-  auto & coeff = coefficient(mat,3,1);
-  coeff = 22;
-  CHECK(mat(3,1)==22);
-}
+  TEST(MatrixCoefficientAccess1, StandardMatrix){
+    matrix2::StaticMatrix<double,5,2> mat;
+    auto & coeff = coefficient(mat,3,1);
+    coeff = 22;
+    CHECK(mat(3,1)==22);
+  }
 
-TEST(MatrixAssign, FuncMatrix){
-  matrix2::StaticMatrix<double,3,3> mat;
-  bool result = assignMatrix(mat,lazyMatrix(3,3,[](int i, int j)->double{return i==j?1.0:0.0;}));
-  CHECK(result);
-  for(int i=0; i < mat.rows(); i++){
-    for(int j=0; j < mat.cols();j++){
-      if(i==j) {
-        CHECK(mat(i,j)==1.0);
-      }else{
-        CHECK(mat(i,j)==0.0);
+  TEST(MatrixAssign, FuncMatrix){
+    matrix2::StaticMatrix<double,3,3> mat;
+    bool result = assignMatrix(mat,lazyMatrix(3,3,[](int i, int j)->double{return i==j?1.0:0.0;}));
+    CHECK(result);
+    for(int i=0; i < mat.rows(); i++){
+      for(int j=0; j < mat.cols();j++){
+        if(i==j) {
+          CHECK(mat(i,j)==1.0);
+        }else{
+          CHECK(mat(i,j)==0.0);
+        }
       }
     }
   }
-}
 
 
 
-TEST(rowcolcount1, scalar){
-  double d = 23;
-  CHECK(rows(d)==1);
-  CHECK(cols(d)==1);
-}
+  TEST(rowcolcount1, scalar){
+    double d = 23;
+    CHECK(rows(d)==1);
+    CHECK(cols(d)==1);
+  }
 
 
 #define BINARYOP_TEST(NAME, OP, TYPE_A, TYPE_B, TYPE_C, STRING_A, STRING_B, STRING_C)\
@@ -364,32 +529,32 @@ TEST(rowcolcount1, scalar){
   OP<TypeC,TypeA,TypeB>::operation(cActual,a,b);\
   bool result =nspace::math::shorthands::matrix::matricesEqual(cExpected,cActual, Real(0.0001));\
   CHECK(result);\
-};
+  };
 
 
-template<typename Operation>
-class OperationTest : public virtual Log{
-public:
-  virtual bool execute()=0;
-};
+  template<typename Operation>
+  class OperationTest : public virtual Log{
+  public:
+    virtual bool execute()=0;
+  };
 
 
-class UnitTest : 
-  public virtual Log, 
-  public virtual Task
-{
-  REFLECTABLE_OBJECT(UnitTest);
-  SUBCLASSOF(Log);
+  class UnitTest : 
+    public virtual Log, 
+    public virtual Task
+  {
+    REFLECTABLE_OBJECT(UnitTest);
+    SUBCLASSOF(Log);
 
-  PROPERTY(bool, Result){}
-  ACTION(ExecuteTest){runTask();}
+    PROPERTY(bool, Result){}
+    ACTION(ExecuteTest){runTask();}
 
-protected:
-  void runTask(){
-    setResult(runTest());
-  }
-  virtual bool runTest()=0;
-};
+  protected:
+    void runTask(){
+      setResult(runTest());
+    }
+    virtual bool runTest()=0;
+  };
 
 
 
@@ -407,24 +572,24 @@ protected:
   bool expectedResult = RESULT;\
   OperationMatrixEquals<TypeA,TypeB,ElementType>::operation(actualResult,a,b,epsilon);\
   CHECK(actualResult==expectedResult);\
-};
+  };
 
-MATRIX_EQUALS_TEST(eq1,Vector3D,Vector3D,"1 2 3","1 2 3",0.001,true);
-MATRIX_EQUALS_TEST(eq2,Vector3D,Vector3D,"1 2 3","1.0001 2.0001 3.0001",0.001,true);
-MATRIX_EQUALS_TEST(eq3,Vector3D,Vector3D,"1 2 3","1.0001 2.0001 3.001001",0.001,false);
+  MATRIX_EQUALS_TEST(eq1,Vector3D,Vector3D,"1 2 3","1 2 3",0.001,true);
+  MATRIX_EQUALS_TEST(eq2,Vector3D,Vector3D,"1 2 3","1.0001 2.0001 3.0001",0.001,true);
+  MATRIX_EQUALS_TEST(eq3,Vector3D,Vector3D,"1 2 3","1.0001 2.0001 3.001001",0.001,false);
 
-BINARYOP_TEST(add1,MatrixAddition,Vector3D,Vector3D,Vector3D,"1 2 3", "4 5 6", "5 7 9");
-BINARYOP_TEST(add2,MatrixAddition,Vector3D,Vector3D,Vector3D,"0 0 0", "0 0 0", "0 0 0");
-BINARYOP_TEST(add3,MatrixAddition,Vector3D,Vector3D,Vector3D,"0 0 1", "0 2 0", "0 2 1");
+  BINARYOP_TEST(add1,MatrixAddition,Vector3D,Vector3D,Vector3D,"1 2 3", "4 5 6", "5 7 9");
+  BINARYOP_TEST(add2,MatrixAddition,Vector3D,Vector3D,Vector3D,"0 0 0", "0 0 0", "0 0 0");
+  BINARYOP_TEST(add3,MatrixAddition,Vector3D,Vector3D,Vector3D,"0 0 1", "0 2 0", "0 2 1");
 
-BINARYOP_TEST(add1,MatrixAddition,Matrix3x3,Matrix3x3,Matrix3x3,
-  "1 0 0 0 1 0 0 0 1",
-  "2 2 2 2 2 2 2 2 2",
-  "3 2 2 2 3 2 2 2 3");
+  BINARYOP_TEST(add1,MatrixAddition,Matrix3x3,Matrix3x3,Matrix3x3,
+    "1 0 0 0 1 0 0 0 1",
+    "2 2 2 2 2 2 2 2 2",
+    "3 2 2 2 3 2 2 2 3");
 
-BINARYOP_TEST(add2,MatrixAddition,Matrix3x3,Matrix3x3,Matrix3x3,
-  "0 0 0 0 0 0 0 0 0",
-  "2 2 2 2 2 2 2 2 2",
-  "2 2 2 2 2 2 2 2 2");
+  BINARYOP_TEST(add2,MatrixAddition,Matrix3x3,Matrix3x3,Matrix3x3,
+    "0 0 0 0 0 0 0 0 0",
+    "2 2 2 2 2 2 2 2 2",
+    "2 2 2 2 2 2 2 2 2");
 
 }

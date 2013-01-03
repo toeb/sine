@@ -57,6 +57,30 @@ public:
   }
 
   /**
+   *
+   * \brief Resizes the matrix specified to a rowvector of dimension newRowCount.
+   *
+   * \tparam  typename VectorType Type of the  vector .
+   * \param [in,out]  vector  The vector.
+   * \param newRowCount       Number of new rows.
+   *
+   * \return  true if it succeeds, false if it fails.
+   */
+
+  template<typename VectorType> inline bool resize(VectorType & vector, typename indexTypeOfType(VectorType) newRowCount){
+    return resize(vector,newRowCount,1);
+  }
+
+  template<typename MatrixType> inline bool ensureMatrixDimension(MatrixType & matrix, typename indexTypeOfType(MatrixType) newRowCount, typename indexTypeOfType(MatrixType) newColCount){
+    if(rows(matrix)==newRowCount&&cols(matrix)==newColCount)return true;
+    return resize(matrix,newRowCount,newColCount);
+  }
+
+  template<typename VectorType> inline bool ensureVectorDimension(VectorType & vector, typename indexTypeOfType(VectorType) newRowCount){
+    return ensureMatrixDimension(vector,newRowCount,1);
+  }
+
+  /**
    * \brief Resizes the matrix lhs to the same dimension as the matrix rhs.
    *
    * \tparam  typename MatrixTypeA  Type of the typename matrix type a.
@@ -69,6 +93,16 @@ public:
   template<typename MatrixTypeA, typename MatrixTypeB> inline bool resize(MatrixTypeA & lhs, const MatrixTypeB & rhs){
     return resize(lhs,rows(rhs),cols(rhs));
   }
+
+  template<typename MatrixType> MatrixType createMatrix(typename indexTypeOfType(MatrixType) rowCount, typename indexTypeOfType(MatrixType) colCount){
+    MatrixType matrix;
+    if(!ensureMatrixDimension(matrix,rowCount,colCount)){}
+    return matrix;
+  }
+  template<typename VectorType> VectorType createVector(typename indexTypeOfType(VectorType) rowCount){
+    return createMatrix<VectorType>(rowCount,1);
+  }
+
 
 /**
  * \brief A macro that defines begin specialize matrix resize. the code for resizeing the matrix "matrix"
@@ -90,5 +124,5 @@ public:
  * \param RESIZECODE  The resize code must return true if it is ensured that matrix has the wished for dimensions else false.
  */
 #define SpecializeMatrixResize(TYPE,RESIZECODE) BeginSpecializeMatrixResize(TYPE) RESIZECODE EndSpecializeMatrixResize
-
+  
 }

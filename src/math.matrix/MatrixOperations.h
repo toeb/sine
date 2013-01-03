@@ -76,10 +76,23 @@
 #include <math.matrix/operations/MatrixRowTraits.h>
 #include <math.matrix/operations/MatrixColumnTraits.h>
 
+#include <math.matrix/operations/MatrixSetZero.h>
+
+#include <math.matrix/operations/MatrixMaximumElement.h>
+#include <math.matrix/operations/MatrixMinimumElement.h>
+#include <math.matrix/operations/MatrixSwap.h>
+#include <math.matrix/operations/MatrixSwapColumns.h>
+#include <math.matrix/operations/MatrixSwapRows.h>
+#include <math.matrix/operations/MatrixOperations.h>
+
+#include <math.matrix/operations/GaussJordanElimination.h>
+
 #include <math.matrix/specialization/Scalars.h>
 #include <math.matrix/specialization/Array1D.h>
 #include <math.matrix/specialization/Array2D.h>
 #include <math.matrix/specialization/StdVector.h>
+
+
 
 namespace nspace{
   namespace math{
