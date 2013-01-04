@@ -50,8 +50,8 @@ namespace nspace{
   //                matrix type    index type  coefficient type  row count   column count
   DeclareMatrixType(float2x1,      int,        float,            return 2,   return 1){
     // code for accessing a reference to matrix at index (i,j)
-    if(j!=0)throw exception("illegal column");
-    if(i >1)throw exception("illegal row");
+    if(j!=0)throw "illegal column";
+    if(i >1)throw "illegal row";
     if(i==0)return matrix.a11;
     return matrix.a21;
   }
@@ -64,7 +64,7 @@ namespace nspace{
     case 1:return matrix.a12;
     case 2:return matrix.a21;
     case 3:return matrix.a22;
-    default: throw(exception());
+      default: throw "illegal index";
     }
   }
 
@@ -117,7 +117,7 @@ void reflectMatrix(const MatrixType & matrix){
   cout <<endl;
 }
 
-void main(){
+int main(){
   float2x2 myFirstCustomMatrix={2.0f,1.0f,-1.0f,3.0f};
   cout << "float2x2" <<endl;
   reflectMatrix(myFirstCustomMatrix);
@@ -159,4 +159,5 @@ void main(){
 
 
   //... on multiple matices
+  return 0;
 }

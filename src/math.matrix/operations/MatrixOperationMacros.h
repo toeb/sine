@@ -2,9 +2,9 @@
 
 
 #define NamedCoefficientAliasForType(TYPE, ALIAS) typedef typename coefficientTypeOfType(TYPE) ALIAS;
-#define NamedCoefficientAliasForInstance(INSTANCE,ALIAS) NamedCoefficientAliasForType(typename decltype(INSTANCE), ALIAS);
+#define NamedCoefficientAliasForInstance(INSTANCE,ALIAS) NamedCoefficientAliasForType( decltype(INSTANCE), ALIAS);
 #define NamedIndexAliasForType(TYPE, ALIAS)  typedef typename indexTypeOfType(TYPE) ALIAS;
-#define NamedIndexAliasForInstance(INSTANCE,ALIAS) NamedIndexAliasForType(typename decltype(INSTANCE),ALIAS);
+#define NamedIndexAliasForInstance(INSTANCE,ALIAS) NamedIndexAliasForType( decltype(INSTANCE),ALIAS);
 #define IndexAliasForType(TYPE) NamedIndexAliasForType(TYPE, Index)
 #define IndexAliasForInstance(INSTANCE) NamedIndexAliasForInstance(INSTANCE, Index)
 #define CoefficientAliasForType(TYPE) NamedCoefficientAliasForType(TYPE,Coefficient)
