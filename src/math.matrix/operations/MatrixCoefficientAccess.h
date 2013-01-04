@@ -21,6 +21,7 @@
 #include <math.matrix/operations/MatrixCoefficientType.h>
 #include <math.matrix/operations/MatrixIndexType.h>
 #include <math.matrix/operations/MatrixIndexMapping.h>
+#include <math.matrix/operations/MatrixOperationMacros.h>
 namespace nspace {
 
    /**
@@ -45,7 +46,7 @@ namespace nspace {
    *
    * \return  .
    */
-  template<typename MatrixType> inline auto coefficient(const MatrixType & matrix, const typename indexTypeOfType(MatrixType) & i,const typename indexTypeOfType(MatrixType) & j)-> typename coefficientTypeOfType(MatrixType);
+  template<typename MatrixType> inline auto coefficient(const MatrixType & matrix, IndexArgument(MatrixType) i,IndexArgument(MatrixType)  j)-> typename coefficientTypeOfType(MatrixType);
 
   /**
    * \brief reference to coefficient at i, given the row/column mapping (default is RowMajor)
@@ -57,7 +58,7 @@ namespace nspace {
    *
    * \return  .
    */
-  template<typename MatrixType> inline auto coefficient(MatrixType & matrix, const typename indexTypeOfType(MatrixType) & i, IndexMapping mapping=RowMajor)->typename coefficientTypeOfType(MatrixType)&;
+  template<typename MatrixType> inline auto coefficient(MatrixType & matrix, IndexArgument(MatrixType)  i, IndexMapping mapping=RowMajor)->typename coefficientTypeOfType(MatrixType)&;
   
   /**
    * \brief value of coefficient at i, given the row/column mapping (default is RowMajor)
@@ -69,7 +70,7 @@ namespace nspace {
    *
    * \return  .
    */
-  template<typename MatrixType> inline auto coefficient(const MatrixType & matrix, const typename indexTypeOfType(MatrixType) & i, IndexMapping mapping=RowMajor)-> typename coefficientTypeOfType(MatrixType);
+  template<typename MatrixType> inline auto coefficient(const MatrixType & matrix, IndexArgument(MatrixType)  i, IndexMapping mapping=RowMajor)-> typename coefficientTypeOfType(MatrixType);
 
  
   /**
@@ -91,7 +92,7 @@ public:
      *
      * \return  the coefficient reference.
      */
-    static inline typename coefficientTypeOfType(MatrixType) & operation(MatrixType & matrix,const typename indexTypeOfType(MatrixType) & i,const typename indexTypeOfType(MatrixType) & j){
+    static inline typename coefficientTypeOfType(MatrixType) & operation(MatrixType & matrix,IndexArgument(MatrixType)  i,IndexArgument(MatrixType)  j){
       return matrix(i,j);
     }
 
@@ -105,7 +106,7 @@ public:
      *
      * \return  the const coefficient reference.
      */
-    static inline typename coefficientTypeOfType(MatrixType) operation(const MatrixType &matrix,const typename indexTypeOfType(MatrixType) &i, const typename indexTypeOfType(MatrixType) & j){
+    static inline typename coefficientTypeOfType(MatrixType) operation(const MatrixType &matrix,IndexArgument(MatrixType) i, IndexArgument(MatrixType)  j){
       return matrix(i,j);
     }
 
@@ -119,10 +120,10 @@ public:
    template <typename MatrixType>
   class OperationMatrixCoefficientAccessSingleIndex{
   public:
-    static inline typename coefficientTypeOfType(MatrixType) & operation(MatrixType  & matrix, const typename indexTypeOfType(MatrixType) & i, IndexMapping mapping){
+    static inline typename coefficientTypeOfType(MatrixType) & operation(MatrixType  & matrix, IndexArgument(MatrixType)  i, IndexMapping mapping){
       return coefficient(matrix,mapRowIndex(matrix,i,mapping),mapColumnIndex(matrix,i,mapping));
     }
-    static inline typename coefficientTypeOfType(MatrixType) operation(const MatrixType & matrix, const typename indexTypeOfType(MatrixType) & i, IndexMapping mapping){
+    static inline typename coefficientTypeOfType(MatrixType) operation(const MatrixType & matrix, IndexArgument(MatrixType)  i, IndexMapping mapping){
       return coefficient(matrix,mapRowIndex(matrix,i,mapping),mapColumnIndex(matrix,i,mapping));
     }
   };
@@ -135,8 +136,8 @@ public:
  */
 #define DefineCoefficientAccess(TYPE,ACCESSCODE)template<> class OperationMatrixCoefficientAccess<TYPE>{ \
 public: \
-    static inline coefficientTypeOfType(TYPE) & operation(TYPE & matrix, const indexTypeOfType(TYPE) & i,const indexTypeOfType(TYPE) & j){return ACCESSCODE; } \
-    static inline coefficientTypeOfType(TYPE) operation(const TYPE &matrix, const indexTypeOfType(TYPE) & i,const indexTypeOfType(TYPE) & j){return ACCESSCODE; } \
+    static inline coefficientTypeOfType(TYPE) & operation(TYPE & matrix, const indexTypeOfType(TYPE) & i,const indexTypeOfType(TYPE) & j){ACCESSCODE;} \
+    static inline coefficientTypeOfType(TYPE) operation(const TYPE &matrix, const indexTypeOfType(TYPE) & i,const indexTypeOfType(TYPE) & j){ACCESSCODE; } \
 };
 
 /**
@@ -147,21 +148,15 @@ public: \
  */
 #define SpecializeCoefficientAccess(TYPE,ACCESSCODE)class OperationMatrixCoefficientAccess<TYPE>{ \
 public: \
-    static inline typename coefficientTypeOfType(TYPE) & operation(TYPE & matrix, const typename indexTypeOfType(TYPE) & i,const typename indexTypeOfType(TYPE) & j){return ACCESSCODE; } \
-    static inline typename coefficientTypeOfType(TYPE)   operation(const TYPE &matrix, const typename indexTypeOfType(TYPE) & i,const typename indexTypeOfType(TYPE) & j){return ACCESSCODE; } \
+    static inline typename coefficientTypeOfType(TYPE) & operation(TYPE & matrix, const typename indexTypeOfType(TYPE) & i,const typename indexTypeOfType(TYPE) & j){ACCESSCODE; } \
+    static inline typename coefficientTypeOfType(TYPE)   operation(const TYPE &matrix, const typename indexTypeOfType(TYPE) & i,const typename indexTypeOfType(TYPE) & j){ACCESSCODE; } \
 };
   
 
   // specializations
 
-  //scalar
-  DefineCoefficientAccess(double,        matrix)
-  DefineCoefficientAccess(float,         matrix)
-  DefineCoefficientAccess(int,           matrix)
-  DefineCoefficientAccess(unsigned int,  matrix)
-  DefineCoefficientAccess(char,          matrix)
-  DefineCoefficientAccess(unsigned char, matrix)
-
+  
+  
   // 2d array of unspecified size
   template<typename T> SpecializeCoefficientAccess(T**,matrix[i][j])
 

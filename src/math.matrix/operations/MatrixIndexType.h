@@ -20,24 +20,7 @@
 
 #include <config.h>
 namespace nspace {
-/**
- * \brief Matrix index type.  has one typedef called Type which contains the type used for MatrixType's Indices
- *        the default Index type is unsigned int.  Matrix classes may specialize this template
- */
-  template<typename MatrixType>
-  class MatrixIndexType {
-public:
-    typedef unsigned int Type;
-  };
-
-/**
- * \brief A macro that defines define matrix index type specialization.
- *
- * \param MATRIXTYPE  The matrixtype.
- * \param INDEXTYPE   The indextype.
- */
-#define DefineMatrixIndexType(MATRIXTYPE,INDEXTYPE) class MatrixIndexType<MATRIXTYPE>{public: typedef INDEXTYPE Type; };
-
+  
 /**
  * \brief A macro that is replaced by the index typ of MATRIXTYPE
  *
@@ -51,4 +34,32 @@ public:
  * \param MATRIXINSTANCE  The matrixinstance.
  */
 #define indexTypeOfInstance(MATRIXINSTANCE) indexTypeOfType( decltype(MATRIXINSTANCE))
+
+
+/**
+ * \brief Matrix index type.  has one typedef called Type which contains the type used for MatrixType's Indices
+ *        the default Index type is unsigned int.  Matrix classes may specialize this template
+ */
+  template<typename MatrixType>
+  class MatrixIndexType {
+public:
+    typedef unsigned int Type;
+  };
+
+/**
+ * \brief A macro that defines partial matrix index type specialization
+ *
+ * \param MATRIXTYPE  The matrixtype.
+ * \param INDEXTYPE   The indextype.
+ */
+#define SpecializeMatrixIndexType(MATRIXTYPE,INDEXTYPE) class MatrixIndexType<MATRIXTYPE>{public: typedef INDEXTYPE Type; };
+
+/**
+ * \brief A macro that defines full matrix index type specialization.
+ *
+ * \param MATRIXTYPE  The matrixtype.
+ * \param INDEXTYPE   The indextype.
+ */
+#define DeclareMatrixIndexType(MATRIXTYPE,INDEXTYPE) template<> SpecializeMatrixIndexType(MATRIXTYPE,INDEXTYPE)
+
 }

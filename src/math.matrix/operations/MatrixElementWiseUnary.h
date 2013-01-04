@@ -83,7 +83,7 @@ namespace nspace {
 #define UnaryElementWiseMatrixOperation(OPCODE) \
   template<typename A,typename B> inline void elementWise ## OPCODE(B & b, const A &a){elementWiseUnaryScalarOperation<math::operation::scalar::opcodes::OPCODE, A, B>(b,a); } \
   template<typename A,typename B> inline B elementWise ## OPCODE(const A &a){B b; elementWise ## OPCODE(b,a); return b; } \
-  template<typename A> inline auto elementWise ## OPCODE(const A &a)->A {return elementWise ## OPCODE< A, A>(a); } \
+  template<typename A> inline A elementWise ## OPCODE(const A &a) {return elementWise ## OPCODE< A, A>(a); } \
   template<typename A> inline void elementWise ## OPCODE ## InPlace(A & a){elementWise ## OPCODE(a,a); }
 
   /**

@@ -20,27 +20,7 @@
 
 #include <config.h>
 namespace nspace {
-
-
-  /**
-   * \brief Matrix coefficient type. template class which has a typedef Type containing the coefficient type of a MatrixType
-   *        The default is double.  MatrixTypes need to specialize this template
-   * \todo :remove double
-   */
-  template<typename MatrixType>
-  class MatrixCoefficientType {
-public:
-    typedef double /*void*/ Type;
-  };
-
-/**
- * \brief A macro that specializes the MatrixCoefficientType class.
- *
- * \param MATRIXTYPE      The matrixtype.
- * \param COEFFICIENTTYPE The coefficienttype.
- */
-#define SpecializeMatrixCoefficientType(MATRIXTYPE,COEFFICIENTTYPE) class MatrixCoefficientType<MATRIXTYPE>{public: typedef COEFFICIENTTYPE Type; };
-
+  
 /**
  * \brief A macro that is replaced by the  coefficient type of a matrix type.
  *
@@ -55,17 +35,27 @@ public:
  */
 #define coefficientTypeOfInstance(MATRIXINSTANCE)  coefficientTypeOfType( decltype(MATRIXINSTANCE))
 
+
+  /**
+   * \brief Matrix coefficient type. template class which has a typedef Type containing the coefficient type of a MatrixType
+   *        The default is double.  MatrixTypes need to specialize this template
+   * \todo :remove double
+   */
+  template<typename MatrixType>
+  class MatrixCoefficientType {
+public:
+    typedef void Type;
+  };
+
+/**
+ * \brief A macro that specializes the MatrixCoefficientType class.
+ *
+ * \param MATRIXTYPE      The matrixtype.
+ * \param COEFFICIENTTYPE The coefficienttype.
+ */
+#define SpecializeMatrixCoefficientType(MATRIXTYPE,COEFFICIENTTYPE) class MatrixCoefficientType<MATRIXTYPE>{public: typedef COEFFICIENTTYPE Type; };
+
+#define DeclareMatrixCoefficientType(MATRIXTYPE,COEFFICIENTTYPE) template<> SpecializeMatrixCoefficientType(MATRIXTYPE,COEFFICIENTTYPE)
   
-  //specializations for scalar types
-  template<> SpecializeMatrixCoefficientType(double,double);
-  template<> SpecializeMatrixCoefficientType(float,float);
-  template<> SpecializeMatrixCoefficientType(int,int);
-  template<> SpecializeMatrixCoefficientType(unsigned int,unsigned int);
-  template<> SpecializeMatrixCoefficientType(char,char);
-  template<> SpecializeMatrixCoefficientType(unsigned char,unsigned char);
-  // specialization for 2d array
-  template<typename T, size_t n, size_t m> SpecializeMatrixCoefficientType(T[n][m],T);
-  // specializeation for 1d array
-  template<typename T, size_t n> SpecializeMatrixCoefficientType(T[n],T);
 
 }

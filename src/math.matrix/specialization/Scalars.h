@@ -23,11 +23,13 @@
  * \brief Contains specializations for scalar matrices.
  */
 #pragma once
+#include <math.matrix/operations/MatrixOperationMacros.h>
 #include <math.matrix/operations/MatrixTraits.h>
 #include <math.matrix/operations/MatrixColumnTraits.h>
 #include <math.matrix/operations/MatrixRowTraits.h>
 #include <math.matrix/operations/MatrixColumnCount.h>
 #include <math.matrix/operations/MatrixRowCount.h>
+#include <math.matrix/operations/MatrixCoefficientType.h>
 
 
 namespace nspace {
@@ -45,6 +47,12 @@ namespace nspace {
   OPERATION(unsigned short); \
   OPERATION(char); \
   OPERATION(unsigned char);
+
+  
+  //specializations for scalar types
+  
+#define DeclareScalarCoefficientType(SCALARTYPE) DeclareMatrixCoefficientType(SCALARTYPE,SCALARTYPE)
+  FOR_ALL_DEFAULT_SCALAR_TYPES(DeclareScalarCoefficientType);
 
   /**
    * \brief Define Scalar Matrix Trait fro default scalars
@@ -78,5 +86,7 @@ SpecializeTypeSelector(TYPE , TYPE, TYPE);
 
   FOR_ALL_DEFAULT_SCALAR_TYPES(DefineScalarTypeSelectors);
 
+#define DeclareScalarCoefficientAccess(SCALARTYPE) DefineCoefficientAccess(SCALARTYPE, return matrix)
+  FOR_ALL_DEFAULT_SCALAR_TYPES(DeclareScalarCoefficientAccess);
 
 }
