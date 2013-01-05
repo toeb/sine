@@ -280,25 +280,25 @@ namespace nspace{
     template<typename T, int RowCount, int ColumnCount>
     inline T StaticMatrix<T,RowCount,ColumnCount>::length()const{
       T result;
-      vectorop::norm(result,*this);
+      nspace::length(result,*this);
       return result;
     }
     template<typename T, int RowCount, int ColumnCount>
     inline T StaticMatrix<T,RowCount,ColumnCount>::norm()const{
       T result;
-      vectorop::norm(result,*this);
+      nspace::length(result,*this);
       return result;
     }
     template<typename T, int RowCount, int ColumnCount>
     inline T StaticMatrix<T,RowCount,ColumnCount>::length2()const{
       T result;
-      vectorop::normSquared(result,*this);
+      nspace::lengthSquared(result,*this);
       return result;
     }
     template<typename T, int RowCount, int ColumnCount>
     inline T StaticMatrix<T,RowCount,ColumnCount>::squaredNorm()const{
       T result;
-      vectorop::normSquared(result,*this);
+      nspace::lengthSquared(result,*this);
       return result;
     }
     template<typename T, int RowCount, int ColumnCount>
@@ -314,7 +314,8 @@ namespace nspace{
     }
     template<typename T, int RowCount, int ColumnCount>
     inline void StaticMatrix<T,RowCount,ColumnCount>::normalize(){
-      vectorop::normalize(*this);
+      nspace::normalize(*this);
+      //vectorop::normalize(*this);
     }
 
     template<typename T, int RowCount, int ColumnCount>

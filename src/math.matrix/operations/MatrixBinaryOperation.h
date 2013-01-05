@@ -33,6 +33,10 @@
 #define MatrixOperationMethod public: static inline void operation
 
 
+#define VectorOperation(NAME) OperationVector##NAME
+#define VectorOperationClass(NAME) class VectorOperation(NAME)
+#define VectorOperationMethod public : static inline void operation
+
 /**
  * \brief A macro that defines the methods for binary a matrix operation.
  *        define methods void OPNAME(c,a,b); C OPNAME(c,a,b) auto OPNAME(c,a,b)

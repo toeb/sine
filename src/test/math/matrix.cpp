@@ -43,6 +43,10 @@ namespace nspace{
     normalize(vec);
     CHECK(vec[0]==1);
   }
+  TEST(1, lengthSquared){
+    auto l2 = lengthSquared(2.0);
+    CHECK(l2==4.0);
+  }
 
   TEST(5, EigenSpecialization){
     float matrix[4][4];
@@ -108,7 +112,7 @@ namespace nspace{
   TEST(1, MatrixTranspose){
     int arrayMatrix[2][2]={{1,2},{3,4}};
     int resultMatrix[2][2];
-    transpose(resultMatrix,arrayMatrix);
+    nspace::transpose(resultMatrix,arrayMatrix);
     CHECK(resultMatrix[0][0]== 1 && resultMatrix[0][1]==3 && resultMatrix[1][0] == 2 && resultMatrix[1][1]==4);
 
     

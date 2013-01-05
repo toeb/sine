@@ -189,8 +189,9 @@ void nspace::glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,con
 
   if(!normal){
     Vector3D n;
-    vectorop::crossProduct(n, b-a, c-a);
-    n.normalize();
+    nspace::triangleNormal(n,a,b,c);
+    //vectorop::crossProduct(n, b-a, c-a);
+    //n.normalize();
     glNormal(n);
   }else{
     glNormal(*normal);

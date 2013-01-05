@@ -198,7 +198,8 @@ namespace nspace{
     template<typename T>
     inline T DynamicMatrix<T>::norm()const{
       T result;
-      vectorop::norm(result,*this);
+      nspace::length(result,*this);
+      //vectorop::norm(result,*this);
       return result;
     }
 
@@ -261,9 +262,9 @@ namespace nspace{
       return true;
     }
     template<typename T>
-    inline DynamicMatrix<T> DynamicMatrix<T>::transpose()const {
+    inline DynamicMatrix<T> DynamicMatrix<T>::transpose()const {     
       DynamicMatrix<T> result;
-      MatrixTranspose<DynamicMatrix<T>,DynamicMatrix<T> >::operation(result,*this);
+      nspace::transpose(result,*this);
       return result;
     }
     template<typename T>
