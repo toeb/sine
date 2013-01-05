@@ -67,4 +67,12 @@ namespace nspace
   SizeType Matrix<T,IndexType,SizeType>::size()const{
     return rows()*cols();
   }
+
+  
+  template<typename T, typename IndexType, typename SizeType>
+  class MatrixCoefficientType<Matrix<T,IndexType,SizeType> >{public: typedef T Type;};
+
+  template<typename T, typename IndexType, typename SizeType>
+  class MatrixIndexType<Matrix<T,IndexType,SizeType> >{public: typedef IndexType Type;};
+
 }
