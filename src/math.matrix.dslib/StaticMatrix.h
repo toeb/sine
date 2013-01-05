@@ -266,7 +266,8 @@ namespace nspace{
     }
     template<typename T, int RowCount, int ColumnCount>
     inline void StaticMatrix<T,RowCount,ColumnCount>::toTransposed(StaticMatrix<T,ColumnCount,RowCount> & AT)const{
-      MatrixTranspose<StaticMatrix<T,ColumnCount,RowCount>, StaticMatrix<T,RowCount,ColumnCount> >::operation(AT,*this);
+        nspace::transpose(AT,*this);
+        //MatrixTranspose<StaticMatrix<T,ColumnCount,RowCount>, StaticMatrix<T,RowCount,ColumnCount> >::operation(AT,*this);
       //MatrixOperations<T>::transpose(AT,*this);
     }
     template<typename T, int RowCount, int ColumnCount>

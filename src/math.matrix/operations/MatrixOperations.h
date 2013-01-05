@@ -10,6 +10,8 @@
 #include <math.matrix/operations/MatrixRowCount.h>
 #include <math.matrix/operations/MatrixColumnCount.h>
 
+#include <math.matrix/operations/MatrixDimensionCheck.h>
+#include <math.matrix/operations/MatrixResize.h>
 #include <math.matrix/operations/MatrixBinaryOperation.h>
 
 

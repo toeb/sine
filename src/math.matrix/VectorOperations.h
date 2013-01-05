@@ -26,7 +26,7 @@ namespace nspace{
         /*template<typename T, typename Vec>
         static inline void innerProduct(T & result,const Vec & a, const Vec& b){
           
-         /* result = 0.0;
+          result = 0.0;
           int dimension = a.size();
 
           for(int i=0; i < dimension; i++){

@@ -47,7 +47,7 @@ namespace nspace {
    * \return  n the resulting normal vector.
    */
   template<typename N, typename A, typename B> inline N normal(ARG_IN(A)a, ARG_IN(B)b){
-    VectorN result;
+    N result;
     normal(result,a,b);
     return result;
   }

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <math.matrix/operations/MatrixIndexType.h>
-
+#include <math.matrix/operations/MatrixRowCount.h>
+#include <math.matrix/operations/MatrixColumnCount.h>
 namespace nspace{  
 
   /**
