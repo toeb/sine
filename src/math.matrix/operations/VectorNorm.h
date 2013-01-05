@@ -1,13 +1,28 @@
 #pragma once
 #include <config.h>
 
-#include <math.matrix/operations/MatrixSubtraction.h>
-#include <math.matrix/operations/VectorCrossProduct.h>
 
-#include <math.matrix/operations/VectorInnerProduct.h>
-#include <math.matrix/operations/MatrixScalarMultiplication.h>
-#include <math.scalar/operations.h>
+#include <math.matrix/operations/VectorNormSquared.h>
+
 namespace nspace{
+
+  template<typename LengthType, typename VectorType> inline void length(LengthType & l, const VectorType & vector);
+  template<typename LengthType, typename VectorType> inline void length(const VectorType & vector){LengthType l; length(l,vector); return l;}
+  template<typename VectorType> typename coefficientTypeOfType(VectorType) inline length(const VectorType & vector){return length<typename coefficientTypeOfType(VectorType)>(vector);}
+
+
+  template<typename LengthType, typename VectorType>
+  VectorOperationClass(Length){
+    VectorOperationMethod(LengthType & length, const VectorType & vector){
+      elementWiseSquareRoot(length, normSquared(vector));
+    }
+  };
+  
+  template<typename LengthType, typename VectorType> inline void length(LengthType & l, const VectorType & vector){
+    OperationVectorLength<LengthType,VectorType>::operation(l,vector);
+  }
+
+
 
 template <typename VectorType>
 inline void normalize(VectorType & vector){

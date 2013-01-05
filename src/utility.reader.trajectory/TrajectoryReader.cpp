@@ -94,7 +94,7 @@ bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> *
   uint lastStride = dim+1;
 
   //
-  for(int offset=0; offset < doubles.size()-lastStride; offset+=stride){
+  for(size_t offset=0; offset < doubles.size()-lastStride; offset+=stride){
     Real t_k = doubles[offset+0];
     //Real t_k_plus1= doubles[offset+1];
     int coeffOffset_k = offset+2;
@@ -114,7 +114,7 @@ bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> *
   }
   t.push_back(doubles[doubles.size()-lastStride]);
   uint i=0;
-  for(int offset=doubles.size()-lastStride+1; offset < doubles.size();offset++ ){
+  for(size_t offset=doubles.size()-lastStride+1; offset < doubles.size();offset++ ){
     MatrixNxM a_k;
     a_k.resize(dim,4);
     a_k.setZero();
@@ -130,7 +130,7 @@ bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> *
   typedef NormalizedBoundedFunction<VectorND,Polynom<VectorND,MatrixNxM>> NormalizedCubicInterpolation;
 
   NormalizedCubicInterpolation * f_k=0;
-  for(int i=0; i < n-1;i++){
+  for(size_t i=0; i < n-1;i++){
     Interval interval(t[i],t[i+1]);
 
     Polynom<VectorND,MatrixNxM> polynom;
@@ -162,7 +162,7 @@ bool TrajectoryReader::parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> 
   }
   NormalizedLinearInterpolation * f_k=0;
 
-  for(int k=0; k < n-1;k++){
+  for(size_t k=0; k < n-1;k++){
     Interval interval(t[k],t[k+1]); // create interval
     LinearInterpolation<VectorND> interpolation(u[k] ,u[k+1]);// create linear interpolation between two sample points
     f_k = new NormalizedLinearInterpolation(interval,interpolation); // create normalized interpolation function

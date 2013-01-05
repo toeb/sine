@@ -86,12 +86,17 @@
 #include <math.matrix/operations/MatrixOperations.h>
 
 #include <math.matrix/operations/GaussJordanElimination.h>
+#include <math.matrix/operations/VectorNormalize.h>
+#include <math.matrix/operations/VectorNorm.h>
+
+#include <math.matrix/operations/VectorNormal.h>
+#include <math.matrix/operations/VectorTriangleNormal.h>
+
 
 #include <math.matrix/specialization/Scalars.h>
 #include <math.matrix/specialization/Array1D.h>
 #include <math.matrix/specialization/Array2D.h>
 #include <math.matrix/specialization/StdVector.h>
-
 
 
 namespace nspace{

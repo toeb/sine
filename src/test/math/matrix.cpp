@@ -5,61 +5,126 @@
 #include <core.task.h>
 #include <core/Serialization.h>
 #include <math.matrix.h>
-
+#include <math.matrix.eigen.h>
 
 namespace nspace{
 
-
-  template<typename MatrixType>
-  class MatrixWrapper{
-  private:
-    MatrixType & matrix; 
-  public:
-    inline MatrixWrapper(MatrixType & matrix):matrix(matrix){}
-    typedef typename indexTypeOfType(MatrixType) Index;
-    typedef typename coefficientTypeOfType(MatrixType) Coefficient;
-    inline Coefficient & operator()(const Index & i, const Index & j){
-      return coefficient(matrix,i,j);
-    }
-    inline Coefficient operator()(const Index & i, const Index & j)const{
-      return coefficient(matrix,i,j);
-    }
-
-    inline Index rows()const{return nspace::rows(matrix);}
-    inline Index cols()const{return nspace::cols(matrix);}
-  };
-  template<typename VectorType>
-  class VectorWrapper{
-  private:
-    VectorType & vector;
-  public:
-    inline  VectorWrapper(VectorType & vector):vector(vector){}
-    CoefficientAndIndexAliasForType(VectorType);
-    inline  Coefficient & operator()(const Index & i){
-      return coefficient(vector,i);
-    }
-    inline  Coefficient operator()(const Index & i)const{
-      return coefficient(vector,i);
-    }
-    inline Coefficient & operator()(const Index & i, const Index & j){
-      return coefficient(vector,i);
-    }
-    inline Coefficient operator()(const Index & i, const Index & j)const{
-      return coefficient(vector,i);
-    }
-    inline Index size()const{return rows(vector);}
-    inline Index rows()const{return nspace::rows(vector);}
-    inline Index cols()const{return nspace::cols(vector);}
-  };
-
+  TEST(1, Normal){
+    auto n =triangleNormal(Vector3D::UnitX(),Vector3D::UnitY(),Vector3D::UnitZ());
   
+    
+    double d;
+    d = math::shorthands::scalar::squareRoot(1.0/3.0);
+    DOUBLES_EQUAL(n(0),d,0.0001);
+    DOUBLES_EQUAL(n(1),d,0.0001);
+    DOUBLES_EQUAL(n(2),d,0.0001);
+  }
 
+  TEST(3, Normalized){
+    Vector3D vec(5,5,5);
+    Vector3D result = normalized(vec);
+    double d;
+    d = math::shorthands::scalar::squareRoot(1.0/3.0);
+    CHECK(result(0)==d && result(1)==d && result(2)==d);
 
+  }
 
-  template<typename MatrixType>
-  auto wrapMatrix(MatrixType & mat)->MatrixWrapper<MatrixType>{return MatrixWrapper<MatrixType>(mat);}
-  template<typename VectorType>
-  auto wrapVector(VectorType & vector)->VectorWrapper<VectorType>{return VectorWrapper<VectorType>(vector);}
+  TEST(2, Normalized){
+    float vec[3]={3,0,0};
+    float result[3];
+    normalized(result,vec);
+    CHECK(vec[0]==3);
+    CHECK(result[0]==1);
+  }
+
+  TEST(1, Normalized){
+    float vec[3]={3,0,0};
+
+    normalize(vec);
+    CHECK(vec[0]==1);
+  }
+
+  TEST(5, EigenSpecialization){
+    float matrix[4][4];
+    Eigen::Matrix<float,4,4> id = Eigen::Matrix<float,4,4>::Identity();
+    assignMatrix(matrix, id);
+    CHECK(matrix[2][2]==1);
+  }
+  
+  TEST(4 ,EigenSpecialization){
+    Eigen::Matrix<float,Eigen::Dynamic, Eigen::Dynamic> matrix(4,4);
+    matrix.setIdentity();
+    CHECK(rows(matrix)==4);
+    CHECK(cols(matrix)==4);
+    CHECK(!isScalarMatrix(matrix));
+    CHECK(rowTraits(matrix)==Dynamic);
+    CHECK(columnTraits(matrix)==Dynamic);
+    auto sametype = isSameType<coefficientTypeOfInstance(matrix), float>();
+    CHECK(sametype);
+    auto c11 = coefficient(matrix,0,0);
+    CHECK(c11==1.0f);
+  }  
+  TEST(3 ,EigenSpecialization){
+    Eigen::Matrix<float,4, Eigen::Dynamic> matrix(4,4);
+    matrix.setIdentity();
+    CHECK(rows(matrix)==4);
+    CHECK(cols(matrix)==4);
+    CHECK(!isScalarMatrix(matrix));
+    CHECK(rowTraits(matrix)==Fixed);
+    CHECK(columnTraits(matrix)==Dynamic);
+    auto sametype = isSameType<coefficientTypeOfInstance(matrix), float>();
+    CHECK(sametype);
+    auto c11 = coefficient(matrix,0,0);
+    CHECK(c11==1.0f);
+  }
+  
+  TEST(2 ,EigenSpecialization){
+    Eigen::Matrix<float,Eigen::Dynamic, 4> matrix(4,4);
+    matrix.setIdentity();
+    CHECK(rows(matrix)==4);
+    CHECK(cols(matrix)==4);
+    CHECK(!isScalarMatrix(matrix));
+    CHECK(rowTraits(matrix)==Dynamic);
+    CHECK(columnTraits(matrix)==Fixed);
+    auto sametype = isSameType<coefficientTypeOfInstance(matrix), float>();
+    CHECK(sametype);
+    auto c11 = coefficient(matrix,0,0);
+    CHECK(c11==1.0f);
+  }
+  TEST(1 ,EigenSpecialization){
+    Eigen::Matrix<float, 3,3> matrix;
+    matrix.setIdentity();
+    CHECK(rows(matrix)==3);
+    CHECK(cols(matrix)==3);
+    CHECK(!isScalarMatrix(matrix));
+    CHECK(rowTraits(matrix)==Fixed);
+    CHECK(columnTraits(matrix)==Fixed);
+    auto sametype = isSameType<coefficientTypeOfInstance(matrix), float>();
+    CHECK(sametype);
+    auto c11 = coefficient(matrix,0,0);
+    CHECK(c11==1.0f);
+  }
+
+  TEST(1, MatrixTranspose){
+    int arrayMatrix[2][2]={{1,2},{3,4}};
+    int resultMatrix[2][2];
+    transpose(resultMatrix,arrayMatrix);
+    CHECK(resultMatrix[0][0]== 1 && resultMatrix[0][1]==3 && resultMatrix[1][0] == 2 && resultMatrix[1][1]==4);
+
+    
+  }
+
+  TEST(1 ,MatrixWrapper){
+    int arrayMatrix[4][4];
+    auto matrix = wrapMatrix(arrayMatrix);
+
+    CHECK(matrix.rows()==4);
+    CHECK(matrix.cols()==4);
+    matrix(1,1)= 55;
+    CHECK(arrayMatrix[1][1]==55);
+    
+  }
+
   TEST(1 , indexOfRowMaximum){
 
     auto matrix = Matrix3x3::Identity();

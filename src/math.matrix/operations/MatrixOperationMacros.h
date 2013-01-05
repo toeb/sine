@@ -1,5 +1,7 @@
 #pragma once
 
+#define ARG_IN(TYPE) const TYPE &
+#define ARG_OUT(TYPE) TYPE &
 
 #define NamedCoefficientAliasForType(TYPE, ALIAS) typedef typename coefficientTypeOfType(TYPE) ALIAS;
 #define NamedCoefficientAliasForInstance(INSTANCE,ALIAS) NamedCoefficientAliasForType( decltype(INSTANCE), ALIAS);
@@ -12,8 +14,8 @@
 #define CoefficientAndIndexAliasForType(TYPE) IndexAliasForType(TYPE) CoefficientAliasForType(TYPE)
 #define CoefficientAndIndexAliasForInstance(INSTANCE) IndexAliasForInstance(TYPE) CoefficientAliasForInstance(TYPE)
 
-
-#define IndexArgument(MATRIXTYPE) const typename indexTypeOfType(MATRIXTYPE) &
+// maybe this is wron. in parallel environments const refs to indices could have unexpected results.
+#define IndexArgument(MATRIXTYPE) ARG_IN(typename indexTypeOfType(MATRIXTYPE))
 
 #define matrixForEachRow(MATRIX)\
   NamedIndexAliasForInstance(MATRIX,RowIndex)\

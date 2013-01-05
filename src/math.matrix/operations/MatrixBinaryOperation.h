@@ -16,7 +16,6 @@
   template<typename A, typename B> inline auto OPNAME(const A & a, const B & b) -> typename RETURNTYPE{return OPNAME<typename RETURNTYPE,A,B>(a,b);}\
   template<typename A, typename B> inline void OPNAME##InPlace(A & a,const B&b){OPNAME(a,a,b);}
 
-
 #define UnaryMatrixOperationOtherReturnType(OPNAME,RETURNTYPE)\
   template<typename A,typename B> inline void OPNAME(B & b, const A & a);\
   template<typename A,typename B> inline B OPNAME(const A & a){B b; OPNAME(b,a); return b;}\

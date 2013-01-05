@@ -1,6 +1,8 @@
 
 set(source
  ./Matrix.h
+ ./MatrixFacade.h
+ ./VectorFacade.h
  ./Vector.h
  ./Quaternion.h
  ./MatrixOperations.h

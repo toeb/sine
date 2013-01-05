@@ -31,6 +31,16 @@ public:
     static const bool isScalar = false;
   };
 
+  template<typename MatrixType>
+  class MatrixTraitTransposedType{
+  public:
+    typedef void Type;
+  };
+  
+#define SpecializeMatrixTraitTransposedType(TYPE, TRANSPOSEDTYPE) class MatrixTraitTransposedType<TYPE>{public: typedef TRANSPOSEDTYPE Type;};
+#define DeclareMatrixTraitTransposedType(TYPE, TRANSPOSEDTYPE) template<> class MatrixTraitTransposedType<TYPE>{public: typedef TRANSPOSEDTYPE Type;};
+
+
 /**
  * \brief A macro that defines define matrix scalar trait for a type.
  *

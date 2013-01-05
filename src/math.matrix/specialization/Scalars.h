@@ -89,4 +89,7 @@ SpecializeTypeSelector(TYPE , TYPE, TYPE);
 #define DeclareScalarCoefficientAccess(SCALARTYPE) DefineCoefficientAccess(SCALARTYPE, return matrix)
   FOR_ALL_DEFAULT_SCALAR_TYPES(DeclareScalarCoefficientAccess);
 
+#define DeclareScalarMatrixTransposedTypeTrait(SCALARTYPE) DeclareMatrixTraitTransposedType(SCALARTYPE,SCALARTYPE)
+  FOR_ALL_DEFAULT_SCALAR_TYPES(DeclareScalarMatrixTransposedTypeTrait);
+
 }

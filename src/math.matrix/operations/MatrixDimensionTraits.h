@@ -29,9 +29,15 @@ namespace nspace {
    *        or infinite (ie. functions that are calculate when called)
    */
   enum DimensionTraits {
+    ///< An enum constant representing the unknown dimension type
     Unknown,
+    ///< An enum constant representing fixed at compile time dimension option
     Fixed,
+    ///< An enum constant representing the dynamic dimension option (dimension may vary)
     Dynamic,
-    Infinite
+    ///< An enum constant representing the infinite dimension option
+    Infinite,
+    ///< An enum constant representing the fixed at runtime dimension option
+    FixedAtRuntime
   };
 }

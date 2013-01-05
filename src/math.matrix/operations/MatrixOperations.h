@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <math.matrix/operations/MatrixOperationMacros.h>
 #include <math.matrix/operations/MatrixTraits.h>
 #include <math.matrix/operations/MatrixRowTraits.h>
 #include <math.matrix/operations/MatrixColumnTraits.h>

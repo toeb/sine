@@ -18,10 +18,7 @@
  */
 #pragma once
 #include <config.h>
-#include <math.matrix/operations/MatrixCoefficientAccess.h>
-#include <math.matrix/operations/MatrixRowCount.h>
-#include <math.matrix/operations/MatrixColumnCount.h>
-#include <math.matrix/operations/MatrixTraits.h>
+#include <math.matrix/operations/MatrixOperations.h>
 namespace nspace {
 
   /**
@@ -59,17 +56,14 @@ public:
      * \param b             The const Summand2 &amp; to process.
      */
     static inline void operation(Sum & sum, const Summand1 & a, const Summand2 & b){
-      auto rowCount = rows(a);
-      auto colCount = cols(a);
+      CoefficientAliasForType(Sum);
       // recursion anchor. 
       if(isScalarMatrix<Sum>()) {
         coefficient(sum,0,0)=coefficient(a,0,0)+coefficient(b,0,0);
         return;
       }
-      for(int i=0; i < rowCount; i++) {
-        for(int j=0; j < colCount; j++) {
-          add(coefficient(sum,i,j),coefficient(a,i,j),coefficient(b,i,j));
-        }
+      matrixForEach(sum){
+        add(coefficient(sum,i,j),coefficient(a,i,j),coefficient(b,i,j));
       }
     }
   };
