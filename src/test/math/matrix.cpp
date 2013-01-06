@@ -7,7 +7,143 @@
 #include <math.matrix.h>
 #include <math.matrix.eigen.h>
 
+
+#define mathError(ERROR) throw ERROR;
 namespace nspace{
+
+  template<typename T ,T defaultValue, bool variable>
+  class variableIf{};
+  template<typename T, T defaultValue>
+  class variableIf<T,defaultValue,true>{
+  private:
+    T _value;
+  public:
+    inline operator T (){return get();}
+    inline variableIf(){set(defaultValue);}
+    inline variableIf<T,defaultValue,true> &  operator =(const T other){set(other);return *this;}
+    inline void set(const T value){_value = value;}
+    inline T get()const{return _value;}
+  };
+  template<typename T, T defaultValue>
+  class variableIf<T,defaultValue,false>{
+  public :    
+    inline variableIf<T,defaultValue,false> &  operator =(const T other){set(other);return *this;}
+    inline operator T (){return get();}  
+    inline void set(const T value){}
+    inline T get(){return defaultValue;}    
+  };
+
+
+
+
+  TEST(1,templateTest){
+    variableIf<int,5,true> var;
+    variableIf<int,5,false> var2;
+    
+    int val = var;
+    int val2 = var2;
+    
+    CHECK(val==5);
+    CHECK(var2==5);
+
+    var = 5125;
+    var2 = 3235;
+
+    CHECK(var==5125);
+    CHECK(var2==5);
+  }
+
+
+  template<typename T>
+  class Limits{
+  public:
+    static const unsigned int factorialLimit=171;
+    static const unsigned int lnOfFactorialLimit=2500;
+
+  };
+  
+
+
+
+  template<typename T>
+  class LnOfGamma{
+  private:
+    static const T coefficients[14];    
+  public:
+    static T operation(const T xx){      
+      // from numerical recipes
+      if(xx<=0)mathError( "lnGamma not defined for x <= 0");
+      T x,tmp,y,ser;
+      y=x=xx;
+      tmp = x+5.24218750000000000;//671/128
+      tmp = (x+0.5)*log(tmp)-tmp;
+      ser = 0.999999999999997092;
+      for(int j=0; j < 14;j++) ser += LnOfGamma<double>::coefficients[j];
+      return tmp+log(2.5066282746310005*ser/x);
+    }
+  };
+
+  const double LnOfGamma<double>::coefficients[14]={
+      57.1562356658629235,
+      -59.5979603554754912,
+      14.1360979747417471,
+      -0.491913816097620199,
+      0.339946499848118887e-4,
+      .465236289270485756e-4,
+      -0.983744753048795646e-4,
+      0.158088703224912494e-3,
+      -0.210264441724104883e-3,
+      0.217439618115212643e-3,
+      -0.164318106536763890e-3,
+      0.844182239838527433e-4,
+      -0.261908384015814087e-4,
+      0.368991826595316234e-5
+    };
+  class SpecialFunctions{
+  public:
+
+    static double factorial(const int n){     
+      static double factorialTable[Limits<double>::factorialLimit];
+      static bool initialize = true;
+      if(initialize){
+        // calculate all factorials
+        factorialTable[0]=1.0;
+        for(int i=1; i < Limits<double>::factorialLimit; i++) factorialTable[i]=factorialTable[i-1]*i;        
+        initialize=false;
+      }
+
+      if(n<0||n>Limits<double>::factorialLimit)mathError("factorial out of range");
+      return factorialTable[n];
+    }
+    static double lnOfFactorial(const int n){
+      static double table[Limits<double>::lnOfFactorialLimit];
+      static bool initialize=true;
+      if(initialize){
+        for(int i=0; i < Limits<double>::lnOfFactorialLimit;i++){
+          table[i] = lnGamma(i+1.0);
+        }
+        initialize=false;
+      }
+      if(n<0)mathError( "lnOfFactorial not defined for n < 0");
+      if(n < Limits<double>::lnOfFactorialLimit)return table[n];
+      return lnGamma(n+1.0);
+    }
+    static double binomialCoefficient(const int n, const int k){
+      if(n<0||k<0||k>n)mathError( "binomialCoefficient not defined for given n and k ");
+      if(n<Limits<double>::factorialLimit) return floor(0.5+factorial(n)/(factorial(k)-factorial(n-k)));
+      return floor(0.5+exp(lnOfFactorial(n)-lnOfFactorial(k)-lnOfFactorial(n-k)));
+    }
+    static double lnGamma(const double xx){
+      return LnOfGamma<double>::operation(xx);
+    }
+    static double gamma(const double xx){
+      return exp(lnGamma(xx));
+    }
+    static double beta(const double z, const double w){
+      // B(z,w) = Gamma(z)*Gamma(w)/Gamma(z+w)
+      return exp(lnGamma(z)+lnGamma(w)-lnGamma(z+w));
+    }
+  };
 
   TEST(1, Normal){
     auto n =triangleNormal(Vector3D::UnitX(),Vector3D::UnitY(),Vector3D::UnitZ());
@@ -528,11 +664,11 @@ namespace nspace{
     ~MatrixFunction(){
 
     }
-    inline auto operator()(size_t i, size_t j)-> decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
-      return std::move(_function(i,j));
+    inline auto operator()(size_t i, size_t j)-> decltype(MatrixFunction<BinaryFunction>::_function(i,j)){
+      return _function(i,j);
     }
-    inline auto operator()(size_t i, size_t j)const->const decltype(MatrixFunction<BinaryFunction>::_function(i,j))&&{
-      return std::move(_function(i,j));
+    inline auto operator()(size_t i, size_t j)const->const decltype(MatrixFunction<BinaryFunction>::_function(i,j)){
+      return _function(i,j);
     }
     MatrixFunction(size_t rows, size_t cols, BinaryFunction   function):_rows(rows),_cols(cols),_function(function){
 
