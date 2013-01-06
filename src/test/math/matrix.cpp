@@ -11,6 +11,29 @@
 #define mathError(ERROR) throw ERROR;
 namespace nspace{
 
+
+  TEST(1, unsignedIntMatrixAssignment){
+    unsigned int * rhs = new  unsigned int[3];
+    
+    rhs[0]=5;
+    rhs[1] =4;
+    rhs[2] =23;
+    unsigned int lhs[3];
+    auto v1= coefficient(rhs,1,0);
+    auto & v2 = coefficient(lhs,1,0);
+    
+    indexTypeOfType(unsigned int[3]) r1 = rows(lhs);
+    indexTypeOfType(const unsigned int *) r2 = rows(rhs);
+    indexTypeOfType(unsigned int[3]) c1 = cols(lhs);
+    indexTypeOfType(const unsigned int *) c2 = cols(rhs);
+    coefficient(lhs,1,0)=coefficient(rhs,1,0);
+
+    assignMatrixBlindly(lhs,rhs);
+  }
+
+
+
+
   template<typename T ,T defaultValue, bool variable>
   class variableIf{};
   template<typename T, T defaultValue>
