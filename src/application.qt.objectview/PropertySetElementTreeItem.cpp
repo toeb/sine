@@ -15,6 +15,7 @@ std::string SetElementTreeItem::getDisplayValue(){
 }
 
 SetElementTreeItem::SetElementTreeItem(PropertySetTreeItem & parent, uint index):_ParentSetItem(&parent){
+  setLoggingLevel(1);
   setItemIndex(index);
   logInfo("creating SetElementTreeItem for item "<<index);
 }

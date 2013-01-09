@@ -37,6 +37,7 @@ void PropertySetTreeItem::onChange(Observable* sender){
   refresh();
 }
 PropertySetTreeItem::PropertySetTreeItem():_PropertySetInfo(0),_PropertyObject(0){
+  setLoggingLevel(1);
   debugInfo("creating PropertySetTreeItem");
 }
 

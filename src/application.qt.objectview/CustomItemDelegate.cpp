@@ -28,6 +28,7 @@ Set<Creator*> Creators(Object * object){
 };*/
 
 CustomItemDelegate::CustomItemDelegate(QObject * object):QStyledItemDelegate(object){
+  setLoggingLevel(1);
 }
 QWidget * CustomItemDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index)const{
   // return something else for custom handling

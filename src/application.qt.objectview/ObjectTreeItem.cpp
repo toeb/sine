@@ -3,6 +3,7 @@
 using namespace nspace;
 
 ObjectTreeItem::ObjectTreeItem(){
+  setLoggingLevel(1);
   logInfo("creating ObjectTreeItem");
 }
 void ObjectTreeItem::doExpand(){

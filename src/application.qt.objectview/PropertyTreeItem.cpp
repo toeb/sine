@@ -46,6 +46,7 @@ void PropertyTreeItem::onObjectChanged(){
 }
 
 PropertyTreeItem::PropertyTreeItem(){
+  setLoggingLevel(1);
   debugInfo("creating PropertyTreeItem");
 }
 void PropertyTreeItem::doExpand(){

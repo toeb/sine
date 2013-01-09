@@ -3,7 +3,8 @@
 using namespace nspace;
 using namespace std;
 
-TreeItem::TreeItem():_Object(0),_IsExpanded(false),_Model(0){}
+TreeItem::TreeItem():_Object(0),_IsExpanded(false),_Model(0){
+}
 
 TreeItem::~TreeItem(){
   successors().foreachElement([](TreeItem* item){

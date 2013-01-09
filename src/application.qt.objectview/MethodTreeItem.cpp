@@ -38,6 +38,7 @@ void MethodTreeItem::onObjectChanged(){
 }
 
 MethodTreeItem::MethodTreeItem(){
+  setLoggingLevel(1);
   debugInfo("creating MethodTreeItem");
 }
 void MethodTreeItem::doExpand(){

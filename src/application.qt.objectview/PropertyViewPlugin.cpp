@@ -3,6 +3,7 @@
 using namespace nspace;
 
 PropertyViewPlugin::PropertyViewPlugin():_Object(0),_StartVisible(false),_ObjectPropertyView(0){
+  setLoggingLevel(1);
 }
 void PropertyViewPlugin::propertyChanging(ObjectPropertyView*, ObjectPropertyView){
   if(oldvalue){

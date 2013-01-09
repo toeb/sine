@@ -85,7 +85,10 @@ TreeItem* ObjectPropertyViewModel::getItem(const QModelIndex & index)const{
   if(item)item->setModelIndex(index);
   return item;
 }
-ObjectPropertyViewModel::ObjectPropertyViewModel():_CurrentObject(0),_RootItem(0){}
+ObjectPropertyViewModel::ObjectPropertyViewModel():_CurrentObject(0),_RootItem(0){
+
+  setLoggingLevel(1);
+}
 
 QModelIndex  ObjectPropertyViewModel::parent( const QModelIndex& index ) const {
   if(!index.isValid())return QModelIndex();

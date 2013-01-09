@@ -25,6 +25,7 @@ namespace nspace{
   public:
     ObjectViewPlugin():_SearchString(""),_ui(0){
       setName("ObjectViewPlugin");
+      setLoggingLevel(1);
     }
     void onPropertyChanged(const std::string & name);
     virtual void install(PluginContainer & container);
