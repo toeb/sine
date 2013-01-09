@@ -12,6 +12,7 @@ namespace nspace{
       //< the static data array
       T _data[RowCount*ColumnCount];
     public:
+      
       StaticMatrix(const StaticMatrix<T,RowCount,ColumnCount> & orig);
       StaticMatrix(const T& x, const T& y);
       StaticMatrix(const Real * dataPtr);
@@ -79,7 +80,7 @@ namespace nspace{
 
       inline int index(int i, int j)const;
       inline bool resize(int rows, int cols);
-
+      
     protected:
       // access read/write and read access to the values of the data array
       inline Real & value(int i, int j);

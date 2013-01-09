@@ -108,7 +108,20 @@ public:
     return assignMatrixBlindly(lhs,rhs);
   }
 
-  
+  /**
+   * \brief Converts the given right hand side to a matrix of type LHS.
+   *
+   * \tparam  typename LHS  Type of the  left hand side.
+   * \tparam  typename RHS  Type of the  right hand side.
+   * \param rhs The right hand side.
+   *
+   * \return the converted matrix .
+   */
+  template<typename LHS, typename RHS> inline LHS convert(const RHS & rhs){
+    LHS lhs;
+    assignMatrix(lhs,rhs);
+    return lhs;
+  }
 
 
 /**

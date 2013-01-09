@@ -47,6 +47,7 @@ namespace nspace
     return result;
   }
 
+
   template<typename T, typename IndexType, typename SizeType>
   void Matrix<T,IndexType,SizeType>::toStream(std::ostream & s)const{
     for(Index i=0; i < rows(); i++){
