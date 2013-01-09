@@ -23,6 +23,8 @@
 /**
  * \file src/vis/opengl/Utility.h
  */
+#pragma once
+
 #include <math/core.h>
 #include <visualization.opengl/opengl.h>
 #include <simulation.kinematics/CoordinateSystem.h>
@@ -39,7 +41,7 @@ namespace nspace {
    * \param v The const VectorType&amp; to process.
    */
   template<typename VectorType> void glVertex(const VectorType& v){
-    glVertex3d(v(0), v(1), v(2));
+    glVertex3d(coefficient(v,0), coefficient(v,1), coefficient(v,2));
   }
 
   /**
@@ -49,7 +51,7 @@ namespace nspace {
    * \param v The const VectorType&amp; to process.
    */
   template<typename VectorType> void glNormal(const VectorType& v){
-    glNormal3d(v(0), v(1), v(2));
+    glNormal3d(coefficient(v,0), coefficient(v,1), coefficient(v,2));
   }
 
   /**
@@ -69,7 +71,7 @@ namespace nspace {
    * \param v The const VectorType&amp; to process.
    */
   template<typename VectorType> void glTranslate(const VectorType& v){
-    glTranslated(v(0), v(1), v(2));
+    glTranslated(coefficient(v,0), coefficient(v,1), coefficient(v,2));
   }
 
   /**
@@ -120,6 +122,19 @@ namespace nspace {
    */
   void glTriangle(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & n);
 
+  template<typename VectorA,typename VectorB, typename VectorC>
+  void glTriangle(const VectorA & a, const VectorB & b, const VectorC & c){
+    glBegin(GL_TRIANGLES);
+      glNormal(triangleNormal(a,b,c));
+      glTexCoord2f (0.0, 0.0);
+      glVertex(a);
+      glTexCoord2f (1.0, 0.0);
+      glVertex(b);
+      glTexCoord2f (0.0,1.0);
+      glVertex(c);
+    glEnd();
+  }
+
   /**
    * \brief Gl quad. Draws a Quad 2D surface defined by its four cornerpoints and normal vector n
    *
@@ -129,7 +144,7 @@ namespace nspace {
    * \param d The const Vector3D &amp; to process.
    * \param n The const Vector3D &amp; to process.
    */
-  void glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d,const Vector3D & n);
+ // void glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d,const Vector3D & n);
 
   /**
    * \brief Gl scale. scales the 3 dimensions by Vector
@@ -264,16 +279,33 @@ namespace nspace {
    */
   void glSphere(double r, int lats, int longs);
 
-  /**
-   * \brief Gl quad.
-   *
-   * \param a       The const Vector3D &amp; to process.
-   * \param b       The const Vector3D &amp; to process.
-   * \param c       The const Vector3D &amp; to process.
-   * \param d       The const Vector3D &amp; to process.
-   * \param normal  (optional) the normal.
-   */
-  void glQuad(const Vector3D & a,const Vector3D & b,const Vector3D & c,const Vector3D & d, const Vector3D * normal=0);
+
+  
+
+  template<typename VectorA, typename VectorB, typename VectorC, typename VectorD, typename VectorN>
+void glQuad(const VectorA & a,const VectorB & b,const VectorC & c,const VectorD & d, const VectorN & normal){
+  glBegin(GL_QUADS);
+  glNormal(normal);
+  glTexCoord2d(0, 1); glVertex(a);
+  glTexCoord2d(1, 1); glVertex(b);
+  glTexCoord2d(1, 0); glVertex(c);
+  glTexCoord2d(0, 0); glVertex(d);
+  glEnd();
+}
+template<typename VectorA, typename VectorB, typename VectorC, typename VectorD>
+void glQuad(const VectorA & a,const VectorB & b,const VectorC & c,const VectorD & d){
+  Vector3D normal;
+  triangleNormal(normal,a,b,c);
+  glQuad(a,b,c,d,normal);
+}
+
+template<typename VectorA, typename VectorB, typename VectorC, typename VectorD>
+void glWireQuad(const VectorA & a,const VectorB & b,const VectorC & c,const VectorD & d){
+  glLine(a,b);
+  glLine(b,c);
+  glLine(c,d);
+  glLine(d,a);
+}
 
   /**
    * \brief Gl quad. alternative formulation.  a position, orientation and side length specifies a square quad
@@ -282,7 +314,73 @@ namespace nspace {
    * \param orientation The orientation.
    * \param sidelength  (optional) the sidelength.
    */
-  void glQuad(const Vector3D & position, const Quaternion & orientation, Real sidelength=1);
+void glQuad(const Vector3D & position, const Quaternion & orientation, Real a);
+
+
+
+    void glPushAll();
+    void glPopAll();
+
+
+template<typename VectorA,typename VectorB, typename VectorC, typename VectorD, typename VectorE, typename VectorF, typename VectorG, typename VectorH>
+void glHexahedron(const VectorA & v000, const VectorB & v001, const VectorC & v010, const VectorD & v011, const VectorE & v100, const VectorF & v101, const VectorG & v110, const VectorH & v111){
+  glQuad(v000,v010,v011,v001);
+  glQuad(v001,v101,v111,v011);
+  glQuad(v101,v100,v110,v111);
+  glQuad(v000,v010,v110,v100);
+  glQuad(v011,v111,v110,v010);
+  glQuad(v001,v000,v100,v101);
+}
+template<typename VectorA,typename VectorB, typename VectorC, typename VectorD, typename VectorE, typename VectorF, typename VectorG, typename VectorH>
+void glWireHexahedron(const VectorA & v000, const VectorB & v001, const VectorC & v010, const VectorD & v011, const VectorE & v100, const VectorF & v101, const VectorG & v110, const VectorH & v111){
+  
+  glWireQuad(v000,v010,v011,v001);
+  glWireQuad(v001,v101,v111,v011);
+  glWireQuad(v101,v100,v110,v111);
+  glWireQuad(v000,v010,v110,v100);
+  glWireQuad(v011,v111,v110,v010);
+  glWireQuad(v001,v000,v100,v101);
+}
+
+template<typename VectorCenter, typename RotationMatrix, typename Width,typename Height, typename Depth>
+void glBox(const VectorCenter & center, const RotationMatrix & R, const Width width, const Height height, const Depth depth){
+  static Vector3D v000(-0.5,-0.5,-0.5);
+  static Vector3D v001(-0.5,-0.5,0.5);
+  static Vector3D v010(-0.5,0.5,-0.5);
+  static Vector3D v011(-0.5,0.5,0.5);
+  static Vector3D v100(0.5,-0.5,-0.5);
+  static Vector3D v101(0.5,-0.5,0.5);
+  static Vector3D v110(0.5,0.5,-0.5);
+  static Vector3D v111(0.5,0.5,0.5);
+  glPushMatrix();
+  glTranslate(center);
+  glRotate(R);
+  glScale(width,height,depth);
+
+  glHexahedron(v000,v001,v010,v011,v100,v101,v110,v111);
+  glPopMatrix();
+}
+
+
+template<typename VectorCenter, typename RotationMatrix, typename Width,typename Height, typename Depth>
+void glWireBox(const VectorCenter & center, const RotationMatrix & R, const Width width, const Height height, const Depth depth){
+  static Vector3D v000(-0.5,-0.5,-0.5);
+  static Vector3D v001(-0.5,-0.5,0.5);
+  static Vector3D v010(-0.5,0.5,-0.5);
+  static Vector3D v011(-0.5,0.5,0.5);
+  static Vector3D v100(0.5,-0.5,-0.5);
+  static Vector3D v101(0.5,-0.5,0.5);
+  static Vector3D v110(0.5,0.5,-0.5);
+  static Vector3D v111(0.5,0.5,0.5);
+  glPushMatrix();
+  glTranslate(center);
+  glRotate(R);
+  glScale(width,height,depth);
+
+  glWireHexahedron(v000,v001,v010,v011,v100,v101,v110,v111);
+  glPopMatrix();
+}
+
 
   /**
    * \brief Gl line. draws a line
@@ -290,7 +388,14 @@ namespace nspace {
    * \param a The const Vector3D &amp; to process.
    * \param b The const Vector3D &amp; to process.
    */
-  void glLine(const Vector3D & a, const Vector3D & b);
+  template<typename VectorA, typename VectorB>
+  void glLine(const VectorA & a, const VectorB & b){
+    glBegin (GL_LINES);
+    glVertex(a);
+    glVertex(b);
+    glEnd ();
+  }
+
 
   /**
    * \brief Gl vector. draws a Line from start to start + direction
@@ -298,5 +403,17 @@ namespace nspace {
    * \param start     The start.
    * \param direction The direction.
    */
-  void glVector(const Vector3D & start, const Vector3D & direction);
+  //void glVector(const Vector3D & start, const Vector3D & direction);
+  template<typename VectorA, typename VectorB>
+  void glVector(const VectorA & start, const VectorB & direction){
+    glLine(start,add(start,direction));
+  }
+
+
+  template<typename VectorType>
+  void glPoint(const VectorType & vector){
+    glBegin(GL_POINTS);
+      glVertex(vector);
+    glEnd();
+  }
 }

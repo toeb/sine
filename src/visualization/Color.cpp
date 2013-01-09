@@ -49,7 +49,9 @@ namespace nspace{
     return !(a==b);
   }
 }
-
+ Color::Color(const char * name){
+   setTo(std::string(name));
+ }
 Color::Color(const std::string & name){
   setTo(name);
 }

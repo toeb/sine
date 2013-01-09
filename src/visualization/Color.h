@@ -74,6 +74,16 @@ private:
     static std::string _defaultname;
 public:
 
+  /**
+   * \brief Gets the color array as a shared pointer so that its memory is freed when not used anymore.
+   *
+   * \return  .
+   */
+  std::shared_ptr<float> colorArray()const{
+    std::shared_ptr<float> result(new float[4]);
+    colorArray(result.get());
+    return result;
+  }
     /**
      * \brief Gets the unknown color.
      *
@@ -90,6 +100,8 @@ public:
      * \param name  The name.
      */
     Color(const std::string & name);
+
+    Color(const char * name);
 
     /**
      * \brief setTo assigns this color the value of the color represented by name (or black if the name

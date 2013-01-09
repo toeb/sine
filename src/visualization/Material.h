@@ -129,6 +129,8 @@ public:
      */
     Material(const std::string & name);
 
+    Material(const char * name);
+
     Material(const Material &material);
     Material & operator =(const Material &material);
   };

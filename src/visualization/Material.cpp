@@ -67,6 +67,9 @@ Material::Material(const std::string & name){
   setTo(name);
 }
 
+Material::Material(const char * name){
+  setTo(name);
+}
 Material::Material(const Material & material){
   *this = material;
 }

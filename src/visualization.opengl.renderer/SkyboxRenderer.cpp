@@ -45,7 +45,7 @@ void SkyboxRenderer::onBeforeRendering(Viewport & viewport){
   glMaterial(m);
   Textures().at(0)->bind();
 
-  glQuad(Vector3D(-3,0,0),Quaternion::Identity(),1);
+  glQuad(Vector3D(-3,0,0),Quaternion::Identity(),1.0);
 
   glDisable(GL_DEPTH_TEST);
   //glCallList(2412);
