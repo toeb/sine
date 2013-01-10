@@ -1,0 +1,6 @@
+bunny.ply
+happy.ply
+dragon.ply
+hand.ply
+horse.ply
+blade.ply
