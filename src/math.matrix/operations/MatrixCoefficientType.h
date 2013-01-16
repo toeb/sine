@@ -44,7 +44,7 @@ namespace nspace {
   template<typename MatrixType>
   class MatrixCoefficientType {
 public:
-    typedef void Type;
+    typedef double Type;
   };
 
 /**
