@@ -79,7 +79,7 @@ TEST(6, CustomMesh){
 
 TEST(1, MtlReader){
   MtlReader reader;
-  bool result = reader.readFile("material/mtl/example.mtl");
+  bool result = reader.readFile("materials/mtl/example.mtl");
   CHECK(result);
 }
 

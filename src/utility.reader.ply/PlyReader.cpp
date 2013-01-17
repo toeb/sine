@@ -2,6 +2,7 @@
 
 #include <utility.reader.h>
 #include <map>
+#include <fstream>
 #include <rply/rply.h>
 
 using namespace nspace;
@@ -52,7 +53,16 @@ namespace nspace{
     }
 
     bool doRead(){
-      const char * fn = "";
+      const char * fn = tmpnam(0);
+      ofstream outstream(fn);
+      char c;
+      while(_reader.stream()){
+        _reader.stream().get(c);
+        outstream<<c;
+      }
+      outstream.close();
+
+      
       logInfo("opening ply file '"<<fn<<"'");
       p_ply ply = ply_open(fn,&plyErrorCallback,0,this);
       if(!ply)return false;

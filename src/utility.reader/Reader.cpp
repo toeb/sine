@@ -55,6 +55,9 @@ bool Reader::runTaskReturnSuccess(){
 }
 void Reader::clearResult(){}
 
+std::istream & Reader::stream(){
+return *_stream;
+}
 bool Reader::readString(const std::string & str){
   std::stringstream stream(str);
   setStream(stream);
@@ -67,6 +70,7 @@ bool Reader::readStream(istream & stream){
 
 bool Reader::readFile(const std::string & filename){
   std::ifstream stream(filename);
+  setStream(stream);
   bool result = read();
   stream.close();
   return result;

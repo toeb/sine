@@ -46,6 +46,7 @@ namespace nspace {
 
   protected:
     virtual bool doRead()=0;
+    std::istream & stream();
     virtual void clearResult();
   public:    
     Reader();

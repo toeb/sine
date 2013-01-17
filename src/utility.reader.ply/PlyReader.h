@@ -42,7 +42,8 @@ class PlyReader : public Reader{
   PROPERTY(bool, ReadObjectInfo){}
   PROPERTY(bool, Cancel){}
   SIMPLE_PROPERTY(std::shared_ptr<PlyObject>, Result){}
-
+  
+  friend class PrivatePlyReader;
   PrivatePlyReader* reader;
 public:
   PlyReader();
@@ -53,7 +54,6 @@ protected:
   // returns a filename which can be opened by plyopen. (may be a temp file constructed from a stream)
   const char * filename();
   bool doRead();
-  friend class PrivatePlyReader;
 };
 
 

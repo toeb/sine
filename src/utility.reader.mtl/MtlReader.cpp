@@ -138,7 +138,6 @@ const std::vector<std::shared_ptr<Material> > & MtlReader::Materials(){
   return _materials; 
 };
 bool MtlReader::doRead(){
-  std::ifstream file("materials/mtl/example.mtl");
-  parseLineWise(file,parsers,Abort());
+  parseLineWise(stream(),parsers,Abort());
   return true;
 }
