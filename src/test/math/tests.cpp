@@ -6,6 +6,9 @@
 
 
 using namespace nspace;
+
+
+
 TEST(IdentityCreation, Quaternion){
   Quaternion q = Quaternion::Identity();
   

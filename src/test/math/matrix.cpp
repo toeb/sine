@@ -7,9 +7,13 @@
 #include <math.matrix.h>
 #include <math.matrix.eigen.h>
 
-
+using namespace std;
 #define mathError(ERROR) throw ERROR;
 namespace nspace{
+  
+
+
+
 
 
   TEST(1, unsignedIntMatrixAssignment){
@@ -27,7 +31,6 @@ namespace nspace{
     indexTypeOfType(unsigned int[3]) c1 = cols(lhs);
     indexTypeOfType(const unsigned int *) c2 = cols(rhs);
     coefficient(lhs,1,0)=coefficient(rhs,1,0);
-
     assignMatrixBlindly(lhs,rhs);
   }
 
