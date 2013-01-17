@@ -23,6 +23,8 @@ set(source
  ./TaskDelegate.cpp
  ./TaskRunnerBase.h
  ./TaskRunnerBase.cpp
+ ./StatefulTask.h
+ ./StatefulTask.cpp
  ../include/core.task.h
 )
 
