@@ -32,6 +32,8 @@
 #include <math.scalar/operation/SquareRoot.h>
 
 
+
+
 #define FOR_ALL_UNARY_SCALAR_OPERATIONCODES(DEFINITION) \
 DEFINITION(Signum);\
 DEFINITION(Cosinus);\
@@ -56,6 +58,30 @@ DEFINITION(SquareRoot);
   template<typename T> T NAME(const T & a,const T & b){T result; NAME(result, a,b); return result; }
 
 namespace nspace{
+  
+/**
+ * \brief Clamps the given value to the specified interval.
+ *
+ * \tparam  typename T  Type of the value.
+ * \param [in,out]  value The value.
+ * \param max             The maximum.
+ * \param min             The minimum.
+ *
+ * \return  true if value was clamped false if value was in range
+ */
+template<typename T> inline bool clamp(T & value, T min, T max){
+  if(value <min){
+    value=min;
+    return true;
+  }
+  if(value>max){
+    value=max;
+    return true;
+  }
+  return false;
+}
+
+
   namespace math{
     namespace shorthands{
       namespace scalar{
