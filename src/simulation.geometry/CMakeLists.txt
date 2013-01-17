@@ -20,6 +20,8 @@ set(geometry_SRC
 set(mesh_SRC
  ./mesh/Mesh.h
  ./mesh/Mesh.cpp
+ ./mesh/MeshOperations.h
+ ./mesh/MeshOperations.cpp
  
 )
 source_group("mesh" FILES ${mesh_SRC})
