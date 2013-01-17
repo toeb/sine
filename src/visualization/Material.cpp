@@ -55,12 +55,13 @@ void Material::setTo(const std::string & name){
   *this = mat;
 }
 
-Material::Material(){}
+Material::Material():_Model(ColorOnly){}
 Material::Material(const Color & color){
   _Ambient = color;
   _Diffuse = color;
   _Specular = color;
   _Emission = Color(0,0,0,0);
+  _Model=ColorOnly;
   _Shininess = 10;
 }
 Material::Material(const std::string & name){
@@ -80,5 +81,6 @@ Material & Material::operator =(const Material& material){
   _Emission=material.Emission();
   _Shininess=material.Shininess();
   _MaterialName=material.MaterialName();
+  _Model = material._Model;
   return *this;
 }
