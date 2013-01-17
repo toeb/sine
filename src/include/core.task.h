@@ -15,3 +15,6 @@
 #include <core.task/ImmediateTaskRunner.h>
 
 #include <core.task/TaskDelegate.h>
+
+#include <core.task/ExtendedTask.h>
+#include <core.task/StatefulTask.h>
