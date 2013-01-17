@@ -1,8 +1,8 @@
 set(source 
- ./ObjMeshReader.h
- ./ObjMeshReader.cpp
+ ./ObjReader.h
+ ./ObjReader.cpp
+ ../include/utility.reader.obj.h
 )
-
 
 source_group("" FILES ${source})
 add_library(utility.reader.obj ${source} CMakeLists.txt)
