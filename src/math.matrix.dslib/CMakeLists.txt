@@ -9,6 +9,7 @@ QuaternionOperators.h
 StaticMatrix.h
 StaticMatrixOperators.h
 core.h
+../include/math.matrix.dslib.h
 )
 source_group("" FILES ${source})
 
