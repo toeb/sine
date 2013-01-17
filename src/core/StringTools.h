@@ -24,6 +24,12 @@ namespace nspace{
     std::string spaces(unsigned int n);
     // repeats str n times
     std::string repeat(const std::string & str, unsigned int n );
+    // trims the stream and retruns the string
+    std::string trim(std::stringstream & stream);
+    std::string trim(const std::string & str);
+    bool startsWith(const std::string & subject,const std::string & what);
+    bool startWithIgnoreCase(const std::string &subject, const std::string & what);
+
   }
 }
 

@@ -86,6 +86,22 @@ namespace nspace{
   static bool serialize(std::ostream & stream,const TYPE* value){SERIALIZE;return true;}\
   };
 
+  template<typename T>
+  bool deserialize(T & value, std::istream & stream){
+    return Deserializer<T>::deserialize(&value,stream);  
+  }
+  template<typename T>
+  T deserialize(std::istream & stream){
+    T value;
+    deserialize(value,stream);
+    return value;
+  }
+  template<typename T>
+  bool serialize(const T & value, std::ostream & stream){
+    Serializer<T>::serialize(stream,&value);
+  }
+
+
   // this macro allows easy creation of serializes based on the stream operator << and >>
 #define DEFAULTSERIALIZERS(TYPE) SERIALIZERS(TYPE,stream<<*value;return true;,stream>>*value;return true;)
 

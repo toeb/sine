@@ -7,6 +7,42 @@
 using namespace std;
 using namespace nspace::stringtools;
 
+
+std::string nspace::stringtools::trim(std::stringstream & stream){      
+      std::stringstream result;
+      char c;
+      while(stream.get(c)){
+        switch(c){
+        case ' ':
+        case '\t':
+        case '\n':
+        case '\r':
+          continue;
+        default:
+          result<<c;
+        };          
+      }
+      return result.str();
+    }
+    std::string nspace::stringtools::trim(const std::string & str){
+      std::stringstream stream(str);
+      return trim(stream);
+    }
+    bool nspace::stringtools::startsWith(const std::string & subject,const std::string & what){
+      if(subject.size()<what.size())return false;
+      int i=0;
+      for(int i=0; i < what.size(); i++){
+        if(what[i]!=subject[i])return false;
+      };
+      return true;
+    }
+    bool nspace::stringtools::startWithIgnoreCase(const std::string &subject, const std::string & what){
+      auto s =toLowerCase(subject);
+      auto w = toLowerCase(what);
+      return startsWith(s,w);
+    }
+
+
 std::string nspace::stringtools::toLowerCase(const std::string & original){
   std::string data = original;
   std::transform(data.begin(), data.end(), data.begin(), ::tolower);
