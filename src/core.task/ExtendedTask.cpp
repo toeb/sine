@@ -1,16 +1,16 @@
 #include "ExtendedTask.h"
 #include <core/NamedObject.h>
 using namespace nspace;
-ExtendedTask::ExtendedTask():_runCount(0),_runTime(0),_running(false){
+ExtendedTask::ExtendedTask():_RunCount(0),_RunTime(0),_IsRunning(false){
 }
 void ExtendedTask::onBeforeRun(){
-  _running=true;
-  _lastStartTime = systemTime();
+  setIsRunning(true);
+  setLastStartTime(systemTime());
 }
 void ExtendedTask::onAfterRun(){
-  _runTime += systemTime()-_lastStartTime;
-  _runCount++;
-  _running=false;
+  setRunTime(systemTime()-getLastStartTime());
+  setRunCount(getRunCount()+1);
+  setIsRunning(false);
 }
 
 void ExtendedTask:: toString(std::ostream & o)const{
@@ -18,5 +18,5 @@ void ExtendedTask:: toString(std::ostream & o)const{
   o << "<task ";
   if(named)  o << " name=\"" << named->name()  << "\"";
   else  o << "" ;
-  o <<" runcount = "<<_runCount<< " runtime = "<<_runTime<<" />";
+  o <<" runcount = "<<getRunCount()<< " runtime = "<<getRunTime()<<" />";
 }

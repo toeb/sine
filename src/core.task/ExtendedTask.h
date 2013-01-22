@@ -4,13 +4,14 @@
 #include <core/Time.h>
 #include <functional>
 namespace nspace{
-  class ExtendedTask :public virtual Task{
+  class ExtendedTask :public virtual Task, public virtual PropertyChangingObject{
     TYPED_OBJECT(ExtendedTask);
+    PROPERTY(long, RunCount){}
+    PROPERTY(Time, RunTime){}
+    PROPERTY(Time, LastStartTime){}
+    PROPERTY(bool, IsRunning){}
   private :
-    long _runCount;
-    Time _runTime;
-    Time _lastStartTime;
-    bool _running;
+
   public:
     ExtendedTask();
     virtual void toString(std::ostream & o)const;
