@@ -9,4 +9,5 @@
 #include <visualization.opengl.renderer.geometry/PointRenderer.h>
 #include <visualization.opengl.renderer.geometry/PolygonRenderer.h>
 #include <visualization.opengl.renderer.geometry/SphereRenderer.h>
+#include <visualization.opengl.renderer.geometry/mesh/basic/BasicMeshRenderer.h>
 //#include <visualization.opengl.renderer.geometry/BoundingOctreeRenderer.h>
