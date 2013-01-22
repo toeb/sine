@@ -25,14 +25,15 @@ set(meshSource
  ./mesh/Mesh.cpp
  ./mesh/MeshRenderer.h
  ./mesh/MeshRenderer.cpp
- ./mesh/ObjMesh.h
- ./mesh/ObjMesh.cpp
  ./mesh/SphereMesh.h
  ./mesh/SphereMesh.cpp
  ./mesh/PlaneMesh.h
  ./mesh/PlaneMesh.cpp
  ./mesh/PlyMesh.h
  ./mesh/PlyMesh.cpp
+ ./mesh/basic/BasicMeshRenderer.h
+ ./mesh/basic/BasicMeshRenderer.cpp
+ 
 )
 source_group("mesh" FILES ${meshSource})
 set(source ${source} ${meshSource})
