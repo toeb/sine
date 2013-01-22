@@ -17,27 +17,37 @@
  *
  */
 #pragma once
-#include <utility.reader.h>
 #include <math.matrix.h>
+#include <utility.reader.mtl.h>
+#include <utility.reader.mesh.h>
 namespace nspace {
+
+
 /**
  * \brief Mesh Reader for Wavefront obj files.
  *        specification for obj file format: http://www.martinreddy.net/gfx/3d/OBJ.spec
  */
-  class ObjReader : public Reader {
+  class ObjReader : public MeshReader {
     REFLECTABLE_OBJECT(ObjReader);
-    SUBCLASSOF(Reader);
+    SUBCLASSOF(MeshReader);
 
     typedef std::function<void (std::istream & )> Parser;
     typedef nspace::Vector3D Vector3D;
     typedef nspace::Vector2D TextureVector;
-
+    typedef MeshFace Face;
+    typedef MeshElement::Index Index;
+    
     std::map<std::string, Parser> parsers;
     std::vector<std::string> comments;
-    std::vector<Vector3D> positions;
-    std::vector<Real> positionWeight;
-    std::vector<TextureVector> textureCoordinates;
-    std::vector<Vector3D> normals;
+   
+    Set<std::string> groups;
+    Set<std::string> objects;
+    Set<std::string> materials;
+    
+    Set<Index> currentGroups;
+    Index currentMaterial;
+    Index currentObject;
+    Index currentSmoothingGroup;
 
 public:
     ObjReader();
@@ -48,9 +58,12 @@ private:
     void parseFace(std::istream & stream);
     void parseComment(std::istream & stream);
     void parseGroup(std::istream& stream);
-    void parseObject(std::istream & object);
+    void parseObject(std::istream & stream);
+    void parseMaterialLibrary(std::istream & stream);
+    void parseUseMaterial(std::istream &stream);
+    void parseSmoothingGroup(std::istream &stream);
 protected:
-    bool doRead();
+    bool readMesh(IMeshBuilder & meshBuilder);
   };
 
 }
