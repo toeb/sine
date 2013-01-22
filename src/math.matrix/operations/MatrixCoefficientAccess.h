@@ -82,7 +82,6 @@ namespace nspace {
   template<typename MatrixType>
   class OperationMatrixCoefficientAccess {
 public:
-
     /**
      * \brief reference access to a matrix coefficient
      *

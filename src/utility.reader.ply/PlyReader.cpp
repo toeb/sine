@@ -127,6 +127,7 @@ bool  PlyReader::readMesh(IMeshBuilder & builder){
   }
 
   builder.end();
+  return true;
 }
 
 //what follows is a slew of ideas for parsing a ply file.... 
@@ -662,7 +663,7 @@ PlyStateMachine():PlyState(new PlyInitialState()){}
 #include <map>
 
 namespace nspace{
-/*
+
 struct PlyElement;
 
 struct PlyObject:public std::map<std::string,std::shared_ptr<PlyElement> >{

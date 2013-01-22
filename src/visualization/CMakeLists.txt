@@ -29,7 +29,7 @@ set(source
 source_group("" FILES ${source})
 
 add_library(visualization ${source}  CMakeLists.txt)
-target_link_libraries(visualization simulation.interaction core.hub math lodepng)
+target_link_libraries(visualization simulation.interaction simulation.kinematics core.hub math lodepng)
 
 
 

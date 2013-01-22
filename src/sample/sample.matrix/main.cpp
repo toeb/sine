@@ -16,7 +16,8 @@
  * More information at: https://dslib.assembla.com/
  *
  */
-
+#define IGNOREFILE
+#ifndef IGNOREFILE
 // to use matrix functionality include math.matrix.h
 #include <math.matrix.h>
 
@@ -161,3 +162,8 @@ int main(){
   //... on multiple matices
   return 0;
 }
+#else
+
+int main(){return 0;}
+
+#endif

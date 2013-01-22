@@ -57,7 +57,7 @@ class ProgressReporter : public virtual PropertyChangingObject, public virtual L
   PROPERTY(double,NotificationInterval){}
   PROPERTY(bool, LogProgress){}
 public:
-  ProgressReporter():_TotalProgress(1),_Progress(0),_NotificationInterval(0.01),_LogProgress(true),_NumberOfNotifications(200.0){
+  ProgressReporter():_NumberOfNotifications(200.0),_TotalProgress(1),_Progress(0),_NotificationInterval(0.01),_LogProgress(true){
     resetProgress();
   
   };

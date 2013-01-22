@@ -44,8 +44,8 @@ namespace nspace {
     return result;
   }
   template<typename VectorA,typename VectorB, typename VectorC>
-  inline typename returnType(VectorA, typename returnType(VectorB,VectorC)) triangleNormal(ARG_IN(VectorA) a, ARG_IN(VectorB) b, ARG_IN(VectorC) c){
-    return triangleNormal<typename returnType(VectorA, typename returnType(VectorB,VectorC)),VectorA,VectorB,VectorC>(a,b,c);
+  inline typename MatrixTypeSelector<VectorA, typename returnType(VectorB,VectorC)>::Type triangleNormal(ARG_IN(VectorA) a, ARG_IN(VectorB) b, ARG_IN(VectorC) c){
+    return triangleNormal<typename MatrixTypeSelector<VectorA, typename returnType(VectorB,VectorC)>::Type,VectorA,VectorB,VectorC>(a,b,c);
   }
 
   template<typename VectorN, typename VectorA, typename VectorB, typename VectorC>

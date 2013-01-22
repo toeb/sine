@@ -12,11 +12,12 @@
 #include <simulation.geometry/mesh/MeshOperations.h>
 #include <iostream>
 #include <fstream>
+#include <core/patterns/Multiton.h>
 
 #include <core.fsm/HierarchicalFiniteStateMachine.h>
 using namespace nspace;
 
-
+/*
 TEST(7, MeshBuilder){
   
 }
@@ -76,7 +77,7 @@ TEST(6, CustomMesh){
     CHECK(result.position()(0)==0);
   }
 }
-
+*/
 
 class A: public Object{
   TYPED_OBJECT(A);

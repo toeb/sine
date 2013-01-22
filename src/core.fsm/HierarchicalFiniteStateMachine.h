@@ -104,7 +104,7 @@ return it->second;
 
 
     State * parent(){
-      return parentState;
+        return getParentState();
     }
 
     HierarchicalStateMachine():_CurrentState(0), _ParentState(0), _InitialState(0){
@@ -112,11 +112,11 @@ return it->second;
     }
 
     virtual State * process(TokenType token){
-      if(recursiveConsume(token))return &derived();
+      if(recursiveConsume(token))return &this->derived();
 
       auto newState = transition(token);
       recursiveConsume(token);
-      return &derived();
+      return &this->derived();
     }
 
     int stateDepth()const{
@@ -128,12 +128,12 @@ return it->second;
         if(getCurrentState())return getCurrentState().currentChildState()-1;
         return 0;
       }
-      return & derived();
+      return & this->derived();
     }
 
     inline State * leafState(){
       if(getCurrentState())return getCurrentState()->leafState();
-      return &derived();
+      return &this->derived();
     }
   protected:
     virtual State* transition(TokenType token){ 
@@ -143,7 +143,7 @@ return it->second;
         setCurrentState(newstate);
       }
       if(getCurrentState())setCurrentState(getCurrentState()->transition(token));
-      return &derived();     
+      return &this->derived();
     }
     virtual bool consume(TokenType token){return false;}        
 

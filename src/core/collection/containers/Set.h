@@ -307,7 +307,7 @@ public:
     bool contains(T element) const;
 
     bool all(Predicate predicate)const{
-      return reduce([]([predicate](T value, Result accu)->bool{return accu && predicate(value);},true));
+      return reduce([predicate](T value, bool accu)->bool{return accu && predicate(value);},true);
     }
        
 

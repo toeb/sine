@@ -174,6 +174,7 @@ namespace nspace{
     }
   };
 
+  template<>
   const double LnOfGamma<double>::coefficients[14]={
       57.1562356658629235,
       -59.5979603554754912,

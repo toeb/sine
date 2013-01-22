@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <istream>
+#include <iterator>
 using namespace std;
 using namespace nspace::stringtools;
 
@@ -54,23 +56,25 @@ std::vector<std::string> nspace::stringtools::split(const std::string & str, con
   }
   return result;
 }
-std::vector<std::string> nspace::stringtools::split(istringstream & stream){  
+vector<std::string> nspace::stringtools::split(istringstream & stream){
   vector<string> tokens;
   copy(istream_iterator<string>(stream),
          istream_iterator<string>(),
          back_inserter<vector<string> >(tokens));
   return tokens;
 }
-std::vector<std::string> nspace::stringtools::split(const std::string & str){
-  return split(istringstream(str));;
+vector<std::string> nspace::stringtools::split(const std::string & str){
+    istringstream iss(str);
+  return split(iss);
+
 }
-std::string nspace::stringtools::trim(std::stringstream & stream){      
+string nspace::stringtools::trim(std::stringstream & stream){
   return trim(stream.str());
 
 }
 
 
-std::string nspace::stringtools::trimFront(const std::string & str){
+string nspace::stringtools::trimFront(const std::string & str){
   int front=0;  
   bool isWhitespace;  
   bool allWhitespace=true;
@@ -129,12 +133,13 @@ std::string nspace::stringtools::trim(const std::string & str){
 }
 bool nspace::stringtools::startsWith(const std::string & subject,const std::string & what){
   if(subject.size()<what.size())return false;
-  int i=0;
   for(int i=0; i < what.size(); i++){
     if(what[i]!=subject[i])return false;
   };
   return true;
 }
+
+
 bool nspace::stringtools::startWithIgnoreCase(const std::string &subject, const std::string & what){
   auto s =toLowerCase(subject);
   auto w = toLowerCase(what);
@@ -193,3 +198,51 @@ std::string nspace::stringtools::replace(std::string  original, const std::strin
 std::string nspace::stringtools::spaces(unsigned int n){
   return repeat(" ",n);
 }
+
+namespace nspace{
+SPECIALIZE_PARSE(double){
+  value = std::strtod(word.c_str(),0);
+  return true;
+}
+
+SPECIALIZE_PARSE(unsigned long){
+  value = std::strtoul(word.c_str(),0,10);
+  return true;
+}
+SPECIALIZE_PARSE(long){
+  value = std::strtol(word.c_str(),0,10);
+  return true;
+}
+
+SPECIALIZE_PARSE(int){
+  value= parse<long>(word);
+  return true;
+}
+
+SPECIALIZE_PARSE(short){
+  value= parse<long>(word);
+  return true;
+}
+
+SPECIALIZE_PARSE(char){
+  value= parse<long>(word);
+  return true;
+}
+
+SPECIALIZE_PARSE(unsigned int){
+  value = parse<unsigned long>(word);
+  return true;
+}
+
+SPECIALIZE_PARSE(unsigned short){
+  value= parse<unsigned long>(word);
+
+  return true;
+}
+
+SPECIALIZE_PARSE(unsigned char){
+  value= parse<unsigned long>(word);
+  return true;
+}
+}
+

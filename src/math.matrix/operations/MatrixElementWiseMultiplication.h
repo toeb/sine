@@ -3,6 +3,7 @@
 #include <math.matrix/operations/MatrixColumnTraits.h>
 #include <math.matrix/operations/MatrixRowTraits.h>
 #include <math.matrix/operations/MatrixCoefficientAccess.h>
+#include <math.matrix/operations/MatrixTypeSelector.h>
 #include <math.matrix/operations/MatrixBinaryOperation.h>
 namespace nspace{
   /**

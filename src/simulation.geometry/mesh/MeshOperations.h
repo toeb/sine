@@ -3,7 +3,7 @@
 namespace nspace{
 
 
-
+/*
 template<typename VertexType, typename FaceType, typename EdgeType>
 class DynamicMesh{
 
@@ -19,9 +19,7 @@ struct IndexType{typedef void Type;};
 template<typename Index=size_t, typename Vertex=Vector3D, typename Face=std::vector<unsigned int>>
 class MeshBuilder{
 public:
-  typedef size_t Index;
-  typedef Vector3D Vertex;
-  typedef std::vector<unsigned int> Face;
+
 
 
   virtual void setVertexCount(Index count);
@@ -92,7 +90,7 @@ inline void setVertexProperty(VertexType & vertex,  const typename VertexPropert
 
 template<typename VertexType>
 inline typename  VertexProperty<VertexType, VertexPosition>::Type getVertexPosition(const VertexType & vertex){
-  return getVertexProperty<VertexType,Position>(vertex);
+  return getVertexProperty<VertexType,VertexPosition>(vertex);
 }
 
 template<typename VertexType>
@@ -106,38 +104,38 @@ inline void setVertexPosition(VertexType & vertex, const typename VertexProperty
 #define MESH_OPERATION_METHOD(NAME) mesh##NAME
 template<typename MeshType>
 MESH_OPERATION_CLASS(VertexIndexType){
-  typedef std::_Nil Type;
+//  typedef std::_Nil Type;
 };
 #define MESH_VERTEX_INDEX_TYPE(MESHTYPE)  MESH_OPERATION(VertexIndexType)<MESHTYPE>::Type
 
 template<typename MeshType>
 MESH_OPERATION_CLASS(FaceIndexType){
-  typedef std::_Nil Type;
+  //typedef std::_Nil Type;
 };
 
 #define MESH_FACE_INDEX_TYPE(MESHTYPE)  MESH_OPERATION(FaceIndexType)<MESHTYPE>::Type
 
 template<typename MeshType>
 MESH_OPERATION_CLASS(EdgeIndexType){
-  typedef std::_Nil Type;
+  //typedef std::_Nil Type;
 };
 #define MESH_EDGE_INDEX_TYPE(MESHTYPE) MESH_OPERATION(EdgeIndexType)<MESHTYPE>::Type
 
 template<typename MeshType>
 MESH_OPERATION_CLASS(VertexType){
-  typedef std::_Nil Type;
+  //typedef std::_Nil Type;
 };
 #define MESH_VERTEX_TYPE(MESHTYPE) MESH_OPERATION(VertexType)<MESHTYPE>::Type
 
 template<typename MeshType>
 MESH_OPERATION_CLASS(FaceType){
-  typedef std::_Nil Type;
+  //typedef std::_Nil Type;
 };
 #define MESH_FACE_TYPE(MESHTYPE) MESH_OPERATION(FaceType)<MESHTYPE>::Type
 
 template<typename MeshType>
 MESH_OPERATION_CLASS(EdgeType){
-  typedef std::_Nil Type;
+  //typedef std::_Nil Type;
 };
 #define MESH_EDGE_TYPE(MESHTYPE) MESH_OPERATION_CLASS(EdgeType)<MESHTYPE>::Type
 
@@ -423,4 +421,5 @@ public:
     return 1;
   }
 };
+*/
 }

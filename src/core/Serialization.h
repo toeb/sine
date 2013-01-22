@@ -98,7 +98,7 @@ namespace nspace{
   }
   template<typename T>
   bool serialize(const T & value, std::ostream & stream){
-    Serializer<T>::serialize(stream,&value);
+    return Serializer<T>::serialize(stream,&value);
   }
 
 

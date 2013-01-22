@@ -1,7 +1,7 @@
 #pragma once
 #include <config.h>
 #include <math.matrix/operations/MatrixOperations.h>
-
+#include <math.matrix/operations/MatrixElementWiseMultiplication.h>
 
 namespace nspace{
 
