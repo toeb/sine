@@ -6,15 +6,80 @@
 #include <core/Serialization.h>
 #include <math.matrix.h>
 #include <math.matrix.eigen.h>
+#include <random>
 
 using namespace std;
 #define mathError(ERROR) throw ERROR;
 namespace nspace{
   
 
+  TEST(1,OperationMatrixAddition){
+    auto result = add(identity<Vector3D>(), identity<Vector3D>());
+  };
+
+  TEST(1, OperationMatrixRandom){
+    auto vector = random<Vector3D>();
+    CHECK(vector(0) >= 0 && vector(0)<=1);
+    CHECK(vector(1) >= 0 && vector(1)<=1);
+    CHECK(vector(2) >= 0 && vector(2)<=1);
+  }
+
+  TEST(2, OperationMatrixIdentity){
+    auto vector = identity<Vector3D>();
+    CHECK(vector(0)==1);
+    CHECK(vector(1)==0);
+    CHECK(vector(2)==0);
+
+  }
+
+  TEST(1, OperationMatrixIdentity){
+    unsigned int a[2][2];
+    matrixSetIdentity(a);
+    CHECK(a[0][0]==1);
+    CHECK(a[1][1]==1);
+    CHECK(a[0][1]==0);
+    CHECK(a[1][0]==0);
+  }
+
+  TEST(3, OperationMatrixScalarMultiplication){
+   
+    Vector3D v=Vector3D::UnitX();
+
+    auto result =matrixMultiplyScalar(v,0.25);
+    
+    CHECK(result(0)==0.25);
+    CHECK(result(1)==0.0);
+    CHECK(result(2)==0.0);
+
+  }
+
+  TEST(2, OperationMatrixScalarMultiplication){
+    unsigned int a =4;
+    unsigned int b=5;
+
+    matrixMultiplyScalar(a,a,b);
+    
+    CHECK(a==20);
+
+  }
 
 
+  TEST(1, OperationMatrixScalarMultiplication){
+    unsigned int a[2][2];
+    a[0][0]=1;
+    a[1][1]=2;
+    a[0][1]=3;
+    a[1][0]=4;
+    unsigned int b=5;
 
+    matrixMultiplyScalar(a,a,b);
+    
+    CHECK(a[0][0]==5);
+    CHECK(a[1][1]==10);
+    CHECK(a[0][1]==15);
+    CHECK(a[1][0]==20);
+
+  }
 
   TEST(1, unsignedIntMatrixAssignment){
     unsigned int * rhs = new  unsigned int[3];

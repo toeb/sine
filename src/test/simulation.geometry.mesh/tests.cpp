@@ -13,8 +13,14 @@
 #include <iostream>
 #include <fstream>
 
-
+#include <core.fsm/HierarchicalFiniteStateMachine.h>
 using namespace nspace;
+
+
+TEST(7, MeshBuilder){
+  
+}
+
 TEST(7, CustomMesh){
   CustomMesh uut;
   uut.setFaceCount(10);
@@ -72,11 +78,150 @@ TEST(6, CustomMesh){
 }
 
 
+class A: public Object{
+  TYPED_OBJECT(A);
+public:
+  std::string asd(){return "das";}
+};
+class B : public Object{
+  TYPED_OBJECT(B);
+
+};
+
+TEST(1,Multiton){
+  Multiton<Object> uut;
+  auto a = uut.request<A>();
+  CHECK(a==0);
+}
+TEST(2,Multiton){
+  
+  Multiton<Object> uut;
+  auto a = uut.require<A>();
+  CHECK(a!=0);
+}
+TEST(3,Multiton){
+  Multiton<Object> uut;  
+  uut.registerType<B>();
+  auto b = uut.request<B>();
+  CHECK(b!=0);
+}
+TEST(4,Multiton){
+  Multiton<Object> uut;
+  auto aa = uut.require<A>();
+  auto ab=uut.require<A>();
+
+  CHECK(aa==ab);
+}
+
+
+//  string ply="ply\ncomment asd ddad awd adwd adw d aw \nelement 1000 vertex\n";
+//
+/*
+TEST(1,PLY){
+  using namespace std;
+  string ply="ply";
+  istringstream iss(ply);
+  PlyStateMachine uut;
+
+  PlyToken token(iss);  
+  while(token.next()){
+    uut.process(token);
+  }
+
+  auto state = uut.leafState();
+  CHECK(&state->getType()==typeof(HeaderState));
+  
+}
+
+
+TEST(2,PLY){
+  using namespace std;
+  string ply="plyalei";
+  istringstream iss(ply);
+  PlyStateMachine uut;
+
+  PlyToken token(iss);  
+  while(token.next()){
+    uut.process(token);
+  }
+
+  auto state = uut.leafState();
+  CHECK(&state->getType()==typeof(BadFileState));  
+}
 
 
 
+TEST(3,PLY){
+  using namespace std;
+  string ply="plyalei";
+  istringstream iss(ply);
+  PlyStateMachine uut;
+  IMeshBuilder builder;
+  uut.setBuilder(&builder);
+  PlyToken token(iss);  
+  while(token.next()){
+    uut.process(token);
+  }
 
 
+  auto state = uut.leafState();
+  CHECK(state->getBuilder()==&builder);  
+}
+
+
+TEST(4,PLY){
+  using namespace std;
+  string ply="ply\ncomment hellasda asdasd asd asd as dasd asd asd as das asd\n";
+  istringstream iss(ply);
+  PlyStateMachine uut;
+  IMeshBuilder builder;
+  uut.setBuilder(&builder);
+  PlyToken token(iss);  
+  while(token.next()){
+    uut.process(token);
+  }
+  CHECK(&uut.leafState()->getType()==typeof(HeaderState));
+  CHECK(uut.getPlyObject()->comments.size()==1);  
+}
+
+
+TEST(5,PLY){
+  using namespace std;
+  string ply="ply\ncomment hellasda asdasd asd asd as dasd asd asd as das asd\nelement vertex 100";
+  istringstream iss(ply);
+  PlyStateMachine uut;
+  IMeshBuilder builder;
+  uut.setBuilder(&builder);
+  PlyToken token(iss);  
+  while(token.next()){
+    uut.process(token);
+  }
+  
+  CHECK(&uut.leafState()->getType()==typeof(HeaderState));
+  CHECK(uut.getPlyObject()->size()==1);  
+}
+
+TEST(6,PLy){
+  using namespace std;
+    string ply="ply\ncomment hellasda asdasd asd asd as dasd asd asd as das asd\nelement vertex 100";
+  istringstream iss(ply);
+  PlyObject o;
+  IMeshBuilder b;
+  ply2::PlyFiniteStateMachine uut(o,b);
+  PlyToken token(iss);  
+  while(token.next()){
+    uut.process(token);
+  }
+}
+*/
+
+TEST(1,PLY){
+  PlyReader reader;
+  IMeshBuilder builder;
+  reader.setBuilder(&builder);
+ // reader.readFile("meshes/ply/blade.ply");
+
+}
 TEST(1, MtlReader){
   MtlReader reader;
   bool result = reader.readFile("materials/mtl/example.mtl");
@@ -85,18 +230,20 @@ TEST(1, MtlReader){
 
 TEST(1, ObjReader){
   ObjReader obj;
-  obj.run();
-
+  
+  IMeshBuilder builder;
+  obj.setBuilder(&builder);
+  obj.readFile("meshes/obj/alfa147.obj");
 }
 
-
+/*
 TEST(LoadPly, MeshReader){
   PlyReader reader;
   
   auto result = reader.readFile("meshes/ply/horse.ply");
 
   CHECK(result);
-}
+}*/
 
 TEST(LoadObj, MeshReader){
 
