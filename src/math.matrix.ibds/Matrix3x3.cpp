@@ -100,11 +100,11 @@ Matrix3x3::~Matrix3x3(){
   // delete v;
   DEC
 }
-Matrix3x3 * zero = new Matrix3x3(Vector3D(),Vector3D(),Vector3D());
+Matrix3x3 * _zero = new Matrix3x3(Vector3D(),Vector3D(),Vector3D());
 Matrix3x3 * identityMatrix= new Matrix3x3();
 
 const Matrix3x3 & Matrix3x3::Zero(){
-  return *zero;
+  return *_zero;
 }
 
 const Matrix3x3 & Matrix3x3::Identity(){
