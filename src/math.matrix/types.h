@@ -1,6 +1,7 @@
 #pragma once
 #include <config.h>
 #include <core/Serialization.h>
+#include <core/StringTools.h>
 #include <core/reflection/Type.h>
 #ifndef MATRIX_CLASSES
 #define MATRIX_CLASSES 2
@@ -52,13 +53,13 @@ namespace nspace{
 #endif
 
 namespace nspace{
-  SERIALIZERS(Vector3D,
+  SERIALIZERS(Vector3D,      
     stream<<(*value)(0) <<" "<< (*value)(1)<<" " << (*value)(2),
-    stream >> (*value)(0) >> (*value)(1) >> (*value)(2)
+    auto & vec=*value; vec(0)=parseNext<Real>(stream); vec(1)=parseNext<Real>(stream); vec(2)=parseNext<Real>(stream); 
     )
     SERIALIZERS(Vector2D,
     stream<<(*value)(0) <<" "<< (*value)(1),
-    stream >> (*value)(0) >> (*value)(1)
+    auto & vec=*value; vec(0)=parseNext<Real>(stream);vec(1)=parseNext<Real>(stream);
     )
     SERIALIZERS(Matrix3x3,
   {
@@ -69,8 +70,8 @@ namespace nspace{
   },
   {
     Matrix3x3 & matrix = *value;
-    for(int i=0; i < 9; i++){
-      stream >> matrix(i);
+    for(int i=0; i < 9; i++){      
+      matrix(i)=parseNext<Real>(stream);
     }
   }
   );

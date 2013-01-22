@@ -20,7 +20,8 @@ namespace nspace{
  * \param A The first type
  * \param B The second type.
  */
-#define returnType(A,B) MatrixTypeSelector<A,B>::Type
+#define RETURN_TYPE(A,B) MatrixTypeSelector<A,B>::Type
+#define returnType(A,B) RETURN_TYPE(A,B)
 
 /**
  * \brief A macro that specializes the return type for an operation of two types.

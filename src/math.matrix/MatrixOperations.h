@@ -92,11 +92,16 @@
 #include <math.matrix/operations/VectorNormal.h>
 #include <math.matrix/operations/VectorTriangleNormal.h>
 
+#include <math.matrix/operations/MatrixRandomize.h>
+#include <math.matrix/operations/MatrixSetZero.h>
+#include <math.matrix/operations/MatrixIdentity.h>
 
 #include <math.matrix/specialization/Scalars.h>
 #include <math.matrix/specialization/Array1D.h>
 #include <math.matrix/specialization/Array2D.h>
 #include <math.matrix/specialization/StdVector.h>
+
+
 
 
 namespace nspace{

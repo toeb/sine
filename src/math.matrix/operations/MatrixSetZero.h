@@ -6,7 +6,37 @@
 #include <math.matrix/operations/MatrixBinaryOperation.h>
 namespace nspace{
 
+  
 
+  template<typename Matrix> void matrixSetZero(Matrix & matrix);
+
+  template<typename Matrix>
+  MatrixOperationClass(Zero){
+    MatrixOperationMethod(Matrix & matrix){
+      if(isScalarMatrix<Matrix>()){
+        coefficient(matrix,0,0) = 0;
+        return;
+      }
+      matrixForEach(matrix){
+        matrixSetZero(coefficient(matrix,i,j));
+      }
+    }
+  };
+  
+  template<typename Matrix> void matrixSetZero(Matrix & matrix){
+    MatrixOperation(Zero)<Matrix>::operation(matrix);
+  }
+  template<typename Matrix> Matrix zero(){
+    Matrix result;
+    matrixSetZero(result);
+    return result;
+  }
+  template<typename Matrix> Matrix zero(typename indexTypeOfType(Matrix) rows,typename indexTypeOfType(Matrix) cols){
+    Matrix result;
+    ensureMatrixDimension(result,rows,cols);
+    matrixSetZero(result);
+    return result;
+  }
 
   NullaryMatrixOperation(zeros);
 

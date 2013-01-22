@@ -17,7 +17,7 @@
  *
  */
 #pragma once
-#include <config.h>
+
 #include <math.matrix/operations/MatrixOperations.h>
 namespace nspace {
 
@@ -74,6 +74,8 @@ public:
     MatrixAddition<LHS,RHS1,RHS2>::operation(lhs,rhs1,rhs2);
   }
 
+ 
+ 
   template<typename T>
   T add(const T & rhs1, const T& rhs2){
     T lhs;
@@ -81,6 +83,6 @@ public:
     add(lhs,rhs1,rhs2);
     return lhs;
   }
-
+  
 
 }

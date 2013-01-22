@@ -2,7 +2,28 @@
 
 #include <math.matrix/Matrix.h>
 namespace nspace{
-  
+
+
+  template<typename T>
+  class IMatrixData{   
+  public:
+    typedef unsigned int Index;
+    typedef T Coefficient;
+    virtual Coefficient & operator()(const Index & i, const Index & j)=0;
+    virtual Coefficient operator()(const Index & i, const Index & j)const=0;
+    virtual Index rows()const=0;
+    virtual Index cols()const=0;
+    
+  };
+  template <typename T>
+  class IVectorData{
+  public:
+    typedef unsigned int Index;
+    typedef T Coefficient;
+    virtual Coefficient & operator()(const unsigned int i)=0;
+    virtual Coefficient operator()(const Index & i)const=0;    
+    virtual Index size()const=0;
+  };
   template<typename MatrixType>
   class MatrixFacade : public Matrix<typename coefficientTypeOfType(MatrixType), typename indexTypeOfType(MatrixType), typename indexTypeOfType(MatrixType)>{
   private:
@@ -26,9 +47,9 @@ namespace nspace{
   class ObservableMatrix{
 
   };
-
+  
   template<typename VectorType>
-  class VectorFacade{
+  class VectorFacade:public IVectorData<typename coefficientTypeOfType(VectorType)>{
   private:
     VectorType & vector;
   public:
