@@ -71,3 +71,88 @@ namespace nspace{
     };
   }
 }
+
+
+/*
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionConstAccess{
+public:
+static bool operation(ElementType& element, const CollectionType & collection, const IndexType & index){    
+element = list[index];
+return true;
+}
+};
+
+
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionInsert{
+public:
+static bool operation(CollectionType & collection, ElementType& element, const IndexType & index){
+return false;
+}
+};
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionRemove{
+public:
+static bool operation(CollectionType & collection, const ElementType& element,const IndexType & index){
+return false;
+}
+};
+template<typename ElementType, typename CollectionType, typename IndexType>
+class CollectionSwap{
+public:
+static bool operation(CollectionType & collection, const IndexType & indexOld,const IndexType & indexNew){
+return false;  
+}
+};
+
+template<typename ElementType, typename CollectionType, typename IndexType, typename Function>
+class CollectionIterate{
+public:
+static bool operation(Function & function, CollectionType & collection){
+for(IndexType i =0; i < size(collection); i++){
+function(element(collection,i));
+}
+}
+};
+template<typename ElementType, typename CollectionType, typename IndexType, typename Function>
+bool iterate(Function & function, CollectionType & container){
+return CollectionIterate<ElementType,CollectionType,IndexType,Function>::operation(function,container);
+}
+
+template<typename ListIndex, typename IndexType=uint, IndexType RowCount=0, IndexType ColumnCount=0>
+class RowMajorIndex{
+public:
+static inline ListIndex operation(const IndexType & i, const IndexType& j){
+return 
+}
+};
+
+template<typename Coefficient, typename Mat, typename Index>
+class MatrixCoefficentMutableAccess{
+public:
+static Coefficient & operation(Mat & mat, const Index &i, const Index & j){
+return mat(i,j);
+}  
+};
+template<typename Coefficient, typename Mat, typename Index>
+class MatrixCoefficentConstAccess{
+public:
+static const Coefficient & operation(const Mat & mat, const Index &i, const Index & j){
+return mat[Index(i,j)]
+}  
+};
+
+
+template<typename T,typename Mat, typename Index>
+T & coefficient(Mat & mat, const Index & i, const Index & j){
+return MatrixCoefficentMutableAccess<T,Mat,Index>::operation(mat)
+}
+template<typename T,typename Mat, typename Index>
+const T & coefficient(const Mat & mat, const Index & i, const Index & j){
+return MatrixCoefficentConstAccess<T,Mat,Index>::operation(mat);
+}
+
+
+
+*/

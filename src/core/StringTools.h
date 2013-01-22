@@ -2,6 +2,7 @@
 #include <config.h>
 #include <string>
 #include <sstream>
+#include <vector>
 namespace nspace{
   namespace stringtools{
     //concatenates to strings
@@ -27,10 +28,150 @@ namespace nspace{
     // trims the stream and retruns the string
     std::string trim(std::stringstream & stream);
     std::string trim(const std::string & str);
+    std::string trimFront(const std::string & str);
+    std::string trimBack(const std::string & str);
     bool startsWith(const std::string & subject,const std::string & what);
     bool startWithIgnoreCase(const std::string &subject, const std::string & what);
+    std::vector<std::string> split(const std::string & str, const char separator);
+    std::vector<std::string> split(const std::string & str);
+    std::vector<std::string> split(std::istringstream & stream);
+    //returns the next token in stream - this may be a word (delimited by whitespace) or a newline.  if an empty string "" is returned the stream is empty
+    std::string nextToken(std::istream & stream);
 
-  }
+
+    
+
+
+   
+
+
+    // struct for tokenizing a stream (  while(token.next()){do eomething}
+    struct StringToken{
+      StringToken(std::istream & stream);
+      std::istream & stream;
+      std::string word;
+      bool next();
+      operator bool();   
+    };
+
+  }//stringtools
+
+  
+    //specialize using macro or: template<> double Parse<double>::operation(const std::string  &word){}
+    //
+    template<typename T>
+    struct Parse{
+      static inline bool operation(T & value, const std::string & word){
+        std::istringstream stream(word);
+        stream>>value;
+        return true;
+      }
+    };
+    /**
+    * \brief A macro that helps to specialize Parse.
+    *
+    * \param TYPE  The type.
+    */
+#define SPECIALIZE_PARSE(TYPE) template<> bool Parse<TYPE>::operation(TYPE & value, const std::string  &word)
+     /**
+     * \brief Parses a T from the string and stores it in value. 
+     *
+     * \tparam  typename T  Type of   t.
+     * \param [out]  value The value.
+     * \param word            The word.
+     *
+     * \return  true if it succeeds, false if it fails.
+     */
+    template<typename T> inline bool parse(T & value, const std::string & word){      
+      return Parse<T>::operation(value,word);
+    }
+    
+    /**
+     * \brief Parses the given word.  
+     *
+     * \tparam  typename T  Type of the typename t.
+     * \param word  The word.
+     *
+     * \return  the parse Type.
+     */
+    template<typename T> inline T parse(const std::string & word){
+      T result;
+      parse(result,word);
+      return result;
+    };
+
+    /**
+     * \brief reads a word from the stream an tries to parse it.
+     *
+     * \tparam  typename T  Type of value.
+     * \param [out]  value   The value.
+     * \param [in]  stream  The stream.
+     *
+     * \return  true if it succeeds, false if it fails.
+     */
+    template<typename T> inline bool parseNext(T& value, std::istream & stream){      
+      std::string word;
+      stream >> word;
+      return parse<T>(value,word);      
+    }
+
+
+    template<typename T> inline T parseNext( std::istream & stream){
+      T result;
+      parseNext(result,stream);
+      return result;
+    }
+
+    //todo what happens when parse error?
+
+    SPECIALIZE_PARSE(double){
+      value = std::strtod(word.c_str(),0);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(unsigned long){
+      value = std::strtoul(word.c_str(),0,10);
+      return true;
+    }
+    SPECIALIZE_PARSE(long){
+      value = std::strtol(word.c_str(),0,10);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(int){
+      value= parse<long>(word);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(short){
+      value= parse<long>(word);
+      return true;
+    }
+        
+    SPECIALIZE_PARSE(char){
+      value= parse<long>(word);
+      return true;
+    }
+
+    
+
+    SPECIALIZE_PARSE(unsigned int){
+      value = parse<unsigned long>(word);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(unsigned short){
+      value= parse<unsigned long>(word);
+      
+      return true;
+    }
+        
+    SPECIALIZE_PARSE(unsigned char){
+      value= parse<unsigned long>(word);
+      return true;
+    }
+
+
 }
 
 //implementation

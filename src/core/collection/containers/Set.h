@@ -306,6 +306,20 @@ public:
      */
     bool contains(T element) const;
 
+    bool all(Predicate predicate)const{
+      return reduce([]([predicate](T value, Result accu)->bool{return accu && predicate(value);},true));
+    }
+       
+
+    template<typename Result>
+    Result reduce(std::function<Result (T , Result )> f, T seed)const{
+      Result result = seed;
+      foreachElement([f,&result](T value){
+        result = f(value,result);
+      });
+      return result;
+    }
+
     /**
      * \brief reduce into result.
      *
@@ -411,6 +425,9 @@ public:
      * \return  The result of the operation.
      */
     Set<T> & operator &=(const Set<T> &b);
+
+
+
 
     /**
      * \brief returns true if the sets contain exactly the same elements (symmetric difference has a
