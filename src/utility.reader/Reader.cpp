@@ -41,7 +41,16 @@ void nspace::parseLineWise(std::istream & stream,std::map<std::string, std::func
 }
 
 bool Reader::read(){
-  return runStatefulTask();
+  stream().seekg(0,ios::end);
+  long e=stream().tellg();
+  stream().seekg(0,ios::beg);
+  double totalProgress = double(e);
+  resetProgress(totalProgress);
+  logInfo("Reading "<<e<<" bytes");
+  bool result= runStatefulTask();
+  logInfo("Read "<<e<<" bytes in "<<getRunTime()<<"s");
+  logInfo("Read was "<<(result?"successfull":"unsuccessfull"));
+  return result;
 }
 
 bool Reader::runTaskReturnSuccess(){
@@ -63,7 +72,7 @@ bool Reader::readString(const std::string & str){
   setStream(stream);
   return read();
 }
-bool Reader::readStream(istream & stream){
+bool Reader::readStream(istream & stream){ 
   setStream(stream);
   return read();
 }
@@ -77,6 +86,7 @@ bool Reader::readFile(const std::string & filename){
 }
 void Reader::setStream(std::istream & instream){
   _stream = &instream;
+
 }
 
 
