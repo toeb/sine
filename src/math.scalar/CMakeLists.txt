@@ -5,6 +5,11 @@ file(GLOB_RECURSE operationsSource
 )
 source_group("operations" FILES ${operationsSource})
 
+set(specialFunctionsSource
+./specialfunctions/SpecialFunctions.h
+./specialfunctions/SpecialFunctions.cpp
+)
+
 set(source 
 ./CMakeLists.txt
 ./core.h
@@ -13,6 +18,7 @@ set(source
 ./operationcodes.h
 ./operations.h
 ./operators.h
+../include/math.scalar.h
 )
 source_group("" FILES ${source})
 
