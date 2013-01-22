@@ -20,3 +20,27 @@ namespace nspace{
     virtual void logSystemInfo(std::ostream & ostream)const{};
   };
 }
+
+
+/*
+
+class TrajectorySystemFunction : public virtual ISystemFunction, public virtual PropertyChangingObject{
+  REFLECTABLE_OBJECT(TrajectorySystemFunction);
+public:
+  typedef Function<StateMatrix,Real> Trajectory;
+  SIMPLE_PROPERTY(Trajectory*, Trajectory){}
+  SIMPLE_PROPERTY(StatefulObject*, StatefulObject){}
+public:
+
+  TrajectorySystemFunction():_Trajectory(0),_StatefulObject(0){
+
+  }
+  virtual void evaluate(Time t, Time h){
+    auto trajectory = getTrajectory();
+    auto state=getStatefulObject();
+    if(!trajectory)return;
+    if(!state)return;
+    VectorND x;
+    trajectory->evaluate(x,t);
+  }
+};*/
