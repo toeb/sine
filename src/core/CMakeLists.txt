@@ -200,8 +200,9 @@ set(patternsSource
 ./patterns/Visitor.h
 ./patterns/Singleton.h
 ./patterns/Decorator.h
+./patterns/Multiton.h
 )
 set(source ${source} ${patternsSource})
-source_group("src\\patterns" FILES ${patternsSource})
+source_group("patterns" FILES ${patternsSource})
 add_library(core  ${source} CMakeLists.txt)
 
