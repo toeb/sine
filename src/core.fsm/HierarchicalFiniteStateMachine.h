@@ -5,68 +5,6 @@ namespace nspace{
 
 
   
-  template<typename SuperClass=Object>
-  class Multiton{
-  public:
-    typedef SuperClass * ObjectInstance;
-    typedef const Type * ObjectType;
-
-  private:
-    std::map<ObjectType , ObjectInstance> registeredObjects;
-  public:    
-
-    ~Multiton(){
-      for(auto i : registeredObjects){
-        delete i.second;
-      };
-      registeredObjects.clear();
-    }
-
-    ObjectInstance request(ObjectType type){
-      auto it = registeredObjects.find(type);
-      if(it==registeredObjects.end()) return 0;
-      return it->second;
-    }
-    template<typename T> T* request(){
-      return dynamic_cast<T*>(request(typeof(T)));
-    }
-
-    bool registerType(ObjectInstance object){
-      if(request(&object->getType()))return false;
-      registeredObjects[&object->getType()]=object;
-      onObjectRegistered(object);
-    }
-        
-    template<typename T>
-    bool registerType(std::function<T*()>  constructor){
-      if(request<T>())return false;
-      return registerType(constructor());
-    }
-    
-    template<typename T>
-    bool registerType(){
-      return registerType<T>([](){return new T();});
-    }
-        
-    template<typename T>
-    T* require(std::function<T*()> constructor){
-      auto result = request<T>();
-      if(!result){
-        registerType(constructor);
-        result =request<T>();
-      }
-      return dynamic_cast<T*>(result);      
-    };
-
-    template<typename T>
-    T * require(){
-      return require<T>([](){return new T();});
-    }
-
-  protected:
-    virtual void onObjectRegistered(ObjectInstance instance){}
-
-  };
 
 
   template<typename StateType, typename TokenType>
