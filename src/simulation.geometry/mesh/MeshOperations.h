@@ -2,10 +2,7 @@
 
 namespace nspace{
 
-template<typename PositionType, typename VelocityType>
-struct Vertex{
 
-};
 
 template<typename VertexType, typename FaceType, typename EdgeType>
 class DynamicMesh{
@@ -17,9 +14,7 @@ struct IndexType{typedef void Type;};
 
 
 
-class Face{
 
-};
 
 template<typename Index=size_t, typename Vertex=Vector3D, typename Face=std::vector<unsigned int>>
 class MeshBuilder{
@@ -328,7 +323,7 @@ struct CustomMesh{
       }
     }
     if(faceCount){
-      faces .reserve(faceCount);      
+      while(faces.size()<faceCount)faces.push_back(FaceType());
     }
     return true;
   }
@@ -372,23 +367,6 @@ public:
 };
 class IFace{};
 class IEdge{};
-class IMeshBuilder{
-public:
-  typedef size_t Index;
-
-
-
-};
-
-
-
-class CustomMeshBuilder  : public IMeshBuilder{
-  std::shared_ptr<CustomMesh> mesh;
-public:  
-
-
-
-};
 
 
 class IVertexProperty{
@@ -417,9 +395,7 @@ template<> MESH_OPERATION_CLASS(VertexType)<CustomMesh>{typedef CustomVertex Typ
 template<> unsigned int MESH_OPERATION(VertexCount)<CustomMesh>::operation(const CustomMesh& mesh){return mesh.vertexCount;}
 template<> CustomVertex MESH_OPERATION(VertexGet)<CustomMesh>::operation(CustomMesh& mesh, const unsigned index){return mesh.vertex(index);}
 
-class MeshReader{
 
-};
 class MeshWriter{
 
 };

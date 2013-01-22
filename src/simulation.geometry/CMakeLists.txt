@@ -15,6 +15,7 @@ set(geometry_SRC
  ./Interval.cpp
  ./Axis.h
  ./Axis.cpp
+ ../include/simulation.geometry.h
 )
 
 set(mesh_SRC
@@ -25,11 +26,13 @@ set(mesh_SRC
  
 )
 source_group("mesh" FILES ${mesh_SRC})
-set(meshPly_SRC
-./mesh/Ply/PlyMesh.h
-./mesh/Ply/PlyMesh.cpp
+set(meshBasic_SRC
+./mesh/basic/BasicMesh.h
+./mesh/basic/BasicMesh.cpp
+./mesh/basic/BasicMeshBuilder.h
+./mesh/basic/BasicMeshBuilder.cpp
 )
-source_group("mesh\\ply" FILES ${meshPly_SRC})
+source_group("mesh\\basic" FILES ${meshBasic_SRC})
 
 
 source_group("" FILES ${geometry_SRC})
@@ -81,7 +84,7 @@ set(polygon_SRC
  ./polygon/Element.cpp
 )
 source_group("polygon" FILES ${polygon_SRC})
-set(source ${source} ${polygon_SRC} ${meshPly_SRC} ${mesh_SRC})
+set(source ${source} ${polygon_SRC} ${meshBasic_SRC} ${mesh_SRC})
 
 
 add_library(simulation.geometry ${source} CMakeLists.txt)
