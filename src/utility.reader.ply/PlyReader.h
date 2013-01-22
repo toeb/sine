@@ -1,60 +1,34 @@
+/**
+ * Copyright (C) 2013 Tobias P. Becker
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the  rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * More information at: https://dslib.assembla.com/
+ *
+ */
 #pragma once
+#include <utility.reader.mesh.h>
+namespace nspace {
 
-#include <utility.reader.h>
-#include <map>
-#include <rply/rply.h>
-
-namespace nspace{
-
-struct PlyElement;
-
-struct PlyObject:public std::map<std::string,std::shared_ptr<PlyElement> >{
-  std::vector<std::string> info;
-  std::vector<std::string> comments;
-};
-
-struct PlyProperty;
-struct PlyElement:public std::map<std::string,std::shared_ptr<PlyProperty> >{
-  PlyObject & object;
-  std::string name;
-  long instances;
-  PlyElement(PlyObject & object, const std::string & name, long instances);
-};
-
-struct PlyProperty{
-  typedef size_t Index;
-  std::string name;
-  PlyElement & element;
-  std::vector<std::pair<Index,double> > values;
-
-  PlyProperty(const std::string & name, PlyElement &  element);
-  void value(const Index i, double value);
-};
-
-
-class PrivatePlyReader;
-
-class PlyReader : public Reader{
-  REFLECTABLE_OBJECT(PlyReader);
-  SUBCLASSOF(Reader);
-
-  PROPERTY(bool, ReadComments){}
-  PROPERTY(bool, ReadObjectInfo){}
-  PROPERTY(bool, Cancel){}
-  SIMPLE_PROPERTY(std::shared_ptr<PlyObject>, Result){}
-  
-  friend class PrivatePlyReader;
-  PrivatePlyReader* reader;
-public:
-  PlyReader();
-  ~PlyReader();
+  /**
+   * \brief Ply reader. ready mesh files of .ply format
+   */
+  class PlyReader : public MeshReader {
+    REFLECTABLE_OBJECT(PlyReader);
+    SUBCLASSOF(MeshReader);
 protected:
-
-  void clearResult();
-  // returns a filename which can be opened by plyopen. (may be a temp file constructed from a stream)
-  const char * filename();
-  bool doRead();
-};
+    bool readMesh(IMeshBuilder & builder);
+  };
 
 
 }
