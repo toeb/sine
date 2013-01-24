@@ -98,7 +98,7 @@ namespace nspace{
       T result;
       parse(result,word);
       return result;
-    }
+    };
 
     /**
      * \brief reads a word from the stream an tries to parse it.
@@ -124,15 +124,52 @@ namespace nspace{
 
     //todo what happens when parse error?
 
-    SPECIALIZE_PARSE(double);
-    SPECIALIZE_PARSE(unsigned long);
-    SPECIALIZE_PARSE(long);
-    SPECIALIZE_PARSE(int);
-    SPECIALIZE_PARSE(short);
-    SPECIALIZE_PARSE(char);
-    SPECIALIZE_PARSE(unsigned int);
-    SPECIALIZE_PARSE(unsigned short);
-    SPECIALIZE_PARSE(unsigned char);
+    SPECIALIZE_PARSE(double){
+      value = std::strtod(word.c_str(),0);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(unsigned long){
+      value = std::strtoul(word.c_str(),0,10);
+      return true;
+    }
+    SPECIALIZE_PARSE(long){
+      value = std::strtol(word.c_str(),0,10);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(int){
+      value= parse<long>(word);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(short){
+      value= parse<long>(word);
+      return true;
+    }
+        
+    SPECIALIZE_PARSE(char){
+      value= parse<long>(word);
+      return true;
+    }
+
+    
+
+    SPECIALIZE_PARSE(unsigned int){
+      value = parse<unsigned long>(word);
+      return true;
+    }
+
+    SPECIALIZE_PARSE(unsigned short){
+      value= parse<unsigned long>(word);
+      
+      return true;
+    }
+        
+    SPECIALIZE_PARSE(unsigned char){
+      value= parse<unsigned long>(word);
+      return true;
+    }
 
 
 }
