@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/DerivableDataNode.h>
+#include <core/graph/DerivableDataNode.h>
 
 namespace nspace{
   template<class T>

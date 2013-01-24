@@ -1,7 +1,7 @@
 #pragma once
 #include <config.h>
 #include <core/Serialization.h>
-#include <core/StringTools.h>
+#include <core.utilities.h>
 #include <core/reflection/Type.h>
 #ifndef MATRIX_CLASSES
 #define MATRIX_CLASSES 2

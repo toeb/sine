@@ -8,11 +8,14 @@ NamedObject::~NamedObject(){
   _name=0;
 }
 
-const string & NamedObject::DefaultName=*new string("<DEFAULTOBJECTNAME>");
+const string & NamedObject::DefaultName(){
+  static auto n =string("<DEFAULTOBJECTNAME>");
+  return n;
+}
 NamedObject::NamedObject(const string & name):_name(new string(name)){}
 NamedObject::NamedObject():_name(0){}
 const string & NamedObject::name()const{
-  if(!_name)return NamedObject::DefaultName;
+  if(!_name)return NamedObject::DefaultName();
   return *_name;
 }
 void NamedObject::setName(const std::string & name){
@@ -48,7 +51,7 @@ namespace nspace{
     static std::string notNamed="unnamed-object";
     if(!object)return nullString;
     const NamedObject* no = dynamic_cast<const NamedObject*>(object);
-    if(!no)return notNamed;
+    if(!no)return notNamed;    
     return no->name();
   }
 

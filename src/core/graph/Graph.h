@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/Node.h>
+#include <core/graph/Node.h>
 
 namespace nspace{
   // a class holding all nodes of a graph

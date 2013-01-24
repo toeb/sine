@@ -1,12 +1,13 @@
-#include <CppUnitLite/TestHarness.h>
+#include <core.testing.h>
 #include <core/Object.h>
 #include <core/NamedObject.h>
-#include <core/DataNode.h>
-#include <core/Graph.h>
+#include <core/graph/DataNode.h>
+#include <core/graph/Graph.h>
 #include "conversion.h"
 #include <string>
 #include <sstream>
 #include <core.h>
+#include <core/patterns/Multiton.h>
 
 using namespace nspace;
 using namespace std;
@@ -44,6 +45,44 @@ int main(int argc,  char ** argv){
  std::cout << stringtools::trimBack("    1234 \t \n")<<"."<<endl;
  std::cout << stringtools::trim("\t\n\r   1 \t 2   ")<<"."<<endl;
  */
+
+  namespace multiton{
+class A: public Object{
+  TYPED_OBJECT(A);
+public:
+  std::string asd(){return "das";}
+};
+class B : public Object{
+  TYPED_OBJECT(B);
+
+};
+
+TEST(1,Multiton){
+  Multiton<Object> uut;
+  auto a = uut.request<A>();
+  CHECK(a==0);
+}
+TEST(2,Multiton){
+  
+  Multiton<Object> uut;
+  auto a = uut.require<A>();
+  CHECK(a!=0);
+}
+TEST(3,Multiton){
+  Multiton<Object> uut;  
+  uut.registerType<B>();
+  auto b = uut.request<B>();
+  CHECK(b!=0);
+}
+TEST(4,Multiton){
+  Multiton<Object> uut;
+  auto aa = uut.require<A>();
+  auto ab=uut.require<A>();
+
+  CHECK(aa==ab);
+}
+
+  };
   TEST(1 ,trimFront){
     using namespace stringtools;
     CHECK("1234   "== trimFront("   1234   "));
@@ -226,7 +265,7 @@ TEST(Create, Object){
 
 TEST(Create1, NamedObject){
   NamedObject o;
-  CHECK(o.name()==NamedObject::DefaultName);
+  CHECK(o.name()==NamedObject::DefaultName());
 
 }
 TEST(Create2, NamedObject){
@@ -316,7 +355,7 @@ TEST(DFS1,DataNode){
   int current = 0;
   int actualorder []={1,2,4,5,3,6,7};
   
-  order.foreachElement([&actualorder, &current,this,&result_](DataNode<int> * n){
+  order.foreachElement([&](DataNode<int> * n){
     int cv = n->data();
     CHECK_EQUAL(actualorder[current++],cv);
   });
@@ -351,7 +390,7 @@ TEST(BFS1,DataNode){
   int current = 0;
   int actualorder []={1,2,3,4,5,6,7};
   
-  order.foreachElement([&actualorder, &current,this,&result_](DataNode<int> * n){
+  order.foreachElement([&](DataNode<int> * n){
     int cv = n->data();
     CHECK_EQUAL(actualorder[current++],cv);
   });

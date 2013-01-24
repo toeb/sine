@@ -3,6 +3,11 @@ set(source
  UnitTest.cpp
  UnitTestRunner.h
  UnitTestRunner.cpp 
+ PerformanceTest.h
+ PerformanceTest.cpp 
+ TestResult.h
+ TestResult.cpp 
+ macros.h
  ../include/core.testing.h
  CMakeLists.txt
  )

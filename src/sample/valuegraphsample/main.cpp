@@ -1,7 +1,7 @@
 #include <utility.valuegraph/valuegraph.h>
 #include <iostream>
 #include <math/core.h>
-#include <core/Node.h>
+#include <core/graph/Node.h>
 #include <core/ValueLookup.h>
 #include <core.logging.h>
 #include <core/binding/Binding.h>

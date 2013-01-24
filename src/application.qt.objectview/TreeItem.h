@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/Node.h>
+#include <core/graph/Node.h>
 #include <core.h>
 #include <application.qt.objectview/ObjectPropertyViewModel.h>
 

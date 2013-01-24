@@ -15,10 +15,11 @@ std::string StatefulTask::stateToString(const State & state){
 }
 
 void StatefulTask::propertyChanging(State, State){
-  logInfo("StatefuleTask state Changed from: "<<stateToString(oldvalue) <<" to " << stateToString(newvalue));
+  setLoggingLevel(3);
+  logMessage("StatefulTask state Changed from: "<<stateToString(oldvalue) <<" to " << stateToString(newvalue),5);
 }
 void StatefulTask::Reset(){
-  logInfo("resetting task");
+  logMessage("resetting task",5);
   clearResult();
   setState(Unknown);
 
@@ -28,7 +29,7 @@ void StatefulTask::Run(){
 }
 void StatefulTask::clearResult(){}
 void StatefulTask::runTask(){
-  logInfo("running task")
+  logMessage("running task",5)
     if(getState()!=Unknown){
       Reset();
     }
@@ -44,7 +45,7 @@ void StatefulTask::runTask(){
       setState(Succeeded);
     else
       setState(Failed);
-    logInfo("finished task");
+    logMessage("finished task",5);
 }
 
 bool StatefulTask::runStatefulTask(){

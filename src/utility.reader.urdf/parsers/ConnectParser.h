@@ -1,7 +1,7 @@
 #pragma once
 #include <utility.xml/NamedElementParser.h>
 #include <simulation.model/builder/ModelBuilderHolder.h>
-#include <core/Node.h>
+#include <core/graph/Node.h>
 
 namespace nspace{
   class ConnectParser: public NamedElementParser, public ModelBuilderHolder{

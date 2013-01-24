@@ -1,4 +1,4 @@
-#include <CppUnitLite/TestHarness.h>
+#include <core.testing.h>
 
 #include <core.hub/Hub.h>
 #include <core.hub/ModuleBase.h>

@@ -3,9 +3,7 @@
 
 #include <core/NamedObject.h>
 #include <core/ValueLookup.h>
-#include <core/Node.h>
-#include <core/DataNode.h>
-#include <core/TypedNode.h>
+#include <core.graph.h>
 
 namespace nspace{
   class NodeDataClass : public ValueLookup, public NamedObject{

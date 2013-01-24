@@ -1,4 +1,4 @@
-#include <CppUnitLite/TestHarness.h>
+#include <core.testing.h>
 #include <math/core.h>
 #include <math.matrix.h>
 #include <math.matrix.dslib/core.h>
@@ -78,41 +78,6 @@ TEST(6, CustomMesh){
   }
 }
 */
-
-class A: public Object{
-  TYPED_OBJECT(A);
-public:
-  std::string asd(){return "das";}
-};
-class B : public Object{
-  TYPED_OBJECT(B);
-
-};
-
-TEST(1,Multiton){
-  Multiton<Object> uut;
-  auto a = uut.request<A>();
-  CHECK(a==0);
-}
-TEST(2,Multiton){
-  
-  Multiton<Object> uut;
-  auto a = uut.require<A>();
-  CHECK(a!=0);
-}
-TEST(3,Multiton){
-  Multiton<Object> uut;  
-  uut.registerType<B>();
-  auto b = uut.request<B>();
-  CHECK(b!=0);
-}
-TEST(4,Multiton){
-  Multiton<Object> uut;
-  auto aa = uut.require<A>();
-  auto ab=uut.require<A>();
-
-  CHECK(aa==ab);
-}
 
 
 //  string ply="ply\ncomment asd ddad awd adwd adw d aw \nelement 1000 vertex\n";

@@ -7,8 +7,8 @@
 //#include <core/Set.h>
 #include <core/NamedObject.h>
 #include <core.hub/Module.h>
-#include <core/StringTools.h>
-#include <core/DataNode.h>
+#include <core.utilities.h>
+#include <core/graph/DataNode.h>
 namespace nspace{
   typedef DataNode<Object*> HubNode;
   class Hub :

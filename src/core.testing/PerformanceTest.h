@@ -16,38 +16,35 @@
  * More information at: https://dslib.assembla.com/
  *
  */
-#pragma once;
+#pragma once
+
 #include <core.testing/UnitTest.h>
+
 namespace nspace {
 
-  /**
-   * \brief Unit test runner.
-   *
-   */
-  class UnitTestRunner : public StatefulTask, public ProgressReporter {
-    REFLECTABLE_OBJECT(UnitTestRunner);
+  class PerformanceTest : public UnitTest {
+    REFLECTABLE_OBJECT(PerformanceTest);
+    PROPERTY(long, Repeats);
+    PROPERTY(Time, ExecutionTime);
+protected:
+    PerformanceTest(const std::string  &name);
 
-    /**
-     * \brief currently this runner is only available as a singleton
-     *
-     */
-    SINGLETON(UnitTestRunner) : _FailedTestCount(0){
-      setName("UnitTestRunner");
+  };
+
+  template<typename Derived>
+  class TypedPerformanceTest : public PerformanceTest {
+public:
+    TypedPerformanceTest(const std::string  &name) : PerformanceTest(name){}
+    void runTest(){
+      Derived* derived = static_cast<Derived*>(this);
+      for(long i=0; i < getRepeats(); i++) {
+        tick();
+        derived->run();
+        tock();
+      }
+
     }
 
-    /**
-     * \brief Contains all tests
-     */
-    OBJECTPOINTERCOLLECTION(UnitTest,RegisteredTests,{},{});
-
-    /**
-     * \brief Number of Tests which failed during run.
-     *
-     */
-    PROPERTY(int, FailedTestCount){}
-public:
-    void toString(std::ostream & out) const;
-protected:
-    bool runTaskReturnSuccess();
   };
+
 }

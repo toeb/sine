@@ -1,4 +1,4 @@
-#include <CppUnitLite/TestHarness.h>
+#include <core.testing.h>
 #include <string>
 #include <sstream>
 #include <core.h>

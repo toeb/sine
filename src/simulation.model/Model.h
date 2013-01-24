@@ -1,7 +1,7 @@
 #pragma once
 
-#include <core/Node.h>
-#include <core/Graph.h>
+#include <core/graph/Node.h>
+#include <core/graph/Graph.h>
 #include <math/core.h>
 
 #include <simulation.model/ModelElement.h>

@@ -16,7 +16,7 @@
  */
 #pragma once
 #include <config.h>
-#include <core/Node.h>
+#include <core/graph/Node.h>
 #include <core/collection/containers/Set.h>
 #include <core/Members.h>
 #include <core/patterns/Singleton.h>

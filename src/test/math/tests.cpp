@@ -1,4 +1,5 @@
-#include <CppUnitLite/TestHarness.h>
+//#include <CppUnitLite/TestHarness.h>
+#include <core.testing.h>
 #include <string>
 
 #include <math/core.h>

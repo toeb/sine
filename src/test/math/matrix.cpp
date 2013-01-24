@@ -1,4 +1,5 @@
-#include <CppUnitLite/TestHarness.h>
+
+#include <core.testing.h>
 #include <string>
 #include <math.matrix/types.h>
 #include <core.logging.h>
@@ -829,29 +830,6 @@ namespace nspace{
   };
 
 
-  template<typename Operation>
-  class OperationTest : public virtual Log{
-  public:
-    virtual bool execute()=0;
-  };
-
-
-  class UnitTest : 
-    public virtual Log, 
-    public virtual Task
-  {
-    REFLECTABLE_OBJECT(UnitTest);
-    SUBCLASSOF(Log);
-
-    PROPERTY(bool, Result){}
-    ACTION(ExecuteTest){runTask();}
-
-  protected:
-    void runTask(){
-      setResult(runTest());
-    }
-    virtual bool runTest()=0;
-  };
 
 
 

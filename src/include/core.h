@@ -7,5 +7,4 @@
 #include <core/Time.h>
 #include <core.reflection.h>
 #include <core/template/TemplateUtilities.h>
-#include <core/Helpers.h>
-#include <core/StringTools.h>
+#include <core.utilities.h>

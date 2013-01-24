@@ -8,24 +8,13 @@
 #include <sstream>
 #include <string>
 
+
 // these macros work within any class that contains a function to a reference called log (Log & log();}
 
 #define createLogMessage(level, x) {std::stringstream ss; ss << x ; getLog().log(level, ss.str(),__FUNCSIG__,__FILE__,__LINE__);}
-#define logMessage_0(x) createLogMessage(0,x)
-#define logMessage_1(x) createLogMessage(1,x)
-#define logMessage_2(x) createLogMessage(2,x)
-#define logMessage_3(x) createLogMessage(3,x)
-#define logMessage_4(x) createLogMessage(4,x)
-#define logMessage_5(x) createLogMessage(5,x)
-#define logMessage_6(x) createLogMessage(6,x)
-#define logMessage_7(x) createLogMessage(7,x)
-#define logMessage_8(x) createLogMessage(8,x)
-#define logMessage_9(x) createLogMessage(9,x)
-// default level
-#define logMessage_(x) logMessage_3(x)
 
 // macro for logging a message
-#define logMessage(message,level) logMessage_##level(message)
+#define logMessage(message,level) createLogMessage(level,message)
 
 #define logInfo(x) logMessage(x,3);
 #define logWarning(x) logMessage(x,2)
@@ -86,6 +75,7 @@ namespace nspace{
   };
   class Log : public virtual PropertyChangingObject{
     REFLECTABLE_OBJECT(Log);
+    typedef int LogLevel;
 
     PROPERTY(bool,LoggingEnabled){};
     DEFAULTVALUE(LoggingEnabled, true);
@@ -96,6 +86,7 @@ namespace nspace{
     SIMPLE_PROPERTY(std::ostream *, LogInfoStream){}
     SIMPLE_PROPERTY(std::ostream *, LogWarningStream){}
     SIMPLE_PROPERTY(std::ostream *, LogErrorStream){}
+    BASIC_PROPERTY(std::function<LogLevel (const LogEntry * )> , Filter,public,,,);
 
     PROPERTYSET(LogEntry*,LogEntries,{
       std::ostream * out=0;
@@ -169,6 +160,7 @@ namespace nspace{
         entry = 0;
         return;
       }
+
       if(getLoggingLevel()<entry->getLogLevel()){
         delete entry;
         entry = 0;

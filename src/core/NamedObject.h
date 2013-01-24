@@ -12,7 +12,7 @@ namespace nspace{
     std::string * _name;
   public:
     // the default name. (if a named object does not have a name set it will be returned)
-    static const std::string & DefaultName;
+    static const std::string & DefaultName();
     // constructor accepting a string name
     NamedObject(const std::string & name);
     // default constructor

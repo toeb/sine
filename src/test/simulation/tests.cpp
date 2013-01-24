@@ -1,4 +1,4 @@
-#include <CppUnitLite/TestHarness.h>
+#include <core.testing.h>
 
 TEST(Test1, Test){
   

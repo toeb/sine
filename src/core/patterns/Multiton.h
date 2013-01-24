@@ -18,6 +18,7 @@
  */
 #pragma once
 #include <core/Object.h>
+#include <map>
 namespace nspace {
 
   /**

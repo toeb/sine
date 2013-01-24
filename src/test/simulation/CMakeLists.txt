@@ -4,5 +4,5 @@ set(source
  )
  source_group("" FILES ${source})
  add_executable(test.simulation ${source} CMakeLists.txt)
- target_link_libraries(test.simulation cppunitlite )
+ target_link_libraries(test.simulation core.testing )
  project_folder("test" test.simulation )

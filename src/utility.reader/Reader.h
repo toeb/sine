@@ -43,56 +43,6 @@ namespace nspace {
    */
   void parseLineWise(std::istream & stream,std::map<std::string, std::function<void (std::istream & stream)> > & lookup,const bool& cancel=false);
   
-class ProgressReporter : public virtual PropertyChangingObject, public virtual Log{
-  REFLECTABLE_OBJECT(ProgressReporter);
-  PROPERTY(double, NumberOfNotifications){
-    if(newvalue==0)newvalue=1.0;
-  }
-  PROPERTY(double,TotalProgress){
-    setNotificationInterval(newvalue/getNumberOfNotifications());
-  }
-  PROPERTY(double,Progress){
-        
-  }
-  PROPERTY(double,NotificationInterval){}
-  PROPERTY(bool, LogProgress){}
-public:
-  ProgressReporter():_NumberOfNotifications(200.0),_TotalProgress(1),_Progress(0),_NotificationInterval(0.01),_LogProgress(true){
-    resetProgress();
-  
-  };
-  double percent()const{
-    return quotient()*100.0;
-  }
-  double quotient()const{
-    return getProgress()/getTotalProgress();
-  }
-
-private:
-  double _lastNotification;
-protected:
-  void resetProgress(double totalProgress){
-    resetProgress();
-    setTotalProgress(totalProgress);
-  }
-  void resetProgress(){
-    _lastNotification=0;
-    setProgress(0.0);  
-  }
-  void incrementProgress(double value){
-    reportProgress(getProgress()+value);
-  }
-  void reportProgress(double value){
-    _Progress = value;
-    if(getProgress()>_lastNotification+getNotificationInterval()){
-      _lastNotification=getProgress();
-      notifyProgressChanged();
-      if(getLogProgress()){
-        logInfo("Progress: "<< percent() << "%");
-      }
-    }    
-  }
-};
   /**
   * \brief Reader superclass.
   */

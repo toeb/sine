@@ -25,6 +25,58 @@
 
 namespace nspace {
 
+  
+class ProgressReporter : public virtual PropertyChangingObject, public virtual Log{
+  REFLECTABLE_OBJECT(ProgressReporter);
+  PROPERTY(double, NumberOfNotifications){
+    if(newvalue==0)newvalue=1.0;
+  }
+  PROPERTY(double,TotalProgress){
+    setNotificationInterval(newvalue/getNumberOfNotifications());
+  }
+  PROPERTY(double,Progress){}
+  PROPERTY(int, ProgressLogLevel){}
+  PROPERTY(double,NotificationInterval){}
+  PROPERTY(bool, LogProgress){}
+public:
+  ProgressReporter():_TotalProgress(1),_Progress(0),_ProgressLogLevel(4),_NotificationInterval(0.01),_LogProgress(true),_NumberOfNotifications(200.0){
+    resetProgress();
+  
+  };
+  double percent()const{
+    return quotient()*100.0;
+  }
+  double quotient()const{
+    return getProgress()/getTotalProgress();
+  }
+
+private:
+  double _lastNotification;
+protected:
+  void resetProgress(double totalProgress){
+    resetProgress();
+    setTotalProgress(totalProgress);
+  }
+  void resetProgress(){
+    _lastNotification=0;
+    setProgress(0.0);  
+  }
+  void incrementProgress(double value){
+    reportProgress(getProgress()+value);
+  }
+  void reportProgress(double value){
+    _Progress = value;
+    if(getProgress()>_lastNotification+getNotificationInterval()){
+      _lastNotification=getProgress();
+      notifyProgressChanged();
+      if(getLogProgress()){
+
+        logMessage("Progress: "<< percent() << "%",getProgressLogLevel());
+      }
+    }    
+  }
+};
+
 
   class StatefulTask : public virtual ExtendedTask,public virtual Log, public virtual NamedObject {
     REFLECTABLE_OBJECT(StatefulTask);
