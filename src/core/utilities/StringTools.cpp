@@ -130,8 +130,7 @@ std::string nspace::stringtools::trim(const std::string & str){
 
 }
 bool nspace::stringtools::startsWith(const std::string & subject,const std::string & what){
-  if(subject.size()<what.size())return false;
-  int i=0;
+  if(subject.size()<what.size())return false; 
   for(int i=0; i < what.size(); i++){
     if(what[i]!=subject[i])return false;
   };
