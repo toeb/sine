@@ -1,9 +1,7 @@
 #pragma once
 #include <math.matrix/operations/MatrixOperations.h>
-
+#include <cstdlib>
 namespace nspace{
-  
-  
   template<typename Matrix> void matrixSetRandom(Matrix & matrix);
 
   template<typename Matrix>

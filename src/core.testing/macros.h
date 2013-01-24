@@ -1,6 +1,17 @@
 #pragma once
 #include <core/utilities/Preprocessor.h>
 
+
+#define DS_FOR_DEFAULT_TYPE_LIST(ACTION)\
+  ACTION(bool)\
+  ACTION(int)\
+  ACTION(void*)\
+  ACTION(std::shared_ptr<int>)\
+  ACTION(std::string)\
+  ACTION(std::vector<std::string>)\
+  ACTION(nspace::Object*)\
+  ACTION(nspace::Object)
+
 #define DS_UNIT_TEST_RESULT(SUCCESS, MESSAGE) nspace::UnitTestResult(SUCCESS,MESSAGE,DS_SOURCE_INFO_PTR())
 #define DS_UNIT_TEST_REPORT(SUCCESS, MESSAGE) {Results().add(new DS_UNIT_TEST_RESULT(SUCCESS,MESSAGE));}
 #define DS_UNIT_TEST_REPORT_FAILURE(MESSAGE) DS_UNIT_TEST_REPORT(true,MESSAGE)
@@ -29,6 +40,8 @@
   if (fabs((expectedTemp)-(actualTemp)) > (threshold)) \
   { DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING("|"<<#actual<<"("<<(actualTemp)<<")-"<<#expected<<"("<<(expectedTemp)<<")| >"<<#threshold<<"("<< double(threshold)<<")")); }}
 
+#define DS_UNIT_TEST_FAIL(MESSAGE)\
+  {DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING(MESSAGE));}
 
 
 #define DS_TESTCLASSNAME(NAME) Test##NAME##Class
@@ -37,6 +50,7 @@
 #define DS_TEST_PERFORMANCE(NAME) \
 class DS_TESTCLASSNAME(NAME) : public nspace::TypedPerformanceTest<DS_TESTCLASSNAME(NAME)>{\
 public:inline void test();\
+  typedef DS_TESTCLASSNAME(NAME) UnitTestClass;\
   DS_TESTCLASSNAME(NAME):UnitTest(#NAME){nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
 }DS_TESTINSTANCENAME(NAME);\
   void DS_TESTCLASSNAME(NAME)::test()
@@ -44,25 +58,71 @@ public:inline void test();\
 #define DS_TEST(NAME) \
 class DS_TESTCLASSNAME(NAME) : public nspace::UnitTest{\
 public:inline void test();\
+  typedef DS_TESTCLASSNAME(NAME) UnitTestClass;\
   DS_TESTCLASSNAME(NAME)():UnitTest(#NAME){nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
 }DS_TESTINSTANCENAME(NAME);\
   void DS_TESTCLASSNAME(NAME)::test()
 
 
-/*#ifndef TEST(NAME) 
-#define TEST(NAME) DS_TEST(NAME)
-#endif*/
+#define DS_TEST_TEMPLATED_DEFINITION(NAME,...)\
+template<__VA_ARGS__>\
+class DS_TESTCLASSNAME(NAME) : public nspace::UnitTest{\
+private:\
+ std::string templateArguments;\
+public:inline void test();\
+  typedef DS_TESTCLASSNAME(NAME) UnitTestClass;\
+  DS_TESTCLASSNAME(NAME)(const std::string & templateArguments):UnitTest(#NAME),templateArguments(templateArguments){setTestName(DS_INLINE_STRING(#NAME<<"<"<<templateArguments<<">"));nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
+};
+
+#define DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,...) template<__VA_ARGS__> void DS_TESTCLASSNAME(NAME)<__VA_ARGS__>::test()
+  
+#define DS_TEST_TEMPLATED(NAME,...)\
+  DS_TEST_TEMPLATED_DEFINITION(NAME,__VA_ARGS__)\
+  DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,__VA_ARGS__)
+
+
+#define DS_TEST_TEMPLATED_INSTANCE(NAME,...) namespace NAME##TemplateTests{  DS_TESTCLASSNAME(NAME)  <__VA_ARGS__>  DS_CONCAT(Test,__COUNTER__)(#__VA_ARGS__);  }
+
+
+//rename
+#define DS_TEST_TEMPLATED_INSTANCIATE(TYPE) <TYPE>  DS_CONCAT(Test,__COUNTER__)(#TYPE);
+
+
+#define DS_TEMPLATED_DEFAULT_TESTS(NAME,...) DS_TEST_TEMPLATED_DEFINITION(NAME,__VA_ARGS__) \
+  namespace NAME##TemplateTests { \
+  DS_FOR_DEFAULT_TYPE_LIST(DS_TESTCLASSNAME(NAME) DS_TEST_TEMPLATED_INSTANCIATE) \
+} \
+  DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,__VA_ARGS__)
+
+#ifndef UNITTEST(NAME) 
+#define UNITTEST(NAME) DS_TEST(NAME)
+#endif
 
 #ifndef TEST(NAME,NAME2) 
 #define TEST(NAME,NAME2) DS_TEST(NAME2##NAME)
 #endif
 
+#ifndef TTEST(NAME,...)
+#define TTEST(NAME,...)  DS_TEST_TEMPLATED(NAME,__VA_ARGS__)
+#endif
+
+#ifndef TTEST_INSTANCE(NAME,...)
+#define TTEST_INSTANCE(NAME,...)DS_TEST_TEMPLATED_INSTANCE(NAME,__VA_ARGS__)
+#endif
+
+#ifndef TTEST_DEFAULT(NAME,...)
+#define TTEST_DEFAULT(NAME,...) DS_TEMPLATED_DEFAULT_TESTS(NAME,__VA_ARGS__)
+#endif
 
 
 #ifndef PTEST(NAME)
 #define PTEST(NAME) DS_TEST_PERFORMANCE(NAME)
 #endif
   
+#ifndef FAIL(MESSAGE)
+#define FAIL(MESSAGE) DS_UNIT_TEST_FAIL(MESSAGE)
+#endif
+
 #ifndef CHECK(condition)
 #define CHECK(condition) DS_UNIT_TEST_CHECK(condition)
 #endif

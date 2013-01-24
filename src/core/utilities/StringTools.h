@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <cstdlib>
 namespace nspace{
   namespace stringtools{
     //concatenates to strings
@@ -137,7 +138,6 @@ namespace nspace{
       value = std::strtol(word.c_str(),0,10);
       return true;
     }
-
     SPECIALIZE_PARSE(int){
       value= parse<long>(word);
       return true;

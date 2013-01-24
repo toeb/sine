@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <iterator>
 using namespace std;
 using namespace nspace::stringtools;
 
@@ -62,7 +63,8 @@ std::vector<std::string> nspace::stringtools::split(istringstream & stream){
   return tokens;
 }
 std::vector<std::string> nspace::stringtools::split(const std::string & str){
-  return split(istringstream(str));;
+  istringstream stream(str);
+  return split(stream);
 }
 std::string nspace::stringtools::trim(std::stringstream & stream){      
   return trim(stream.str());

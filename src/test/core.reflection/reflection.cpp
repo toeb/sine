@@ -1,12 +1,119 @@
 #include <core.testing.h>
+#include <map>
+#include <string>
+
+
+#define DS_CURRENT_TYPE(CLASSNAME) typedef Person CurrentType;
 
 
 
-TEST(Toeb){
-  std::cout  << "lol"<<std::endl;
-  DS_UNIT_TEST_CHECK(false);
+#define DS_PROPERTY_NAME(NAME) NAME
+
+#define DS_PROPERTY_TYPE_NAME(NAME)  DS_PROPERTY_NAME(NAME)##PropertyType
+
+#define DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) DS_PROPERTY_NAME(NAME)##NullPointer
+
+#define DS_PROPERTY_TYPE_DEFINITION(NAME) private: typedef std::remove_const<std::remove_pointer<decltype(DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME)())>::type>::type DS_PROPERTY_TYPE_NAME(NAME); //this is the definition of the property type
+
+#define DS_PROPERTY_DEFINITION(NAME) /* Begginning of Property */\
+  static const * DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME)(){return 0;}/*this should not create any overhead and is possible for any type*/\
+  DS_PROPERTY_TYPE_DEFINITION(NAME) /* Define Property type */
+
+// there can be field storage pointer storage, refence storage and callback storage
+// 
+
+#define DS_PROPERTY_STORAGE_NAME(NAME) DS_CONCAT(_, DS_PROPERTY_NAME(NAME))
+
+#define DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_NAME(NAME)##StorageType
+#define DS_PROPERTY_STORAGE_TYPE_FIELD(NAME) typedef DS_PROPERTY_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
+#define DS_PROPERTY_STORAGE_TYPE_POINTER(NAME) typedef std::add_pointer<DS_PROPERTY_TYPE_NAME(NAME)>::type DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
+#define DS_PROPERTY_STORAGE_TYPE_REFERENCE(NAME) typedef std::add_reference<DS_PROPERTY_TYPE_NAME(NAME)>::type DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
+
+
+
+
+#define DS_PROPERTY_STORAGE_FIELD(NAME) DS_PROPERTY_STORAGE_TYPE_FIELD(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_NAME(NAME);
+#define DS_PROPERTY_STORAGE_POINTER(NAME)  DS_PROPERTY_STORAGE_TYPE_POINTER(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_NAME(NAME);
+#define DS_PROPERTY_STORAGE_REFERENCE(NAME) DS_PROPERTY_STORAGE_TYPE_REFERENCE(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_NAME(NAME);
+#define DS_PROPERTY_STORAGE_CALLBACK(NAME) 
+
+#define DS_PROPERTY_STORAGE(NAME)
+
+class Person{
+private: typedef Person CurrentType;
+
+
+
+std::map<std::string, int> static const *__LastName(){return 0;}// this should not create any overhead and is possible for any type
+private: typedef std::remove_pointer<decltype(__LastName())>::type PropertyTypeLastName; //this is the definition of the property type
+private: PropertyTypeLastName LastName;
+
+private: int _Age;
+public: int getAge(){return _Age;}
+protected: void setAge(int & value){_Age=value;}
+protected: const int & age()const{return _Age;}
+
+bool DS_PROPERTY_DEFINITION(IsAlive);
+public: DS_PROPERTY_STORAGE_FIELD(IsAlive);
+
+        std::string DS_PROPERTY_DEFINITION(MiddleNames);
+      public: DS_PROPERTY_STORAGE_FIELD(MiddleNames);
+
+              Person DS_PROPERTY_DEFINITION(SpecialOther);
+public:   DS_PROPERTY_STORAGE_POINTER(SpecialOther);
+
+              Person DS_PROPERTY_DEFINITION(Self);
+public: DS_PROPERTY_STORAGE_REFERENCE(Self);
+public:
+  Person():_Self(*this),_IsAlive(false){}
+
+};
+
+
+TEST(1,propertyDefinition){
+  struct A{
+    std::string DS_PROPERTY_DEFINITION(StringValue)
+    friend class UnitTestClass;
+  };
+
+  auto result=std::is_same<A::StringValuePropertyType,std::string>::value;
+  CHECK(result);
 }
 
-TEST(Toeb2){
-  DOUBLES_EQUAL(1.1,1.2,0.05);
+
+TEST(1, propertyField){
+  class A{
+    std::string DS_PROPERTY_DEFINITION(StringValue)
+      DS_PROPERTY_STORAGE_FIELD(StringValue)
+    private:
+      friend class UnitTestClass;
+  };
+  auto result=std::is_same<A::StringValuePropertyType,std::string>::value;
+  CHECK(result);
 }
+
+
+TEST(1, TemplatedPropertyField){
+  class A{
+    std::map<std::string,std::string> DS_PROPERTY_DEFINITION(MapValue)
+      DS_PROPERTY_STORAGE_FIELD(MapValue);
+  private:
+    friend class UnitTestClass;
+  };
+    auto result = std::is_same<A::MapValuePropertyType,std::map<std::string,std::string>>::value;
+    CHECK(result);
+}
+
+
+TTEST_DEFAULT(PropertyField, typename PropertyType){
+  class A{
+    PropertyType DS_PROPERTY_DEFINITION(Value);
+  private:
+    friend class UnitTestClass;
+  };
+  auto res = std::is_same<A::ValuePropertyType,PropertyType>::value;
+  if(!res){
+    FAIL(templateArguments << " the field types do not match");
+  }
+};
+

@@ -4,10 +4,20 @@
 
 namespace nspace{
   class CompilerInfo: public PropertyChangingObject{
-    REFLECTABLE_OBJECT(CompilerInfo);    
+    REFLECTABLE_OBJECT(CompilerInfo);
     PROPERTY(std::string, CompilationDate){}
     PROPERTY(std::string, CompilationTime){}
+    PROPERTY(std::string, TimeStamp){}
+  public:
+    CompilerInfo(const std::string compileTime, const std::string &compileDate,const std::string & timestamp)
+      :_CompilationDate(compileDate),_CompilationTime(compileTime),_TimeStamp(timestamp){}
   };
+
+#define DS_COMPILER_INFO() nspace::CompilerInfo(__TIME__,__DATE__,__TIMESTAMP__)
+#ifndef COMPILER_INFO
+#define COMPILER_INFO DS_COMPILER_INFO()
+#endif
+
   class SourceInfo : public PropertyChangingObject{
     REFLECTABLE_OBJECT(SourceInfo);
   public:
@@ -27,5 +37,19 @@ namespace nspace{
 #ifndef SOURCE_INFO
 #define SOURCE_INFO DS_SOURCE_INFO()
 #endif
+
+  
+//helper macro.
+#define DS_CONCAT_(A,B) A ## B
+/**
+ * \brief A macro for concatenating to Preprocessor Tokens
+ *        this is used when A ## B does not work
+ *
+ * \param A.
+ * \param B.
+ */
+#define DS_CONCAT(A,B) DS_CONCAT_(A,B)
+
+
 
 }
