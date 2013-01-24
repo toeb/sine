@@ -108,12 +108,29 @@ TEST(1, TemplatedPropertyField){
 TTEST_DEFAULT(PropertyField, typename PropertyType){
   class A{
     PropertyType DS_PROPERTY_DEFINITION(Value);
+    DS_PROPERTY_STORAGE_FIELD(Value);
   private:
     friend class UnitTestClass;
-  };
-  auto res = std::is_same<A::ValuePropertyType,PropertyType>::value;
+  }a;
+  auto res = std::is_same<A::ValueStorageType,PropertyType>::value;
   if(!res){
-    FAIL(templateArguments << " the field types do not match");
+    FAIL(" the property storage type is incorrect");
+  }
+  res = std::is_same<A::ValuePropertyType,typename decltype(a._Value)>::value;
+  if(!res){
+    FAIL(" the field type is incorrect");
   }
 };
 
+TTEST_DEFAULT(PropertyPointerStorage, typename PropertyType){
+  class A{
+    friend class UnitTestClass;
+    PropertyType DS_PROPERTY_DEFINITION(Value);
+    DS_PROPERTY_STORAGE_POINTER(Value);
+  };
+
+  auto res = std::is_pointer<A::ValueStorageType>::value;
+  if(!res) FAIL("the property storage type is incorrect (not a pointer");
+  res = std::is_same<A::ValueStorageType, std::add_pointer<PropertyType>::type>::value;
+  if(!res) FAIL("the type of the storage field is incorrect");
+}
