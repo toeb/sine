@@ -3,9 +3,6 @@
 using namespace nspace;
 
 
-int main(){
-  auto & instance = *UnitTestRunner::instance();
-  instance.run();
-  std::cout<<instance;
-
+int main(int argc, char** argv){
+  return nspace::UnitTestRunner::runCommandLine(argc,argv);
 }

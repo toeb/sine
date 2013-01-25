@@ -50,6 +50,12 @@ namespace nspace{
  */
 #define DS_CONCAT(A,B) DS_CONCAT_(A,B)
 
-
+/**
+ * \brief A macro that creates a lambda to concatenate a string using stream out operator <<
+ *        evaluates to a std::string
+ *
+ * \param ARGS  The arguments.
+ */
+#define DS_INLINE_STRING(ARGS) (std::function<std::string ()>([&]()->std::string{std::ostringstream stream; stream << ARGS; return stream.str();})() )
 
 }

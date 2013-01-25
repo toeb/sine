@@ -194,3 +194,4 @@ std::string nspace::stringtools::replace(std::string  original, const std::strin
 std::string nspace::stringtools::spaces(unsigned int n){
   return repeat(" ",n);
 }
+

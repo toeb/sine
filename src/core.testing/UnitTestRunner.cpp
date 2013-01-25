@@ -23,3 +23,4 @@ void UnitTestRunner::toString(std::ostream & out)const{
     out << test<<std::endl;
   });
 }
+

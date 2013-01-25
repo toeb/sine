@@ -125,51 +125,100 @@ namespace nspace{
 
     //todo what happens when parse error?
 
-    SPECIALIZE_PARSE(double){
-      value = std::strtod(word.c_str(),0);
-      return true;
-    }
+    template<>
+    struct Parse<double>{
+      static inline bool operation(double & value, const std::string & word){        
+        value = std::strtod(word.c_str(),0);
+        return true;
+      }
+    };
 
-    SPECIALIZE_PARSE(unsigned long){
-      value = std::strtoul(word.c_str(),0,10);
-      return true;
-    }
-    SPECIALIZE_PARSE(long){
-      value = std::strtol(word.c_str(),0,10);
-      return true;
-    }
-    SPECIALIZE_PARSE(int){
-      value= parse<long>(word);
-      return true;
-    }
-
-    SPECIALIZE_PARSE(short){
-      value= parse<long>(word);
-      return true;
-    }
-        
-    SPECIALIZE_PARSE(char){
-      value= parse<long>(word);
-      return true;
-    }
+    template<>
+    struct Parse<unsigned long>{
+      static inline bool operation(unsigned long & value, const std::string & word){        
+        value = std::strtoul(word.c_str(),0,10);
+        return true;
+      }
+    };
+    
+    template<>
+    struct Parse<long>{
+      static inline bool operation(long & value, const std::string & word){        
+        value = std::strtol(word.c_str(),0,10);
+        return true;
+      }
+    };
 
     
+    template<>
+    struct Parse<int>{
+      static inline bool operation( int & value, const std::string & word){     
+      value= parse<long>(word);
+        return true;
+      }
+    };
 
-    SPECIALIZE_PARSE(unsigned int){
-      value = parse<unsigned long>(word);
-      return true;
-    }
 
-    SPECIALIZE_PARSE(unsigned short){
+    
+    template<>
+    struct Parse<short>{
+      static inline bool operation( short & value, const std::string & word){     
+      value= parse<long>(word);
+        return true;
+      }
+    };
+
+
+    
+    
+    template<>
+    struct Parse<char>{
+      static inline bool operation( char & value, const std::string & word){     
+      value= parse<long>(word);
+        return true;
+      }
+    };
+
+
+    template<>
+    struct Parse<unsigned int>{
+      static inline bool operation( unsigned int & value, const std::string & word){     
       value= parse<unsigned long>(word);
-      
-      return true;
-    }
-        
-    SPECIALIZE_PARSE(unsigned char){
+        return true;
+      }
+    };
+    
+    
+    template<>
+    struct Parse<unsigned short>{
+      static inline bool operation( unsigned short & value, const std::string & word){     
       value= parse<unsigned long>(word);
-      return true;
-    }
+        return true;
+      }
+    };
+
+    
+    template<>
+    struct Parse<unsigned char>{
+      static inline bool operation( unsigned char & value, const std::string & word){     
+      value= parse<unsigned long>(word);
+        return true;
+      }
+    };
+
+    
+    
+    template<>
+    struct Parse<float>{
+      static inline bool operation( float & value, const std::string & word){     
+      value= parse<double>(word);
+        return true;
+      }
+    };
+
+
+
+
 
 
 }

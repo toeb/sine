@@ -10,9 +10,9 @@
 
 #define DS_PROPERTY_NAME(NAME) NAME
 
-#define DS_PROPERTY_TYPE_NAME(NAME)  DS_PROPERTY_NAME(NAME)##PropertyType
+#define DS_PROPERTY_TYPE_NAME(NAME) DS_CONCAT(DS_PROPERTY_NAME(NAME),PropertyType)
 
-#define DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) DS_PROPERTY_NAME(NAME)##NullPointer
+#define DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) DS_CONCAT(DS_PROPERTY_NAME(NAME),NullPointer)
 
 #define DS_PROPERTY_TYPE_DEFINITION(NAME) private: typedef std::remove_const<std::remove_pointer<decltype(DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME)())>::type>::type DS_PROPERTY_TYPE_NAME(NAME); //this is the definition of the property type
 
@@ -25,7 +25,7 @@
 
 #define DS_PROPERTY_STORAGE_NAME(NAME) DS_CONCAT(_, DS_PROPERTY_NAME(NAME))
 
-#define DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_NAME(NAME)##StorageType
+#define DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_CONCAT(DS_PROPERTY_NAME(NAME),StorageType)
 
 #define DS_PROPERTY_STORAGE_TYPE_FIELD(NAME) typedef DS_PROPERTY_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
 #define DS_PROPERTY_STORAGE_TYPE_POINTER(NAME) typedef std::add_pointer<DS_PROPERTY_TYPE_NAME(NAME)>::type DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
@@ -85,6 +85,24 @@ TEST(1, TemplatedPropertyField){
 }
 
 
+template<typename T>
+struct ClassA{
+  void test();
+};
+
+template<typename T>
+void ClassA< T>::test(){
+  std::cout << "lol";
+}
+
+
+UNITTEST(typenameTest){
+  ClassA<int>  asd;
+  asd.test();
+}
+
+/*
+
 TTEST_DEFAULT(PropertyField, typename PropertyType){
   class A{
     PropertyType DS_PROPERTY_DEFINITION(Value);
@@ -129,13 +147,13 @@ TTEST_DEFAULT(PropertyReferenceStorage, typename PropertyType){
   if(!res) FAIL("the type of the storage field is incorrect");
 }
 
+*/
 
-
-TEST(PropertyFieldSetter){
+UNITTEST(PropertyFieldSetter){
   class A{
     friend class UnitTestClass;
     int DS_PROPERTY_DEFINITION(Value);
-    DS_PROPERTY_STORAGE_FIELD(Value);
+  public :DS_PROPERTY_STORAGE_FIELD(Value);
   public: DS_PROPERTY_SETTER(Value){DS_PROPERTY_STORAGE(Value)=value;}
           
 

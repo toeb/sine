@@ -39,6 +39,7 @@ namespace nspace {
     PROPERTY(bool, IsInitialized);
     PROPERTY(double, Time);
     OBJECTPOINTERCOLLECTION(UnitTestResult, Results,,);
+    //@todo rename to ... (failures)
     PROPERTY(int, FailedTests);
     PROPERTY(time_t, TestStartTime);
     PROPERTY(time_t, TestEndTime);

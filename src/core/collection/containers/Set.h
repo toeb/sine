@@ -307,9 +307,25 @@ public:
     bool contains(T element) const;
 
     bool all(Predicate predicate)const{
-      return reduce([predicate](T value, bool accu)->bool{return accu && predicate(value);},true);
+      return !any([predicate](T element){return !predicate(element);});
+      //return reduce([predicate](T value, bool accu)->bool{return accu && predicate(value);},true);
     }
        
+    bool any(Predicate predicate)const{
+      for(uint i=0 ; i < size(); i++){
+        if(predicate(at(i)))return true;
+      }
+      return false;
+    }
+
+    uint count(Predicate predicate)const{
+      uint res=0;
+      for(uint i=0; i < size(); i++){
+        if(predicate(at(i)))res++;
+      }
+      return res;
+    }
+
 
     template<typename Result>
     Result reduce(std::function<Result (T , Result )> f, T seed)const{

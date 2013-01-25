@@ -23,6 +23,7 @@ namespace nspace {
   /**
    * \brief Unit test result. a test may have many result this mainly contains the message, a flag indicating whether the test was successful and a SourceInfo
    *        object which is useful for identifying where tests failed
+   *        @todo add inconclusive state
    */
   class UnitTestResult : public PropertyChangingObject {
     REFLECTABLE_OBJECT(UnitTestResult);

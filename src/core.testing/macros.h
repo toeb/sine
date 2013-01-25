@@ -17,7 +17,6 @@
 #define DS_UNIT_TEST_REPORT_FAILURE(MESSAGE) DS_UNIT_TEST_REPORT(true,MESSAGE)
 #define DS_UNIT_TEST_REPORT_SUCCESS(MESSAGE) DS_UNIT_TEST_REPORT(false,MESSAGE)
 
-#define DS_INLINE_STRING(ARGS) std::function<std::string ()>([&]()->std::string{std::ostringstream stream; stream << ARGS; return stream.str();})() 
   
 #define DS_UNIT_TEST_CHECK(condition)\
 { if (!(condition)) \
@@ -42,6 +41,9 @@
 
 #define DS_UNIT_TEST_FAIL(MESSAGE)\
   {DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING(MESSAGE));}
+
+//todo
+//#define DS_UNIT_TEST_INCONCLUSIVE(MESSAGE)  {DS_UNIT_TEST_REPORT(DS_INLINE_STRING(MESSAGE));}
 
 
 #define DS_TESTCLASSNAME(NAME) Test##NAME##Class
@@ -94,47 +96,47 @@ public:inline void test();\
 } \
   DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,__VA_ARGS__)
 
-#ifndef UNITTEST(NAME) 
+#ifndef UNITTEST
 #define UNITTEST(NAME) DS_TEST(NAME)
 #endif
 
-#ifndef TEST(NAME,NAME2) 
+#ifndef TEST
 #define TEST(NAME,NAME2) DS_TEST(NAME2##NAME)
 #endif
 
-#ifndef TTEST(NAME,...)
+#ifndef TTEST
 #define TTEST(NAME,...)  DS_TEST_TEMPLATED(NAME,__VA_ARGS__)
 #endif
 
-#ifndef TTEST_INSTANCE(NAME,...)
+#ifndef TTEST_INSTANCE
 #define TTEST_INSTANCE(NAME,...)DS_TEST_TEMPLATED_INSTANCE(NAME,__VA_ARGS__)
 #endif
 
-#ifndef TTEST_DEFAULT(NAME,...)
+#ifndef TTEST_DEFAULT
 #define TTEST_DEFAULT(NAME,...) DS_TEMPLATED_DEFAULT_TESTS(NAME,__VA_ARGS__)
 #endif
 
 
-#ifndef PTEST(NAME)
+#ifndef PTEST
 #define PTEST(NAME) DS_TEST_PERFORMANCE(NAME)
 #endif
   
-#ifndef FAIL(MESSAGE)
+#ifndef FAIL
 #define FAIL(MESSAGE) DS_UNIT_TEST_FAIL(MESSAGE)
 #endif
 
-#ifndef CHECK(condition)
+#ifndef CHECK
 #define CHECK(condition) DS_UNIT_TEST_CHECK(condition)
 #endif
 
-#ifndef CHECK_EQUAL(expected, actual)
+#ifndef CHECK_EQUAL
 #define CHECK_EQUAL(expected, actual) DS_UNIT_TEST_CHECK_EQUAL(expected, actual)
 #endif
   
-#ifndef LONGS_EQUAL(expected, actual)
+#ifndef LONGS_EQUAL
 #define LONGS_EQUAL(expected, actual) DS_UNIT_TEST_LONGS_EQUAL(expected, actual)
 #endif
 
-#ifndef DOUBLES_EQUAL(expected, actual,threshold)
+#ifndef DOUBLES_EQUAL
 #define DOUBLES_EQUAL(expected, actual,threshold) DS_UNIT_TEST_DOUBLES_EQUAL(expected, actual,threshold)
 #endif
