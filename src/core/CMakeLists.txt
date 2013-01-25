@@ -1,5 +1,19 @@
 set(source ../include/core.h )
 
+
+set(commandlineParserSource
+  ./commandline/CommandLineParser.h
+  ./commandline/CommandLineParser.cpp
+  ./commandline/CommandLineArgumentDefinition.h
+  ./commandline/CommandLineArgumentDefinition.cpp
+  ./commandline/CommandLineArgument.h
+  ./commandline/CommandLineArgument.cpp
+  ../include/core.commandline.h
+)
+source_group("commandline" FILES ${commandlineParserSource})
+
+set(source ${source} ${commandlineParserSource})
+
 set(templateSource
 ./template/TemplateUtilities.h
 )

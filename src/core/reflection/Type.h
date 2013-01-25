@@ -362,6 +362,22 @@ public:
   META(std::ifstream);
   META(std::ofstream);
 
+
+  
+  /*
+  template<typename T>
+  class TypeInfo<std::vector<T>>:public Type{
+    TEMPLATEDSINGLETON(TypeInfo,<std::vector<T> >){
+      setCreateInstanceFunction([](){return new std::vector<T>();});
+      setDeleteInstanceFunction([](void * v){delete static_cast<std::vector<T>*>(v);});
+      
+      setName(DS_INLINE_STRING("std::vector<"<<typeof(T)->getName()<<">"));
+    }
+  };
+  //need serializers
+  */
+
+
 /**
  * \brief this macro returns the Type * instance for TYPENAME.
  *
