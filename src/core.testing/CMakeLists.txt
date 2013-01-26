@@ -14,5 +14,5 @@ set(source
  source_group("" FILES ${source})
  
  add_library(core.testing ${source})
- target_link_libraries(core.testing core core.task)
+ target_link_libraries(core.testing core core.task core.logging)
 

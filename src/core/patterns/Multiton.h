@@ -35,9 +35,12 @@ private:
 public:
 
     ~Multiton(){
-      for(auto i : registeredObjects) {
+    /*  for(auto i : registeredObjects) {
         delete i.second;
-      };
+      };*/
+      for(auto it = registeredObjects.begin(); it!=registeredObjects.end();it++){
+        delete (*it).second;
+      }
       registeredObjects.clear();
     }
 

@@ -23,9 +23,13 @@ UnitTest::UnitTest(const std::string & name){
 
 
     UnitTest::~UnitTest(){
+      for(uint i=0; i < Results(); i++){
+        delete Results().at(i);
+      }
+      /* removed for backwards compatibility
       for(auto test : Results().elements()){
         delete test;
-      }
+      }*/
       Results().clear();
     }
 
