@@ -9,6 +9,13 @@ cmake_minimum_required(VERSION 2.4)
 #ds = dynamische simulation
 project(ds)
 
+# enables testing for the projects.
+include(CTest)
+if(BUILD_TESTING)
+  set(BUILDNAME "${BUILDNAME}" CACHE STRING "Name of build on the dashboard")
+  mark_as_advanced(BUILDNAME)
+endif(BUILD_TESTING)
+
 # set the root project folder for visual studio
 set(dslibProjectFolder "")
 # sets which projects not to build
