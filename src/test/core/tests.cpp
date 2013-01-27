@@ -457,8 +457,9 @@ TEST(BFS1,DataNode){
   });
 
 }
+/*
 TEST(GraphCreate1, Graph){
-  Graph<DataNode<int> > uut;
+ Graph<DataNode<int> > uut;
   
 
   DataNode<int> n1 = 1;
@@ -481,3 +482,4 @@ TEST(GraphCreate1, Graph){
   CHECK_EQUAL(7U, uut.nodes().size());
   CHECK(uut.leaves().size()==4);
 }
+*/
