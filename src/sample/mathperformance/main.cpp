@@ -35,9 +35,9 @@ typedef MatrixNxM MatMN1;
 
 class PerformanceTest{
 private:
+    std::string _name;
   Time start;
   Time _duration;
-  std::string _name;
   int _n;
   static std::vector<PerformanceTest*> tests;
 public:

@@ -57,6 +57,7 @@ public:
       if(request(&object->getType())) return false;
       registeredObjects[&object->getType()]=object;
       onObjectRegistered(object);
+      return true;
     }
 
     template<typename T>

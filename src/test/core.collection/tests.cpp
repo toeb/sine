@@ -477,8 +477,8 @@ TEST(LambdaMultilineReturnType, Tech){
     int i=5; 
     return i*0.01;
   };
-  decltype(lambda()) val;
-  val = 2.1;
+  auto result = std::is_same<decltype(lambda()),double>::value;
+  CHECK(result);
 }
 
 
@@ -522,7 +522,7 @@ TEST(Size2, Collection){
 TEST(Size3, Collection){
   int * arrayPointer = new int[5];
   // cannot form any conclusion about s - it is undefined
-  auto s= size(arrayPointer);
+
   size_t n;
   auto success = size(n,arrayPointer);
   CHECK(success==false);
@@ -530,7 +530,7 @@ TEST(Size3, Collection){
 TEST(Size4, Collection){
   Set<int> set;
   set =1,4,5,6,34,3,2;
-  auto result = size(set);
+
   CHECK(size(set)==7);
 };
 TEST(Size5, Collection){

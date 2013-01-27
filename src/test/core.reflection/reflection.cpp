@@ -18,7 +18,7 @@ UNITTEST(DS_REDUCE){
 #define my_op +
   int i = DS_REDUCE(,my_op,1,1,1,1,1,1);
   CHECK_EQUAL(6,i);
-#undef my_op;
+#undef my_op
 }
 
 
@@ -26,28 +26,28 @@ UNITTEST(DS_REDUCE_N){
 #define my_op +
   int i = DS_REDUCE_N(5,,my_op,1,1,1,1,1);
   CHECK_EQUAL(5,i);
-#undef my_op;
+#undef my_op
 }
 
 UNITTEST(DS_REDUCE_3){
 #define my_op +
   int i = DS_REDUCE_3(,my_op,2,3,4);
   CHECK_EQUAL(9,i);
-#undef my_op;
+#undef my_op
 }
 
 UNITTEST(DS_REDUCE_2){
 #define my_op +
   int i = DS_REDUCE_2(,my_op,2,3);
   CHECK_EQUAL(5,i);
-#undef my_op;
+#undef my_op
 }
 
 UNITTEST(DS_REDUCE_1){
 #define my_op +
   int i = DS_REDUCE_1(,my_op,2);
   CHECK_EQUAL(2,i);
-#undef my_op;
+#undef my_op
 }
 
 UNITTEST(DS_NUM_ARGS1){
@@ -156,11 +156,17 @@ UNITTEST(DS_REST){
 
 #define DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) DS_CONCAT(DS_PROPERTY_NAME(NAME),NullPointer)
 
-#define DS_PROPERTY_TYPE_DEFINITION(NAME) private: typedef std::remove_const<std::remove_pointer<decltype(DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME)())>::type>::type DS_PROPERTY_TYPE_NAME(NAME); //this is the definition of the property type
+#define DS_PROPERTY_TYPE_DEFINITION(NAME) private: typedef nspace::result_of_static_function< decltype( &DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) ) >::type DS_PROPERTY_TYPE_NAME(NAME); //this is the definition of the property type
+#define DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) private: typedef typename  nspace::result_of_static_function< decltype( &DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) ) >::type DS_PROPERTY_TYPE_NAME(NAME);
 
 #define DS_PROPERTY_DEFINITION(NAME) /* Begginning of Property */\
-  static const * DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME)(){return 0;}/*this should not create any overhead and is possible for any type*/\
+  static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME)();/*this should not create any overhead and is possible for any type*/\
   DS_PROPERTY_TYPE_DEFINITION(NAME) /* Define Property type */
+
+
+#define DS_PROPERTY_DEFINITION_TEMPLATED(NAME) \
+    static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME)();/*this should not create any overhead and is possible for any type*/\
+    DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) /* Define Property type */
 
 // there can be field storage pointer storage, refence storage and callback storage
 // 
@@ -170,13 +176,13 @@ UNITTEST(DS_REST){
 #define DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_CONCAT(DS_PROPERTY_NAME(NAME),StorageType)
 
 #define DS_PROPERTY_STORAGE_TYPE_FIELD(NAME) typedef DS_PROPERTY_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
-#define DS_PROPERTY_STORAGE_TYPE_POINTER(NAME) typedef std::add_pointer<DS_PROPERTY_TYPE_NAME(NAME)>::type DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
-#define DS_PROPERTY_STORAGE_TYPE_REFERENCE(NAME) typedef std::add_reference<DS_PROPERTY_TYPE_NAME(NAME)>::type DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
+#define DS_PROPERTY_STORAGE_TYPE_POINTER(NAME) typedef DS_PROPERTY_TYPE_NAME(NAME) * DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
+#define DS_PROPERTY_STORAGE_TYPE_REFERENCE(NAME) typedef DS_PROPERTY_TYPE_NAME(NAME) & DS_PROPERTY_STORAGE_TYPE_NAME(NAME);
 
 #define DS_PROPERTY_STORAGE_FIELD(NAME) DS_PROPERTY_STORAGE_TYPE_FIELD(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_NAME(NAME);
 #define DS_PROPERTY_STORAGE_POINTER(NAME)  DS_PROPERTY_STORAGE_TYPE_POINTER(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_NAME(NAME);
 #define DS_PROPERTY_STORAGE_REFERENCE(NAME) DS_PROPERTY_STORAGE_TYPE_REFERENCE(NAME) DS_PROPERTY_STORAGE_TYPE_NAME(NAME) DS_PROPERTY_STORAGE_NAME(NAME);
-#define DS_PROPERTY_STORAGE_CALLBACK(NAME) 
+#define DS_PROPERTY_STORAGE_CALLBACK(NAME)
 
 #define DS_PROPERTY_STORAGE(NAME) DS_PROPERTY_STORAGE_NAME(NAME)
 
@@ -243,53 +249,56 @@ UNITTEST(typenameTest){
   asd.test();
 }
 
-/*
 
-TTEST_DEFAULT(PropertyField, typename PropertyType){
+TTEST_DEFAULT(PropertyField, PropertyType){
   class A{
-    PropertyType DS_PROPERTY_DEFINITION(Value);
-    DS_PROPERTY_STORAGE_FIELD(Value);
+    public:PropertyType DS_PROPERTY_DEFINITION_TEMPLATED(Value);
+  public: DS_PROPERTY_STORAGE_FIELD(Value);
   private:
     friend class UnitTestClass;
   }a;
-  auto res = std::is_same<A::ValueStorageType,PropertyType>::value;
+
+
+  auto res = std::is_same<typename A::ValueStorageType,PropertyType>::value;
   if(!res){
     FAIL(" the property storage type is incorrect");
   }
-  res = std::is_same<A::ValuePropertyType,typename decltype(a._Value)>::value;
+  typedef  decltype(a._Value) TheType;
+  res = std::is_same<typename A::ValueStorageType,TheType>::value;
   if(!res){
     FAIL(" the field type is incorrect");
   }
-};
+}
 
-TTEST_DEFAULT(PropertyPointerStorage, typename PropertyType){
+
+TTEST_DEFAULT(PropertyPointerStorage, PropertyType){
   class A{
     friend class UnitTestClass;
-    PropertyType DS_PROPERTY_DEFINITION(Value);
-    DS_PROPERTY_STORAGE_POINTER(Value);
+  public:PropertyType DS_PROPERTY_DEFINITION_TEMPLATED(Value);
+  public: DS_PROPERTY_STORAGE_POINTER(Value);
   };
 
-  auto res = std::is_pointer<A::ValueStorageType>::value;
+  auto res = std::is_pointer<typename A::ValueStorageType>::value;
   if(!res) FAIL("the property storage type is incorrect (not a pointer");
-  res = std::is_same<A::ValueStorageType, std::add_pointer<PropertyType>::type>::value;
+  res = std::is_same< typename A::ValueStorageType,typename std::add_pointer<PropertyType>::type>::value;
   if(!res) FAIL("the type of the storage field is incorrect");
 }
 
 
-TTEST_DEFAULT(PropertyReferenceStorage, typename PropertyType){
+TTEST_DEFAULT(PropertyReferenceStorage, PropertyType){
   class A{
     friend class UnitTestClass;
-    PropertyType DS_PROPERTY_DEFINITION(Value);
-    DS_PROPERTY_STORAGE_REFERENCE(Value);
+   public:  PropertyType DS_PROPERTY_DEFINITION_TEMPLATED(Value);
+  public: DS_PROPERTY_STORAGE_REFERENCE(Value);
   };
 
-  auto res = std::is_reference<A::ValueStorageType>::value;
+  auto res = std::is_reference<typename A::ValueStorageType>::value;
   if(!res) FAIL("the property storage type is incorrect (not a pointer");
-  res = std::is_same<A::ValueStorageType, std::add_reference<PropertyType>::type>::value;
+  res = std::is_same< typename A::ValueStorageType, PropertyType&>::value;
   if(!res) FAIL("the type of the storage field is incorrect");
 }
 
-*/
+
 
 UNITTEST(PropertyFieldSetter){
   class A{
@@ -304,26 +313,3 @@ UNITTEST(PropertyFieldSetter){
   auto val = a._Value;
   CHECK_EQUAL(4,val);
 }
-/*
-template<typename TValue, typename TStorage>
-struct StorageAccess{
-  static inline void setStorage(){}
-  static inline TValue getStorage(){}
-};
-
-  class A{
-    int static const * ValueNullPointer(){return 0;} 
-    private: typedef std::remove_const<std::remove_pointer<decltype(ValueNullPointer())>::type>::type ValuePropertyType;;
-    typedef ValuePropertyType ValueStorageType; ValueStorageType _Value;;
-  private: static inline void assign(const ValuePropertyType & value){}
-  public: inline void inline void setValue(const ValuePropertyType & value){_Value=value;}
-          
-
-  }a;
-  */
-
-// int property(Count, storeAs(private: reference), defaultValue(0), public: getter, private: virtual setter, protected: const_reference )
-// propertyChanging(Count){}
-// propertyValidate(Count){ if (newvalue<0) return false;}
-// propertyChanged(Count){}
-// 

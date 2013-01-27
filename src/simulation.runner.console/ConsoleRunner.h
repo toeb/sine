@@ -7,8 +7,8 @@ namespace nspace{
   class ConsoleRunner : public SimulationRunner{
     TYPED_OBJECT(ConsoleRunner);
 
-    SimulationTimeProvider * simulationTime;
     bool running;
+    SimulationTimeProvider * simulationTime;
     Time target;
   public:
     ConsoleRunner():running(false),simulationTime(0){
