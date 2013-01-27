@@ -113,7 +113,8 @@ namespace nspace{
 
 // Reduction of VA args list,  applies macro M to every element and adds SEPARATOR in between results
 // DS_REDUCE(,+,1,2,3,4,5,6,7) evaluates to (1)+(2)+(3)+(4)+(5)+(6)+(7) 
-
+#define DS_COMMA ,
+#define DS_NOOP(X) X
 #define DS_REDUCE_1(M, SEPARATOR,X) M(X)
 #define DS_REDUCE_2(M, SEPARATOR,...)  DS_EXPAND(M(DS_FIRST(__VA_ARGS__))) SEPARATOR DS_REDUCE_1(M,SEPARATOR,DS_EXPAND(DS_REST(__VA_ARGS__)))
 #define DS_REDUCE_3(M, SEPARATOR,...)  DS_EXPAND(M(DS_FIRST(__VA_ARGS__))) SEPARATOR DS_REDUCE_2(M,SEPARATOR,DS_EXPAND(DS_REST(__VA_ARGS__)))

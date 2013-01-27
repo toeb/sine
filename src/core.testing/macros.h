@@ -67,7 +67,7 @@ public:inline void test();\
 #define DS_ADD_TYPENAME_QUALIFIER(X) typename X
 
 #define DS_TEST_TEMPLATED_DEFINITION(NAME,...)\
-template<DS_FOREACH(DS_ADD_TYPENAME_QUALIFIER,__VA_ARGS__)>\
+  template<DS_REDUCE(DS_ADD_TYPENAME_QUALIFIER,DS_COMMA,__VA_ARGS__)>\
 class DS_TESTCLASSNAME(NAME) : public nspace::UnitTest{\
 private:\
  std::string templateArguments;\
@@ -76,7 +76,7 @@ public:inline void test();\
   DS_TESTCLASSNAME(NAME)(const std::string & templateArguments):UnitTest(#NAME),templateArguments(templateArguments){setTestName(DS_INLINE_STRING(#NAME<<"<"<<templateArguments<<">"));nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
 };
 
-#define DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,...) template<__VA_ARGS__> void DS_TESTCLASSNAME(NAME)<__VA_ARGS__>::test()
+#define DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,...) template<DS_REDUCE(DS_ADD_TYPENAME_QUALIFIER,DS_COMMA,__VA_ARGS__)> void DS_TESTCLASSNAME(NAME)<DS_REDUCE(DS_NOOP,DS_COMMA,__VA_ARGS__)>::test()
   
 #define DS_TEST_TEMPLATED(NAME,...)\
   DS_TEST_TEMPLATED_DEFINITION(NAME,__VA_ARGS__)\

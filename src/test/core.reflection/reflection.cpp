@@ -2,6 +2,15 @@
 #include <map>
 #include <string>
 
+TTEST(Ttesttest, T,K){
+  bool res = std::is_same<T,K>::value;
+  CHECK(res);
+}
+
+TTEST_INSTANCE(Ttesttest,int,int);
+TTEST_INSTANCE(Ttesttest,int,double);
+TTEST_INSTANCE(Ttesttest,int,std::string);
+TTEST_INSTANCE(Ttesttest,std::string,std::string);
 
 
 
