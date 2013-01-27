@@ -34,8 +34,8 @@ void mapElement(PlyElement &  element, IMeshBuilder & builder, std::istream & st
   if(element.name=="vertex"){
 
     Vector3D position;
-    for(auto property: element.properties){
-      
+    for(auto it = element.properties.begin(); it != element.properties.end(); it++){
+      auto & property = *it;
      // stream >> value;
       if(property->name  =="x"){
         position(0)=parseNext<Real>(stream);

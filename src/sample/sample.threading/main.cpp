@@ -1,9 +1,10 @@
-#include <thread>
+// todo: does nto work in vs10
+//#include <thread>
 #include <iostream>
 #include <string>
-#include <chrono>
+//#include <chrono>
 using namespace std;
-using namespace std::chrono;
+//using namespace std::chrono;
 int main(int argc, char ** argv){
   /*
   bool iterate = true;

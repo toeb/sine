@@ -49,15 +49,20 @@ void ObjReader::parseFace(std::istream & stream){
     face.smoothingGroup = currentSmoothingGroup;
     face.object =currentObject;
     face.material =currentMaterial;
-  for(auto tuple : tuples){      
+//  for(auto tuple : tuples){      
+    for(auto it = tuples.begin() ; it!=tuples.end(); it++){
+        auto & tuple = *it;
+
     MeshFaceVertex vertex;
     std::vector<unsigned int> indices;
 
     tuple = stringtools::trim(tuple);
     auto parts = stringtools::split(tuple,'/');
     
-    unsigned int count=0;
-    for(auto part : parts){
+    unsigned int count=0;    
+    // for(auto part : parts){
+    for(auto it = parts.begin(); it!=parts.end(); it++){
+      auto & part = *it;
       indices.push_back(0);
       parse(indices[count],part);
       count++;
@@ -76,8 +81,11 @@ void ObjReader::parseFace(std::istream & stream){
   }
   
   
+  
+  //for(auto group :currentGroups.elements()){
+    for(auto it=currentGroups.elements().begin(); it!= currentGroups.elements().end(); it++){
+      auto & group = *it;
 
-  for(auto group :currentGroups.elements()){
     Face groupFace = face;
     groupFace.group=group;
     builder().face(move(groupFace));
@@ -100,7 +108,9 @@ void ObjReader::parseGroup(std::istream& stream){
  // remove all groups from currentgroups
  currentGroups.clear();
  // add all groups to currentgroups
- for(auto group : groupstatements){
+// for(auto group : groupstatements){
+ for(auto it = groupstatements.begin(); it != groupstatements.end(); it++){
+   auto & group = *it;
    bool added = groups.add(group);
    currentGroups |=groups.indexOf(group);     
    if(added)getBuilder()->group(move(group));

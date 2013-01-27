@@ -28,7 +28,9 @@ void BasicMeshBuilder::end(){
   }
 
   while(faces.size()){
-    for(auto vertex : faces.front()){        
+    //for(auto vertex : faces.front()){     backward compatibility with vs10    
+    for(auto it = faces.front().begin(); it != faces.front().end(); it++){
+      auto & vertex = *it;
       mesh->faces[faceIndex].push_back(vertex.position-1);
     }
     faces.pop();

@@ -8,6 +8,11 @@
 #include <math.matrix.h>
 #include <math.matrix.eigen.h>
 #include <random>
+// todo :  move this to the correct place or better: make it consistent with the std::declval declaration
+namespace nspace{
+template <typename T>
+typename std::add_rvalue_reference<T>::type declval(); // vs2010 does not support std::declval - workaround http://stackoverflow.com/questions/11383722/adl-does-not-work-in-the-specific-situation
+}
 
 using namespace std;
 #define mathError(ERROR) throw ERROR;
@@ -745,6 +750,22 @@ namespace nspace{
     coeff = 2.3;
     CHECK(matrix[1]==2.3);
   }
+  template< typename T >
+struct result_of_ptmf {};
+
+template< typename R, typename C, typename A1 >
+struct result_of_ptmf< R (C::*)( A1 ) > {
+    typedef R type;
+};
+template< typename R, typename C, typename A1, typename A2 >
+struct result_of_ptmf< R (C::*)( A1 ,A2) > {
+    typedef R type;
+};
+template< typename R, typename C, typename A1, typename A2,typename A3 >
+struct result_of_ptmf< R (C::*)( A1 ,A2,A3) > {
+    typedef R type;
+};
+
 
   template<typename BinaryFunction>
   class MatrixFunction{
@@ -757,10 +778,10 @@ namespace nspace{
     ~MatrixFunction(){
 
     }
-    inline auto operator()(size_t i, size_t j)-> decltype(MatrixFunction<BinaryFunction>::_function(i,j)){
+  inline auto operator()(size_t i, size_t j)-> typename  decltype(nspace::declval<BinaryFunction>()(i,j)){
       return _function(i,j);
     }
-    inline auto operator()(size_t i, size_t j)const->const decltype(MatrixFunction<BinaryFunction>::_function(i,j)){
+    inline auto operator()(size_t i, size_t j)const->const typename decltype(nspace::declval<BinaryFunction>()(i,j)){
       return _function(i,j);
     }
     MatrixFunction(size_t rows, size_t cols, BinaryFunction   function):_rows(rows),_cols(cols),_function(function){
