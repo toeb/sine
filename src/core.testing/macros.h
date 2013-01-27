@@ -64,10 +64,10 @@ public:inline void test();\
   DS_TESTCLASSNAME(NAME)():UnitTest(#NAME){nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
 }DS_TESTINSTANCENAME(NAME);\
   void DS_TESTCLASSNAME(NAME)::test()
-
+#define DS_ADD_TYPENAME_QUALIFIER(X) typename X
 
 #define DS_TEST_TEMPLATED_DEFINITION(NAME,...)\
-template<__VA_ARGS__>\
+template<DS_FOREACH(DS_ADD_TYPENAME_QUALIFIER,__VA_ARGS__)>\
 class DS_TESTCLASSNAME(NAME) : public nspace::UnitTest{\
 private:\
  std::string templateArguments;\
