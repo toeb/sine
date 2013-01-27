@@ -18,10 +18,11 @@ bool UnitTestRunner::runTaskReturnSuccess(){
 
 void UnitTestRunner::toString(std::ostream & out)const{
 
-  out << "Testrunner: " << (RegisteredTests().size()-getFailedTestCount()) << "/"<<RegisteredTests().size() <<" succeeded ("<<getFailedTestCount()<<" Failures)"<<std::endl;
+  out << "Testrunner executed test count: " <<RegisteredTests().size()<<std::endl;
   RegisteredTests().foreachElement([&](UnitTest* test){
     out << test<<std::endl;
   });
+   out << "Summary: " << (RegisteredTests().size()-getFailedTestCount()) << "/"<<RegisteredTests().size() <<" passed ("<<getFailedTestCount()<<" failed)"<<std::endl;
 }
 
 Set<UnitTest*> UnitTestRunner::Tests(const std::string & name){
