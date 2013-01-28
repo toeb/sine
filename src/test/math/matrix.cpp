@@ -10,8 +10,11 @@
 #include <random>
 // todo :  move this to the correct place or better: make it consistent with the std::declval declaration
 namespace nspace{
+
 template <typename T>
-typename std::add_rvalue_reference<T>::type declval(); // vs2010 does not support std::declval - workaround http://stackoverflow.com/questions/11383722/adl-does-not-work-in-the-specific-situation
+T&& declval(); // vs2010 does not support std::declval - workaround http://stackoverflow.com/questions/11383722/adl-does-not-work-in-the-specific-situation
+
+
 }
 
 using namespace std;
@@ -778,7 +781,7 @@ struct result_of_ptmf< R (C::*)( A1 ,A2,A3) > {
     ~MatrixFunction(){
 
     }
-  inline auto operator()(size_t i, size_t j)-> typename  decltype(nspace::declval<BinaryFunction>()(i,j)){
+  inline auto operator()(size_t i, size_t j)-> typename decltype(nspace::declval<BinaryFunction>()(i,j)){
       return _function(i,j);
     }
     inline auto operator()(size_t i, size_t j)const->const typename decltype(nspace::declval<BinaryFunction>()(i,j)){
