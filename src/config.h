@@ -31,3 +31,7 @@ typedef float Real;
 #ifndef WIN32
 #define __FUNCSIG__ __PRETTY_FUNCTION__
 #endif
+
+
+// for visual studio i'll disalbe warning about inheritance via dominance
+#pragma warning( disable : 4250 )

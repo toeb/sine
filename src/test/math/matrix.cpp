@@ -781,10 +781,10 @@ struct result_of_ptmf< R (C::*)( A1 ,A2,A3) > {
     ~MatrixFunction(){
 
     }
-  inline auto operator()(size_t i, size_t j)-> typename decltype(nspace::declval<BinaryFunction>()(i,j)){
+  inline auto operator()(size_t i, size_t j)-> decltype(nspace::declval<BinaryFunction>()(i,j)){
       return _function(i,j);
     }
-    inline auto operator()(size_t i, size_t j)const->const typename decltype(nspace::declval<BinaryFunction>()(i,j)){
+    inline auto operator()(size_t i, size_t j)const->const decltype(nspace::declval<BinaryFunction>()(i,j)){
       return _function(i,j);
     }
     MatrixFunction(size_t rows, size_t cols, BinaryFunction   function):_rows(rows),_cols(cols),_function(function){

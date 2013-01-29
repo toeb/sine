@@ -1,0 +1,1 @@
+wget -O mathgl-2.1.2.tar.gz "http://downloads.sourceforge.net/project/mathgl/mathgl/mathgl 2.1.2/mathgl-2.1.2-mingw.i686.7z?r=http://Fsourceforge.net/projects/mathgl/files/latest/download/source/files&ts=1359424661&use_mirror=netcologne
