@@ -24,6 +24,23 @@ namespace nspace{
 
 
 
+  template<typename T>
+  struct class_of_member_method{};
+  template<typename C, typename R, typename A1>
+  struct class_of_member_method<R (C::*)(A1)>{
+  typedef C type;
+  };
+template<typename C, typename R, typename A1, typename A2>
+  struct class_of_member_method<R (C::*)(A1,A2)>{
+  typedef C type;
+  };
+template<typename C, typename R, typename A1, typename A2, typename A3>
+  struct class_of_member_method<R (C::*)(A1,A2,A3)>{
+  typedef C type;
+  };
+
+
+
   template< typename T >
   struct result_of_static_function {};
 

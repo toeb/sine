@@ -108,7 +108,7 @@ namespace nspace{
 #define DS_FOREACH_30(M, ... ) DS_EXPAND(M(DS_FIRST(__VA_ARGS__))) DS_FOREACH_29(M,DS_EXPAND(DS_REST(__VA_ARGS__)))
 
 #define DS_FOREACH_N(N,M,...) DS_CONCAT(DS_FOREACH_,N)(M,__VA_ARGS__)
-#define DS_FOREACH(M, ...) DS_FOREACH_N(DS_NUM_ARGS(__VA_ARGS__),M,__VA_ARGS)
+#define DS_FOREACH(M, ...) DS_FOREACH_N(DS_NUM_ARGS(__VA_ARGS__),M,__VA_ARGS__)
 
 
 // Reduction of VA args list,  applies macro M to every element and adds SEPARATOR in between results
