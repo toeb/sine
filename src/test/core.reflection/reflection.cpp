@@ -505,16 +505,8 @@ struct TrueType{
   static const bool value=true;
 };
 
-    template<typename T>  static auto IsSomeMethodDefined(T & t)->typename decltype(t.someMethod(),FalseType);
- struct AF{
-    int basic_property(Value0)
-    int basic_property(Value1)
-    //int validating_property(Value2)
 
-   // int property(Value2, field,private_get,
- 
 
-  };
 
 UNITTEST(SimplifiedPropertyDefintion){
 
