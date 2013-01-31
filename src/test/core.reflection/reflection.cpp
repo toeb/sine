@@ -202,7 +202,7 @@ TEST(1,propertyDefinition){
   struct A{
     std::string DS_PROPERTY_DEFINITION(StringValue)
   private:
-      friend class UnitTestClass;
+    friend class UnitTestClass;
   };
 
   auto result=std::is_same<A::StringValuePropertyType,std::string>::value;
@@ -396,36 +396,36 @@ struct ArgumentType{
 };
 template<typename R, typename A1>
 struct ArgumentType<R (*)(A1)>{
-  typedef A1 type;
+typedef A1 type;
 };
 template<typename C,typename R, typename A1>
 struct ArgumentType<R (C::*)(A1)>{
-  typedef A1 type;
+typedef A1 type;
 };
 
 
 UNITTEST(ArgumentTypeMemberFunction){
-  struct A{
-    void testmethod(double arg){};
-  }a;
-  ArgumentType<&A::testmethod>::type;
+struct A{
+void testmethod(double arg){};
+}a;
+ArgumentType<&A::testmethod>::type;
 }
 UNITTEST(ArgumentTypeStaticFunction){
-  struct A{
-    static void testmethod(float arg){};
-  };
-  ArgumentType<&A::testmethod>::type;
+struct A{
+static void testmethod(float arg){};
+};
+ArgumentType<&A::testmethod>::type;
 }
 */
 /*
 UNITTEST(PropertyCallbackGetter){
-  class A{
-    int DS_PROPERTY_DEFINITION(Value);
-  public: DS_PROPERTY_STORAGE_FIELD(Value);
-  public: auto getValue()->decltype(getCallback()){return getCallback();}
-          void setValue(const ValuePropertyType & value){setCallback(value);}
-            
-  }a;
+class A{
+int DS_PROPERTY_DEFINITION(Value);
+public: DS_PROPERTY_STORAGE_FIELD(Value);
+public: auto getValue()->decltype(getCallback()){return getCallback();}
+void setValue(const ValuePropertyType & value){setCallback(value);}
+
+}a;
 }
 */
 /*  It is relatively ugly but one could use define to set the propertyname
@@ -456,7 +456,7 @@ public: GETTER;
 #define DS_PROPERTY_3(NAME,...) 
 #define DS_PROPERTY_4(NAME,...) 
 #define DS_PROPERTY_5(NAME,...) 
- 
+
 
 #define DS_PROPERTY_N(NAME,N,...) DS_CONCAT(DS_PROPERTY_,N)(__VA_ARGS__)
 
@@ -464,7 +464,7 @@ public: GETTER;
 #define basic_property(NAME) \
   DS_PROPERTY_DEFINITION(NAME)\
   private: DS_PROPERTY_STORAGE_FIELD(NAME);  public: DS_PROPERTY_AUTO_GETTER(NAME); public:DS_PROPERTY_AUTO_SETTER(NAME)
-  
+
 
 
 #define DS_PROPERTY_EXTENSIBLE_SET(NAME)
@@ -489,28 +489,188 @@ public: GETTER;
 
 template<typename T>
 struct hasBeforeSetMethod{
- static const bool value = false;
+static const bool value = false;
 };
 
 template<typename T>
 struct hasBeforeSetMethod<typename T::BeforeSetValue>{
-  static const bool value = true;
+static const bool value = true;
 };
 */
 struct FalseType{
   static const bool value=false;
 };
 struct TrueType{
-  
+
   static const bool value=true;
 };
 
 
 
 
-UNITTEST(SimplifiedPropertyDefintion){
+/*
+#define DS_HAS_MEMBER_CHECK(MEMBERNAME)
+template<typename T> struct has_member_check_##MEMBERNAME { 
+struct Fallback { int MEMBERNAME; }; // introduce member name "x"
+struct Derived : T, Fallback { };
+
+template<typename C, C> struct ChT; 
+
+template<typename C> static char (&f(ChT<int Fallback::*, &C::MEMBERNAME>*))[1]; 
+template<typename C> static char (&f(...))[2]; 
+
+static bool const value = sizeof(f<Derived>(0)) == 2;
+}; 
+
+
+#define DS_HAS_MEMBER(NAME) 
+struct A { int x; };
+
+struct B { int X; };*/
+
+#define DS_MINIMAL_GET(NAME) DS_PROPERTY_GETTER(NAME){ return DS_PROPERTY_STORAGE(NAME);  }
+#define DS_MINIMAL_SET(NAME) DS_PROPERTY_SETTER(NAME){ DS_PROPERTY_STORAGE(NAME) = value; }
+
+#define DS_PROPERTY_CLASS(CLASSNAME) typedef CLASSNAME PropertyClassType;
+
+
+#define DS_PROPERTY_MARKER(NAME) DS_CONCAT(NAME,PropertyMarker)
+#define DS_PROPERTY_MARKER_DEFINITION(NAME) struct DS_PROPERTY_MARKER(NAME){};
+
+#define DS_PROPERTY_EXTENSION_BEFORE_SET_NAME onBeforePropertySet
+#define DS_PROPERTY_EXTENSION_AFTER_SET_NAME onAfterPropertySet
+#define DS_PROPERTY_EXTENSION_BEFORE_GET_NAME onBeforePropertyGet
+
+#define DS_PROPERTY_EXTENSION_BEFORE_SET  template<typename MarkerType,typename ValueType> DS_INLINE bool DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const ValueType & value){return false;}
+#define DS_PROPERTY_EXTENSION_AFTER_SET   template<typename MarkerType> DS_INLINE void DS_PROPERTY_EXTENSION_AFTER_SET_NAME(){}
+#define DS_PROPERTY_EXTENSION_BEFORE_GET  template<typename MarkerType> DS_INLINE void DS_PROPERTY_EXTENSION_BEFORE_GET_NAME()const{}
+
+#define DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME) template<> DS_INLINE bool DS_PROPERTY_EXTENSION_BEFORE_SET_NAME<DS_PROPERTY_MARKER(NAME),  DS_PROPERTY_TYPE_NAME(NAME)>(const DS_PROPERTY_TYPE_NAME(NAME) & newvalue)
+#define DS_PROPERTY_EXTENSION_AFTER_SET_IMPLEMENTATION(NAME)  template<> DS_INLINE void DS_PROPERTY_EXTENSION_AFTER_SET_NAME< DS_PROPERTY_MARKER(NAME)>()
+#define DS_PROPERTY_EXTENSION_BEFORE_GET_IMPLEMENTATION(NAME) template<> DS_INLINE void DS_PROPERTY_EXTENSION_BEFORE_GET_NAME< DS_PROPERTY_MARKER(NAME)>()const
+
+
+#define DS_PROPERTY_EXTENSION_METHODS\
+  DS_PROPERTY_EXTENSION_BEFORE_SET\
+  DS_PROPERTY_EXTENSION_AFTER_SET\
+  DS_PROPERTY_EXTENSION_BEFORE_GET\
+
+#define DS_PROPERTY_BEFORE_SET(NAME) DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME) //DS_INLINE bool before##NAME##Set(const DS_PROPERTY_TYPE_NAME(NAME) & value)
+#define DS_PROPERTY_AFTER_SET(NAME) DS_PROPERTY_EXTENSION_AFTER_SET_IMPLEMENTATION(NAME)//DS_INLINE void after##NAME##Set()
+#define DS_PROPERTY_BEFORE_GET(NAME) DS_PROPERTY_EXTENSION_BEFORE_GET_IMPLEMENTATION(NAME)//DS_INLINE void before##NAME##Get()const
+
+#define beforeSet(NAME) DS_PROPERTY_BEFORE_SET(NAME)
+#define afterSet(NAME) DS_PROPERTY_AFTER_SET(NAME)
+#define beforeGet(NAME) DS_PROPERTY_BEFORE_GET(NAME)
+
+#define DS_PROPERTY_SETTER_EXTENDED(NAME) DS_PROPERTY_SETTER(NAME){ if( DS_PROPERTY_EXTENSION_BEFORE_SET_NAME<DS_PROPERTY_MARKER(NAME),DS_PROPERTY_TYPE_NAME(NAME)>(value))return; DS_PROPERTY_STORAGE(NAME) = value; DS_PROPERTY_EXTENSION_AFTER_SET_NAME<DS_PROPERTY_MARKER(NAME)>();}
+#define DS_PROPERTY_GETTER_EXTENDED(NAME) DS_PROPERTY_GETTER(NAME){ DS_PROPERTY_EXTENSION_BEFORE_GET_NAME<DS_PROPERTY_MARKER(NAME)>(); return DS_PROPERTY_STORAGE(NAME); }
+        
+
+#define DS_PROPERTY_EXTENDED(NAME)\
+  DS_PROPERTY_DEFINITION(NAME)\
+  DS_PROPERTY_MARKER_DEFINITION(NAME)\
+  DS_PROPERTY_STORAGE_FIELD(NAME)\
+  public: DS_PROPERTY_GETTER_EXTENDED(NAME)\
+  public: DS_PROPERTY_SETTER_EXTENDED(NAME)
+
+
+struct C{
+  typedef C CurrentClassType;
+
+  template<typename T, typename V>
+  DS_INLINE bool onBeforePropertySet(V newvalue){ return false; }
+  template<typename T>
+  DS_INLINE void onAfterPropertySet(){ }
+  template<typename T>
+  DS_INLINE void onBeforePropertyGet()const{ }
 
 
 
+  template<typename T, typename V>
+  DS_INLINE void setProperty(){}
+  template<typename T, typename V>
+  DS_INLINE V getProperty(){}
+
+
+
+
+  int DS_PROPERTY_DEFINITION(Value1);
+  struct Value1Marker{};
+  DS_PROPERTY_STORAGE_FIELD(Value1);
+
+public:
+  DS_PROPERTY_GETTER(Value1){
+    onBeforePropertyGet<Value1Marker>();
+    return _Value1;
+  }
+public:
+  DS_PROPERTY_SETTER(Value1){
+    if(onBeforePropertySet<Value1Marker>(value))return;
+    _Value1 = value;
+    onAfterPropertySet<Value1Marker>();
+  }
+  template<>  void onAfterPropertySet<Value1Marker>(){
+    int b=3+3;
+    std::cout << b;
+  }
+
+};
+
+struct ExtendedPropertyTestStruct{
+  DS_PROPERTY_EXTENSION_METHODS;
+    
+  ExtendedPropertyTestStruct():_RedChannel(0),beforeSetCallCount(0),afterSetCallCount(0),beforeGetCallCount(0),cancelSetResult(false){}
+
+  // counters for accessing callcount
+  int beforeSetCallCount;
+  int afterSetCallCount;
+  mutable int beforeGetCallCount;
+  bool cancelSetResult;
+
+
+  // define a default extended property - a property which has extension points for setting and getting
+  float DS_PROPERTY_EXTENDED(RedChannel);
+
+  
+  beforeSet(RedChannel){
+    beforeSetCallCount++;
+    return cancelSetResult;
+  }
+
+  afterSet(RedChannel){
+    afterSetCallCount++;
+  }
+
+
+  beforeGet(RedChannel){
+    beforeGetCallCount++;
+  }
+
+};
+
+
+UNITTEST(ExtensiblePropertyDefintion){
+ ExtendedPropertyTestStruct uut;
+  CHECK_EQUAL(0,uut.afterSetCallCount);
+  CHECK_EQUAL(0,uut.beforeGetCallCount);
+  CHECK_EQUAL(0,uut.beforeSetCallCount);
+  
+  uut.setRedChannel(42);  
+
+  CHECK_EQUAL(42,uut.getRedChannel());
+  CHECK_EQUAL(1,uut.beforeGetCallCount);
+
+  uut.setRedChannel(41);
+
+  uut.cancelSetResult = true;
+  uut.setRedChannel(1);
+
+  auto val = uut.getRedChannel();
+
+  CHECK_EQUAL(41,val);
+  CHECK_EQUAL(2,uut.beforeGetCallCount);
+  CHECK_EQUAL(2,uut.afterSetCallCount);
+  CHECK_EQUAL(3,uut.beforeSetCallCount);
 
 }
