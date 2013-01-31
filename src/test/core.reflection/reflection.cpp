@@ -625,48 +625,6 @@ struct B { int X; };*/
   DS_PROPERTY_MARKER_DEFINITION(NAME)       \
   */
 
-struct C{
-  typedef C CurrentClassType;
-
-  template<typename T, typename V>
-  DS_INLINE bool onBeforePropertySet(V newvalue){ return false; }
-  template<typename T>
-  DS_INLINE void onAfterPropertySet(){ }
-  template<typename T>
-  DS_INLINE void onBeforePropertyGet()const{ }
-
-
-
-  template<typename T, typename V>
-  DS_INLINE void setProperty(){}
-  template<typename T, typename V>
-  DS_INLINE V getProperty(){}
-
-
-
-
-  int DS_PROPERTY_DEFINITION(Value1);
-  struct Value1Marker{};
-  DS_PROPERTY_STORAGE_FIELD(Value1);
-
-public:
-  DS_PROPERTY_GETTER(Value1){
-    onBeforePropertyGet<Value1Marker>();
-    return _Value1;
-  }
-public:
-  DS_PROPERTY_SETTER(Value1){
-    if(onBeforePropertySet<Value1Marker>(value))return;
-    _Value1 = value;
-    onAfterPropertySet<Value1Marker>();
-  }
-  template<>  void onAfterPropertySet<Value1Marker>(){
-    int b=3+3;
-    std::cout << b;
-  }
-
-};
-
 
 
 

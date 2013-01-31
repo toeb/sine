@@ -1,5 +1,16 @@
 set(source ../include/core.h )
 
+set(unifiedPropertyDefinitionSource
+../include/core.properties.h
+./uniformproperties/Extensible.h
+./uniformproperties/Templated.h
+./uniformproperties/Simple.h
+./uniformproperties/UniformProperties.h
+
+)
+
+source_group("unifiedpropertydefinition" FILES ${unifiedPropertyDefinitionSource})
+set(source ${source} ${unifiedPropertyDefinitionSource})
 
 set(commandlineParserSource
   ./commandline/CommandLineParser.h
