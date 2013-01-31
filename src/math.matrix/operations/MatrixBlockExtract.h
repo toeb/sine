@@ -1,8 +1,56 @@
 #pragma once
 
+
+
 #include <config.h>
 
+#include <math.matrix/operations/MatrixOperations.h>
+#include <math.matrix/operations/MatrixAssignment.h>
+
 namespace nspace{
+
+
+
+
+  template<typename BlockMatrix, typename SourceMatrix>
+  MatrixOperationClass(BlockExtract){
+    IndexAliasForType(SourceMatrix);
+    MatrixOperationMethod(BlockMatrix & block, const SourceMatrix & matrix, const Index rowOffset, const Index colOffset  ){
+
+      const Index sourceRows=rows(matrix);
+      const Index sourceCols=cols(matrix);
+      const Index blockRows = rows(block);
+      const Index blockCols = cols(block);
+
+      if(blockRows+rowOffset>sourceRows)return;//error
+      if(blockCols+colOffset>sourceCols)return;//error
+
+      for(Index i = 0; i < blockRows; ++i){
+        for(Index j= 0; j < blockCols;++j){
+          assignMatrixBlindly(coefficient(block,i,j),coefficient(matrix,i+rowOffset,j+colOffset));
+        }
+      }
+
+    }
+  };
+
+  template<typename BlockMatrix, typename SourceMatrix>
+  inline void matrixBlockExtract(BlockMatrix & block, const SourceMatrix & source, const typename indexTypeOfType(SourceMatrix) rowOffset, const typename indexTypeOfType(SourceMatrix) columnOffset){
+    MatrixOperation(BlockExtract)<BlockMatrix,SourceMatrix>::operation(block,source,rowOffset,columnOffset);
+  }
+
+  template<typename BlockMatrix, typename SourceMatrix>
+  inline void matrixBlockExtract(BlockMatrix & block, const SourceMatrix & source, 
+                                const typename indexTypeOfType(SourceMatrix) rowOffset, const typename indexTypeOfType(SourceMatrix) columnOffset,
+                                const typename indexTypeOfType(BlockMatrix) rowCount,   const typename indexTypeOfType(BlockMatrix) columnCount     ){
+    if(!ensureMatrixDimension(block,rowOffset,columnCount))return;
+    MatrixOperation(BlockExtract)<BlockMatrix,SourceMatrix>::operation(block,source,rowOffset,columnOffset);
+  }
+
+
+
+
+
   template<typename BlockType, typename SourceType>
   class MatrixBlockExtract{
   public:

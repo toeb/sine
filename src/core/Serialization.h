@@ -140,7 +140,7 @@ namespace nspace{
   public:
     static bool serialize(std::ostream & stream, const Set<T> * value){
       const Set<T> & val = *value;
-      for(int i=0; i< val; i++){
+      for(uint i=0; i< val; i++){
         T v = val.at(i);
         if(!Serializer<T>::serialize(stream,&v)){
           stream << "{"<<i<<"}";

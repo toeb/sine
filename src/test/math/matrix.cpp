@@ -8,6 +8,10 @@
 #include <math.matrix.h>
 #include <math.matrix.eigen.h>
 #include <random>
+
+
+
+
 // todo :  move this to the correct place or better: make it consistent with the std::declval declaration
 namespace nspace{
 
@@ -21,6 +25,13 @@ using namespace std;
 #define mathError(ERROR) throw ERROR;
 namespace nspace{
   
+
+
+  TEST(1,MatrixBlockExtract){    
+    MatrixNxM matrix=identity<MatrixNxM>(4,4);
+    Matrix2x2 block;
+    matrixBlockExtract(block,matrix,1,1);
+  }
 
   TEST(1,OperationMatrixAddition){
     auto result = add(identity<Vector3D>(), identity<Vector3D>());

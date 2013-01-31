@@ -1,16 +1,29 @@
 set(source ../include/core.h )
 
-set(unifiedPropertyDefinitionSource
-../include/core.properties.h
-./uniformproperties/Extensible.h
-./uniformproperties/Templated.h
-./uniformproperties/Simple.h
-./uniformproperties/UniformProperties.h
+
+set(preprocessorSource 
+../include/core.preprocessor.h
+./preprocessor/Basic.h
+./preprocessor/Variadic.h
+./preprocessor/Foreach.h
+./preprocessor/Reduce.h
 
 )
+source_group("preprocessor" FILES ${preprocessorSource})
+set(source ${source} ${preprocessorSource})
 
-source_group("unifiedpropertydefinition" FILES ${unifiedPropertyDefinitionSource})
+set(unifiedPropertyDefinitionSource
+../include/core.properties.h
+./properties/Extensible.h
+./properties/Templated.h
+./properties/Simple.h
+./properties/Properties.h
+
+)
+source_group("properties" FILES ${unifiedPropertyDefinitionSource})
 set(source ${source} ${unifiedPropertyDefinitionSource})
+
+
 
 set(commandlineParserSource
   ./commandline/CommandLineParser.h
@@ -188,11 +201,12 @@ set(source ${source} ${reflectionSource})
 set(utilitySource
 ./utilities/StringTools.h
 ./utilities/StringTools.cpp
+./utilities/SourceInfo.h
+./utilities/SourceInfo.cpp
 ./utilities/Helpers.h
 ./utilities/Helpers.cpp
 ./utilities/Utilities.h
 ./utilities/Utilities.cpp
-./utilities/Preprocessor.h
 ./utilities/Timer.h
 ./utilities/Timer.cpp
 ../include/core.utilities.h

@@ -1,5 +1,5 @@
 #pragma once
-#include <core/utilities/Preprocessor.h>
+#include <core.preprocessor.h>
 
 
 #define DS_FOR_DEFAULT_TYPE_LIST(ACTION)\
@@ -95,6 +95,16 @@ public:inline void test();\
   DS_FOR_DEFAULT_TYPE_LIST(DS_TESTCLASSNAME(NAME) DS_TEST_TEMPLATED_INSTANCIATE) \
 } \
   DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,__VA_ARGS__)
+
+
+#define DS_CHECK_TYPES(...)\
+{if(!std::is_same<DS_REDUCE_COMMA(DS_NOOP, __VA_ARGS__)>::value)FAIL("The following types are not the equal: '<" << #__VA_ARGS__<<"'>");}
+
+
+
+#ifndef CHECK_TYPES
+#define CHECK_TYPES(...) DS_CHECK_TYPES(__VA_ARGS__)
+#endif
 
 #ifndef UNITTEST
 #define UNITTEST(NAME) DS_TEST(NAME)

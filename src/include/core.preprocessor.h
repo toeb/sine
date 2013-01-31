@@ -17,30 +17,10 @@
  *
  */
 #pragma once
-#include <core/commandline/CommandLineArgumentDefinition.h>
-#include <core.utilities.h>
-namespace nspace {
-  namespace commandline {
-    class CommandLineArgument {
-private:
-      CommandLineArgumentDefinition & _ArgumentDefinition;
-      REFERENCES(public, CommandLineArgumentDefinition,ArgumentDefinition);
-      std::vector<std::string> _Tokens;
-      REFERENCES(public, std::vector<std::string>,Tokens);
-      
-public:
-      CommandLineArgument(CommandLineArgumentDefinition & definition) ;
-  
-      template<typename T>
-      std::unique_ptr<T> token(uint i=0) const {
-        if(_Tokens.size()<=i) return std::unique_ptr<T>();
-        T result;
-        if(!nspace::parse(result,_Tokens[i])) return std::unique_ptr<T>();
-        return std::unique_ptr<T>(new T(result));
-      }
 
 
+#include <core/preprocessor/Basic.h>
+#include <core/preprocessor/Variadic.h>
+#include <core/preprocessor/Foreach.h>
+#include <core/preprocessor/Reduce.h>
 
-    };
-  }
-}

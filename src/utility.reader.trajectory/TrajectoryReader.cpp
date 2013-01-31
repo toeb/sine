@@ -85,7 +85,7 @@ bool TrajectoryReader::read(std::istream & stream, PiecewiseFunction<VectorND>**
   return true;
 }
 
-bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim){
+bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, uint dim){
   std::vector<MatrixNxM> a;
   std::vector<Real> t;
   uint k=0;
@@ -143,17 +143,17 @@ bool TrajectoryReader::parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> *
 
 typedef  NormalizedBoundedFunction<VectorND,LinearInterpolation<VectorND>> NormalizedLinearInterpolation;
 
-bool TrajectoryReader::parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim){
+bool TrajectoryReader::parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, uint dim){
   // create all sample points and times
   std::vector<Real> t;
   std::vector<VectorND> u;
   uint n=0;
-  for(int i=0; i < doubles.size(); i+=(1+dim)){
+  for(uint i=0; i < doubles.size(); i+=(1+dim)){
     Real t_k = doubles[i];
     VectorND u_k;
     u_k.resize(dim,1);
 
-    for(int j=0; j < dim; j++){
+    for(uint j=0; j < dim; j++){
       u_k(j)=doubles[i+1+j];
     }
     t.push_back(t_k);

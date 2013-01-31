@@ -117,7 +117,7 @@ bool  PlyReader::readMesh(IMeshBuilder & builder){
     for(int i=0; i < element.instances;i++){
       mapElement(element,builder,token.stream);       
       token.next();
-      if(i%1000==0)reportProgress(token.stream.tellg());
+      if(i%1000==0)reportProgress(double(token.stream.tellg()));
       if(token.word!="\n")return false;
     }
 

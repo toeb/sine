@@ -73,7 +73,7 @@ std::string nspace::stringtools::trim(std::stringstream & stream){
 
 
 std::string nspace::stringtools::trimFront(const std::string & str){
-  int front=0;  
+  uint front=0;  
   bool isWhitespace;  
   bool allWhitespace=true;
   do{
@@ -131,7 +131,7 @@ std::string nspace::stringtools::trim(const std::string & str){
 }
 bool nspace::stringtools::startsWith(const std::string & subject,const std::string & what){
   if(subject.size()<what.size())return false; 
-  for(int i=0; i < what.size(); i++){
+  for(uint i=0; i < what.size(); i++){
     if(what[i]!=subject[i])return false;
   };
   return true;

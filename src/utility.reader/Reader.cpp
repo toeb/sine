@@ -42,7 +42,7 @@ void nspace::parseLineWise(std::istream & stream,std::map<std::string, std::func
 
 bool Reader::read(){
   stream().seekg(0,ios::end);
-  long e=stream().tellg();
+  auto e=long(stream().tellg());
   stream().seekg(0,ios::beg);
   double totalProgress = double(e);
   resetProgress(totalProgress);

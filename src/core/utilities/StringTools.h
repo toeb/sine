@@ -153,6 +153,7 @@ namespace nspace{
     template<>
     struct Parse<int>{
       static inline bool operation( int & value, const std::string & word){     
+#pragma warning(suppress:4244)
       value= parse<long>(word);
         return true;
       }
@@ -163,6 +164,7 @@ namespace nspace{
     template<>
     struct Parse<short>{
       static inline bool operation( short & value, const std::string & word){     
+#pragma warning(suppress:4244)
       value= parse<long>(word);
         return true;
       }
@@ -174,6 +176,7 @@ namespace nspace{
     template<>
     struct Parse<char>{
       static inline bool operation( char & value, const std::string & word){     
+#pragma warning(suppress:4244)
       value= parse<long>(word);
         return true;
       }
@@ -183,6 +186,7 @@ namespace nspace{
     template<>
     struct Parse<unsigned int>{
       static inline bool operation( unsigned int & value, const std::string & word){     
+#pragma warning(suppress:4244)
       value= parse<unsigned long>(word);
         return true;
       }
@@ -192,6 +196,7 @@ namespace nspace{
     template<>
     struct Parse<unsigned short>{
       static inline bool operation( unsigned short & value, const std::string & word){     
+#pragma warning(suppress:4244)
       value= parse<unsigned long>(word);
         return true;
       }
@@ -200,7 +205,8 @@ namespace nspace{
     
     template<>
     struct Parse<unsigned char>{
-      static inline bool operation( unsigned char & value, const std::string & word){     
+      static inline bool operation( unsigned char & value, const std::string & word){    
+#pragma warning(suppress:4244) 
       value= parse<unsigned long>(word);
         return true;
       }
@@ -211,6 +217,7 @@ namespace nspace{
     template<>
     struct Parse<float>{
       static inline bool operation( float & value, const std::string & word){     
+#pragma warning(suppress:4244)
       value= parse<double>(word);
         return true;
       }

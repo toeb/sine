@@ -59,5 +59,15 @@ template<typename C, typename R, typename A1, typename A2, typename A3>
     typedef R type;
   };
 
+  struct FalseType{
+  static const bool value=false;
+};
+struct TrueType{
+
+  static const bool value=true;
+};
+
+
+
 
 }

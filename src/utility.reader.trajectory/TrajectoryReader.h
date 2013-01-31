@@ -35,7 +35,7 @@ namespace nspace{
     bool read(std::istream & stream, PiecewiseFunction<VectorND>** trajectory=0);
   private:
 
-    bool parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim);
-    bool parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, int dim);
+    bool parseCubicPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, uint dim);
+    bool parseLinearPiecewiseFunction(PiecewiseFunction<VectorND> * piecewise, std::vector<double> & doubles, uint dim);
   };
 }
