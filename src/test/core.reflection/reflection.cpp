@@ -531,12 +531,14 @@ struct B { int X; };*/
 #define DS_MINIMAL_GET(NAME) DS_PROPERTY_GETTER(NAME){ return DS_PROPERTY_STORAGE(NAME);  }
 #define DS_MINIMAL_SET(NAME) DS_PROPERTY_SETTER(NAME){ DS_PROPERTY_STORAGE(NAME) = value; }
 
-#define DS_PROPERTY_CLASS(CLASSNAME) typedef CLASSNAME PropertyClassType;
+#define DS_CURRENT_CLASS(CLASSNAME) typedef CLASSNAME CurrentClassType;
 
 
 #define DS_PROPERTY_MARKER(NAME) DS_CONCAT(NAME,PropertyMarker)
-#define DS_PROPERTY_MARKER_DEFINITION(NAME) struct DS_PROPERTY_MARKER(NAME){};
+#define DS_PROPERTY_MARKER_DEFINITION(NAME) struct DS_PROPERTY_MARKER(NAME){ };
 
+/*  This works with MSVC however specialization of template methods inside of a class is not part of the C++ standard --> GCC fails
+    Also a limitation (albeit a negligable one) is that you may not use this as a  local struct because of templating
 #define DS_PROPERTY_EXTENSION_BEFORE_SET_NAME onBeforePropertySet
 #define DS_PROPERTY_EXTENSION_AFTER_SET_NAME onAfterPropertySet
 #define DS_PROPERTY_EXTENSION_BEFORE_GET_NAME onBeforePropertyGet
@@ -573,7 +575,55 @@ struct B { int X; };*/
   DS_PROPERTY_STORAGE_FIELD(NAME)\
   public: DS_PROPERTY_GETTER_EXTENDED(NAME)\
   public: DS_PROPERTY_SETTER_EXTENDED(NAME)
+  */
+// This is plattform indepenedent.  it uses overloading and a markertypes to call default/custom extension methods
+// it works for classes and structs in namespaces, classes as well as methods
+// furthermore you must not define the general (empty implementations) of the extension methods in the class if every property defines all extensions
+// I strongly believe( have not checked) that there is no overhead when the compiler is done optimizing code.  I may be mistaken
+// these do not work with templated arguments you must use the correct
+#define DS_PROPERTY_EXTENSION_BEFORE_SET_NAME onBeforePropertySet
+#define DS_PROPERTY_EXTENSION_AFTER_SET_NAME onAfterPropertySet
+#define DS_PROPERTY_EXTENSION_BEFORE_GET_NAME onBeforePropertyGet
 
+#define DS_PROPERTY_EXTENSION_BEFORE_SET  DS_INLINE bool DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const void * marker, const void * value){return false;}
+#define DS_PROPERTY_EXTENSION_AFTER_SET   DS_INLINE void DS_PROPERTY_EXTENSION_AFTER_SET_NAME(const void * marker){}
+#define DS_PROPERTY_EXTENSION_BEFORE_GET  DS_INLINE void DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(const void * marker)const{}
+
+#define DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME) DS_INLINE bool DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const DS_PROPERTY_MARKER(NAME)*,  const DS_PROPERTY_TYPE_NAME(NAME) * newvalue)
+#define DS_PROPERTY_EXTENSION_AFTER_SET_IMPLEMENTATION(NAME)  DS_INLINE void DS_PROPERTY_EXTENSION_AFTER_SET_NAME(const DS_PROPERTY_MARKER(NAME)*)
+#define DS_PROPERTY_EXTENSION_BEFORE_GET_IMPLEMENTATION(NAME) DS_INLINE void DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(const DS_PROPERTY_MARKER(NAME)*)const
+
+
+#define DS_PROPERTY_EXTENSION_METHODS\
+  DS_PROPERTY_EXTENSION_BEFORE_SET   \
+  DS_PROPERTY_EXTENSION_AFTER_SET    \
+  DS_PROPERTY_EXTENSION_BEFORE_GET   \
+
+#define DS_PROPERTY_BEFORE_SET(NAME) DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME) //DS_INLINE bool before##NAME##Set(const DS_PROPERTY_TYPE_NAME(NAME) & value)
+#define DS_PROPERTY_AFTER_SET(NAME) DS_PROPERTY_EXTENSION_AFTER_SET_IMPLEMENTATION(NAME)//DS_INLINE void after##NAME##Set()
+#define DS_PROPERTY_BEFORE_GET(NAME) DS_PROPERTY_EXTENSION_BEFORE_GET_IMPLEMENTATION(NAME)//DS_INLINE void before##NAME##Get()const
+
+#define beforeSet(NAME) DS_PROPERTY_BEFORE_SET(NAME)
+#define afterSet(NAME) DS_PROPERTY_AFTER_SET(NAME)
+#define beforeGet(NAME) DS_PROPERTY_BEFORE_GET(NAME)
+#define DS_PROPERTY_MARKER_INSTANCE(NAME) static_cast<const DS_PROPERTY_MARKER(NAME)*>(0)
+#define DS_PROPERTY_SETTER_EXTENDED(NAME) DS_PROPERTY_SETTER(NAME){ if(DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME), &value))return; DS_PROPERTY_STORAGE(NAME) = value; DS_PROPERTY_EXTENSION_AFTER_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME));}
+#define DS_PROPERTY_GETTER_EXTENDED(NAME) DS_PROPERTY_GETTER(NAME){ DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME)); return DS_PROPERTY_STORAGE(NAME); }
+        
+
+#define DS_PROPERTY_EXTENDED(NAME)\
+  DS_PROPERTY_DEFINITION(NAME)\
+  DS_PROPERTY_MARKER_DEFINITION(NAME)\
+  DS_PROPERTY_STORAGE_FIELD(NAME)\
+  public: DS_PROPERTY_GETTER_EXTENDED(NAME)\
+  public: DS_PROPERTY_SETTER_EXTENDED(NAME)
+
+// todo:
+/*
+#define DS_PROPERTY_EXTENDED_TEMPLATED(NAME)\
+  DS_PROPERTY_DEFINITION_TEMPLATED(NAME)    \
+  DS_PROPERTY_MARKER_DEFINITION(NAME)       \
+  */
 
 struct C{
   typedef C CurrentClassType;
@@ -617,6 +667,11 @@ public:
 
 };
 
+
+
+
+UNITTEST(ExtensiblePropertyDefintion){
+  
 struct ExtendedPropertyTestStruct{
   DS_PROPERTY_EXTENSION_METHODS;
     
@@ -648,9 +703,6 @@ struct ExtendedPropertyTestStruct{
   }
 
 };
-
-
-UNITTEST(ExtensiblePropertyDefintion){
  ExtendedPropertyTestStruct uut;
   CHECK_EQUAL(0,uut.afterSetCallCount);
   CHECK_EQUAL(0,uut.beforeGetCallCount);
@@ -674,3 +726,51 @@ UNITTEST(ExtensiblePropertyDefintion){
   CHECK_EQUAL(3,uut.beforeSetCallCount);
 
 }
+
+/*
+template<typename T1, typename T2>
+struct TemplatedExtensiblePropertyTestUnit{
+  DS_PROPERTY_EXTENSION_METHODS;
+
+  std::stringstream result;
+
+  T1 DS_PROPERTY_EXTENDED_TEMPLATED(Value1);
+  
+  beforeGet(Value1){
+    result<<"getValue1";
+  }
+
+  afterSet(Value1){
+    result<<"afterSetValue1";
+    result<<"afterSetValue1"<<_Value1;
+  }
+  beforeGet(Value1){
+    result << "beforeGetValue1";
+  }
+
+  T2 DS_PROPERTY_EXTENDED(Value2);
+
+  beforeGet(Value2){
+    result<<"getValue2";
+  }
+
+  afterSet(Value2){
+    result<<"afterSetValue2";
+    result<<"afterSetValue2"<<_Value2;
+  }
+  beforeGet(Value2){
+    result << "beforeGetValue2";
+  }
+
+  
+};
+UNITTEST(TemplatedExtendedProperty){
+  TemplatedExtensiblePropertyTestUnit<std::string,int> uut;
+  uut.setValue1("hello");
+  uut.setValue2(31);
+
+  auto a = uut.getValue1();
+  auto b = uut.getValue2();
+
+  auto str = uut.result.str();
+}*/
