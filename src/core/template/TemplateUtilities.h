@@ -1,8 +1,39 @@
 #pragma once
 
 #include <config.h>
-
+#include <core/patterns/Singleton.h>
 namespace nspace{
+
+  
+  // returns a new instance of T if T is defaultconstructible. else returns 0; also work for singletons
+  // TODO: this will cause errors for all types that are only privately constructible
+  template<typename T, bool IsDefaultConstructible=std::is_default_constructible<T>::value && !std::is_abstract<T>::value, bool Singleton=is_singleton<T>::value>
+  struct default_constructor{    
+    T* operator()(){
+      return 0;
+    }
+  };
+
+  //Specialization for non singleton default constructable type
+  template<typename T>
+  struct default_constructor<T,true,false>{
+    T* operator()(){
+      return new T();
+    }
+  };
+
+  //specialization for singleton type.
+  template<typename T>
+  struct default_constructor<T,true,true>{
+    T* operator()(){
+      return T::instance();
+    }
+  };
+
+
+
+
+
   // todo replace issame by std::is_same
   template<typename T1,typename T2>
   class IsSame{

@@ -8,6 +8,7 @@ namespace nspace{
     PROPERTY(std::string, CompilationTime){}
     PROPERTY(std::string, TimeStamp){}
   public:
+    CompilerInfo(){}
     CompilerInfo(const std::string compileTime, const std::string &compileDate,const std::string & timestamp)
       :_CompilationDate(compileDate),_CompilationTime(compileTime),_TimeStamp(timestamp){}
   };

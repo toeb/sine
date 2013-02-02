@@ -1,8 +1,17 @@
 #include "Type.h"
 #include <core/reflection/PropertyInfo.h>
 #include <core/reflection/MethodInfo.h>
-
+#include <sstream>
 using namespace nspace;
+void Type::objectToString(const void * object, std::ostream & stream)const{
+  getObjectToStringFunction()(object,stream);
+}
+std::string Type::objectToString(const void * object)const{
+  std::stringstream stream;
+  objectToString(object,stream);
+  return stream.str();
+}
+
 
 const Set< const Type * > & Types::allTypes(){ return instance()->_types; }
 bool Types::registerType(const Type * type){

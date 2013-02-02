@@ -1,6 +1,8 @@
 set(source 
  Lua.h
  Lua.cpp
+ LuaHelpers.h
+ LuaHelpers.cpp
  ../include/scripting.lua.h
 )
 

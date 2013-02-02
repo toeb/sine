@@ -4,265 +4,10 @@
 #include <fstream>
 #include <scripting.lua.h>
 #include <map>
+#include <lua/src/lua.hpp>
+#include <scripting.lua/LuaHelpers.h>
 using namespace std;
 using namespace nspace;
-class SampleClass : public nspace::PropertyChangingObject{
-  REFLECTABLE_OBJECT(SampleClass);
-
-  PROPERTY(int, Value1){}
-  PROPERTY(std::string, Value2){}
-
-  OBJECTPOINTERPROPERTY(SampleClass, Parent){}
-
-};
-
-
-class VirtualScriptMachine : public virtual Log{
-
-public:
-  virtual void registerFunction(){}
-  virtual void registerType(const Type * type){}
-  virtual void registerObject(){}
-  virtual void callFunction(){}
-  virtual void get(){}
-
-  virtual bool loadStream(std::istream & stream){
-    logError("Not implemented");
-    return false;
-  }
-  bool loadString(const std::string & script){
-    stringstream stream (script);
-    return loadStream(stream);
-  }
-  bool loadFile(const std::string & filename){
-    ifstream stream(filename,fstream::in );
-
-    if(!stream.good()){
-      logError("could not load file " << filename);
-      return false;
-    }
-    auto result = loadStream(stream);
-    stream.close();
-    return result;
-  }
-
-};
-//http://www.codeproject.com/Articles/11508/Integrating-Lua-into-C
-// http://blog.acamara.es/2012/08/14/running-a-lua-5-2-script-from-c/
-namespace nspace{
-  META(luaL_Reg);
-}
-/*
-SERIALIZERS(luaL_Reg,{
-stream << value->name;
-},{
-
-});
-template<>
-class Comparator<luaL_Reg,luaL_Reg>{
-
-public:
-static inline void operation(bool & equal, const luaL_Reg a,const luaL_Reg b){
-equal =strcmp(a.name,b.name)!=0;
-}
-};*/
-
-
-
-class LuaVirtualMachine : public VirtualScriptMachine{
-  REFLECTABLE_OBJECT(LuaVirtualMachine);
-  map<std::string,std::function<int(void)> > _functionTable;
-  map<std::string,std::function<void(void)> > _scriptFunctions;
-
-
-  PROPERTYSET(luaL_Reg*,Libraries,{
-    loadLibrary(*item);
-  },{
-
-  });
-
-
-
-
-private:
-  bool loadLibrary(const luaL_Reg & lib){
-    logInfo("loading lua library: "<<lib.name);
-    luaL_requiref(_state,lib.name,lib.func,1);
-    lua_settop(_state, 0);
-    return true;
-
-  }
-  lua_State * _state;
-public:
-  lua_State * state(){
-    return _state;
-  }
-  LuaVirtualMachine(){
-
-    // create new state
-    logInfo("creating lua state");
-    _state = luaL_newstate();    
-
-    // add default libraries
-    luaL_Reg base = {"base",luaopen_base};
-    luaL_Reg io = {"io",luaopen_io};
-    luaL_Reg math = {"file",luaopen_math};
-    luaL_Reg os = {"os",luaopen_os};
-    luaL_Reg string = {"string", luaopen_string};
-    Libraries()|=new luaL_Reg(base);
-    Libraries()|=new luaL_Reg(io);
-    Libraries()|=new luaL_Reg(math);
-    Libraries()|=new luaL_Reg(os);
-    Libraries()|=new luaL_Reg(string);
-
-
-  }
-
-  static int newObject(lua_State* L){
-    // number of args
-    int n = lua_gettop(L);
-
-    if(n!=2)return luaL_error(L,"Got %d arguments expected 2 : (object, type)",n);
-
-    luaL_checktype(L,1,LUA_TTABLE);
-
-    luaL_checktype(L,2,LUA_TUSERDATA);
-
-
-
-    const Type * type = (const Type * )  lua_touserdata(L,2);
-    if(!type){
-      return luaL_error(L,"passed type is not a legal const Type * pointer");
-    }
-
-    // create  atable
-    lua_newtable(L);
-
-    // set metatable
-    lua_pushvalue(L,1);
-    lua_setmetatable(L,-2);
-
-    //
-    lua_pushvalue(L,1);
-    lua_setfield(L,1,"__index");
-
-
-    //luaL_checkudata(L,2,
-    void ** object = (void**)lua_newuserdata(L,sizeof(void*));
-
-    luaL_getmetatable(L,type->getName().c_str());
-
-
-    *object = type->createInstance();
-    if(!*object){
-      return luaL_error(L,"C++ Type '%s' cannot be instanciated",type->getName());
-    }
-
-    lua_setmetatable(L,-2);
-    lua_setfield(L,-2,"__self");
-
-    lua_setuservalue(L,-2);
-    lua_setfield(L,-2,"__type");
-    return 1;
-
-  }
-  static int luaPropertySetter(lua_State * state){
-    return 0;
-  }
-  static int luaPropertyGetter(lua_State* state){
-    return 0;
-  }
-  static int luaConstructor(lua_State* state){
-    return 0;
-  }
-  static int luaDestructor(lua_State* state){
-    return 0;
-  }
-
-  /*
-  void test(){
-  static const luaL_Reg gSpriteFuncs[] = {
-  // Creation
-  {"new", newSprite},
-  {"position", position},
-  {"nextPosition", nextPosition},    
-  {"setPosition", setPosition},  
-  {"render", render},      
-  {"update", update},          
-  {"collision", collision},   
-  {"move", move},    
-  {"accelerate", accelerate},      
-  {"rotate", rotate},  
-  {NULL, NULL}
-  };
-
-  }*/
-
-  void * checkObject(lua_State * L, int index){
-    void * result = 0;
-    luaL_checktype(L,index,LUA_TTABLE);
-    lua_getfield(L, index, "__type");
-    void * type = luaL_checkudata(L,index,"Type");
-    lua_getfield(L, index, "__self");
-    //result = luaL_checkudata(L,index,
-  }
-
-  void registerType(const Type * type);
-
-  ~LuaVirtualMachine(){
-
-    // close the Lua state
-    lua_close(_state);
-    logInfo("closing lua vm");
-
-
-    Libraries().foreachElement([](luaL_Reg* lib){
-      delete lib;
-    });
-    Libraries().clear();
-  }
-
-
-  void registerFunction(const std::string & name, std::function<int(void)> f){
-    _functionTable[name] = f;
-  }
-
-  void callFunction(const std::string & name){
-    auto it = _scriptFunctions.find(name);
-    if(it==_scriptFunctions.end())return; //function not found
-    it->second();
-  }
-  bool loadStream(istream & stream){
-    std::istreambuf_iterator<char> eos;
-    std::string script(std::istreambuf_iterator<char>(stream), eos);
-
-    int status = luaL_loadstring(_state, script.c_str());
-
-    if(status!=LUA_OK){
-      logError("Could not load script, errorcode:" <<status);
-      return false;
-    }
-    lua_pcall(_state, 0, LUA_MULTRET, 0);
-
-    return true;
-  }
-
-  void registerGlobalLuaFunction(const std::string & name, lua_CFunction func){
-    lua_pushcfunction(_state,func);
-    lua_setglobal(_state, name.c_str());
-  }
-
-};
-
-int testFunction(){
-  std::cout << "lol"<<std::endl;
-  return 4;
-}
-
-struct ScriptObject{
-  void * object;
-  const Type * type;
-};
 
 
 class UserDataStruct : public PropertyChangingObject{
@@ -274,7 +19,6 @@ public:
 
 };
 
-
 class UserDataStruct2 : public PropertyChangingObject{
   REFLECTABLE_OBJECT(UserDataStruct2);
 public:
@@ -284,110 +28,36 @@ public:
   ACTION(Lol){cout << "Lolinger"<<getValue1()<<getValue2()<<endl;}
 
 }astruct;
-int luaSetProperty(lua_State * L){
-  return 0;
-}
-int luaGetProperty(lua_State * L){
-  lua_pushstring(L,"somereturnvalue");
-  return 1;
-}
 
-int luaCallAction(lua_State * L){
+UNITTEST(requireGlobalTable){
+  LuaVirtualMachine vm;
+  int before = lua_gettop(vm.state());
+  auto result = requireGlobalTable(vm.state(),"globalname");
+  CHECK(result);
 
-  int n= lua_gettop(L);
-  if(n!=1){
-    return luaL_error(L,"action needs to be called on self");
-  }
-
-  if(!lua_istable(L,-1)){
-    return luaL_error(L,"self must be a table");
-  }
-  
-  auto fieldFound = luaL_getmetafield(L,-1,"__type");
-  void* typedata = lua_touserdata(L,-1);
-  auto type= (const Type*)typedata;
-
-  //lua_pop(L,-1);
-
-
-  lua_getfield(L,1,"__self");
-  void * objectdata = lua_touserdata(L,-1);
-  
-
-  type->getMethodInfo("Lol")->call((Object*)objectdata);
-  
-
-  return 0;
-}
-void LuaVirtualMachine::registerType(const Type* type){
-  logInfo("registering type:"<<type->getName());
-  string stdname = type->getName();
-  const char * name = stdname.c_str();
-  luaL_getmetatable(_state,name);
-  bool metatableFound = lua_istable(_state,-1);
-  if(metatableFound){
-    logError("type '"<<name<<"' already registered");
-    return;
-  }
-  luaL_newmetatable(_state,name);
-
-  //lua_newtable(_state);
-  lua_pushstring(_state,name);
-  lua_setfield(_state,-2,"__typename");
-  //const Type ** luatype = (const Type **)lua_newuserdata(_state,sizeof(const Type*));
-  //  *luatype = type;
-  lua_pushlightuserdata(_state,const_cast<void*>((const void*)type));
-  lua_setfield(_state,-2,"__type");
-
-
-  for(auto member : type->Members().elements()){    
-    if(member->getType()==*typeof(MethodInfo)){      
-      lua_pushcfunction(_state, luaCallAction);
-      lua_setfield(_state,-2,member->getName().c_str());
-    }else if(dynamic_cast<const PropertyInfo*>(member)){    
-      lua_pushcfunction(_state, luaGetProperty);
-      lua_setfield(_state,-2,DS_INLINE_STRING("get"<<member->getName()).c_str());
-      
-      lua_pushcfunction(_state, luaSetProperty);
-      lua_setfield(_state,-2,DS_INLINE_STRING("set"<<member->getName()).c_str());
-      
-    }
-   }
-  lua_pushvalue(_state,-1);
-  lua_setfield(_state,-1,"__index");
-
-  //lua_setglobal(_state,"thetable");
-  lua_newtable(_state);
-  lua_setglobal(_state,"object1");
-  
-  lua_getglobal(_state,"object1");
-  luaL_getmetatable(_state, name);
-  lua_setmetatable(_state,-2);
-
-  void** obj = (void**)lua_newuserdata(_state,sizeof(void*));
-  *obj = type->createInstance();
-  lua_setfield(_state,-2,"__self");
-
-
-/*
-  lua_getglobal(_state,"object1");
-  luaL_getmetatable(_state,name);
-  lua_setfield(_state,-2,"__index");
-  lua_setglobal(_state,"object1");*/
-  /*
-  //luaL_setmetatable(_state, type->getName().c_str());
-  lua_getglobal(_state, "types");
-  if(!lua_istable(_state,-1)){
-    lua_newtable(_state);
-    lua_setglobal(_state,"types");      
-  }
-  lua_getglobal(_state, "types");
-  auto table = lua_istable(_state,-1);
-  const Type ** luatype = (const Type **)lua_newuserdata(_state,sizeof(const Type*));
-  *luatype = type;
-  lua_setfield(_state,-2,type->getName().c_str());*/
+  int after=lua_gettop(vm.state());
+  result = requireGlobalTable(vm.state(),"globalname");
+  CHECK((before+1)==after);// requireGlobalTable leaves the table on the stack
+  lua_pop(vm.state(),1);//remove
+  CHECK(!result);
+  after=lua_gettop(vm.state());
+  CHECK((before+1)==after);
 }
 
+
+UNITTEST(requireTableField){
+  LuaVirtualMachine vm;
+  requireGlobalTable(vm.state(),"globalname");
+  int before = lua_gettop(vm.state());  
+  bool created = requireTableField(vm.state(),"somename");
+  int after=lua_gettop(vm.state());
+  CHECK(created);
+  CHECK(before+1==after);// requireTablefield leaves table on top of stack
+  lua_pop(vm.state(),1);
+  created = requireTableField(vm.state(),"somename");
+  CHECK(!created);
+  CHECK(before+1==after);
+}
 UNITTEST(LuaUserData){
   UserDataStruct uut;
   uut.setValue1(32);
@@ -401,37 +71,7 @@ UNITTEST(LuaUserData){
   cout << ""<<endl;
 }
 
-struct LuaFunctionWrapper{
 
-};
-
-UNITTEST(LuaCFunctionTranslation){
-
-
-  std::function<tuple<int,std::string,float> (int, int, std::string, float)> fuu=[](int a, int b, std::string c, float d){return make_tuple(a+1,c,d-3);};
-  auto val = fuu(2,3,"asd",232.2f);
-
-
-  FAIL("Not implemented");
-
-}
-
-
-bool wasCalled = false;
-int testLuaFunction(lua_State * state){
-  wasCalled = true;
-  return 0;
-}
-
-UNITTEST(LuaCFunction){
-  LuaVirtualMachine vm;
-  wasCalled = false;
-  vm.registerGlobalLuaFunction("fuu", &testLuaFunction);
-
-  CHECK(!wasCalled);
-  vm.loadString("fuu()");
-  CHECK(wasCalled);
-}
 
 UNITTEST(LuaInitialization){
   LuaVirtualMachine vm;

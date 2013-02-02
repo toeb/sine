@@ -447,6 +447,7 @@ private: \
   class MEMBERCLASSNAME(NAME) : public virtual nspace::MethodInfo { \
     SINGLETON(MEMBERCLASSNAME(NAME)){ \
       setName(# NAME); \
+      setOwningType(typeof(NAME ## ParentClassType));\
     } \
 public: \
     bool call(nspace::Object * object, void * arguments=0, void ** returnvalue=0) const { \

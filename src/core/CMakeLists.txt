@@ -209,6 +209,8 @@ set(utilitySource
 ./utilities/Utilities.cpp
 ./utilities/Timer.h
 ./utilities/Timer.cpp
+./utilities/ToString.h
+./utilities/ToString.cpp
 ../include/core.utilities.h
 
 )

@@ -97,13 +97,13 @@ public:inline void test();\
   DS_TEST_TEMPLATED_IMPLEMENTATION(NAME,__VA_ARGS__)
 
 
-#define DS_CHECK_TYPES(...)\
+#define DS_CHECK_TYPES_EQUAL(...)\
 {if(!std::is_same<DS_REDUCE_COMMA(DS_NOOP, __VA_ARGS__)>::value)FAIL("The following types are not the equal: '<" << #__VA_ARGS__<<"'>");}
 
 
-
+//todo rename
 #ifndef CHECK_TYPES
-#define CHECK_TYPES(...) DS_CHECK_TYPES(__VA_ARGS__)
+#define CHECK_TYPES(...) DS_CHECK_TYPES_EQUAL(__VA_ARGS__)
 #endif
 
 #ifndef UNITTEST

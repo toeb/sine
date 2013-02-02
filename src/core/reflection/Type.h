@@ -20,6 +20,7 @@
 #include <core/collection/containers/Set.h>
 #include <core/Members.h>
 #include <core/patterns/Singleton.h>
+#include <core/template/TemplateUtilities.h>
 #include <memory>
 namespace nspace
 {
@@ -124,6 +125,8 @@ public:
 
     void deleteInstance(void * instance)const;
 
+    void objectToString(const void * object, std::ostream & stream)const;
+    std::string objectToString(const void * object)const;
     /**
      * \brief Property Id.
      *
@@ -144,6 +147,10 @@ public:
      */
     BASIC_PROPERTY(std::function< void(void*)>, DeleteInstanceFunction, protected,,,);
     
+
+    typedef std::function<void(const void *, std::ostream &)> ObjectToStringFunction;
+    BASIC_PROPERTY(ObjectToStringFunction, ObjectToStringFunction,protected,,,);
+
     /**
      * \brief Property Name.
      *        the name of this type
@@ -287,15 +294,31 @@ public:
     }
   };
 
-  template<typename T>
 
   /**
    * \brief Information about the type.
    */
+  template<typename T>
   class TypeInfo : public Type
-  {
-    TEMPLATEDSINGLETON(TypeInfo, <T>) {
-      setName(RemovePointer<T>::Type::getTypeName());
+  {     
+    typedef typename std::remove_pointer<T>::type type;
+    TEMPLATEDSINGLETON(TypeInfo, <T>) {      
+      setName(type::getTypeName());
+      setCreateInstanceFunction([]()->void*{
+        default_constructor<type> t;
+        return static_cast<void*>(t());
+      });
+      setDeleteInstanceFunction([](void * value){
+        // todo: default destructor?
+        delete static_cast<T*>(value);
+      });
+      setObjectToStringFunction([](const void * obj, std::ostream & stream){
+        auto object = static_cast<const T*>(obj);
+        if(object){
+          stream << object;
+        }
+        //toString(*object,stream);
+      });
     }
   };
 
@@ -396,7 +419,7 @@ private: \
   typedef TYPE CurrentClassType; \
 public: \
   static std::string getTypeName(){return std::string(# TYPE); } \
-  virtual inline const nspace::Type & getType() const {return *nspace::TypeInfo<TYPE>::instance(); } \
+  virtual inline const nspace::Type & getType() const {return *nspace::TypeInfo<CurrentClassType>::instance(); } \
   virtual inline bool isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); } \
 private:
 

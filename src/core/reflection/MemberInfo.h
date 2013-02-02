@@ -35,7 +35,7 @@ namespace nspace {
     REFERENCE_PROPERTY(std::string, Name);
 
     SIMPLE_PROPERTY(bool, IsVisible){}
-    SIMPLE_PROPERTY(Type *, OwningType ){};
+    SIMPLE_PROPERTY(const Type *, OwningType ){};
 
     /**
      * \brief Description of the member.
