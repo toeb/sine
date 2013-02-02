@@ -88,9 +88,10 @@ namespace nspace{
       binding->setSink(b);
       return binding;
     }
-
-  private:
+    //HACK: private default constructor causes errors for typed objects
     Binding():_Source(0),_Sink(0),_BindingType(0),_IsUpdating(false){
     }
+  private:
+    
   };
 }

@@ -4,7 +4,7 @@
 #include <string>
 namespace nspace{
 
-
+  /*
   // generic tostring method
 
   template <typename T>
@@ -45,5 +45,5 @@ namespace nspace{
     toString(object,stream);
     return stream.str();
   }
-
+  */
 }

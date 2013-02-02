@@ -3,6 +3,26 @@
 #include <config.h>
 #include <core/patterns/Singleton.h>
 namespace nspace{
+  /*
+  // this should remove const from a variable
+  // all kind of warnings apply to this kind of stuff :/
+    template<typename T> 
+  struct remove_const_from_instance_impl{
+    typedef T type;
+    static typename type value(T val){return val;}
+  };
+  template<typename T>
+  struct remove_const_from_instance_impl<const T >{
+    typedef T type;
+    static typename type  value(const T val){return const_cast<T>(val);}
+  };
+  
+
+  template<typename T>
+  auto remove_const_from_instance(T  value)-> typename remove_const_from_instance_impl<T>::type {
+    return remove_const_from_instance_impl<T>::value(value); 
+  }
+  */
 
   
   // returns a new instance of T if T is defaultconstructible. else returns 0; also work for singletons

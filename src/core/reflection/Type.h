@@ -293,6 +293,7 @@ public:
       return true;
     }
   };
+  
 
 
   /**
@@ -301,12 +302,12 @@ public:
   template<typename T>
   class TypeInfo : public Type
   {     
-    typedef typename std::remove_pointer<T>::type type;
+    typedef typename std::remove_const<typename std::remove_pointer<T>::type>::type type;
     TEMPLATEDSINGLETON(TypeInfo, <T>) {      
       setName(type::getTypeName());
       setCreateInstanceFunction([]()->void*{
         default_constructor<type> t;
-        return static_cast<void*>(t());
+        return static_cast<void*>(const_cast<type*>(t()));
       });
       setDeleteInstanceFunction([](void * value){
         // todo: default destructor?

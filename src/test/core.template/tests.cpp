@@ -5,7 +5,27 @@
 #include <sstream>
 using namespace nspace;
 using namespace std;
+/*
+UNITTEST(remove_const_from_instance1){
+  const std::string str="asdasd";
+  auto & result = remove_const_from_instance(str);
 
+  bool success = !std::is_const<decltype(result)>::value && std::is_const<decltype(str)>::value;
+  CHECK(success);
+
+}
+
+
+UNITTEST(remove_const_from_instance2){
+  const std::string * str= new std::string;
+  auto result = remove_const_from_instance(str);
+
+  bool success = !std::is_const<decltype(result)>::value && std::is_const<decltype(str)>::value;
+  CHECK(success);
+
+}
+
+*/
 UNITTEST(CheckSingleton1){
   struct A{
 
