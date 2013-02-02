@@ -141,15 +141,16 @@ const MemberInfo * luaGetMemberInfo(lua_State*L,int index){
 }
 
 int luaDestructor(lua_State * L){
-  cout << "destructor called"<<endl;
+  auto type = luaGetTypeMeta(L,-1);
+  auto object = luaGetObject(L,-1);
+  type->deleteInstance(object);
   return 0;
 }
 int luaToString(lua_State * L){
-  cout << "to string called";
   auto type = luaGetTypeMeta(L,-1);
   auto object = luaGetObject(L,-1);
-
-  lua_pushstring(L, "TOSTRING RETURN VALUE IS NOT YET IMPLEMENTED");
+  string str= type->objectToString(object);
+  lua_pushstring(L, str.c_str());
   return 1;
 }
 int luaInheritanceSolver(lua_State*L){
@@ -158,7 +159,7 @@ int luaInheritanceSolver(lua_State*L){
   return 0;
 }
 int luaConstructor(lua_State* L){
-  cout <<"constructor called"<<endl;
+
   auto n = lua_gettop(L);
   if(n<1)return luaL_error(L,"expected at least one argument");
   auto type = luaGetType(L,1);
@@ -183,12 +184,17 @@ int luaConstructor(lua_State* L){
     lua_setfield(L,-2,"__cobject");
 
     // assign the c type pointer
+    
     lua_pushlightuserdata(L,const_cast<void*>(static_cast<const void*>(type)));
     lua_setfield(L,-2,"__ctype");
 
     // set to string function
     lua_pushcfunction(L,luaToString);
     lua_setfield(L,-2,"__tostring");
+
+    
+    lua_pushboolean(L,true);
+    lua_setfield(L,-2,"__managed");
 
     // make metatable immutable
     //  lua_pushnil(L);

@@ -27,7 +27,7 @@ const Type * Types::getType(const std::string & name){
 }
 
 TypeId Type::_typeCounter=0;
-Type::Type():_Id(_typeCounter++),_CreateInstanceFunction([](){return static_cast<void*>(0);}),_DeleteInstanceFunction([](void *){}){
+Type::Type():_Id(_typeCounter++),_CreateInstanceFunction([](){return static_cast<void*>(0);}),_DeleteInstanceFunction([](void *){}),_ObjectToStringFunction([](const void*,std::ostream&){}){
   Types::registerType(this);
 }
 namespace nspace{
