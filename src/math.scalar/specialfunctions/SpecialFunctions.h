@@ -12,10 +12,6 @@ namespace nspace{
     static const unsigned int lnOfFactorialLimit=2500;
 
   };
-  
-
-
-
   template<typename T>
   class LnOfGamma{
   private:

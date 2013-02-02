@@ -397,7 +397,7 @@ private: \
 public: \
   static std::string getTypeName(){return std::string(# TYPE); } \
   virtual inline const nspace::Type & getType() const {return *nspace::TypeInfo<TYPE>::instance(); } \
-  virtual inline bool isInstanceOf(const Type * type) const { return type->isSuperClassOf(this->getType()); } \
+  virtual inline bool isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); } \
 private:
 
 /**

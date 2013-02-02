@@ -1,1 +1,1 @@
-subdirs(math simulation core.hub core core.collection simulation.geometry.mesh core.reflection core.properties core.template core.preprocessor)
+subdirs(math simulation core.hub core core.collection simulation.geometry.mesh core.reflection core.properties core.template core.preprocessor utility.scripting.lua)
