@@ -10,6 +10,8 @@ set(specialFunctionsSource
 ./specialfunctions/SpecialFunctions.cpp
 )
 
+source_group("specialfunctions" FILES ${specialFunctionsSource})
+
 set(source 
 ./CMakeLists.txt
 ./core.h
@@ -24,6 +26,8 @@ source_group("" FILES ${source})
 
 add_library(math.scalar
 ${source}
-${operationsSource})
+${operationsSource}
+${specialFunctionsSource}
+)
 
 target_link_libraries(math.scalar math.operation)

@@ -90,4 +90,38 @@ public:
   template<typename T, typename Index> class MatrixRowTraits<std::function<T(Index,Index)> >{public: static const DimensionTraits Traits=Infinite;  };
   template<typename T, typename Index> class MatrixColumnTraits<std::function<T(Index,Index)> >{public: static const DimensionTraits Traits=Infinite;  };
 
+
+
+  
+
+  template<typename BinaryFunction>
+  class MatrixFunction{
+    size_t _rows;
+    size_t _cols;
+    BinaryFunction  _function;
+
+  public:
+
+    ~MatrixFunction(){
+
+    }
+  inline auto operator()(size_t i, size_t j)-> decltype(nspace::declval<BinaryFunction>()(i,j)){
+      return _function(i,j);
+    }
+    inline auto operator()(size_t i, size_t j)const->const decltype(nspace::declval<BinaryFunction>()(i,j)){
+      return _function(i,j);
+    }
+    MatrixFunction(size_t rows, size_t cols, BinaryFunction   function):_rows(rows),_cols(cols),_function(function){
+
+    }
+    inline size_t rows()const{return _rows;}
+    inline size_t cols()const{return _cols;}
+  };
+  // todo... double is wrong
+  template<typename BinaryFunction> SpecializeMatrixCoefficientType(MatrixFunction<BinaryFunction>, double);
+
+  template<typename BinaryFunction>
+  auto lazyMatrix(size_t rows, size_t cols, BinaryFunction f)->MatrixFunction<BinaryFunction>{
+    return MatrixFunction<BinaryFunction>(rows, cols,f);
+  }
 }
