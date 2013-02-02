@@ -70,7 +70,7 @@ TEST(3,default_constructor){
   CHECK(instance==0);
 }
 
-
+/*
 
 
 UNITTEST(toString1){
@@ -125,3 +125,4 @@ UNITTEST(toString5){
   auto result = nspace::toString(a,stream);
   CHECK(result);
 }
+*/
