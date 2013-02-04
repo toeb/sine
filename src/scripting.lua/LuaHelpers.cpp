@@ -5,7 +5,7 @@ using namespace std;
 
 
 // returns true if table had to be created
-bool ::requireGlobalTable(lua_State *L, const char * name){
+bool nspace::requireGlobalTable(lua_State *L, const char * name){
 
   lua_getglobal(L,name);
   if(!lua_istable(L,-1)){
@@ -19,7 +19,7 @@ bool ::requireGlobalTable(lua_State *L, const char * name){
 
 }
 // returns true if table had to be created
-bool ::requireTableField(lua_State * L, const char * name){
+bool nspace::requireTableField(lua_State * L, const char * name){
   lua_getfield(L,-1,name);
   if(!lua_istable(L,-1)){
     // remove nil or whatever non table value from stack

@@ -24,10 +24,10 @@ namespace nspace{
 
     template<typename T>
     bool registerObject(T* object){
-      auto object = new ScriptObject();
-      object->setObjectPointer(object);
-      object->setObjectType(typeof(object));
-      return registerObject(object);
+      auto obj = new ScriptObject();
+      obj->setObjectPointer(object);
+      obj->setObjectType(typeof(T));
+      return registerObject(obj);
     }
 
 
