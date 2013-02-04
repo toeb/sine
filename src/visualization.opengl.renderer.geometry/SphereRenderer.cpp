@@ -21,3 +21,14 @@ void SphereRenderer::render(){
 }
 
 
+
+
+void SphereRenderer::propertyChanging(Material,Material){}
+
+void SphereRenderer::propertyChanging(Color, Color){
+  setMaterial(Material(newvalue));
+}
+
+void SphereRenderer::propertyChanging(int, LatitudeSegments){}
+
+void SphereRenderer::propertyChanging(int, LongitudeSegments){}

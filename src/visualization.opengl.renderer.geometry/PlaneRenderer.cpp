@@ -36,3 +36,4 @@ void PlaneRenderer::render(){
 
 }
 
+  Real & PlaneRenderer::extent(){return _extent;}

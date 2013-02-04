@@ -7,9 +7,7 @@ namespace nspace{
   public:
     static int level;
     static bool doRender;
-    OctreeRenderer(Octree  & octree):_octree(octree){
- 
-    }
+    OctreeRenderer(Octree  & octree);
     void render();
   };
 

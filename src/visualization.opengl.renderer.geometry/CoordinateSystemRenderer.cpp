@@ -5,6 +5,11 @@
 using namespace std;
 using namespace nspace;
 
+ CoordinateSystemRenderer::CoordinateSystemRenderer(const CoordinateSystem  & coordinateSystem):_coordinateSystem(coordinateSystem){
+
+  }
+
+
 void CoordinateSystemRenderer::render(){
   MiniGL::pushMatrix();
   MiniGL::translate(_coordinateSystem.position());

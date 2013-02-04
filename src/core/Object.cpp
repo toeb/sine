@@ -50,4 +50,4 @@ namespace nspace {
   }
 }
 
-Object::~virtual ~Object(){}
+Object::~Object(){}

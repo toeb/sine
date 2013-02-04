@@ -6,6 +6,12 @@ using namespace nspace;
 using namespace std;
 int OctreeRenderer::level =0;
 bool OctreeRenderer::doRender =true;
+
+
+    OctreeRenderer::OctreeRenderer(Octree  & octree):_octree(octree){
+ 
+    }
+
 void OctreeRenderer::render(){
   if(!doRender)return;
 

@@ -10,7 +10,7 @@ private:
   Plane & _plane;
   Real _extent;
 public:
-  Real & extent(){return _extent;}
+  Real & extent();
   PlaneRenderer( Plane & plane, Real extent=100);
   void render();
 };

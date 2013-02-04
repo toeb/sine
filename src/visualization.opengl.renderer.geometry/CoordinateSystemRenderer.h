@@ -21,9 +21,7 @@ private:
   const CoordinateSystem & _coordinateSystem;
 public:
 
-  CoordinateSystemRenderer(const CoordinateSystem  & coordinateSystem):_coordinateSystem(coordinateSystem){
-
-  }
+  CoordinateSystemRenderer(const CoordinateSystem  & coordinateSystem);
 
   /**
     * \brief Renders this object.
