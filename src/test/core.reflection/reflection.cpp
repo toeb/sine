@@ -2,10 +2,15 @@
 
 #include <core.reflection.h>
 
+
 using namespace nspace;
 using namespace std;
 
 
+#ifdef NEWIMPL
+#include <core/template/meta_type_construction.h>
+#include <core/template/meta_type_name.h>
+#include <core/template/meta_type_tostring.h>
 
 
 TEST(1,typeNameOf){
@@ -97,3 +102,4 @@ TEST(4,createInstance){
 
 
 }
+#endif

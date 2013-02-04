@@ -2,8 +2,130 @@
 
 #include <core/reflection/Type.h>
 #include <core/patterns/Singleton.h>
-#include <core/template/default_constructor.h>
+//#include <core/template/default_constructor.h>
+//#define NEWIMPL
+#ifndef NEWIMPL
 
+#include <core/collection/containers/Set.h>
+namespace nspace{
+
+  
+
+/**
+* \brief this macro returns the Type * instance for TYPENAME.
+*
+* \param TYPENAME  The typename.
+*/
+#define typeof(TYPENAME) nspace::TypeInfo<TYPENAME>::instance().get()
+
+
+/**
+* \brief Macro for making an object a typed object. defines a static meta information structure
+*        (TypeData) and virtual access methods 
+*
+* \param TYPE  The type.
+*/
+#define DS_CLASS(TYPE)                                                                                                \
+private:                                                                                                              \
+  typedef TYPE CurrentClassType;                                                                                      \
+public:                                                                                                               \
+  static std::string getTypeName(){return std::string(# TYPE); }                                                      \
+  virtual inline const nspace::Type & getType() const {return *nspace::TypeInfo<CurrentClassType>::instance(); }      \
+  virtual inline bool isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); } \
+private:
+
+#define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
+
+/**
+* \brief sets up inheritance hierarchy.
+*        Subclass specify SUBCLASSOF in the class declaration so that the hierarchy can be generated
+*
+* \param TYPE  The parent type.
+*/
+#define SUBCLASSOF(TYPE)                                                                                                \
+private:                                                                                                                \
+  STATIC_INITIALIZER(TYPE ## Subclass,{                                                                                 \
+  auto unconstCurrentType = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType)));   \
+  auto unconstSuperType = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(TYPE)));                 \
+  unconstSuperType->successors()|=unconstCurrentType;                                                                 \
+  })
+
+
+  /**
+   * \brief Information about the type.
+   */
+  template<typename T>
+  class TypeInfo : public Type
+  {
+    TEMPLATEDSINGLETON(TypeInfo, <T>) {
+      setName(std::remove_pointer<T>::type::getTypeName());
+    }
+  };
+
+/**
+ * \brief macro allows typeinfo to be declared for primitve types. or external types
+ *
+ * \param TYPE  The type.
+ */
+#define META(TYPE) \
+  template<> \
+  class /*nspace::*/ TypeInfo<TYPE>: public /*nspace::*/ Type { \
+    TEMPLATEDSINGLETON(TypeInfo, <TYPE>){ \
+      setName(# TYPE); \
+    } \
+  };
+
+/**
+ * \brief META which set allows instancecreation of type by default constructor
+ *
+ * \param TYPE  The type.
+ */
+#define META_DEFAULTCONSTRUCTOR(TYPE) \
+  template<> \
+  class /*nspace::*/ TypeInfo<TYPE>: public /*nspace::*/ Type { \
+    TEMPLATEDSINGLETON(TypeInfo, <TYPE>){ \
+      setCreateInstanceFunction([] (){return std::shared_ptr<void>(new TYPE); }); \
+      setName(# TYPE); \
+    } \
+  };
+
+
+  /**
+   * \brief Information about the type. Set<T>  /specialization
+   *
+   * \tparam  T Generic type parameter.
+   */
+  template<typename T>
+  class TypeInfo<Set<T> >: public Type
+  {
+    TEMPLATEDSINGLETON(TypeInfo, <Set<T> >) {
+      setName("Set<T>");
+    }
+  };
+
+
+  // meta information for default types
+  META_DEFAULTCONSTRUCTOR(int);
+  META_DEFAULTCONSTRUCTOR(double);
+  META_DEFAULTCONSTRUCTOR(bool);
+  META_DEFAULTCONSTRUCTOR(float);
+  META_DEFAULTCONSTRUCTOR(char);
+  META_DEFAULTCONSTRUCTOR(short);
+  META_DEFAULTCONSTRUCTOR(unsigned int);
+  META_DEFAULTCONSTRUCTOR(long);
+  META_DEFAULTCONSTRUCTOR(long long);
+  META_DEFAULTCONSTRUCTOR(unsigned char);
+
+  META_DEFAULTCONSTRUCTOR(std::string);
+
+  META(std::ostream);
+  META(std::istream);
+  META(std::iostream);
+  META(std::ifstream);
+  META(std::ofstream);
+
+}
+#else NEWIMPL
 
 #define DS_META_TYPENAME(TYPE) template<> struct meta_type_name<TYPE>{static const std::string & value(){static std::string name = #TYPE; return name;}};
 #define DS_META_INSTANCIATE_DEFAULT_CONSTRUCTOR(TYPE) template<> struct meta_type_construction<TYPE> { static const bool constructible = true; static std::shared_ptr<void> construct(){return std::shared_ptr<void>(new TYPE());}};
@@ -156,3 +278,5 @@ return name;
 template<typename T> std::string typeNameOf( ){
 return getTypeNameImpl<T>::getTypeName();
 }*/
+
+#endif

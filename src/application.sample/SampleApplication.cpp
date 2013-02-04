@@ -3,6 +3,27 @@
 using namespace std;
 using namespace nspace;
 
+
+void SampleApplication::propertyChanging(std::string  ,ResourceDirectory){}
+void SampleApplication::propertyChanging(SkyboxRenderer * ,Skybox){cancel = true;}
+void SampleApplication::propertyChanging(ViewportController * ,Camera){cancel = true;}
+void SampleApplication::propertyChanging(SimulationTimeProvider * ,SimulationTimeProvider){cancel = true;}
+void SampleApplication::propertyChanging(ObjectViewPlugin * ,ObjectViewPlugin){cancel = true;}
+void SampleApplication::propertyChanging(QtPropertyView * ,QtPropertyView){cancel = true;}
+void SampleApplication::propertyChanging(ViewportPlugin * ,ViewportPlugin){cancel = true;}
+void SampleApplication::propertyChanging(InitializationModule * ,Initializer){cancel = true;}
+void SampleApplication::propertyChanging(Hub * ,Hub){cancel = true;}
+void SampleApplication::propertyChanging(PluginApplication * ,Application){cancel = true;}
+void SampleApplication::propertyChanging(GlViewport * ,Viewport){cancel = true;}
+void SampleApplication::propertyChanging(RenderSet * ,RenderSet){cancel = true;}
+void SampleApplication::propertyChanging(QtTaskRunner * ,QtTaskRunner){cancel = true;}
+void SampleApplication::propertyChanging(QtTimeControlPlugin * ,QtTimeControlPlugin){cancel = true;}
+void SampleApplication::propertyChanging(DefaultLightSetup * ,DefaultLightSetup){cancel = true;}
+void SampleApplication::propertyChanging(SimulationTimeController * ,SimulationTimeController){cancel = true;}
+void SampleApplication::propertyChanging(Simulation * ,Simulation){cancel = true;}
+void SampleApplication::propertyChanging(StepIntegrator * ,Integrator){cancel = true;}
+void SampleApplication::propertyChanging(GridRenderer * ,Grid){cancel = true;}
+
 SampleApplication::SampleApplication(int argc, char ** argv, Sample & sample, const std::string & resourceDirectory):
   _Skybox(0),
   _Camera(0),

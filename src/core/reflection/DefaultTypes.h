@@ -10,6 +10,7 @@ namespace nspace{
 
 
 
+  /*
   DS_META_TRIVIAL_TYPE(int);
   DS_META_TRIVIAL_TYPE(double);
   DS_META_TRIVIAL_TYPE(bool);

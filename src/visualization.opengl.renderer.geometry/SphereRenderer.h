@@ -37,7 +37,7 @@ namespace nspace {
     /**
      * \brief Property Material - the material the spheres are rendered in
      */
-    PROPERTY(Material, Material){}
+    PROPERTY(Material, Material);
 
     /**
      * \brief Color Property - the creates sets copies the Materialsproperty changing its color
@@ -45,21 +45,19 @@ namespace nspace {
      * \param parameter1  The first parameter.
      * \param parameter2  The second parameter.
      */
-    PROPERTY(Color, Color){
-      setMaterial(Material(newvalue));
-    }
+    PROPERTY(Color, Color);
 
     /**
      * \brief LatitudeSegments property. specifies how many latitudal segments the sphere is to be rendered with
      *
      */
-    PROPERTY(int, LatitudeSegments){}
+    PROPERTY(int, LatitudeSegments);
 
     /**
      * \brief LatitudeSegments property. specifies how many longitudal segments the sphere is to be rendered with
      *
      */
-    PROPERTY(int, LongitudeSegments){}
+    PROPERTY(int, LongitudeSegments);
 
 public:
 
