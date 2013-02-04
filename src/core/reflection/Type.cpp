@@ -2,6 +2,7 @@
 #include <core/reflection/PropertyInfo.h>
 #include <core/reflection/MethodInfo.h>
 #include <sstream>
+#include <core/reflection/TypeRepository.h>
 using namespace nspace;
 void Type::objectToString(const void * object, std::ostream & stream)const{
   getObjectToStringFunction()(object,stream);
@@ -13,22 +14,14 @@ std::string Type::objectToString(const void * object)const{
 }
 
 
-const Set< const Type * > & Types::allTypes(){ return instance()->_types; }
-bool Types::registerType(const Type * type){
-  auto existingType = getType(type->getName());
-  if(existingType)return false;
-  instance()->_types.add(type);
-  return true;
-}
-
-const Type * Types::getType(const std::string & name){
-  auto type = instance()->_types.first([&name](const Type * type){ return type->getName()==name;  });
-  return type;
-}
-
 TypeId Type::_typeCounter=0;
-Type::Type():_Id(_typeCounter++),_CreateInstanceFunction([](){return static_cast<void*>(0);}),_DeleteInstanceFunction([](void *){}),_ObjectToStringFunction([](const void*,std::ostream&){}){
-  Types::registerType(this);
+Type::Type():
+  _Id(_typeCounter++),
+  _IsConstructible(false),
+  _CreateInstanceFunction([](){return std::shared_ptr<void>();}),
+  _ObjectToStringFunction([](const void*,std::ostream&){})
+{
+  TypeRepository::registerType(this);
 }
 namespace nspace{
   bool operator==(const Type & a, const Type & b){
@@ -44,14 +37,11 @@ namespace nspace{
   }
 }
 
-void * Type::createInstance()const{
+std::shared_ptr<void> Type::createInstance()const{
   return getCreateInstanceFunction()();
 }
 
 
-void Type::deleteInstance(void * instance)const{
-    getDeleteInstanceFunction()(instance);
-}
 
 const MemberInfo * Type::getMember(const std::string & name)const{
   auto member = Members().first([&name](const MemberInfo * member){return member->getName()==name;});

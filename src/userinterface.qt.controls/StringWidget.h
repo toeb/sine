@@ -1,7 +1,7 @@
 #pragma once
 #include <QLineEdit>
 #include <core/reflection/ITypedModifiableValue.h>
-
+#include <core/reflection/DefaultTypes.h>
 namespace nspace{
   class StringWidget : public QLineEdit, public virtual ITypedModifiableValue<std::string>{
     Q_OBJECT;

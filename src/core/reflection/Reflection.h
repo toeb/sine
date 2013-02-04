@@ -17,6 +17,10 @@
  *
  */
 #pragma once
+/*
+#include <core/reflection/Type.h>
+#include <core/reflection/TypeInfo.h>
+
 
 #include <core/reflection/PropertyInfo.h>
 #include <core/reflection/MethodInfo.h>
@@ -26,7 +30,7 @@
 #include <core/reflection/MethodAdapter.h>
 #include <core/PropertyChangingObject.h>
 #include <core/patterns/Singleton.h>
-
+*/
 /**
  * \brief to use reflection REFLECTABLE(<CLASSNAME>) needs to be stated once in the class. it
  *        creates multiple things:
@@ -108,7 +112,7 @@ private:
  *
  * \param NAME  The name.
  */
-#define MEMBERCLASSINSTANCE(NAME) ((MEMBERCLASSNAME(NAME)*)MEMBERCLASSNAME(NAME) ::instance())
+#define MEMBERCLASSINSTANCE(NAME) ((MEMBERCLASSNAME(NAME)*)MEMBERCLASSNAME(NAME) ::instance().get())
 
 /**
  * \brief A macro that defines propertyclass.

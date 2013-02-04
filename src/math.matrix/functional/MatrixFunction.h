@@ -93,6 +93,10 @@ public:
 
 
   
+    template <typename T>
+  T&& declval(); // vs2010 does not support std::declval - workaround http://stackoverflow.com/questions/11383722/adl-does-not-work-in-the-specific-situation
+
+  
 
   template<typename BinaryFunction>
   class MatrixFunction{

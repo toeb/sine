@@ -7,9 +7,11 @@ struct lua_State;
 struct luaL_Reg;
 namespace nspace{
 
+
   class LuaVirtualMachine : public VirtualScriptMachine{
     REFLECTABLE_OBJECT(LuaVirtualMachine);
     PROPERTYSET(luaL_Reg*,Libraries,{loadLibrary(*item);},{});
+    
   private:
     bool loadLibrary(const luaL_Reg & lib);
     lua_State * _state;
@@ -20,9 +22,9 @@ namespace nspace{
 
     LuaVirtualMachine();
 
-
-    void registerProperty(const MemberInfo * member);
-    void registerType(const Type * type);
+    bool registerType(const Type * type);
+    bool registerObject(Object * object);
+    bool registerObject(ScriptObject * object);
 
     ~LuaVirtualMachine();
     bool loadStream(std::istream & stream);

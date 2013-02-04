@@ -14,5 +14,14 @@ set(source
 
 add_executable(sample.particlesystem ${source} CMakeLists.txt)
 
-target_link_libraries(sample.particlesystem application.sample simulation.dynamics simulation.dynamics.force simulation.dynamics.textile simulation.utility utility.reader.trajectory)
+target_link_libraries(sample.particlesystem 
+  application.sample 
+  simulation.dynamics 
+  simulation.dynamics.force 
+  simulation.dynamics.textile 
+  simulation.utility 
+  utility.reader.trajectory
+  utility.reader.mesh
+)
+
 project_folder("samples" sample.particlesystem)

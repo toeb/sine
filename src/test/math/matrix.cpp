@@ -9,9 +9,11 @@
 #include <math.matrix.eigen.h>
 #include <random>
 
+
+#include <core/template/is_same_type.h>
+
 using namespace std;
 namespace nspace{
-  
   TEST(1,MatrixBlockExtract){    
     MatrixNxM matrix=identity<MatrixNxM>(4,4);
     Matrix2x2 block;

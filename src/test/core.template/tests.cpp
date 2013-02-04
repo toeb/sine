@@ -1,6 +1,13 @@
 #include <core.testing.h>
 
 #include <core/template/TemplateUtilities.h>
+#include <core/template/is_same_type.h>
+#include <core/template/is_singleton.h>
+
+#include <core/template/result_of_static_function.h>
+
+#include <core/template/to_string.h>
+#include <core/template/default_constructor.h>
 
 #include <sstream>
 using namespace nspace;
@@ -26,6 +33,8 @@ UNITTEST(remove_const_from_instance2){
 }
 
 */
+
+
 UNITTEST(CheckSingleton1){
   struct A{
 
@@ -44,8 +53,7 @@ UNITTEST(CheckSingleton2){
 };
 TEST(1,default_constructor){
   struct A{ };
-  default_constructor<A> constructor;
-  auto  instance = constructor();
+  auto instance = default_constructor<A>::construct();
   CHECK(instance !=0);
 }
 TEST(2,default_constructor){
@@ -56,19 +64,40 @@ TEST(2,default_constructor){
     }
   };
   CHECK(!called);
-  default_constructor<A> constructor;
-  auto  instance = constructor();  
+  auto instance = default_constructor<A>::construct();
   CHECK(instance!=0);
 }
 TEST(3,default_constructor){
   struct A{
     A(int i){}//no default constructor available
   };
-
-  default_constructor<A> constructor;
-  auto instance = constructor();
+  auto instance = default_constructor<A>::construct();
   CHECK(instance==0);
 }
+TEST(4,default_constructor){
+  // tests if a constructed object is destructed correctly
+  static bool constructed = false;
+  static bool destructed =false;
+  struct A{  
+    A(){
+      constructed= true;
+    }
+    ~A(){
+      destructed = true;
+    }
+  };
+
+  default_constructor<A> constructor;
+
+  CHECK(!constructed && !destructed);
+  {
+  auto instance = default_constructor<A>::construct();
+    CHECK(constructed);
+  }
+  CHECK(destructed);
+}
+
+
 
 /*
 

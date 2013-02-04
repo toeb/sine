@@ -32,6 +32,21 @@ typedef float Real;
 #define __FUNCSIG__ __PRETTY_FUNCTION__
 #endif
 
+// macro for dynamic linking
+#ifdef DLL
+#ifdef DLL_EXPORT
+#define DS_API __declspec(dllexport)
+#else
+#define DS_API __declspec(dllimport)
+#endif
+#else 
+#define DS_API
+#endif
+
+
+
+
+
 
 // for visual studio i'll disalbe warning about inheritance via dominance
 #pragma warning( disable : 4250 )

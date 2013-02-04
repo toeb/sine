@@ -1,7 +1,8 @@
 #include <QSlider>
 
 #include <core.reflection.h>
-#include <core/reflection/IModifiableValue.h>
+#include <core/reflection/ITypedModifiableValue.h>
+#include <core/PropertyChangingObject.h>
 
 namespace nspace{
   class DoubleSliderWidget : public QSlider, public virtual ITypedModifiableValue<double>, public virtual PropertyChangingObject{

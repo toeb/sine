@@ -49,3 +49,5 @@ namespace nspace {
     return out;
   }
 }
+
+Object::~virtual ~Object(){}

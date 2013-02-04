@@ -40,6 +40,12 @@ set(source ${source} ${commandlineParserSource})
 
 set(templateSource
 ./template/TemplateUtilities.h
+./template/default_constructor.h
+./template/is_singleton.h
+./template/is_same_type.h
+./template/result_of_static_function.h
+./template/to_string.h
+
 )
 
 set(source ${source} ${templateSource})
@@ -189,6 +195,13 @@ set(reflectionSource
 ./reflection/ITypedSerializableValue.cpp
 ./reflection/MemberAdapter.h
 ./reflection/MemberAdapter.cpp
+./reflection/DefaultTypes.h
+./reflection/DefaultTypes.cpp
+./reflection/TypeInfo.h
+./reflection/TypeInfo.cpp
+./reflection/TypeRepository.h
+./reflection/TypeRepository.cpp
+
 
 ./reflection/Converter.h
 ./reflection/Converter.cpp

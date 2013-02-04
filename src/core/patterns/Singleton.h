@@ -5,41 +5,32 @@
 
 namespace nspace{
 
-#define TEMPLATEDSINGLETON(CLASSNAME, TEMPLATEARGUMENTS)\
+
+#define DS_SINGLETON_TYPE(CLASSNAME,TEMPLATEARGUMENTS) typedef CLASSNAME TEMPLATEARGUMENTS SingletonType;
+  // todo remove if !_instance 
+#define DS_SINGLETON_IMPL(CLASSNAME)                                              \
+  static std::shared_ptr<SingletonType> instance(){                               \
+  static std::shared_ptr<SingletonType> _instance;                                \
+  if(!_instance)_instance = std::shared_ptr<SingletonType>(new SingletonType());  \
+    return _instance;                                                             \
+  }                                                                               \
+  private:                                                                        \
+  CLASSNAME()
+
+#define DS_SINGLETON_TEMPLATED(CLASSNAME,TEMPLATEARGUMENTS)\
   public:\
-  typedef CLASSNAME TEMPLATEARGUMENTS SingletonType;\
-  static SingletonType * instance(){\
-  static SingletonType * _instance;\
-  if(!_instance)_instance = new SingletonType();\
-  return _instance;\
-  }\
-  private:\
-  CLASSNAME()
+  DS_SINGLETON_TYPE(CLASSNAME,TEMPLATEARGUMENTS);\
+  DS_SINGLETON_IMPL(CLASSNAME)
 
-//defines a the class as a singleton
-#define SINGLETON(CLASSNAME)\
-  public: \
-  typedef CLASSNAME SingletonType;\
-  static SingletonType * instance(){\
-  static SingletonType * _instance =0;\
-  if(!_instance)_instance = new SingletonType();\
-  return _instance;\
-}\
-private:\
-  CLASSNAME()
+#define DS_SINGLETON(CLASSNAME) DS_SINGLETON_TEMPLATED(CLASSNAME,)
+
+#define TEMPLATEDSINGLETON(CLASSNAME,TEMPLATEARGUMENTS) DS_SINGLETON_TEMPLATED(CLASSNAME,TEMPLATEARGUMENTS)
+
+//defines a the class as a singleton (private constructor and public static instance() method returning a shared ptr
+#define SINGLETON(CLASSNAME) DS_SINGLETON(CLASSNAME)
 
 
-  // compile time check if type is singleton.
-template <typename T>
-struct is_singleton{
-private:
-    template <typename T1>
-    static typename T1::SingletonType test(int);
-    template <typename>
-    static void test(...);
-public:
-    enum { value = !std::is_void<decltype(test<T>(0))>::value };
-};
+
 
 
 /*  Example of a class using the singleton macro

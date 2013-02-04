@@ -17,7 +17,7 @@ public:
   PROPERTY(int, Value1){}
   PROPERTY(std::string, Value2){}
 
-};
+}b;
 
 class UserDataStruct2 : public PropertyChangingObject{
   REFLECTABLE_OBJECT(UserDataStruct2);
@@ -27,7 +27,16 @@ public:
   PROPERTY(std::string, Value2){}
   ACTION(Lol){cout << "Lolinger"<<getValue1()<<getValue2()<<endl;}
 
-}astruct;
+}a;
+
+
+
+UNITTEST(LuaUserData){
+  LuaVirtualMachine vm;
+  vm.registerType(typeof(UserDataStruct2));
+  auto res = vm.loadFile("scripts/lua/sine.lua");
+}
+
 
 UNITTEST(requireGlobalTable){
   LuaVirtualMachine vm;
@@ -58,19 +67,6 @@ UNITTEST(requireTableField){
   CHECK(!created);
   CHECK(before+1==after);
 }
-UNITTEST(LuaUserData){
-  UserDataStruct uut;
-  uut.setValue1(32);
-  uut.setValue2("asdldigger");
-  LuaVirtualMachine vm;
-  vm.registerType(typeof(UserDataStruct));
-  vm.registerType(typeof(UserDataStruct2));
-  vm.registerType(typeof(UserDataStruct2));
-  auto l = vm.state();
-  auto res = vm.loadFile("scripts/lua/sine.lua");
-  cout << ""<<endl;
-}
-
 
 
 UNITTEST(LuaInitialization){

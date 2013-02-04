@@ -8,6 +8,7 @@
 #include <sstream>
 #include <core.h>
 #include <core/patterns/Multiton.h>
+#include <core/reflection/ReferenceValue.h>
 #include <core/utilities/StringTools.h>
 using namespace nspace;
 using namespace std;

@@ -19,8 +19,6 @@
 #include <core/graph/Node.h>
 #include <core/collection/containers/Set.h>
 #include <core/Members.h>
-#include <core/patterns/Singleton.h>
-#include <core/template/TemplateUtilities.h>
 #include <memory>
 namespace nspace
 {
@@ -35,19 +33,6 @@ namespace nspace
    */
   typedef uint TypeId;
 
-  /**
-   * \brief Types. a class containing a set of all types.
-   */
-  class Types
-  {
-private:
-    SINGLETON(Types) {}
-    Set< const Type * > _types;
-public:
-    static const Set< const Type * > & allTypes();
-    static const Type * getType(const std::string & name);
-    static bool registerType(const Type * type);
-  };
 
   /**
    * \brief Type.
@@ -121,31 +106,32 @@ public:
      *
      * \return  The new instance or zero if instanciation was not possibly.
      */
-    void * createInstance() const;
+    std::shared_ptr<void> createInstance() const;
 
-    void deleteInstance(void * instance)const;
+    template<typename T>
+    std::shared_ptr<T> createTypedInstance()const{
+      return std::static_pointer_cast<T>(createInstance());
+    }
+   
 
     void objectToString(const void * object, std::ostream & stream)const;
     std::string objectToString(const void * object)const;
+
+    BASIC_PROPERTY(bool, IsConstructible,public,,,);
+
     /**
-     * \brief Property Id.
+     * \brief Type Id.
      *
      */
     BASIC_PROPERTY(TypeId, Id,public,,,);
 
     /**
-     * \brief Property CreateInstanceFunction.
+     * \brief CreateInstanceFunction.
      *        may contain a function which creates an instance of the specified type
      *
      */
-    BASIC_PROPERTY(std::function<void * ()>, CreateInstanceFunction, protected,,,);
+    BASIC_PROPERTY(std::function<std::shared_ptr<void>()>, CreateInstanceFunction, protected,,,);
 
-    /**
-     * \brief Property DeleteInstanceFunction.
-     *        may contain a function which deletes an instance of the specified type
-     *
-     */
-    BASIC_PROPERTY(std::function< void(void*)>, DeleteInstanceFunction, protected,,,);
     
 
     typedef std::function<void(const void *, std::ostream &)> ObjectToStringFunction;
@@ -224,217 +210,4 @@ protected:
      */
     void onPredecessorRemoved(Type* type);
   };
-
-  template<typename T>
-
-  /**
-   * \brief Remove pointer.
-   */
-  class RemovePointer
-  {
-public:
-    typedef T Type;
-  };
-  template<typename T>
-
-  /**
-   * \brief Remove pointer.
-   *
-   * \tparam  T*  Type of the t*.
-   */
-  class RemovePointer<T*>
-  {
-public:
-    typedef T Type;
-  };
-
-  template<typename T>
-
-  /**
-   * \brief Is pointer.
-   */
-  struct IsPointer {
-    bool operator()() const {
-      return false;
-    }
-  };
-  template<typename T>
-
-  /**
-   * \brief Is pointer.
-   *
-   * \tparam  T*  Type of the t*.
-   */
-  struct IsPointer<T*> {
-    bool operator()() const {
-      return true;
-    }
-  };
-
-  template<typename T>
-
-  /**
-   * \brief Is constant.
-   */
-  struct IsConst {
-    bool operator()() const {
-      return false;
-    }
-  };
-  template<typename T>
-
-  /**
-   * \brief Is constant.
-   *
-   * \tparam  const T Type of the constant.
-   */
-  struct IsConst<const T> {
-    bool operator()() const {
-      return true;
-    }
-  };
-  
-
-
-  /**
-   * \brief Information about the type.
-   */
-  template<typename T>
-  class TypeInfo : public Type
-  {     
-    typedef typename std::remove_const<typename std::remove_pointer<T>::type>::type type;
-    TEMPLATEDSINGLETON(TypeInfo, <T>) {      
-      setName(type::getTypeName());
-      setCreateInstanceFunction([]()->void*{
-        default_constructor<type> t;
-        return static_cast<void*>(const_cast<type*>(t()));
-      });
-      setDeleteInstanceFunction([](void * value){
-        // todo: default destructor?
-        delete static_cast<T*>(value);
-      });
-      setObjectToStringFunction([](const void * obj, std::ostream & stream){
-        auto object = static_cast<const T*>(obj);
-        if(object){
-          stream << object;
-        }
-        //toString(*object,stream);
-      });
-    }
-  };
-
-/**
- * \brief macro allows typeinfo to be declared for primitve types. or external types
- *
- * \param TYPE  The type.
- */
-#define META(TYPE) \
-  template<> \
-  class /*nspace::*/ TypeInfo<TYPE>: public /*nspace::*/ Type { \
-    TEMPLATEDSINGLETON(TypeInfo, <TYPE>){ \
-      setName(# TYPE); \
-    } \
-  };
-
-/**
- * \brief META which set allows instancecreation of type by default constructor
- *
- * \param TYPE  The type.
- */
-#define META_DEFAULTCONSTRUCTOR(TYPE) \
-  template<> \
-  class /*nspace::*/ TypeInfo<TYPE>: public /*nspace::*/ Type { \
-    TEMPLATEDSINGLETON(TypeInfo, <TYPE>){ \
-      setCreateInstanceFunction([] (){return new TYPE; }); \
-      setDeleteInstanceFunction([](void * v){delete static_cast<TYPE*>(v);});\
-      setName(# TYPE); \
-    } \
-  };
-
-
-  /**
-   * \brief Information about the type. Set<T>  /specialization
-   *
-   * \tparam  T Generic type parameter.
-   */
-  template<typename T>
-  class TypeInfo<Set<T> >: public Type
-  {
-    TEMPLATEDSINGLETON(TypeInfo, <Set<T> >) {
-      setName("Set<T>");
-    }
-  };
-
-
-  // meta information for default types
-  META_DEFAULTCONSTRUCTOR(int);
-  META_DEFAULTCONSTRUCTOR(double);
-  META_DEFAULTCONSTRUCTOR(bool);
-  META_DEFAULTCONSTRUCTOR(float);
-  META_DEFAULTCONSTRUCTOR(char);
-  META_DEFAULTCONSTRUCTOR(short);
-  META_DEFAULTCONSTRUCTOR(unsigned int);
-  META_DEFAULTCONSTRUCTOR(long);
-  META_DEFAULTCONSTRUCTOR(long long);
-  META_DEFAULTCONSTRUCTOR(unsigned char);
-
-  META_DEFAULTCONSTRUCTOR(std::string);
-
-  META(std::ostream);
-  META(std::istream);
-  META(std::iostream);
-  META(std::ifstream);
-  META(std::ofstream);
-
-
-  
-  /*
-  template<typename T>
-  class TypeInfo<std::vector<T>>:public Type{
-    TEMPLATEDSINGLETON(TypeInfo,<std::vector<T> >){
-      setCreateInstanceFunction([](){return new std::vector<T>();});
-      setDeleteInstanceFunction([](void * v){delete static_cast<std::vector<T>*>(v);});
-      
-      setName(DS_INLINE_STRING("std::vector<"<<typeof(T)->getName()<<">"));
-    }
-  };
-  //need serializers
-  */
-
-
-/**
- * \brief this macro returns the Type * instance for TYPENAME.
- *
- * \param TYPENAME  The typename.
- */
-#define typeof(TYPENAME) nspace::TypeInfo<TYPENAME>::instance()
-
-/**
- * \brief Macro for making an object a typed object. defines a static meta information structure
- *        (TypeData) and virtual access methods @TODO rename TYPED_OBJECT to TYPED_CLASS.
- *
- * \param TYPE  The type.
- */
-#define TYPED_OBJECT(TYPE) \
-private: \
-  typedef TYPE CurrentClassType; \
-public: \
-  static std::string getTypeName(){return std::string(# TYPE); } \
-  virtual inline const nspace::Type & getType() const {return *nspace::TypeInfo<CurrentClassType>::instance(); } \
-  virtual inline bool isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); } \
-private:
-
-/**
- * \brief sets up inheritance hierarchy.
- *        Subclass specify SUBCLASSOF in the class declaration so that the hierarchy can be generated
- *
- * \param TYPE  The parent type.
- */
-#define SUBCLASSOF(TYPE) \
-private: \
-  STATIC_INITIALIZER(TYPE ## Subclass,{ \
-                       auto unconstCurrentType = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType))); \
-                       auto unconstSuperType = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(TYPE))); \
-                       unconstSuperType->successors()|=unconstCurrentType; \
-                     })
 }

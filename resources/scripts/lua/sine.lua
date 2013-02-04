@@ -16,12 +16,23 @@ end
 --asd = function(self,object,...) print(object) end
 --asd(1,2,3,45)
 
-recurse("Types","",Types,0);
+recurse("Types","",Class,0);
+
 print("trying to construct a objcet");
-print(Types);
-print(Types.UserDataStruct2);
-print(Types.UserDataStruct2.__new);
-print(Types.UserDataStruct2:__new());
 
+print(" a s",Class.UserDataStruct2);
+print(Class.UserDataStruct2.new());
 
-print("im westen nichts neues");
+--aObject = Class.UserDataStruct2();
+Class.UserDataStruct2.Lol.call();
+Class.UserDataStruct2.Value1.get();
+Class.UserDataStruct2.Value1.set();
+print(Class.UserDataStruct2)
+print(Class.UserDataStruct2.Lol)
+print(Class.UserDataStruct2.Value1)
+print(Class.UserDataStruct2.Value2)
+
+b = aObject.getValue1();
+print(b);
+print("Ende des scripts");
+print("Ende des scripts");

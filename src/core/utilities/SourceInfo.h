@@ -1,9 +1,10 @@
 #pragma once
 #include <core.reflection.h>
-
+#include <core/PropertyChangingObject.h>
 namespace nspace{
   class CompilerInfo: public PropertyChangingObject{
     REFLECTABLE_OBJECT(CompilerInfo);
+
     PROPERTY(std::string, CompilationDate){}
     PROPERTY(std::string, CompilationTime){}
     PROPERTY(std::string, TimeStamp){}

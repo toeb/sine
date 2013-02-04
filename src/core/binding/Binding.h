@@ -52,7 +52,7 @@ namespace nspace{
       auto sink = getSink();
       if(!(sink&&source))return false;
       auto type = getBindingType();
-      void * instance = type->createInstance();
+      auto instance = type->createInstance().get();
       if(!instance){
         logError("Type does not allow instanciation");
       }
@@ -62,8 +62,8 @@ namespace nspace{
       if(!sink->setByPointer(instance)){
         logError("Sink was not writable");
       }
-      type->deleteInstance(instance);
-      instance = 0;
+      //type->deleteInstance(instance.get());
+      //instance = 0;
       setIsUpdating(false);
       return true;
     }

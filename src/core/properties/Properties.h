@@ -24,6 +24,8 @@
 #pragma once
 
 #include <core.preprocessor.h>
+// for type helper function
+#include <core/template/result_of_static_function.h>
 
 
 #define DS_CURRENT_TYPE_NAME CurrentType

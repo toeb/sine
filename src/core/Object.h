@@ -22,7 +22,7 @@
 #include <ostream>
 #include <string>
 
-#include <core/reflection/Type.h>
+#include <core/reflection/TypeInfo.h>
 
 namespace nspace {
 
@@ -43,7 +43,7 @@ public:
     /**
      * \brief virtual Destructor.
      */
-    virtual ~Object(){}
+    virtual ~Object();
 
     /**
      * \brief toString method converts this object to a string representation (should be

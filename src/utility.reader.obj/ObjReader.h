@@ -18,7 +18,6 @@
  */
 #pragma once
 #include <math.matrix.h>
-#include <utility.reader.mtl.h>
 #include <utility.reader.mesh.h>
 namespace nspace {
 

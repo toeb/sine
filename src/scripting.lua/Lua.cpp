@@ -7,13 +7,247 @@ using namespace std;
 #include <scripting.lua/LuaHelpers.h>
 #include <core.preprocessor.h>
 
+void lua_pushstring(lua_State * L, const std::string& str){
+  lua_pushstring(L,str.c_str());
+}
 
+int luaCallClass(lua_State*L){return 0;}
+int luaClassToString(lua_State*L){return 0;}
+int luaCallMethod(lua_State*L){return 0;}
+int luaSetProperty(lua_State*L){return 0;}
+int luaGetProperty(lua_State*L){return 0;}
+int luaConstructor(lua_State*L);
+int luaToString(lua_State*L){return 0;}
+int luaTypeToString(lua_State*L){return 0;}
+int luaClassDestructor(lua_State*L){return 0;}
+
+
+bool createType(lua_State*L,const Type*type);
+bool createPropertyMetaTable(lua_State* L){return false;}
+bool createMethodMetaTable(lua_State* L){return false;}
+bool createTypeMetaTable(lua_State * L){return false;}
+bool createMemberMetaTable(lua_State*L){return false;}
+bool createObjectMetaTable(lua_State*L, const Type * type);
+
+
+bool createObject(lua_State*L, ScriptObject  object);
+
+
+void createMethod(lua_State* L, const MemberInfo * method);
+void createProperty(lua_State* L, const PropertyInfo * prop);
+void createMember(lua_State*L, const MemberInfo* member);
+bool createClass(lua_State*L,const Type *type);
+
+
+
+bool createObject(lua_State*L, ScriptObject object){
+  return false;
+}
+
+int luaConstructor(lua_State*L){  
+  int n= lua_gettop(L);
+  
+  if(n < 1){
+    return luaL_error(L,"to few args in constructor.  expecting class");
+  }
+
+  lua_newtable(L);
+
+  if(!lua_istable(L,1)){
+    return luaL_error(L,"first arguemnt is not  a table");
+  }
+
+  lua_getfield(L,1,"ctype");
+  if(!lua_islightuserdata(L,-1)){
+    return luaL_error(L,"class table does not contain type *");
+  }
+  const Type * type = static_cast<const Type*>( lua_touserdata(L,-1));
+
+  //type->createInstance(
+
+
+  
+
+
+  return 1;
+}
+
+
+bool createClass(lua_State*L,const Type *type){
+  // table already on stack
+  
+  string name = type->getName();
+
+  lua_pushcfunction(L,luaToString);
+  lua_setfield(L,-2,"__tostring");
+
+  lua_pushcfunction(L,luaCallClass);
+  lua_setfield(L,-2,"__call");
+ 
+  lua_pushcfunction(L,luaClassDestructor);
+  lua_setfield(L,-2,"__gc");
+
+  lua_pushcfunction(L,luaConstructor);
+  lua_setfield(L,-2,"new");
+
+  lua_pushlightuserdata(L,static_cast<void*>(const_cast<Type*>(type)));
+  lua_setfield(L,-2,"ctype");
+
+  
+  type->Members().foreachElement([L](const MemberInfo* member){
+    string name = member->getName();
+    requireTableField(L,name.c_str());
+    createMember(L,member);
+    lua_pop(L,1);
+  });
+
+
+  luaL_setmetatable(L,name.c_str());
+
+  return true;
+}
+
+void requireClass(lua_State*L,const Type* type){
+  std::string stdName = type->getName();
+  const char * name = stdName.c_str();
+  requireGlobalTable(L,"Class");
+
+  
+
+  if(requireTableField(L,name)){
+    createClass(L,type);    
+    
+    return;
+  }
+}
+
+
+void createProperty(lua_State* L, const PropertyInfo * prop){  
+  // table already on stack
+  
+
+  lua_pushlightuserdata(L,static_cast<void*>(const_cast<PropertyInfo*>(prop)));
+  lua_setfield(L,-2,"_cproperty");
+
+  lua_pushstring(L,prop->getName());
+  lua_setfield(L,-2,"name");
+    
+
+  if(prop->getHasGetter()){
+    lua_pushcfunction(L,luaGetProperty);
+    lua_setfield(L,-2,"get");
+  }
+  if(prop->getHasSetter()){
+    lua_pushcfunction(L,luaSetProperty);
+    lua_setfield(L,-2,"set");
+  } 
+
+}
+void createMethod(lua_State* L, const MemberInfo * method){
+  // table is already on top of stack
+  lua_pushstring(L,method->getName());
+  lua_setfield(L,-2,"name");
+  
+
+  lua_pushcfunction(L,luaCallMethod);
+  lua_setfield(L,-2,"call");
+
+
+}
+
+bool LuaVirtualMachine::registerObject(Object * object){return false;}
+bool LuaVirtualMachine::registerObject(ScriptObject * object){return false;}
+
+
+bool createObject(lua_State*L, ScriptObject* scriptObject){
+  auto type = scriptObject->getObjectType();
+  auto object = scriptObject->getObjectPointer();
+  
+  //logInfo("Creating object");
+
+  lua_newtable(L);
+
+  requireClass(L,type);
+  lua_setmetatable(L,-2);
+
+  lua_pushlightuserdata(L,scriptObject);
+  lua_setfield(L,-2,"__cobject");
+    
+  return true;
+}
+
+bool LuaVirtualMachine::registerType(const Type* type){
+  auto L = _state;
+  logInfo("registering type:"<<type->getName());
+   
+  requireClass(L,type);
+  lua_pop(L,1);
+
+  return true;
+}
+
+
+
+
+
+
+// creates the metatable for type t and leaves it on the stack
+bool createType(lua_State * L, const Type * type){
+  std::string stdName = type->getName();
+  const char*  name = stdName.c_str();
+
+  requireGlobalTable(L,"Class");
+
+  // create metatable (if it already exists return false)
+  if(!requireTableField(L,name)){
+    return false;
+  }
+  // set metatable for new type
+  luaL_getmetatable(L,"Type");
+  lua_setmetatable(L,-2);
+    
+  // assign the c object pointer
+  lua_pushlightuserdata(L,const_cast<void*>(static_cast<const void*>(type)));
+  lua_setfield(L,-2,"__ctype");
+  
+  // create parent types table
+  lua_newtable(L);
+  type->foreachPredecessor([L](const Type * type){
+    //createType(L,type);
+    //string name = type->getName();
+   // luaL_getmetatable(L,name.c_str());
+  //  lua_setfield(L,-2,name.c_str());
+  });
+  lua_setfield(L,-2,"superclasses");
+  
+
+  type->Members().foreachElement([L](const MemberInfo * member){
+    createMember(L,member);  
+  });
+
+
+
+  lua_pop(L,1);// superclasses -> type
+  lua_pop(L,1);// Class -> 0
+  
+
+  return true;
+}
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------------
 bool LuaVirtualMachine::loadLibrary(const luaL_Reg & lib){
   logInfo("loading lua library: "<<lib.name);
   luaL_requiref(_state,lib.name,lib.func,1);
   lua_settop(_state, 0);
   return true;
 }
+
+
 lua_State * LuaVirtualMachine::state(){
   return _state;
 }
@@ -28,6 +262,17 @@ LuaVirtualMachine::LuaVirtualMachine(){
   logInfo("creating lua state");
   _state = luaL_newstate();    
 
+  luaL_newmetatable(_state,"vm");
+  lua_pushlightuserdata(_state,this);
+  lua_setfield(_state,-2,"cpointer");
+  lua_pop(_state,1);
+
+  /*
+  createTypeMetaTable(_state);
+  createMemberMetaTable(_state);
+  createMethodMetaTable(_state);
+  createPropertyMetaTable(_state);
+  */
   // add default libraries
   luaL_Reg base = {"base",luaopen_base};
   luaL_Reg io = {"io",luaopen_io};
@@ -44,17 +289,17 @@ LuaVirtualMachine::LuaVirtualMachine(){
 
 
 LuaVirtualMachine::~LuaVirtualMachine(){
-
   // close the Lua state
   lua_close(_state);
   logInfo("closing lua vm");
-
-
+  
   Libraries().foreachElement([](luaL_Reg* lib){
     delete lib;
   });
   Libraries().clear();
 }
+
+
 bool LuaVirtualMachine::loadStream(std::istream & stream){
   std::istreambuf_iterator<char> eos;
   std::string script(std::istreambuf_iterator<char>(stream), eos);
@@ -72,266 +317,10 @@ bool LuaVirtualMachine::loadStream(std::istream & stream){
 
 
 
-int luaSetProperty(lua_State * L){
-  return 0;
-}
-int luaGetProperty(lua_State * L){
-  lua_pushstring(L,"somereturnvalue");
-  return 1;
-}
-
-int luaCallAction(lua_State * L){
-
-  int n= lua_gettop(L);
-  if(n!=1){
-    return luaL_error(L,"action needs to be called on self");
-  }
-
-  if(!lua_istable(L,-1)){
-    return luaL_error(L,"self must be a table");
-  }
-
-  auto fieldFound = luaL_getmetafield(L,-1,"__type");
-  void* typedata = lua_touserdata(L,-1);
-  auto type= (const Type*)typedata;
-
-  //lua_pop(L,-1);
-  /*
-
-  lua_getfield(L,1,"__self");
-  void * objectdata = lua_touserdata(L,-1);
-
-
-  type->getMethodInfo("Lol")->call((Object*)objectdata);
-
-  */
-  return 0;
-}
-
-
-const Type * luaGetType(lua_State* L, int index){
-  lua_getfield(L,index,"__ctype");
-  if(!lua_isuserdata(L,-1))return 0;
-  void * ptr = lua_touserdata(L,-1);  
-  lua_pop(L,1);
-  return static_cast<Type*>(ptr);
-}
-const Type * luaGetTypeMeta(lua_State* L, int index){
-  luaL_getmetafield(L,index,"__ctype");
-  if(!lua_isuserdata(L,-1))return 0;
-  void * ptr = lua_touserdata(L,-1);  
-  lua_pop(L,1);
-  return static_cast<Type*>(ptr);
-}
-
-void  * luaGetObject(lua_State* L, int index){
-  luaL_getmetafield(L,index,"__cobject");
-  if(!lua_isuserdata(L,-1))return 0;
-  void * ptr=  lua_touserdata(L,-1);
-  lua_pop(L,1);
-  return ptr;
-}
-const MemberInfo * luaGetMemberInfo(lua_State*L,int index){
-
-  lua_getfield(L,index,"__memberInfo");
-  if(!lua_isuserdata(L,-1))return 0;
-  void * ptr = lua_touserdata(L,-1);  
-  lua_pop(L,1);
-  return static_cast<MemberInfo*>(ptr);
-}
-
-int luaDestructor(lua_State * L){
-  auto type = luaGetTypeMeta(L,-1);
-  auto object = luaGetObject(L,-1);
-  type->deleteInstance(object);
-  return 0;
-}
-int luaToString(lua_State * L){
-  auto type = luaGetTypeMeta(L,-1);
-  auto object = luaGetObject(L,-1);
-  string str= type->objectToString(object);
-  lua_pushstring(L, str.c_str());
-  return 1;
-}
-int luaInheritanceSolver(lua_State*L){
-  cout << "unknown call needs to be resolved"<<endl;
-  //t,k
-  return 0;
-}
-int luaConstructor(lua_State* L){
-
-  auto n = lua_gettop(L);
-  if(n<1)return luaL_error(L,"expected at least one argument");
-  auto type = luaGetType(L,1);
-  if(!type){
-    return luaL_error(L, "expected type object as first argument");
-  }
-  auto typenameStd = type->getName();
-  auto typeName = typenameStd.c_str();
-  void * instance = type->createInstance();
-
-
-  // new object
-  lua_newtable(L);
-
-  if(luaL_newmetatable(L,type->getName().c_str())){
-    // assign garbage collection function
-    lua_pushcfunction(L,luaDestructor);
-    lua_setfield(L,-2,"__gc");
-
-    // assign the c object pointer
-    lua_pushlightuserdata(L,instance);
-    lua_setfield(L,-2,"__cobject");
-
-    // assign the c type pointer
-    
-    lua_pushlightuserdata(L,const_cast<void*>(static_cast<const void*>(type)));
-    lua_setfield(L,-2,"__ctype");
-
-    // set to string function
-    lua_pushcfunction(L,luaToString);
-    lua_setfield(L,-2,"__tostring");
-
-    
-    lua_pushboolean(L,true);
-    lua_setfield(L,-2,"__managed");
-
-    // make metatable immutable
-    //  lua_pushnil(L);
-    //  lua_setfield(L,-2,"__metatable");
-
-    //inheritance
-    lua_pushcfunction(L,luaInheritanceSolver);
-    lua_setfield(L,-2,"__index");
-
-    // no new fields allowd
-    lua_pushnil(L);
-    lua_setfield(L,-2,"__newindex");
-
-
-  }
-  // set object's metattable
-  lua_setmetatable(L,-2);
-
-  return 1;
-}
-void LuaVirtualMachine::registerType(const Type* type){
-  logInfo("registering type:"<<type->getName());
-  string stdname = type->getName();
-  const char * name = stdname.c_str();
-  /* luaL_getmetatable(_state,name);
-  bool metatableFound = lua_istable(_state,-1);
-  if(metatableFound){
-  logError("type '"<<name<<"' already registered");
-  return;
-  }
-  lua_pop(_state,1);
-  luaL_newmetatable(_state,name);
-  lua_pop(_state,1) ;
-  */
-
-
-  requireGlobalTable(_state,"Types");
-  requireTableField(_state, name);
-
-  lua_pushcfunction(_state,luaConstructor);
-  lua_setfield(_state, -2,"__new");
-
-  lua_pushcfunction(_state,luaDestructor);
-  lua_setfield(_state,-2,"__destroy");
-
-  lua_pushstring(_state,name);
-  lua_setfield(_state,-2,"__typename");
-
-  //const Type ** luatype = (const Type **)lua_newuserdata(_state,sizeof(const Type*));
-  //  *luatype = type;
-  lua_pushlightuserdata(_state,const_cast<void*>((const void*)type));
-  lua_setfield(_state,-2,"__ctype");
-
-
-  for(auto member : type->Members().elements()){    
-    registerProperty(member);
-  }
-
-  lua_pop(_state,1);      
-  lua_pop(_state,1);
-
-}
-int luaCallMethod(lua_State*L){
-
-  int n= lua_gettop(L);
-  if(n < 2){
-    return luaL_error(L,"method can needs first argument to be a MethodInfo and the second to be an Object");
-  }
-
-  if(!lua_istable(L,1)){
-    return luaL_error(L,"self must be a table");
-  }
-
-  lua_getfield(L,1,"__memberPointer"); // get typefield of Member object
-  auto result = lua_isuserdata(L,-1);
-  void * udata=  lua_touserdata(L,-1); // get userdata
-  lua_pop(L,1); //--> remove typefield
-
-  const MemberInfo * member = static_cast<MemberInfo*>(static_cast<void*>(udata));
-
-  auto fieldFound = luaL_getmetafield(L,-1,"__type");
-  void* typedata = lua_touserdata(L,-1);
-  auto type= (const Type*)typedata;
-
-
-  cout << "muahahaahah";
-  return 0;
-}
-
-void LuaVirtualMachine::registerProperty(const MemberInfo * member){
-  const char * ns = "ds";
-  const char * propertyClassName = "Property";
-  const Type * type = member->getOwningType();
-  auto typeNameStd = type->getName();
-  auto typeName = typeNameStd.c_str();
-  string memberNameStd = member->getName();
-  const char * memberName = memberNameStd.c_str();
-  string fullMemberNameStd = DS_INLINE_STRING(type->getName()<<"."<<member->getName());
-  const char* fullMemberName =fullMemberNameStd.c_str();
-  // global table types
-  requireGlobalTable(_state,"Types");
-
-  // type table
-  requireTableField(_state,typeName);
-
-  // member table
-  requireTableField(_state, memberName);
-  void * udata = const_cast<void*>(static_cast<const void*>(member));
-  lua_pushlightuserdata(_state,udata);
-  lua_setfield(_state,-2,"__memberPointer");
-
-  lua_pushstring(_state,fullMemberName);
-  lua_setfield(_state,-2,"fullName");
-
-  string membertype;
-
-  if(dynamic_cast<const PropertyInfo*>(member)){
-    membertype = "Property";
-    luaL_loadstring(_state, "");
-    lua_setfield(_state,-2,"set");
-    luaL_loadstring(_state, "");
-    lua_setfield(_state,-2,"get");
-
-  }else if(dynamic_cast<const MethodInfo*>(member)){
-    membertype = "Method";
-    lua_pushcfunction(_state,luaCallMethod);
-    lua_setfield(_state,-2,"call");
-
-  }
-
-  lua_pushstring(_state,membertype.c_str());
-  lua_setfield(_state,-2,"membertype");
-
-  lua_pop(_state,1);// -> type table
-  lua_pop(_state,1);// -> Types table
-  lua_pop(_state,1);//->initial state
-
-
-
+void createMember(lua_State*L,const MemberInfo * member){
+    if(dynamic_cast<const PropertyInfo*>(member)){
+       createProperty(L,dynamic_cast<const PropertyInfo*>(member));
+    }else if(dynamic_cast<const MethodInfo*>(member)){
+       createMethod(L,dynamic_cast<const MethodInfo*>(member));
+    }
 }

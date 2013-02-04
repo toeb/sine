@@ -37,7 +37,7 @@ namespace nspace{
       auto source = getSource();
       if(!source)return false;
       auto sourceType = source->getValueType();
-      void * value = sourceType->createInstance();
+      void * value = sourceType->createInstance().get();
       if(!value)return false;
 
       return false;

@@ -1,5 +1,7 @@
 #pragma once
 #include <QCheckBox>
+#include <core/reflection/DefaultTypes.h>
+
 #include <core/reflection/ITypedModifiableValue.h>
 namespace nspace{
   class BoolWidget : public QCheckBox, public virtual ITypedModifiableValue<bool>{
