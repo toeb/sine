@@ -54,7 +54,7 @@ TTEST_DEFAULT(PropertyField, PropertyType){
   if(!res){
     FAIL(" the property storage type is incorrect");
   }
-  typedef  decltype(a._Value) TheType;
+  typedef decltype(a._Value) TheType;
   res = std::is_same<typename A::ValueStorageType,TheType>::value;
   if(!res){
     FAIL(" the field type is incorrect");
@@ -173,9 +173,10 @@ UNITTEST(PropertyFieldVirtualGetter){
   };
 
   class B : public A{
-  public: DS_PROPERTY_GETTER(Value){
-            return A::getValue()+1;
-          }
+  public: 
+    DS_PROPERTY_GETTER(Value){
+      return A::getValue()+1;
+    }
   }b;
   b._Value= 2;
   CHECK_EQUAL(3,b.getValue());
@@ -232,43 +233,43 @@ void setValue(const ValuePropertyType & value){setCallback(value);}
 
 
 UNITTEST(ExtensiblePropertyDefintion){
-  
-struct ExtendedPropertyTestStruct{
-  DS_PROPERTY_EXTENSION_METHODS;
-    
-  ExtendedPropertyTestStruct():_RedChannel(0),beforeSetCallCount(0),afterSetCallCount(0),beforeGetCallCount(0),cancelSetResult(false){}
 
-  // counters for accessing callcount
-  int beforeSetCallCount;
-  int afterSetCallCount;
-  mutable int beforeGetCallCount;
-  bool cancelSetResult;
+  struct ExtendedPropertyTestStruct{
+    DS_PROPERTY_EXTENSION_METHODS;
 
+    ExtendedPropertyTestStruct():_RedChannel(0),beforeSetCallCount(0),afterSetCallCount(0),beforeGetCallCount(0),cancelSetResult(false){}
 
-  // define a default extended property - a property which has extension points for setting and getting
-  float DS_PROPERTY_EXTENDED(RedChannel);
-
-  
-  beforeSet(RedChannel){
-    beforeSetCallCount++;
-    return cancelSetResult;
-  }
-
-  afterSet(RedChannel){
-    afterSetCallCount++;
-  }
+    // counters for accessing callcount
+    int beforeSetCallCount;
+    int afterSetCallCount;
+    mutable int beforeGetCallCount;
+    bool cancelSetResult;
 
 
-  beforeGet(RedChannel){
-    beforeGetCallCount++;
-  }
+    // define a default extended property - a property which has extension points for setting and getting
+    float DS_PROPERTY_EXTENDED(RedChannel);
 
-};
- ExtendedPropertyTestStruct uut;
+
+    beforeSet(RedChannel){
+      beforeSetCallCount++;
+      return cancelSetResult;
+    }
+
+    afterSet(RedChannel){
+      afterSetCallCount++;
+    }
+
+
+    beforeGet(RedChannel){
+      beforeGetCallCount++;
+    }
+
+  };
+  ExtendedPropertyTestStruct uut;
   CHECK_EQUAL(0,uut.afterSetCallCount);
   CHECK_EQUAL(0,uut.beforeGetCallCount);
   CHECK_EQUAL(0,uut.beforeSetCallCount);
-  
+
   uut.setRedChannel(42);  
 
   CHECK_EQUAL(42,uut.getRedChannel());
@@ -291,47 +292,47 @@ struct ExtendedPropertyTestStruct{
 /*
 template<typename T1, typename T2>
 struct TemplatedExtensiblePropertyTestUnit{
-  DS_PROPERTY_EXTENSION_METHODS;
+DS_PROPERTY_EXTENSION_METHODS;
 
-  std::stringstream result;
+std::stringstream result;
 
-  T1 DS_PROPERTY_EXTENDED_TEMPLATED(Value1);
-  
-  beforeGet(Value1){
-    result<<"getValue1";
-  }
+T1 DS_PROPERTY_EXTENDED_TEMPLATED(Value1);
 
-  afterSet(Value1){
-    result<<"afterSetValue1";
-    result<<"afterSetValue1"<<_Value1;
-  }
-  beforeGet(Value1){
-    result << "beforeGetValue1";
-  }
+beforeGet(Value1){
+result<<"getValue1";
+}
 
-  T2 DS_PROPERTY_EXTENDED(Value2);
+afterSet(Value1){
+result<<"afterSetValue1";
+result<<"afterSetValue1"<<_Value1;
+}
+beforeGet(Value1){
+result << "beforeGetValue1";
+}
 
-  beforeGet(Value2){
-    result<<"getValue2";
-  }
+T2 DS_PROPERTY_EXTENDED(Value2);
 
-  afterSet(Value2){
-    result<<"afterSetValue2";
-    result<<"afterSetValue2"<<_Value2;
-  }
-  beforeGet(Value2){
-    result << "beforeGetValue2";
-  }
+beforeGet(Value2){
+result<<"getValue2";
+}
 
-  
+afterSet(Value2){
+result<<"afterSetValue2";
+result<<"afterSetValue2"<<_Value2;
+}
+beforeGet(Value2){
+result << "beforeGetValue2";
+}
+
+
 };
 UNITTEST(TemplatedExtendedProperty){
-  TemplatedExtensiblePropertyTestUnit<std::string,int> uut;
-  uut.setValue1("hello");
-  uut.setValue2(31);
+TemplatedExtensiblePropertyTestUnit<std::string,int> uut;
+uut.setValue1("hello");
+uut.setValue2(31);
 
-  auto a = uut.getValue1();
-  auto b = uut.getValue2();
+auto a = uut.getValue1();
+auto b = uut.getValue2();
 
-  auto str = uut.result.str();
+auto str = uut.result.str();
 }*/

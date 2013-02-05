@@ -52,7 +52,131 @@ int luaObjectToString(lua_State*L){
   }
   return 0;
 }
+bool luaToValue(lua_State* L, const Type * type, void * value){
+  auto lType = lua_type(L,-1);
+  LUA_NUMBER lNumber=0;
 
+  bool lBool=0;
+
+  switch(lType){
+  case LUA_TNUMBER:
+    lNumber = lua_tonumber(L,-1);
+    break;
+  case LUA_TSTRING:
+
+    break;
+  case LUA_TBOOLEAN:
+    lBool = lua_toboolean(L,-1);
+    break;
+  default :
+    return false;
+  }
+  if(lType==LUA_TNUMBER){
+    if(type==typeof(int)){
+      *static_cast<int*>(value)=lNumber;
+      return true;
+    }else if(type == typeof(double)){
+      *static_cast< double*>(value)=lNumber;
+      return true;
+    }else if(type == typeof(float)){
+      *static_cast< float*>(value)=lNumber;
+      return true;
+    }else if(type == typeof(long)){        
+      *static_cast< long*>(value)=lNumber;
+      return true;
+    }else if(type== typeof(long long)){      
+      *static_cast< long long*>(value)=lNumber;
+      return true;
+    }else if(type==typeof(short)){
+      *static_cast< short*>(value)=lNumber;
+      return true;
+    }else if(type==typeof(unsigned char)){
+      *static_cast< unsigned char*>(value)=lNumber;
+      return true;
+    }else if(type==typeof(unsigned int)){
+      *static_cast< unsigned int*>(value)=lNumber;
+      return true;
+    }else if(type==typeof(char)){
+      *static_cast<char*>(value)=lNumber;
+      return true;
+    }
+  }
+  
+  if(type==typeof(bool)){
+    bool & flag = *static_cast< bool*>(value);
+    switch(lType){
+    case LUA_TNUMBER:
+      flag = lNumber!=0;
+      return true;
+    case LUA_TBOOLEAN:
+      flag = lBool;
+      return true;
+    }
+  }
+
+  if(type==typeof(string)){
+    std::string str=  lua_tostring(L,-1);
+    *static_cast<string*>(value)=str;
+    return true;
+  }
+
+
+  // if all conversions fail push nil
+  lua_pushnil(L);
+  return false;
+}
+bool luaPushValue(lua_State* L, const Type * type, const void * value){
+  double number=0.0;
+  bool isNumber=false;
+  if(type==typeof(int)){
+    isNumber=true;
+    number = *static_cast<const int*>(value);
+  }else if(type == typeof(double)){
+    isNumber=true;
+    number = *static_cast<const double*>(value);
+  }else if(type == typeof(float)){
+    isNumber=true;
+    number = *static_cast<const float*>(value);
+  }else if(type == typeof(long)){        
+    isNumber=true;
+    number = *static_cast<const long*>(value);
+  }else if(type== typeof(long long)){      
+    isNumber=true;
+    number = *static_cast<const long long*>(value);
+  }else if(type==typeof(short)){
+    isNumber = true;
+    number = *static_cast<const short*>(value);
+  }else if(type==typeof(unsigned char)){
+    isNumber = true;
+    number = *static_cast<const unsigned char*>(value);
+  }else if(type==typeof(unsigned int)){
+    isNumber = true;
+    number = *static_cast<const unsigned int*>(value);
+  }else if(type==typeof(char)){
+    isNumber = true;
+    number = *static_cast<const char*>(value);
+  }
+  if(isNumber){
+    lua_pushnumber(L,number);
+    return true;
+  }
+
+  if(type==typeof(bool)){
+    lua_pushboolean(L,*static_cast<const bool*>(value));
+    return true;
+  }
+
+  if(type==typeof(string)){
+    std::string str=  *static_cast<const string*>(value);
+    lua_pushstring(L,str);
+    return true;
+  }
+
+
+  // if all conversions fail push nil
+  lua_pushnil(L);
+  return false;
+}
 
 bool createType(lua_State*L,const Type*type);
 bool createPropertyMetaTable(lua_State* L){return false;}
@@ -91,17 +215,20 @@ bool createObject(lua_State*L, ScriptObject object){
 
 int luaMemberMethod(lua_State*L){
   auto n = lua_gettop(L);
-  if(n<1){
+  if(n<2){
     return 0;
   }
-  auto member = luaUserDataField<const MemberInfo>(L,1,"cmemberinfo");
-  auto object = luaUserDataField<ScriptObject>(L,1,"cscriptobject");
+  auto member = luaUserDataField<const MemberInfo>(L,1,"cmemberinfo");  
+  auto object = luaUserDataField<ScriptObject>(L,2,"cscriptobject");
   if(!member){
     return 0;
   }
   if(!object){
     return 0;
   }
+
+
+
   auto method = dynamic_cast<const MethodInfo*>(member);
   if(method){
     method->unsafeCall(object->getObjectPointer().get());
@@ -109,11 +236,38 @@ int luaMemberMethod(lua_State*L){
   }
   auto prop = dynamic_cast<const PropertyInfo*>(member);
   if(prop){
-    prop->setValue(0,0);
-    prop->getValue(0,0);
+    auto propertyType = prop->getPropertyType();
+
+    if(n==2){
+      if(!propertyType->getIsConstructible()){
+        //error
+        return 0;
+      }      
+
+      //prop->getIsPointer();
+      // lua supports only double
+      bool isNumber=false;
+      double number =0.0;
+
+      auto valuePointer=  propertyType->createInstance();
+      prop->unsafeGetValue(object->getObjectPointer().get(),valuePointer.get());
+      luaPushValue(L,propertyType,valuePointer.get());
+
+      return 1;
+
+
+    }else{
+      auto valuePointer = propertyType->createInstance();
+      luaToValue(L,propertyType,valuePointer.get());
+      prop->unsafeSetValue(object->getObjectPointer().get(),valuePointer.get());
+
+
+      //prop->unsafeSetValue(object->getObjectPointer().get(),0);
+    }
 
     return 0;
   }
+  return 0;
 }
 int luaConstructor(lua_State*L){  
   int n= lua_gettop(L);
@@ -170,8 +324,8 @@ int luaConstructor(lua_State*L){
     // set object's member object pointer
     lua_pushlightuserdata(L,const_cast<MemberInfo*>(member));      
     lua_setfield(L,-2,"cmemberinfo");
-    lua_pushlightuserdata(L,object);
-    lua_setfield(L,-2,"cscriptobject");
+    /*lua_pushlightuserdata(L,object);
+    lua_setfield(L,-2,"cscriptobject");*/
     // new metatable 
     lua_newtable(L);
     lua_pushcfunction(L,luaMemberMethod);

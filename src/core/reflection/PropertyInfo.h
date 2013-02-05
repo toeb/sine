@@ -76,7 +76,7 @@ public:
      * \param value             The value.
      */
     virtual void setValue(Object * object, const void * value) const=0;
-
+    virtual void unsafeSetValue(void * object, const void * value)const=0;
     /**
      * \brief gets the value of the property.
      *
@@ -84,7 +84,7 @@ public:
      * \param [in,out]  value If non-null, the value.
      */
     virtual void getValue(const Object * object, void * value) const=0;
-
+    virtual void unsafeGetValue(const void * object, void * value)const=0;
     /**
      * \brief if the value is a pointer and a subtype of object this method returns the pointer as an
      *        Object.

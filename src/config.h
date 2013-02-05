@@ -47,6 +47,7 @@ typedef float Real;
 
 
 
+// for visual studio i'll disalbe warning about inheritance via dominance  4250 is inheritance via dominance warning, 4822 is for locally declared methods without body
+#pragma warning( disable : 4250 4822 )
+// considered adding 4018 for signed unsigned comparison
 
-// for visual studio i'll disalbe warning about inheritance via dominance
-#pragma warning( disable : 4250 )

@@ -52,43 +52,40 @@
  *
  * \param TYPENAME  The typename.
  */
-#define REFLECTABLE(TYPENAME) \
-public: \
-  template<typename T> \
-  T getPropertyValue(const std::string & propertyname) const { \
-    T val; \
-    getPropertyValue(propertyname,val); \
-    return val; \
-  } \
-  template<typename T> \
-  void getPropertyValue(const std::string & propertyname,T & value) const { \
-    auto prop = getProperty(propertyname); \
-    if(!prop) return; \
-    prop->get(value,*this); \
-  } \
-  template<typename T> \
-  void setPropertyValue(const std::string & propertyname,const T &value){ \
-    auto prop = getProperty(propertyname); \
-    if(!prop) return; \
-    prop->set(value,*this); \
-  } \
-  static const nspace::Set<const nspace::PropertyInfo*> & properties(){ \
-    static nspace::Set<const nspace::PropertyInfo*> _properties = typeof(TYPENAME)->Properties(); \
-    return _properties; \
-  } \
-  static const nspace::PropertyInfo * getProperty(const std::string & propertyname){ \
-    auto p = typeof(TYPENAME)->getProperty(propertyname); \
-    return p; \
-  } \
-  nspace::PropertyAdapter getPropertyAdapter(const std::string & name){ \
-    return nspace::PropertyAdapter(dynamic_cast<nspace::Object*>(this),name); \
-  } \
-  nspace::MethodAdapter getMethodAdapter(const std::string & name){ \
-    return nspace::MethodAdapter(dynamic_cast<nspace::Object*>(this),name); \
-  } \
-  static const nspace::MethodInfo * getMethodInfo(const std::string & methodName){ \
-    return typeof(TYPENAME)->getMethodInfo(methodName); \
-  } \
+#define REFLECTABLE(TYPENAME)                                                                              \
+public:                                                                                                    \
+  template<typename T>  T getPropertyValue(const std::string & propertyname) const {                       \
+    T val;                                                                                                 \
+    getPropertyValue(propertyname,val);                                                                    \
+    return val;                                                                                            \
+  }                                                                                                        \
+  template<typename T> void getPropertyValue(const std::string & propertyname,T & value) const {           \
+    auto prop = getProperty(propertyname);                                                                 \
+    if(!prop) return;                                                                                      \
+    prop->get(value,*this);                                                                                \
+  }                                                                                                        \
+  template<typename T> void setPropertyValue(const std::string & propertyname,const T &value){             \
+    auto prop = getProperty(propertyname);                                                                 \
+    if(!prop) return;                                                                                      \
+    prop->set(value,*this);                                                                                \
+  }                                                                                                        \
+  static const nspace::Set<const nspace::PropertyInfo*> & properties(){                                    \
+    static nspace::Set<const nspace::PropertyInfo*> _properties = typeof(TYPENAME)->Properties();          \
+    return _properties;                                                                                    \
+  }                                                                                                        \
+  static const nspace::PropertyInfo * getProperty(const std::string & propertyname){                       \
+    auto p = typeof(TYPENAME)->getProperty(propertyname);                                                  \
+    return p;                                                                                              \
+  }                                                                                                        \
+  nspace::PropertyAdapter getPropertyAdapter(const std::string & name){                                    \
+    return nspace::PropertyAdapter(dynamic_cast<nspace::Object*>(this),name);                              \
+  }                                                                                                        \
+  nspace::MethodAdapter getMethodAdapter(const std::string & name){                                        \
+    return nspace::MethodAdapter(dynamic_cast<nspace::Object*>(this),name);                                \
+  }                                                                                                        \
+  static const nspace::MethodInfo * getMethodInfo(const std::string & methodName){                         \
+    return typeof(TYPENAME)->getMethodInfo(methodName);                                                    \
+  }                                                                                                        \
 private:
 
 /**
@@ -136,30 +133,30 @@ private:
  * \param TYPE  The type.
  * \param NAME  The name.
  */
-#define ENABLE_PROPERTY_REFLECTION(TYPE,NAME) \
-private: \
-  typedef CurrentClassType NAME ## OwningClassType; \
-  class PROPERTYCLASS(NAME) : public virtual nspace::TypedProperty<NAME ## OwningClassType,TYPE>{ \
-    TYPED_OBJECT( PROPERTYCLASS(NAME) ); \
-public: \
-    SINGLETON( PROPERTYCLASS(NAME) ){ \
-      setPropertyType(typeof(TYPE)); \
-      setName(# NAME); \
-      setHasGetter(true); \
-      setHasSetter(true); \
-    } \
-    void setTypedValue(NAME ## OwningClassType *  object, TYPE value) const { \
-      object->SETMETHOD(NAME) (value); \
-    } \
-    TYPE getTypedValue(const NAME ## OwningClassType *  object) const { \
-      return object->GETMETHOD(NAME) (); \
-    } \
-  }; \
-private: \
-  STATIC_INITIALIZER( NAME ## Property, { \
-                        auto type = typeof(NAME ## OwningClassType); \
-                        auto unconst = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(type)); \
-                        unconst->Members()|=PROPERTYCLASSINSTANCE(NAME); \
+#define ENABLE_PROPERTY_REFLECTION(TYPE,NAME)                                                                      \
+private:                                                                                                           \
+  typedef CurrentClassType NAME ## OwningClassType;                                                                \
+  class PROPERTYCLASS(NAME) : public virtual nspace::TypedProperty<NAME ## OwningClassType,TYPE>{                  \
+    TYPED_OBJECT( PROPERTYCLASS(NAME) );                                                                           \
+public:                                                                                                            \
+    SINGLETON( PROPERTYCLASS(NAME) ){                                                                              \
+      setPropertyType(typeof(TYPE));                                                                               \
+      setName(# NAME);                                                                                             \
+      setHasGetter(true);                                                                                          \
+      setHasSetter(true);                                                                                          \
+    }                                                                                                              \
+    void setTypedValue(NAME ## OwningClassType *  object, TYPE value) const {                                      \
+      object->SETMETHOD(NAME) (value);                                                                             \
+    }                                                                                                              \
+    TYPE getTypedValue(const NAME ## OwningClassType *  object) const {                                            \
+      return object->GETMETHOD(NAME) ();                                                                           \
+    }                                                                                                              \
+  };                                                                                                               \
+private:                                                                                                           \
+  STATIC_INITIALIZER( NAME ## Property, {                                                                          \
+                        auto type = typeof(NAME ## OwningClassType);                                               \
+                        auto unconst = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(type));         \
+                        unconst->Members()|=PROPERTYCLASSINSTANCE(NAME);                                           \
                       })
 
 /**

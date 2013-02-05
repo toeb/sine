@@ -10,36 +10,50 @@ using namespace std;
 using namespace nspace;
 
 
+
+
 class UserDataStruct : public PropertyChangingObject{
   REFLECTABLE_OBJECT(UserDataStruct);
-  DS_DEFAULT_CONSTRUCTIBLE;
-public:
-
-  PROPERTY(int, Value1){}
-  PROPERTY(std::string, Value2){}
-
-}b;
-
-class UserDataStruct2 : public PropertyChangingObject{
-  REFLECTABLE_OBJECT(UserDataStruct2);
   DS_DEFAULT_CONSTRUCTIBLE;
   DS_TO_STRING;
   DS_HIERARCHY_OBJECT
 public:
-
-  PROPERTY(bool, Value1){}
-  PROPERTY(std::string, Value2){}
-  ACTION(Lol){
-    cout << "Lolinger"<<getValue1()<<getValue2()<<endl;
+  static int instanceCount;
+  // custom to string method
+  void toString(std::ostream & stream)const{
+    stream << "UserDataStruct2{ Value1:"<< boolalpha<< getValue1() <<"; Value2:\""<<getValue2()<<"\" }";
+  }
+  // constructor
+  UserDataStruct(){
+    instanceCount++;
+    cout << "constructed. remaining instances: "<<instanceCount<<endl;
+  }
+  ~UserDataStruct(){
+    instanceCount--;
+    cout << "destructed. remaining instances: "<<instanceCount<<endl;
+  }
+  PROPERTY(bool, Value1){
+    cout << "property value1 changed from '"<<oldvalue<<"' to '" <<newvalue<<"'";
+  }
+  PROPERTY(std::string, Value2){    
+    cout << "property value2 changed from '"<<oldvalue<<"' to '" <<newvalue<<"'";
+  }
+  ACTION(Action1){
+    cout << "Action1 was called"<<endl;
+    setValue2("Action1 was called");
+  }
+  ACTION(Action2){
+    cout << "Action2 was called"<<endl;
+    setValue2("Action2 was called");
   }
 
 }a;
 
-
+int UserDataStruct::instanceCount=0;
 
 UNITTEST(LuaUserData){
   LuaVirtualMachine vm;
-  vm.registerType(typeof(UserDataStruct2));
+  vm.registerType(typeof(UserDataStruct));
   auto res = vm.loadFile("scripts/lua/sine.lua");
 }
 
