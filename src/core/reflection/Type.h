@@ -130,7 +130,7 @@ public:
      *        may contain a function which creates an instance of the specified type
      *
      */
-    BASIC_PROPERTY(std::function<std::shared_ptr<void>()>, CreateInstanceFunction, protected,,,);
+    BASIC_PROPERTY(std::function<std::shared_ptr<void>()>, CreateInstanceFunction, public,,,);
 
     
 

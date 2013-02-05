@@ -26,7 +26,7 @@
 
 #include <config.h>
 #include <memory>
-
+#include <core/patterns/StaticInitializer.h>
 // helper macros needed for MODIFIER(x)
 #define _MODIFIER_public public:
 #define _MODIFIER_private private:
@@ -353,8 +353,11 @@ public: \
  * \param NAME                The name.
  * \param INITIALIZATIONCODE  The initializationcode.
  */
-#define STATIC_INITIALIZER(NAME,INITIALIZATIONCODE) \
+/*OLD IMPL: #define STATIC_INITIALIZER(NAME,INITIALIZATIONCODE) \
   INITIALIZER(NAME ## Static, static bool __isInitialized=false; if(__isInitialized) return; __isInitialized=true; INITIALIZATIONCODE)
+  */
+#define STATIC_INITIALIZER(NAME,INITIALIZATIONCODE) DS_EXECUTE_ONCE(NAME){INITIALIZATIONCODE;}
+
 
 /**
  * \brief A macro that defines on property changing method name.

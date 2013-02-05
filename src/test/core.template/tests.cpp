@@ -64,8 +64,8 @@ TEST(2,default_constructor){
     }
   };
   CHECK(!called);
-//  auto instance = default_constructor<A>::construct();
- // CHECK(instance!=0);
+  auto instance = default_constructor<A>::construct();
+  CHECK(instance!=0);
  CHECK(called);
 }
 TEST(3,default_constructor){

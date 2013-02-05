@@ -37,6 +37,19 @@ private:
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
 
 /**
+ * \brief A marks a class as default constructible
+ */
+#define DS_DEFAULT_CONSTRUCTIBLE                                                                                      \
+  DS_ONCE{                                                                                                            \
+    auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType)));               \
+    type->setCreateInstanceFunction([](){return std::shared_ptr<void>(new CurrentClassType());});                     \
+    type->setIsConstructible(true);                                                                                   \
+  }
+
+
+
+
+/**
 * \brief sets up inheritance hierarchy.
 *        Subclass specify SUBCLASSOF in the class declaration so that the hierarchy can be generated
 *
@@ -49,7 +62,6 @@ private:                                                                        
   auto unconstSuperType = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(TYPE)));                 \
   unconstSuperType->successors()|=unconstCurrentType;                                                                 \
   })
-
 
   /**
    * \brief Information about the type.
@@ -85,6 +97,7 @@ private:                                                                        
   class /*nspace::*/ TypeInfo<TYPE>: public /*nspace::*/ Type { \
     TEMPLATEDSINGLETON(TypeInfo, <TYPE>){ \
       setCreateInstanceFunction([] (){return std::shared_ptr<void>(new TYPE); }); \
+      setIsConstructible(true);\
       setName(# TYPE); \
     } \
   };

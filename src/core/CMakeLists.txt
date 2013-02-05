@@ -285,6 +285,7 @@ set(patternsSource
 ./patterns/Singleton.h
 ./patterns/Decorator.h
 ./patterns/Multiton.h
+./patterns/StaticInitializer.h
 )
 set(source ${source} ${patternsSource})
 source_group("patterns" FILES ${patternsSource})

@@ -2,6 +2,8 @@
 #include <map>
 #include <string>
 
+#include <core/patterns/StaticInitializer.h>
+
 
 UNITTEST(DS_REDUCE){
 #define my_op +
@@ -134,4 +136,28 @@ UNITTEST(DS_REST){
   CHECK_EQUAL(ar[0],2);
   CHECK_EQUAL(ar[1],3);
   CHECK_EQUAL(ar[2],4);
+}
+
+UNITTEST(DS_EXECUTE_ONCE1){
+  static bool wasExecuted = false;
+  struct A{
+    DS_ONCE{
+      wasExecuted = true;
+    }
+  }a;
+  CHECK(wasExecuted);
+}
+
+struct ExecuteOnce2TestStruct{
+  DS_EXECUTE_ONCE(SectionA);
+  
+}__executeOnce2TestInstance;// up to now atleast one instance per class has to be created for execute_once to have occured
+bool wasExecuteOnce2TestCalled=false;
+// source code implementation of execute once / static initializer is allowed
+void ExecuteOnce2TestStruct::DS_EXECUTE_ONCE_IMPLEMENTATION(SectionA){
+  wasExecuteOnce2TestCalled=true;
+}
+
+UNITTEST(DS_EXECUTE_ONCE2){
+  CHECK(wasExecuteOnce2TestCalled);
 }
