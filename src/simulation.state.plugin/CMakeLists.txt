@@ -7,8 +7,8 @@ StateView.cpp
 
 )
 set(moc
- StateView.h 
-StateManagerPlugin.h
+# StateView.h 
+#StateManagerPlugin.h
 )
 set(ui
  stateview.ui

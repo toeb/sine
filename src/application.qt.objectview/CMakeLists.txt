@@ -31,7 +31,7 @@ ObjectViewPlugin.h
 ObjectPropertyView.h
 ObjectPropertyViewModel.h
 CustomItemDelegate.h
-MethodTreeItem.h
+#MethodTreeItem.h
 )
 set(ui
  objectview.ui

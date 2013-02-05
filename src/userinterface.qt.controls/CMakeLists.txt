@@ -31,7 +31,7 @@ DoubleRangeWidget.h
 ValueWidget.h
 DoubleSpinBoxWidget.h
 DynamicWidget.h
-ControlFactory.h
+#ControlFactory.h
 )
 set(ui
 

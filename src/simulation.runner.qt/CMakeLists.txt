@@ -41,12 +41,12 @@ set(runnerSource
 )
 
 set(runnerMocFiles
-./QtSnapshotPlugin.h
-./QtTimeControlPlugin.h
+#./QtSnapshotPlugin.h
+#./QtTimeControlPlugin.h
 ./QtSimulationObjectsView.h
 ./QtTimeControl.h
-./QtSimulationRunner.h
-./GlWidget.h
+#./QtSimulationRunner.h
+#./GlWidget.h
 ./QtSimulationAction.h
 ./ValueItem.h
 ./ValueItemDelegate.h
@@ -54,8 +54,8 @@ set(runnerMocFiles
 ./QtPropertyView.h
 ./SimulationDockWidget.h
 ./QtTaskRunner.h
-./QtViewport.h
-./QtLogViewPlugin.h
+#./QtViewport.h
+#./QtLogViewPlugin.h
 )
 
 set(runnerUiFiles
