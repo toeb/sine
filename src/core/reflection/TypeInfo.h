@@ -153,7 +153,7 @@ private:                                                                        
   META(std::ofstream);
 
 }
-#else NEWIMPL
+#else //NEWIMPL
 
 #define DS_META_TYPENAME(TYPE) template<> struct meta_type_name<TYPE>{static const std::string & value(){static std::string name = #TYPE; return name;}};
 #define DS_META_INSTANCIATE_DEFAULT_CONSTRUCTOR(TYPE) template<> struct meta_type_construction<TYPE> { static const bool constructible = true; static std::shared_ptr<void> construct(){return std::shared_ptr<void>(new TYPE());}};
