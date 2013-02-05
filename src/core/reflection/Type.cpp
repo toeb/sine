@@ -19,7 +19,9 @@ Type::Type():
   _Id(_typeCounter++),
   _IsConstructible(false),
   _CreateInstanceFunction([](){return std::shared_ptr<void>();}),
-  _ObjectToStringFunction([](const void*,std::ostream&){})
+  _ObjectToStringFunction([](const void*,std::ostream&){}),
+  _IsConvertibleToObject(false),
+  _ConvertToObjectPointerFunction([](void * v)->Object*{return 0;})
 {
   TypeRepository::registerType(this);
 }

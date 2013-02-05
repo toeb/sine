@@ -28,6 +28,10 @@ namespace nspace{
 
     ~LuaVirtualMachine();
     bool loadStream(std::istream & stream);
+
+
+    void scriptObjectCreated(ScriptObject & object);
+    void deletingScriptObject(ScriptObject & object);
   };
 
 }

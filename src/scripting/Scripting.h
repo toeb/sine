@@ -8,9 +8,13 @@ namespace nspace{
     TYPED_OBJECT(ScriptObject);
 
   public:
-    SIMPLE_PROPERTY(void*, ObjectPointer){}
+    void toString(std::ostream & out)const{
+      getObjectType()->objectToString(getObjectPointer().get(),out);
+    }
+    ScriptObject():_ObjectType(0){}
+    SIMPLE_PROPERTY(std::shared_ptr<void>, ObjectPointer){}
     SIMPLE_PROPERTY(const Type *, ObjectType){}
-
+    template<typename T> std::shared_ptr<T> object(){return std::static_pointer_cast<T>(getObjectPointer());}
   };
 
   class VirtualScriptMachine : public Log{

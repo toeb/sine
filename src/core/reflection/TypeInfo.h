@@ -37,6 +37,16 @@ private:
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
 
 /**
+ * \brief A macro that defines conversion function from a void ptr to a Object* using dynamic cast
+ */
+#define DS_HIERARCHY_OBJECT                                                                                                               \
+  DS_ONCE{                                                                                                                                \
+    auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType)));                                   \
+    type->setIsConvertibleToObject(true);                                                                                                 \
+    type->setConvertToObjectPointerFunction([](void * ptr){return dynamic_cast<nspace::Object*>(static_cast<CurrentClassType*>(ptr));});  \
+  }                                                                                                                                       
+                                                                                                                                          
+/**
  * \brief A marks a class as default constructible
  */
 #define DS_DEFAULT_CONSTRUCTIBLE                                                                                      \
@@ -46,7 +56,12 @@ private:
     type->setIsConstructible(true);                                                                                   \
   }
 
-
+#define DS_TO_STRING                                                                                                                          \
+  DS_ONCE{                                                                                                                                    \
+    auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType)));                                       \
+    type->setObjectToStringFunction([](const void * object, std::ostream & stream){static_cast<const CurrentClassType*>(object)->toString(stream);});  \
+  }                                                                                                                                           
+  //virtual void toString(std::stream & stream)const
 
 
 /**

@@ -445,25 +445,31 @@ public: \
  *
  * \param NAME  The name.
  */
-#define ACTION(NAME) \
-private: \
-  typedef CurrentClassType NAME ## ParentClassType; \
-  class MEMBERCLASSNAME(NAME) : public virtual nspace::MethodInfo { \
-    SINGLETON(MEMBERCLASSNAME(NAME)){ \
-      setName(# NAME); \
-      setOwningType(typeof(NAME ## ParentClassType));\
-    } \
-public: \
-    bool call(nspace::Object * object, void * arguments=0, void ** returnvalue=0) const { \
-      auto typedObject = dynamic_cast<NAME ## ParentClassType*>(object); \
-      if(!typedObject) return false; \
-      typedObject->NAME(); \
-      return true; \
-    } \
-  }; \
-  STATIC_INITIALIZER(NAME,{ \
-                       auto typeInfo =  const_cast<nspace::Type*>(dynamic_cast<const nspace::Type * >(typeof(NAME ## ParentClassType))); \
-                       typeInfo->Members().add(MEMBERCLASSINSTANCE(NAME)); \
-                     }); \
-public: \
+#define ACTION(NAME)                                                                                                  \
+private:                                                                                                              \
+  typedef CurrentClassType NAME ## ParentClassType;                                                                   \
+  class MEMBERCLASSNAME(NAME) : public virtual nspace::MethodInfo {                                                   \
+    SINGLETON(MEMBERCLASSNAME(NAME)){                                                                                 \
+      setName(# NAME);                                                                                                \
+      setOwningType(typeof(NAME ## ParentClassType));                                                                 \
+    }                                                                                                                 \
+public:                                                                                                               \
+    bool unsafeCall(void * object, void * arguments=0, void** returnvalue=0)const{                                    \
+      auto typedObject = static_cast<NAME ## ParentClassType*>(object);                                               \
+      typedObject->NAME();                                                                                            \
+      return true;                                                                                                    \
+    }                                                                                                                 \
+    bool call(nspace::Object * object, void * arguments=0, void ** returnvalue=0) const {                             \
+      auto typedObject = dynamic_cast<NAME ## ParentClassType*>(object);                                              \
+      if(!typedObject) return false;                                                                                  \
+      typedObject->NAME();                                                                                            \
+      return true;                                                                                                    \
+    }                                                                                                                 \
+  };                                                                                                                  \
+  DS_ONCE                                                                                                             \
+  {                                                                                                                   \
+    auto typeInfo =  const_cast<nspace::Type*>(dynamic_cast<const nspace::Type * >(typeof(NAME ## ParentClassType))); \
+    typeInfo->Members().add(MEMBERCLASSINSTANCE(NAME));                                                               \
+  };                                                                                                                  \
+public:                                                                                                               \
   void NAME()

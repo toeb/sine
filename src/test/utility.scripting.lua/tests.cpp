@@ -12,6 +12,7 @@ using namespace nspace;
 
 class UserDataStruct : public PropertyChangingObject{
   REFLECTABLE_OBJECT(UserDataStruct);
+  DS_DEFAULT_CONSTRUCTIBLE;
 public:
 
   PROPERTY(int, Value1){}
@@ -21,11 +22,16 @@ public:
 
 class UserDataStruct2 : public PropertyChangingObject{
   REFLECTABLE_OBJECT(UserDataStruct2);
+  DS_DEFAULT_CONSTRUCTIBLE;
+  DS_TO_STRING;
+  DS_HIERARCHY_OBJECT
 public:
 
   PROPERTY(bool, Value1){}
   PROPERTY(std::string, Value2){}
-  ACTION(Lol){cout << "Lolinger"<<getValue1()<<getValue2()<<endl;}
+  ACTION(Lol){
+    cout << "Lolinger"<<getValue1()<<getValue2()<<endl;
+  }
 
 }a;
 

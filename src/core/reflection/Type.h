@@ -27,7 +27,7 @@ namespace nspace
   class MethodInfo;
   class PropertyInfo;
   class Type;
-
+  class Object;
   /**
    * \brief Defines an alias representing identifier for a type.
    */
@@ -113,10 +113,15 @@ public:
       return std::static_pointer_cast<T>(createInstance());
     }
    
-
+    Object * toObjectPointer(void * object){
+      if(!getIsConvertibleToObject())return 0;
+      return getConvertToObjectPointerFunction()(object);
+    }
     void objectToString(const void * object, std::ostream & stream)const;
     std::string objectToString(const void * object)const;
 
+    BASIC_PROPERTY(std::function<Object*(void * )>, ConvertToObjectPointerFunction,public,,,);
+    BASIC_PROPERTY(bool, IsConvertibleToObject,public,,,);
     BASIC_PROPERTY(bool, IsConstructible,public,,,);
 
     /**
@@ -135,7 +140,7 @@ public:
     
 
     typedef std::function<void(const void *, std::ostream &)> ObjectToStringFunction;
-    BASIC_PROPERTY(ObjectToStringFunction, ObjectToStringFunction,protected,,,);
+    BASIC_PROPERTY(ObjectToStringFunction, ObjectToStringFunction,public,,,);
 
     /**
      * \brief Property Name.

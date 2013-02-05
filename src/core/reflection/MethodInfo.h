@@ -10,5 +10,7 @@ namespace nspace{
   public:
     // the call method must be implemented by a subclass
     virtual bool call(Object * object, void * arguments=0, void ** returnvalue=0)const=0;
+    // the unsafe call method assumes object is a pointer to the concrete type
+    virtual bool unsafeCall(void * object, void * arguments=0, void** returnvalue=0)const=0;
   };
 }

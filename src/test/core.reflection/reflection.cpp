@@ -7,6 +7,93 @@ using namespace nspace;
 using namespace std;
 
 
+TEST(1,DS_CLASS){
+  // tests weather typeof(A) correctly returns a type
+  struct A{
+    DS_CLASS(A);
+  };
+  auto type = typeof(A);
+  CHECK(type!=0);
+}
+TEST(2,DS_CLASS){
+  // tests the typeof(...) and getType operation 
+  struct A{
+    DS_CLASS(A);
+  };
+  A a;
+  auto & type = a.getType();
+  CHECK(*typeof(A)==type);
+}
+TEST(3,DS_CLASS){
+  // this tests whether the Derived class correctly overrides 
+  // the base classes getType() method
+  struct Base{
+    DS_CLASS(Base)
+  }base;
+  struct Derived : public Base{
+    DS_CLASS(Derived)
+  }derived;
+  auto & baseType = base.getType();
+  auto & derivedType = derived.getType();
+  
+  CHECK(baseType != derivedType);
+}
+TEST(4,DS_CLASS){
+  // this tests whether the Derived class still functions when not parttaking in reflection
+  // the base classes getType() method
+  struct Base{
+    DS_CLASS(Base)
+  }base;
+  
+  struct HiddenDerived : public Base{
+
+  }hidden;
+  auto & baseType = base.getType();
+  auto & derivedType = hidden.getType();
+  
+  CHECK_EQUAL(baseType , derivedType);
+}
+
+
+TEST(3,HierarchyObject){
+  // tests weather the converiosn to Object was correct
+  struct A:public Object{
+    DS_CLASS(A);
+  }a;
+}
+
+TEST(2,HierarchyObject){
+  // tests whether the IsConvertibleToObject property is set correctly
+  struct A : public Object{
+    DS_CLASS(A);
+  }a;
+  auto type = typeof(A);
+
+  CHECK(!typeof(A)->getIsConvertibleToObject());
+}
+
+
+TEST(1,HierarchyObject){
+  struct A : public Object{
+    DS_CLASS(A);
+    DS_HIERARCHY_OBJECT
+  }a;
+  struct B : public A{
+    DS_CLASS(B);
+    DS_HIERARCHY_OBJECT
+  }b;
+  auto typeA= typeof(A);
+  auto typeB = typeof(B);
+
+  CHECK(typeof(A)->getIsConvertibleToObject());
+  CHECK(typeof(B)->getIsConvertibleToObject());
+  void * v = &b;
+
+  auto o = typeof(B)->toObjectPointer(v);
+
+
+
+}
 
 TEST(1, createInstance){
   CHECK( typeof(std::string)->getIsConstructible());
