@@ -15,6 +15,7 @@ source_group("" FILES ${unifiedPropertyDefinitionSource})
 set(source ${source} ${unifiedPropertyDefinitionSource})
 
 
+add_library(core.properties  ${source} CMakeLists.txt)
 
-add_library(core.properties.h  ${source} CMakeLists.txt)
 
+set_target_properties(core.properties PROPERTIES LINKER_LANGUAGE CXX)

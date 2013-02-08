@@ -23,6 +23,7 @@ set(templateSource
 ./template/is_same_type.h
 ./template/result_of_static_function.h
 ./template/to_string.h
+./template/Comparator.h
 
 )
 
@@ -34,7 +35,7 @@ source_group("template" FILES ${templateSource})
 set(rootSource
 ./Time.h
 ./Time.cpp
-./Members.h
+
 
 ./Object.h
 ./Object.cpp
@@ -47,7 +48,6 @@ set(rootSource
 ./PropertyChangingObject.h
 ./PropertyChangingObject.cpp
 
-./Comparator.h
 ../config.h
 ../include/core.h
 )

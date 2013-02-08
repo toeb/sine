@@ -95,3 +95,5 @@ set(source ${source} ${collectionSource})
 
 add_library(core.collection  ${source} CMakeLists.txt)
 
+
+set_target_properties(core.collection PROPERTIES LINKER_LANGUAGE CXX)

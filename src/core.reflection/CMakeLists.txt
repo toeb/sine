@@ -29,8 +29,8 @@ set(valueSource
 	value/ITypedModifiableValue.cpp
 	value/ITypedReadableValue.h
 	value/ITypedReadableValue.cpp
-	value/ISerializableValue.h
-	value/ISerializableValue.cpp
+	value/ITypedSerializableValue.h
+	value/ITypedSerializableValue.cpp
 	value/ReferenceValue.h
 	value/ReferenceValue.cpp
 )
@@ -46,8 +46,8 @@ set(memberSource
 	member/property/PropertyInfo.cpp
 	member/property/PropertySetInfo.h
 	member/property/PropertySetInfo.cpp
-	member/property/TypePropertyInfo.h
-	member/property/TypePropertyInfo.cpp
+	member/property/TypedPropertyInfo.h
+	member/property/TypedPropertyInfo.cpp
 	member/property/TypedPropertySetInfo.h
 	member/property/TypedPropertySetInfo.cpp
 	member/method/MethodInfo.h

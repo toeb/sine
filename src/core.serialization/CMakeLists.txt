@@ -2,8 +2,8 @@ set(source
  ../include/core.serialization.h
  CMakeLists.txt
  Serialization.h
- ISerialization.h
- ISerialization.cpp
+ ISerializable.h
+ ISerializable.cpp
 
 
 )
