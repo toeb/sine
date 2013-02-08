@@ -3,7 +3,7 @@
 #include <tinyxml2/tinyxml2.h>
 #include <fstream>
 
-#include <core.utilities.h>
+#include <core.utility.h>
 
 #include <simulation.model/builder/ModelBuilderHolder.h>
 

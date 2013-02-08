@@ -116,7 +116,7 @@ const PropertyInfo* ObjectPropertyViewModel::getProperty(const QModelIndex & ind
   auto object = getCurrentObject();
   if(!object)return 0;
   int row = index.row();
-  auto prop = object->getType().Properties().at(row);
+  auto prop = object->getType()->Properties().at(row);
   return prop;
 }
 
@@ -191,7 +191,7 @@ QVariant  ObjectPropertyViewModel::data(const QModelIndex & index, int role)cons
 void ObjectPropertyViewModel::onPropertyChanged(Object * sender, const std::string & name){
   //if(result)emit dataChanged(index,index);
   auto object = getCurrentObject();
-  const Set<const PropertyInfo*> properties = object->getType().Properties();
+  const Set<const PropertyInfo*> properties = object->getType()->Properties();
 
   for(int i=0; i < properties; i++){
     if(properties.at(i)->getName()==name){

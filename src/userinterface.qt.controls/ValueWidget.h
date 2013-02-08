@@ -1,7 +1,7 @@
 #pragma once
 
 #include <userinterface.qt.controls/DynamicWidget.h>
-#include <core/reflection/IModifiableValue.h>
+#include <core.reflection/value/IModifiableValue.h>
 
 namespace nspace{
   class ValueWidget : public DynamicWidget{
@@ -19,7 +19,7 @@ namespace nspace{
         if(!object)return false;
         auto valueHolder = dynamic_cast<IModifiableValue*>(object);
         if(!valueHolder)return false;
-        auto result = typeof(ValueType)->isSuperClassOf(*valueHolder->getValueType());
+        auto result = typeof(ValueType)->isSuperClassOf(valueHolder->getValueType());
 
         return result;
       }

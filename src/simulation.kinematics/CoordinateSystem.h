@@ -4,7 +4,7 @@
 #include <math/core.h>
 #include <simulation.kinematics/Position.h>
 #include <simulation.kinematics/Orientation.h>
-#include <core/Serialization.h>
+#include <core.serialization/Serialization.h>
 namespace nspace{
   /**
   * \brief Coordinate system.

@@ -3,7 +3,7 @@
 #include <application.qt/PluginContainer.h>
 #include "ui_objectview.h"
 #include <application.qt/DataBinding.h>
-#include <core.utilities.h>
+#include <core.utility.h>
 using namespace std;
 using namespace nspace;
 

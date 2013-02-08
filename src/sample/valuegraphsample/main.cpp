@@ -1,11 +1,11 @@
 #include <utility.valuegraph/valuegraph.h>
 #include <iostream>
 #include <math/core.h>
-#include <core/graph/Node.h>
-#include <core/ValueLookup.h>
+#include <core.graph/Node.h>
+#include <core.collection/ValueLookup.h>
 #include <core.logging.h>
-#include <core/binding/Binding.h>
-#include <core/binding/ValueConverter.h>
+#include <core.reflection/binding/Binding.h>
+#include <core.reflection/binding/ValueConverter.h>
 using namespace nspace;
 using namespace std;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <utility.xml/NamedChildParser.h>
 #include <simulation.model/builder/ModelBuilderHolder.h>
-#include <core/graph/Node.h>
+#include <core.graph/Node.h>
 namespace nspace{
   class ChildLinkParser : public NamedChildParser, public ModelBuilderHolder{
   public:

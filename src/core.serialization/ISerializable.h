@@ -4,7 +4,7 @@
 
 namespace nspace{
   class ISerializeable:public virtual Object{
-    DS_CLASS_DECLARATION(ISerializeable);
+    DS_CLASS(ISerializeable);
   public:
     typedef uint Format;
   protected:

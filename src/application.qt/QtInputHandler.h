@@ -1,7 +1,7 @@
 #pragma once
 
 #include <simulation.interaction/InputHandler.h>
-#include <core/PairMap.h>
+#include <core.collection/PairMap.h>
 #include <core/NamedObject.h>
 #include <QKeyEvent>
 #include <QMouseEvent>

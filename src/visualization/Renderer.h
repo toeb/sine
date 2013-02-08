@@ -9,7 +9,9 @@ namespace nspace{
   public:
     virtual void onBeforeRendering(Viewport & viewport){onBeforeRendering();}
     virtual void onBeforeRendering(){}
-    virtual void render(Viewport & viewport){render();};
+    virtual void render(Viewport & viewport){
+      render();
+    };
     virtual void render(){}
     virtual void sceneResized(int newWidth, int newHeight,Viewport & viewport){}
   };

@@ -50,7 +50,7 @@ namespace nspace{
       if(propertyName!=_PropertyName)return;
       auto source = getSource();
       if(!source)return;
-      auto prop= source->getType().getProperty(propertyName);
+      auto prop= source->getType()->getProperty(propertyName);
       if(!prop)return;
       std::stringstream ss;
       prop->serialize(sender,ss);
@@ -69,7 +69,7 @@ namespace nspace{
         if(!target)return; //this should never happen
         auto source = getSource();
         if(!source)return;
-        auto prop =source->getType().getProperty(_PropertyName);
+        auto prop =source->getType()->getProperty(_PropertyName);
         if(!prop)return ;
         std::string text = target->text().toUtf8().data();
         std::stringstream ss(text);

@@ -8,7 +8,7 @@ ObjectTreeItem::ObjectTreeItem(){
 }
 void ObjectTreeItem::doExpand(){
   debugInfo("Expanding ObjectTreeItem --> "<<*getObject());
-  auto type =& getObject()->getType();
+  auto type = getObject()->getType();
 
   Set<PropertyGroupTreeItem*> groups;
   Set<TreeItem*> directChildren;

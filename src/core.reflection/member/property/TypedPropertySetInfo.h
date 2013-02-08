@@ -1,42 +1,40 @@
 #pragma once
 
-
-#include <core.reflection/member/property/PropertyInfo.h>
-
+#include <core.reflection/member/property/PropertySetInfo.h>
 #include <core.reflection/member/property/TypedPropertyInfo.h>
 
 namespace nspace{
   template<typename OwningClass, typename ValueType>
-  class TypedPropertySetInfo:public virtual  TypedProperty<OwningClass, Set<ValueType> >, public virtual PropertySetInfo{
+  class TypedPropertySetInfo:public virtual TypedProperty<OwningClass, Set<ValueType> >, public virtual PropertySetInfo{
     TYPED_OBJECT(TypedPropertySetInfo);
   public:
     virtual Set<ValueType> & getMutableSetReference( OwningClass * object )const=0;
     virtual const Set<ValueType> & getConstSetReference(const OwningClass * object )const=0;
-    virtual uint getElementCount(void * ptr)const;
+    virtual uint getElementCount(Object * ptr)const;
 
     TypedPropertySetInfo();
     // TypedProperty Implementation
     void setTypedValue(OwningClass * object, Set<ValueType>  value)const;
     Set<ValueType> getTypedValue(const OwningClass * object)const;
 
-    bool addObserver(ObjectPointer ptr,ObjectObserver* observer)const;
-    bool removeObserver(ObjectPointer ptr,ObjectObserver* observer)const;
+    bool addObserver(Object * ptr,ObjectObserver* observer)const;
+    bool removeObserver(Object * ptr,ObjectObserver* observer)const;
     const Set<ValueType> * getConstTypedPointer(const OwningClass * object)const;
     Set<ValueType> * getMutableTypedPointer(OwningClass * object)const;
 
     bool addTypedElement(OwningClass & object, ValueType & value)const;
     bool removeTypedElement(OwningClass & object, const ValueType & value)const;
 
-    bool addElement(ObjectPointer object, ElementPointer value)const;
-    bool removeElement(ObjectPointer object, const ElementPointer value)const;
-    bool setTypedElement(OwningClass * object, uint i, const ElementPointer value )const;
-    bool getTypedElement(const OwningClass * object, uint i, ElementPointer value )const;
+    bool addElement(Object * object, void*value)const;
+    bool removeElement(Object * object, const void*value)const;
+    bool setTypedElement(OwningClass * object, uint i, const ValueType * value )const;
+    bool getTypedElement(const OwningClass * object, uint i, ValueType * value )const;
     // sets the value of the property set at i
-    bool setElement(ObjectPointer object, uint i, const ElementPointer value)const;
+    bool setElement(Object * object, uint i, const void * value)const;
     // gets the value of the property set at i
-    bool getElement(const ObjectPointer object, uint i, ElementPointer value)const;
-    bool deserializeElement(ObjectPointer ptr, uint i, std::istream & in)const;
-    bool serializeElement(ObjectPointer ptr,uint i,  std::ostream & out)const;
+    bool getElement(const Object * object, uint i, void * value)const;
+    bool deserializeElement(Object * ptr, uint i, std::istream & in)const;
+    bool serializeElement(Object * ptr,uint i,  std::ostream & out)const;
   };
 
   // Implementation
@@ -58,16 +56,16 @@ namespace nspace{
   }
 
   template<typename OwningClass, typename ValueType>
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::addObserver(void * object,ObjectObserver* observer)const{
-    auto typedObject = static_cast<OwningClass*>(object);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::addObserver(Object * object,ObjectObserver* observer)const{
+    auto typedObject = dynamic_cast<OwningClass*>(object);
     if(!typedObject)return false;
     Set<ValueType> &  theset = getMutableSetReference(typedObject);
     theset.addObjectObserver(observer);
     return true;
   }
   template<typename OwningClass, typename ValueType>
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::removeObserver(void * ptr,ObjectObserver* observer)const{
-    auto object = static_cast<OwningClass*>(ptr);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::removeObserver(Object * ptr,ObjectObserver* observer)const{
+    auto object = dynamic_cast<OwningClass*>(ptr);
     if(!object)return false;
     Set<ValueType> &  theset = getMutableSetReference(object);
     theset.removeObjectObserver(observer);
@@ -83,8 +81,8 @@ namespace nspace{
   }
 
   template<typename OwningClass, typename ValueType>
-  uint  TypedPropertySetInfo<OwningClass,ValueType>::getElementCount(ObjectPointer ptr)const{
-    auto object = static_cast<OwningClass*>(ptr);//dynamic_cast<OwningClass*>(reinterpret_cast<Object*>(ptr));
+  uint  TypedPropertySetInfo<OwningClass,ValueType>::getElementCount(Object * ptr)const{
+    auto object = dynamic_cast<OwningClass*>(reinterpret_cast<Object*>(ptr));
     if(!object)return false;
     return getConstSetReference(object).size();
   }
@@ -99,15 +97,15 @@ namespace nspace{
   }
 
   template<typename OwningClass, typename ValueType>
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::addElement(ObjectPointer object, ElementPointer value)const{
-    auto typedObject = static_cast<OwningClass*>(object);
-    auto typedValue = static_cast<ValueType*>(value);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::addElement(Object * object, void*value)const{
+    auto typedObject = dynamic_cast<OwningClass*>(object);
+    auto typedValue = reinterpret_cast<ValueType*>(value);
     return addTypedElement(*typedObject,*typedValue);
   }
   template<typename OwningClass, typename ValueType>
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::removeElement(ObjectPointer object, const ElementPointer value)const{
-    auto typedObject = static_cast<OwningClass*>(object);
-    auto typedValue = static_cast<const ValueType*>(value);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::removeElement(Object * object, const void*value)const{
+    auto typedObject = dynamic_cast<OwningClass*>(object);
+    auto typedValue = reinterpret_cast<const ValueType*>(value);
     return removeTypedElement(*typedObject,*typedValue);
   }
   template<typename OwningClass, typename ValueType>
@@ -124,23 +122,23 @@ namespace nspace{
   }
   template<typename OwningClass, typename ValueType>
   // sets the value of the property set at i
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::setElement(ObjectPointer object, uint i, const ElementPointer value)const{
-    auto typedObject = static_cast<OwningClass*>(object);
-    auto typedValue = static_cast<const ValueType*>(value);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::setElement(Object * object, uint i, const void * value)const{
+    auto typedObject = dynamic_cast<OwningClass*>(object);
+    auto typedValue = reinterpret_cast<const ValueType*>(value);
     if(!typedObject)return false;
     return setTypedElement(typedObject,i,typedValue);
   }
   // gets the value of the property set at i
   template<typename OwningClass, typename ValueType>
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::getElement(const ObjectPointer object, uint i, ElementPointer value)const{
-    auto typedObject = static_cast<const OwningClass*>(object);
-    auto typedValue = static_cast<ValueType*>(value);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::getElement(const Object * object, uint i, void * value)const{
+    auto typedObject = dynamic_cast<const OwningClass*>(object);
+    auto typedValue = reinterpret_cast<ValueType*>(value);
     if(!typedObject)return false;
     return getTypedElement(typedObject,i,typedValue);
   }
   template<typename OwningClass, typename ValueType>
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::deserializeElement(ObjectPointer object, uint i, std::istream & in)const{
-    OwningClass * owningClass = static_cast<OwningClass*>(object);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::deserializeElement(Object * object, uint i, std::istream & in)const{
+    OwningClass * owningClass = dynamic_cast<OwningClass*>(object);
     if(!owningClass)return false;
     ValueType value;
     if(getCustomDeserializer()){
@@ -153,8 +151,8 @@ namespace nspace{
     return true;
   }
   template<typename OwningClass, typename ValueType>
-  bool  TypedPropertySetInfo<OwningClass,ValueType>::serializeElement(ObjectPointer object,uint i,  std::ostream & out)const{
-    OwningClass * owningClass = static_cast<OwningClass*>(object);
+  bool  TypedPropertySetInfo<OwningClass,ValueType>::serializeElement(Object * object,uint i,  std::ostream & out)const{
+    OwningClass * owningClass = dynamic_cast<OwningClass*>(object);
     if(!owningClass)return false;
     ValueType value;
     getTypedElement(owningClass,i,&value);

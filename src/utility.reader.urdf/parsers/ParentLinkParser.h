@@ -1,7 +1,7 @@
 #pragma once
 #include <utility.xml/NamedChildParser.h>
 #include <simulation.model/builder/ModelBuilderHolder.h>
-#include <core/graph/Node.h>
+#include <core.graph/Node.h>
 
 namespace nspace{
   // parses the passed xml node and extracts the link attribute. then looks up the correct node in the model

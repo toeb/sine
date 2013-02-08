@@ -2,7 +2,7 @@
 #include <string>
 
 #include <core/NamedObject.h>
-#include <core/ValueLookup.h>
+#include <core.collection/ValueLookup.h>
 #include <core.graph.h>
 
 namespace nspace{

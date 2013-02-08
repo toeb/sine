@@ -8,8 +8,9 @@ namespace nspace{
     //DS_CLASS(Attribute);
     std::string basic_property(AttributeName);
   };
-
-  class AttributeTarget /*: public virtual Object*/{
+  
+  class AttributeTarget {
+    DS_CLASS(AttributeTarget);
     //TYPED_OBJECT(AttributeTarget);
     
    /* PROPERTYSET(Attribute*,Attributes,{},{})*/

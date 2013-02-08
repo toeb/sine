@@ -73,8 +73,8 @@ namespace nspace{
       return true;
     }
     static Binding * create(Object * a,  const std::string &  propertyNameA, Object * b, const std::string & propertyNameB){
-      auto infoA = a->getType().getProperty(propertyNameA);
-      auto infoB = b->getType().getProperty(propertyNameB);
+      auto infoA = a->getType()->getProperty(propertyNameA);
+      auto infoB = b->getType()->getProperty(propertyNameB);
       return create(a,infoA,b,infoB);
     }
     static Binding * create(Object * a, const PropertyInfo * infoA, Object * b, const PropertyInfo*infoB){

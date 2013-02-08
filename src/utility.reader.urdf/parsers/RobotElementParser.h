@@ -3,7 +3,7 @@
 #include <utility.xml/NamedElementParser.h>
 #include <utility.xml/CompositeChildParser.h>
 #include <simulation.model/builder/ModelBuilderHolder.h>
-#include <core/graph/Node.h>
+#include <core.graph/Node.h>
 
 namespace nspace{
   //class for parsing a urdf robot xml node. it builds a model and calls IModelBuilders beginModel and endModel for every robot node ecountered

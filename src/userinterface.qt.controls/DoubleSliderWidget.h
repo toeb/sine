@@ -1,7 +1,7 @@
 #include <QSlider>
 
 #include <core.reflection.h>
-#include <core/reflection/ITypedModifiableValue.h>
+#include <core.reflection/value/ITypedModifiableValue.h>
 #include <core/PropertyChangingObject.h>
 
 namespace nspace{

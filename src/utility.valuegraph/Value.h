@@ -1,7 +1,7 @@
 #pragma once
 
 #include <config.h>
-#include <core/reflection/IReadableValue.h>
+#include <core.reflection/value/IReadableValue.h>
 namespace nspace{
   /**
   * \brief Defines an alias representing identifier for the version of a value.

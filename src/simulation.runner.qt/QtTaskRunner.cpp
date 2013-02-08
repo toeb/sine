@@ -1,7 +1,7 @@
 #include "QtTaskRunner.h"
 
 #include "ui_taskwidget.h"
-#include <core.utilities.h>
+#include <core.utility.h>
 #include <iostream>
 #include <core.task/ScheduledTask.h>
 

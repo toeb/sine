@@ -3,7 +3,6 @@
 using namespace nspace;
 
 
-DS_CLASS_DEFINITION(ISerializeable);
 
 bool ISerializeable::toStream(std::ostream & stream, Format format){return false;}
 bool  ISerializeable::fromStream(std::istream & stream, Format format){return false;}

@@ -2,7 +2,7 @@
 
 #include <config.h>
 #include <functional>
-#include <core/collection/containers/Set.h>
+#include <core.collection/containers/Set.h>
 #include <utility.valuegraph/Value.h>
 
 namespace nspace{

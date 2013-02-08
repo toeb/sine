@@ -20,7 +20,7 @@ void TreeItem::expand(){
 }
 
 string TreeItem::getDisplayName(){
-  return getObject()->getType().getName();
+  return getObject()->getType()->getName();
 }
 string TreeItem::getDisplayValue(){
   return "";

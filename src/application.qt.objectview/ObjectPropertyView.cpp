@@ -24,7 +24,7 @@ void ObjectPropertyView::propertyChanging(Object*, CurrentObject){
   _model->setCurrentObject(newvalue);
   Widgets().clear();
 
-  auto properties = newvalue->getType().Properties();
+  auto properties = newvalue->getType()->Properties();
 
   properties.foreachElement([this](const PropertyInfo * prop){
     auto label = new QLabel();

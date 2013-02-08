@@ -5,7 +5,7 @@ using namespace std;
 using namespace nspace;
 
 Collidable::Collidable(ISimulationObject & collisionObject):
-  _collisionObject(collisionObject),_collisionType(collisionObject.getType().getId())
+  _collisionObject(collisionObject),_collisionType(collisionObject.getType()->getId())
 {
 }
 

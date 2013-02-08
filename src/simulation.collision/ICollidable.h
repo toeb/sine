@@ -13,7 +13,7 @@ namespace nspace{
   class ICollidable : public virtual ISimulationObject{
   public:
     virtual const TypeId getCollisionType()const=0;
-    const TypeId getCollisionObjectType()const{return collisionObject().getType().getId();}
+    const TypeId getCollisionObjectType()const{return collisionObject().getType()->getId();}
 
     virtual ISimulationObject & collisionObject()const=0;
 

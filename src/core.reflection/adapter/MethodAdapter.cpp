@@ -1,7 +1,5 @@
 #include "MethodAdapter.h"
 
-#include <core.reflection/type/TypeInfo.h>
-
 using namespace nspace;
 
 bool MethodAdapter::call(void * arguments , void **returnvalue){
