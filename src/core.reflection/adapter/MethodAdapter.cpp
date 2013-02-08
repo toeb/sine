@@ -1,5 +1,7 @@
 #include "MethodAdapter.h"
 
+#include <core.reflection/type/TypeInfo.h>
+
 using namespace nspace;
 
 bool MethodAdapter::call(void * arguments , void **returnvalue){
@@ -11,7 +13,7 @@ bool MethodAdapter::call(void * arguments , void **returnvalue){
 MethodAdapter::MethodAdapter():_MethodInfo(0){}
 MethodAdapter::MethodAdapter(Object * object, const std::string & name){
   setOwner(object);
-  auto methodInfo = object->getType().getMethodInfo(name);
+  auto methodInfo = object->getType()->getMethodInfo(name);
   if(!methodInfo)return;
   setMethodInfo(methodInfo);
 }

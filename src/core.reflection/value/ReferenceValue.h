@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/reflection/ITypedSerializableValue.h>
+#include <core.reflection/value/ITypedSerializableValue.h>
 
 namespace nspace{
   template<typename T>

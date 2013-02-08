@@ -6,7 +6,7 @@
 //#define NEWIMPL
 #ifndef NEWIMPL
 
-#include <core/collection/containers/Set.h>
+#include <core.collection/containers/Set.h>
 namespace nspace{
 
   
@@ -30,8 +30,8 @@ private:                                                                        
   typedef TYPE CurrentClassType;                                                                                      \
 public:                                                                                                               \
   static std::string getTypeName(){return std::string(# TYPE); }                                                      \
-  virtual inline const nspace::Type * getType() const {return nspace::TypeInfo<CurrentClassType>::instance(); }       \
-  virtual inline bool isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); } \
+  virtual inline const nspace::Type * getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); } \
+  virtual inline bool isInstanceOf(const Type * type) const { return type->isSuperClassOf(this->getType()); }         \
 private:
 
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)

@@ -1,6 +1,6 @@
 #pragma once
-#include <core/collection/operations/OperationCollectionSize.h>
-#include <core/collection/operations/OperationCollectionItemAccess.h>
+#include <core.collection/operations/OperationCollectionSize.h>
+#include <core.collection/operations/OperationCollectionItemAccess.h>
 #include <vector>
 #include <list>
 namespace nspace{

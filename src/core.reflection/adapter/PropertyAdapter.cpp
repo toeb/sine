@@ -44,7 +44,7 @@ PropertyAdapter:: PropertyAdapter():_PropertyInfo(0){
 }
 PropertyAdapter::PropertyAdapter(Object * object, const std::string & name):_PropertyInfo(0){
   setOwner(object);
-  auto prop = object->getType().getProperty(name);
+  auto prop = object->getType()->getProperty(name);
   if(prop)setPropertyInfo(prop);
 }
 PropertyAdapter::PropertyAdapter(Object * object, const PropertyInfo * info):_PropertyInfo(0){

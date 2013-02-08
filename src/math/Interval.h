@@ -1,7 +1,7 @@
 #pragma once
 
 #include <config.h>
-#include <core/Serialization.h>
+#include <core.serialization/Serialization.h>
 namespace nspace{
   struct Interval{
     // set the interval to the invalid values (+inf, -inf)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/reflection/MemberInfo.h>
+#include <core.reflection/member/MemberInfo.h>
 namespace nspace{
   class MemberAdapter : public virtual Object{
     TYPED_OBJECT(Object);

@@ -17,7 +17,7 @@
  *
  */
 #pragma once
-#include <core.utilities.h>
+#include <core.utility.h>
 namespace nspace {
 
   /**

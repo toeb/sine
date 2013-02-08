@@ -1,7 +1,7 @@
 #pragma once
 
-#include <core/Object.h>
-#include <core/reflection/IModifiableValue.h>
+
+#include <core.reflection/value/IModifiableValue.h>
 namespace nspace{
   template<typename T>
   class ITypedModifiableValue :  public virtual IModifiableValue{

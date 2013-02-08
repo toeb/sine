@@ -1,6 +1,6 @@
 #pragma once
-#include <core/reflection/PropertyInfo.h>
-#include <core/Serialization.h>
+#include <core.reflection/member/property/PropertyInfo.h>
+#include <core.serialization/Serialization.h>
 namespace nspace{
   template<typename OwningClass, typename ValueType>
   class TypedProperty : public virtual PropertyInfo{

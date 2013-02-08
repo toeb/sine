@@ -168,7 +168,7 @@ namespace nspace{
       }
       entry->setOwner(this);
       /*const Type& td = getType();*/
-      if(entry->getClassName()=="")entry->setClassName(getType().getName());
+      if(entry->getClassName()=="")entry->setClassName(getType()->getName());
       if(entry->getObjectName()=="")entry->setObjectName(name(this));
 
       LogEntries()|=entry;

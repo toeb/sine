@@ -17,7 +17,7 @@
  *
  */
 #pragma once
-#include <core/reflection/Attribute.h>
+#include <core.reflection/attribute/Attribute.h>
 #include <core/Object.h>
 
 namespace nspace {

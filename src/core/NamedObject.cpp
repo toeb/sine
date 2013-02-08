@@ -1,7 +1,9 @@
 #include "NamedObject.h"
-
+#include <core.reflection/type/TypeInfo.h>
 using namespace nspace;
 using namespace std;
+
+DS_CLASS_DEFINITION(NamedObject);
 
 NamedObject::~NamedObject(){
   if(_name)delete _name;

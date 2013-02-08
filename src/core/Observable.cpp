@@ -1,5 +1,5 @@
 #include "Observable.h"
-#include <core/Query.h>
+#include <core.collection/Query.h>
 using namespace nspace;
 
 Observable::Observable():_observers(0){}

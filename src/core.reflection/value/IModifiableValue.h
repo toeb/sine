@@ -1,5 +1,5 @@
 #pragma once
-#include <core/reflection/IReadableValue.h>
+#include <core.reflection/value/IReadableValue.h>
 namespace nspace{
   class IModifiableValue : public IReadableValue{
     TYPED_OBJECT(IModifiableValue);

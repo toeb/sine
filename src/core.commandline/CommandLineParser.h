@@ -17,8 +17,8 @@
  *
  */
 #pragma once
-#include <core/commandline/CommandLineArgumentDefinition.h>
-#include <core/commandline/CommandLineArgument.h>
+#include <core.commandline/CommandLineArgumentDefinition.h>
+#include <core.commandline/CommandLineArgument.h>
 namespace nspace {
 
   namespace commandline {

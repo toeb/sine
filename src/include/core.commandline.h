@@ -1,3 +1,3 @@
 #pragma once
 
-#include <core/commandline/CommandLineParser.h>
+#include <core.commandline/CommandLineParser.h>

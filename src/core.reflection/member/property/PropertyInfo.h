@@ -18,8 +18,8 @@
  */
 #pragma once
 #include <core/Object.h>
-#include <core/Serialization.h>
-#include <core/reflection/MemberInfo.h>
+#include <core.serialization/Serialization.h>
+#include <core.reflection/member/MemberInfo.h>
 namespace nspace {
 
   /**

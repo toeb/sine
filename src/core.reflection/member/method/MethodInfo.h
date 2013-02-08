@@ -1,5 +1,5 @@
 #pragma once
-#include <core/reflection/MemberInfo.h>
+#include <core.reflection/member/MemberInfo.h>
 
 namespace nspace{
   // MethodInfo represents a method of a class

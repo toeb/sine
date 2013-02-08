@@ -1,5 +1,5 @@
 #pragma once
-#include <core/reflection/PropertyInfo.h>
+#include <core.reflection/member/property/PropertyInfo.h>
 
 namespace nspace{
   // describes a class property which is a set /collection

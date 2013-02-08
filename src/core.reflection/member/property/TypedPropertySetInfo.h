@@ -1,7 +1,9 @@
 #pragma once
 
-#include <core/reflection/PropertySetInfo.h>
-#include <core/reflection/TypedProperty.h>
+
+#include <core.reflection/member/property/PropertyInfo.h>
+
+#include <core.reflection/member/property/TypedPropertyInfo.h>
 
 namespace nspace{
   template<typename OwningClass, typename ValueType>

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <config.h>
-#include <core/collection/containers/Set.h>
+#include <core.collection/containers/Set.h>
 #include <sstream>
 namespace nspace{
   // serializers need to use pointers else auto conversion would disrupt everything

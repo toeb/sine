@@ -1,6 +1,6 @@
 #pragma once
-#include <core/reflection/ISerializable.h>
-#include <core/reflection/ITypedModifiableValue.h>
+#include <core.serialization/ISerializable.h>
+#include <core.reflection/value/ITypedModifiableValue.h>
 namespace nspace{
   template<typename T>
   class ITypedSerializableValue : public virtual ISerializeable, public virtual ITypedModifiableValue<T>{

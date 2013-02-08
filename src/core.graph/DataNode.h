@@ -1,5 +1,5 @@
 #pragma once
-#include <core/graph/DerivableDataNode.h>
+#include <core.graph/DerivableDataNode.h>
 namespace nspace{
   template<typename T>
   class DataNode : public DerivableDataNode<T,DataNode<T> >{

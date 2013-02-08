@@ -1,15 +1,15 @@
 #include <core.testing.h>
 #include <core/Object.h>
 #include <core/NamedObject.h>
-#include <core/graph/DataNode.h>
-#include <core/graph/Graph.h>
+#include <core.graph/DataNode.h>
+#include <core.graph/Graph.h>
 #include "conversion.h"
 #include <string>
 #include <sstream>
 #include <core.h>
 #include <core/patterns/Multiton.h>
-#include <core/reflection/ReferenceValue.h>
-#include <core/utilities/StringTools.h>
+#include <core.reflection/value/ReferenceValue.h>
+#include <core.utility/StringTools.h>
 using namespace nspace;
 using namespace std;
 namespace nspace{

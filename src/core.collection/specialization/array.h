@@ -1,7 +1,7 @@
 #pragma once
-#include <core/collection/operations/OperationCollectionItemType.h>
-#include <core/collection/operations/OperationCollectionSize.h>
-#include <core/collection/operations/OperationCollectionItemAccess.h>
+#include <core.collection/operations/OperationCollectionItemType.h>
+#include <core.collection/operations/OperationCollectionSize.h>
+#include <core.collection/operations/OperationCollectionItemAccess.h>
 namespace nspace{
   // this class wraps an pointer into a structure with number of elements
   template<typename T>

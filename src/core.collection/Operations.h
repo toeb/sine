@@ -1,6 +1,6 @@
 #pragma once
 #include <config.h>
-#include <core/collection/operations/OperationCollectionItemType.h>
+#include <core.collection/operations/OperationCollectionItemType.h>
 namespace nspace{
 
 
@@ -56,10 +56,10 @@ inline typename CollectionItemType<CollectionType>::ItemType* underlyingArray(Co
 }
 
 
-#include <core/collection/operations/OperationCollectionSize.h>
-#include <core/collection/operations/OperationCollectionItemAccess.h>
-#include <core/collection/operations/OperationCollectionSetItem.h>
-#include <core/collection/operations/OperationCollectionCopyRange.h>
+#include <core.collection/operations/OperationCollectionSize.h>
+#include <core.collection/operations/OperationCollectionItemAccess.h>
+#include <core.collection/operations/OperationCollectionSetItem.h>
+#include <core.collection/operations/OperationCollectionCopyRange.h>
 
 namespace nspace{
 namespace collection{

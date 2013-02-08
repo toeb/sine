@@ -2,8 +2,8 @@
 #include <config.h>
 
 #include <core.collection.h>
-#include <core/collection/operations/OperationCollectionItemType.h>
-#include <core/collection/operations/OperationCollectionItemAccess.h>
+#include <core.collection/operations/OperationCollectionItemType.h>
+#include <core.collection/operations/OperationCollectionItemAccess.h>
 #include <memory>
 // is replaced by the item type that the ENUMERABLETYPE contains
 #define ITEMTYPE(ENUMERABLETYPE) typename EnumerableItemType<ENUMERABLETYPE>::ItemType

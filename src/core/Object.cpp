@@ -26,6 +26,9 @@ using namespace std;
 
 DS_CLASS_DEFINITION(Object);
 
+
+
+
 std::string Object::toString() const {
   stringstream ss;
   toString(ss);
@@ -37,7 +40,7 @@ void Object::toString(std::ostream & out) const {
     out << name(this);
     return;
   }
-  out << "<object typeid=\""<<getType()<<"\" typename=\""<< getType().getName() << "\"/>";
+  out << "<object typeid=\""<<getType()<<"\" typename=\""<< getType()->getName() << "\"/>";
 }
 Object::Object(){}
 namespace nspace {

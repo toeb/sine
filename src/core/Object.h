@@ -30,18 +30,18 @@ private:                                                            \
   typedef TYPE CurrentClassType;                                    \
 public:                                                             \
   static std::string getTypeName();                                 \
-  virtual inline const nspace::Type * getType() const;              \
-  virtual inline bool isInstanceOf(const nspace::Type * type) const;\
+  virtual inline nspace::ConstTypePtr getType() const;              \
+  virtual inline bool isInstanceOf(const Type * type) const;        \
 private:
 
 #define DS_CLASS_DEFINITION(TYPE)                                                                                       \
- std::string TYPE::getTypeName(){return std::string(# TYPE); }                                                          \
- const nspace::Type * TYPE::getType() const {return nspace::TypeInfo<CurrentClassType>::instance(); }                   \
- bool TYPE::isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); }
-
+  std::string TYPE::getTypeName(){return std::string(# TYPE); }                                                         \
+  nspace::ConstTypePtr TYPE::getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); }            \
+  bool TYPE::isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); }
 namespace nspace {
   //forward declaration for Type
   class Type;
+  typedef const Type * ConstTypePtr;
   /**
   * \brief Base class.  Contains Type information and some standard methods like the streamout operator <<.
   *
@@ -50,6 +50,9 @@ namespace nspace {
     DS_CLASS_DECLARATION(Object)
   private:
   public:
+
+
+
 
     /**
     * \brief Default constructor.

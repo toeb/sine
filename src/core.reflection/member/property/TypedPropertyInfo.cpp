@@ -1,3 +1,3 @@
-#include "TypedProperty.h"
+#include "TypedPropertyInfo.h"
 
 using namespace nspace;

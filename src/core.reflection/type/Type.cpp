@@ -1,8 +1,8 @@
 #include "Type.h"
-#include <core/reflection/PropertyInfo.h>
-#include <core/reflection/MethodInfo.h>
+#include <core.reflection/member/property/PropertyInfo.h>
+#include <core.reflection/member/method/MethodInfo.h>
+#include <core.reflection/type/TypeRepository.h>
 #include <sstream>
-#include <core/reflection/TypeRepository.h>
 using namespace nspace;
 void Type::objectToString(const void * object, std::ostream & stream)const{
   getObjectToStringFunction()(object,stream);
@@ -69,10 +69,10 @@ const PropertyInfo * Type::getProperty(const std::string & name)const{
 }
 bool Type::isSuperClassOf(const Type * other)const{
   if(!other)return false;  
-  if(&other == this)return true;
-  for(uint i=0; i < other.predecessors(); i++){
-    auto current = other.predecessor(i);
-    if(isSuperClassOf(*current))return true;
+  if(other == this)return true;
+  for(uint i=0; i < other->predecessors(); i++){
+    auto current = other->predecessor(i);
+    if(isSuperClassOf(current))return true;
   }
   return false;
 }

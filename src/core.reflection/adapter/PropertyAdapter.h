@@ -1,8 +1,8 @@
 #pragma once
-#include <core/reflection/PropertyInfo.h>
-#include <core/reflection/IModifiableValue.h>
-#include <core/reflection/ISerializable.h>
-#include <core/reflection/MemberAdapter.h>
+#include <core.reflection/member/property/PropertyInfo.h>
+#include <core.reflection/value/IModifiableValue.h>
+#include <core.serialization/ISerializable.h>
+#include <core.reflection/adapter/MemberAdapter.h>
 
 namespace nspace{
   class PropertyAdapter:

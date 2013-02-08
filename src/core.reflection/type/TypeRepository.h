@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/reflection/Type.h>
+#include <core.reflection/type/Type.h>
 #include <core/patterns/Singleton.h>
 
 namespace nspace{

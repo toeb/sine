@@ -1,8 +1,8 @@
 #pragma once
 
-#include <core/reflection/Type.h>
+#include <core.reflection/type/Type.h>
 #include <core/Object.h>
-
+#include <core.reflection/type/TypeInfo.h>
 #include <math/Interval.h>
 namespace nspace{
   class Attribute{

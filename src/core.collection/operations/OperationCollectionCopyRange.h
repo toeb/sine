@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core.operation.h>
-#include <core/collection/Operations.h>
+#include <core.collection/Operations.h>
 
 namespace nspace{
   //will copy anything.  this will cause errors if th target type is a pointer for example because it will write without knowing the targets size
