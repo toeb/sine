@@ -9,6 +9,7 @@ set(unifiedPropertyDefinitionSource
 ./Templated.h
 ./Simple.h
 ./Properties.h
+./Properties.cpp
 ./Members.h
 )
 source_group("" FILES ${unifiedPropertyDefinitionSource})

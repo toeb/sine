@@ -321,7 +321,7 @@ TEST(instanceOf3, Object){
 
 TEST(Create, Object){
   Object o;
-  CHECK(o.getType()==*typeof(Object));
+  CHECK(o.getType()==typeof(Object));
   
 }
 

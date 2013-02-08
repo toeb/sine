@@ -54,8 +54,8 @@ public:
     }
 
     bool registerType(ObjectInstance object){
-      if(request(&object->getType())) return false;
-      registeredObjects[&object->getType()]=object;
+      if(request(object->getType())) return false;
+      registeredObjects[object->getType()]=object;
       onObjectRegistered(object);
       return true;
     }
