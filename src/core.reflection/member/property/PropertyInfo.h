@@ -28,6 +28,7 @@ namespace nspace {
   class PropertyInfo : public virtual MemberInfo {
   public:
     typedef void * ValuePointer;
+    typedef const void * ConstValuePointer;
     //  TYPED_OBJECT(PropertyInfo);
     //    SUBCLASSOF(MemberInfo);
     bool basic_property(HasGetter);
@@ -35,7 +36,7 @@ namespace nspace {
     // the typedata of the property
     ConstTypePtr basic_property(PropertyType);
     // access to the default value
-    const ValuePointer basic_property(DefaultValue);
+    ValuePointer basic_property(DefaultValue);
     // custom serializer
     typedef CustomSerializer * SerPtr;
     SerPtr basic_property(CustomSerializer);
@@ -186,4 +187,6 @@ namespace nspace {
       prop->setToDefaultValue(&object);
     });
   }
+
+
 }

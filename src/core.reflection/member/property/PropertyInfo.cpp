@@ -6,24 +6,28 @@ using namespace nspace;
 
 /*
 void * PropertyInfo::asObjectPointer(const Object * object) const {
-  if(!getIsPointer()) return 0;
-  void * value;
-  getValue(object,&value);
-  return getObjectConverter() (value);
+if(!getIsPointer()) return 0;
+void * value;
+getValue(object,&value);
+return getObjectConverter() (value);
 }*/
 /*
 
 auto PropertyInfo::getMutablePointer(void * object) const  -> PropertyInfo::ValuePointer{
-  return 0;
+return 0;
 }
 
 auto PropertyInfo::getConstPointer(void * object) const -> const PropertyInfo::ValuePointer{
-  return 0;
+return 0;
 }
 */
 
-void     PropertyInfo::setToDefaultValue(ObjectPointer object) const {
-  if(getDefaultValue()) setValue(object,getDefaultValue());
+void PropertyInfo::setToDefaultValue(ObjectPointer object) const {
+  if(getDefaultValue()){
+    auto defaultValue  = getDefaultValue();
+
+    setValue(object,defaultValue);
+  }
 }
 
 PropertyInfo::PropertyInfo() :
@@ -57,7 +61,7 @@ protected:
 
 
 
-bool PropertyInfo::addObserver(Object * object,ObjectObserver* observer)const{
+bool PropertyInfo::addObserver(ObjectPointer object,ObjectObserver* observer)const{
   auto propertyChangingObject = dynamic_cast<PropertyChangingObject*>(object);
   if(!propertyChangingObject)return false;
 

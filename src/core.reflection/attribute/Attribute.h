@@ -3,7 +3,6 @@
 #include <core.reflection/type/TypeInfo.h>
 #include <core.reflection/type/Type.h>
 #include <core.property.h>
-#include <math/Interval.h>
 namespace nspace{
   class Attribute{
     //DS_CLASS(Attribute);

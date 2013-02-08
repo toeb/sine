@@ -33,12 +33,12 @@ namespace nspace{
     //setPropertyType(&TypeDataProvider<ValueType>::getTypeData());
   }
   template<typename OwningClass, typename ValueType>
-  const auto TypedProperty<OwningClass,ValueType>::getConstPointer(const ObjectPointer object)const->ValuePointer{
+  auto TypedProperty<OwningClass,ValueType>::getConstPointer(const ObjectPointer object)const->ConstValuePointer{
     auto typedObject = static_cast<const OwningClass*>(object);
     return static_cast<const void*>(getConstTypedPointer(typedObject));
   }
   template<typename OwningClass, typename ValueType>
-  void TypedProperty<OwningClass,ValueType>::getMutablePointer(ObjectPointer  object)const->ValuePointer{
+  auto TypedProperty<OwningClass,ValueType>::getMutablePointer(ObjectPointer  object)const->ValuePointer{
     auto typedObject = static_cast< OwningClass*>(object);
     return static_cast<void*>(getMutableTypedPointer(typedObject));
   }
