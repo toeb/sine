@@ -4,15 +4,16 @@ set(source )
 
 set(graphSource
 ../include/core.graph.h
-./graph/TypedNode.h
-./graph/DataNode.h
-./graph/DerivableDataNode.h
-./graph/Node.h
-./graph/Node.cpp
-./graph/Graph.h
-./graph/Graph.cpp
+./TypedNode.h
+./DataNode.h
+./DerivableDataNode.h
+./Node.h
+./Node.cpp
+./Graph.h
+./Graph.cpp
 )
 source_group("" FILES ${graphSource})
+set(source ${source} ${graphSource})
 add_library(core.graph  ${source} CMakeLists.txt)
 target_link_libraries(core.graph core)
 
