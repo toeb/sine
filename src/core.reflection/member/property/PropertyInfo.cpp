@@ -4,6 +4,42 @@
 using namespace std;
 using namespace nspace;
 
+/*
+void * PropertyInfo::asObjectPointer(const Object * object) const {
+  if(!getIsPointer()) return 0;
+  void * value;
+  getValue(object,&value);
+  return getObjectConverter() (value);
+}*/
+/*
+
+auto PropertyInfo::getMutablePointer(void * object) const  -> PropertyInfo::ValuePointer{
+  return 0;
+}
+
+auto PropertyInfo::getConstPointer(void * object) const -> const PropertyInfo::ValuePointer{
+  return 0;
+}
+*/
+
+void     PropertyInfo::setToDefaultValue(ObjectPointer object) const {
+  if(getDefaultValue()) setValue(object,getDefaultValue());
+}
+
+PropertyInfo::PropertyInfo() :
+  _HasGetter(false),
+  _HasSetter(false),
+  _PropertyType(0),
+  _DefaultValue(0),
+  _CustomSerializer(0),
+  _CustomDeserializer(0),
+  _ObjectConverter([] (void * ptr){return static_cast<Object*>(0); }),
+  _IsNavigatable(false),
+  _IsPointer(false),
+  _IsVisible(true)
+{}
+
+
 class ObserverAdapter : public virtual PropertyChangedListener, public virtual Observable{
   SIMPLE_PROPERTY(const PropertyInfo * , PropertyInfo){}
 public:
@@ -18,6 +54,8 @@ protected:
     raiseObjectChanged();
   }
 };
+
+
 
 bool PropertyInfo::addObserver(Object * object,ObjectObserver* observer)const{
   auto propertyChangingObject = dynamic_cast<PropertyChangingObject*>(object);

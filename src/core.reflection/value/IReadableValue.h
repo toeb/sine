@@ -2,7 +2,7 @@
 
 #include <core/Object.h>
 #include <core/Observable.h>
-#include <core.properties.h>
+#include <core.property.h>
 #include <core.reflection/type/TypeInfo.h>
 
 namespace nspace{

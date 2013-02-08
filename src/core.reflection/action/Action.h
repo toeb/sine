@@ -18,15 +18,13 @@
  */
 #pragma once
 
-#include <core/Object.h>
+#include <core.reflection/type/TypeInfo.h>
 
 namespace nspace {
   class Action {
-    TYPED_OBJECT(Action);
+    DS_CLASS(Action);
 public:
-    void execute(){
-      executeAction();
-    }
+    void execute();
 protected:
     virtual void executeAction()=0;
   };

@@ -1,4 +1,4 @@
-set(source ../include/core.properties.h )
+set(source ../include/core.property.h )
 
 
 
@@ -16,7 +16,7 @@ source_group("" FILES ${unifiedPropertyDefinitionSource})
 set(source ${source} ${unifiedPropertyDefinitionSource})
 
 
-add_library(core.properties  ${source} CMakeLists.txt)
+add_library(core.property  ${source} CMakeLists.txt)
 
 
-set_target_properties(core.properties PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(core.property PROPERTIES LINKER_LANGUAGE CXX)

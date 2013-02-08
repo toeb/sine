@@ -14,15 +14,16 @@ namespace nspace{
     TYPED_OBJECT(PropertyAdapter);
     BASIC_PROPERTY(const PropertyInfo *, PropertyInfo,public,,onBeforePropertyInfoChanged();,onPropertyInfoChanged(););
   public:
+    typedef PropertyInfo::ValuePointer ValuePointer;
     //TODO use factorymethods instead.  i hate constructors
     PropertyAdapter();
-    PropertyAdapter(Object * object, const std::string & name);
-    PropertyAdapter(Object * object, const PropertyInfo * info);
+    PropertyAdapter(ObjectPointer object, const std::string & name);
+    PropertyAdapter(ObjectPointer object, const PropertyInfo * info);
     ~PropertyAdapter();
     void setToDefault();
     // implementation of IModifiableValue
-    bool retrieveValue(void * value)const;
-    bool storeValue(const void * value);
+    bool retrieveValue(ValuePointer value)const;
+    bool storeValue(const ValuePointer value);
     // implementation of ISerializable
     bool toStream(std::ostream & stream, Format format);
     bool fromStream(std::istream & stream, Format format);

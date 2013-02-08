@@ -1,5 +1,5 @@
 #include "PropertyAdapter.h"
-
+#include <core.reflection/member/property/PropertyInfo.h>
 using namespace nspace;
 
 void PropertyAdapter::onBeforeOwnerChanged(){
@@ -42,16 +42,16 @@ PropertyAdapter::~PropertyAdapter(){
 }
 PropertyAdapter:: PropertyAdapter():_PropertyInfo(0){
 }
-PropertyAdapter::PropertyAdapter(Object * object, const std::string & name):_PropertyInfo(0){
+PropertyAdapter::PropertyAdapter(ObjectPointer object, const std::string & name):_PropertyInfo(0){
   setOwner(object);
-  auto prop = object->getType()->getProperty(name);
+  auto prop = getPropertyInfo()->getProperty(name);
   if(prop)setPropertyInfo(prop);
 }
-PropertyAdapter::PropertyAdapter(Object * object, const PropertyInfo * info):_PropertyInfo(0){
+PropertyAdapter::PropertyAdapter(ObjectPointer object, const PropertyInfo * info):_PropertyInfo(0){
   setOwner(object);
   setPropertyInfo(info);
 }
-bool PropertyAdapter::retrieveValue(void * value)const{
+bool PropertyAdapter::retrieveValue(ValuePointer value)const{
   auto info = getPropertyInfo();
   auto object = getOwner();
   if(!info)return false;
@@ -59,7 +59,7 @@ bool PropertyAdapter::retrieveValue(void * value)const{
   info->getValue(object,value);
   return true;
 }
-bool PropertyAdapter::storeValue(const void * value){
+bool PropertyAdapter::storeValue(const ValuePointer value){
   auto info = getPropertyInfo();
   auto object = getOwner();
   if(!info)return false;

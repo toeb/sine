@@ -1,23 +1,24 @@
 #pragma once
 
-#include <core.reflection/type/Type.h>
-#include <core/Object.h>
 #include <core.reflection/type/TypeInfo.h>
+#include <core.reflection/type/Type.h>
+#include <core.property.h>
 #include <math/Interval.h>
 namespace nspace{
   class Attribute{
-    TYPED_OBJECT(Attribute);
-    SIMPLE_PROPERTY(std::string, AttributeName){}
+    //DS_CLASS(Attribute);
+    std::string basic_property(AttributeName);
   };
 
-  class AttributeTarget : public virtual Object{
-    TYPED_OBJECT(AttributeTarget);
-    PROPERTYSET(Attribute*,Attributes,{},{})
+  class AttributeTarget /*: public virtual Object*/{
+    //TYPED_OBJECT(AttributeTarget);
+    
+   /* PROPERTYSET(Attribute*,Attributes,{},{})*/
   };
-
-  class DisplayAttribute :public virtual Attribute{
-    TYPED_OBJECT(DisplayAttribute);
-    SUBCLASSOF(Attribute);
+  /*
+  class DisplayAttribute :public virtual  Attribute{
+    //TYPED_OBJECT(DisplayAttribute);
+    //SUBCLASSOF(Attribute);
     SIMPLE_PROPERTY(std::string, DisplayName);
     SIMPLE_PROPERTY(std::string, Description);
     SIMPLE_PROPERTY(std::string, GroupName);
@@ -45,4 +46,5 @@ namespace nspace{
   };
 
 #define ATTRIBUTE(TARGET, NAME, CUSTOMCODE)
+  */
 }

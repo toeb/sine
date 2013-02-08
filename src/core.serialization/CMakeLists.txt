@@ -7,6 +7,6 @@ set(source
 
 
 )
-
+source_group("" FILES ${source})
 add_library(core.serialization ${source})
 target_link_libraries(core.serialization core)

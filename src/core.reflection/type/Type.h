@@ -17,9 +17,10 @@
 #pragma once
 #include <config.h>
 #include <core.graph/Node.h>
+
 #include <core.collection/containers/Set.h>
-#include <core.property/Members.h>
-#include <core.properties.h>
+
+#include <core.property.h>
 #include <memory>
 namespace nspace
 {
@@ -29,6 +30,9 @@ namespace nspace
   class PropertyInfo;
   class Type;
   class Object;
+
+  typedef const Type * ConstTypePtr;
+
   /**
    * \brief Defines an alias representing identifier for a type.
    */

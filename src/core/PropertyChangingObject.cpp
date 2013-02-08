@@ -3,9 +3,6 @@
 #include <core.reflection/type/TypeInfo.h>
 using namespace nspace;
 
-DS_CLASS_DEFINITION(PropertyChangedListener);
-DS_CLASS_DEFINITION(DelegatePropertyChangedListener);
-DS_CLASS_DEFINITION(PropertyChangingObject);
 
 Set<PropertyChangedListener*> & PropertyChangingObject::listeners(){return _listeners;}
 

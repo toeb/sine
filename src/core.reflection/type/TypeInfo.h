@@ -30,11 +30,26 @@ private:                                                                        
   typedef TYPE CurrentClassType;                                                                                      \
 public:                                                                                                               \
   static std::string getTypeName(){return std::string(# TYPE); }                                                      \
-  virtual inline const nspace::Type * getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); } \
-  virtual inline bool isInstanceOf(const Type * type) const { return type->isSuperClassOf(this->getType()); }         \
+  virtual inline nspace::ConstTypePtr getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); } \
+  virtual inline bool isInstanceOf(nspace::ConstTypePtr type) const { return type->isSuperClassOf(this->getType()); }         \
 private:
 
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
+
+  
+#define DS_CLASS_DECLARATION(TYPE)                                  \
+private:                                                            \
+  typedef TYPE CurrentClassType;                                    \
+public:                                                             \
+  static std::string getTypeName();                                 \
+  virtual inline nspace::ConstTypePtr getType() const;              \
+  virtual inline bool isInstanceOf(nspace::ConstTypePtr type) const;        \
+private:
+
+#define DS_CLASS_DEFINITION(TYPE)                                                                                       \
+  std::string TYPE::getTypeName(){return std::string(# TYPE); }                                                         \
+  nspace::ConstTypePtr TYPE::getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); }            \
+  bool TYPE::isInstanceOf(nspace::ConstTypePtr type) const { return type->isSuperClassOf(this->getType()); }
 
 /**
  * \brief A macro that defines conversion function from a void ptr to a Object* using dynamic cast

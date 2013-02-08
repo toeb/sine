@@ -3,21 +3,21 @@
 #include <core.serialization/Serialization.h>
 namespace nspace{
   template<typename OwningClass, typename ValueType>
-  class TypedProperty : public virtual PropertyInfo{
-    TYPED_OBJECT(TypedProperty);
+  class TypedProperty : public /*virtual */ PropertyInfo{
+    /*TYPED_OBJECT(TypedProperty);*/
   public:
     TypedProperty();
   private:
-    const void * getConstPointer(const Object * object)const;
-    void * getMutablePointer(Object * object)const;
+    const ValuePointer getConstPointer(const ObjectPointer object)const;
+    ValuePointer getMutablePointer(ObjectPointer object)const;
     virtual const ValueType * getConstTypedPointer(const OwningClass*)const;
     virtual ValueType * getMutableTypedPointer(OwningClass* )const;
-    void setValue(Object * object, const void * value)const;
-    void unsafeSetValue(void * object, const void * value)const;
-    void getValue(const  Object * ptr, void * value)const;
-    void unsafeGetValue(const  void * ptr, void * value)const;
-    virtual bool deserialize(Object * ptr, std::istream & in)const;
-    virtual bool serialize(Object * object, std::ostream & out)const;
+    void setValue(ObjectPointer object, const ValuePointer value)const;
+    void unsafeSetValue(ObjectPointer object, const ValuePointer value)const;
+    void getValue(const  ObjectPointer object, ValuePointer value)const;
+    void unsafeGetValue(const  ObjectPointer object, ValuePointer value)const;
+    virtual bool deserialize(ObjectPointer object, std::istream & in)const;
+    virtual bool serialize(ObjectPointer object, std::ostream & out)const;
     virtual void setTypedValue(OwningClass *  object , ValueType value)const=0;
     virtual ValueType getTypedValue(const OwningClass *  object)const=0;
   };
@@ -33,44 +33,44 @@ namespace nspace{
     //setPropertyType(&TypeDataProvider<ValueType>::getTypeData());
   }
   template<typename OwningClass, typename ValueType>
-  const void * TypedProperty<OwningClass,ValueType>::getConstPointer(const Object * object)const{
-    auto typedObject = dynamic_cast<const OwningClass*>(object);
-    return reinterpret_cast<const void*>(getConstTypedPointer(typedObject));
+  const auto TypedProperty<OwningClass,ValueType>::getConstPointer(const ObjectPointer object)const->ValuePointer{
+    auto typedObject = static_cast<const OwningClass*>(object);
+    return static_cast<const void*>(getConstTypedPointer(typedObject));
   }
   template<typename OwningClass, typename ValueType>
-  void * TypedProperty<OwningClass,ValueType>::getMutablePointer(Object * object)const{
-    auto typedObject = dynamic_cast< OwningClass*>(object);
-    return reinterpret_cast<void*>(getMutableTypedPointer(typedObject));
+  void TypedProperty<OwningClass,ValueType>::getMutablePointer(ObjectPointer  object)const->ValuePointer{
+    auto typedObject = static_cast< OwningClass*>(object);
+    return static_cast<void*>(getMutableTypedPointer(typedObject));
   }
 
   template<typename OwningClass, typename ValueType>
-  void TypedProperty<OwningClass,ValueType>::setValue(Object * object, const void * value)const{
-    auto typedObject = dynamic_cast<OwningClass*>(object);
-    auto typedValue = reinterpret_cast<const ValueType*>(value);
-    setTypedValue(typedObject,*typedValue);
-  }
-  template<typename OwningClass, typename ValueType>
-  void TypedProperty<OwningClass,ValueType>::getValue(const Object * object, void * value)const{
-    auto typedObject = dynamic_cast<const OwningClass*>(object);
-    if(!typedObject)return;
-    auto typedValue = reinterpret_cast<ValueType*>(value);
-    *typedValue= getTypedValue(typedObject);
-  }
-    template<typename OwningClass, typename ValueType>
-  void TypedProperty<OwningClass,ValueType>::unsafeSetValue(void * object, const void * value)const{
+  void TypedProperty<OwningClass,ValueType>::setValue(ObjectPointer object, const ValuePointer value)const{
     auto typedObject = static_cast<OwningClass*>(object);
     auto typedValue = static_cast<const ValueType*>(value);
     setTypedValue(typedObject,*typedValue);
   }
   template<typename OwningClass, typename ValueType>
-  void TypedProperty<OwningClass,ValueType>::unsafeGetValue(const void * object, void * value)const{
+  void TypedProperty<OwningClass,ValueType>::getValue(const ObjectPointer object, ValuePointer value)const{
+    auto typedObject = static_cast<const OwningClass*>(object);
+    if(!typedObject)return;
+    auto typedValue = static_cast<ValueType*>(value);
+    *typedValue= getTypedValue(typedObject);
+  }
+    template<typename OwningClass, typename ValueType>
+  void TypedProperty<OwningClass,ValueType>::unsafeSetValue(ObjectPointer object, const ValuePointer value)const{
+    auto typedObject = static_cast<OwningClass*>(object);
+    auto typedValue = static_cast<const ValueType*>(value);
+    setTypedValue(typedObject,*typedValue);
+  }
+  template<typename OwningClass, typename ValueType>
+  void TypedProperty<OwningClass,ValueType>::unsafeGetValue(const ObjectPointer object, ValuePointer value)const{
     auto typedObject = static_cast<const OwningClass*>(object);
     auto typedValue = static_cast<ValueType*>(value);
     *typedValue= getTypedValue(typedObject);
   }
   template<typename OwningClass, typename ValueType>
-  bool TypedProperty<OwningClass,ValueType>::deserialize(Object * object, std::istream & in)const{
-    OwningClass * owningClass = dynamic_cast<OwningClass*>(object);
+  bool TypedProperty<OwningClass,ValueType>::deserialize(ObjectPointer object, std::istream & in)const{
+    OwningClass * owningClass = static_cast<OwningClass*>(object);
     if(!owningClass)return false;
     ValueType value;
     getValue(owningClass,&value);
@@ -84,8 +84,8 @@ namespace nspace{
     return true;
   }
   template<typename OwningClass, typename ValueType>
-  bool TypedProperty<OwningClass,ValueType>::serialize(Object * object, std::ostream & out)const{
-    OwningClass * owningClass = dynamic_cast<OwningClass*>(object);
+  bool TypedProperty<OwningClass,ValueType>::serialize(ObjectPointer object, std::ostream & out)const{
+    OwningClass * owningClass = static_cast<OwningClass*>(object);
     ValueType value = getTypedValue(owningClass);
     if(getCustomSerializer()){
       if(!(getCustomSerializer()->serialize(out,&value)))return false;

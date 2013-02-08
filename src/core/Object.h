@@ -22,35 +22,18 @@
 #include <ostream>
 #include <string>
 
+#include <core.reflection/type/TypeInfo.h>
 
 
-
-#define DS_CLASS_DECLARATION(TYPE)                                  \
-private:                                                            \
-  typedef TYPE CurrentClassType;                                    \
-public:                                                             \
-  static std::string getTypeName();                                 \
-  virtual inline nspace::ConstTypePtr getType() const;              \
-  virtual inline bool isInstanceOf(const Type * type) const;        \
-private:
-
-#define DS_CLASS_DEFINITION(TYPE)                                                                                       \
-  std::string TYPE::getTypeName(){return std::string(# TYPE); }                                                         \
-  nspace::ConstTypePtr TYPE::getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); }            \
-  bool TYPE::isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); }
 namespace nspace {
-  //forward declaration for Type
-  class Type;
-  typedef const Type * ConstTypePtr;
   /**
   * \brief Base class.  Contains Type information and some standard methods like the streamout operator <<.
   *
   */
   class Object {
     DS_CLASS_DECLARATION(Object)
-  private:
+  private:  
   public:
-
 
 
 

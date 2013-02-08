@@ -17,8 +17,8 @@
  *
  */
 #pragma once
+
 #include <core.reflection/attribute/Attribute.h>
-#include <core/Object.h>
 
 namespace nspace {
 
@@ -26,41 +26,47 @@ namespace nspace {
    * \brief Information about a member.
    *        @TODO remove attributes like description/displayname etc.
    */
-  class MemberInfo : public virtual AttributeTarget {
-    TYPED_OBJECT(MemberInfo);
+  class MemberInfo : public /*virtual */AttributeTarget {
+    extensible_property_class
+  public:
+    typedef void * ObjectPointer;
+    //DS_CLASS(MemberInfo)
+    //TYPED_OBJECT(MemberInfo);
 
-    SIMPLE_PROPERTY(std::string, Name){
-      if(getDisplayName()!="") return; setDisplayName(newvalue);
+    std::string extensible_property(Name);
+    after_set(Name){
+      if(getDisplayName()=="")setDisplayName(_Name);     
     }
+    
+    // is this needed?
     REFERENCE_PROPERTY(std::string, Name);
 
-    SIMPLE_PROPERTY(bool, IsVisible){}
-    SIMPLE_PROPERTY(const Type *, OwningType ){};
+    bool basic_property(IsVisible);
+
+    ConstTypePtr basic_property(OwningType);
 
     /**
      * \brief Description of the member.
      *
      */
-    SIMPLE_PROPERTY(std::string, Description){}
+    std::string basic_property(Description);
 
     /**
      * \brief Display name of the member
      */
-    SIMPLE_PROPERTY(std::string, DisplayName){}
+    std::string basic_property(DisplayName);
 
     /**
      * \brief Group name of the member
      *
      */
-    SIMPLE_PROPERTY(std::string, GroupName){}
+     std::string basic_property(GroupName);
 public:
 
     /**
      * \brief Default constructor.
      */
-    MemberInfo() :
-      _IsVisible(true),
-      _OwningType(0)
-    {}
+    MemberInfo();
+    virtual ~MemberInfo();
   };
 }

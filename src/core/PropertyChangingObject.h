@@ -11,13 +11,17 @@
   inline void notify##NAME##Changed(){static std::string propertyName=#NAME; raisePropertyChanged(propertyName);}\
   EXTENDED_PROPERTY(TYPE, NAME,public,,,{notify##NAME##Changed();})
 
+
+
+
+
 namespace nspace{
   // forward declaration of PropertyChangingObject
   class PropertyChangingObject;
 
   // A PropertyChangedListener can be added to a PropertyChangingObject and is notified via onPropertyChanged when a property of the Object has Changed
   class PropertyChangedListener : public virtual Object{
-    DS_CLASS_DECLARATION(PropertyChangedListener);
+    DS_CLASS(PropertyChangedListener);
   protected:
     virtual void onPropertyChanged(Object * sender, const std::string & propertyName)=0;
     friend class PropertyChangingObject;
@@ -25,7 +29,7 @@ namespace nspace{
 
   // an implementation of PropertyChangedListener which will delegate it
   class DelegatePropertyChangedListener : public virtual PropertyChangedListener{
-    DS_CLASS_DECLARATION(DelegatePropertyChangedListener);
+    DS_CLASS(DelegatePropertyChangedListener);
   private:
     std::function<void (Object * , const std::string & ) > _callback;
   public:
@@ -38,7 +42,7 @@ namespace nspace{
 
   // an object which allows listeners to listen for property change events
   class PropertyChangingObject : public virtual Object{
-    DS_CLASS_DECLARATION(PropertyChangingObject);
+    DS_CLASS(PropertyChangingObject);
   private:
     Set<PropertyChangedListener*> _listeners;
   public:
