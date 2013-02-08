@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Object.h>
-#include <core/collection/containers/Set.h>
+#include <core.collection/containers/Set.h>
 
 // may only be used inside class which has the a raisePropertyChanged(string) method
 // a private raise<NAME>Changed() method is created which allows this class to control additionally raise the changed event
@@ -17,7 +17,7 @@ namespace nspace{
 
   // A PropertyChangedListener can be added to a PropertyChangingObject and is notified via onPropertyChanged when a property of the Object has Changed
   class PropertyChangedListener : public virtual Object{
-    TYPED_OBJECT(PropertyChangedListener);
+    DS_CLASS_DECLARATION(PropertyChangedListener);
   protected:
     virtual void onPropertyChanged(Object * sender, const std::string & propertyName)=0;
     friend class PropertyChangingObject;
@@ -25,7 +25,7 @@ namespace nspace{
 
   // an implementation of PropertyChangedListener which will delegate it
   class DelegatePropertyChangedListener : public virtual PropertyChangedListener{
-    TYPED_OBJECT(DelegatePropertyChangedListener);
+    DS_CLASS_DECLARATION(DelegatePropertyChangedListener);
   private:
     std::function<void (Object * , const std::string & ) > _callback;
   public:
@@ -38,7 +38,7 @@ namespace nspace{
 
   // an object which allows listeners to listen for property change events
   class PropertyChangingObject : public virtual Object{
-    TYPED_OBJECT(PropertyChangingObject);
+    DS_CLASS_DECLARATION(PropertyChangingObject);
   private:
     Set<PropertyChangedListener*> _listeners;
   public:

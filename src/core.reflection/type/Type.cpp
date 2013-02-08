@@ -67,7 +67,8 @@ const PropertyInfo * Type::getProperty(const std::string & name)const{
   auto prop = dynamic_cast<const PropertyInfo*>(member);
   return prop;
 }
-bool Type::isSuperClassOf(const Type & other)const{
+bool Type::isSuperClassOf(const Type * other)const{
+  if(!other)return false;  
   if(&other == this)return true;
   for(uint i=0; i < other.predecessors(); i++){
     auto current = other.predecessor(i);

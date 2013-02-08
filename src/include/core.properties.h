@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <core/properties/Properties.h>
-#include <core/properties/Extensible.h>
-#include <core/properties/Simple.h>
-#include <core/properties/Templated.h>
+#include <core.property/Properties.h>
+#include <core.property/Extensible.h>
+#include <core.property/Simple.h>
+#include <core.property/Templated.h>

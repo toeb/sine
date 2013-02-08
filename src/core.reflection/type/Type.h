@@ -16,9 +16,9 @@
  */
 #pragma once
 #include <config.h>
-#include <core/graph/Node.h>
-#include <core/collection/containers/Set.h>
-#include <core/Members.h>
+#include <core.graph/Node.h>
+#include <core.collection/containers/Set.h>
+#include <core.property/Members.h>
 #include <core.properties.h>
 #include <memory>
 namespace nspace
@@ -175,7 +175,7 @@ public:
      *
      * \return  true if super class of, false if not.
      */
-    bool isSuperClassOf(const Type & other) const;
+    bool isSuperClassOf(const Type * other) const;
 
 protected:
 

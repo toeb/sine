@@ -19,10 +19,12 @@
 #include "Object.h"
 #include <sstream>
 #include <string>
-#include <core/reflection/PropertyInfo.h>
+#include <core.reflection/type/TypeInfo.h>
 #include <core/NamedObject.h>
 using namespace nspace;
 using namespace std;
+
+DS_CLASS_DEFINITION(Object);
 
 std::string Object::toString() const {
   stringstream ss;

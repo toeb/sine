@@ -12,7 +12,7 @@ set(graphSource
 ./graph/Graph.h
 ./graph/Graph.cpp
 )
-source_group("" FILES ${patternsSource})
+source_group("" FILES ${graphSource})
 add_library(core.graph  ${source} CMakeLists.txt)
 target_link_libraries(core.graph core)
 

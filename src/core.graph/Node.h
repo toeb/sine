@@ -19,8 +19,8 @@
 #pragma once
 
 #include <core/patterns/Derivable.h>
-#include <core/collection/containers/Set.h>
-#include <core/Comparator.h>
+#include <core.collection/containers/Set.h>
+#include <core/template/Comparator.h>
 
 namespace nspace {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/reflection/Type.h>
+#include <core.reflection/type/Type.h>
 #include <core/patterns/Singleton.h>
 //#include <core/template/default_constructor.h>
 //#define NEWIMPL
@@ -18,7 +18,7 @@ namespace nspace{
 */
 #define typeof(TYPENAME) nspace::TypeInfo<TYPENAME>::instance().get()
 
-
+  
 /**
 * \brief Macro for making an object a typed object. defines a static meta information structure
 *        (TypeData) and virtual access methods 
@@ -30,7 +30,7 @@ private:                                                                        
   typedef TYPE CurrentClassType;                                                                                      \
 public:                                                                                                               \
   static std::string getTypeName(){return std::string(# TYPE); }                                                      \
-  virtual inline const nspace::Type & getType() const {return *nspace::TypeInfo<CurrentClassType>::instance(); }      \
+  virtual inline const nspace::Type * getType() const {return nspace::TypeInfo<CurrentClassType>::instance(); }       \
   virtual inline bool isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); } \
 private:
 

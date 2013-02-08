@@ -67,5 +67,5 @@ set(patternsSource
 set(source ${source} ${patternsSource})
 source_group("patterns" FILES ${patternsSource})
 
-add_library(core  ${source} CMakeLists.txt)
-target_link_libraries(core)
+add_library(core   ${source} CMakeLists.txt)
+target_link_libraries(core core.reflection)

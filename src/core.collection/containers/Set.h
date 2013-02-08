@@ -21,9 +21,9 @@
 #include <algorithm>
 
 #include <config.h>
-#include <core/Comparator.h>
-#include <core/Query.h>
-#include <core/ObservableCollection.h>
+#include <core/template/Comparator.h>
+#include <core.collection/Query.h>
+#include <core.collection/ObservableCollection.h>
 
 namespace nspace {
   /**

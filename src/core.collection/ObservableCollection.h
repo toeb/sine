@@ -1,5 +1,5 @@
 #pragma once
-#include <core/Query.h>
+#include <core.collection/Query.h>
 #include <core/Observable.h>
 
 namespace nspace{
