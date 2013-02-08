@@ -2,6 +2,7 @@
 set(source
 	 main.cpp 
 	 reflection.cpp
+	 type.cpp
  )
  source_group("" FILES ${source})
  add_executable(test.core.reflection ${source} CMakeLists.txt)
