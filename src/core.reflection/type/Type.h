@@ -93,6 +93,7 @@ public:
      * \brief Creates a instance of the type specified.
      */
     std::shared_ptr<void> createInstance() const;
+    std::shared_ptr<Object> createObjectInstance()const;
 
     /**
      * \brief Creates an instance of the type and casts it to T.
@@ -102,17 +103,26 @@ public:
     virtual bool convertible(const Type * type)const{return false;}
     virtual bool serializeable(const std::string & format)const{return false;}
     virtual bool stringifiable()const{return false;}
-    virtual bool constructible()const{return false;}
-    
+    bool isConstructible()const{return  getCreateInstanceFunction();}
 
 
-    Object * toObjectPointer(void * object);
+
     void objectToString(const void * object, std::ostream & stream)const;
     std::string objectToString(const void * object)const;
         
+    
+    std::shared_ptr<Object> toSmartObjectPointer(std::shared_ptr<void> object)const;
+    Object * toRawObjectPointer(void * object)const;
+    
+    std::function<std::shared_ptr<Object>(std::shared_ptr<void>)> basic_property(SmartObjectPointerConverter);    
+    std::function<Object *(void * )> basic_property(RawObjectPointerConverter);
 
-    std::function<Object*(void * )> basic_property(ConvertToObjectPointerFunction);    
-    bool basic_property(IsConvertibleToObject);
+    bool isConvertibleToSmartObjectPointer()const{
+      return getSmartObjectPointerConverter();
+    }
+    bool isConvertibleToRawObjectPointer()const{
+      return getRawObjectPointerConverter();
+    }
 
     /**
      * \brief Type Id.
@@ -120,10 +130,7 @@ public:
      */
     TypeId basic_property(Id);
 
-    /**
-     * \brief true if the type is constructible
-     */
-    bool basic_property(IsConstructible);
+
     /**
      * \brief CreateInstanceFunction.
      *        may contain a function which creates an instance of the specified type

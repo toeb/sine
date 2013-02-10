@@ -49,7 +49,32 @@ public:
 
 }a;
 
+
+
+
 int UserDataStruct::instanceCount=0;
+
+TEST(1,CreateObject){
+  LuaVirtualMachine vm;
+  
+  vm.registerType(typeof(UserDataStruct));
+  int count = vm.ManagedObjects().size();
+  CHECK(vm.ManagedObjects().size()==0);
+  vm.loadString("_G.obj = Class.UserDataStruct:new(); _G.obj.Value2('asdfg');");
+  CHECK(vm.ManagedObjects().size() ==1);
+
+}
+
+TEST(1,CreateObject){
+  LuaVirtualMachine vm;
+  
+  vm.registerType(typeof(UserDataStruct));
+  int count = vm.ManagedObjects().size();
+  CHECK(vm.ManagedObjects().size()==0);
+  vm.loadString("_G.obj = Class.UserDataStruct:new();");
+  CHECK(vm.ManagedObjects().size() ==1);
+}
+
 
 UNITTEST(LuaUserData){
   LuaVirtualMachine vm;
@@ -92,8 +117,9 @@ UNITTEST(requireTableField){
 UNITTEST(LuaInitialization){
   LuaVirtualMachine vm;
   CHECK(vm.loadString("-- just a comment"));
-}
 
+}
+/*
 // function to call from lua
 int displayLuaFunction(lua_State *l)
 {
@@ -123,6 +149,7 @@ int displayLuaFunction(lua_State *l)
 * \brief This test calls a c function from lua
 *        code taken from http://blog.acamara.es/2012/08/19/calling-c-functions-from-lua-5-2/
 */
+/*
 UNITTEST(LuaScriptCallCppFunction){
   stringstream script;                                                                                                
   script << "-- call the registered C-function                                                      " <<endl;
@@ -187,6 +214,7 @@ UNITTEST(LuaScriptCallCppFunction){
 *        Taken from http://blog.acamara.es/2012/08/15/passing-variables-from-lua-5-2-to-c-and-vice-versa/
 *
 */
+/*
 UNITTEST(luaScriptArgumentPassingAndReturnValues){
 
   stringstream script;
@@ -296,6 +324,7 @@ UNITTEST(luaScriptArgumentPassingAndReturnValues){
 * \brief Minimal lua script run test from http://blog.acamara.es/2012/08/14/running-a-lua-5-2-script-from-c/
 *
 */
+/*
 UNITTEST(luaScriptMinimal){
   // create new Lua state
   lua_State *lua_state;
@@ -323,4 +352,4 @@ UNITTEST(luaScriptMinimal){
 
   // close the Lua state
   lua_close(lua_state);
-}
+}*/

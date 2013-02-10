@@ -127,7 +127,6 @@ private:                                                                        
   class /*nspace::*/ TypeInfo<TYPE>: public /*nspace::*/ Type { \
     TEMPLATEDSINGLETON(TypeInfo, <TYPE>){ \
       setCreateInstanceFunction([] (){return std::shared_ptr<void>(new TYPE); }); \
-      setIsConstructible(true);\
       setName(# TYPE); \
     } \
   };
@@ -166,6 +165,14 @@ private:                                                                        
   META(std::iostream);
   META(std::ifstream);
   META(std::ofstream);
+
+    template<typename T> 
+    class TypeInfo<std::shared_ptr<T>>: public Type { 
+    TEMPLATEDSINGLETON(TypeInfo, <std::shared_ptr<T>>){ 
+      setName(DS_INLINE_STRING("shared_ptr<" <<typeof(T)->getName()<<">"));
+
+    } 
+  };
 
 }
 #else NEWIMPL

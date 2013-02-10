@@ -14,20 +14,21 @@ std::string Type::objectToString(const void * object)const{
 }
 
 
-    Object * Type::toObjectPointer(void * object){
-      if(!getIsConvertibleToObject())return 0;
-      return getConvertToObjectPointerFunction()(object);
-    }
+Object * Type::toRawObjectPointer(void * object)const{
+  if(!isConvertibleToRawObjectPointer())return 0;
+  return getRawObjectPointerConverter()(object);
+}
+std::shared_ptr<Object> Type::toSmartObjectPointer(std::shared_ptr<void> object)const{
+  if(!isConvertibleToSmartObjectPointer())return std::shared_ptr<Object>();
+  return getSmartObjectPointerConverter()(object);
+}
 
 
 TypeId Type::_typeCounter=0;
 Type::Type():
   _Id(_typeCounter++),
-  _IsConstructible(false),
   _CreateInstanceFunction([](){return std::shared_ptr<void>();}),
-  _ObjectToStringFunction([](const void*,std::ostream&){}),
-  _IsConvertibleToObject(false),
-  _ConvertToObjectPointerFunction([](void * v)->Object*{return 0;})
+  _ObjectToStringFunction([](const void*,std::ostream&){})
 {
   TypeRepository::registerType(this);
 }
@@ -49,6 +50,11 @@ std::shared_ptr<void> Type::createInstance()const{
   return getCreateInstanceFunction()();
 }
 
+
+std::shared_ptr<Object> Type::createObjectInstance()const{
+  if(!isConvertibleToSmartObjectPointer())return std::shared_ptr<Object>();
+  return getSmartObjectPointerConverter()(createInstance());
+}
 
 
 const MemberInfo * Type::getMember(const std::string & name)const{

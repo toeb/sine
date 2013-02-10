@@ -20,21 +20,18 @@ namespace nspace{
   class VirtualScriptMachine : public Log{
     REFLECTABLE_OBJECT(VirtualScriptMachine);
     SUBCLASSOF(Log);
-    OBJECTPOINTERCOLLECTION(Object,ManagedObjects,{},{});
+    
+    PROPERTYCOLLECTION(std::shared_ptr<Object>, ManagedObjects,{},{});
   public:
     virtual bool registerType(const Type * type){return false;}
-    virtual bool registerObject(Object * object){return false;}
-    virtual bool registerObject(ScriptObject * object){return false;}
-
-    template<typename T>
-    bool registerObject(T* object){
-      auto obj = new ScriptObject();
-      obj->setObjectPointer(object);
-      obj->setObjectType(typeof(T));
-      return registerObject(obj);
-    }
+    virtual bool registerObject(std::shared_ptr<Object> object){return false;}
 
 
+
+
+    
+    virtual void scriptObjectConstructed(ScriptObject & object);
+    virtual void scriptObjectDestroyed(ScriptObject & object);
     virtual bool loadStream(std::istream & stream);
     bool loadString(const std::string & script);
     bool loadFile(const std::string & filename);

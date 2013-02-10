@@ -101,7 +101,7 @@ bool luaToValue(lua_State* L, const Type * type, void * value){
       return true;
     }
   }
-  
+
   if(type==typeof(bool)){
     bool & flag = *static_cast< bool*>(value);
     switch(lType){
@@ -239,7 +239,7 @@ int luaMemberMethod(lua_State*L){
     auto propertyType = prop->getPropertyType();
 
     if(n==2){
-      if(!propertyType->getIsConstructible()){
+      if(!propertyType->isConstructible()){
         //error
         return 0;
       }      
@@ -286,14 +286,18 @@ int luaConstructor(lua_State*L){
   const Type * type =  luaUserDataField<const Type>(L,1,"ctype");
   if(!type)return luaL_error(L,"class table does not contain type *");
 
+  // if type is not an object i will ignore it
+  if(!type->isConvertibleToSmartObjectPointer()){
+    return 0;
+  }
+
   lua_newtable(L);
-  // create user data
-  ScriptObject * object = new ScriptObject();
-
-  object->setObjectType(type);  
-  object->setObjectPointer(type->createInstance());
-
-  luaGetVM(L)->scriptObjectCreated(*object);
+  
+  auto object = type->toSmartObjectPointer(type->createInstance());
+  
+  type->createInstance();
+  ScriptObject * scriptObject= new ScriptObject();
+  luaGetVM(L)->scriptObjectConstructed(object);
 
   lua_pushlightuserdata(L,object);
   lua_setfield(L,-2,"cscriptobject");
@@ -349,6 +353,10 @@ int luaConstructor(lua_State*L){
 
 
 bool createClass(lua_State*L,const Type *type){
+  if(!type->getIsConvertibleToObject()){
+    return false;
+  }
+
   // table already on stack
 
   string name = type->getName();
@@ -516,11 +524,13 @@ bool createType(lua_State * L, const Type * type){
 
 
 
-void LuaVirtualMachine::scriptObjectCreated(ScriptObject & object){
-  logInfo("lua created object "<<object);
+void LuaVirtualMachine::scriptObjectCreated(shared_ptr<Object>  object){
+  logInfo("lua created object "<<*object);
+
 }
-void LuaVirtualMachine::deletingScriptObject(ScriptObject & object){
-  logInfo("lua deleting object "<<object);
+void LuaVirtualMachine::deletingScriptObject(shared_ptr<Object> object){
+  logInfo("lua deleting object "<<*object);
+
 }
 
 

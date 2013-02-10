@@ -30,8 +30,8 @@ namespace nspace{
     bool loadStream(std::istream & stream);
 
 
-    void scriptObjectCreated(ScriptObject & object);
-    void deletingScriptObject(ScriptObject & object);
+    void scriptObjectConstructed(ScriptObject & object);
+    void scriptObjectDestroyed(ScriptObject & object);
   };
 
 }
