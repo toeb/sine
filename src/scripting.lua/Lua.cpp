@@ -297,6 +297,8 @@ int luaConstructor(lua_State*L){
   
   type->createInstance();
   ScriptObject * scriptObject= new ScriptObject();
+  scriptObject->setObjectType(type);
+  scriptObject->setObjectPointer(object);
   luaGetVM(L)->scriptObjectConstructed(*scriptObject);
 
 
@@ -372,7 +374,7 @@ bool createClass(lua_State*L,const Type *type){
   lua_setfield(L,-2,"__gc");
 
 
-  if(type->getIsConstructible()){
+  if(type->isConstructible()){
     lua_pushcfunction(L,luaConstructor);
     lua_setfield(L,-2,"new");
   }
@@ -525,12 +527,12 @@ bool createType(lua_State * L, const Type * type){
 
 
 
-void LuaVirtualMachine::scriptObjectCreated(shared_ptr<Object>  object){
-  logInfo("lua created object "<<*object);
+void LuaVirtualMachine::scriptObjectConstructed(ScriptObject & object){
+  logInfo("lua created object "<<object);
 
 }
-void LuaVirtualMachine::deletingScriptObject(shared_ptr<Object> object){
-  logInfo("lua deleting object "<<*object);
+void LuaVirtualMachine::scriptObjectDestroyed(ScriptObject & object){
+  logInfo("lua deleting object "<<object);
 
 }
 

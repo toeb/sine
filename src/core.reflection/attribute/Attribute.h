@@ -11,9 +11,7 @@ namespace nspace{
   
   class AttributeTarget {
     DS_CLASS(AttributeTarget);
-    //TYPED_OBJECT(AttributeTarget);
-    
-   /* PROPERTYSET(Attribute*,Attributes,{},{})*/
+  public:
   };
   /*
   class DisplayAttribute :public virtual  Attribute{

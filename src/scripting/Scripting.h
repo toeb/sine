@@ -30,8 +30,8 @@ namespace nspace{
 
 
     
-    virtual void scriptObjectConstructed(ScriptObject & object);
-    virtual void scriptObjectDestroyed(ScriptObject & object);
+    virtual void scriptObjectConstructed(ScriptObject & object){}
+    virtual void scriptObjectDestroyed(ScriptObject & object){}
     virtual bool loadStream(std::istream & stream);
     bool loadString(const std::string & script);
     bool loadFile(const std::string & filename);

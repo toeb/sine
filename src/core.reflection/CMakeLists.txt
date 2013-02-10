@@ -10,6 +10,7 @@ source_group("" FILES ${source})
 set(typeSource
 	type/Type.h
 	type/Type.cpp
+	type/Type.implementation.h
 	type/TypeInfo.h
 	type/TypeInfo.cpp
 	type/TypeRepository.h

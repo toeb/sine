@@ -32,68 +32,15 @@ namespace nspace {
   */
   class Object {
     DS_CLASS_DECLARATION(Object)
-  private:  
   public:
-
-
-
-    /**
-    * \brief Default constructor.
-    */
     Object();
-
-    /**
-    * \brief virtual Destructor.
-    */
     virtual ~Object();
-
-    /**
-    * \brief toString method converts this object to a string representation (should be
-    *        overridden by subclasses)
-    *
-    * \param [in,out]  out The outputstream were the string is written to.
-    */
     virtual void toString(std::ostream & out) const;
-
-    /**
-    * \brief  converts object to a string
-    *         usesthe toString(out) method to create a std::string which is returned
-    *
-    * \return  This object as a std::string.
-    */
     std::string toString() const;
-
-    /**
-    * \brief Stream insertion operator.
-    *
-    * \param [in,out]  out The output stream.
-    * \param obj           The object.
-    *
-    * \return  The shifted result.
-    */
     friend std::ostream & operator << (std::ostream & out, const Object * obj);
-
-    /**
-    * \brief Stream insertion operator.
-    *
-    * \param [in,out]  out The output stream.
-    * \param obj           The object.
-    *
-    * \return  The shifted result.
-    */
     friend std::ostream & operator << (std::ostream & out, const Object & obj);
-
-    /**
-    * \brief Equality operator.
-    *
-    * \param a The first instance to compare.
-    * \param b The second instance to compare.
-    *
-    * \return  true if the parameters are the same object (in memory).
-    */
-    friend bool operator == (const Object & a, const Object & b){
-      return &a==&b;
-    }
+    friend bool operator == (const Object & a, const Object & b);
   };
-
 }
+// implement type now.
+#include <core.reflection/type/Type.implementation.h>

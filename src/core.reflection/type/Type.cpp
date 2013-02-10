@@ -4,7 +4,14 @@
 #include <core.reflection/type/TypeRepository.h>
 #include <sstream>
 using namespace nspace;
+
+bool Type::isStringifyable()const{
+  bool b = getObjectToStringFunction();
+
+  return b;
+}
 void Type::objectToString(const void * object, std::ostream & stream)const{
+  if(!isStringifyable())return;
   getObjectToStringFunction()(object,stream);
 }
 std::string Type::objectToString(const void * object)const{
@@ -12,7 +19,14 @@ std::string Type::objectToString(const void * object)const{
   objectToString(object,stream);
   return stream.str();
 }
+bool Type::isConstructible()const{return  getCreateInstanceFunction();}
 
+bool Type::isConvertibleToSmartObjectPointer()const{
+  return getSmartObjectPointerConverter();
+}
+bool Type::isConvertibleToRawObjectPointer()const{
+  return getRawObjectPointerConverter();
+}
 
 Object * Type::toRawObjectPointer(void * object)const{
   if(!isConvertibleToRawObjectPointer())return 0;
@@ -33,6 +47,9 @@ Type::Type():
   TypeRepository::registerType(this);
 }
 namespace nspace{
+  bool operator!=(const Type & a, const Type & b) {
+    return !(a==b);
+  }
   bool operator==(const Type & a, const Type & b){
     return a._Id==b._Id;
   }

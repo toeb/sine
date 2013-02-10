@@ -15,7 +15,7 @@ using namespace nspace;
 class UserDataStruct : public PropertyChangingObject{
   REFLECTABLE_OBJECT(UserDataStruct);
   DS_DEFAULT_CONSTRUCTIBLE;
-  DS_TO_STRING;
+  //DS_TO_STRING;
   DS_HIERARCHY_OBJECT
 public:
   static int instanceCount;
@@ -65,7 +65,7 @@ TEST(1,CreateObject){
 
 }
 
-TEST(1,CreateObject){
+TEST(2,CreateObject){
   LuaVirtualMachine vm;
   
   vm.registerType(typeof(UserDataStruct));
