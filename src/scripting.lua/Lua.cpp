@@ -34,7 +34,7 @@ int luaObjectDestructor(lua_State*L){
     return 0;
   }
 
-  luaGetVM(L)->deletingScriptObject(*object);
+  luaGetVM(L)->scriptObjectDestroyed(*object);
   delete object;
   object = 0;
   return 0;
@@ -297,9 +297,10 @@ int luaConstructor(lua_State*L){
   
   type->createInstance();
   ScriptObject * scriptObject= new ScriptObject();
-  luaGetVM(L)->scriptObjectConstructed(object);
+  luaGetVM(L)->scriptObjectConstructed(*scriptObject);
 
-  lua_pushlightuserdata(L,object);
+
+  lua_pushlightuserdata(L,scriptObject);
   lua_setfield(L,-2,"cscriptobject");
 
 
@@ -353,7 +354,7 @@ int luaConstructor(lua_State*L){
 
 
 bool createClass(lua_State*L,const Type *type){
-  if(!type->getIsConvertibleToObject()){
+  if(!type->isConvertibleToSmartObjectPointer()){
     return false;
   }
 
