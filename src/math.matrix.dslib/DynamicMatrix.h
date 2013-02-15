@@ -52,7 +52,8 @@ namespace nspace{
       inline  T maximum()const;
       inline  T minimum()const;
       DynamicMatrix();
-      DynamicMatrix(int rows, int cols);
+      DynamicMatrix(int rows, int cols=1);
+
 
       inline size_t dataByteSize()const;
       inline DynamicMatrix<T> & operator=(const DynamicMatrix<T> & orig );

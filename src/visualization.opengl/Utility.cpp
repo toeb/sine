@@ -214,6 +214,9 @@ void nspace::glMaterial(const nspace::Material & material){
 
 
 void nspace::glSphere(double r, int lats, int longs) {
+
+    glPushMatrix();
+    glScale(r);
   int i, j;
   for(i = 0; i <= lats; i++) {
     double lat0 = M_PI * (-0.5 + (double) (i - 1) / lats);
@@ -237,6 +240,8 @@ void nspace::glSphere(double r, int lats, int longs) {
     }
     glEnd();
   }
+
+  glPopMatrix();
 }
 /*
 void nspace::glLine(const Vector3D & a, const Vector3D & b){

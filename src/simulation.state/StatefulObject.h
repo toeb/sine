@@ -40,4 +40,15 @@ namespace nspace{
     // returns the nubmer of available dimensions
     inline uint dimension(){return _stateDimension;}
   };
+
+  class StandaloneStatefulObject : public StatefulObject{
+	  TYPED_OBJECT(StandaloneStatefulObject);
+  public:
+	  StandaloneStatefulObject(uint dimension, uint derivatives):StatefulObject(dimension,derivatives){}
+	  void notifyStateChanged(){}
+	  void notifyStateNeeded(){}
+	  void onStateAssigned(){}
+
+  };
+
 }

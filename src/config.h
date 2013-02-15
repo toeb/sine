@@ -13,6 +13,12 @@ typedef unsigned char byte;
 #define EPSILON 1.0E-9
 #define PI 3.14159
 
+#ifndef USE_SINGLE
+#ifndef USE_DOUBLES
+#define USE_DOUBLES
+#endif
+#endif
+
 // define the floating point type Real
 #ifdef USE_DOUBLES
 typedef double Real;

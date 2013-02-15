@@ -19,7 +19,22 @@ namespace nspace{
     // log system info
     virtual void logSystemInfo(std::ostream & ostream)const{};
   };
+
+
+  class DelegateSystemFunction: public virtual ISystemFunction{
+	  TYPED_OBJECT(DelegateSystemFunction);
+  private:
+      const std::function<void(Time,Time)> _function;
+  public:
+      DelegateSystemFunction(std::function<void (Time,Time)> f):_function(f){
+
+	  }
+	  void evaluate(Time t, Time h){
+		  _function(t,h);
+	  }
+  };
 }
+
 
 
 /*

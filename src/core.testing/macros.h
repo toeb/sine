@@ -34,10 +34,23 @@
 
 
 #define DS_UNIT_TEST_DOUBLES_EQUAL(expected,actual,threshold)\
-{ double actualTemp = actual; \
-  double expectedTemp = expected; \
+{ double actualTemp = (actual); \
+  double expectedTemp = (expected); \
   if (fabs((expectedTemp)-(actualTemp)) > (threshold)) \
   { DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING("|"<<#actual<<"("<<(actualTemp)<<")-"<<#expected<<"("<<(expectedTemp)<<")| >"<<#threshold<<"("<< double(threshold)<<")")); }}
+
+#define DS_UNIT_TEST_LESSTHAN(threshold, value) \
+    double valueTemp = (value);\
+    double thresholdTemp = (threshold);\
+    if(!(valueTemp < thresholdTemp)){\
+    DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING("less than Assertion failed: \"" << #value<<" ("<<valueTemp<<") < "<<#threshold<<"("<< thresholdTemp<<")\""))\
+    }
+#define DS_UNIT_TEST_GREATERTHAN(threshold, value)\
+    double valueTemp = (value);\
+    double thresholdTemp = (threshold);\
+    if(!(valueTemp < thresholdTemp)){\
+    DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING("greater than Assertion failed: \"" << #value<<" ("<<valueTemp<<") < "<<#threshold<<"("<< thresholdTemp<<")\""))\
+    }
 
 #define DS_UNIT_TEST_FAIL(MESSAGE)\
   {DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING(MESSAGE));}
@@ -71,7 +84,7 @@ public:inline void test();\
 class DS_TESTCLASSNAME(NAME) : public nspace::UnitTest{\
 private:\
  std::string templateArguments;\
-public:inline void test();\
+public: inline void test();\
   typedef DS_TESTCLASSNAME(NAME) UnitTestClass;\
   DS_TESTCLASSNAME(NAME)(const std::string & templateArguments):UnitTest(#NAME),templateArguments(templateArguments){setTestName(DS_INLINE_STRING(#NAME<<"<"<<templateArguments<<">"));nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
 };
@@ -135,6 +148,8 @@ public:inline void test();\
 #define FAIL(MESSAGE) DS_UNIT_TEST_FAIL(MESSAGE)
 #endif
 
+
+
 #ifndef CHECK
 #define CHECK(condition) DS_UNIT_TEST_CHECK(condition)
 #endif
@@ -150,3 +165,15 @@ public:inline void test();\
 #ifndef DOUBLES_EQUAL
 #define DOUBLES_EQUAL(expected, actual,threshold) DS_UNIT_TEST_DOUBLES_EQUAL(expected, actual,threshold)
 #endif
+
+#ifndef CHECK_LESS_THAN
+#define CHECK_LESS_THAN(threshold,value) DS_UNIT_TEST_LESSTHAN(threshold,value)
+#endif
+
+#ifndef CHECK_GREATER_THAN
+#define CHECK_GREATER_THAN(threshold,value) DS_UNIT_TEST_GREATERTHAN(threshold,value)
+#endif
+
+
+
+
