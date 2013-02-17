@@ -51,11 +51,11 @@
 
 #define DS_TEST_PERFORMANCE(NAME) \
 class DS_TESTCLASSNAME(NAME) : public nspace::TypedPerformanceTest<DS_TESTCLASSNAME(NAME)>{\
-public:inline void test();\
+public:inline void runPerformanceTest();\
   typedef DS_TESTCLASSNAME(NAME) UnitTestClass;\
-  DS_TESTCLASSNAME(NAME):UnitTest(#NAME){nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
+  DS_TESTCLASSNAME(NAME)():TypedPerformanceTest(#NAME){nspace::UnitTestRunner::instance()->RegisteredTests().add(this);}\
 }DS_TESTINSTANCENAME(NAME);\
-  void DS_TESTCLASSNAME(NAME)::test()
+  void DS_TESTCLASSNAME(NAME)::runPerformanceTest()
 
 #define DS_TEST(NAME) \
 class DS_TESTCLASSNAME(NAME) : public nspace::UnitTest{\

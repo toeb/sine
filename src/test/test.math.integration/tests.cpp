@@ -222,7 +222,7 @@ struct MultiStepSolver{
 
 
 
-template<typename F, typename X=nspace::function_traits<F>::result_type, typename H =step_size_type<F>::type, typename T = time_type<F>::type>
+template<typename F, typename X=typename nspace::function_traits<F>::result_type, typename H =typename step_size_type<F>::type, typename T = typename time_type<F>::type>
 struct ExplicitEuler :public SingleStepSolver<F,X,H,T>{
   ExplicitEuler(F f):SingleStepSolver(f){}
   void doStep(){    
@@ -230,7 +230,7 @@ struct ExplicitEuler :public SingleStepSolver<F,X,H,T>{
   }
 };
 
-template<typename F, typename X=nspace::function_traits<F>::result_type, typename H =step_size_type<F>::type, typename T = time_type<F>::type>
+template<typename F, typename X=typename nspace::function_traits<F>::result_type, typename H =typename step_size_type<F>::type, typename T =typename time_type<F>::type>
 struct ImplicitEuler :public SingleStepSolver<F,X,H,T>{
   ImplicitEuler(F f):SingleStepSolver(f),_maxIterations(100),_tolerance(0.001){}
 
@@ -256,12 +256,6 @@ struct ImplicitEuler :public SingleStepSolver<F,X,H,T>{
 
 
 
-
-template<typename Integrator,typename F>
-Integrator make_integrator(F f){
-  return Integrator<F>(f);
-}
-
 TEST(1,ExplicitEuler){
   auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
   ExplicitEuler<decltype(f)> uut(f);
@@ -271,6 +265,41 @@ TEST(1,ExplicitEuler){
   logInfo("error: "<< abs(uut.x()-0.5));
   DOUBLES_EQUAL(0.5,uut.x(), 0.001);
 }
+
+PTEST(PerformanceExplicitEuler){
+  static auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
+  static auto uut = ExplicitEuler<decltype(f)>(f);
+  static auto temp=[](){uut.h()=0.001;  return true;}();
+  uut();
+}
+PTEST(PreformanceExplicitEulerManual){
+   static auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
+   static Real x=0.0;
+   static int i=0; 
+   static Real t=0;
+   static Real h=0.001;
+ 
+   t=t+h;
+   i++;
+   x=x+f(x,h,t,i)*h;
+
+}
+PTEST(TestName){
+    // define unit under test
+    static nspace::MatrixNxM a(100,100);
+    static nspace::MatrixNxM b(100,100);
+    // test operation (matrix multiply)
+    auto c = a*b;
+}
+
+PTEST(PerformanceImplicitEuler){
+  static auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
+  static auto uut = ImplicitEuler<decltype(f)>(f);
+  static auto temp=[](){uut.h()=0.001;  return true;}();
+
+  uut();
+}
+
 
 TEST(2,ExplicitEuler){
   auto f=[](Real x, Real h, Real t, int i)->Real{return nspace::scalar::sine(t);};
@@ -346,3 +375,15 @@ TTEST(ZeroIntegration,Solver){
 
 }*/
 //TTEST_INSTANCE(ExplicitEuler, ImplicitEuler)
+
+
+
+
+
+
+
+
+
+
+
+

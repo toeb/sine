@@ -45,6 +45,9 @@ typedef float Real;
 
 
 
+// for marking overriden methods
+#define override 
+
 
 
 // for visual studio i'll disalbe warning about inheritance via dominance  4250 is inheritance via dominance warning, 4822 is for locally declared methods without body

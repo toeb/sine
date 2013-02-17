@@ -1,21 +1,21 @@
 /**
- * Copyright (C) 2013 Tobias P. Becker
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- * and associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the  rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * More information at: https://dslib.assembla.com/
- *
- */
+* Copyright (C) 2013 Tobias P. Becker
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+* and associated documentation files (the "Software"), to deal in the Software without restriction,
+* including without limitation the  rights to use, copy, modify, merge, publish, distribute,
+* sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*
+* More information at: https://dslib.assembla.com/
+*
+*/
 #pragma once
 
 #include <core.testing/UnitTest.h>
@@ -24,24 +24,71 @@ namespace nspace {
 
   class PerformanceTest : public UnitTest {
     REFLECTABLE_OBJECT(PerformanceTest);
-    PROPERTY(long, Repeats);
-    PROPERTY(Time, ExecutionTime);
-protected:
+    PROPERTY(size_t, PlannedRepititions);
+    PROPERTY(size_t, ExecutedRepititions);
+    PROPERTY(size_t, PrimerCount);    
+    PROPERTY(Time, ExecuteFor);
+    PROPERTY(size_t, MaximumRepititions);
+  protected:
     PerformanceTest(const std::string  &name);
-
+    virtual void runTest();
+  public:
+    void test();
+    void toString(std::ostream & out)const;
   };
 
   template<typename Derived>
-  class TypedPerformanceTest : public PerformanceTest {
-public:
+  class TypedPerformanceTest : public PerformanceTest ,public Derivable<Derived>{
+  public:
     TypedPerformanceTest(const std::string  &name) : PerformanceTest(name){}
-    void runTest(){
-      Derived* derived = static_cast<Derived*>(this);
-      for(long i=0; i < getRepeats(); i++) {
-        tick();
-        derived->run();
-        tock();
+
+    override void runTest(){
+      primeTest();
+      planTest();
+      iterateTests();
+    }
+
+  private:
+    void primeTest(){
+      // run once for any static initialization
+      derived().runPerformanceTest();
+
+      // prime performance test.
+      tick();
+      for(size_t i=0; i < getPrimerCount();++i){
+        derived().runPerformanceTest();
       }
+      tock();
+
+    }
+    void planTest(){
+      setPlannedRepititions(1);
+      if(getExecuteFor()!=0){
+        // calculate the number of repetitions needed to run for <executeFor> seconds
+        auto timePerRepetition = getAccumulatedTime()/getPrimerCount();
+        if(timePerRepetition!=0.0){
+          auto repeats = (size_t)(getExecuteFor()/timePerRepetition);
+          setPlannedRepititions(repeats);
+        }
+      }
+      if(getPlannedRepititions()>getMaximumRepititions()){
+        setPlannedRepititions(getMaximumRepititions());
+      }
+
+      resetTimer();
+    }
+    void iterateTests(){
+      size_t i;
+      for(i=0; i < getPlannedRepititions(); ++i) {
+        tick();
+        derived().runPerformanceTest();
+        tock();
+        if(getAccumulatedTime()>getExecuteFor()*2){
+          logWarning("Test '"<< getTestName()<<"' is taking twice as long as anticipated.  Aborting after "<<i<<"/"<< getPlannedRepititions()<<" iterations");
+          break;
+        }
+      }
+      setExecutedRepititions(i);
 
     }
 

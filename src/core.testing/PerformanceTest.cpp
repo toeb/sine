@@ -4,9 +4,24 @@ using namespace nspace;
 
 
 
-void PerformanceTest::propertyChanging(long, Repeats){}
-void PerformanceTest::propertyChanging(Time, ExecutionTime){}
+void PerformanceTest::propertyChanging(size_t, PlannedRepititions){}
+void PerformanceTest::propertyChanging(size_t, ExecutedRepititions){}
+void PerformanceTest::propertyChanging(size_t, MaximumRepititions){}
+void PerformanceTest::propertyChanging(size_t, PrimerCount){}
+void PerformanceTest::propertyChanging(Time, ExecuteFor){}
+
+  void PerformanceTest::runTest(){}
 
 
-PerformanceTest::PerformanceTest(const std::string  &name):UnitTest(name),_Repeats(0),_ExecutionTime(5.0){}
+  void PerformanceTest::test(){}
+    void PerformanceTest::toString(std::ostream & out)const{
+      auto singleTestLength = getAccumulatedTime()/getExecutedRepititions();
+      out << "Performance test '"<< getTestName()<<"' duration: "<< singleTestLength<<"s; "<<getExecutedRepititions()<<" iterations executed in "<< std::fixed<<getAccumulatedTime()<<"s; # of primer iterations: "<<getPrimerCount();
+      Results().foreachElement([&](UnitTestResult* result){
+        out << std::endl<<"  "<<*result;
+      });
+
+
+    }
+PerformanceTest::PerformanceTest(const std::string  &name):UnitTest(name),_PlannedRepititions(0),_ExecutedRepititions(0),_ExecuteFor(1.0),_PrimerCount(4),_MaximumRepititions(std::numeric_limits<size_t>::max()){}
 
