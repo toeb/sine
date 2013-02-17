@@ -23,6 +23,7 @@ set(templateSource
 ./template/is_same_type.h
 ./template/result_of_static_function.h
 ./template/to_string.h
+./template/function_traits.h
 ./template/Comparator.h
 
 )

@@ -5,13 +5,20 @@
 #include <utility>
 namespace nspace{
 
+
+
+// ifdef msvc10 -> no template
+#define nested_template template
+
   // I got the code from http://stackoverflow.com/questions/7943525/is-it-possible-to-figure-out-the-parameter-type-and-return-type-of-a-lambda
   // by user KennyTM.  I modified it so that it works without variadic templates for up to 4 arguments
 
 template <typename T>
 struct function_traits
     : public function_traits<decltype(&T::operator())>
-{};
+{
+  
+};
 
 
 #define DS_ADD_TYPENAME(X) typename X

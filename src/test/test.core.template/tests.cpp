@@ -21,9 +21,9 @@ TEST(0,function_traits){
   auto f = [](){};
   typedef function_traits<decltype(f)> traits;
   // the number of arguments of f should be 0
-  CHECK_EQUAL(1,traits::arity);
-  // the type of argument 0 should be int
-  CHECK_TYPES(traits::arg<0>::type,int);
+  CHECK_EQUAL(0,traits::arity);
+  // the type of argument 0 should be void (because it does not exist
+  CHECK_TYPES(traits::arg<0>::type,void);
   // the result type of f should be void
   CHECK_TYPES(traits::result_type,void);
 }
