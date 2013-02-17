@@ -164,7 +164,7 @@ namespace nspace{
     template<typename T, int RowCount, int ColumnCount>
     const T * StaticMatrix<T,RowCount,ColumnCount>::data()const{return &_data[0];}
     template<typename T, int RowCount, int ColumnCount>
-    inline void StaticMatrix<T,RowCount,ColumnCount>::assign(const T * dataPtr){
+    inline void StaticMatrix<T,RowCount,ColumnCount>::assign(const T * dataPtr){      
       memcpy(_data, dataPtr,dataByteSize());
     }
     template<typename T, int RowCount, int ColumnCount>

@@ -23,5 +23,12 @@ void PerformanceTest::propertyChanging(Time, ExecuteFor){}
 
 
     }
-PerformanceTest::PerformanceTest(const std::string  &name):UnitTest(name),_PlannedRepititions(0),_ExecutedRepititions(0),_ExecuteFor(1.0),_PrimerCount(4),_MaximumRepititions(std::numeric_limits<size_t>::max()){}
+PerformanceTest::PerformanceTest(const std::string  &name):
+  UnitTest(name),
+  _PlannedRepititions(0),
+  _ExecutedRepititions(0),
+  _ExecuteFor(0.2),
+  _PrimerCount(4),
+  _MaximumRepititions(std::numeric_limits<size_t>::max())
+{}
 
