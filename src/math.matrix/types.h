@@ -1,6 +1,6 @@
 #pragma once
 #include <config.h>
-#include <core.Serialization.h>
+#include <core.serialization.h>
 #include <core.utility.h>
 #include <core.reflection/type/Type.h>
 #ifndef MATRIX_CLASSES

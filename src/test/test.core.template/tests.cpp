@@ -113,7 +113,7 @@ TEST(1,default_constructor){
   auto instance = default_constructor<A>::construct();
   CHECK(instance !=0);
 }
-TEST(2,default_constructor){
+/*TEST(2,default_constructor){
   static bool called = false;
   struct A{
     SINGLETON(A){
@@ -124,7 +124,7 @@ TEST(2,default_constructor){
   auto instance = default_constructor<A>::construct();
   CHECK(instance!=0);
  CHECK(called);
-}
+}*/
 TEST(3,default_constructor){
   struct A{
     A(int i){}//no default constructor available

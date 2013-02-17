@@ -72,7 +72,7 @@ TEST(1,IStepper){
 
 template<typename F>
 struct TestStepper :public Stepper<F>{
-  TestStepper(F f):Stepper(f){}
+  TestStepper(F f):Stepper<F>(f){}
   void doStep(){
   }
 };
@@ -106,16 +106,16 @@ TEST(1,Stepper){
 TTEST(StepperFunctionCall,StateType){
   auto f=[](StateType x){return x;};  
   typedef integrable_function_traits<decltype(f)> traits;
-   traits::TimeStepType h;
-  traits::TimeType t;     
-  traits::StateType x;    
+  typename traits::TimeStepType h;
+  typename traits::TimeType t;
+  typename traits::StateType x;
   
   nspace::elementWiseSetConstant(h,0.01);
   nspace::elementWiseSetConstant(t,0.0);
   nspace::elementWiseSetConstant(x,1.5);
   TestStepper<decltype(f)> uut(f);
   auto result = uut.f(x,h,t);
-  CHECK_TYPES(decltype(result), std::decay<StateType>::type);
+  //CHECK_TYPES(typename decltype(result), typename std::decay<StateType>::type);
   CHECK_EQUAL(x,result);
 }
 

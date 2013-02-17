@@ -27,6 +27,29 @@ set(dslibExternalsProjectFolder "externals")
 add_definitions(-DFREEGLUT_LIB_PRAGMAS=0)
 add_definitions(-DFREEGLUT_STATIC=1)
 
+
+#add_definitions(-DUNIX=1)
+#add_definitions(-DWIN32=1)
+#add_definitions(-DAPPLE=1)
+#add_definitions(-DMINGW=1)
+
+#add_definitions(-DMSYS=1)
+#add_definitions(-DCYGWIN=1)
+#add_definitions(-DBORLAND=1)
+#add_definitions(-DWATCOM=1)
+
+if(MSVC)
+add_definitions(-DMSVC=1)
+endif(MSVC)
+
+if(CMAKE_COMPILER_IS_GNUCC)
+add_definitions(-DGCC=1)
+endif(CMAKE_COMPILER_IS_GNUCC)
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+add_definitions(-DGXX=1)
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
 set(projectPath ${PROJECT_SOURCE_DIR})
 set(LIBRARY_OUTPUT_PATH ${projectPath}/build/lib)
 set(EXECUTABLE_OUTPUT_PATH ${projectPath}/build/bin)

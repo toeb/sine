@@ -9,7 +9,7 @@ namespace nspace{
     public virtual Log{
       REFLECTABLE_OBJECT(MethodTreeItem);
       // the method info object
-      PROPERTY(const MethodInfo*, MethodInfo){}
+      SIMPLE_PROPERTY(const MethodInfo*, MethodInfo){}
       // the ownign object of the property
       PROPERTY(Object *, PropertyOwner){}
   public:

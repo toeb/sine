@@ -69,7 +69,7 @@ TEST(2,HierarchyObject){
   }a;
   auto type = typeof(A);
 
-  CHECK(!typeof(A)->getIsConvertibleToObject());
+  CHECK(!typeof(A)->isConvertibleToRawObjectPointer());
 }
 
 
@@ -85,18 +85,18 @@ TEST(1,HierarchyObject){
   auto typeA= typeof(A);
   auto typeB = typeof(B);
 
-  CHECK(typeof(A)->getIsConvertibleToObject());
-  CHECK(typeof(B)->getIsConvertibleToObject());
+  CHECK(typeof(A)->isConvertibleToRawObjectPointer());
+  CHECK(typeof(B)->isConvertibleToRawObjectPointer());
   void * v = &b;
 
-  auto o = typeof(B)->toObjectPointer(v);
+  auto o = typeof(B)->toRawObjectPointer(v);
 
 
 
 }
 
 TEST(1, createInstance){
-  CHECK( typeof(std::string)->getIsConstructible());
+  CHECK( typeof(std::string)->isConstructible());
   auto instance = typeof(std::string)->createTypedInstance<std::string>();  
   CHECK(instance);
   *instance = "asdasdasdasd";
@@ -115,7 +115,7 @@ TEST(2, createInstance){
     DS_DEFAULT_CONSTRUCTIBLE;
   }a;// need to instanciate else static code is not executed :(
 
-  CHECK( typeof(A)->getIsConstructible());
+  CHECK( typeof(A)->isConstructible());
 
   auto instance = typeof(A)->createTypedInstance<A>();
   
@@ -133,7 +133,7 @@ TEST(3, createInstance){
     A(int i){}    
   };
 
-  CHECK( !typeof(A)->getIsConstructible());
+  CHECK( !typeof(A)->isConstructible());
   CHECK(!typeof(A)->createInstance());
 }
 

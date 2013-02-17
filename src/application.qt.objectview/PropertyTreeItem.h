@@ -11,7 +11,7 @@ namespace nspace{
   {
     REFLECTABLE_OBJECT(PropertyTreeItem);
     // the propertyinfo object
-    PROPERTY(const PropertyInfo*, PropertyInfo){}
+    SIMPLE_PROPERTY(const PropertyInfo*, PropertyInfo){}
     // the ownign object of the property
     PROPERTY(Object *, PropertyOwner){}
   public:

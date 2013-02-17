@@ -1,14 +1,16 @@
 #pragma once
 
+#include <math.integration/Stepper.h>
+
 
 namespace nspace{
   namespace math{
     namespace integration{
     
 
-template<typename F, typename X=state_type<F>::type, typename H =step_size_type<F>::type,typename T = time_type<F>::type >
+template<typename F, typename X=typename state_type<F>::type, typename H =typename step_size_type<F>::type,typename T = typename time_type<F>::type >
 struct SingleStepSolver : public Stepper<F,X,H,T>{
-  SingleStepSolver(FunctionType f):Stepper(f){}
+  SingleStepSolver(F f):Stepper<F,X,H,T>(f){}
 
 };
     }

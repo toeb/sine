@@ -35,7 +35,7 @@ namespace nspace{
       if(newvalue)newvalue->listeners()|= this;
     }
     PROPERTY(BindingType, BindingType){}
-    PROPERTY(const PropertyInfo*, Property){}
+    SIMPLE_PROPERTY(const PropertyInfo*, Property){}
 
     bool _propertyChanging;//don't know if i realy need this
   public:

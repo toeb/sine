@@ -14,11 +14,12 @@ namespace integration{
   template<typename F, typename X, typename H ,typename T> auto Stepper<F,X,H,T>::h()->TimeStepType & {return _h;}
   template<typename F, typename X, typename H ,typename T> auto Stepper<F,X,H,T>::h0()const->const TimeStepType & {return _h0;}
 
-  template<typename F, typename X, typename H ,typename T> Stepper<F,X,H,T>::Stepper(FunctionType function, 
-    StateType x0=constant<StateType>(0),
-    TimeType t0=constant<TimeType>(0),
-    TimeStepType h0=constant<TimeStepType>(0.02)
-    ):_x0(x0),_x(x0), _h0(h0),_h(h0),_t0(t0),_t(t0){}
+  template<typename F, typename X, typename H ,typename T> Stepper<F,X,H,T>::Stepper(
+    F function,
+    X x0,
+    T t0,
+    H h0
+    ):_function(function),_x0(x0),_x(x0), _h0(h0),_h(h0),_t0(t0),_t(t0){}
   
    template<typename F, typename X, typename H ,typename T> void Stepper<F,X,H,T>::step(){
     IStepper::step();    

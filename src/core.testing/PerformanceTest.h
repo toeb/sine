@@ -51,12 +51,12 @@ namespace nspace {
   private:
     void primeTest(){
       // run once for any static initialization
-      derived().runPerformanceTest();
+      this->derived().runPerformanceTest();
 
       // prime performance test.
       tick();
       for(size_t i=0; i < getPrimerCount();++i){
-        derived().runPerformanceTest();
+        this->derived().runPerformanceTest();
       }
       tock();
 
@@ -81,7 +81,7 @@ namespace nspace {
       size_t i;
       for(i=0; i < getPlannedRepititions(); ++i) {
         tick();
-        derived().runPerformanceTest();
+        this->derived().runPerformanceTest();
         tock();
         if(getAccumulatedTime()>getExecuteFor()*2){
           logWarning("Test '"<< getTestName()<<"' is taking twice as long as anticipated.  Aborting after "<<i<<"/"<< getPlannedRepititions()<<" iterations");

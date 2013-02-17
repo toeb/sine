@@ -2,6 +2,7 @@
 
 #include <core.reflection/type/Type.h>
 #include <core/patterns/Singleton.h>
+#include <sstream>
 //#include <core/template/default_constructor.h>
 //#define NEWIMPL
 #ifndef NEWIMPL
@@ -101,7 +102,7 @@ private:                                                                        
   class TypeInfo : public Type
   {
     TEMPLATEDSINGLETON(TypeInfo, <T>) {
-      typedef std::remove_pointer<T>::type pureType;
+      typedef typename std::remove_pointer<T>::type pureType;
       setName(pureType::getTypeName());
       setRawDerivedPointerConverter(Type::rawToDerivedCaster<pureType>());
       setRawObjectPointerConverter(Type::rawToObjectCaster<pureType>());
@@ -164,6 +165,7 @@ private:                                                                        
   META_DEFAULTCONSTRUCTOR(long);
   META_DEFAULTCONSTRUCTOR(long long);
   META_DEFAULTCONSTRUCTOR(unsigned char);
+  META_DEFAULTCONSTRUCTOR(long unsigned int);
 
   META_DEFAULTCONSTRUCTOR(std::string);
 
@@ -176,7 +178,7 @@ private:                                                                        
   template<typename T> 
   class TypeInfo<std::shared_ptr<T>>: public Type { 
     TEMPLATEDSINGLETON(TypeInfo, <std::shared_ptr<T>>){ 
-      setName(DS_INLINE_STRING("shared_ptr<" <<typeof(T)->getName()<<">"));
+      setName(DS_INLINE_STRING("shared_ptr<" << typeof(T)->getName()<<">"));
 
     } 
   };

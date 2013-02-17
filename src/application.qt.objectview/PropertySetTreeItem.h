@@ -8,7 +8,7 @@ namespace nspace{
   class PropertySetTreeItem : public TreeItem, public virtual Log, public virtual ObjectObserver{
     REFLECTABLE_OBJECT(PropertySetTreeItem);
     // the propertyset info object
-    PROPERTY(const PropertySetInfo*, PropertySetInfo);
+    SIMPLE_PROPERTY(const PropertySetInfo*, PropertySetInfo);
     // the object to which the propertyset belongs
     PROPERTY(Object *, PropertyObject){}
   public:

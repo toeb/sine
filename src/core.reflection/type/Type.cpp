@@ -6,9 +6,7 @@
 using namespace nspace;
 
 bool Type::isStringifyable()const{
-  bool b = getObjectToStringFunction();
-
-  return b;
+  return (bool)getObjectToStringFunction();
 }
 void Type::objectToString(const void * object, std::ostream & stream)const{
   if(!isStringifyable())return;
@@ -19,13 +17,13 @@ std::string Type::objectToString(const void * object)const{
   objectToString(object,stream);
   return stream.str();
 }
-bool Type::isConstructible()const{return  getCreateInstanceFunction();}
+bool Type::isConstructible()const{return  (bool)getCreateInstanceFunction();}
 
 bool Type::isConvertibleToSmartObjectPointer()const{
-  return getSmartObjectPointerConverter();
+  return (bool)getSmartObjectPointerConverter();
 }
 bool Type::isConvertibleToRawObjectPointer()const{
-  return getRawObjectPointerConverter();
+  return (bool)getRawObjectPointerConverter();
 }
 
 Object * Type::toRawObjectPointer(void * object)const{

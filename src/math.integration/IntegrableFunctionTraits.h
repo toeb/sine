@@ -56,7 +56,7 @@ namespace integration{
     typedef typename time_type<F>::type TimeType;
     typedef typename step_size_type<F>::type TimeStepType;
     typedef typename state_type<F>::type StateType;    
-    typedef typename nspace::coefficientTypeOfType(typename StateType) CoefficientType;
+    typedef typename nspace::coefficientTypeOfType( StateType) CoefficientType;
     typedef size_t StepCountType;
     typedef F FunctionType;
     static StateType call(FunctionType f ,StateType x, TimeStepType h, TimeType t, StepCountType i);
