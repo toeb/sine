@@ -35,6 +35,7 @@ namespace nspace {
     REFLECTABLE_OBJECT(UnitTest);
     ACTION(RunTest);
     PROPERTY(std::string, TestName);
+    PROPERTY(std::string, TestDescription);
     OBJECTPOINTERPROPERTY(SourceInfo, Info);
     PROPERTY(bool, IsInitialized);
     PROPERTY(double, Time);

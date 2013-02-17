@@ -10,6 +10,7 @@ UnitTest::UnitTest(const std::string & name){
 
  void UnitTest::RunTest(){run();}
     void UnitTest::propertyChanging(std::string, TestName){}
+    void UnitTest::propertyChanging(std::string, TestDescription){}
     void UnitTest::propertyChanging(SourceInfo*, Info){}
     void UnitTest::propertyChanging(bool, IsInitialized){}    
     void UnitTest::propertyChanging(double, Time){}
@@ -54,7 +55,7 @@ UnitTest::UnitTest(const std::string & name){
     }
 
      void UnitTest::toString(std::ostream & out)const{
-      out << "Test '"<< getTestName()<<"' executed in "<< std::fixed<<getAccumulatedTime()<<"s ";
+       out << "Test '"<< getTestName()<<"' executed in "<< std::fixed<<getAccumulatedTime()<<"s (desciption:'"<< getTestDescription()<<"')";
       Results().foreachElement([&](UnitTestResult* result){
         out << std::endl<<"  "<<*result;
       });
