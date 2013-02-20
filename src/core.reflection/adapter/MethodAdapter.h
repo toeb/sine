@@ -19,7 +19,8 @@ namespace nspace{
     Argument call();
     template<typename Container>
     Argument call(Container & args){
-      getMethodInfo()->call<Container>(getOwner(), getMethodInfo());
+      return getMethodInfo()->call<Container>(getOwner(), getMethodInfo());
+
     }
     Argument call(std::vector<Argument> args);
 

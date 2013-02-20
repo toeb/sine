@@ -71,22 +71,17 @@
  *
  * \param NAME  The name.
  */
-#define DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) /*private:  typedef typename nspace::result_of_static_function< decltype( &DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) ) >::type*/ DS_PROPERTY_TYPE_NAME (NAME);
+#define DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME)  DS_PROPERTY_TYPE_NAME (NAME);
 
-//#define DS_PROPERTY_DEFINITION(NAME) /* Begginning of Property */ \
- // static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) (); /*this should not create any overhead and is possible for any type*/ \
- // DS_PROPERTY_TYPE_DEFINITION(NAME) /* Define Property type */
+
 
 #define DS_PROPERTY_DEFINITION(NAME) DS_PROPERTY_TYPE_DEFINITION(NAME)
-  /* Begginning of Property */ 
-  /*DS_PROPERTY_DEFINITION_HELPER(NAME); *//*this should not create any overhead and is possible for any type*/ 
-  /*DS_PROPERTY_TYPE_DEFINITION(NAME)*/ /* Define Property type */
+
 
 
 #define DS_PROPERTY_DEFINITION_TEMPLATED(NAME) \
   DS_PROPERTY_DEFINITION(NAME)\
-  /*static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) (); *//*this should not create any overhead and is possible for any type*/ \
-  /*DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) *//* Define Property type */
+
 
 // there can be field storage pointer storage, refence storage and callback storage
 //
@@ -125,18 +120,7 @@
 #define DS_PROPERTY_AUTO_GETTER(NAME) DS_PROPERTY_GETTER(NAME){ return DS_PROPERTY_STORAGE(NAME); }
 
 
-/*  It is relatively ugly but one could use define to set the propertyname
-   #define DS_PROPERTY_NAME Value
-   DEFINITION;
-   private: FIELD_STORAGE;
-   protected: virtual SETTER;
-   public: GETTER;
 
-
-   #undef DS_PROPERTY_NAME
-
-
- */
 
 
 #define basic_property(NAME)      \
@@ -182,45 +166,7 @@ private:                                                          \
 #define DS_PROPERTY_MARKER(NAME) DS_CONCAT(NAME,PropertyMarker)
 #define DS_PROPERTY_MARKER_DEFINITION(NAME) struct DS_PROPERTY_MARKER (NAME){ };
 
-/*  This works with MSVC however specialization of template methods inside of a class is not part of the C++ standard --> GCC fails
-    Also a limitation (albeit a negligable one) is that you may not use this as a  local struct because of templating
-   #define DS_PROPERTY_EXTENSION_BEFORE_SET_NAME onBeforePropertySet
-   #define DS_PROPERTY_EXTENSION_AFTER_SET_NAME onAfterPropertySet
-   #define DS_PROPERTY_EXTENSION_BEFORE_GET_NAME onBeforePropertyGet
 
-   #define DS_PROPERTY_EXTENSION_BEFORE_SET  template<typename MarkerType,typename ValueType> DS_INLINE bool DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const ValueType & value){return false;}
-   #define DS_PROPERTY_EXTENSION_AFTER_SET   template<typename MarkerType> DS_INLINE void DS_PROPERTY_EXTENSION_AFTER_SET_NAME(){}
-   #define DS_PROPERTY_EXTENSION_BEFORE_GET  template<typename MarkerType> DS_INLINE void DS_PROPERTY_EXTENSION_BEFORE_GET_NAME()const{}
-
-   #define DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME) template<> DS_INLINE bool DS_PROPERTY_EXTENSION_BEFORE_SET_NAME<DS_PROPERTY_MARKER(NAME),  DS_PROPERTY_TYPE_NAME(NAME)>(const DS_PROPERTY_TYPE_NAME(NAME) & newvalue)
-   #define DS_PROPERTY_EXTENSION_AFTER_SET_IMPLEMENTATION(NAME)  template<> DS_INLINE void DS_PROPERTY_EXTENSION_AFTER_SET_NAME< DS_PROPERTY_MARKER(NAME)>()
-   #define DS_PROPERTY_EXTENSION_BEFORE_GET_IMPLEMENTATION(NAME) template<> DS_INLINE void DS_PROPERTY_EXTENSION_BEFORE_GET_NAME< DS_PROPERTY_MARKER(NAME)>()const
-
-
-   #define DS_PROPERTY_EXTENSION_METHODS\
-   DS_PROPERTY_EXTENSION_BEFORE_SET\
-   DS_PROPERTY_EXTENSION_AFTER_SET\
-   DS_PROPERTY_EXTENSION_BEFORE_GET\
-
-   #define DS_PROPERTY_BEFORE_SET(NAME) DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME) //DS_INLINE bool before##NAME##Set(const DS_PROPERTY_TYPE_NAME(NAME) & value)
-   #define DS_PROPERTY_AFTER_SET(NAME) DS_PROPERTY_EXTENSION_AFTER_SET_IMPLEMENTATION(NAME)//DS_INLINE void after##NAME##Set()
-   #define DS_PROPERTY_BEFORE_GET(NAME) DS_PROPERTY_EXTENSION_BEFORE_GET_IMPLEMENTATION(NAME)//DS_INLINE void before##NAME##Get()const
-
-   #define beforeSet(NAME) DS_PROPERTY_BEFORE_SET(NAME)
-   #define afterSet(NAME) DS_PROPERTY_AFTER_SET(NAME)
-   #define beforeGet(NAME) DS_PROPERTY_BEFORE_GET(NAME)
-
-   #define DS_PROPERTY_SETTER_EXTENDED(NAME) DS_PROPERTY_SETTER(NAME){ if( DS_PROPERTY_EXTENSION_BEFORE_SET_NAME<DS_PROPERTY_MARKER(NAME),DS_PROPERTY_TYPE_NAME(NAME)>(value))return; DS_PROPERTY_STORAGE(NAME) = value; DS_PROPERTY_EXTENSION_AFTER_SET_NAME<DS_PROPERTY_MARKER(NAME)>();}
-   #define DS_PROPERTY_GETTER_EXTENDED(NAME) DS_PROPERTY_GETTER(NAME){ DS_PROPERTY_EXTENSION_BEFORE_GET_NAME<DS_PROPERTY_MARKER(NAME)>(); return DS_PROPERTY_STORAGE(NAME); }
-
-
-   #define DS_PROPERTY_EXTENDED(NAME)\
-   DS_PROPERTY_DEFINITION(NAME)\
-   DS_PROPERTY_MARKER_DEFINITION(NAME)\
-   DS_PROPERTY_STORAGE_FIELD(NAME)\
-   public: DS_PROPERTY_GETTER_EXTENDED(NAME)\
-   public: DS_PROPERTY_SETTER_EXTENDED(NAME)
- */
 // This is plattform indepenedent.  it uses overloading and a markertypes to call default/custom extension methods
 // it works for classes and structs in namespaces, classes as well as methods
 // furthermore you must not define the general (empty implementations) of the extension methods in the class if every property defines all extensions

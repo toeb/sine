@@ -440,13 +440,13 @@ public: \
 
 #define DS_REFLECTION_METHOD(NAME)                                                                          \
   DS_ONCE{                                                                                                  \
-  static nspace::TypedMethodInfo<decltype(&NAME)> info(&NAME);                                              \
+  static nspace::TypedMethodInfo<decltype(&CurrentClassType::NAME)> info(&CurrentClassType::NAME);                                              \
   info.setName(#NAME);                                                                                      \
   auto type = const_cast<nspace::Type*>(static_cast<const nspace::Type*>(typeof(CurrentClassType)));        \
   type->Members()|=&info;                                                                                   \
   }
 
-#ifndef reflect_method(NAME)
+#ifndef reflect_method
 #define reflect_method(NAME) DS_REFLECTION_METHOD(NAME)
 #endif
 

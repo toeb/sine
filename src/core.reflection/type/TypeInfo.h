@@ -12,20 +12,6 @@ namespace nspace{
 
 
 
-  template<typename T>
-  const Type * type_of(){
-    return nspace::TypeInfo<T>::instance().get();
-  }
-  template<typename T>
-  const Type * type_of(const T & t){
-    return type_of<T>();
-  }
-  /**
-  * \brief this macro returns the Type * instance for TYPENAME.
-  *
-  * \param TYPENAME  The typename.
-  */
-#define typeof(TYPENAME) nspace::type_of<TYPENAME>()
   
 
   /**
@@ -45,7 +31,7 @@ private:
 
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
 
-#ifndef reflect_type(NAME)
+#ifndef reflect_type
 #define reflect_type(NAME) DS_CLASS(NAME)
 #endif
 
@@ -124,6 +110,23 @@ private:                                                                        
     }
   };
 
+
+  template<typename T>
+  const Type * type_of(){
+    return nspace::TypeInfo<T>::instance().get();
+  }
+  template<typename T>
+  const Type * type_of(const T & t){
+    return type_of<T>();
+  }
+  /**
+  * \brief this macro returns the Type * instance for TYPENAME.
+  *
+  * \param TYPENAME  The typename.
+  */
+#define typeof(TYPENAME) nspace::type_of<TYPENAME>()
+
+
   /**
   * \brief macro allows typeinfo to be declared for primitve types. or external types
   *
@@ -197,7 +200,7 @@ private:                                                                        
   };
 
 }
-#else NEWIMPL
+#else
 
 #define DS_META_TYPENAME(TYPE) template<> struct meta_type_name<TYPE>{static const std::string & value(){static std::string name = #TYPE; return name;}};
 #define DS_META_INSTANCIATE_DEFAULT_CONSTRUCTOR(TYPE) template<> struct meta_type_construction<TYPE> { static const bool constructible = true; static std::shared_ptr<void> construct(){return std::shared_ptr<void>(new TYPE());}};

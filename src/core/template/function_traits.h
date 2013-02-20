@@ -3,6 +3,7 @@
 #include <core/preprocessor/Reduce.h>
 #include <tuple>
 #include <utility>
+#include <cstdlib>
 namespace nspace{
 
 
@@ -15,7 +16,7 @@ namespace nspace{
 
 template <typename T>
 struct function_traits
-    : public function_traits<typename decltype(&T::operator())>
+    : public function_traits< decltype(&T::operator())>
 {
   
 };

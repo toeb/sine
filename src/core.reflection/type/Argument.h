@@ -23,6 +23,9 @@ namespace nspace{
 }
 
 
+// template implementation
+#include <core.reflection/type/TypeInfo.h>
+
 namespace nspace{
   template<typename T> Argument::Argument(const T & data):data(new T(data)),type(type_of<T>()){
   

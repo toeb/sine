@@ -33,7 +33,7 @@ namespace nspace{
     return call(object,args);
   }
   template<typename Container>
-  Argument MethodInfo::call(Object * object, Container & container)const{
+  Argument MethodInfo::call(Object * object, Container & args)const{
     auto ptr = object->getType()->toRawDerivedPointer(object);
     return call<Container>(object,args);
   }
