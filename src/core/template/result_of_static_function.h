@@ -21,6 +21,7 @@ namespace nspace{
   typedef C type;
   };
   */
+  
 
 
   template< typename T >

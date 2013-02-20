@@ -18,7 +18,15 @@ namespace nspace{
   * \param TYPENAME  The typename.
   */
 #define typeof(TYPENAME) nspace::TypeInfo<TYPENAME>::instance().get()
-
+  
+  template<typename T>
+  const Type * type_of(){
+    return typeof(T);
+  }
+  template<typename T>
+  const Type * type_of(const T & t){
+    return type_of<T>();
+  }
 
   /**
   * \brief Macro for making an object a typed object. defines a static meta information structure

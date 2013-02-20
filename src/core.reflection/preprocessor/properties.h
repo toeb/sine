@@ -435,6 +435,16 @@ public: \
                       PROPERTYCLASSINSTANCE(NAME)->setElementToObjectConverter([] (void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr)); }); \
                       );
 
+
+
+#define DS_REFLECTION_METHOD(NAME)                                                    \
+  DS_ONCE{                                                                            \
+  static TypedMethodInfo<decltype(&NAME)> info(&NAME);                                \
+  info.setName(#NAME);                                                                \
+  auto type = const_cast<Type*>(static_cast<const Type*>(typeof(CurrentClassType)));  \
+  type->Members()|=&info;                                                             \
+  }
+
 /**
  * \brief creates a public method with the signature void <NAME>() and registers it at its typeinfo
  *        class only TYPED_OBJECT(<ClassName>) needs to be declared in the class were action is
@@ -442,7 +452,8 @@ public: \
  *
  * \param NAME  The name.
  */
-#define ACTION(NAME)                                                                                                  \
+#define ACTION(NAME) DS_REFLECTION_METHOD(NAME); public: void NAME()
+/*#define ACTION(NAME)                                                                                                  \
 private:                                                                                                              \
   typedef CurrentClassType NAME ## ParentClassType;                                                                   \
   class MEMBERCLASSNAME(NAME) : public virtual nspace::MethodInfo {                                                   \
@@ -470,3 +481,4 @@ public:                                                                         
   };                                                                                                                  \
 public:                                                                                                               \
   void NAME()
+  */

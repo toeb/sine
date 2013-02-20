@@ -2,10 +2,8 @@
 
 using namespace nspace;
 
-bool MethodAdapter::call(void * arguments , void **returnvalue){
-  auto object = getOwner();
-  auto method = getMethodInfo();
-  return  method->call(object,arguments,returnvalue);
+Argument MethodAdapter::call(std::vector<Argument> args){
+  return call(args);
 }
 
 MethodAdapter::MethodAdapter():_MethodInfo(0){}
@@ -20,6 +18,10 @@ MethodAdapter::MethodAdapter(Object * object, const MethodInfo * methodInfo){
   setOwner(object);
 }
 
+Argument MethodAdapter::call(){
+  std::vector<Argument> args;
+  return call(args);
+}
 void MethodAdapter::executeAction(){
-  call(0,0);
+  call();
 }

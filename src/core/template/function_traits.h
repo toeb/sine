@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/preprocessor/Foreach.h>
+#include <core/preprocessor/Reduce.h>
 #include <tuple>
 #include <utility>
 namespace nspace{
@@ -15,7 +15,7 @@ namespace nspace{
 
 template <typename T>
 struct function_traits
-    : public function_traits<decltype(&T::operator())>
+    : public function_traits<typename decltype(&T::operator())>
 {
   
 };

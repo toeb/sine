@@ -6,7 +6,7 @@
 namespace nspace{
   class Attribute{
     //DS_CLASS(Attribute);
-    std::string basic_property(AttributeName);
+    typedef std::string basic_property(AttributeName);
   };
   
   class AttributeTarget {

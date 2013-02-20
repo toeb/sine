@@ -9,7 +9,7 @@ namespace nspace{
   class IReadableValue : public virtual Object, public virtual Observable{
     DS_CLASS_DECLARATION(IReadableValue);
     
-    ConstTypePtr basic_property(ValueType);
+   typedef ConstTypePtr basic_property(ValueType);
   protected:
     virtual bool retrieveValue(void * value)const=0;
   public:

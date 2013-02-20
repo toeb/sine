@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core.graph/Node.h>
-#include <core.utility.h>
+#include <core.utility/StringTools.h>
 namespace nspace{
   template<typename T, typename Derived>
   class DerivableDataNode: public Node<Derived>{

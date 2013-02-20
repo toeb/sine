@@ -69,7 +69,7 @@ namespace nspace{
     DS_CURRENT_CLASS(ReflectionTest1);
   //REFLECTABLE_OBJECT(ReflectionTest1);
 
-    int basic_property(Value1);
+   typedef int basic_property(Value1);
     DS_PROPERTY_MAKE_REFLECTABLE(Value1);
 
   //PROPERTY(int , Value1){};

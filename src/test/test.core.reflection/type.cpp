@@ -4,6 +4,3 @@ using namespace std;
 using namespace nspace;
 
 
-TEST(1,Type){
-
-}

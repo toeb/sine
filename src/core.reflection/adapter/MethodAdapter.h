@@ -15,6 +15,13 @@ namespace nspace{
     MethodAdapter(Object * object, const MethodInfo * methodInfo);
   protected:
     void executeAction();
-    bool call(void * arguments =0, void **returnvalue=0);
+
+    Argument call();
+    template<typename Container>
+    Argument call(Container & args){
+      getMethodInfo()->call<Container>(getOwner(), getMethodInfo());
+    }
+    Argument call(std::vector<Argument> args);
+
   };
 }

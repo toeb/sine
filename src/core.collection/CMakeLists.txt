@@ -76,6 +76,7 @@ set(collectionSource
   ./Operators.h
   ./Operations.h
   ./Enumerable.h
+  ./ObservableCollection.h
   ../include/core.collection.h
 )
 

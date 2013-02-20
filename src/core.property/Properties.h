@@ -25,7 +25,7 @@
 #include <core.preprocessor.h>
 // for type helper function
 #include <core/template/result_of_static_function.h>
-
+#include <core/template/function_traits.h>
 
 #define DS_CURRENT_TYPE_NAME CurrentType
 #define DS_CURRENT_TYPE(CLASSNAME) typedef CLASSNAME DS_CURRENT_TYPE_NAME;
@@ -54,30 +54,39 @@
  * \param NAME  The name.
  */
 #define DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) DS_CONCAT(___,DS_PROPERTY_NAME(NAME))
-
+#define DS_PROPERTY_DEFINITION_HELPER_NAME(NAME)  DS_CONCAT(___,DS_PROPERTY_NAME(NAME))
+#define DS_PROPERTY_DEFINITION_HELPER(NAME)  DS_PROPERTY_DEFINITION_HELPER_NAME(NAME)()const
 /**
  * \brief defines the type of the property (using the Definition helper method to allow prepending the actual type only once)
- *        
- *
+ *  current usage: typedef <typename> DS_PROPERTY_TYPE_DEFINITION * this will change in future versions when microsoft fixes their compiler       
+ * 
  * \param NAME  The name.
  */
-#define DS_PROPERTY_TYPE_DEFINITION(NAME) protected: typedef nspace::result_of_static_function< decltype( &DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) ) >::type DS_PROPERTY_TYPE_NAME (NAME); //this is the definition of the property type
-
+//#define DS_PROPERTY_TYPE_DEFINITION(NAME) protected: typedef nspace::result_of_static_function< decltype( &DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) ) >::type DS_PROPERTY_TYPE_NAME (NAME); //this is the definition of the property type
+//this would work if visual studio fixed the c1001 bug //#define DS_PROPERTY_TYPE_DEFINITION(NAME) protected: typedef nspace::function_traits< decltype(  &DS_PROPERTY_DEFINITION_HELPER_NAME(NAME) ) >::result_type DS_PROPERTY_TYPE_NAME (NAME); //this is the definition of the property type
+// 
+#define DS_PROPERTY_TYPE_DEFINITION(NAME) DS_CONCAT(_,DS_PROPERTY_TYPE_NAME(NAME)); protected: typedef DS_CONCAT(_,DS_PROPERTY_TYPE_NAME(NAME)) DS_PROPERTY_TYPE_NAME(NAME);
 /**
  * \brief same as DS_PROPERTY_TYPE_DEFINITION(NAME) but works in template classes (added typename specifier)
  *
  * \param NAME  The name.
  */
-#define DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) private:  typedef typename nspace::result_of_static_function< decltype( &DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) ) >::type DS_PROPERTY_TYPE_NAME (NAME);
+#define DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) /*private:  typedef typename nspace::result_of_static_function< decltype( &DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) ) >::type*/ DS_PROPERTY_TYPE_NAME (NAME);
 
-#define DS_PROPERTY_DEFINITION(NAME) /* Begginning of Property */ \
-  static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) (); /*this should not create any overhead and is possible for any type*/ \
-  DS_PROPERTY_TYPE_DEFINITION(NAME) /* Define Property type */
+//#define DS_PROPERTY_DEFINITION(NAME) /* Begginning of Property */ \
+ // static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) (); /*this should not create any overhead and is possible for any type*/ \
+ // DS_PROPERTY_TYPE_DEFINITION(NAME) /* Define Property type */
+
+#define DS_PROPERTY_DEFINITION(NAME) DS_PROPERTY_TYPE_DEFINITION(NAME)
+  /* Begginning of Property */ 
+  /*DS_PROPERTY_DEFINITION_HELPER(NAME); *//*this should not create any overhead and is possible for any type*/ 
+  /*DS_PROPERTY_TYPE_DEFINITION(NAME)*/ /* Define Property type */
 
 
 #define DS_PROPERTY_DEFINITION_TEMPLATED(NAME) \
-  static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) (); /*this should not create any overhead and is possible for any type*/ \
-  DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) /* Define Property type */
+  DS_PROPERTY_DEFINITION(NAME)\
+  /*static DS_STATIC_TYPE_DEFINITION_HELPER_NAME(NAME) (); *//*this should not create any overhead and is possible for any type*/ \
+  /*DS_PROPERTY_TYPE_DEFINITION_TEMPLATED(NAME) *//* Define Property type */
 
 // there can be field storage pointer storage, refence storage and callback storage
 //

@@ -19,9 +19,9 @@ using namespace std;
 TEST(0,function_traits){ 
   TEST_DESCRIPTION(tests traits for a simple void function)
   auto f = [](){};
-
+  int result = function_traits<decltype(f)>::arity;
   // the number of arguments of f should be 0
-  CHECK_EQUAL(0,function_traits<decltype(f)>::arity);
+  CHECK_EQUAL(0,result);
   // the type of argument 0 should be void (because it does not exist
   CHECK_TYPES(function_traits<decltype(f)>::arg<0>::type,void);
   // the result type of f should be void

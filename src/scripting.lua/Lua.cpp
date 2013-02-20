@@ -231,7 +231,8 @@ int luaMemberMethod(lua_State*L){
 
   auto method = dynamic_cast<const MethodInfo*>(member);
   if(method){
-    method->unsafeCall(object->getObjectPointer().get());
+    method->call(object->getObjectPointer().get());
+    //method->unsafeCall(object->getObjectPointer().get());
     return 0;
   }
   auto prop = dynamic_cast<const PropertyInfo*>(member);

@@ -76,14 +76,14 @@ namespace nspace
     std::shared_ptr<void> toSmartDerivedPointer(std::shared_ptr<Object> object)const;
     void * toRawDerivedPointer(Object * object)const;
 
-    TypeId                                                        basic_property(Id);
-    std::string                                                   basic_property(Name);
-    std::function<std::shared_ptr<Object>(std::shared_ptr<void>)> basic_property(SmartObjectPointerConverter);    
-    std::function<std::shared_ptr<void>(std::shared_ptr<Object>)> basic_property(SmartDerivedPointerConverter);
-    std::function<Object *(void * )>                              basic_property(RawObjectPointerConverter);
-    std::function<void *(Object * )>                              basic_property(RawDerivedPointerConverter);
-    std::function<std::shared_ptr<void>()>                        basic_property(CreateInstanceFunction);
-    std::function<void(const void *, std::ostream &)>             basic_property(ObjectToStringFunction);
+    typedef TypeId basic_property(Id);
+    typedef std::string                                                   basic_property(Name);
+    typedef std::function<std::shared_ptr<Object>(std::shared_ptr<void>)> basic_property(SmartObjectPointerConverter);    
+    typedef std::function<std::shared_ptr<void>(std::shared_ptr<Object>)> basic_property(SmartDerivedPointerConverter);
+    typedef std::function<Object *(void * )>                              basic_property(RawObjectPointerConverter);
+    typedef std::function<void *(Object * )>                              basic_property(RawDerivedPointerConverter);
+    typedef std::function<std::shared_ptr<void>()>                        basic_property(CreateInstanceFunction);
+    typedef std::function<void(const void *, std::ostream &)>             basic_property(ObjectToStringFunction);
 
     template<typename DerivedType> static Object * rawCastToObject(void * pointer);
     template<typename DerivedType> static std::function<Object *(void * )> rawToObjectCaster();
