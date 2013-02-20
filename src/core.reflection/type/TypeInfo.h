@@ -12,21 +12,21 @@ namespace nspace{
 
 
 
-  /**
-  * \brief this macro returns the Type * instance for TYPENAME.
-  *
-  * \param TYPENAME  The typename.
-  */
-#define typeof(TYPENAME) nspace::TypeInfo<TYPENAME>::instance().get()
-  
   template<typename T>
   const Type * type_of(){
-    return typeof(T);
+    return nspace::TypeInfo<T>::instance().get();
   }
   template<typename T>
   const Type * type_of(const T & t){
     return type_of<T>();
   }
+  /**
+  * \brief this macro returns the Type * instance for TYPENAME.
+  *
+  * \param TYPENAME  The typename.
+  */
+#define typeof(TYPENAME) nspace::type_of<TYPENAME>()
+  
 
   /**
   * \brief Macro for making an object a typed object. defines a static meta information structure
@@ -44,6 +44,10 @@ public:                                                                         
 private:
 
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
+
+#ifndef reflect_type(NAME)
+#define reflect_type(NAME) DS_CLASS(NAME)
+#endif
 
 
 #define DS_CLASS_DECLARATION(TYPE)                                  \

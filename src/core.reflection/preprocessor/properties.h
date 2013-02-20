@@ -446,6 +446,10 @@ public: \
   type->Members()|=&info;                                                                                   \
   }
 
+#ifndef reflect_method(NAME)
+#define reflect_method(NAME) DS_REFLECTION_METHOD(NAME)
+#endif
+
 /**
  * \brief creates a public method with the signature void <NAME>() and registers it at its typeinfo
  *        class only TYPED_OBJECT(<ClassName>) needs to be declared in the class were action is

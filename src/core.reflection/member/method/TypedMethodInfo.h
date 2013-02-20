@@ -9,13 +9,13 @@ namespace nspace{
 
   template<typename ClassType, typename ReturnType>
   struct TypedMethodInfo<ReturnType(ClassType::*)()const>:public MethodInfo{
-    TypedMethodInfo(){
-      setReturnType(type_of<ReturnType>());
-      setIsConst(true);
-    }
     typedef ReturnType(ClassType::*MethodType)()const ;                                                   
     MethodType method;                                                                                                                        
-    TypedMethodInfo(MethodType method):method(method){}                                                                                       
+    TypedMethodInfo(MethodType method):method(method){    
+      setOwningType(type_of<ClassType>());
+      setReturnType(type_of<ReturnType>());
+      setIsConst(true);
+    }                                                                                       
     Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                       
       Argument result;                                                                                                                           
       return Argument(((*object).*method)()); 
@@ -26,31 +26,32 @@ namespace nspace{
   };
 
   template<typename ClassType, typename ReturnType>
-  struct TypedMethodInfo<ReturnType(ClassType::*)()>:public MethodInfo{TypedMethodInfo(){
-    setReturnType(type_of<ReturnType>());
-    setIsConst(false);
-  }
-  typedef ReturnType(ClassType::*MethodType)() ;                                                   
-  MethodType method;                                                                                                                        
-  TypedMethodInfo(MethodType method):method(method){}                                                                                       
-  Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                       
-    Argument result;                                                                                                                           
-    return Argument(((*object).*method)()); 
-  }                                                                                                                                         
-  Argument call(void * object, std::vector<Argument> args )const{                                                                                
-    return typedCall(static_cast<ClassType*>(object),args);                                                                                   
-  }                                                                
+  struct TypedMethodInfo<ReturnType(ClassType::*)()>:public MethodInfo{
+    typedef ReturnType(ClassType::*MethodType)() ;                                                   
+    MethodType method;                                                                                                                        
+    TypedMethodInfo(MethodType method):method(method){
+      setOwningType(type_of<ClassType>());
+      setReturnType(type_of<ReturnType>());
+      setIsConst(false);
+    }                                                                                       
+    Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                       
+      Argument result;                                                                                                                           
+      return Argument(((*object).*method)()); 
+    }                                                                                                                                         
+    Argument call(void * object, std::vector<Argument> args )const{                                                                                
+      return typedCall(static_cast<ClassType*>(object),args);                                                                                   
+    }                                                                
   };
 
   template<typename ClassType>
   struct TypedMethodInfo<void(ClassType::*)()const>:public MethodInfo{
-    typedef void(ClassType::*MethodType)()const ;             
-    TypedMethodInfo(){
+    typedef void(ClassType::*MethodType)()const ;           
+    MethodType method;                                                                                                                        
+    TypedMethodInfo(MethodType method):method(method){
+      setOwningType(type_of<ClassType>());
       setReturnType(type_of<void>());
       setIsConst(true);
-    }
-    MethodType method;                                                                                                                        
-    TypedMethodInfo(MethodType method):method(method){}                                                                                       
+    }                                                                                       
     Argument typedCall(ClassType * object, std::vector<Argument> args)const{           
       ((*object).*method)(); 
       return Argument::VoidArgument();
@@ -61,13 +62,13 @@ namespace nspace{
   };
   template<typename ClassType>
   struct TypedMethodInfo<void(ClassType::*)()>:public MethodInfo{
-    TypedMethodInfo(){
-      setReturnType(type_of<void>());
-      setIsConst(false);
-    }
     typedef void(ClassType::*MethodType)() ;                                                   
     MethodType method;                                                                                                                        
-    TypedMethodInfo(MethodType method):method(method){}                                                                                       
+    TypedMethodInfo(MethodType method):method(method){
+      setOwningType(type_of<ClassType>());
+      setReturnType(type_of<void>());
+      setIsConst(false);
+    }                                                                                       
     Argument typedCall(ClassType * object, std::vector<Argument> args)const{           
       ((*object).*method)(); 
       return Argument::VoidArgument();
@@ -79,7 +80,7 @@ namespace nspace{
 
 
 
-
+  // the following code creates specializations for methods with up to 9 arguments
 
 #define DS_TYPED_METHOD_INFO_ADD_ARGUMENT(X) argumentTypes().push_back(type_of<X>());
 #define DS_TYPED_METHOD_INFO_PASS_ARG(X) args[X]
@@ -90,7 +91,9 @@ namespace nspace{
   struct TypedMethodInfo<ReturnType(ClassType::*)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARGS__)) const>:public MethodInfo{                            \
   typedef ReturnType(ClassType::*MethodType)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARGS__))const ;                                                    \
   MethodType method;                                                                                                                         \
+  /* Constrcutor*/                                                                                                                           \
   TypedMethodInfo(MethodType method):method(method){                                                                                         \
+  setOwningType(type_of<ClassType>());                                                                                                       \
   setReturnType(type_of<ReturnType>());                                                                                                      \
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(true);                                                                                                                          \
@@ -109,6 +112,7 @@ namespace nspace{
   typedef ReturnType(ClassType::*MethodType)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARGS__));                                                          \
   MethodType method;                                                                                                                         \
   TypedMethodInfo(MethodType method):method(method){                                                                                         \
+  setOwningType(type_of<ClassType>());                                                                                                       \
   setReturnType(type_of<ReturnType>());                                                                                                      \
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(false);                                                                                                                         \
@@ -127,6 +131,7 @@ namespace nspace{
   typedef void(ClassType::*MethodType)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARGS__))const ;                                                          \
   MethodType method;                                                                                                                         \
   TypedMethodInfo(MethodType method):method(method){                                                                                         \
+  setOwningType(type_of<ClassType>());                                                                                                       \
   setReturnType(type_of<void>());                                                                                                            \
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(true);                                                                                                                          \
@@ -146,6 +151,7 @@ namespace nspace{
   typedef void(ClassType::*MethodType)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARGS__)) ;                                                               \
   MethodType method;                                                                                                                         \
   TypedMethodInfo(MethodType method):method(method){                                                                                         \
+  setOwningType(type_of<ClassType>());                                                                                                       \
   setReturnType(type_of<void>());                                                                                                            \
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(false);                                                                                                                         \
@@ -160,14 +166,16 @@ namespace nspace{
   }                                                                                                                                          \
   };      
 
+
+  // define specialization for upt o 9 arguments.  
   DS_TYPED_METHOD_INFO(A1)
-    DS_TYPED_METHOD_INFO(A1,A2)
-    DS_TYPED_METHOD_INFO(A1,A2,A3)
-    DS_TYPED_METHOD_INFO(A1,A2,A3,A4)
-    DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5)
-    DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6)
-    DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7)
-    DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8)
-    DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8,A9)
+  DS_TYPED_METHOD_INFO(A1,A2)
+  DS_TYPED_METHOD_INFO(A1,A2,A3)
+  DS_TYPED_METHOD_INFO(A1,A2,A3,A4)
+  DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5)
+  DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6)
+  DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7)
+  DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8)
+  DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8,A9)
 
 }

@@ -6,13 +6,13 @@ using namespace std;
 UNITTEST(MethodInfoMetaDataConst){
   setTestDescription("Tests whether the const flag is properly set for Method info");
   struct A{
-    DS_CLASS(A);
-    DS_REFLECTION_METHOD(a);
-    DS_REFLECTION_METHOD(b);
-    DS_REFLECTION_METHOD(c);
-    DS_REFLECTION_METHOD(d);
-    DS_REFLECTION_METHOD(e);
-    DS_REFLECTION_METHOD(f);
+    reflect_type(A);
+    reflect_method(a);
+    reflect_method(b);
+    reflect_method(c);
+    reflect_method(d);
+    reflect_method(e);
+    reflect_method(f);
     void a()const{}
     void b(){}
     void c(int)const{}
@@ -41,10 +41,64 @@ UNITTEST(MethodInfoMetaDataConst){
 
 UNITTEST(virtualMethodReflection1){
   struct A{
-    virtual void testMethod1();
-  };
+    reflect_type(A);
+
+    reflect_method(testMethod1);
+    virtual void testMethod1(){};
+  }a;
+
+  struct B : public A{
+    reflect_type(B);
+    SUBCLASSOF(A);
+
+    reflect_method(testMethod1);
+    void testMethod1(){}
+  }b;
+
+  auto typeB = type_of<B>();
+  auto method = type_of<B>()->getMethodInfo("testMethod1");
+
+
+  CHECK(method);
+  auto type= method->getOwningType();
+  CHECK(type);
+  auto name = type->getName();
+  CHECK_EQUAL("A",name);
+
+
 }
 
+UNITTEST(methodReflectionReturnType){
+  struct A{
+    reflect_type(A);
+
+    reflect_method(test);
+    std::string test(){return "";}
+  }a;
+
+  auto type = type_of(a);
+  auto method = type->getMethodInfo("test");
+  auto returntype = method->getReturnType();
+  CHECK(returntype!=0);
+  CHECK_EQUAL("std::string",returntype->getName());
+}
+UNITTEST(methodReflectionARgumentList){
+  struct A{
+    reflect_type(A);
+
+    reflect_method(test);
+    void test(int,double,std::string,A){}
+  }a;
+  // get argument types by reflection
+  auto argumentTypes = type_of(a)->getMethodInfo("test")->getArgumentTypes();
+  
+  CHECK_EQUAL(4,argumentTypes.size());
+  CHECK_EQUAL(argumentTypes[0], typeof(int));
+  CHECK_EQUAL(argumentTypes[1], typeof(double));
+  CHECK_EQUAL(argumentTypes[2], typeof(std::string));
+  CHECK_EQUAL(argumentTypes[3], typeof(A));
+
+}
 
 
 UNITTEST(ReflectConstMethodThreeArgumentsNonVoidReturnType){

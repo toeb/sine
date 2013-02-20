@@ -110,6 +110,7 @@ namespace nspace
     const MemberInfo * getMember(const std::string & name) const;
     const MethodInfo * getMethodInfo(const std::string & name) const;
     const PropertyInfo * getProperty(const std::string & name) const;
+
     bool isSuperClassOf(const Type * other) const;
 
   protected:
