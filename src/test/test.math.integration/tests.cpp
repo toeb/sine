@@ -146,7 +146,7 @@ TEST(1,ExplicitEuler){
 PTEST(PerformanceExplicitEuler){
   static auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
   static auto uut = ExplicitEuler<decltype(f)>(f);
-  static auto temp=[](){uut.h()=0.001;  return true;}();
+  static auto temp=[]()->bool{uut.h()=0.001;  return true;}();
   uut();
 }
 PTEST(PreformanceExplicitEulerManual){
@@ -165,7 +165,7 @@ PTEST(PreformanceExplicitEulerManual){
 PTEST(PerformanceImplicitEuler){
   static auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
   static auto uut = ImplicitEuler<decltype(f)>(f);
-  static auto temp=[](){uut.h()=0.001;  return true;}();
+  static auto temp=[]()->bool{uut.h()=0.001;  return true;}();
 
   uut();
 }

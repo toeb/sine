@@ -19,13 +19,13 @@ using namespace std;
 TEST(0,function_traits){ 
   TEST_DESCRIPTION(tests traits for a simple void function)
   auto f = [](){};
-  typedef function_traits<decltype(f)> traits;
+
   // the number of arguments of f should be 0
-  CHECK_EQUAL(0,traits::arity);
+  CHECK_EQUAL(0,function_traits<decltype(f)>::arity);
   // the type of argument 0 should be void (because it does not exist
-  CHECK_TYPES(traits::arg<0>::type,void);
+  CHECK_TYPES(function_traits<decltype(f)>::arg<0>::type,void);
   // the result type of f should be void
-  CHECK_TYPES(traits::result_type,void);
+  CHECK_TYPES(function_traits<decltype(f)>::result_type,void);
 }
 TEST(1,function_traits){
   TEST_DESCRIPTION( test for a simple function which accepts an int and returns nothing)
