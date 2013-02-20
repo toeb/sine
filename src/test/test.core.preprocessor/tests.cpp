@@ -4,6 +4,19 @@
 
 #include <core/patterns/StaticInitializer.h>
 
+UNITTEST(DS_MINUS_ONE){
+  int result  = DS_MINUS_ONE(15);
+  CHECK_EQUAL(14,result);
+}
+
+UNITTEST(DS_SEQUENCE){
+  int result[10]  = {DS_SEQUENCE(9)};
+  for(int i=0; i < 10; i++){
+    CHECK_EQUAL(i,result[i]);
+  }
+}
+
+
 
 UNITTEST(DS_REDUCE){
 #define my_op +

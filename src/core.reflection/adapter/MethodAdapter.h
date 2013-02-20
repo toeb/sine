@@ -15,7 +15,7 @@ namespace nspace{
     MethodAdapter(Object * object, const MethodInfo * methodInfo);
   protected:
     void executeAction();
-
+  public:
     Argument call();
     template<typename Container>
     Argument call(Container & args){

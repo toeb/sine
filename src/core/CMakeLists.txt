@@ -7,6 +7,8 @@ set(preprocessorSource
 ./preprocessor/Variadic.h
 ./preprocessor/Foreach.h
 ./preprocessor/Reduce.h
+./preprocessor/Sequence.h
+./preprocessor/MinusOne.h
 
 )
 source_group("preprocessor" FILES ${preprocessorSource})

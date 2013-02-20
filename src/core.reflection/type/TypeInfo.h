@@ -182,6 +182,7 @@ private:                                                                        
   META(std::iostream);
   META(std::ifstream);
   META(std::ofstream);
+  META(void);
 
   template<typename T> 
   class TypeInfo<std::shared_ptr<T>>: public Type { 

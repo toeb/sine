@@ -9,6 +9,7 @@
 #include <core.reflection/member/MemberInfo.h>
 #include <core.reflection/member/property/PropertyInfo.h>
 #include <core.reflection/member/method/MethodInfo.h>
+#include <core.reflection/member/method/TypedMethodInfo.h>
 
 
 #include <core.reflection/member/property/TypedPropertyInfo.h>

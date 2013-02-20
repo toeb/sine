@@ -13,6 +13,8 @@ set(typeSource
 	type/Type.implementation.h
 	type/TypeInfo.h
 	type/TypeInfo.cpp
+	type/Argument.h
+	type/Argument.cpp
 	type/TypeRepository.h
 	type/TypeRepository.cpp
 )
@@ -53,6 +55,8 @@ set(memberSource
 	member/property/TypedPropertySetInfo.cpp
 	member/method/MethodInfo.h
 	member/method/MethodInfo.cpp
+	member/method/TypedMethodInfo.h
+	member/method/TypedMethodInfo.cpp
 )
 source_group("member" FILES ${memberSource})
 set(source ${source} ${memberSource})

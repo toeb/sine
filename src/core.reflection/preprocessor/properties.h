@@ -24,6 +24,7 @@
 
 #include <core/reflection/PropertyInfo.h>
 #include <core/reflection/MethodInfo.h>
+#include <core/reflection/TypedMethodInfo.h>
 #include <core/reflection/TypedProperty.h>
 #include <core/reflection/TypedPropertySetInfo.h>
 #include <core/reflection/PropertyAdapter.h>
@@ -437,12 +438,12 @@ public: \
 
 
 
-#define DS_REFLECTION_METHOD(NAME)                                                    \
-  DS_ONCE{                                                                            \
-  static TypedMethodInfo<decltype(&NAME)> info(&NAME);                                \
-  info.setName(#NAME);                                                                \
-  auto type = const_cast<Type*>(static_cast<const Type*>(typeof(CurrentClassType)));  \
-  type->Members()|=&info;                                                             \
+#define DS_REFLECTION_METHOD(NAME)                                                                          \
+  DS_ONCE{                                                                                                  \
+  static nspace::TypedMethodInfo<decltype(&NAME)> info(&NAME);                                              \
+  info.setName(#NAME);                                                                                      \
+  auto type = const_cast<nspace::Type*>(static_cast<const nspace::Type*>(typeof(CurrentClassType)));        \
+  type->Members()|=&info;                                                                                   \
   }
 
 /**

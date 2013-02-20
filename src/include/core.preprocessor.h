@@ -23,4 +23,6 @@
 #include <core/preprocessor/Variadic.h>
 #include <core/preprocessor/Foreach.h>
 #include <core/preprocessor/Reduce.h>
+#include <core/preprocessor/Sequence.h>
+#include <core/preprocessor/MinusOne.h>
 

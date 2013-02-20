@@ -26,6 +26,12 @@ bool Type::isConvertibleToRawObjectPointer()const{
   return (bool)getRawObjectPointerConverter();
 }
 
+
+void * Type::toRawDerivedPointer(Object * object)const{
+  if(!isConvertibleToRawObjectPointer())return 0;
+  return getRawDerivedPointerConverter()(object);
+}
+
 Object * Type::toRawObjectPointer(void * object)const{
   if(!isConvertibleToRawObjectPointer())return 0;
   return getRawObjectPointerConverter()(object);

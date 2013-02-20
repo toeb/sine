@@ -29,39 +29,37 @@ namespace nspace {
   class MemberInfo : public virtual AttributeTarget {
     //TYPED_OBJECT(MemberInfo);
 
-    SIMPLE_PROPERTY(std::string, Name){
-      if(getDisplayName()!="") return; setDisplayName(newvalue);
-    }
+    SIMPLE_PROPERTY(std::string, Name);
     REFERENCE_PROPERTY(std::string, Name);
 
-    SIMPLE_PROPERTY(bool, IsVisible){}
-    SIMPLE_PROPERTY(const Type *, OwningType ){};
+    typedef bool basic_property(IsVisible);
+    typedef const Type * basic_property( OwningType );
+
+    //enum Accessibility{private,public,protected}
+    //typedef Accessibility basic_property(Accessibility);
 
     /**
      * \brief Description of the member.
      *
      */
-    SIMPLE_PROPERTY(std::string, Description){}
+    typedef std::string basic_property(Description);
 
     /**
      * \brief Display name of the member
      */
-    SIMPLE_PROPERTY(std::string, DisplayName){}
+    typedef std::string basic_property( DisplayName);
 
     /**
      * \brief Group name of the member
      *
      */
-    SIMPLE_PROPERTY(std::string, GroupName){}
+    typedef std::string basic_property( GroupName);
 public:
 
     /**
      * \brief Default constructor.
      */
-    MemberInfo() :
-      _IsVisible(true),
-      _OwningType(0)
-    {}
-    virtual ~MemberInfo(){}
+    MemberInfo();
+    virtual ~MemberInfo();
   };
 }
