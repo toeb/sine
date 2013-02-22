@@ -16,6 +16,9 @@
 #include <core.reflection/member/property/PropertySetInfo.h>
 #include <core.reflection/member/property/TypedPropertySetInfo.h>
 
+#include <core.reflection/member/constructor/ConstructorInfo.h>
+#include <core.reflection/member/constructor/TypedConstructorInfo.h>
+
 #include <core.reflection/attribute/Attribute.h>
 
 

@@ -85,7 +85,7 @@ public:                                                                         
     return nspace::MethodAdapter(dynamic_cast<nspace::Object*>(this),name);                                \
   }                                                                                                        \
   static const nspace::MethodInfo * getMethodInfo(const std::string & methodName){                         \
-    return typeof(TYPENAME)->getMethodInfo(methodName);                                                    \
+    return typeof(TYPENAME)->getMethod(methodName);                                                    \
   }                                                                                                        \
 private:
 

@@ -57,6 +57,10 @@ set(memberSource
 	member/method/MethodInfo.cpp
 	member/method/TypedMethodInfo.h
 	member/method/TypedMethodInfo.cpp
+	member/constructor/ConstructorInfo.h
+	member/constructor/ConstructorInfo.cpp
+	member/constructor/TypedConstructorInfo.h
+	member/constructor/TypedConstructorInfo.cpp
 )
 source_group("member" FILES ${memberSource})
 set(source ${source} ${memberSource})

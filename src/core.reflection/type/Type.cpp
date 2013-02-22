@@ -1,9 +1,12 @@
 #include "Type.h"
 #include <core.reflection/member/property/PropertyInfo.h>
 #include <core.reflection/member/method/MethodInfo.h>
+#include <core.reflection/member/constructor/ConstructorInfo.h>
 #include <core.reflection/type/TypeRepository.h>
 #include <sstream>
 using namespace nspace;
+
+
 
 bool Type::isStringifyable()const{
   return (bool)getObjectToStringFunction();
@@ -83,9 +86,20 @@ const MemberInfo * Type::getMember(const std::string & name)const{
   return member;
 }
 
-const MethodInfo * Type::getMethodInfo(const std::string & name)const{
+const MethodInfo * Type::getMethod(const std::string & name)const{
   auto method = dynamic_cast<const MethodInfo*>(getMember(name));
   return method;
+}
+
+
+const ConstructorInfo * Type::getConstructor(const std::vector<const Type*> & types)const{
+  return Constructors().first([&types](const ConstructorInfo * info)->bool{
+    if(types.size()!=info->getArgumentTypes().size())return false;
+    for(int i=0; i < types.size(); i++){
+      if(types[i]!=info->getArgumentTypes()[i])return false;
+    }
+    return true;
+  });
 }
 
 const PropertyInfo * Type::getProperty(const std::string & name)const{
@@ -114,6 +128,9 @@ Set<const PropertyInfo*> Type::Properties()const{
   return result;
 }
 
+Set<const ConstructorInfo*> Type::Constructors()const{
+  return Members().subset<const ConstructorInfo*>();
+}
 void Type::itemAdded(const MemberInfo * , Members){
 }
 void Type::itemRemoved(const MemberInfo * , Members){

@@ -16,13 +16,13 @@ namespace nspace{
       setReturnType(type_of<ReturnType>());
       setIsConst(true);
     }                                                                                       
-    Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                       
-      Argument result;                                                                                                                           
+    Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                                       
       return Argument(((*object).*method)()); 
-    }                                                                                                                                         
-    Argument call(void * object, std::vector<Argument> args )const{                                                                                
-      return typedCall(static_cast<ClassType*>(object),args);                                                                                   
-    }                                                                
+    }
+    Argument call(const void * object, std::vector<Argument> args )const{                                                                                
+      return typedCall(static_cast<const ClassType*>(object),args);                                                                                   
+    }                                    
+    
   };
 
   template<typename ClassType, typename ReturnType>
@@ -52,12 +52,12 @@ namespace nspace{
       setReturnType(type_of<void>());
       setIsConst(true);
     }                                                                                       
-    Argument typedCall(ClassType * object, std::vector<Argument> args)const{           
+    Argument typedCall(const ClassType * object, std::vector<Argument> args)const{           
       ((*object).*method)(); 
       return Argument::VoidArgument();
     }                                                                                                                                         
-    Argument call(void * object, std::vector<Argument> args )const{                                                                                
-      return typedCall(static_cast<ClassType*>(object),args);                                                                                   
+    Argument call(const void * object, std::vector<Argument> args )const{                                                                                
+      return typedCall(static_cast<const ClassType*>(object),args);                                                                                   
     }                                                                
   };
   template<typename ClassType>
@@ -98,12 +98,12 @@ namespace nspace{
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(true);                                                                                                                          \
   }                                                                                                                                          \
-  Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                   \
+  Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                                   \
   DS_FOREACH(DS_TYPED_METHOD_INFO_CHECK_ARG, DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                            \
   return Argument(((*object).*method)(DS_REDUCE_COMMA(DS_TYPED_METHOD_INFO_PASS_ARG,DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))));  \
   }                                                                                                                                          \
-  Argument call(void * object, std::vector<Argument> args )const{                                                                            \
-  return typedCall(static_cast<ClassType*>(object),args);                                                                                    \
+  Argument call(const void * object, std::vector<Argument> args )const{                                                                            \
+  return typedCall(static_cast<const ClassType*>(object),args);                                                                                    \
   }                                                                                                                                          \
   };                                                                                                                                         \
   /* Specialization for non-const method with non void return type and arbirtray arguments*/                                                 \
@@ -136,13 +136,13 @@ namespace nspace{
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(true);                                                                                                                          \
   }                                                                                                                                          \
-  Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                   \
+  Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                                   \
   DS_FOREACH(DS_TYPED_METHOD_INFO_CHECK_ARG, DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                            \
   ((*object).*method)(DS_REDUCE_COMMA(DS_TYPED_METHOD_INFO_PASS_ARG,DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__)))));                   \
   return Argument::VoidArgument();                                                                                                           \
   }                                                                                                                                          \
-  Argument call(void * object, std::vector<Argument> args )const{                                                                            \
-  return typedCall(static_cast<ClassType*>(object),args);                                                                                    \
+  Argument call(const void * object, std::vector<Argument> args )const{                                                                            \
+  return typedCall(static_cast<const ClassType*>(object),args);                                                                                    \
   }                                                                                                                                          \
   };                                                                                                                                         \
   /* Specialization for non-const method with void return type and arbirtray arguments*/                                                     \

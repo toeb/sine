@@ -22,13 +22,13 @@ UNITTEST(MethodInfoMetaDataConst){
   }instance;// one instance is needed else reflection will not be initialized for the class
   // get type
   auto type =type_of(instance);
-  auto a = type->getMethodInfo("a");
-  auto b = type->getMethodInfo("b");
-  auto c = type->getMethodInfo("c");
-  auto d = type->getMethodInfo("d");
-  auto e = type->getMethodInfo("e");
-  auto f = type->getMethodInfo("f");
-  
+  auto a = type->getMethod("a");
+  auto b = type->getMethod("b");
+  auto c = type->getMethod("c");
+  auto d = type->getMethod("d");
+  auto e = type->getMethod("e");
+  auto f = type->getMethod("f");
+
   CHECK(a->getIsConst());
   CHECK(!b->getIsConst());
   CHECK(c->getIsConst());
@@ -56,7 +56,7 @@ UNITTEST(virtualMethodReflection1){
   }b;
 
   auto typeB = type_of<B>();
-  auto method = type_of<B>()->getMethodInfo("testMethod1");
+  auto method = type_of<B>()->getMethod("testMethod1");
 
 
   CHECK(method);
@@ -77,7 +77,7 @@ UNITTEST(methodReflectionReturnType){
   }a;
 
   auto type = type_of(a);
-  auto method = type->getMethodInfo("test");
+  auto method = type->getMethod("test");
   auto returntype = method->getReturnType();
   CHECK(returntype!=0);
   CHECK_EQUAL("std::string",returntype->getName());
@@ -90,8 +90,8 @@ UNITTEST(methodReflectionARgumentList){
     void test(int,double,std::string,A){}
   }a;
   // get argument types by reflection
-  auto argumentTypes = type_of(a)->getMethodInfo("test")->getArgumentTypes();
-  
+  auto argumentTypes = type_of(a)->getMethod("test")->getArgumentTypes();
+
   CHECK_EQUAL(4,argumentTypes.size());
   CHECK_EQUAL(argumentTypes[0], typeof(int));
   CHECK_EQUAL(argumentTypes[1], typeof(double));
@@ -191,7 +191,7 @@ UNITTEST(ReflectTwoArgumentMethodVoidReturnType){
     }
   }uut;
   auto type = type_of(uut);
-  auto method = (const MethodInfo*)type->getMember("testMethod");
+  auto method = type->getMethod("testMethod");
   CHECK(!called);
   Argument args[]={5,std::string("hahaha")};
   auto result = method->call(&uut,args);
@@ -199,7 +199,6 @@ UNITTEST(ReflectTwoArgumentMethodVoidReturnType){
   CHECK_EQUAL("hahaha5",str);
   CHECK(result.isValid());
 }
-
 
 
 

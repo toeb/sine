@@ -5,6 +5,7 @@ set(source
 	 type.cpp
 	 argument.cpp
 	 methodinfo.cpp
+	 constructorinfo.cpp
 	 propertyinfo.cpp
  )
  source_group("" FILES ${source})

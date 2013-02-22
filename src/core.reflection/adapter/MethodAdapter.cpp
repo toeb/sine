@@ -9,7 +9,7 @@ Argument MethodAdapter::call(std::vector<Argument> args){
 MethodAdapter::MethodAdapter():_MethodInfo(0){}
 MethodAdapter::MethodAdapter(Object * object, const std::string & name){
   setOwner(object);
-  auto methodInfo = object->getType()->getMethodInfo(name);
+  auto methodInfo = object->getType()->getMethod(name);
   if(!methodInfo)return;
   setMethodInfo(methodInfo);
 }

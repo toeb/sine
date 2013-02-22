@@ -28,8 +28,11 @@ namespace nspace
   class MemberInfo;
   class MethodInfo;
   class PropertyInfo;
+  class ConstructorInfo;
   class Type;
   class Object;
+
+
 
   typedef const Type * ConstTypePtr;
 
@@ -107,9 +110,24 @@ namespace nspace
     PROPERTYSET(const MemberInfo *, Members,,);
   public:
     Set<const PropertyInfo*> Properties() const;
+    Set<const MethodInfo*> Methods()const;
+    Set<const ConstructorInfo*> Constructors()const;
+
     const MemberInfo * getMember(const std::string & name) const;
-    const MethodInfo * getMethodInfo(const std::string & name) const;
+    const MethodInfo * getMethod(const std::string & name) const;
     const PropertyInfo * getProperty(const std::string & name) const;
+    const ConstructorInfo * getConstructor(const std::vector<const Type*>& types)const;
+    template<typename Container>
+    const ConstructorInfo * getConstructor(const Container & container){
+      auto it = std::begin(container);
+      auto end = std::end(container);
+      std::vector<const Type*> types;
+      for(;it!=end;it++){
+        types.push_back(*it);
+      }
+      return getConstructorInfo(types);
+    }
+
 
     bool isSuperClassOf(const Type * other) const;
 

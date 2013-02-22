@@ -8,6 +8,7 @@ Argument MethodInfo::call(void * object)const{
   return call(object,args);
 }
 
+
 Argument MethodInfo::call(Object * object){
   auto ptr = object->getType()->toRawDerivedPointer(object);
   return call(ptr);
