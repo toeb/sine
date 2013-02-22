@@ -17,13 +17,17 @@
 #define DS_CONSTRUCTOR_NAME(NAME) DS_CONCAT(Constructor,NAME)
 #define DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME) DS_CONCAT(DS_CONSTRUCTOR_NAME(NAME),OwningClass)
 
+// Type::Helper
+// Type::
+// Type::construct
+
 #define DS_CONSTRUCTOR_STRUCT(NAME, ...)                                                              \
   typedef CurrentClassType DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME);                                          \
 struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)>{             \
   struct Helper{                                                                                \
       void operator ()(__VA_ARGS__)const;                                                       \
   };                                                                                            \
-  DS_CURRENT_CLASS(DS_CONSTRUCTOR_NAME(NAME));\
+  DS_CURRENT_CLASS(DS_CONSTRUCTOR_NAME(NAME));                                                                         \
   typedef nspace::function_traits<Helper> traits;                                               \
   DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME) * construct(GENERIC_ARG_LIST(__VA_ARGS__))const{     /*the pointer here*/              \
     return new DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)(GENERIC_ARG_NAME_LIST(__VA_ARGS__));                  \
@@ -31,7 +35,7 @@ struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUC
 protected:                                                                                      \
   nspace::Argument call(std::vector<nspace::Argument> args)const{                          \
   auto method = typeof(CurrentClassType)->getMethod("construct");                               \
-  return method->call(this,args);                                                                                         /*will not be correctly returned here*/   \
+  return method->call(this,args);                                            /*will not be correctly returned here*/   \
 }                                                                                               \
   reflect_method(construct);                                                                    \
   SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){                                                                       \

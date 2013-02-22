@@ -202,3 +202,45 @@ UNITTEST(ReflectTwoArgumentMethodVoidReturnType){
 
 
 
+UNITTEST(PointerReturnType){
+  static int * expected = 0;
+  struct A{
+    reflect_type(A);
+
+    reflect_method(testMethod)
+    std::shared_ptr<int> testMethod(){
+       std::shared_ptr<int> result(new int(43));
+       expected=result.get();
+      return result;
+    }
+
+  }a;
+
+  auto type= type_of(a);
+  auto method = type->getMethod("testMethod");
+
+  auto result = method->call(&a);
+  //auto actual = (<int>)result;
+
+  //CHECK_EQUAL(expected,actual.get());
+  FAIL("not implemented")
+}
+
+template<typename T>
+struct remove_pointers{
+  typedef T type;
+};
+
+template<typename T>
+struct remove_pointers<T*>{
+  typedef typename remove_pointers<T>::type type;
+};
+
+
+
+UNITTEST(remove_pointers){
+  typedef char * * * * uut;
+  typedef remove_pointers<uut>::type actual;
+  typedef char expected;
+  CHECK_TYPES(expected,actual);
+}
