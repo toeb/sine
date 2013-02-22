@@ -25,13 +25,13 @@ struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUC
   };                                                                                            \
   DS_CURRENT_CLASS(DS_CONSTRUCTOR_NAME(NAME));\
   typedef nspace::function_traits<Helper> traits;                                               \
-  DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME) * construct(GENERIC_ARG_LIST(__VA_ARGS__))const{                   \
+  DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME) * construct(GENERIC_ARG_LIST(__VA_ARGS__))const{     /*the pointer here*/              \
     return new DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)(GENERIC_ARG_NAME_LIST(__VA_ARGS__));                  \
 }                                                                                               \
 protected:                                                                                      \
   nspace::Argument call(std::vector<nspace::Argument> args)const{                          \
   auto method = typeof(CurrentClassType)->getMethod("construct");                               \
-  return method->call(this,args);                                                                                            \
+  return method->call(this,args);                                                                                         /*will not be correctly returned here*/   \
 }                                                                                               \
   reflect_method(construct);                                                                    \
   SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){                                                                       \
