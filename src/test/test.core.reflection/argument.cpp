@@ -22,3 +22,8 @@ UNITTEST(Argumentcreatesimple){
     CHECK(a.type);    
     CHECK_EQUAL(nspace::type_of<int>(),a.type);    
 }
+
+UNITTEST(ReferenceArgument){
+  
+  
+}

@@ -6,6 +6,15 @@ using namespace nspace;
 
 
 
+namespace nspace2{
+
+
+}
+
+UNITTEST(referenceType){
+ 
+}
+
 UNITTEST(type_of1){
   struct A{
     reflect_type(A);

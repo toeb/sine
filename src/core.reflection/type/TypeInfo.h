@@ -106,10 +106,13 @@ private:                                                                        
       setRawObjectPointerConverter(Type::rawToObjectCaster<pureType>());
       setSmartDerivedPointerConverter(Type::smartToDerivedCaster<pureType>());
       setSmartObjectPointerConverter(Type::smartToObjectCaster<pureType>());
+      setBaseType(this);
+      setUnderlyingType(0);
       //setObjectToStringFunction(Type::derivedStringifier<pureType>());
     }
   };
 
+  
 
   template<typename T>
   const Type * type_of(){
@@ -119,6 +122,10 @@ private:                                                                        
   const Type * type_of(const T & t){
     return type_of<T>();
   }
+
+
+
+
   /**
   * \brief this macro returns the Type * instance for TYPENAME.
   *
@@ -167,6 +174,45 @@ private:                                                                        
       setName("Set<T>");
     }
   };
+
+
+  template<typename T>
+  struct  TypeInfo<T&>:public Type{
+    TEMPLATEDSINGLETON(TypeInfo,<T&>){
+      setIsReference(true);
+      auto type = type_of<T>();
+      setUnderlyingType(type);
+      setBaseType(type->getBaseType())
+    }
+   };
+   template<typename T>
+   struct  TypeInfo<T*>:public Type{
+     TEMPLATEDSINGLETON(TypeInfo,<T*>){
+      setIsPointer(true);
+      auto type =  type_of<T>();
+      setUnderlyingType(type);
+      setBaseType(type->getBaseType());
+    }
+   };
+   template<typename T>
+   struct  TypeInfo<const T>:public Type{
+     TEMPLATEDSINGLETON(TypeInfo,<const T>){
+      setIsConst(true);
+      auto type =  type_of<T>();
+      setUnderlyingType(type);
+      setBaseType(type->getBaseType());
+    }
+   };
+   template<typename T>
+   struct  TypeInfo<volatile T>:public Type{
+     TEMPLATEDSINGLETON(TypeInfo,<volatile T>){
+      setIsVolatile(true);
+      auto type =  type_of<T>();
+      setUnderlyingType(type);
+      setBaseType(type->getBaseType());
+    }
+   };
+
 
 
   // meta information for default types

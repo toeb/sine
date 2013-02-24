@@ -8,9 +8,10 @@ namespace nspace{
     DS_CLASS(MemberInfo)
   public:
     template<typename Container> Argument call(void * object, Container & container=std::vector<Argument>())const;
+    template<typename Container> Argument call(const void * object, Container & container=std::vector<Argument>())const;
     template<typename Container> Argument call(Object * object, Container & container=std::vector<Argument>())const;
     Argument call(void * object)const;
-    Argument constCall(const void * object)const;
+    Argument call(const void * object)const;
     Argument call(Object * object);
     typedef std::vector<const Type*> basic_property(ArgumentTypes);
     typedef const Type * basic_property(ReturnType);
@@ -28,6 +29,14 @@ namespace nspace{
 namespace nspace{
   template<typename Container>
   Argument MethodInfo::call(void * object, Container & container)const{
+    std::vector<Argument> args;
+    for(auto it = std::begin(container); it!=std::end(container);it++){
+      args.push_back(*it);
+    }
+    return call(object,args);
+  }
+  template<typename Container>
+  Argument MethodInfo::call(const void * object, Container & container)const{
     std::vector<Argument> args;
     for(auto it = std::begin(container); it!=std::end(container);it++){
       args.push_back(*it);

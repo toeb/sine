@@ -55,6 +55,16 @@ namespace nspace
   protected:
     Type();
   public:
+
+    typedef const Type * basic_property(UnderlyingType);
+    typedef const Type * basic_property(BaseType);
+    typedef bool basic_property(IsPointer);
+    typedef bool basic_property(IsReference);
+    typedef bool basic_property(IsVolatile);
+    typedef bool basic_property(IsConst);
+
+    bool isBaseType()const{return getBaseType()==this;}
+
     friend bool operator==(const Type & a, const Type & b);
     friend bool operator!=(const Type & a, const Type & b);
     friend std::ostream & operator <<(std::ostream & out, const Type & type);
@@ -112,6 +122,8 @@ namespace nspace
     Set<const PropertyInfo*> Properties() const;
     Set<const MethodInfo*> Methods()const;
     Set<const ConstructorInfo*> Constructors()const;
+
+    
 
     const MemberInfo * getMember(const std::string & name) const;
     const MethodInfo * getMethod(const std::string & name) const;

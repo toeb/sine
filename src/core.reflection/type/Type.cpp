@@ -47,7 +47,7 @@ std::shared_ptr<Object> Type::toSmartObjectPointer(std::shared_ptr<void> object)
 
 TypeId Type::_typeCounter=0;
 Type::Type():
-  _Id(_typeCounter++),
+  _Id(_typeCounter++),_IsPointer(false),_IsReference(false),_IsVolatile(false),_UnderlyingType(0),_BaseType(0),
   _CreateInstanceFunction([](){return std::shared_ptr<void>();}),
   _ObjectToStringFunction([](const void*,std::ostream&){})
 {
