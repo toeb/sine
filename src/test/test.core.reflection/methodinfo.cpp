@@ -213,14 +213,14 @@ UNITTEST(PointerReturnType){
        expected=result.get();
       return result;
     }
-
+    
   }a;
 
   auto type= type_of(a);
   auto method = type->getMethod("testMethod");
 
   auto result = method->call(&a);
-  //auto actual = (<int>)result;
+ // auto actual = (<int>)result;
 
   //CHECK_EQUAL(expected,actual.get());
   FAIL("not implemented")

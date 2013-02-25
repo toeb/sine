@@ -56,6 +56,9 @@ namespace nspace
     Type();
   public:
 
+    std::string fullName()const;
+
+    typedef std::string basic_property(FullName);
     typedef const Type * basic_property(UnderlyingType);
     typedef const Type * basic_property(BaseType);
     typedef bool basic_property(IsPointer);

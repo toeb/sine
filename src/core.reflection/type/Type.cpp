@@ -102,6 +102,10 @@ const ConstructorInfo * Type::getConstructor(const std::vector<const Type*> & ty
   });
 }
 
+    std::string Type::fullName()const{
+      if(!getUnderlyingType())return getName();
+      return DS_INLINE_STRING(getUnderlyingType()->fullName()<<" "<<getName());
+    }
 const PropertyInfo * Type::getProperty(const std::string & name)const{
   auto member = getMember(name);
   if(!member)return 0;

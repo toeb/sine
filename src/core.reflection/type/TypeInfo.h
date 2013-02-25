@@ -171,47 +171,11 @@ private:                                                                        
   class TypeInfo<Set<T> >: public Type
   {
     TEMPLATEDSINGLETON(TypeInfo, <Set<T> >) {
-      setName("Set<T>");
+      setName(DS_INLINE_STRING("Set<"<< typeof(T)<<">"));
     }
   };
 
 
-  template<typename T>
-  struct  TypeInfo<T&>:public Type{
-    TEMPLATEDSINGLETON(TypeInfo,<T&>){
-      setIsReference(true);
-      auto type = type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType())
-    }
-   };
-   template<typename T>
-   struct  TypeInfo<T*>:public Type{
-     TEMPLATEDSINGLETON(TypeInfo,<T*>){
-      setIsPointer(true);
-      auto type =  type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
-   template<typename T>
-   struct  TypeInfo<const T>:public Type{
-     TEMPLATEDSINGLETON(TypeInfo,<const T>){
-      setIsConst(true);
-      auto type =  type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
-   template<typename T>
-   struct  TypeInfo<volatile T>:public Type{
-     TEMPLATEDSINGLETON(TypeInfo,<volatile T>){
-      setIsVolatile(true);
-      auto type =  type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
 
 
 
@@ -237,12 +201,20 @@ private:                                                                        
   META(std::ofstream);
   META(void);
 
+
+  // more std library
   template<typename T> 
   class TypeInfo<std::shared_ptr<T>>: public Type { 
     TEMPLATEDSINGLETON(TypeInfo, <std::shared_ptr<T>>){ 
       setName(DS_INLINE_STRING("shared_ptr<" << typeof(T)->getName()<<">"));
-
     } 
+  };
+
+  template<typename T>
+  class TypeInfo<std::vector<T>> :public Type{
+    TEMPLATEDSINGLETON(TypeInfo, <std::vector<T> >){
+      setName(DS_INLINE_STRING("shared_ptr<"<<typeof(T)->getName()<<">"));
+    }
   };
 
 }
