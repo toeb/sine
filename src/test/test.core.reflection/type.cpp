@@ -8,71 +8,48 @@ using namespace nspace;
 
 namespace nspace{
   
-  template<typename T>
-  struct  TypeInfo<T&>:public Type{
-    TEMPLATEDSINGLETON(TypeInfo,<T&>){
-      setName("&");
-      setIsReference(true);
-      auto type = type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
-   template<typename T>
-   struct  TypeInfo<T*>:public Type{
-     TEMPLATEDSINGLETON(TypeInfo,<T*>){       
-      setName("*");
-      setIsPointer(true);
-      auto type =  type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
-   template<typename T>
-   struct  TypeInfo<const T>:public Type{
-     TEMPLATEDSINGLETON(TypeInfo,<const T>){       
-      setName("const");
-      setIsConst(true);
-      auto type =  type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
-   template<typename T>
-   struct  TypeInfo<volatile T>:public Type{
-     TEMPLATEDSINGLETON(TypeInfo,<volatile T>){
-      setName("volatile");
-      setIsVolatile(true);
-      auto type =  type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
-   template<typename T>
-   struct  TypeInfo<const volatile T>:public Type{
-     TEMPLATEDSINGLETON(TypeInfo,<const volatile T>){
-      setName("const volatile");
-      setIsVolatile(true);
-      auto type =  type_of<T>();
-      setUnderlyingType(type);
-      setBaseType(type->getBaseType());
-    }
-   };
 
 
 }
 
-UNITTEST(multiType){
+UNITTEST(MultiModifierTypeName){
   struct A{
     reflect_type(A);
   };
 
   auto uut = typeof(A const  * const * const&  );
-
-  auto name = uut->fullName();
-
+  auto name = uut->getName();
+  CHECK_EQUAL("A const * const * const &",name);
 }
 
+UNITTEST(ConstVolatileType){
+ struct A{
+   reflect_type(A);
+ };
+ 
+ auto t = typeof(const volatile A); 
+ auto t2 = t->getUnderlyingType();
+
+ CHECK(t2==typeof(A));
+ CHECK(!t->getIsReference());
+ CHECK(!t->getIsPointer());
+ CHECK(t->getIsConst());
+ CHECK(t->getIsVolatile());
+}
+UNITTEST(volatileType){
+ struct A{
+   reflect_type(A);
+ };
+ 
+ auto t = typeof(volatile A); 
+ auto t2 = t->getUnderlyingType();
+
+ CHECK(t2==typeof(A));
+ CHECK(!t->getIsReference());
+ CHECK(!t->getIsPointer());
+ CHECK(!t->getIsConst());
+ CHECK(t->getIsVolatile());
+}
 UNITTEST(referenceType){
  struct A{
    reflect_type(A);
@@ -187,3 +164,28 @@ TEST(3, createInstance){
   CHECK(!typeof(A)->createInstance());
 }
 
+
+
+TEST(1, subclassOf){
+  struct A{
+    reflect_type(A);
+  };
+  struct A2{
+    reflect_type(A2)
+  };
+  struct B:public A,public A2{    
+    reflect_type(A);
+    reflect_superclasses(A,A2)
+
+  };
+  struct C:public B{
+    reflect_type(A);
+    reflect_superclasses(B)
+
+  }c;
+  auto result = nspace::subclassof<A,C>();
+  CHECK(result);
+
+  result = nspace::subclassof<A>(c);
+  CHECK(result);
+}

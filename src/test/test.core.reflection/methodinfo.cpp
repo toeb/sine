@@ -3,6 +3,133 @@
 using namespace nspace;
 using namespace std;
 
+TEST(1, CallInheritedMember){
+  struct A{
+    reflect_type(A);
+  public:
+    A():val(23){}
+    // add a field so that pointer offset of b is != 0
+    int val;
+    int method(){return val;}
+    reflect_method(method);
+
+  };
+  struct B:public A{
+    reflect_type(B);
+    reflect_superclasses(A);
+  public:
+    B():c(29){}
+    // add a field so that pointer offset of b is != 0
+    int c;
+    int method2(){return c;}
+    reflect_method(method2);
+  }b;
+
+  CHECK(b.method2()==29);
+  CHECK(b.method()==23);
+
+  auto inheritedMethod = type_of(b)->getMethod("method");
+  CHECK(inheritedMethod);
+
+  CHECK((int)inheritedMethod->call(&b)==23);
+   
+
+}
+
+
+TEST(1, CallOverridenMethod){
+  struct A{
+    reflect_type(A);
+  public:
+    A():val(23){}
+    // add a field so that pointer offset of b is != 0
+    int val;
+    virtual int method(){return val;}
+    reflect_method(method);
+
+  };
+  struct B:public A{
+    reflect_type(B);
+    reflect_superclasses(A);
+  public:
+    B():c(29){}
+    // add a field so that pointer offset of b is != 0
+    int c;
+    int method(){return c;}
+  }b;
+
+  CHECK(b.method()==29);
+
+  auto inheritedMethod = type_of(b)->getMethod("method");
+  CHECK(inheritedMethod);
+  CHECK((int)inheritedMethod->call(&b)==29);
+   
+
+}
+
+TEST(2, CallOverridenMethod){
+  struct A{
+    reflect_type(A);
+  public:
+    A():val(23){}
+    // add a field so that pointer offset of b is != 0
+    int val;
+    virtual int method(){return val;}
+    reflect_method(method);
+
+  };
+  struct B:public A{
+    reflect_type(B);
+    reflect_superclasses(A);
+  public:
+    B():c(29){}
+    // add a field so that pointer offset of b is != 0
+    int c;
+    int method(){return c;}
+  }b;
+  // cast b to an A pointer
+  A * a =&b;
+  CHECK(a->method()==29);
+  auto inheritedMethod = type_of<A>()->getMethod("method");
+  CHECK(inheritedMethod);
+  CHECK((int)inheritedMethod->call(a)==29);
+   
+
+}
+
+TEST(3, CallOverridenMethod){
+  setTestDescription("checks if calls work for virtual inheritance and virtual methods");
+  struct A{
+    reflect_type(A);
+  public:
+    A():val(23){}
+    // add a field so that pointer offset of b is != 0
+    int val;
+    virtual int method(){return val;}
+    reflect_method(method);
+
+  };
+  struct B:public virtual A{
+    reflect_type(B);
+    reflect_superclasses(A);
+  public:
+    B():c(29){}
+    // add a field so that pointer offset of b is != 0
+    int c;
+    int method(){return c;}
+  }b;
+  // cast b to an A pointer
+  A * a =&b;
+  CHECK(a->method()==29);
+  auto inheritedMethod = type_of<A>()->getMethod("method");
+  CHECK(inheritedMethod);
+  CHECK((int)inheritedMethod->call(a)==29);
+   
+
+}
+
+
+
 UNITTEST(MethodInfoMetaDataConst){
   setTestDescription("Tests whether the const flag is properly set for Method info");
   struct A{
@@ -106,7 +233,6 @@ UNITTEST(ReflectConstMethodThreeArgumentsNonVoidReturnType){
     DS_CLASS(TestStruct);
     DS_REFLECTION_METHOD(testMethod);
     virtual int testMethod(int i, int j, int k)const{
-      cout << i<<j<<k<<endl;
       return i+j+k;
     };
   }t;

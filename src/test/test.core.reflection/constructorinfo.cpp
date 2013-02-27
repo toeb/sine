@@ -51,7 +51,7 @@ protected:                                                                      
 
 #define reflect_constructor(TYPE, ...) DS_CONSTRUCTOR_STRUCT(__LINE__, __VA_ARGS__)  TYPE ( __VA_ARGS__)
 
-
+#define reflect_
 
 UNITTEST(a){
   struct A{

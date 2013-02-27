@@ -34,6 +34,10 @@ private:
 #ifndef reflect_type
 #define reflect_type(NAME) DS_CLASS(NAME)
 #endif
+  
+#define reflect_superclasses(...) DS_FOREACH(SUBCLASSOF,__VA_ARGS__);
+
+
 
 
 #define DS_CLASS_DECLARATION(TYPE)                                  \
@@ -106,7 +110,7 @@ private:                                                                        
       setRawObjectPointerConverter(Type::rawToObjectCaster<pureType>());
       setSmartDerivedPointerConverter(Type::smartToDerivedCaster<pureType>());
       setSmartObjectPointerConverter(Type::smartToObjectCaster<pureType>());
-      setBaseType(this);
+      setRawType(this);
       setUnderlyingType(0);
       //setObjectToStringFunction(Type::derivedStringifier<pureType>());
     }
@@ -121,6 +125,24 @@ private:                                                                        
   template<typename T>
   const Type * type_of(const T & t){
     return type_of<T>();
+  }
+  
+  template<typename SuperType, typename TestType>
+  bool subclassof(){
+    const Type * t1 = type_of<SuperType>();
+    const Type * t2 = type_of<TestType>();
+    return t2->isSubClassOf(t1);
+  }
+
+
+
+  template<typename SuperType, typename TestType>
+  bool subclassof(const TestType & b){
+    return subclassof<SuperType,TestType>();
+  }
+  template<typename SuperType, typename TestType>
+  bool subclassof(const SuperType & a, const TestType & b){
+    return subclassof<SuperType,TestType>();  
   }
 
 
@@ -177,7 +199,38 @@ private:                                                                        
 
 
 
-
+  
+  template<typename T>
+  struct  TypeInfo<T&>:public Type{
+    TEMPLATEDSINGLETON(TypeInfo,<T&>):Type("&", type_of<T>()){
+      setIsReference(true);
+    }
+   };
+   template<typename T>
+   struct  TypeInfo<T*>:public Type{
+     TEMPLATEDSINGLETON(TypeInfo,<T*>):Type("*", type_of<T>()){       
+      setIsPointer(true);
+    }
+   };
+   template<typename T>
+   struct TypeInfo<const T>:public Type{
+     TEMPLATEDSINGLETON(TypeInfo,<const T>):Type("const", type_of<T>()){       
+      setIsConst(true);
+    }
+   };
+   template<typename T>
+   struct TypeInfo<volatile T>:public Type{
+     TEMPLATEDSINGLETON(TypeInfo,<volatile T>):Type("volatile", type_of<T>()){
+      setIsVolatile(true);
+    }
+   };
+   template<typename T>
+   struct TypeInfo<const volatile T>:public Type{
+     TEMPLATEDSINGLETON(TypeInfo,<const volatile T>):Type("const volatile", type_of<T>()){
+      setIsVolatile(true);
+      setIsConst(true);
+    }
+   };
 
   // meta information for default types
   META_DEFAULTCONSTRUCTOR(int);

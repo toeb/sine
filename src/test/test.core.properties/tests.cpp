@@ -4,6 +4,11 @@
 
 #include <core.property.h>
 
+TEST(1,propertyMutableReference){
+
+}
+
+
 TEST(1,propertyDefinition){
   struct A{
     typedef std::string DS_PROPERTY_DEFINITION(StringValue)

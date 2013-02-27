@@ -54,19 +54,16 @@ namespace nspace
     static TypeId _typeCounter;
   protected:
     Type();
+    Type(const std::string & name, const Type * underlyingType);
   public:
-
-    std::string fullName()const;
-
-    typedef std::string basic_property(FullName);
     typedef const Type * basic_property(UnderlyingType);
-    typedef const Type * basic_property(BaseType);
+    typedef const Type * basic_property(RawType);
     typedef bool basic_property(IsPointer);
     typedef bool basic_property(IsReference);
     typedef bool basic_property(IsVolatile);
     typedef bool basic_property(IsConst);
 
-    bool isBaseType()const{return getBaseType()==this;}
+    bool isRawType()const;
 
     friend bool operator==(const Type & a, const Type & b);
     friend bool operator!=(const Type & a, const Type & b);
@@ -145,8 +142,16 @@ namespace nspace
 
 
     bool isSuperClassOf(const Type * other) const;
+    bool isSubClassOf(const Type * other)const;
+    typedef Set<const Type*> basic_property(SuperClasses);
+    typedef Set<const Type*> basic_property(RootClasses);
+
+
 
   protected:
+    void onSuccessorAdded(Type * type);
+    void onSuccessorRemoved(Type* type);
+
     void onPredecessorAdded(Type* type);
     void onPredecessorRemoved(Type* type);
   };

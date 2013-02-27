@@ -6,7 +6,25 @@
 #include <sstream>
 using namespace nspace;
 
-
+Type::Type(const std::string & name ,const Type * underlyingType):
+  _Id(_typeCounter++),
+  _IsPointer(false),
+  _IsReference(false),
+  _IsVolatile(false),
+  _IsConst(false),
+  _UnderlyingType(0),
+  _RawType(0)
+{
+  if(underlyingType==this || underlyingType==0){
+    setUnderlyingType(0);
+    setRawType(this);
+    setName(name);
+  }else{
+    setUnderlyingType(underlyingType);
+    setRawType(underlyingType->getRawType());
+    setName(DS_INLINE_STRING(underlyingType->getName()<<" "<<name));    
+  }
+}
 
 bool Type::isStringifyable()const{
   return (bool)getObjectToStringFunction();
@@ -45,11 +63,17 @@ std::shared_ptr<Object> Type::toSmartObjectPointer(std::shared_ptr<void> object)
 }
 
 
+bool Type::isRawType()const{return getRawType()==this;}
+
 TypeId Type::_typeCounter=0;
 Type::Type():
-  _Id(_typeCounter++),_IsPointer(false),_IsReference(false),_IsVolatile(false),_UnderlyingType(0),_BaseType(0),
-  _CreateInstanceFunction([](){return std::shared_ptr<void>();}),
-  _ObjectToStringFunction([](const void*,std::ostream&){})
+  _Id(_typeCounter++),
+  _IsPointer(false),
+  _IsReference(false),
+  _IsVolatile(false),
+  _IsConst(false),
+  _UnderlyingType(0),
+  _RawType(0)
 {
   TypeRepository::registerType(this);
 }
@@ -102,10 +126,7 @@ const ConstructorInfo * Type::getConstructor(const std::vector<const Type*> & ty
   });
 }
 
-    std::string Type::fullName()const{
-      if(!getUnderlyingType())return getName();
-      return DS_INLINE_STRING(getUnderlyingType()->fullName()<<" "<<getName());
-    }
+
 const PropertyInfo * Type::getProperty(const std::string & name)const{
   auto member = getMember(name);
   if(!member)return 0;
@@ -121,6 +142,13 @@ bool Type::isSuperClassOf(const Type * other)const{
   }
   return false;
 }
+
+
+bool Type::isSubClassOf(const Type * other)const{
+  return other->isSuperClassOf(other);
+}
+
+
 
 Set<const PropertyInfo*> Type::Properties()const{
   Set<const PropertyInfo*> result;
@@ -141,9 +169,20 @@ void Type::itemRemoved(const MemberInfo * , Members){
 }
 
 void Type::onPredecessorAdded(Type* type){
-  Members()|=type->Members();
-  //std::cout << this->getName() << "  is subclass of "<<type->getName()<<std::endl;
+  Members()|=type->Members();  
+  _SuperClasses |=type;
+  _RootClasses |=type->getRootClasses();
 }
 void Type::onPredecessorRemoved(Type* type){
   Members()/=type->Members();
+  
+  _SuperClasses /=type;
+  _RootClasses /=type->getRootClasses();
+}
+
+void Type::onSuccessorAdded(Type * type){
+
+}
+void Type::onSuccessorRemoved(Type* type){
+
 }
