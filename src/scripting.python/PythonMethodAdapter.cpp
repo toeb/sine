@@ -12,7 +12,7 @@ bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::ve
   auto n=PyTuple_GET_SIZE(args);
 
   if(n!=argumentTypes.size()){
-    false;
+    return false;
   }
 
 

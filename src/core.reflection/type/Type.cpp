@@ -8,6 +8,12 @@ using namespace nspace;
 struct DefaultNS : public Namespace{
   DS_SINGLETON(DefaultNS):Namespace(DS_STRINGIFY(nspace)){};
 };
+
+
+std::string Type::getFullyQualifiedName()const{
+  return DS_INLINE_STRING(getNamespace()->getFullyQualifiedName()<<"::"<<getName());
+}
+
 Type::Type(const std::string & name ,const Type * underlyingType):
   _Id(_typeCounter++),
   _IsPointer(false),
@@ -143,7 +149,7 @@ void Type::onPredecessorAdded(Type* type){
 }
 void Type::onPredecessorRemoved(Type* type){
   Members()/=type->Members();
-  
+
   _SuperClasses /=type;
   _RootClasses /=type->getRootClasses();
 }

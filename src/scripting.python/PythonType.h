@@ -11,7 +11,7 @@ struct PythonType : public PyTypeObject{
  static void       destruct(void * object);
   static PyObject * getProperty(PyObject* pobject, PyObject * name );
   static int        setProperty(PyObject * object, PyObject * , PyObject* value);
- static  PyObject * stringRepresentation(PyObject * object);
+
 
   PythonType(const Type* type);
   const Type * type;

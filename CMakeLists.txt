@@ -28,6 +28,8 @@ add_definitions(-DFREEGLUT_LIB_PRAGMAS=0)
 add_definitions(-DFREEGLUT_STATIC=1)
 
 
+set(CMAKE_PREFIX_PATH  ${CMAKE_PREFIX_PATH} "E:/projects/python/Python-3.3.0/PCbuild" "E:/projects/python/Python-3.3.0" "E:/projects/python/Python-3.3.0/Include" )
+
 #add_definitions(-DUNIX=1)
 #add_definitions(-DWIN32=1)
 #add_definitions(-DAPPLE=1)

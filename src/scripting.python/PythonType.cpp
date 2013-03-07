@@ -6,15 +6,15 @@ using namespace std;
 
 PyObject * constructCallback(PyTypeObject* subtype, PyObject*args, PyObject * kwds){
   auto  pythonType = static_cast<PythonType*>(subtype);
-  return pythonType->construct(args,kwds);
-  
+  return pythonType->construct(args,kwds);  
 }
 
-  bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> & argumentTypes);
+bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> & argumentTypes);
 
 PyObject * PythonType::construct( PyObject *args, PyObject *kwds){
   const ConstructorInfo * constructor = 0;
   std::vector<Argument> arguments;
+  // get the constructor corresponding to the arguments (by testing every constructors type arguments to match the arguments passed)
   for(int i=0; i < type->Constructors().size(); i++){
     auto currentConstructor = type->Constructors().at(i);
     auto argumentTypes = currentConstructor->getArgumentTypes();
@@ -27,15 +27,22 @@ PyObject * PythonType::construct( PyObject *args, PyObject *kwds){
     std::cerr << "could not find matching constructor"<<std::endl;
     return 0;
   }
-  auto result = constructor->call();
-  
-  return new PythonObject(result);
-
+  auto result = constructor->call(arguments);
+  // allocate by python system
+  auto pythonResult= tp_alloc(this,0);
+  // call constructor
+  new (pythonResult) PythonObject(result);
+  return pythonResult;
 }
-void       PythonType::destruct(void * object){ }
+void PythonType::destruct(void * object){ }
 PyObject * PythonType::getProperty(PyObject* pobject, PyObject * name ){return 0; }
-int        PythonType::setProperty(PyObject * object, PyObject * , PyObject* value){return 0;}
-PyObject *PythonType:: stringRepresentation(PyObject * object){return 0; }
+int PythonType::setProperty(PyObject * object, PyObject * , PyObject* value){return 0;}
+PyObject * stringRepresentationCallback(PyObject * object){
+  auto obj = static_cast<PythonObject*>(object);
+  auto str  = DS_INLINE_STRING("wrapped c++ object of type '"<<obj->object.type->getFullyQualifiedName()<<"'");
+  auto pyStr= PyUnicode_FromString(str.c_str());
+  return pyStr; 
+}
 PythonType::PythonType(const Type* type):type(type){
   auto ns = type->getNamespace();
   string namespaceString= stringtools::replace(ns->getFullyQualifiedName(),"::",".")+"."+type->getName();
@@ -47,7 +54,7 @@ PythonType::PythonType(const Type* type):type(type){
 
   tp_name = stringtools::c_str(namespaceString);
   tp_basicsize = sizeof(PythonObject);
-  tp_repr = &stringRepresentation;
+  tp_repr = &stringRepresentationCallback;
   tp_getattro=&getProperty;
   tp_setattro=&setProperty;
   tp_doc = stringtools::c_str(docString);

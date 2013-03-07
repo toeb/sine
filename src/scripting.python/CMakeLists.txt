@@ -16,8 +16,8 @@ set(source
 add_library(scripting.python ${source} CMakeLists.txt)
 
 
-find_package(PythonInterp)
-find_package(PythonLibs)
+find_package(PythonLibs 3)
+find_package(PythonInterp 3)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 target_link_libraries(scripting.python scripting ${PYTHON_LIBRARIES} )

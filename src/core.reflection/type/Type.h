@@ -109,7 +109,7 @@ namespace nspace
 
     // type fields
     typedef TypeId                                                        basic_property(Id);
-    typedef std::string                                                   basic_property(Name);
+    typedef std::string                                                   basic_property(Name);    
     typedef std::function<std::shared_ptr<void>()>                        basic_property(CreateInstanceFunction);
 
     // member access
@@ -119,7 +119,8 @@ namespace nspace
     Set<const MethodInfo*>            Methods()const;
     Set<const ConstructorInfo*>       Constructors()const;
 
-    
+    std::string getFullyQualifiedName()const;
+
     const MemberInfo *        getMember(const std::string & name) const;
     const MethodInfo *        getMethod(const std::string & name) const;
     const PropertyInfo *      getProperty(const std::string & name) const;

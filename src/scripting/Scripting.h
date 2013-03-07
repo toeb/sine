@@ -26,10 +26,6 @@ namespace nspace{
     virtual bool registerType(const Type * type){return false;}
     virtual bool registerObject(std::shared_ptr<Object> object){return false;}
 
-
-
-
-    
     virtual void scriptObjectConstructed(ScriptObject & object){}
     virtual void scriptObjectDestroyed(ScriptObject & object){}
     virtual bool loadStream(std::istream & stream);
