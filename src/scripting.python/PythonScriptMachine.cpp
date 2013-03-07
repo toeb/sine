@@ -2,20 +2,33 @@
 #include <scripting.python/PythonUtilities.h>
 #include <scripting.python/PythonMethodAdapter.h>
 #include <scripting.python/PythonType.h>
+#include <scripting.python/PythonObject.h>
+#include <scripting.python/PythonVariable.h>
 using namespace nspace;
-
+using namespace std;
 
 size_t PythonScriptMachine::instances=0;
 
-bool PythonScriptMachine::registerObject(const std::string & variablename, Argument argument){
+
+bool PythonScriptMachine::setVariable(const std::string & name, Argument argument){
   if(!registerType(argument.type)){
     return false;
   }
-  auto globalModule = PyImport_AddModule("lala");
-  auto wrapper = pythonObjectFromArgument(argument);
-  auto dict = PyModule_GetDict(globalModule);
-  auto result = PyDict_SetItemString(dict,variablename.c_str(),wrapper);
+  PythonVariable var = name;
 
+
+
+  return var.assign( argument);
+}
+
+Argument PythonScriptMachine::getVariable(const std::string & name,const Type * type){
+  PythonVariable var=name;
+  return var.toArgument(type);
+}
+
+
+bool PythonScriptMachine::registerObject(const std::string & variablename, Argument argument){
+  return setVariable(variablename,argument);
 }
 
 PythonScriptMachine::PythonScriptMachine(){
@@ -62,28 +75,7 @@ void PythonScriptMachine::initStaticTypes(){
   }
 }
 
-namespace nspace{
 
-  struct Module{
-    Module(){}
-    void addType(const std::string  & name, const Type * type){
-
-    }
-    const Namespace * _namespace;
-    std::map<std::string,PythonType*> types;
-  };
-};
-
-
-PyObject * nspace::pythonObjectFromArgument(Argument arg){
-  if(arg.type==typeof(int)){
-    return Py_BuildValue("i",(int)arg);
-  }
-
-  
-
-  return 0;
-}
 
 bool PythonScriptMachine::registerType(const Type * type){
   if(!type){

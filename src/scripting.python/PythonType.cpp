@@ -9,6 +9,8 @@ PyObject * constructCallback(PyTypeObject* subtype, PyObject*args, PyObject * kw
   return pythonType->construct(args,kwds);  
 }
 
+
+
 bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> & argumentTypes);
 
 PyObject * PythonType::construct( PyObject *args, PyObject *kwds){

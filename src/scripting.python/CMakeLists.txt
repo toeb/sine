@@ -8,6 +8,8 @@ set(source
  PythonMethodAdapter.h
  PythonUtilities.h
  PythonUtilities.cpp
+ PythonVariable.h
+ PythonVariable.cpp
  PythonMethodAdapter.cpp
  ../include/scripting.python.h
 
