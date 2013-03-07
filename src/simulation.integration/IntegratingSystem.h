@@ -19,14 +19,14 @@ namespace nspace{
     public virtual CompositeHubObject,
     public virtual Log
   {
-    REFLECTABLE_OBJECT(IntegratingSystem);
-    PROPERTY(ITask*, Task);
-    PROPERTY(StatefulObject*, SystemState);
-    PROPERTY(ISystemFunction*, SystemFunction);
-    PROPERTY(Evaluator*, Evaluator);
-    PROPERTY(SimulationTimeProvider *, TimeProvider);
-    PROPERTY(StepIntegrator*, Integrator);
-    PROPERTY(long, EvaluationCount){};
+    reflect_type(IntegratingSystem);
+    typedef ITask*                    reflect_property(Task);
+    typedef StatefulObject*           reflect_property(SystemState);
+    typedef ISystemFunction*          reflect_property(SystemFunction);
+    typedef Evaluator*                reflect_property(Evaluator);
+    typedef SimulationTimeProvider *  reflect_property(TimeProvider);
+    typedef StepIntegrator*           reflect_property(Integrator);
+    typedef long                      reflect_property(EvaluationCount);
   public:
     // this object is a functor which will be used as a callback in the Task
     void operator()();

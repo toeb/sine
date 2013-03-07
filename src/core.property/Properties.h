@@ -156,7 +156,7 @@ private:                                                          \
 
 
 #define DS_PROPERTY_MARKER(NAME) DS_CONCAT(NAME,PropertyMarker)
-#define DS_PROPERTY_MARKER_DEFINITION(NAME) struct DS_PROPERTY_MARKER (NAME){ };
+#define DS_PROPERTY_MARKER_DEFINITION(NAME) struct DS_PROPERTY_MARKER (NAME){ static inline const char * & name(){static const char * _name = #NAME; return _name; } };
 
 
 // This is plattform indepenedent.  it uses overloading and a markertypes to call default/custom extension methods
@@ -184,7 +184,7 @@ private:                                                          \
 
 
 
-
+// add a notify general notifyMethod like propertychanging object
 #define DS_PROPERTY_EXTENSION_METHODS \
   DS_PROPERTY_EXTENSION_BEFORE_SET   \
   DS_PROPERTY_EXTENSION_AFTER_SET    \
@@ -194,9 +194,25 @@ private:                                                          \
 #define DS_PROPERTY_AFTER_SET(NAME) DS_PROPERTY_EXTENSION_AFTER_SET_SPECIALIZATION(NAME) //DS_INLINE void after##NAME##Set()
 #define DS_PROPERTY_BEFORE_GET(NAME) DS_PROPERTY_EXTENSION_BEFORE_GET_SPECIALIZATION(NAME) //DS_INLINE void before##NAME##Get()const
 
+
+
 #define DS_PROPERTY_MARKER_INSTANCE(NAME) static_cast<const DS_PROPERTY_MARKER(NAME)*>(0)
-#define DS_PROPERTY_SETTER_EXTENDED(NAME) DS_PROPERTY_SETTER(NAME){ if(DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME), &value)) return; DS_PROPERTY_STORAGE(NAME) = value; DS_PROPERTY_EXTENSION_AFTER_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME)); }
-#define DS_PROPERTY_GETTER_EXTENDED(NAME) DS_PROPERTY_GETTER(NAME){ DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME)); return DS_PROPERTY_STORAGE(NAME); }
+#define DS_PROPERTY_SETTER_EXTENDED(NAME)                                                         \
+  DS_PROPERTY_SETTER(NAME){                                                                       \
+    DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(DS_PROPERTY_MARKER(NAME)::name(), &value);              \
+    if(DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME), &value)){         \
+      return;                                                                                     \
+    }                                                                                             \
+    DS_PROPERTY_STORAGE(NAME) = value;                                                            \
+    DS_PROPERTY_EXTENSION_AFTER_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME));                      \
+    DS_PROPERTY_EXTENSION_AFTER_SET_NAME(DS_PROPERTY_MARKER(NAME)::name());                       \
+}
+#define DS_PROPERTY_GETTER_EXTENDED(NAME)                                                         \
+  DS_PROPERTY_GETTER(NAME){                                                                       \
+    DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME));                     \
+    DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(DS_PROPERTY_MARKER(NAME)::name());                      \
+    return DS_PROPERTY_STORAGE(NAME);                                                             \
+  }
 
 #define DS_PROPERTY_REFERENCE_MUTABLE(NAME) DS_PROPERTY_TYPE_NAME(NAME) & NAME(){return DS_PROPERTY_STORAGE_FIELD(NAME);}
 #define DS_PROPERTY_REFERENCE_CONST(NAME) const DS_PROPERTY_TYPE_NAME(NAME) NAME()const{return DS_PROPERTY_STORAGE_FIELD(NAME);}
@@ -211,6 +227,9 @@ public: DS_PROPERTY_SETTER_EXTENDED(NAME)
 
 #define extensible_property_class DS_PROPERTY_EXTENSION_METHODS
 #define extensible_property(NAME) DS_PROPERTY_EXTENDED(NAME)
+
+#define continue_set() return false
+#define cancel_set() return true
 #define before_set(NAME) DS_PROPERTY_BEFORE_SET(NAME)
 #define after_set(NAME) DS_PROPERTY_AFTER_SET(NAME)
 #define before_get(NAME) DS_PROPERTY_BEFORE_GET(NAME)

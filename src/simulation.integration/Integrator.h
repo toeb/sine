@@ -43,11 +43,11 @@ namespace nspace{
     public virtual PropertyChangingObject,
     public virtual Log
   {
-    REFLECTABLE_OBJECT(Integrator);
-    SUBCLASSOF(Log);
+    reflect_type(Integrator);
+    reflect_superclasses(Log);
 
-    DESCRIPTION(Evaluator,"The evaluator which is to be integrated");
-    PROPERTY(Evaluator*, Evaluator){}
+    //DESCRIPTION(Evaluator,"The evaluator which is to be integrated");
+    typedef Evaluator * reflect_property(Evaluator);
   public:
     // default constructor (no evaluator set)
     Integrator();

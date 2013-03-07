@@ -39,7 +39,7 @@ namespace nspace{
       _callback(sender,propertyName);
     }
   };
-
+  
   // an object which allows listeners to listen for property change events
   class PropertyChangingObject : public virtual Object{
     DS_CLASS(PropertyChangingObject);
@@ -48,7 +48,12 @@ namespace nspace{
   public:
     Set<PropertyChangedListener*> & listeners();
   protected:
+    void onAfterPropertySet(const char * name);
+    // handler for extensible_properties
     void raisePropertyChanged(const std::string & propertyname);
     virtual void onPropertyChanged(const std::string & propertyname);
   };
+  // declare this macro in a class which uses extensible properties and PropertyChanging object.
+  // else one must handle property changes manually
+#define notify_property_changed using PropertyChangingObject::onAfterPropertySet;
 }

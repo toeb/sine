@@ -12,7 +12,7 @@
 namespace nspace{
   //an inputhandler is a module which translates input into events for IInputListeners and keeps track of keyboard / mouse input state
   class InputHandler:public virtual ModuleBase,public virtual NamedObject, public virtual Log{
-    REFLECTABLE_OBJECT(InputHandler);
+    reflect_type(InputHandler);
     PROPERTYSET(IInputListener*, InputListeners,,);
   private:
     // store the last change time which allows clients to see which is the current inputhandler

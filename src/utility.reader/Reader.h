@@ -47,9 +47,9 @@ namespace nspace {
   * \brief Reader superclass.
   */
 class Reader : public virtual StatefulTask ,public virtual ProgressReporter{
-    REFLECTABLE_OBJECT(Reader);
-    SUBCLASSOF(StatefulTask);
-    PROPERTY(bool, Abort){}
+    reflect_type(Reader);
+    reflect_superclasses(StatefulTask);
+    typedef bool reflect_property(Abort);
     REFERENCE(protected,bool,Abort);
 
   protected:

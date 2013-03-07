@@ -4,25 +4,24 @@
 #include <simulation.integration/Integrator.h>
 namespace nspace{
   class StepIntegrator : public virtual Integrator{
-    REFLECTABLE_OBJECT(StepIntegrator)
-      SUBCLASSOF(Integrator);
+    reflect_type(StepIntegrator)
+      reflect_superclasses(Integrator);
 
-    DESCRIPTION(LowerBound, "The lower bound of integration")
-      PROPERTY(Time, LowerBound);
+    //DESCRIPTION(LowerBound, "The lower bound of integration")
+    typedef Time reflect_property(LowerBound);
 
-    DESCRIPTION(UpperBound, "The upper bound which is to be reached")
-      PROPERTY(Time, UpperBound);
+    //DESCRIPTION(UpperBound, "The upper bound which is to be reached")
+    typedef Time reflect_property(UpperBound);
 
-    DESCRIPTION(Time, "The current time 't' ")
-      PROPERTY(Time, Time){}
+    //DESCRIPTION(Time, "The current time 't' ")
+    typedef Time reflect_property(Time);
 
-    DESCRIPTION(CurrentStepSize, "The current step size h(t) 'h' ")
-      PROPERTY(Time, CurrentStepSize){}
+    //DESCRIPTION(CurrentStepSize, "The current step size h(t) 'h' ")
+    typedef Time reflect_property(CurrentStepSize);
 
-    DESCRIPTION(InitialStepSize, "The initial step size h(t)|t=0 'h0'")
-      PROPERTY(Time, InitialStepSize){}
+    //DESCRIPTION(InitialStepSize, "The initial step size h(t)|t=0 'h0'")
+    typedef Time reflect_property(InitialStepSize);
   private:
-
     StateMatrix x_next;
   protected:
     /**

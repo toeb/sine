@@ -6,13 +6,13 @@ namespace nspace{
   class DynamicWidget;
   // TODO abstract Hint / Taggable interface for Object
   class ControlFactory{
-    TYPED_OBJECT(ControlFactory);
+    reflect_type(ControlFactory);
   public:
     virtual bool match(const Type * type, Object * object=0, const std::string& hints="")=0;
     virtual DynamicWidget * createInstance()=0;
   };
   class ControlFactoryRepository  : public virtual PropertyChangingObject, public virtual Log{
-    REFLECTABLE_OBJECT(ControlFactory);
+    reflect_type(ControlFactory);
     PROPERTYSET(ControlFactory* , Factories,{},{});
   public:
     static  ControlFactoryRepository * defaultInstance();

@@ -3,7 +3,7 @@
 #include <string>
 
 #include <core.property.h>
-
+#include <core/PropertyChangingObject.h>
 TEST(1,propertyMutableReference){
 
 }
@@ -13,7 +13,7 @@ TEST(1,propertyDefinition){
   struct A{
     typedef std::string DS_PROPERTY_DEFINITION(StringValue)
   public:
-    
+
     typedef StringValuePropertyType PublicStringValuePropertyType;
   };
 
@@ -36,7 +36,7 @@ TEST(1, propertyField){
 
 TEST(1, TemplatedPropertyField){
   class A{
-     typedef std::map<std::string,std::string> DS_PROPERTY_DEFINITION(MapValue)
+    typedef std::map<std::string,std::string> DS_PROPERTY_DEFINITION(MapValue)
       DS_PROPERTY_STORAGE_FIELD(MapValue);
   private:
     friend class UnitTestClass;
@@ -130,7 +130,7 @@ UNITTEST(PropertyFieldGetter){
 
 UNITTEST(PropertyFieldAutoSetter){
   class A{
-   typedef   int DS_PROPERTY_DEFINITION(Value);
+    typedef   int DS_PROPERTY_DEFINITION(Value);
   public: DS_PROPERTY_STORAGE_FIELD(Value);
   public: DS_PROPERTY_AUTO_SETTER(Value)
   }a;
@@ -141,7 +141,7 @@ UNITTEST(PropertyFieldAutoSetter){
 
 UNITTEST(PropertyFieldAutoGetter){
   class A{
-   typedef   int DS_PROPERTY_DEFINITION(Value);
+    typedef   int DS_PROPERTY_DEFINITION(Value);
   public: DS_PROPERTY_STORAGE_FIELD(Value);
   public: DS_PROPERTY_AUTO_GETTER(Value)
   }a;
@@ -195,7 +195,7 @@ UNITTEST(PropertyFieldVirtualGetter){
 UNITTEST(ExtensiblePropertyDefintion){
 
   struct ExtendedPropertyTestStruct{
-    DS_PROPERTY_EXTENSION_METHODS;
+    extensible_property_class;
 
     ExtendedPropertyTestStruct():_RedChannel(0),beforeSetCallCount(0),afterSetCallCount(0),beforeGetCallCount(0),cancelSetResult(false){}
 
@@ -207,7 +207,7 @@ UNITTEST(ExtensiblePropertyDefintion){
 
 
     // define a default extended property - a property which has extension points for setting and getting
-  typedef  float DS_PROPERTY_EXTENDED(RedChannel);
+    typedef  float extensible_property(RedChannel);
 
 
     auto before_set(RedChannel){
@@ -218,8 +218,6 @@ UNITTEST(ExtensiblePropertyDefintion){
     auto after_set(RedChannel){
       afterSetCallCount++;
     }
-
-
     auto before_get(RedChannel){
       beforeGetCallCount++;
     }
@@ -265,6 +263,63 @@ TEST(1, constPointerProperty){
 
 
 }
+
+
+
+TEST(1, notifyingProperties){
+
+  struct A{
+    mutable std::stringstream ss;
+    extensible_property_class;
+
+    virtual void onBeforePropertyGet(const char * name)const{ss<<1;}
+    virtual void onAfterPropertySet(const char * name){ss<<2;}
+    virtual void onBeforePropertySet(const char * name, const void * data){ss<<3;}
+
+    typedef int extensible_property(IntProperty);
+
+
+    auto before_get(IntProperty){
+
+    }
+
+    auto before_set(IntProperty){
+      continue_set();
+    }
+    auto after_set(IntProperty){
+    }
+
+  };
+
+  A a;
+  a.setIntProperty(4242);
+  a.getIntProperty();
+
+  CHECK_EQUAL("321",a.ss.str());
+}
+
+TEST(2, notifyingProperties){
+
+  struct A : public PropertyChangingObject{    
+    extensible_property_class;    
+    notify_property_changed
+    typedef int extensible_property(IntProperty);    
+  };
+
+  A a;
+  bool called=false;
+  a.listeners()|= new nspace::DelegatePropertyChangedListener([&](Object* sender, const std::string &  name){
+    if(name=="IntProperty") called = true;
+  });
+  CHECK(!called);
+  a.setIntProperty(4242);
+  CHECK(called);
+
+}
+
+
+
+
 
 
 

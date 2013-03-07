@@ -8,10 +8,10 @@ namespace nspace{
 
 
   class MeshReader : public Reader{
-    REFLECTABLE_OBJECT(MeshReader);
-    SUBCLASSOF(Reader);
+    reflect_type(MeshReader);
+    reflect_superclasses(Reader);
 
-    PROPERTY(IMeshBuilder*, Builder){}
+    typedef IMeshBuilder* reflect_property(Builder);
     
   public:
     MeshReader():_Builder(0){}

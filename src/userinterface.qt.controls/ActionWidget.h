@@ -1,15 +1,16 @@
 #pragma once
 #include <core.h>
 
+#include <core.reflection/callable/Action.h>
 #include <userinterface.qt.controls/DynamicWidget.h>
 #include <userinterface.qt.controls/ControlFactory.h>
 #include <QPushButton>
 namespace nspace{
   class ActionWidget : public DynamicWidget, public virtual PropertyChangingObject{
-    REFLECTABLE_OBJECT(ActionWidget);
+    reflect_type(ActionWidget);
     Q_OBJECT;
     QPushButton * _button;
-    PROPERTY(Action *, Action){}
+    typedef Action * reflect_property(Action);
   public:
     ActionWidget(QWidget * parent);
 

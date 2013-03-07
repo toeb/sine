@@ -115,6 +115,7 @@ public:inline void test();\
 #endif
 
 #ifndef TEST
+// todo:  make test use varargs to allow categorization in any number of groups
 #define TEST(NAME,NAME2) DS_TEST(NAME2##NAME)
 #endif
 
