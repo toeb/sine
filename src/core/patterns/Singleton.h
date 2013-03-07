@@ -2,7 +2,7 @@
 #include <config.h>
 #include <core/template/TemplateUtilities.h>
 
-
+#include <memory>
 namespace nspace{
 
 

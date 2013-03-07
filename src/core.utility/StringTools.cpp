@@ -9,6 +9,13 @@
 using namespace std;
 using namespace nspace::stringtools;
 
+char * nspace::stringtools::c_str(const std::string  & original){
+  char *cDocString = new char[original.size()+1]; // +1 to account for \0 byte
+  std::strncpy(cDocString, original.c_str(), original.size());
+  cDocString[original.size()]=0;// ensure it is null terminated ( if it is not already)
+  return cDocString;
+}
+
 StringToken::StringToken(std::istream & stream):stream(stream){}
 bool StringToken::next(){
   word=stringtools::nextToken(stream);      
@@ -22,29 +29,29 @@ StringToken:: operator bool(){
 string nspace::stringtools::nextToken(std::istream & stream){
   static string newline="\n";
   static string empty="";
-      bool stop=false;
-      while(!stop){
-        char c = stream.peek();
-        switch(c){        
-        case '\n':      
-        case '\r':
-          stream.ignore();
-          return newline;
-        case '\t':  
-        case ' ':        
-          stream.ignore();
-          if(!stream)return empty;
-          break;
-        default:
-          stop = true;
-          break;
-        };
-      }
-      string tok;
-      stream >> tok;
-      return tok;
+  bool stop=false;
+  while(!stop){
+    char c = stream.peek();
+    switch(c){        
+    case '\n':      
+    case '\r':
+      stream.ignore();
+      return newline;
+    case '\t':  
+    case ' ':        
+      stream.ignore();
+      if(!stream)return empty;
+      break;
+    default:
+      stop = true;
+      break;
+    };
+  }
+  string tok;
+  stream >> tok;
+  return tok;
 
-    }
+}
 
 std::vector<std::string> nspace::stringtools::split(const std::string & str, const char separator){  
   std::vector<std::string> result;
@@ -58,8 +65,8 @@ std::vector<std::string> nspace::stringtools::split(const std::string & str, con
 std::vector<std::string> nspace::stringtools::split(istringstream & stream){  
   vector<string> tokens;
   copy(istream_iterator<string>(stream),
-         istream_iterator<string>(),
-         back_inserter<vector<string> >(tokens));
+    istream_iterator<string>(),
+    back_inserter<vector<string> >(tokens));
   return tokens;
 }
 std::vector<std::string> nspace::stringtools::split(const std::string & str){
@@ -79,17 +86,17 @@ std::string nspace::stringtools::trimFront(const std::string & str){
   do{
     isWhitespace=false;
     switch(str[front]){
-      case ' ':
-      case '\t':
-      case '\n':
-      case '\r':
-        isWhitespace=true;
-        
-    break;
-      default:
-        allWhitespace = false;
+    case ' ':
+    case '\t':
+    case '\n':
+    case '\r':
+      isWhitespace=true;
+
+      break;
+    default:
+      allWhitespace = false;
     } 
-    
+
     front++;
   }
   while(isWhitespace && front < str.size());
@@ -99,11 +106,11 @@ std::string nspace::stringtools::trimFront(const std::string & str){
 
 
 std::string nspace::stringtools::trimBack(const std::string & str){
-  
+
   int back=str.size()-1;
   if(back < 0)return "";
   bool isWhitespace; 
-  
+
   bool allWhitespace=true;
   do{
     isWhitespace=false;
@@ -112,15 +119,15 @@ std::string nspace::stringtools::trimBack(const std::string & str){
     case '\t':
     case '\n':
     case '\r':
-    isWhitespace=true;
-    break;
+      isWhitespace=true;
+      break;
     default:
       allWhitespace = false;
     } 
 
     back--;
   }while(isWhitespace && back >=0); 
-  
+
   if(allWhitespace)return "";
   return str.substr(0,back+2);
 }

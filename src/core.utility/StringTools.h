@@ -39,7 +39,8 @@ namespace nspace{
     //returns the next token in stream - this may be a word (delimited by whitespace) or a newline.  if an empty string "" is returned the stream is empty
     std::string nextToken(std::istream & stream);
 
-
+    // creates a null terminated copy of the original string on heap
+    char * c_str(const std::string  & original);
     
 
 

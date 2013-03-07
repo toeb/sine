@@ -1,7 +1,16 @@
 set(source 
- Python.h
- Python.cpp
+ PythonType.h
+ PythonType.cpp
+ PythonObject.h
+ PythonObject.cpp
+ PythonScriptMachine.h
+ PythonScriptMachine.cpp
+ PythonMethodAdapter.h
+ PythonUtilities.h
+ PythonUtilities.cpp
+ PythonMethodAdapter.cpp
  ../include/scripting.python.h
+
 )
 
 add_library(scripting.python ${source} CMakeLists.txt)
