@@ -4,10 +4,14 @@
 #include <core.reflection/type/Argument.h>
 namespace nspace{
   class MemberAdapter{
-    BASIC_PROPERTY(Argument,Owner,public,,onBeforeOwnerChanged();,onOwnerChanged());
+    extensible_property_class;
+
+    typedef Argument extensible_property(Owner);
   protected:
-    MemberAdapter():_Owner(0){}
-    virtual void onOwnerChanged(){}
-    virtual void onBeforeOwnerChanged(){}
+    MemberAdapter();
+    MemberAdapter(Argument owner);
+    virtual auto before_set(Owner);
+    virtual auto after_set(Owner);
+
   };
 }

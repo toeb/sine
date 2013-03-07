@@ -9,7 +9,7 @@ namespace nspace{
 
   public:
     void toString(std::ostream & out)const{
-      getObjectType()->objectToString(getObjectPointer().get(),out);
+    //  getObjectType()->objectToString(getObjectPointer().get(),out);
     }
     ScriptObject():_ObjectType(0){}
     SIMPLE_PROPERTY(std::shared_ptr<void>, ObjectPointer){}

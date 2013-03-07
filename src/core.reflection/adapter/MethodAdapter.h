@@ -11,8 +11,9 @@ namespace nspace{
     SIMPLE_PROPERTY(const MethodInfo *, MethodInfo){}
   public:
     MethodAdapter();
-    MethodAdapter(Object * object, const std::string & name);
-    MethodAdapter(Object * object, const MethodInfo * methodInfo);
+    MethodAdapter(Argument object, const std::string & name);
+    MethodAdapter(Argument object, const MethodInfo * method);
+    
   protected:
     void executeAction();
   public:

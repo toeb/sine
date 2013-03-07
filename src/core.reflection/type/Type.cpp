@@ -5,7 +5,9 @@
 #include <core.reflection/type/TypeRepository.h>
 #include <sstream>
 using namespace nspace;
-
+struct DefaultNS : public Namespace{
+  DS_SINGLETON(DefaultNS):Namespace(DS_STRINGIFY(nspace)){};
+};
 Type::Type(const std::string & name ,const Type * underlyingType):
   _Id(_typeCounter++),
   _IsPointer(false),
@@ -13,8 +15,10 @@ Type::Type(const std::string & name ,const Type * underlyingType):
   _IsVolatile(false),
   _IsConst(false),
   _UnderlyingType(0),
-  _RawType(0)
+  _RawType(0),
+  _Namespace( DefaultNS::instance().get())
 {
+  DefaultNS::instance()->setTypes(DefaultNS::instance()->getTypes() | this);
   if(underlyingType==this || underlyingType==0){
     setUnderlyingType(0);
     setRawType(this);
@@ -34,6 +38,7 @@ bool Type::isConstructible()const{return  (bool)getCreateInstanceFunction();}
 
 bool Type::isRawType()const{return getRawType()==this;}
 
+
 Type::TypeId Type::_typeCounter=0;
 Type::Type():
   _Id(_typeCounter++),
@@ -42,8 +47,10 @@ Type::Type():
   _IsVolatile(false),
   _IsConst(false),
   _UnderlyingType(0),
-  _RawType(0)
+  _RawType(0),
+  _Namespace( DefaultNS::instance().get())
 {
+  DefaultNS::instance()->setTypes(DefaultNS::instance()->getTypes() | this);
   TypeRepository::registerType(this);
 }
 namespace nspace{
@@ -112,19 +119,18 @@ bool Type::isSubClassOf(const Type * other)const{
 
 
 
-Set<const PropertyInfo*> Type::Properties()const{
-  Set<const PropertyInfo*> result;
-  for(uint i=0; i < Members(); i++){
-    auto prop = dynamic_cast<const PropertyInfo*>(Members().at(i));
-    if(!prop)continue;
-    result|=prop;
-  }
-  return result;
+Set<const PropertyInfo*> Type::Properties()const{  
+  return Members().subset<const PropertyInfo*>();
+}
+
+Set<const MethodInfo*> Type::Methods()const{
+  return Members().subset<const MethodInfo*>();
 }
 
 Set<const ConstructorInfo*> Type::Constructors()const{
   return Members().subset<const ConstructorInfo*>();
 }
+
 void Type::itemAdded(const MemberInfo * , Members){
 }
 void Type::itemRemoved(const MemberInfo * , Members){
