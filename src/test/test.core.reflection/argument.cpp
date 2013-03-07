@@ -2,7 +2,7 @@
 
 #include <core.reflection/type/Argument.h>
 
-typedef nspace::Argument Argument;
+using namespace nspace;
 
 UNITTEST(Argumentcreateinvalid){
     // a default constructed argument is invalid
@@ -26,4 +26,17 @@ UNITTEST(Argumentcreatesimple){
 UNITTEST(ReferenceArgument){
   
   
+}
+
+UNITTEST(ComplexArgument){
+  std::shared_ptr<int> sptr(new int(32));
+
+  Argument arg =sptr;
+
+  std::shared_ptr<int> b = arg;
+
+  auto ptr = b.get();
+
+  CHECK(ptr==sptr.get());
+
 }

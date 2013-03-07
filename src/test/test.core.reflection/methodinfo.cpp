@@ -346,9 +346,8 @@ UNITTEST(PointerReturnType){
   auto method = type->getMethod("testMethod");
 
   auto result = method->call(&a);
- // auto actual = (std::shared_ptr<int>)result;
-  FAIL("Not implemented correctly yet")
-  //CHECK_EQUAL(expected,actual.get());
+  auto actual = (std::shared_ptr<int>)result;
+  CHECK_EQUAL(expected,actual.get());
 }
 
 template<typename T>
