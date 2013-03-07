@@ -23,7 +23,7 @@ UNITTEST(CallableConstructor){
   auto type = typeof(A);
   auto constructor = type->Constructors().first();
   int args[3]={4,4,4};
-  auto instance = (A*)(*constructor)(args);
+  auto instance = (A*)constructor->call(args);
   CHECK_EQUAL(12,instance->sum);
 }
 

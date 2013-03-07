@@ -5,20 +5,20 @@ using namespace nspace;
 
 
 Argument Callable::operator()(){
-  return operator()(std::vector<Argument>());
+  return callImplementation(std::vector<Argument>());
 }
 
 Argument Callable::operator()()const{
-  return operator()(std::vector<Argument>());
+  return callImplementation(std::vector<Argument>());
 }
 
 
 Argument Callable::call(){
-  return operator()(std::vector<Argument>());
+  return callImplementation(std::vector<Argument>());
 }
 
 Argument Callable::call()const{
-  return operator()(std::vector<Argument>());
+  return callImplementation(std::vector<Argument>());
 }
 
 

@@ -10,7 +10,7 @@ using namespace std;
 
 TEST(3,CallableFunctor){
   auto it =make_callable([](string s)->int{return strtol(s.c_str(),0,10);});  
-  auto res =  (int)it.callArgs(string("32"));
+  auto res =  (int)it(string("32"));
   CHECK(res == 32);
 }
   
@@ -26,9 +26,9 @@ TEST(2,CallableFunctor){
   };
   CallableFunctor<A> cf; 
   Callable * c= &cf;
-  auto result = (int)c->callArgs(5,2,3);
+  auto result = (int)c->operator()(5,2,3);
   CHECK(10==result);
-  c->callArgs(1,1,1);
+  c->operator()(1,1,1);
   CHECK(3==cf._function.lastOpResult);
 }
 
@@ -41,7 +41,7 @@ TEST(1,CallableFunctor){
   };
   CallableFunctor<A> cf; 
   Callable * c= &cf;
-  auto result = (int)c->callArgs(5,2,3);
+  auto result = (int)c->operator()(5,2,3);
   CHECK(10==result);
 }
 

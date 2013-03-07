@@ -38,7 +38,7 @@ static PyObject * call(PyObject * object, PyObject* args, PyObject* kwds){
   std::vector<Argument> cargs;
   auto success=  parseArguments(args,cargs,0);
   if(!success)return 0;
-  auto result = callable->callable(cargs);
+  auto result = callable->callable.call(cargs);
   return pythonObjectFromArgument(result);
 }
 PyObject * construct(PyTypeObject *subtype, PyObject *args, PyObject *kwds){return 0;}

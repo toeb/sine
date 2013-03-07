@@ -40,6 +40,22 @@ namespace nspace{
     }
   };
   
+
+  template<typename TCallable>
+  struct ScriptCallableImplementationCallableFunctor:public ScriptFunctionImplementation{
+    CallableFunctor<TCallable> callable;
+    ScriptCallableImplementationCallableFunctor(CallableFunctor<TCallable> callable):callable(callable){}
+
+    bool isValid() const override final{
+      return callable.isValid();
+    }
+    Argument callImplementation(const Arguments & args) override final{
+      return callable.callImplementation(args);
+    }
+    Argument callImplementation(const Arguments & args) const override final{
+      return callable.callImplementation(args);
+    }
+  };
   
  
 
@@ -49,7 +65,7 @@ namespace nspace{
     ScriptFunction(std::shared_ptr<Callable> callable):impl(new ScriptCallableImplementationSmartPointer(callable)){}
     ScriptFunction(Callable * callable):impl(new ScriptCallableImplementationRawPointer(callable)){}
     ScriptFunction(Callable & callable):impl(new ScriptCallableImplementationRawPointer(&callable)){}
-    
+    template<typename TCallable> ScriptFunction(CallableFunctor<TCallable> callable):impl(new ScriptCallableImplementationCallableFunctor<TCallable>(callable)){}
     ScriptFunction(std::shared_ptr<ScriptFunctionImplementation> impl):impl(impl){}
     ScriptFunction(){}
     std::shared_ptr<ScriptFunctionImplementation> impl;
@@ -91,6 +107,10 @@ namespace nspace{
     bool setFunction(const std::string & name, ScriptFunction func ){
      return  setVariable(name,func);
     }
+    template <typename TFunctor>bool setFunctor(const std::string & name, TFunctor func){
+      return setFunction(name, make_callable(func));
+    }
+    
 
 
   };

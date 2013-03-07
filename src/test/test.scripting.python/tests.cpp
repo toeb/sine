@@ -29,8 +29,30 @@ struct TestType{
   }
 }a;
 
-
-
+UNITTEST(CallCLambda3){
+  // does the same as CallCLambda2 with auto conversion
+  PythonScriptMachine machine;
+  machine.setFunctor("herroWolrd",[](std::string s)->std::string{return "herror";} );
+  machine.loadString("a = herroWolrd('nihau')");
+  auto a = machine.getVariable("a");
+  CHECK_EQUAL("herror",(std::string)a);
+}
+UNITTEST(CallCLambda2){
+  // does the same as CallCLambda1 without requiering a reference . a rvalue suffices
+  PythonScriptMachine machine;
+  machine.setFunction("herroWolrd",make_callable([](std::string s)->std::string{return "herror";}) );
+  machine.loadString("a = herroWolrd('nihau')");
+  auto a = machine.getVariable("a");
+  CHECK_EQUAL("herror",(std::string)a);
+}
+UNITTEST(CallCLambda1){
+  PythonScriptMachine machine;
+  auto c=make_callable([](std::string s)->std::string{return "herror";});
+  machine.setFunction("herroWolrd",c );
+  machine.loadString("a = herroWolrd('nihau')");
+  auto a = machine.getVariable("a");
+  CHECK_EQUAL("herror",(std::string)a);
+}
 
 
 TEST(1,GetVariable){
@@ -107,8 +129,7 @@ TEST(Function2,Call){
   auto res =  machine.loadString("def fuu3(intval): print(\"meh\"+str(intval)); return 'meh'+str(intval)\nfuu3(32)\n");
 
   auto func = machine.getVariable<ScriptFunction>("fuu3");
-  Argument args[1]={42};
-  auto result = func(args);
+  auto result = func(42);
   CHECK(result.isValid());
   CHECK_EQUAL("meh42",(std::string)result);
 }
