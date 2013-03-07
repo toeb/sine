@@ -9,16 +9,16 @@ PyObject * constructCallback(PyTypeObject* subtype, PyObject*args, PyObject * kw
   return pythonType->construct(args,kwds);  
 }
 
-bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> & argumentTypes);
+bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> * argumentTypes);
 
 PyObject * PythonType::construct( PyObject *args, PyObject *kwds){
   const ConstructorInfo * constructor = 0;
   std::vector<Argument> arguments;
   // get the constructor corresponding to the arguments (by testing every constructors type arguments to match the arguments passed)
-  for(int i=0; i < type->Constructors().size(); i++){
+  for(size_t i=0; i < type->Constructors().size(); i++){
     auto currentConstructor = type->Constructors().at(i);
     auto argumentTypes = currentConstructor->getArgumentTypes();
-    if(parseArguments(args,arguments,argumentTypes)){
+    if(parseArguments(args,arguments,&argumentTypes)){
       constructor = currentConstructor;
       break;
     }
@@ -34,9 +34,18 @@ PyObject * PythonType::construct( PyObject *args, PyObject *kwds){
   new (pythonResult) PythonObject(result);
   return pythonResult;
 }
-void PythonType::destruct(void * object){ }
-PyObject * PythonType::getProperty(PyObject* pobject, PyObject * name ){return 0; }
-int PythonType::setProperty(PyObject * object, PyObject * , PyObject* value){return 0;}
+void PythonType::destruct(void * object){
+
+}
+PyObject * PythonType::getProperty(PyObject* pobject, PyObject * name ){
+  auto o = (PythonObject*)pobject;
+  auto n = PyUnicode_AsUTF8(name);
+
+  return o->getMember(n);
+}
+int PythonType::setProperty(PyObject * object, PyObject * , PyObject* value){
+  return 0;
+}
 PyObject * stringRepresentationCallback(PyObject * object){
   auto obj = static_cast<PythonObject*>(object);
   auto str  = DS_INLINE_STRING("wrapped c++ object of type '"<<obj->object.type->getFullyQualifiedName()<<"'");

@@ -29,6 +29,7 @@ namespace nspace {
     PROPERTY(size_t, PrimerCount);    
     PROPERTY(Time, ExecuteFor);
     PROPERTY(size_t, MaximumRepititions);
+    
   protected:
     PerformanceTest(const std::string  &name);
     virtual void runTest();
@@ -43,6 +44,7 @@ namespace nspace {
     TypedPerformanceTest(const std::string  &name) : PerformanceTest(name){}
 
     void runTest() override final{
+
       primeTest();
       planTest();
       iterateTests();

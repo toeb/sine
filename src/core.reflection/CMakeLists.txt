@@ -85,16 +85,16 @@ source_group("attribute" FILES ${attributeSource})
 set(source ${source} ${attributeSource})
 
 
-set(actionSource
-	action/Action.h
-	action/Action.cpp
-	action/DelegateAction.h
-	action/DelegateAction.cpp
-	action/MethodAction.h
-	action/MethodAction.cpp
+set(callableSource
+	callable/Action.h
+	callable/Action.cpp
+	callable/DelegateAction.h
+	callable/DelegateAction.cpp
+	callable/Callable.h
+	callable/Callable.cpp
 )
-source_group("action" FILES ${actionSource})
-set(source ${source} ${actionSource})
+source_group("callable" FILES ${callableSource})
+set(source ${source} ${callableSource})
 
 
 set(bindingSource

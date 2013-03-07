@@ -85,6 +85,8 @@ const MemberInfo * Type::getMember(const std::string & name)const{
   return member;
 }
 
+
+
 const MethodInfo * Type::getMethod(const std::string & name)const{
   auto method = dynamic_cast<const MethodInfo*>(getMember(name));
   return method;
@@ -94,7 +96,7 @@ const MethodInfo * Type::getMethod(const std::string & name)const{
 const ConstructorInfo * Type::getConstructor(const std::vector<const Type*> & types)const{
   return Constructors().first([&types](const ConstructorInfo * info)->bool{
     if(types.size()!=info->getArgumentTypes().size())return false;
-    for(int i=0; i < types.size(); i++){
+    for(size_t i=0; i < types.size(); i++){
       if(types[i]!=info->getArgumentTypes()[i])return false;
     }
     return true;

@@ -2,7 +2,7 @@
 #include <scripting.python/PythonUtilities.h>
 #include <scripting.python.h>
 #include <map>
-
+#include <core.reflection/callable/DelegateAction.h>
 
 #include <core.utility/StringTools.h>
 using namespace std;
@@ -14,14 +14,22 @@ struct TestType{
   int initialValue;
   reflect_type(TestType);
   reflected_default_constructor(public: TestType):initialValue(0){};
-  reflected_constructor(public: TestType, int a):initialValue(a){};
+  reflected_constructor(public: TestType, int a):initialValue(a){
+  
+  };
   typedef void reflected_method(method1)(){}
   typedef int  reflected_method(method2)(){return 3;}  
   typedef int  reflected_method(increment)(int i){return i+1;}
-  typedef int  reflected_method(add)(int a, int b){return a+b;}
+  typedef int  reflected_method(add)(int a, int b){
+    return a+b;
+  }
 
-
+  typedef int reflected_method(AddInitialValues)(const TestType & t){
+    return initialValue+t.initialValue;
+  }
 }a;
+
+
 
 
 
@@ -91,7 +99,62 @@ TEST(Function1,Call){
   auto func = machine.getVariable<ScriptFunction>("fuu2");
   auto result = func();
   auto r = (std::string)result;
+  CHECK(result.isValid());
   CHECK_EQUAL("herro",(std::string)result);
+}
+TEST(Function2,Call){
+  PythonScriptMachine machine;
+  auto res =  machine.loadString("def fuu3(intval): print(\"meh\"+str(intval)); return 'meh'+str(intval)\nfuu3(32)\n");
+
+  auto func = machine.getVariable<ScriptFunction>("fuu3");
+  Argument args[1]={42};
+  auto result = func(args);
+  CHECK(result.isValid());
+  CHECK_EQUAL("meh42",(std::string)result);
+}
+
+
+TEST(CallableAction,Call){
+  PythonScriptMachine machine;
+  bool called = false;
+  
+  DelegateAction<std::function<void()>> action([&](){
+    called = true;
+  });
+
+  machine.setFunction("fuu4",action);
+  CHECK(!called);
+  machine.loadString(
+    "fuu4()\n"
+    );
+  CHECK(called);
+}
+
+
+TEST(BinaryMethodAdapter,Call){
+  PythonScriptMachine machine;
+  TestType t;
+  MethodAdapter adapter(t,"add");
+  machine.setFunction("aNiceMethod",&adapter);
+  machine.loadString(
+    "a = aNiceMethod(21,84)\n"
+    );
+  auto result = (int)machine.getVariable("a");
+  CHECK_EQUAL(105,result);
+}
+TEST(ComplexMethod,Call){
+  PythonScriptMachine machine;
+  TestType b(3232);
+  machine.setVariable("b",b);
+  machine.registerType(typeof(TestType));
+  machine.loadString(
+    "import ds;\n"
+    "a = ds.TestType(2323)\n"
+    "c=a.add(3,3)\n"
+    );
+  auto result = (int)machine.getVariable("c");
+  CHECK_EQUAL(5555,result);  
+    
 }
 TEST(2,SetVariable){
   // test if data pointer stays the same

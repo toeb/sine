@@ -231,7 +231,7 @@ void testvalueAndAction(){
   stringstream sss(str);
 
 
-  act1.execute();
+  act1();
 
   prop2.deserialize(sss);
   prop2.serialize(cout);

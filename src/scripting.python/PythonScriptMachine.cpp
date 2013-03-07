@@ -50,24 +50,14 @@ PythonScriptMachine::~PythonScriptMachine() {
   }
 }
 void PythonScriptMachine::initStaticTypes(){
-  auto mType = PythonMethodType::instance().get();
+  auto mType = PythonCallableType::instance().get();
   if(PyType_Ready(mType)<0){
     logError("could not ready method wrapper")
   }   
-  Py_INCREF(mType);
-  static PyModuleDef moduleDefinition={
-    PyModuleDef_HEAD_INIT,
-    "ds.statictypes",
-    "module containing static types needed for connecting c library",
-    -1,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL
-  };
 
-  auto module = PyModule_Create(&moduleDefinition);
+  auto module = PyImport_AddModule("ds.statictypes");
+  Py_INCREF(mType);
+  
   if(!module){
     logError("could not init module ds.statictypes");
     return;

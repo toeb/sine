@@ -1,11 +1,11 @@
 #pragma once
 
-#include <core.reflection/action/Action.h>
+#include <core.reflection/callable/Action.h>
 
 namespace nspace{
   template<typename T=std::function<void()> >
   class DelegateAction : public virtual Action{
-    TYPED_OBJECT(DelegateAction)
+    reflect_type(DelegateAction)
   private:
     T _callback;
   public:

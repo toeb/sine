@@ -7,11 +7,10 @@ namespace nspace{
 
 struct PythonFunction : public ScriptFunctionImplementation{
   PyObject * func;
-  PythonFunction(PyObject * func);
-
-  bool isValid()const override;
-  ~PythonFunction();
-  Argument call(std::vector<Argument> & args)override;
+  PythonFunction(PyObject * func);  
+  ~PythonFunction() override final;
+  bool isValid()const override final;
+  Argument callImplementation(const Arguments & args)override final;
 };
 
 }

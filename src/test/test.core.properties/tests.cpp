@@ -210,17 +210,17 @@ UNITTEST(ExtensiblePropertyDefintion){
   typedef  float DS_PROPERTY_EXTENDED(RedChannel);
 
 
-    before_set(RedChannel){
+    auto before_set(RedChannel){
       beforeSetCallCount++;
       return cancelSetResult;
     }
 
-    after_set(RedChannel){
+    auto after_set(RedChannel){
       afterSetCallCount++;
     }
 
 
-    before_get(RedChannel){
+    auto before_get(RedChannel){
       beforeGetCallCount++;
     }
 

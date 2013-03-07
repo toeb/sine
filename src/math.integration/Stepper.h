@@ -33,7 +33,7 @@ namespace nspace{
           TimeType t0=constant<TimeType>(0),
           TimeStepType h0=constant<TimeStepType>(0.02)
           );
-        virtual override void step();
+        virtual  void step()override;
         void stepUntil(const TimeType t_end);
         StateType f(StateType x, TimeStepType h, TimeType t);
       private:

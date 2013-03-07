@@ -29,7 +29,7 @@ namespace nspace
   class MemberInfo;
   class MethodInfo;
   class PropertyInfo;
-  class ConstructorInfo;
+  struct ConstructorInfo;
   class Type;
   
  typedef const Type * ConstTypePtr;

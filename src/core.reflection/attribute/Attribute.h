@@ -10,7 +10,7 @@ namespace nspace{
   };
   
   class AttributeTarget {
-    DS_CLASS(AttributeTarget);
+    reflect_type(AttributeTarget);
   public:
   };
 

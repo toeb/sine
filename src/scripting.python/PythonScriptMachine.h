@@ -6,29 +6,56 @@
 namespace nspace{
   struct Module;
   struct PythonType;
-  struct ScriptFunctionImplementation{
+  struct ScriptFunctionImplementation : public Callable{
 
     virtual bool isValid()const=0;
-    virtual Argument call(std::vector<Argument> &args)=0;
+    virtual Argument callImplementation(const Arguments &args)=0;
   };
-  struct ScriptFunction{
+
+  struct ScriptCallableImplementationSmartPointer:public ScriptFunctionImplementation{
+    std::shared_ptr<Callable> callable;
+    ScriptCallableImplementationSmartPointer(std::shared_ptr<Callable> callable):callable(callable){}
+    bool isValid() const override final{
+      return callable->isValid();
+    }
+    Argument callImplementation(const Arguments & args) override final{
+      return callable->callImplementation(args);
+    }
+    Argument callImplementation(const Arguments & args) const override final{
+      return callable->callImplementation(args);
+    }
+  };
+
+  struct ScriptCallableImplementationRawPointer:public ScriptFunctionImplementation{
+    Callable * callable;
+    ScriptCallableImplementationRawPointer(Callable * callable):callable(callable){}
+    bool isValid() const override final{
+      return callable->isValid();
+    }
+    Argument callImplementation(const Arguments & args) override final{
+      return callable->callImplementation(args);
+    }
+    Argument callImplementation(const Arguments & args) const override final{
+      return callable->callImplementation(args);
+    }
+  };
+  
+  
+ 
+
+  struct ScriptFunction : public Callable{
     reflect_type(ScriptFunction);
   public:
+    ScriptFunction(std::shared_ptr<Callable> callable):impl(new ScriptCallableImplementationSmartPointer(callable)){}
+    ScriptFunction(Callable * callable):impl(new ScriptCallableImplementationRawPointer(callable)){}
+    ScriptFunction(Callable & callable):impl(new ScriptCallableImplementationRawPointer(&callable)){}
+    
     ScriptFunction(std::shared_ptr<ScriptFunctionImplementation> impl):impl(impl){}
     ScriptFunction(){}
     std::shared_ptr<ScriptFunctionImplementation> impl;
-    Argument operator()(){
-      return operator()(std::vector<Argument>());
-    }
-    template<typename TContainer> Argument operator()(TContainer & container){
-      std::vector<Argument> vec;
-      for(auto it = std::begin(container); it!=std::end(container); it++){
-        vec.push_back(*it);
-      }
-      return call(vec);
-    }
-    bool isValid(){return (bool)impl&&impl->isValid();}
-    Argument call(std::vector<Argument> &args){return impl->call(args);}
+ 
+    bool isValid()const override{return (bool)impl&&impl->isValid();}
+    Argument callImplementation(const Arguments &args)override{return impl->callImplementation(args);}
   };
   class PythonScriptMachine : public VirtualScriptMachine{
     static size_t instances;
@@ -58,6 +85,12 @@ namespace nspace{
       return val;  
     }
 
+    ScriptFunction getFunction(const std::string & name){
+      return getVariable<ScriptFunction>(name);
+    }
+    bool setFunction(const std::string & name, ScriptFunction func ){
+     return  setVariable(name,func);
+    }
 
 
   };

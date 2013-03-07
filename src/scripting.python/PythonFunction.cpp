@@ -16,14 +16,15 @@ bool PythonFunction::isValid()const {
 PythonFunction::~PythonFunction(){
   Py_DecRef(func);
 }
-Argument PythonFunction::call(std::vector<Argument> & args){
+Argument PythonFunction::callImplementation(const Arguments & args){
   if(!isValid())return Argument();
   auto tuple = PyTuple_New(args.size());
-  for(int i=0; i < args.size();i++){
+  for(size_t i=0; i < args.size();i++){
     auto obj  =pythonObjectFromArgument(args[i]);
     PyTuple_SetItem(tuple,i,obj);
   }
   auto pythonResult =PyObject_Call(func,tuple,NULL);
+  if(!pythonResult)return Argument();
   Argument result= pythonObjectToArgument(pythonResult,0);
   Py_DecRef(pythonResult);
   return result;

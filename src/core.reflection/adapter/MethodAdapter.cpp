@@ -2,11 +2,6 @@
 
 using namespace nspace;
 
-Argument MethodAdapter::call(std::vector<Argument> args){
-  auto method = getMethodInfo();
-  auto owner = getOwner();
-  return method->call(owner.data.get(),args);
-}
 
 MethodAdapter::MethodAdapter():_MethodInfo(0){}
 MethodAdapter::MethodAdapter(Argument object, const std::string & name):MemberAdapter(object){
@@ -14,15 +9,16 @@ MethodAdapter::MethodAdapter(Argument object, const std::string & name):MemberAd
   if(!methodInfo)return;
   setMethodInfo(methodInfo);
 }
+
+bool MethodAdapter::isValid()const{
+  return getOwner().isValid()&& getMethodInfo()!=0;
+}
 MethodAdapter::MethodAdapter(Argument object, const MethodInfo * methodInfo):MemberAdapter(object){
   setMethodInfo(methodInfo);
 }
 
 
-Argument MethodAdapter::call(){
-  std::vector<Argument> args;
-  return call(args);
-}
-void MethodAdapter::executeAction(){
-  call();
+Argument MethodAdapter::callImplementation(const Arguments & args){
+  if(!isValid())return Argument();
+  return getMethodInfo()->call(getOwner().data.get(),args);
 }
