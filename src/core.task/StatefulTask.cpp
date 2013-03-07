@@ -14,9 +14,10 @@ std::string StatefulTask::stateToString(const State & state){
   }
 }
 
-void StatefulTask::propertyChanging(State, State){
+auto StatefulTask::before_set(State){
   setLoggingLevel(3);
-  logMessage("StatefulTask state Changed from: "<<stateToString(oldvalue) <<" to " << stateToString(newvalue),5);
+  logMessage("StatefulTask state Changed from: "<<stateToString(getState()) <<" to " << stateToString(*newvalue),5);
+  return true;
 }
 void StatefulTask::Reset(){
   logMessage("resetting task",5);

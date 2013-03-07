@@ -12,16 +12,22 @@ namespace nspace{
     public virtual Log,
     public virtual NamedObject
   {
-    REFLECTABLE_OBJECT(ScheduledTask);
-    SUBCLASSOF(Log);
+    reflect_type(ScheduledTask);
+    reflect_superclasses(Log);
   private:
-    DESCRIPTION(Interval,"The timeout Interval in seconds");
-    DISPLAYNAME(Interval,"Timeout Interval");
-    PROPERTY(Time, Interval){logMessage("setting timeout to: "<<newvalue,4);}
+    //DESCRIPTION(Interval,"The timeout Interval in seconds");
+    //DISPLAYNAME(Interval,"Timeout Interval");
+    typedef Time reflect_property(Interval);
+    auto after_set(Interval){      
+      logMessage("setting timeout to: "<<getIsOneTimeTask(),4);
+    }
 
-    DESCRIPTION(IsOneTimeTask, "This flag Indicates whether to run the task repeatedly or only once");
-    DISPLAYNAME(IsOneTimeTask, "Run Task Only Once")
-      PROPERTY(bool, IsOneTimeTask){logMessage("setting IsOneTimeTask to: "<<newvalue,4);}
+    //DESCRIPTION(IsOneTimeTask, "This flag Indicates whether to run the task repeatedly or only once");
+    //DISPLAYNAME(IsOneTimeTask, "Run Task Only Once")
+    typedef bool reflect_property(IsOneTimeTask);
+    auto after_set(IsOneTimeTask){
+      logMessage("setting IsOneTimeTask to: "<<getIsOneTimeTask(),4);
+    }
 
     // the last time this task has timed out
     Time _lastTimeoutTime;

@@ -4,12 +4,21 @@
 
 namespace nspace{
   class TaskRunnerBase : public virtual ITaskRunner,public virtual Log, public virtual NamedObject{
-    REFLECTABLE_OBJECT(TaskRunnerBase);
-    SUBCLASSOF(ITaskRunner);
-    PROPERTY(bool, IsRunning){cancel=true;}
+    reflect_type(TaskRunnerBase);
+    reflect_superclasses(ITaskRunner,Log);
 
-    PROPERTY(uint, NumberOfRunningTasks){cancel=true;}
-    PROPERTY(bool, IsHalting){debugInfo("IsHalting is set to"<<newvalue);}
+    typedef bool reflect_property(IsRunning);
+    auto before_set(IsRunning){
+      return false;
+    }
+
+    typedef uint reflect_property(NumberOfRunningTasks)
+    auto before_set(NumberOfRunningTasks){return false;}
+
+    typedef bool reflect_property(IsHalting);
+    auto after_set(IsHalting){
+      debugInfo("IsHalting is set to"<<getIsHalting());
+    }
   public:
     TaskRunnerBase();
     void halt();

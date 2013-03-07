@@ -6,8 +6,8 @@
 namespace nspace{
   // Implementation of TaskRunner which schedules tasks to be executed at specific timepoints
   class ScheduledTaskRunner : public virtual TaskRunnerBase{
-    REFLECTABLE_OBJECT(ScheduledTaskRunner);
-    SUBCLASSOF(TaskRunnerBase)
+    reflect_type(ScheduledTaskRunner);
+    reflect_superclasses(TaskRunnerBase)
   private:
     std::priority_queue<ScheduledTask*,std::vector<ScheduledTask*>,ScheduledTask::CompareTaskPriority> _taskqueue;
   public:

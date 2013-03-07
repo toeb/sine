@@ -15,14 +15,14 @@ void PropertyAdapter::onChange(Observable * observable){
 }
 void PropertyAdapter::onBeforePropertyInfoChanged(){
 }
-
+/*
 void PropertyAdapter::setToDefault(){
   auto object = getOwner();
   if(!object.isValid())return;
   auto info  =getPropertyInfo();
   if(!info)return;
   info->setToDefaultValue(object);
-}
+}*/
 PropertyAdapter::~PropertyAdapter(){
 }
 PropertyAdapter:: PropertyAdapter():_PropertyInfo(0){
@@ -36,6 +36,14 @@ PropertyAdapter::PropertyAdapter(Argument object, const PropertyInfo * info):_Pr
   setOwner(object);
   setPropertyInfo(info);
 }
+Argument PropertyAdapter::retrieveValue()const{
+ return getPropertyInfo()->get(getOwner().data.get());
+}
+bool PropertyAdapter::storeValue(Argument argument){
+  getPropertyInfo()->set(getOwner().data.get(),argument);
+  return true;
+}
+/*
 bool PropertyAdapter::retrieveValue(void * value)const{
   auto info = getPropertyInfo();
   auto object = getOwner();
@@ -67,4 +75,4 @@ bool PropertyAdapter::fromStream(std::istream & stream, Format format){
   if(!object.isValid())return false;
   if(format!=0)return false;
   return info->deserialize(object,stream);
-}
+}*/

@@ -4,11 +4,6 @@ using namespace nspace;
 
 
 
-void PerformanceTest::propertyChanging(size_t, PlannedRepititions){}
-void PerformanceTest::propertyChanging(size_t, ExecutedRepititions){}
-void PerformanceTest::propertyChanging(size_t, MaximumRepititions){}
-void PerformanceTest::propertyChanging(size_t, PrimerCount){}
-void PerformanceTest::propertyChanging(Time, ExecuteFor){}
 
   void PerformanceTest::runTest(){}
 

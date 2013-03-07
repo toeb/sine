@@ -32,7 +32,7 @@ private:
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
 
 #ifndef reflect_type
-#define reflect_type(NAME) DS_CLASS(NAME)
+#define reflect_type(NAME) DS_CLASS(NAME) DS_PROPERTY_EXTENSION_METHODS
 #endif
   
 #define reflect_superclasses(...) DS_FOREACH(SUBCLASSOF,__VA_ARGS__);

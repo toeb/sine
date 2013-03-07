@@ -40,8 +40,7 @@ PyObject* PythonObject::getMember(const std::string & name){
   if((bool)property){
 
   }
-
-  return 0;
+  return Py_BuildValue("");
 
 
 }

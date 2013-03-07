@@ -20,7 +20,7 @@ bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::ve
   }
   // else use passed types to construct argument
   if(n!=argumentTypes->size())return false;
-  for(int i=0; i < argumentTypes->size(); i++){
+  for(size_t i=0; i < argumentTypes->size(); i++){
     auto argType = argumentTypes->at(i);
     auto argPythonObject = PyTuple_GET_ITEM(args,i);
     auto argument = pythonObjectToArgument(argPythonObject,argType);

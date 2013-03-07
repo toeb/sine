@@ -3,11 +3,11 @@
 #include <core/PropertyChangingObject.h>
 namespace nspace{
   class CompilerInfo: public PropertyChangingObject{
-    REFLECTABLE_OBJECT(CompilerInfo);
+    reflect_type(CompilerInfo);
 
-    PROPERTY(std::string, CompilationDate){}
-    PROPERTY(std::string, CompilationTime){}
-    PROPERTY(std::string, TimeStamp){}
+    typedef std::string reflect_property(CompilationDate);
+    typedef std::string reflect_property(CompilationTime);
+    typedef std::string reflect_property(TimeStamp);
   public:
     CompilerInfo(){}
     CompilerInfo(const std::string compileTime, const std::string &compileDate,const std::string & timestamp)
@@ -20,15 +20,15 @@ namespace nspace{
 #endif
 
   class SourceInfo : public PropertyChangingObject{
-    REFLECTABLE_OBJECT(SourceInfo);
+    reflect_type(SourceInfo);
   public:
     SourceInfo(const std::string & file, int line, const std::string & func):_File(file),_Line(line),_Function(func){}
     void toString(std::ostream & out)const{
       out <<"Source: Line: "<< getLine()<< " File: "<<getFile()<<" Function: "<<getFunction();
     }
-    PROPERTY(std::string, File){}
-    PROPERTY(int, Line){}
-    PROPERTY(std::string, Function){}
+    typedef std::string reflect_property(File);
+    typedef int         reflect_property(Line);
+    typedef std::string reflect_property(Function);
 
   };
 

@@ -32,18 +32,23 @@ namespace nspace {
    *
    */
   class UnitTest : public virtual StatefulTask, public virtual Log, public virtual Timer {
-    REFLECTABLE_OBJECT(UnitTest);
-    ACTION(RunTest);
-    PROPERTY(std::string, TestName);
-    PROPERTY(std::string, TestDescription);
-    PROPERTY(SourceInfo*, Info);
-    PROPERTY(bool, IsInitialized);
-    PROPERTY(double, Time);
-    PROPERTYCOLLECTION(UnitTestResult*, Results,,);
+    reflect_type(UnitTest);
+
+    reflect_method(RunTest);
+    void RunTest();
+
+
+    typedef std::string reflect_property( TestName);
+    typedef std::string reflect_property( TestDescription);
+    typedef SourceInfo* reflect_property( Info);
+    typedef bool        reflect_property( IsInitialized);
+    typedef double      reflect_property( Time);
+    typedef int         reflect_property( FailedTests);
+    typedef time_t      reflect_property( TestStartTime);
+    typedef time_t      reflect_property( TestEndTime);
+
+    PROPERTYSET(UnitTestResult*, Results,,);
     //@todo rename to ... (failures)
-    PROPERTY(int, FailedTests);
-    PROPERTY(time_t, TestStartTime);
-    PROPERTY(time_t, TestEndTime);
 public:
     UnitTest(const std::string  &name);
     ~UnitTest();

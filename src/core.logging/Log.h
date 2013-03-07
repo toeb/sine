@@ -41,137 +41,51 @@ namespace nspace{
   Log & getLog();
 
   class LogEntry : public  PropertyChangingObject{
-    REFLECTABLE_OBJECT(LogEntry);
-    PROPERTY(std::string, Message){}
-    PROPERTY(int, SourceLineNumber){}
-    PROPERTY(std::string, SourceFileName){}
-    PROPERTY(std::string, FunctionSignature){}
-    PROPERTY(int, LogLevel){}
-    PROPERTY(Log*, Owner){}
-    PROPERTY(std::string, ClassName){}
-    PROPERTY(Time, SystemTimeStamp){}
-    PROPERTY(std::string, ObjectName){}
+    reflect_type(LogEntry);    
+    typedef std::string reflect_property(Message);
+
+
+    typedef int reflect_property(SourceLineNumber);
+    typedef std::string reflect_property(SourceFileName);
+    typedef std::string reflect_property(FunctionSignature);
+    typedef int reflect_property( LogLevel);
+    typedef Log* reflect_property( Owner);
+    typedef std::string reflect_property( ClassName);
+    typedef Time reflect_property( SystemTimeStamp);
+    typedef std::string reflect_property( ObjectName);
   public:
 
   public:
-    LogEntry():_LogLevel(100),_Owner(0){
-      setSystemTimeStamp(systemTime());
-    }
-    void toString(std::ostream & out)const{
-      switch(getLogLevel()){
-      case 3:out<< "Info    : ";
-        break;
-      case 2:out << "Warning : ";
-        break;
-      case 1:out << "Error   : ";
-        break;
-      default: out << "Message(lvl "<<getLogLevel()<<"): ";
-      }
-      out << getSystemTimeStamp()<<"s : ";
-      out << getMessage();
-      out << " (in "<<getObjectName()<<")";
-      //out <<" "<<getFunctionSignature();
-    }
+    LogEntry();
+    void toString(std::ostream & out)const;
   };
   class Log : public virtual PropertyChangingObject{
-    REFLECTABLE_OBJECT(Log);
+    reflect_type(Log);
     typedef int LogLevel;
+  public:
+    typedef bool reflect_property(LoggingEnabled);
+    //DEFAULTVALUE(LoggingEnabled, true);
 
-    PROPERTY(bool,LoggingEnabled){};
-    DEFAULTVALUE(LoggingEnabled, true);
+    typedef int reflect_property(LoggingLevel);
+    //DEFAULTVALUE(LoggingLevel, int(3));
 
-    PROPERTY(int, LoggingLevel){};
-    DEFAULTVALUE(LoggingLevel, int(3));
+    typedef  std::ostream * reflect_property(LogInfoStream);
+    typedef  std::ostream * reflect_property(LogWarningStream);
+    typedef  std::ostream * reflect_property(LogErrorStream);
 
-    SIMPLE_PROPERTY(std::ostream *, LogInfoStream){}
-    SIMPLE_PROPERTY(std::ostream *, LogWarningStream){}
-    SIMPLE_PROPERTY(std::ostream *, LogErrorStream){}
-    BASIC_PROPERTY(std::function<LogLevel (const LogEntry * )> , Filter,public,,,);
 
-    PROPERTYSET(LogEntry*,LogEntries,{
-      std::ostream * out=0;
-      switch(item->getLogLevel()){
-      case 1:
-        out = getLogErrorStream();
-        break;
-      case 2:
-        out = getLogWarningStream();
-        break;
-      default:
-        out = getLogInfoStream();
-        break;
-      }
-      if(!out)return;
-      *out << *item << std::endl;
-    },{})
+    typedef std::function<LogLevel (const LogEntry * )> basic_property(Filter);
+
+    PROPERTYSET(LogEntry*,LogEntries,,);
   protected:
 
     Log & getLog()const{return *const_cast<Log*>(this);}
   public:
-
-    Log():_LogInfoStream(0),_LogWarningStream(0),_LogErrorStream(0){
-      setLogInfoStream(&std::cout);
-      setLogErrorStream(&std::cerr);
-      setLogWarningStream(&std::cout);
-      setLoggingLevelToDefault();
-      setLoggingEnabledToDefault();
-    }
-    void log(
-      int level,
-      const std::string & message,
-      const std::string & functionsignature="",
-      const std::string & sourcefile ="",
-      int sourcelinenumber=-1){
-        auto entry = new LogEntry();
-        entry->setLogLevel(level);
-        entry->setMessage(message);
-        entry->setFunctionSignature(functionsignature);
-        entry->setSourceFileName(sourcefile);
-        entry->setSourceLineNumber(sourcelinenumber);
-        addEntry(entry);
-    }
-    void info(
-      const std::string & message,
-      const std::string & functionsignature="",
-      const std::string & sourcefile ="",
-      int sourcelinenumber=-1){
-        log(3,message,functionsignature,sourcefile,sourcelinenumber);
-    }
-
-    void warn(
-      const std::string & message,
-      const std::string & functionsignature="",
-      const std::string & sourcefile ="",
-      int sourcelinenumber=-1){
-        log(2,message,functionsignature,sourcefile,sourcelinenumber);
-    }
-
-    void error(
-      const std::string & message,
-      const std::string & functionsignature="",
-      const std::string & sourcefile ="",
-      int sourcelinenumber=-1){
-        log(1,message,functionsignature,sourcefile,sourcelinenumber);
-    }
-
-    void addEntry(LogEntry * entry){
-      if(!getLoggingEnabled()){
-        delete entry;
-        entry = 0;
-        return;
-      }
-
-      if(getLoggingLevel()<entry->getLogLevel()){
-        delete entry;
-        entry = 0;
-        return;
-      }
-      entry->setOwner(this);
-      /*const Type& td = getType();*/
-      if(entry->getClassName()=="")entry->setClassName(getType()->getName());
-      if(entry->getObjectName()=="")entry->setObjectName(name(this));
-
-      LogEntries()|=entry;
-    }
+    Log();
+    void log(int level,const std::string & message,const std::string & functionsignature="",const std::string & sourcefile ="",int sourcelinenumber=-1);
+    void info(const std::string & message,const std::string & functionsignature="",const std::string & sourcefile ="",int sourcelinenumber=-1);
+    void warn(const std::string & message,const std::string & functionsignature="",const std::string & sourcefile ="",int sourcelinenumber=-1);
+    void error(const std::string & message,const std::string & functionsignature="",const std::string & sourcefile ="",int sourcelinenumber=-1);
+    void addEntry(LogEntry * entry);
   };
 }

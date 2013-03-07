@@ -89,6 +89,8 @@ public:                                                                         
   }                                                                                                        \
 private:
 
+
+
 /**
  * \brief shorthand for a typed object which is also reflectable TYPED_OBJECT enables that metadata
  *        about the class can be generated (getType method for instances of TYPE)
@@ -125,51 +127,34 @@ private:
  * \param NAME  The name.
  */
 #define PROPERTYCLASSINSTANCE(NAME) MEMBERCLASSINSTANCE(NAME) //( (PROPERTYCLASS(NAME) * ) PROPERTYCLASS(NAME)::instance())
+ 
 
-/**
- * \brief enables property reflection for the property <NAME> of type <TYPE>
- *        this may only be used in a class which has been declared as REFLECTABLE and has both the
- *        set<NAME>(<TYPE>) and <TYPE> get<NAME>()const methods.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define ENABLE_PROPERTY_REFLECTION(TYPE,NAME)                                                                      \
-private:                                                                                                           \
-  typedef CurrentClassType NAME ## OwningClassType;                                                                \
-  class PROPERTYCLASS(NAME) : public virtual nspace::TypedProperty<NAME ## OwningClassType,TYPE>{                  \
-    TYPED_OBJECT( PROPERTYCLASS(NAME) );                                                                           \
-public:                                                                                                            \
-    SINGLETON( PROPERTYCLASS(NAME) ){                                                                              \
-      setPropertyType(typeof(TYPE));                                                                               \
-      setName(# NAME);                                                                                             \
-      setHasGetter(true);                                                                                          \
-      setHasSetter(true);                                                                                          \
-    }                                                                                                              \
-    void setTypedValue(NAME ## OwningClassType *  object, TYPE value) const {                                      \
-      object->SETMETHOD(NAME) (value);                                                                             \
-    }                                                                                                              \
-    TYPE getTypedValue(const NAME ## OwningClassType *  object) const {                                            \
-      return object->GETMETHOD(NAME) ();                                                                           \
-    }                                                                                                              \
-  };                                                                                                               \
-private:                                                                                                           \
-  STATIC_INITIALIZER( NAME ## Property, {                                                                          \
-                        auto type = typeof(NAME ## OwningClassType);                                               \
-                        auto unconst = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(type));         \
-                        unconst->Members()|=PROPERTYCLASSINSTANCE(NAME);                                           \
-                      })
+#define DS_REFLECT_PROPERTY(NAME, GETTER, SETTER)\
+  DS_INITIALIZER_STATIC(NAME##Property){\
+  auto type = const_cast<Type*>(typeof(CurrentClassType));\
+  auto getter = type->getMethod(#GETTER);\
+  auto setter = type->getMethod(#SETTER);\
+  auto info = new TypedPropertyInfo<CurrentClassType>(#NAME,getter,setter);\
+  type->Members()|=info;\
+  }
+  
+#define DS_REFLECT_PROPERTY_DEFINITION(...) DS_EXPAND(DS_CONCAT(DS_REFLECT_PROPERTY_DEFINITION_,DS_NUM_ARGS(__VA_ARGS__))(__VA_ARGS__))
+  
+#define DS_REFLECT_PROPERTY_DEFINITION_3(NAME,GETTER,SETTER) \
+  DS_REFLECTION_METHOD(GETTER);\
+  DS_REFLECTION_METHOD(SETTER);\
+  DS_REFLECT_PROPERTY(NAME,GETTER,SETTER)
 
-/**
- * \brief A macro that defines reflectable custom property.
- *
- * \param TYPE                The type.
- * \param NAME                The name.
- * \param PROPERTYDECLARATION The propertydeclaration.
- */
-#define REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,PROPERTYDECLARATION) \
-  ENABLE_PROPERTY_REFLECTION(TYPE,NAME) \
-  PROPERTYDECLARATION(TYPE,NAME)
+#define DS_REFLECT_PROPERTY_DEFINITION_2(NAME,PROPERTY_DEFINITION) PROPERTY_DEFINITION(NAME); \
+  DS_REFLECT_PROPERTY_DEFINITION_3(NAME,DS_PROPERTY_GETTER_NAME(NAME),DS_PROPERTY_SETTER_NAME(NAME))
+
+#define DS_REFLECT_PROPERTY_DEFINITION_1(NAME) DS_REFLECT_PROPERTY_DEFINITION_2(NAME, DS_PROPERTY_EXTENDED)
+
+#define reflect_property(...)  DS_REFLECT_PROPERTY_DEFINITION(__VA_ARGS__) 
+#define reflect_method_property(GETTER,SETTER) DS_REFLECT_PROPERTY_DEFINITION_3(GETTER,GETTER,SETTER)
+
+
+
 
 /**
  * \brief sets the propertydisplayname property of the property object created for the property
@@ -212,177 +197,6 @@ private: \
 #define GROUPNAME(NAME,GROUP) \
   STATIC_INITIALIZER(NAME ## GroupName,MEMBERCLASSINSTANCE(NAME)->setGroupName(GROUP); )
 
-/**
- * \brief A macro that defines hidden.
- *
- * \param NAME  The name.
- */
-#define HIDDEN(NAME) \
-  STATIC_INITIALIZER(NAME ## Hidden,PROPERTYCLASSINSTANCE(NAME)->setIsVisible(false); )
-
-/**
- * \brief sets the property or propertyset to navigatable (indicating that the property is a
- *        subclass of object)
- *
- * \param CLASS The class.
- * \param NAME  The name.
- */
-#define NAVIGATABLE(CLASS, NAME) \
-  STATIC_INITIALIZER(NAME ## Navigatable,PROPERTYCLASSINSTANCE(NAME)->setIsNavigatable(true); PROPERTYCLASSINSTANCE(NAME)->setPropertyClass(typeof(CurrenClassType)); )
-
-/**
- * \brief A macro that defines ispointer.
- *
- * \param NAME  The name.
- */
-#define ISPOINTER(NAME) \
-  STATIC_INITIALIZER(NAME ## Pointer,PROPERTYCLASSINSTANCE(NAME)->setIsPointer(true); )
-
-/**
- * \brief A macro that defines objectpointer.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define OBJECTPOINTER(TYPE,NAME) \
-  STATIC_INITIALIZER(NAME ## ObjectPointer, \
-                     PROPERTYCLASSINSTANCE(NAME)->setIsPointer(true); \
-                     PROPERTYCLASSINSTANCE(NAME)->setObjectConverter([] (void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr)); }); \
-                     );
-
-/**
- * \brief A macro that defines objectpointerproperty.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define OBJECTPOINTERPROPERTY(TYPE,NAME) \
-  OBJECTPOINTER(TYPE,NAME) \
-  PROPERTY(TYPE*,NAME)
-
-/**
- * \brief A macro that defines serializerarguments.
- *
- * \param TYPE  The type.
- */
-#define SERIALIZERARGUMENTS(TYPE) std::ostream & stream, const TYPE * value
-
-/**
- * \brief A macro that defines deserializerarguments.
- *
- * \param TYPE  The type.
- */
-#define DESERIALIZERARGUMENTS(TYPE) TYPE * value, std::istream & stream
-
-/**
- * \brief A macro that defines serializemethodname.
- *
- * \param NAME  The name.
- */
-#define SERIALIZEMETHODNAME(NAME) serialize ## NAME
-
-/**
- * \brief A macro that defines deserializemethodname.
- *
- * \param NAME  The name.
- */
-#define DESERIALIZEMETHODNAME(NAME) deserialize ## NAME
-
-/**
- * \brief A macro that defines serializesignature.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define SERIALIZESIGNATURE(TYPE,NAME) SERIALIZEMETHODNAME(NAME) (SERIALIZERARGUMENTS(TYPE))
-
-/**
- * \brief A macro that defines deserializesignature.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define DESERIALIZESIGNATURE(TYPE,NAME) DESERIALIZEMETHODNAME(NAME) (DESERIALIZERARGUMENTS(TYPE))
-
-/**
- * \brief macro for implementing serializing property <NAME> of type <TYPE>.  be sure to define the
- *        returntype as bool (See CUSTOMSERIALIZER macro)
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define serializeProperty(TYPE,NAME) SERIALIZESIGNATURE(TYPE,NAME)
-
-/**
- * \brief macro for implementing deserializing property <NAME> of type <TYPE>.  be sure to define
- *        the returntype as bool(See CUSTOMSERIALIZER macro)
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define deserializeProperty(TYPE,NAME) DESERIALIZESIGNATURE(TYPE,NAME)
-
-/**
- * \brief make sure to return if the deserialization was successful or not.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- * \param CODE  The code.
- */
-#define CUSTOMDESERIALIZER(TYPE,NAME,CODE) \
-public: \
-  static bool DESERIALIZESIGNATURE(TYPE,NAME) CODE; \
-private: \
-  class NAME ## CustomDeserializer : public virtual TypedCustomDeserializer<TYPE>{ \
-public: \
-    bool deserializeType(DESERIALIZERARGUMENTS(TYPE)){return DESERIALIZEMETHODNAME(NAME) (value,stream); }; \
-  }; \
-  STATIC_INITIALIZER(NAME ## CustomDeserializer,{PROPERTYCLASSINSTANCE(NAME)->setCustomDeserializer(new NAME ## CustomDeserializer()); })
-
-/**
- * \brief make sure to return if the serialization was successful or not.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- * \param CODE  The code.
- */
-#define CUSTOMSERIALIZER(TYPE,NAME,CODE) \
-public: \
-  static bool SERIALIZESIGNATURE(TYPE,NAME) CODE; \
-private: \
-  class NAME ## CustomSerializer : public virtual TypedCustomSerializer<TYPE>{ \
-public: \
-    bool serializeType(SERIALIZERARGUMENTS(TYPE)){return SERIALIZEMETHODNAME(NAME) (stream,value); }; \
-  }; \
-  STATIC_INITIALIZER(NAME ## CustomSerializer,{PROPERTYCLASSINSTANCE(NAME)->setCustomSerializer(new NAME ## CustomSerializer()); })
-
-/**
- * \brief defines a custom serializer for property <NAME>
- *
- * \param TYPE            The type.
- * \param NAME            The name.
- * \param SERIALIZECODE   The serializecode.
- * \param DESERIALIZECODE The deserializecode.
- */
-#define CUSTOMSERIALIZERS(TYPE,NAME,SERIALIZECODE,DESERIALIZECODE) \
-  CUSTOMSERIALIZER(TYPE,NAME,SERIALIZECODE); \
-  CUSTOMDESERIALIZER(TYPE,NAME,DESERIALIZECODE);
-
-/**
- * \brief A macro that defines reflectable property.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define REFLECTABLE_PROPERTY(TYPE,NAME) REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,SIMPLE_PROPERTY)
-
-/**
- * \brief A macro that defines reflectable notifying property.
- *
- * \param TYPE  The type.
- * \param NAME  The name.
- */
-#define REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME) REFLECTABLE_CUSTOM_PROPERTY(TYPE,NAME,NOTIFYING_PROPERTY)
 
 /**
  * \brief default property macro.
@@ -390,7 +204,7 @@ public: \
  * \param TYPE  The type.
  * \param NAME  The name.
  */
-#define PROPERTY(TYPE,NAME) REFLECTABLE_NOTIFYING_PROPERTY(TYPE,NAME)
+#define PROPERTY(TYPE,NAME) typedef TYPE reflect_property(NAME)
 
 /**
  * \brief creates a property for any nonpointer / nonreference field and addutionally allows access
@@ -409,32 +223,7 @@ public: \
  * \param ONADD     The onadd.
  * \param ONREMOVE  The onremove.
  */
-#define PROPERTYCOLLECTION(TYPE,NAME,ONADD,ONREMOVE) \
-private: \
-  typedef CurrentClassType NAME ## OwningClassType; \
-  class PROPERTYCLASS(NAME) : public virtual TypedPropertySetInfo<NAME ## OwningClassType,TYPE>{ \
-public: \
-    SINGLETON( PROPERTYCLASS(NAME) ){ \
-      setName(# NAME); \
-    } \
-    Set<TYPE> & getMutableSetReference( NAME ## OwningClassType * object ) const { \
-      return object->NAME(); \
-    } \
-    const Set<TYPE> & getConstSetReference(const NAME ## OwningClassType * object ) const { \
-      return object->NAME(); \
-    } \
-  }; \
-  STATIC_INITIALIZER(NAME ## PropertyClass, {  auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(NAME ## OwningClassType))); \
-                                               type->Members()|= PROPERTYCLASSINSTANCE(NAME); }); \
-  PROPERTYSET(TYPE,NAME,ONADD,ONREMOVE);
 
-// creates a collection of TYPE* objects which can be navigated
-#define OBJECTPOINTERCOLLECTION(TYPE,NAME,ONADD,ONREMOVE) \
-  PROPERTYCOLLECTION(TYPE*,NAME,ONADD,ONREMOVE); \
-  STATIC_INITIALIZER( NAME ## ObjectPointer, \
-                      PROPERTYCLASSINSTANCE(NAME)->setIsPointerCollection(true); \
-                      PROPERTYCLASSINSTANCE(NAME)->setElementToObjectConverter([] (void * ptr){ return dynamic_cast<Object*>(reinterpret_cast<TYPE*>(ptr)); }); \
-                      );
 
 
 

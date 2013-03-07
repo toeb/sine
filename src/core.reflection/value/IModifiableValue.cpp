@@ -1,7 +1,7 @@
 #include "IModifiableValue.h"
 using namespace nspace;
 
-bool IModifiableValue::changeValue(const void * value){
+bool IModifiableValue::changeValue(Argument value){
   bool cancel = false;
   valueChanging(value,cancel);
   if(cancel)return false;
@@ -9,4 +9,3 @@ bool IModifiableValue::changeValue(const void * value){
   if(success) raiseObjectChanged();
   return success;
 }
-bool IModifiableValue::setByPointer(const void * value){return changeValue(value);};

@@ -3,10 +3,10 @@
 #include <core/Time.h>
 namespace nspace{  
   class Timer:public virtual PropertyChangingObject{
-    REFLECTABLE_OBJECT(Timer);
+    reflect_type(Timer);
 
-    PROPERTY(Time,AccumulatedTime){}
-    PROPERTY(bool,IsRunning){}
+    typedef Time reflect_property(AccumulatedTime);
+    typedef bool reflect_property(IsRunning);
 
     Time _startTime;
 
@@ -22,7 +22,7 @@ namespace nspace{
       setIsRunning(false);
 
       _AccumulatedTime+= endTime-_startTime;
-      notifyAccumulatedTimeChanged();
+      notify_after_set(AccumulatedTime);
     }
     void resetTimer(){
       tock();

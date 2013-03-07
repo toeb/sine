@@ -1,3 +1,4 @@
+#ifdef HI
 #pragma once
 
 #include <core.reflection/member/property/PropertySetInfo.h>
@@ -164,3 +165,4 @@ namespace nspace{
     return true;
   }
 }
+#endif

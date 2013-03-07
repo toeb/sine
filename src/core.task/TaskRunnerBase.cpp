@@ -34,13 +34,13 @@ void TaskRunnerBase::run(){
   if(_IsRunning)return;
   setIsHalting(false);
   _IsRunning =true;
-  notifyIsRunningChanged();
+  notify_after_set(IsRunning);
   while(!_IsHalting){
     step();
     if(!hasTasks())halt();
   }
   _IsRunning = false;
-  notifyIsRunningChanged();
+  notify_after_set(IsRunning);
 }
 bool TaskRunnerBase::step(){
   if(!canStep()){
@@ -58,7 +58,8 @@ bool TaskRunnerBase::step(){
     return false;
   }
   _NumberOfRunningTasks++;
-  notifyNumberOfRunningTasksChanged();
+  
+  notify_after_set(NumberOfRunningTasks);
 
   onBeforeTaskRun(task);
   debugMessage("Task Starting: "<<*task,6);
@@ -71,6 +72,6 @@ bool TaskRunnerBase::step(){
   removeTask(task);
 
   _NumberOfRunningTasks--;
-  notifyNumberOfRunningTasksChanged();
+  notify_after_set(NumberOfRunningTasks);
   return true;
 }

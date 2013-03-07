@@ -11,9 +11,9 @@ namespace nspace{
   META(ITaskRunner);
 
   class ITask: public virtual NamedObject, public virtual PropertyChangingObject{
-    REFLECTABLE_OBJECT(ITask);
-    SIMPLE_PROPERTY(ITaskRunner*, TaskRunner);
-    PROPERTY(uint, NumberOfTimes);
+    reflect_type(ITask);
+    typedef ITaskRunner* extensible_property(TaskRunner);
+    typedef uint reflect_property(NumberOfTimes);
   public:
     ITask():_TaskRunner(0),_NumberOfTimes(0){}
     // run may do anything.  if the task ongoing you need to make sure, that the implementation of run is fast

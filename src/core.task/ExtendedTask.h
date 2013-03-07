@@ -5,11 +5,11 @@
 #include <functional>
 namespace nspace{
   class ExtendedTask :public virtual Task, public virtual PropertyChangingObject{
-    TYPED_OBJECT(ExtendedTask);
-    PROPERTY(long, RunCount){}
-    PROPERTY(Time, RunTime){}
-    PROPERTY(Time, LastStartTime){}
-    PROPERTY(bool, IsRunning){}
+    reflect_type(ExtendedTask);
+    typedef long reflect_property(RunCount);
+    typedef Time reflect_property(RunTime);
+    typedef Time reflect_property(LastStartTime);
+    typedef bool reflect_property(IsRunning);
   private :
 
   public:

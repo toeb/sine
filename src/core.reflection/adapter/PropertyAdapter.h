@@ -11,21 +11,29 @@ namespace nspace{
     public virtual MemberAdapter,
     public virtual ObjectObserver
   {
-    TYPED_OBJECT(PropertyAdapter);
-    BASIC_PROPERTY(const PropertyInfo *, PropertyInfo,public,,onBeforePropertyInfoChanged();,onPropertyInfoChanged(););
+    reflect_type(PropertyAdapter);
+    typedef const PropertyInfo * extensible_property(PropertyInfo);
+    auto before_set(PropertyInfo){
+      onBeforePropertyInfoChanged();
+      return true;
+    }
+    auto after_set(PropertyInfo){
+      onPropertyInfoChanged();
+    }
+
   public:
     //TODO use factorymethods instead.  i hate constructors
     PropertyAdapter();
     PropertyAdapter(Argument object, const std::string & name);
     PropertyAdapter(Argument object, const PropertyInfo * info);
     ~PropertyAdapter();
-    void setToDefault();
     // implementation of IModifiableValue
-    bool retrieveValue(void * value)const;
-    bool storeValue(const void * value);
+    Argument retrieveValue()const override final;
+    bool storeValue(Argument value)override final;
+
     // implementation of ISerializable
-    bool toStream(std::ostream & stream, Format format);
-    bool fromStream(std::istream & stream, Format format);
+    //bool toStream(std::ostream & stream, Format format);
+    //bool fromStream(std::istream & stream, Format format);
   protected:
     void onChange(Observable * sender);
     void onOwnerChanged();

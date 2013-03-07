@@ -23,12 +23,12 @@
 namespace nspace {
 
   class PerformanceTest : public UnitTest {
-    REFLECTABLE_OBJECT(PerformanceTest);
-    PROPERTY(size_t, PlannedRepititions);
-    PROPERTY(size_t, ExecutedRepititions);
-    PROPERTY(size_t, PrimerCount);    
-    PROPERTY(Time, ExecuteFor);
-    PROPERTY(size_t, MaximumRepititions);
+    reflect_type(PerformanceTest);
+    typedef size_t reflect_property(PlannedRepititions);
+    typedef size_t reflect_property(ExecutedRepititions);
+    typedef size_t reflect_property(PrimerCount);    
+    typedef Time   reflect_property(ExecuteFor);
+    typedef size_t reflect_property(MaximumRepititions);
     
   protected:
     PerformanceTest(const std::string  &name);

@@ -5,7 +5,7 @@
 namespace nspace{
   template<typename T>
   class ReferenceValue:public virtual ITypedSerializableValue<T>{
-    TYPED_OBJECT(ReferenceValue);
+    reflect_type(ReferenceValue);
   private:
     T & _underylingValue;
   public:

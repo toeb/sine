@@ -4,12 +4,11 @@ namespace nspace{
   class IModifiableValue : public IReadableValue{
     TYPED_OBJECT(IModifiableValue);
   private:
-    bool changeValue(const void * value);
+    bool changeValue(Argument argument);
   protected:
-    virtual bool storeValue(const void * value)=0;
-    virtual void valueChanging(const void * newvalue, bool & cancel){}
+    virtual bool storeValue(Argument value)=0;
+    virtual void valueChanging(Argument newValue, bool & cancel){}
   public:
-    bool setByPointer(const void * value);
-    template<typename T> bool set(const T & value){ return setByPointer(&value); }
+
   };
 }

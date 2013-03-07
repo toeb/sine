@@ -5,28 +5,22 @@
 #include <core.property.h>
 #include <core.reflection/type/TypeInfo.h>
 
+#include <core.reflection/type/Argument.h>
+
 namespace nspace{
-  class IReadableValue : public virtual Object, public virtual Observable{
-    DS_CLASS_DECLARATION(IReadableValue);
-    
-   typedef ConstTypePtr basic_property(ValueType);
+  class IReadableValue : public Object, public Observable{
+    reflect_type(IReadableValue);    
+   typedef const Type * basic_property(ValueType);
   protected:
-    virtual bool retrieveValue(void * value)const=0;
+    virtual Argument retrieveValue()const=0;
   public:
-    bool getByPointer(void * result)const;
     IReadableValue();
     template<typename T> T get()const;
-    template<typename T> bool get(T & result)const;
   };
 
 
 
   template<typename T> T IReadableValue::get()const{
-    T result;
-    get(result);
-    return result;
-  }
-  template<typename T> bool IReadableValue::get(T & result)const{
-    return getByPointer(&result);
+    return (T)retrieveValue();
   }
 }

@@ -204,11 +204,12 @@ TEST(4,Multiton){
   
 
 class TestClass  : public PropertyChangingObject{
-  REFLECTABLE_OBJECT(TestClass);
+  reflect_type(TestClass);
 public:
   TestClass():_IntegerValue(0){}
-  PROPERTY(int, IntegerValue){}
-  PROPERTY(std::string, StringValue){}
+  typedef int reflect_property(IntegerValue);
+  typedef std::string (StringValue);
+  
   ACTION(PrintALineOfText){cout << "LOL"<<endl;}
 };
 void testvalueAndAction(){

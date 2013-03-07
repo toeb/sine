@@ -27,17 +27,20 @@ namespace nspace {
 
   
 class ProgressReporter : public virtual PropertyChangingObject, public virtual Log{
-  REFLECTABLE_OBJECT(ProgressReporter);
-  PROPERTY(double, NumberOfNotifications){
-    if(newvalue==0)newvalue=1.0;
+  reflect_type(ProgressReporter);
+  typedef double reflect_property(NumberOfNotifications);
+  auto after_set(NumberOfNotifications){
+    if(getNumberOfNotifications())setNumberOfNotifications(1.0);
   }
-  PROPERTY(double,TotalProgress){
-    setNotificationInterval(newvalue/getNumberOfNotifications());
+  typedef double reflect_property(TotalProgress);
+  auto after_set(TotalProgress){  
+    setNotificationInterval(getTotalProgress()/getNumberOfNotifications());
   }
-  PROPERTY(double,Progress){}
-  PROPERTY(int, ProgressLogLevel){}
-  PROPERTY(double,NotificationInterval){}
-  PROPERTY(bool, LogProgress){}
+  
+  typedef double reflect_property(Progress);
+  typedef int    reflect_property(ProgressLogLevel);
+  typedef double reflect_property(NotificationInterval);
+  typedef bool   reflect_property( LogProgress);
 public:
   ProgressReporter():    
     _NumberOfNotifications(200.0),
@@ -74,7 +77,7 @@ protected:
     _Progress = value;
     if(getProgress()>_lastNotification+getNotificationInterval()){
       _lastNotification=getProgress();
-      notifyProgressChanged();
+      notify_after_set(Progress);
       if(getLogProgress()){
 
         logMessage("Progress: "<< percent() << "%",getProgressLogLevel());
@@ -85,9 +88,8 @@ protected:
 
 
   class StatefulTask : public virtual ExtendedTask,public virtual Log, public virtual NamedObject {
-    REFLECTABLE_OBJECT(StatefulTask);
-    SUBCLASSOF(ExtendedTask);
-    SUBCLASSOF(Log);
+    reflect_type(StatefulTask);
+    reflect_superclasses(ExtendedTask,Log);
 
 protected:
     // method to override
@@ -100,7 +102,9 @@ public:
       Failed
     };
     static std::string stateToString(const State & state);
-    SIMPLE_PROPERTY(State, State);
+    typedef State reflect_property(State);
+    auto before_set(State);
+
     ACTION(Reset);
     ACTION(Run);
 
@@ -114,4 +118,5 @@ private:
     // overridden from extended task
     void runTask();
   };
+  META(StatefulTask::State);
 }

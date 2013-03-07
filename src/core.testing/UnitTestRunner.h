@@ -25,8 +25,8 @@ namespace nspace {
   *
   */
   class UnitTestRunner : public StatefulTask, public ProgressReporter {
-    REFLECTABLE_OBJECT(UnitTestRunner);
-
+    reflect_type(UnitTestRunner);
+    reflect_superclasses(StatefulTask,ProgressReporter)
     /**
     * \brief currently this runner is only available as a singleton
     *

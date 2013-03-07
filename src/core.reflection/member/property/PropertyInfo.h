@@ -19,150 +19,71 @@
 #pragma once
 #include <core.serialization/Serialization.h>
 #include <core.reflection/member/MemberInfo.h>
+#include <core.reflection/member/method/MethodInfo.h>
 namespace nspace {
-  /**
-   * \brief Information about a property.
-   */
-  class PropertyInfo : public virtual MemberInfo {
-    //TYPED_OBJECT(PropertyInfo);
-    //SUBCLASSOF(MemberInfo);
-    SIMPLE_PROPERTY(bool, HasGetter){}
-    SIMPLE_PROPERTY(bool, HasSetter){}
-    // the typedata of the property
-    SIMPLE_PROPERTY(const Type *, PropertyType){}
-    // access to the default value
-    SIMPLE_PROPERTY(const void *, DefaultValue){}
-    // custom serializer
-    SIMPLE_PROPERTY(CustomSerializer*, CustomSerializer){}
-    // custom deserializer
-    SIMPLE_PROPERTY(CustomDeserializer*, CustomDeserializer){}
+  class PropertyInfo : public MemberInfo{
+    typedef const MethodInfo * basic_property(GetMethod);
+    typedef const MethodInfo * basic_property(SetMethod);
+    typedef const Type * basic_property(PropertyType);
+  protected:
+    PropertyInfo(const std::string & name, const MethodInfo * getter, const MethodInfo * setter):MemberInfo(name),_SetMethod(setter),_GetMethod(getter){
+      const Type *  propertyType=0;
+      if(getter){
+        if(getter->getArgumentTypes().size()!=0){
+          std::cerr << "getter is not a parameterless method. ignoring"<<std::endl;
+          _GetMethod=0;
+        }else{
+          auto type = getter->getReturnType()->removeConst()->removeReference();
+          propertyType = type->removeConst()->removeReference();
+        }
+      }
+      if(setter){
+        if(setter->getArgumentTypes().size()!=1){
+          std::cerr<<"setter method is not a single parameter method"<<std::endl;          
+        }else{
+          auto type = setter->getArgumentTypes().at(0)->removeReference()->removeConst();
+          if(propertyType){
+            if(propertyType!=type){
+              std::cerr<<"getter and setter raw types do not match"<<std::endl;
 
-    SIMPLE_PROPERTY(bool, IsNavigatable){}
-    SIMPLE_PROPERTY(bool, IsPointer){}
-    SIMPLE_PROPERTY(bool, IsVisible){}
-public:
-
-    /**
-     * \brief Default constructor.
-     */
-    PropertyInfo() :
-      _HasGetter(false),
-      _HasSetter(false),
-      _PropertyType(0),
-      _DefaultValue(0),
-      _CustomSerializer(0),
-      _CustomDeserializer(0),
-      _IsNavigatable(false),
-      _IsPointer(false),
-      _IsVisible(true)
-    {}
-
-    /**
-     * \brief sets this property to the default value.
-     *
-     * \param [in,out]  object  If non-null, the object.
-     */
-    void setToDefaultValue(void * object) const {
-      if(getDefaultValue()) setValue(object,getDefaultValue());
+            }else{
+              // find closest relation 
+              
+            }
+          }else{
+            propertyType = type;
+          }
+          
+        }
+      }
     }
-
-    /**
-     * \brief sets the value of the property.
-     *
-     * \param [in,out]  object  If non-null, the object.
-     * \param value             The value.
-     */
-    virtual void setValue(void * object, const void * value) const=0;
-    /**
-     * \brief gets the value of the property.
-     *
-     * \param object          The object.
-     * \param [in,out]  value If non-null, the value.
-     */
-    virtual void getValue(const void * object, void * value) const=0;
-
-    /**
-     * \brief Gets mutable pointer.
-     *
-     * \param [in,out]  object  If non-null, the object.
-     *
-     * \return  null if it fails, else the mutable pointer.
-     */
-    virtual void * getMutablePointer(void * object) const {
-      return 0;
-    }
-
-    /**
-     * \brief Gets constant pointer.
-     *
-     * \param object  The object.
-     *
-     * \return  null if it fails, else the constant pointer.
-     */
-    virtual const void * getConstPointer(const void * object) const {
-      return 0;
-    }
-
-    /**
-     * \brief Deserializes.
-     *
-     * \param [in,out]  object  If non-null, the object.
-     * \param [in,out]  in      The in.
-     *
-     * \return  true if it succeeds, false if it fails.
-     */
-    virtual bool deserialize(void * object, std::istream & in) const=0;
-
-    /**
-     * \brief Serializes.
-     *
-     * \param [in,out]  object  If non-null, the object.
-     * \param [in,out]  out     The out.
-     *
-     * \return  true if it succeeds, false if it fails.
-     */
-    virtual bool serialize(void * object, std::ostream & out) const=0;
+  public:
     
-    /**
-     * \brief Gets.
-     *
-     * \param [in,out]  value The value.
-     * \param object          The object.
-     */
-    template<typename ObjectType, typename T>
-    void get(T& value, const ObjectType & object) const {
-      getValue(&object,&value);
-    }
+    bool isGettable()const{return getGetMethod()!=0;}
+    bool isSettable()const{return getSetMethod()!=0;}
 
-    template<typename T, typename ObjectType>
-    T get(const ObjectType & object)const{
-      T result;
-      get(result,object);
-      return result;
+    Argument get(const void * ptr)const{
+      if(!isGettable())return Argument();
+      auto getter = getGetMethod();
+      return getter->call(ptr);
     }
+    Argument get(void * ptr)const{
+      if(!isGettable())return Argument();
+      auto getter = getGetMethod();
+      return getter->call(ptr);
+    }
+    void set(void * ptr, Argument argument)const{
+      if(!isSettable())return;
+      auto setter = getSetMethod();
+      Argument args[1]={argument};
+      setter->call(ptr,args);
 
-    /**
-     * \brief Sets.
-     *
-     * \param value             The value.
-     * \param [in,out]  object  The object.
-     */
-    template<typename ObjectType, typename T>
-    void set(const T& value, ObjectType & object) const {
-      setValue(&object,&value);
+    }
+    void set(const void * ptr , Argument argument)const{ 
+      if(!isSettable())return;
+      auto setter = getSetMethod();
+      Argument args[1]={argument};
+      setter->call(ptr,args);
     }
   };
-
-  /**
-   * \brief sets all properties of the specified object to default.
-   *
-   * \tparam  typename T  Type of the typename t.
-   * \param [in,out]  object  The object.
-   */
-  template <typename T> void setToDefault(T & object){
-    typeof(T)->Properties().foreachElement([&object](const PropertyInfo * prop){
-                                             prop->setToDefaultValue(&object);
-                                             //cout << "setting "<<prop->getName()<<" to default"<<endl;
-                                           });
-  }
 }

@@ -143,6 +143,8 @@ TEST(BinaryMethodAdapter,Call){
   CHECK_EQUAL(105,result);
 }
 TEST(ComplexMethod,Call){
+  FAIL("Not implemented");
+  return;
   PythonScriptMachine machine;
   TestType b(3232);
   machine.setVariable("b",b);
