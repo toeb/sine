@@ -1,10 +1,10 @@
 #pragma once
 
 #include <core.reflection/member/MemberInfo.h>
+#include <core.reflection/type/Argument.h>
 namespace nspace{
-  class MemberAdapter : public virtual Object{
-    TYPED_OBJECT(Object);
-    BASIC_PROPERTY(Object*,Owner,public,,onBeforeOwnerChanged();,onOwnerChanged());
+  class MemberAdapter{
+    BASIC_PROPERTY(Argument,Owner,public,,onBeforeOwnerChanged();,onOwnerChanged());
   protected:
     MemberAdapter():_Owner(0){}
     virtual void onOwnerChanged(){}

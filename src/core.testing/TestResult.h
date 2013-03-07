@@ -25,11 +25,11 @@ namespace nspace {
    *        object which is useful for identifying where tests failed
    *        @todo add inconclusive state
    */
-  class UnitTestResult : public PropertyChangingObject {
-    REFLECTABLE_OBJECT(UnitTestResult);
-    PROPERTY(std::string, Message){}
-    PROPERTY(bool, Failed){}
-    OBJECTPOINTERPROPERTY(SourceInfo,SourceInfo){}
+  class UnitTestResult : public Object{
+    reflect_type(UnitTestResult)
+    typedef std::string basic_property(Message);
+    typedef bool basic_property(Failed)
+    typedef SourceInfo * basic_property(SourceInfo);
 public:
     UnitTestResult();
     UnitTestResult(bool failed,const std::string & message, SourceInfo * info);

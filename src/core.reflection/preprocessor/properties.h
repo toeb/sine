@@ -439,7 +439,7 @@ public: \
 
 
 #define DS_REFLECTION_METHOD(NAME)                                                                          \
-  DS_ONCE{                                                                                                  \
+  DS_INITIALIZER_STATIC(NAME##Method){                                                                                                  \
   static nspace::TypedMethodInfo<decltype(&CurrentClassType::NAME)> info(&CurrentClassType::NAME);                                              \
   info.setName(#NAME);                                                                                      \
   auto type = const_cast<nspace::Type*>(static_cast<const nspace::Type*>(typeof(CurrentClassType)));        \

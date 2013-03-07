@@ -4,6 +4,7 @@
 
 namespace nspace{
   class Type;
+  //todo rename to ObjectHandle
   struct Argument{
     template<typename T> Argument(const T & data);
     template<typename T> Argument(std::shared_ptr<T> data);

@@ -7,6 +7,7 @@ set(source
 	 methodinfo.cpp
 	 constructorinfo.cpp
 	 propertyinfo.cpp
+	 propertyadapter.cpp
  )
  source_group("" FILES ${source})
  add_executable(test.core.reflection ${source} CMakeLists.txt)

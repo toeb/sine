@@ -36,10 +36,10 @@ namespace nspace {
     ACTION(RunTest);
     PROPERTY(std::string, TestName);
     PROPERTY(std::string, TestDescription);
-    OBJECTPOINTERPROPERTY(SourceInfo, Info);
+    PROPERTY(SourceInfo*, Info);
     PROPERTY(bool, IsInitialized);
     PROPERTY(double, Time);
-    OBJECTPOINTERCOLLECTION(UnitTestResult, Results,,);
+    PROPERTYCOLLECTION(UnitTestResult*, Results,,);
     //@todo rename to ... (failures)
     PROPERTY(int, FailedTests);
     PROPERTY(time_t, TestStartTime);

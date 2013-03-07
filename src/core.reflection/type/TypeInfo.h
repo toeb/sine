@@ -105,14 +105,9 @@ private:                                                                        
   {
     TEMPLATEDSINGLETON(TypeInfo, <T>) {
       typedef typename std::remove_pointer<T>::type pureType;
-      setName(pureType::getTypeName());
-      setRawDerivedPointerConverter(Type::rawToDerivedCaster<pureType>());
-      setRawObjectPointerConverter(Type::rawToObjectCaster<pureType>());
-      setSmartDerivedPointerConverter(Type::smartToDerivedCaster<pureType>());
-      setSmartObjectPointerConverter(Type::smartToObjectCaster<pureType>());
+      setName(pureType::getTypeName());      
       setRawType(this);
       setUnderlyingType(0);
-      //setObjectToStringFunction(Type::derivedStringifier<pureType>());
     }
   };
 

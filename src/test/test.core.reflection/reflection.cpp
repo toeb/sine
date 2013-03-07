@@ -56,45 +56,8 @@ TEST(4,DS_CLASS){
 }
 
 
-TEST(3,HierarchyObject){
-  // tests weather the converiosn to Object was correct
-  struct A:public Object{
-    DS_CLASS(A);
-  }a;
-}
-
-TEST(2,HierarchyObject){
-  // tests whether the IsConvertibleToObject property is set correctly
-  struct A : public Object{
-    DS_CLASS(A);
-  }a;
-  auto type = typeof(A);
-
-  CHECK(!typeof(A)->isConvertibleToRawObjectPointer());
-}
 
 
-TEST(1,HierarchyObject){
-  struct A : public Object{
-    DS_CLASS(A);
-    DS_HIERARCHY_OBJECT
-  }a;
-  struct B : public A{
-    DS_CLASS(B);
-    DS_HIERARCHY_OBJECT
-  }b;
-  auto typeA= typeof(A);
-  auto typeB = typeof(B);
-
-  CHECK(typeof(A)->isConvertibleToRawObjectPointer());
-  CHECK(typeof(B)->isConvertibleToRawObjectPointer());
-  void * v = &b;
-
-  auto o = typeof(B)->toRawObjectPointer(v);
-
-
-
-}
 
 
 

@@ -12,6 +12,23 @@ namespace nspace{
 
 }
 
+UNITTEST(RemoveConst){
+  auto type = typeof(const int);
+  auto noConst = type->removeConst();
+  CHECK_EQUAL(typeof(int), noConst);
+}
+UNITTEST(RemovePointer){
+  auto type = typeof(int *);
+  auto noPointer = type->removePointer();
+  CHECK_EQUAL(typeof(int), noPointer);
+}
+UNITTEST(RemoveReference){
+  auto type = typeof(int *);
+  auto noReference = type->removePointer();
+  CHECK_EQUAL(typeof(int), noReference);
+}
+
+
 UNITTEST(MultiModifierTypeName){
   struct A{
     reflect_type(A);

@@ -36,7 +36,7 @@ namespace nspace {
     SIMPLE_PROPERTY(CustomSerializer*, CustomSerializer){}
     // custom deserializer
     SIMPLE_PROPERTY(CustomDeserializer*, CustomDeserializer){}
-    BASIC_PROPERTY(std::function<Object* (void *)>, ObjectConverter,public,,,);
+
     SIMPLE_PROPERTY(bool, IsNavigatable){}
     SIMPLE_PROPERTY(bool, IsPointer){}
     SIMPLE_PROPERTY(bool, IsVisible){}
@@ -52,7 +52,6 @@ public:
       _DefaultValue(0),
       _CustomSerializer(0),
       _CustomDeserializer(0),
-      _ObjectConverter([] (void * ptr){return static_cast<Object*>(0); }),
       _IsNavigatable(false),
       _IsPointer(false),
       _IsVisible(true)
@@ -63,7 +62,7 @@ public:
      *
      * \param [in,out]  object  If non-null, the object.
      */
-    void setToDefaultValue(Object * object) const {
+    void setToDefaultValue(void * object) const {
       if(getDefaultValue()) setValue(object,getDefaultValue());
     }
 
@@ -73,30 +72,14 @@ public:
      * \param [in,out]  object  If non-null, the object.
      * \param value             The value.
      */
-    virtual void setValue(Object * object, const void * value) const=0;
-    virtual void unsafeSetValue(void * object, const void * value)const=0;
+    virtual void setValue(void * object, const void * value) const=0;
     /**
      * \brief gets the value of the property.
      *
      * \param object          The object.
      * \param [in,out]  value If non-null, the value.
      */
-    virtual void getValue(const Object * object, void * value) const=0;
-    virtual void unsafeGetValue(const void * object, void * value)const=0;
-    /**
-     * \brief if the value is a pointer and a subtype of object this method returns the pointer as an
-     *        Object.
-     *
-     * \param object  The object.
-     *
-     * \return  null if it fails, else.
-     */
-    Object * asObjectPointer(const Object * object) const {
-      if(!getIsPointer()) return 0;
-      void * value;
-      getValue(object,&value);
-      return getObjectConverter() (value);
-    }
+    virtual void getValue(const void * object, void * value) const=0;
 
     /**
      * \brief Gets mutable pointer.
@@ -105,7 +88,7 @@ public:
      *
      * \return  null if it fails, else the mutable pointer.
      */
-    virtual void * getMutablePointer(Object * object) const {
+    virtual void * getMutablePointer(void * object) const {
       return 0;
     }
 
@@ -116,7 +99,7 @@ public:
      *
      * \return  null if it fails, else the constant pointer.
      */
-    virtual const void * getConstPointer(const Object * object) const {
+    virtual const void * getConstPointer(const void * object) const {
       return 0;
     }
 
@@ -128,7 +111,7 @@ public:
      *
      * \return  true if it succeeds, false if it fails.
      */
-    virtual bool deserialize(Object * object, std::istream & in) const=0;
+    virtual bool deserialize(void * object, std::istream & in) const=0;
 
     /**
      * \brief Serializes.
@@ -138,29 +121,8 @@ public:
      *
      * \return  true if it succeeds, false if it fails.
      */
-    virtual bool serialize(Object * object, std::ostream & out) const=0;
-
-    /**
-     * \brief Adds an observer to 'observer'.
-     *
-     * \param [in,out]  object    If non-null, the object.
-     * \param [in,out]  observer  If non-null, the observer.
-     *
-     * \return  true if it succeeds, false if it fails.
-     */
-    virtual bool addObserver(Object * object,ObjectObserver* observer) const;
-
-    /**
-     * \brief Removes the observer.
-     *
-     * \param [in,out]  object    If non-null, the object.
-     * \param [in,out]  observer  If non-null, the observer.
-     *
-     * \return  true if it succeeds, false if it fails.
-     */
-    virtual bool removeObserver(Object * object,ObjectObserver* observer) const;
-
-
+    virtual bool serialize(void * object, std::ostream & out) const=0;
+    
     /**
      * \brief Gets.
      *

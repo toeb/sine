@@ -30,16 +30,8 @@ namespace nspace
   class PropertyInfo;
   class ConstructorInfo;
   class Type;
-  class Object;
-
-
-
-  typedef const Type * ConstTypePtr;
-
-  /**
-  * \brief Defines an alias representing identifier for a type.
-  */
-  typedef uint TypeId;
+  
+ typedef const Type * ConstTypePtr;
 
 
   /**
@@ -50,103 +42,88 @@ namespace nspace
   */
   class Type : public Node<Type>
   {
+  public: 
+    /**
+    * \brief Defines an alias representing identifier for a type.
+    */
+  typedef uint TypeId;
   private:
     static TypeId _typeCounter;
   protected:
     Type();
     Type(const std::string & name, const Type * underlyingType);
   public:
-    typedef const Type * basic_property(UnderlyingType);
-    typedef const Type * basic_property(RawType);
-    typedef bool basic_property(IsPointer);
-    typedef bool basic_property(IsReference);
-    typedef bool basic_property(IsVolatile);
-    typedef bool basic_property(IsConst);
-
+    // type traits
+    typedef const Type *  basic_property(UnderlyingType);
+    typedef const Type *  basic_property(RawType);
+    typedef bool          basic_property(IsPointer);
+    typedef bool          basic_property(IsReference);
+    typedef bool          basic_property(IsVolatile);
+    typedef bool          basic_property(IsConst);
+    bool isConstructible()const;
     bool isRawType()const;
 
+
+    // comparison
     friend bool operator==(const Type & a, const Type & b);
     friend bool operator!=(const Type & a, const Type & b);
+
+    // to string
     friend std::ostream & operator <<(std::ostream & out, const Type & type);
     friend std::ostream & operator <<(std::ostream & out, const Type * type);
     
-    
+    // construction
     std::shared_ptr<void>   createInstance() const;
-    std::shared_ptr<Object> createObjectInstance()const;
     template<typename T> std::shared_ptr<T> createTypedInstance()const;
 
-    bool isConstructible()const;
-    bool isStringifyable()const;
-
-    void objectToString(const void * object, std::ostream & stream)const;
-    std::string objectToString(const void * object)const;
-
-
-
-    std::shared_ptr<Object> toSmartObjectPointer(std::shared_ptr<void> object)const;
-    Object * toRawObjectPointer(void * object)const;
-
-    std::shared_ptr<void> toSmartDerivedPointer(std::shared_ptr<Object> object)const;
-    void * toRawDerivedPointer(Object * object)const;
-
-    typedef TypeId basic_property(Id);
-    typedef std::string                                                   basic_property(Name);
-    typedef std::function<std::shared_ptr<Object>(std::shared_ptr<void>)> basic_property(SmartObjectPointerConverter);    
-    typedef std::function<std::shared_ptr<void>(std::shared_ptr<Object>)> basic_property(SmartDerivedPointerConverter);
-    typedef std::function<Object *(void * )>                              basic_property(RawObjectPointerConverter);
-    typedef std::function<void *(Object * )>                              basic_property(RawDerivedPointerConverter);
-    typedef std::function<std::shared_ptr<void>()>                        basic_property(CreateInstanceFunction);
-    typedef std::function<void(const void *, std::ostream &)>             basic_property(ObjectToStringFunction);
-
-    template<typename DerivedType> static Object * rawCastToObject(void * pointer);
-    template<typename DerivedType> static std::function<Object *(void * )> rawToObjectCaster();
-    template<typename DerivedType> static std::shared_ptr<Object> smartCastToObject(std::shared_ptr<void> pointer);
-    template<typename DerivedType> static std::function<std::shared_ptr<Object> (std::shared_ptr<void>  )> smartToObjectCaster();
-    template<typename DerivedType> static std::shared_ptr<void> smartCastToDerived(std::shared_ptr<Object> pointer);
-    template<typename DerivedType> static std::function<std::shared_ptr<void>(std::shared_ptr<Object>)> smartToDerivedCaster();
-    template<typename DerivedType> static void * rawCastToDerived(Object * pointer);
-    template<typename DerivedType> static std::function<void*(Object *)> rawToDerivedCaster();
-    template<typename DerivedType> static void derivedToString(const void * ptr, std::ostream & stream);
-    template<typename DerivedType> static std::function<void (const void * , std::ostream &)> derivedStringifier();
-
-
-    bool isConvertibleToSmartObjectPointer()const;
-    bool isConvertibleToRawObjectPointer()const;
-
-
     
 
+    // type fields
+    typedef TypeId                                                        basic_property(Id);
+    typedef std::string                                                   basic_property(Name);
+    typedef std::function<std::shared_ptr<void>()>                        basic_property(CreateInstanceFunction);
 
+    // member access
     PROPERTYSET(const MemberInfo *, Members,,);
   public:
-    Set<const PropertyInfo*> Properties() const;
-    Set<const MethodInfo*> Methods()const;
-    Set<const ConstructorInfo*> Constructors()const;
+    Set<const PropertyInfo*>          Properties() const;
+    Set<const MethodInfo*>            Methods()const;
+    Set<const ConstructorInfo*>       Constructors()const;
 
     
-
-    const MemberInfo * getMember(const std::string & name) const;
-    const MethodInfo * getMethod(const std::string & name) const;
-    const PropertyInfo * getProperty(const std::string & name) const;
-    const ConstructorInfo * getConstructor(const std::vector<const Type*>& types)const;
-    template<typename Container>
-    const ConstructorInfo * getConstructor(const Container & container){
-      auto it = std::begin(container);
-      auto end = std::end(container);
-      std::vector<const Type*> types;
-      for(;it!=end;it++){
-        types.push_back(*it);
-      }
-      return getConstructorInfo(types);
-    }
+    const MemberInfo *        getMember(const std::string & name) const;
+    const MethodInfo *        getMethod(const std::string & name) const;
+    const PropertyInfo *      getProperty(const std::string & name) const;
+    const ConstructorInfo *   getConstructor(const std::vector<const Type*>& types)const;
+    
+    template<typename Container> const ConstructorInfo * getConstructor(const Container & container)const;
 
 
+    //type hierarchy
     bool isSuperClassOf(const Type * other) const;
     bool isSubClassOf(const Type * other)const;
     typedef Set<const Type*> basic_property(SuperClasses);
     typedef Set<const Type*> basic_property(RootClasses);
 
-
+    // 
+    const Type * removeConst()const{
+      if(!getIsConst()){
+        return this;
+      }
+      return getUnderlyingType();
+    }
+    const Type * removeReference()const{
+      if(!getIsReference()){
+        return this;
+      }
+      return getUnderlyingType();
+    }
+    const Type * removePointer()const{
+      if(!getIsPointer()){
+        return this;
+      }
+      return getUnderlyingType();
+    }
 
   protected:
     void onSuccessorAdded(Type * type);

@@ -26,46 +26,15 @@ Type::Type(const std::string & name ,const Type * underlyingType):
   }
 }
 
-bool Type::isStringifyable()const{
-  return (bool)getObjectToStringFunction();
-}
-void Type::objectToString(const void * object, std::ostream & stream)const{
-  if(!isStringifyable())return;
-  getObjectToStringFunction()(object,stream);
-}
-std::string Type::objectToString(const void * object)const{
-  std::stringstream stream;
-  objectToString(object,stream);
-  return stream.str();
-}
+
+
 bool Type::isConstructible()const{return  (bool)getCreateInstanceFunction();}
 
-bool Type::isConvertibleToSmartObjectPointer()const{
-  return (bool)getSmartObjectPointerConverter();
-}
-bool Type::isConvertibleToRawObjectPointer()const{
-  return (bool)getRawObjectPointerConverter();
-}
-
-
-void * Type::toRawDerivedPointer(Object * object)const{
-  if(!isConvertibleToRawObjectPointer())return 0;
-  return getRawDerivedPointerConverter()(object);
-}
-
-Object * Type::toRawObjectPointer(void * object)const{
-  if(!isConvertibleToRawObjectPointer())return 0;
-  return getRawObjectPointerConverter()(object);
-}
-std::shared_ptr<Object> Type::toSmartObjectPointer(std::shared_ptr<void> object)const{
-  if(!isConvertibleToSmartObjectPointer())return std::shared_ptr<Object>();
-  return getSmartObjectPointerConverter()(object);
-}
 
 
 bool Type::isRawType()const{return getRawType()==this;}
 
-TypeId Type::_typeCounter=0;
+Type::TypeId Type::_typeCounter=0;
 Type::Type():
   _Id(_typeCounter++),
   _IsPointer(false),
@@ -97,13 +66,6 @@ namespace nspace{
 std::shared_ptr<void> Type::createInstance()const{
   return getCreateInstanceFunction()();
 }
-
-
-std::shared_ptr<Object> Type::createObjectInstance()const{
-  if(!isConvertibleToSmartObjectPointer())return std::shared_ptr<Object>();
-  return getSmartObjectPointerConverter()(createInstance());
-}
-
 
 const MemberInfo * Type::getMember(const std::string & name)const{
   auto member = Members().first([&name](const MemberInfo * member){return member->getName()==name;});

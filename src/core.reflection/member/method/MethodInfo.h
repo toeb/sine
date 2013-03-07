@@ -9,10 +9,8 @@ namespace nspace{
   public:
     template<typename Container> Argument call(void * object, Container & container=std::vector<Argument>())const;
     template<typename Container> Argument call(const void * object, Container & container=std::vector<Argument>())const;
-    template<typename Container> Argument call(Object * object, Container & container=std::vector<Argument>())const;
     Argument call(void * object)const;
     Argument call(const void * object)const;
-    Argument call(Object * object);
     typedef std::vector<const Type*> basic_property(ArgumentTypes);
     typedef const Type * basic_property(ReturnType);
     typedef bool basic_property(IsConst);
@@ -42,10 +40,5 @@ namespace nspace{
       args.push_back(*it);
     }
     return call(object,args);
-  }
-  template<typename Container>
-  Argument MethodInfo::call(Object * object, Container & args)const{
-    auto ptr = object->getType()->toRawDerivedPointer(object);
-    return call<Container>(object,args);
   }
 }

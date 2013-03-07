@@ -207,7 +207,7 @@ public: DS_PROPERTY_SETTER_EXTENDED(NAME)
 #define after_set(NAME) DS_PROPERTY_AFTER_SET(NAME)
 #define before_get(NAME) DS_PROPERTY_BEFORE_GET(NAME)
 
-#define basic_property(NAME)      \
+#define DS_PROPERTY_BASIC(NAME)      \
   DS_PROPERTY_DEFINITION(NAME)    \
 private:                          \
  DS_PROPERTY_STORAGE_FIELD(NAME); \
@@ -215,7 +215,10 @@ public:                           \
   DS_PROPERTY_AUTO_GETTER(NAME);  \
   DS_PROPERTY_AUTO_SETTER(NAME)
 
+
+#define basic_property(NAME)  DS_PROPERTY_BASIC(NAME)
 #define basic_references(NAME) DS_PROPERTY_REFERENCE(NAME)
+
 
 
 // todo:

@@ -16,8 +16,8 @@ namespace nspace{
   public:
     //TODO use factorymethods instead.  i hate constructors
     PropertyAdapter();
-    PropertyAdapter(Object * object, const std::string & name);
-    PropertyAdapter(Object * object, const PropertyInfo * info);
+    PropertyAdapter(Argument object, const std::string & name);
+    PropertyAdapter(Argument object, const PropertyInfo * info);
     ~PropertyAdapter();
     void setToDefault();
     // implementation of IModifiableValue
@@ -33,7 +33,5 @@ namespace nspace{
   private:
     void onBeforePropertyInfoChanged();
     void onPropertyInfoChanged();
-    void uninstallObserver();
-    void installObserver();
   };
 }

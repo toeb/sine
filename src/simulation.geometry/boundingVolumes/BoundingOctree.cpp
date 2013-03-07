@@ -3,7 +3,7 @@
 using namespace nspace;
 using namespace std;
 
-const TypeId Octree::getCollisionType()const{
+const Type::TypeId Octree::getCollisionType()const{
   return type;
 }
 

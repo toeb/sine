@@ -38,13 +38,14 @@ namespace nspace {
     /**
     * \brief Contains all tests
     */
-    OBJECTPOINTERCOLLECTION(UnitTest,RegisteredTests,{},{});
+    typedef Set<UnitTest*> basic_property(RegisteredTests);
+    REFERENCE_PROPERTY(Set<UnitTest*>, RegisteredTests)
 
     /**
     * \brief Number of Tests which failed during run.
     *
     */
-    PROPERTY(int, FailedTestCount){}
+    typedef int basic_property(FailedTestCount)
 
 
   public:

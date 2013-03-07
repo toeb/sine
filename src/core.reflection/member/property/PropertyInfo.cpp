@@ -3,7 +3,7 @@
 #include <core/PropertyChangingObject.h>
 using namespace std;
 using namespace nspace;
-
+/*
 class ObserverAdapter : public virtual PropertyChangedListener, public virtual Observable{
   SIMPLE_PROPERTY(const PropertyInfo * , PropertyInfo){}
 public:
@@ -55,4 +55,4 @@ bool PropertyInfo::removeObserver(Object * object,ObjectObserver* observer)const
     adapter =0;
   }
   return true;
-};
+};*/

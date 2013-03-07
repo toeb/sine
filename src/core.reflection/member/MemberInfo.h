@@ -18,7 +18,6 @@
  */
 #pragma once
 #include <core.reflection/attribute/Attribute.h>
-#include <core/Object.h>
 
 namespace nspace {
 
@@ -27,9 +26,7 @@ namespace nspace {
    *        @TODO remove attributes like description/displayname etc.
    */
   class MemberInfo : public virtual AttributeTarget {
-    //TYPED_OBJECT(MemberInfo);
-
-    SIMPLE_PROPERTY(std::string, Name);
+    SIMPLE_PROPERTY(std::string, Name);    
     REFERENCE_PROPERTY(std::string, Name);
 
     typedef bool basic_property(IsVisible);
@@ -55,11 +52,12 @@ namespace nspace {
      */
     typedef std::string basic_property( GroupName);
 public:
-
+  protected:
     /**
      * \brief Default constructor.
      */
     MemberInfo();
+    MemberInfo(const std::string & name);
     virtual ~MemberInfo();
   };
 }

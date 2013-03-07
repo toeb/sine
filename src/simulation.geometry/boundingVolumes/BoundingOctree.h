@@ -108,7 +108,7 @@ namespace nspace{
       reset();
     }
     ///< The type ("Octree")
-    static const TypeId type;
+    static const Type::TypeId type;
 
     /**
     * \brief Gets the collision type.
@@ -116,7 +116,7 @@ namespace nspace{
     *
     * \return The collision type.
     */
-    const TypeId getCollisionType()const;
+    const Type::TypeId getCollisionType()const;
 
     void update();
     void reset();

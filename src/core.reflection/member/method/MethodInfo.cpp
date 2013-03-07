@@ -13,8 +13,3 @@ Argument MethodInfo::call(const void * object)const{
 }
 
 
-Argument MethodInfo::call(Object * object){
-  auto ptr = object->getType()->toRawDerivedPointer(object);
-  return call(ptr);
-
-}
