@@ -18,6 +18,7 @@ MethodAdapter::MethodAdapter(Argument object, const MethodInfo * methodInfo):Mem
   setMethodInfo(methodInfo);
 }
 
+
 Argument MethodAdapter::call(){
   std::vector<Argument> args;
   return call(args);

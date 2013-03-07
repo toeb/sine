@@ -6,6 +6,30 @@
 namespace nspace{
   struct Module;
   struct PythonType;
+  struct ScriptFunctionImplementation{
+
+    virtual bool isValid()const=0;
+    virtual Argument call(std::vector<Argument> &args)=0;
+  };
+  struct ScriptFunction{
+    reflect_type(ScriptFunction);
+  public:
+    ScriptFunction(std::shared_ptr<ScriptFunctionImplementation> impl):impl(impl){}
+    ScriptFunction(){}
+    std::shared_ptr<ScriptFunctionImplementation> impl;
+    Argument operator()(){
+      return operator()(std::vector<Argument>());
+    }
+    template<typename TContainer> Argument operator()(TContainer & container){
+      std::vector<Argument> vec;
+      for(auto it = std::begin(container); it!=std::end(container); it++){
+        vec.push_back(*it);
+      }
+      return call(vec);
+    }
+    bool isValid(){return (bool)impl&&impl->isValid();}
+    Argument call(std::vector<Argument> &args){return impl->call(args);}
+  };
   class PythonScriptMachine : public VirtualScriptMachine{
     static size_t instances;
     std::map<std::string ,std::shared_ptr<Module>> modules;
@@ -34,7 +58,7 @@ namespace nspace{
       return val;  
     }
 
-    
+
 
   };
 

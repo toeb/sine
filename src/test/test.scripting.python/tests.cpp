@@ -75,7 +75,23 @@ TEST(1,SetVariable){
     "print(testvar)\n"
     );
   CHECK(result);
-
+}
+TEST(Lambda1,Call){
+  PythonScriptMachine machine;
+  machine.loadString(
+    "fuu = lambda :  'herro'\n"
+    );
+  auto func = machine.getVariable<ScriptFunction>("fuu");
+  auto result = func();
+  CHECK_EQUAL("herro", (std::string)result);
+}
+TEST(Function1,Call){
+  PythonScriptMachine machine;
+  machine.loadString("def fuu2():return 'herro'\n");
+  auto func = machine.getVariable<ScriptFunction>("fuu2");
+  auto result = func();
+  auto r = (std::string)result;
+  CHECK_EQUAL("herro",(std::string)result);
 }
 TEST(2,SetVariable){
   // test if data pointer stays the same
@@ -85,6 +101,14 @@ TEST(2,SetVariable){
   auto var= machine.getVariable("testvar");
   std::shared_ptr<TestType> actual = var;
   CHECK_EQUAL(expected.get(),actual.get());
+}
+TEST(String1,SetVariable){
+  // tests if string is correctly set
+  PythonScriptMachine machine;
+  machine.setVariable("sValue",std::string("some string value"));
+  machine.loadString("print(sValue)\n");
+  auto str = machine.getVariable<std::string>("sValue");
+  CHECK_EQUAL("some string value", str);
 }
 
 

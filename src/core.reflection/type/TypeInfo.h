@@ -250,6 +250,13 @@ private:                                                                        
   META(void);
 
 
+  template<typename TResult>
+  class TypeInfo<std::function<TResult(void)>> : public Type{
+    TEMPLATEDSINGLETON(TypeInfo, <std::function<TResult(void)>>){ 
+      setName(DS_INLINE_STRING("function<" << typeof(TResult)->getName()<<"(void)>"));      
+    } 
+  };
+
   // more std library
   template<typename T> 
   class TypeInfo<std::shared_ptr<T>>: public Type { 

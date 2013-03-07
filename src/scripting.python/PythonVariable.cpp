@@ -69,7 +69,7 @@ Argument PythonVariable::toArgument(const Type * type){
   auto dict = PyModule_GetDict(module);
   if(!dict)return Argument();
   auto value = PyDict_GetItemString(dict,this->name.c_str());
-  if(!dict)return Argument();
+  if(!value)return Argument();
 
 
 

@@ -10,6 +10,8 @@ using namespace std;
 size_t PythonScriptMachine::instances=0;
 
 
+bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> & argumentTypes);
+
 bool PythonScriptMachine::setVariable(const std::string & name, Argument argument){
   if(!registerType(argument.type)){
     return false;
@@ -20,6 +22,7 @@ bool PythonScriptMachine::setVariable(const std::string & name, Argument argumen
 
   return var.assign( argument);
 }
+
 
 Argument PythonScriptMachine::getVariable(const std::string & name,const Type * type){
   PythonVariable var=name;

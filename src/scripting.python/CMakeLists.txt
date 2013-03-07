@@ -10,6 +10,8 @@ set(source
  PythonUtilities.cpp
  PythonVariable.h
  PythonVariable.cpp
+ PythonFunction.h
+ PythonFunction.cpp
  PythonMethodAdapter.cpp
  ../include/scripting.python.h
 
