@@ -3,7 +3,9 @@
 using namespace nspace;
 
 Argument MethodAdapter::call(std::vector<Argument> args){
-  return call(args);
+  auto method = getMethodInfo();
+  auto owner = getOwner();
+  return method->call(owner.data.get(),args);
 }
 
 MethodAdapter::MethodAdapter():_MethodInfo(0){}

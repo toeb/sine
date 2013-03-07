@@ -17,7 +17,7 @@ namespace nspace{
     }
   protected:
 
-    virtual bool retrieveTypeValue(T & value)const{value = _underylingValue; return true;}
+    virtual bool retrieveTypeValue(T & value)const override{value = _underylingValue; return true;}
     virtual bool storeTypedValue(const T  & value){_underylingValue = value; return true;}
   };
 }

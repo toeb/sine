@@ -45,8 +45,6 @@ typedef float Real;
 
 
 
-// for marking overriden methods
-#define override 
 
 
 

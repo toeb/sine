@@ -5,8 +5,5 @@
 
 
 namespace nspace{
-class PythonScriptMachine : public VirtualScriptMachine{
-  REFLECTABLE_OBJECT(PythonScriptMachine);
-  
-};
+
 }

@@ -42,7 +42,7 @@ namespace nspace {
   public:
     TypedPerformanceTest(const std::string  &name) : PerformanceTest(name){}
 
-    override void runTest(){
+    void runTest() override final{
       primeTest();
       planTest();
       iterateTests();
