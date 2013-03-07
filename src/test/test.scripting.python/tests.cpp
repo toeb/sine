@@ -84,6 +84,7 @@ TEST(4,GetVariable){
   machine.loadString(
     "aValue=42\n"
     );
+  
   auto var = machine.getVariable<int>("aValue");
   CHECK_EQUAL(42,var);
 }

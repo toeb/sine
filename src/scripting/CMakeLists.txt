@@ -1,6 +1,8 @@
 set(source 
  Scripting.h
  Scripting.cpp
+ ScriptFunction.h
+ ScriptFunction.cpp
  ../include/scripting.h
 )
 

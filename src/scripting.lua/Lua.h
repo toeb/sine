@@ -6,6 +6,19 @@
 struct lua_State;
 struct luaL_Reg;
 namespace nspace{
+  
+  class ScriptObject : public Object{
+    reflect_type(ScriptObject);
+
+  public:
+    void toString(std::ostream & out)const{
+      //  getObjectType()->objectToString(getObjectPointer().get(),out);
+    }
+    ScriptObject():_ObjectType(0){}
+    typedef std::shared_ptr<void> basic_property(ObjectPointer);
+    typedef const Type * basic_property(ObjectType);
+    template<typename T> std::shared_ptr<T> object(){return std::static_pointer_cast<T>(getObjectPointer());}
+  };
 
 
   class LuaVirtualMachine : public VirtualScriptMachine{

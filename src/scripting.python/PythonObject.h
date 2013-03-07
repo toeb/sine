@@ -11,10 +11,7 @@ struct PythonObject:public PyObject{
   PythonObject(PyObject * pObject){
 
   }
-  // converts PythonObject to a pyObject * 
-  operator PyObject * (){
 
-  }
 
   Argument object;
   std::map<std::string, std::shared_ptr<MemberAdapter>> members;
