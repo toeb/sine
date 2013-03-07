@@ -4,6 +4,8 @@
 
 using namespace nspace;
 
+
+
 UNITTEST(Argumentcreateinvalid){
     // a default constructed argument is invalid
     Argument a;
@@ -15,7 +17,6 @@ UNITTEST(Argumentcreateinvalid){
 
 
 UNITTEST(Argumentcreatesimple){
-    // a default constructed argument is invalid
     Argument a = 2;
     CHECK((bool)a.isValid());
     CHECK((bool)a.data);
@@ -23,20 +24,12 @@ UNITTEST(Argumentcreatesimple){
     CHECK_EQUAL(nspace::type_of<int>(),a.type);    
 }
 
-UNITTEST(ReferenceArgument){
-  
-  
-}
 
 UNITTEST(ComplexArgument){
   std::shared_ptr<int> sptr(new int(32));
-
   Argument arg =sptr;
-
   std::shared_ptr<int> b = arg;
-
   auto ptr = b.get();
-
   CHECK(ptr==sptr.get());
-
 }
+

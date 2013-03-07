@@ -15,6 +15,8 @@ namespace nspace{
     ~Argument(){
   //    if((bool)deleter)deleter();
     }
+    
+    
 
 
     static const Argument & VoidArgument();    
@@ -22,12 +24,13 @@ namespace nspace{
     template<typename T> operator const T & ()const;
     template<typename T> operator T & ();
 
-    template<typename T> operator std::shared_ptr<const T>()const{
+    template<typename T> operator  std::shared_ptr<const T> ()const{
       return cast<const T>();
     }
-    template<typename T> operator std::shared_ptr<T>(){return cast<T>();}
 
-    template<typename T> std::shared_ptr<T> cast();
+    template<typename T> operator  std::shared_ptr<T>  (){return cast<T>();}
+
+    template<typename T> std::shared_ptr<T>  cast();
     template<typename T> std::shared_ptr<const T> cast()const;
     
     std::shared_ptr<void> data;
@@ -57,6 +60,6 @@ namespace nspace{
   }
   
   
-  template<typename T> std::shared_ptr<T> Argument::cast(){return std::static_pointer_cast<T>(data);}
-  template<typename T> std::shared_ptr< const T> Argument::cast()const{return std::static_pointer_cast<T>(data);}
+  template<typename T>  std::shared_ptr<T>  Argument::cast(){return std::static_pointer_cast<T>(data);}
+  template<typename T>  std::shared_ptr< const T>   Argument::cast()const{return std::static_pointer_cast<T>(data);}
 }

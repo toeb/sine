@@ -2,6 +2,76 @@
 
 using namespace nspace;
 using namespace std;
+TEST(4, smartPointerArgument){
+  static std::shared_ptr<double> ptr;
+  struct A{
+    reflect_type(A);
+
+    reflect_method(method1);
+    void method1(const std::shared_ptr<double> & p)const{
+      ptr = p;
+      
+
+    }
+
+  }a;
+  
+  std::shared_ptr<double> thePointer(new double(1.23));
+  Argument args[1] = {thePointer};
+  auto method = a.getType()->getMethod("method1");
+  method->call(&a, args);
+}
+
+TEST(3, smartPointerArgument){
+  static std::shared_ptr<double> ptr;
+  struct A{
+    reflect_type(A);
+
+    reflect_method(method1);
+    void method1(std::shared_ptr<double> p){
+      ptr = p;
+    }
+
+  }a;
+  Argument args[1] = {std::shared_ptr<double>(new double(1.23))};
+  auto method = a.getType()->getMethod("method1");
+  method->call(&a, args);
+}
+
+TEST(2, smartPointerArgument){
+  struct A{
+    A():ptr(new double(1111)){}
+    reflect_type(A);
+    std::shared_ptr<double> ptr;
+    reflect_method(method1);
+    const std::shared_ptr<double> & method1(){
+      return ptr;
+    }
+  }a;
+
+  auto method = a.getType()->getMethod("method1");
+  auto argument = method->call(&a);
+  
+  CHECK(argument.isValid());
+  CHECK_EQUAL(1111,*(std::shared_ptr<double>)argument);   
+}
+
+TEST(1, smartPointerArgument){
+  struct A{
+    reflect_type(A);
+
+    reflect_method(method1);
+    std::shared_ptr<double> method1(){
+      return std::shared_ptr<double>(new double(2323));
+    }
+  }a;
+
+  auto method = a.getType()->getMethod("method1");
+  auto argument = method->call(&a);
+  
+  CHECK(argument.isValid());
+  CHECK_EQUAL(2323.0,*(std::shared_ptr<double>)argument);
+}
 
 TEST(1, CallInheritedMember){
   struct A{
@@ -368,3 +438,4 @@ UNITTEST(remove_pointers){
   typedef char expected;
   CHECK_TYPES(expected,actual);
 }
+

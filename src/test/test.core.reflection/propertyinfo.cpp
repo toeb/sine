@@ -1,5 +1,6 @@
 #include <core.testing.h>
 #include <core.reflection.h>
+#include <memory>
 using namespace nspace;
 
 namespace n2{
@@ -97,7 +98,7 @@ namespace n2{
 
 #define DS_REFLECT_PROPERTY_DEFINITION_1(NAME) DS_REFLECT_PROPERTY_DEFINITION_2(NAME, DS_PROPERTY_BASIC)
 
-#define reflect_property(...) DS_EXPAND( DS_REFLECT_PROPERTY_DEFINITION(__VA_ARGS__) )
+#define reflect_property(...)  DS_REFLECT_PROPERTY_DEFINITION(__VA_ARGS__) 
 #define reflect_method_property(GETTER,SETTER) DS_REFLECT_PROPERTY_DEFINITION_3(GETTER,GETTER,SETTER)
 
 
@@ -127,7 +128,10 @@ namespace testNamespace{
 
   public:
     typedef int * reflect_property(TestPropertyTwo);
+  public:
+    typedef std::shared_ptr<double> reflect_property(TestPropertyThree);
 
+    
   public:
     A():_TestProperty(3),_TestPropertyTwo(new int(3232)){}
   };
@@ -162,6 +166,16 @@ TEST(GetPointerValue,PropertyInfo){
   auto prop = (const n2::PropertyInfo*)typeof(A)->getMember("TestPropertyTwo");
   auto val = (int*)prop->get(&a);
   CHECK_EQUAL(3232,*val);
+}
+
+TEST(GetSmartPointer,PropertyInfo){
+  A a;
+  std::shared_ptr<double> thePointer(new double(141));
+  a.setTestPropertyThree(thePointer);
+  
+  auto prop = (const n2::PropertyInfo*)typeof(A)->getMember("TestPropertyThree");  
+  auto val = (std::shared_ptr<double>) prop->get(&a);
+  CHECK(141,*val);
 }
 
 
