@@ -25,6 +25,8 @@
 #include <core.reflection/adapter/MethodAdapter.h>
 #include <core.reflection/adapter/MemberAdapter.h>
 #include <core.reflection/adapter/PropertyAdapter.h>
+#include <core.reflection/callable/CallableFunctor.h>
+
 
 //#include <core/reflection/Action.h>
 //#include <core/reflection/DelegateAction.h>

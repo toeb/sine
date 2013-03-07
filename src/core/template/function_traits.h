@@ -29,6 +29,7 @@ struct function_traits<ReturnType(ClassType::*)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARG
 {                                                                                                                    \
   enum { arity = DS_NUM_ARGS(__VA_ARGS__) };                                                                         \
     typedef ReturnType result_type;                                                                                  \
+    static const bool isConstCall=true;\
     template <size_t i>                                                                                              \
     struct arg                                                                                                       \
     {                                                                                                                \
@@ -40,6 +41,7 @@ struct function_traits<ReturnType(ClassType::*)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARG
 {                                                                                                                    \
   enum { arity = DS_NUM_ARGS(__VA_ARGS__) };                                                                         \
     typedef ReturnType result_type;                                                                                  \
+    static const bool isConstCall=false;\
     template <size_t i>                                                                                              \
     struct arg                                                                                                       \
     {                                                                                                                \
@@ -50,7 +52,8 @@ template <typename ClassType, typename ReturnType>
 struct function_traits<ReturnType(ClassType::*)() const>                      
 {                                                                                                                  
   enum { arity = 0 };                                                                       
-    typedef ReturnType result_type;                                                                                
+    typedef ReturnType result_type;           
+    static const bool isConstCall=true;                                                                     
     template <size_t i>                                                                                            
     struct arg                                                                                                     
     {                                                                                                              
@@ -62,7 +65,8 @@ template <typename ClassType, typename ReturnType>
 struct function_traits<ReturnType(ClassType::*)() >                      
 {                                                                                                                  
   enum { arity = 0 };                                                                       
-    typedef ReturnType result_type;                                                                                
+    typedef ReturnType result_type;                   
+    static const bool isConstCall=false;                                                 
     template <size_t i>                                                                                            
     struct arg                                                                                                     
     {                                                                                                              

@@ -8,6 +8,44 @@ using namespace nspace;
 using namespace std;
 
 
+TEST(3,CallableFunctor){
+  auto it =make_callable([](string s)->int{return strtol(s.c_str(),0,10);});  
+  auto res =  (int)it.callArgs(string("32"));
+  CHECK(res == 32);
+}
+  
+TEST(2,CallableFunctor){
+  struct A{
+    A(){
+      lastOpResult=0;
+    }
+    int lastOpResult;
+    int operator ()(int i, int j, int k){
+      return lastOpResult = i+j+k;
+    }
+  };
+  CallableFunctor<A> cf; 
+  Callable * c= &cf;
+  auto result = (int)c->callArgs(5,2,3);
+  CHECK(10==result);
+  c->callArgs(1,1,1);
+  CHECK(3==cf._function.lastOpResult);
+}
+
+
+TEST(1,CallableFunctor){
+  struct A{
+    int operator ()(int i, int j, int k)const{
+      return i+j+k;
+    }
+  };
+  CallableFunctor<A> cf; 
+  Callable * c= &cf;
+  auto result = (int)c->callArgs(5,2,3);
+  CHECK(10==result);
+}
+
+
 TEST(1,DS_CLASS){
   // tests weather typeof(A) correctly returns a type
   struct A{
@@ -159,3 +197,5 @@ TEST(4,createInstance){
 #endif
 
 
+
+    

@@ -92,6 +92,8 @@ set(callableSource
 	callable/DelegateAction.cpp
 	callable/Callable.h
 	callable/Callable.cpp
+	callable/CallableFunctor.h
+	callable/CallableFunctor.cpp
 )
 source_group("callable" FILES ${callableSource})
 set(source ${source} ${callableSource})
