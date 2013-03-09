@@ -17,7 +17,12 @@ struct PythonObject:public PyObject{
   std::map<std::string, std::shared_ptr<MemberAdapter>> members;
 
 
-  PyObject* getMember(const std::string & name);
-  
+  PyObject* getAttribute(PyObject * name);
+  int setAttribute(PyObject * name, PyObject * value);
+
+private:
+  std::shared_ptr<MemberAdapter> getMember(PyObject * pname);
+
+
 };
 }

@@ -37,14 +37,13 @@ PyObject * PythonType::construct( PyObject *args, PyObject *kwds){
 void PythonType::destruct(void * object){
 
 }
-PyObject * PythonType::getProperty(PyObject* pobject, PyObject * name ){
-  auto o = (PythonObject*)pobject;
-  auto n = PyUnicode_AsUTF8(name);
-
-  return o->getMember(n);
+PyObject * PythonType::getAttribute(PyObject* pobject, PyObject * name ){
+  auto object = (PythonObject*)pobject;
+  return object->getAttribute(name);
 }
-int PythonType::setProperty(PyObject * object, PyObject * , PyObject* value){
-  return 0;
+int PythonType::setAttribute(PyObject * pobject, PyObject * name, PyObject* value){
+  auto object = (PythonObject*)pobject;
+  return object->setAttribute(name,value);
 }
 PyObject * stringRepresentationCallback(PyObject * object){
   auto obj = static_cast<PythonObject*>(object);
@@ -60,12 +59,11 @@ PythonType::PythonType(const Type* type):type(type){
   //initialize head
   PyTypeObject tmp={PyObject_HEAD_INIT(NULL)};
   ((PyTypeObject&)*this)=tmp;
-
   tp_name = stringtools::c_str(namespaceString);
   tp_basicsize = sizeof(PythonObject);
   tp_repr = &stringRepresentationCallback;
-  tp_getattro=&getProperty;
-  tp_setattro=&setProperty;
+  tp_getattro=&getAttribute;
+  tp_setattro=&setAttribute;
   tp_doc = stringtools::c_str(docString);
 
   //initialization function (may be called multiple times)

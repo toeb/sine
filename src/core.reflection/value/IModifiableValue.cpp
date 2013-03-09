@@ -9,3 +9,9 @@ bool IModifiableValue::changeValue(Argument value){
   if(success) raiseObjectChanged();
   return success;
 }
+
+
+
+bool IModifiableValue::set(Argument argument){
+  return changeValue(argument);
+}

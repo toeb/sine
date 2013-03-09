@@ -6,14 +6,17 @@
 
 namespace nspace{
 
-struct PythonType : public PyTypeObject{
-  PyObject * construct(PyObject *args, PyObject *kwds);
- static void       destruct(void * object);
-  static PyObject * getProperty(PyObject* pobject, PyObject * name );
-  static int        setProperty(PyObject * object, PyObject * , PyObject* value);
+  struct PythonType : public PyTypeObject{
+    PyObject * construct(PyObject *args, PyObject *kwds);
+    static void destruct(void * object);
 
 
-  PythonType(const Type* type);
-  const Type * type;
-};
+
+    static PyObject * getAttribute(PyObject* pobject, PyObject * name );
+    static int setAttribute(PyObject * object, PyObject * name, PyObject* value);
+
+
+    PythonType(const Type* type);
+    const Type * type;
+  };
 }

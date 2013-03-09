@@ -15,6 +15,8 @@ namespace nspace{
 
   template<typename ClassType>
   struct TypedConstructorInfo : public ConstructorInfo{
+    typedef std::shared_ptr<ClassType> InstanceType;
+    typedef ClassType ConstructorClassType;
     TypedConstructorInfo(){
       auto type = const_cast<Type*>(typeof(ClassType));
       type->Members()|=this;
@@ -40,52 +42,50 @@ namespace nspace{
 #define DS_CONSTRUCTOR_NAME(NAME) DS_CONCAT(Constructor,NAME)
 #define DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME) DS_CONCAT(DS_CONSTRUCTOR_NAME(NAME),OwningClass)
 
-  // Type::Helper
-  // Type::
-  // Type::construct
 
-#define DS_CONSTRUCTOR_STRUCT(NAME, ...)                                                              \
-  typedef CurrentClassType DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME);                                          \
-  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)>{             \
-  struct Helper{                                                                                \
-  void operator ()(__VA_ARGS__)const;                                                       \
-  };                                                                                            \
-  DS_CLASS(DS_CONSTRUCTOR_NAME(NAME));                                                                         \
-  typedef nspace::function_traits<Helper> traits;                                               \
-  DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME) * construct(GENERIC_ARG_LIST(__VA_ARGS__))const{     /*the pointer here*/              \
-  return new DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)(GENERIC_ARG_NAME_LIST(__VA_ARGS__));                  \
-  }                                                                                               \
-  protected:                                                                                      \
-  nspace::Argument callImplementation(const  Arguments &  args)const override final{                          \
-  auto method = typeof(CurrentClassType)->getMethod("construct");                               \
-  return method->call(this,args);                                            /*will not be correctly returned here*/   \
-  }                                                                                               \
-  reflect_method(construct);                                                                    \
-  SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){                                                                       \
-  std::vector<const nspace::Type*> types;                                                       \
-  DS_FOREACH(ADD_TYPE,GENERIC_ARG_TYPE_LIST(__VA_ARGS__));                                      \
-  setArgumentTypes(types);                                                                      \
-  }                                                                                               \
-  };                                                                                              \
-  DS_ONCE{                                                                                      \
-  static std::shared_ptr<DS_CONSTRUCTOR_NAME(NAME)>  c = DS_CONSTRUCTOR_NAME(NAME)::instance();                             \
+
+#define DS_CONSTRUCTOR_STRUCT(NAME, ...)                                                                            \
+  typedef CurrentClassType DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME);                                                  \
+  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)>{     \
+  struct Helper{                                                                                                    \
+  void operator ()(__VA_ARGS__)const;                                                                               \
+  };                                                                                                                \
+  DS_CLASS(DS_CONSTRUCTOR_NAME(NAME));                                                                              \
+  typedef nspace::function_traits<Helper> traits;                                                                   \
+  InstanceType construct(GENERIC_ARG_LIST(__VA_ARGS__))const{                                                       \
+  return InstanceType(new ConstructorClassType(GENERIC_ARG_NAME_LIST(__VA_ARGS__)));                                \
+  }                                                                                                                 \
+  protected:                                                                                                        \
+  nspace::Argument callImplementation(const  Arguments &  args)const override final{                                \
+  auto method = typeof(CurrentClassType)->getMethod("construct");                                                   \
+  return method->call(this,args);                                                                                   \
+  }                                                                                                                 \
+  reflect_method(construct);                                                                                        \
+  SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){                                                                             \
+  std::vector<const nspace::Type*> types;                                                                           \
+  DS_FOREACH(ADD_TYPE,GENERIC_ARG_TYPE_LIST(__VA_ARGS__));                                                          \
+  setArgumentTypes(types);                                                                                          \
+  }                                                                                                                 \
+  };                                                                                                                \
+  DS_ONCE{                                                                                                          \
+  static std::shared_ptr<DS_CONSTRUCTOR_NAME(NAME)>  c = DS_CONSTRUCTOR_NAME(NAME)::instance();                     \
   }
 
-#define DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)                                                                               \
-  typedef CurrentClassType DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME);                                                     \
-  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)>{       \
-  DS_CLASS(DS_CONSTRUCTOR_NAME(NAME));                                                                           \
-  std::shared_ptr<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)> construct()const{return std::shared_ptr<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)>(new DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)());}        \
-  protected:                                                                                                                \
-  nspace::Argument callImplementation(const  Arguments &  args)const override final{                                                        \
-  auto method = typeof(CurrentClassType)->getMethod("construct");                                                         \
-  return method->call(this,args);                                                                                         \
-  }                                                                                                                         \
-  reflect_method(construct);                                                                                              \
-  SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){ }                                                                                 \
-  };                                                                                                                        \
-  DS_ONCE{                                                                                                                \
-  static std::shared_ptr<DS_CONSTRUCTOR_NAME(NAME)>  c = DS_CONSTRUCTOR_NAME(NAME)::instance();                           \
+#define DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)                                                                     \
+  typedef CurrentClassType DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME);                                              \
+  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)>{ \
+  DS_CLASS(DS_CONSTRUCTOR_NAME(NAME));                                                                          \
+  InstanceType construct()const{return InstanceType(new ConstructorClassType());}                               \
+  protected:                                                                                                    \
+  nspace::Argument callImplementation(const  Arguments &  args)const override final{                            \
+  auto method = typeof(CurrentClassType)->getMethod("construct");                                               \
+  return method->call(this,args);                                                                               \
+  }                                                                                                             \
+  reflect_method(construct);                                                                                    \
+  SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){ }                                                                       \
+  };                                                                                                            \
+  DS_ONCE{                                                                                                      \
+  static std::shared_ptr<DS_CONSTRUCTOR_NAME(NAME)>  c = DS_CONSTRUCTOR_NAME(NAME)::instance();                 \
   }
 
 

@@ -15,12 +15,8 @@ namespace nspace{
     virtual Argument retrieveValue()const=0;
   public:
     IReadableValue();
-    template<typename T> T get()const;
+    Argument get()const;
   };
 
 
-
-  template<typename T> T IReadableValue::get()const{
-    return (T)retrieveValue();
-  }
 }

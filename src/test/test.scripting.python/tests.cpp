@@ -10,6 +10,9 @@ using namespace nspace;
 
 
 #define reflected_method(NAME) DS_CONCAT(NAME,ReturnType); reflect_method(NAME); public: DS_CONCAT(NAME,ReturnType) NAME
+
+
+
 struct TestType{
   int initialValue;
   reflect_type(TestType);
@@ -17,6 +20,8 @@ struct TestType{
   reflected_constructor(public: TestType, int a):initialValue(a){
   
   };
+
+
   typedef void reflected_method(method1)(){}
   typedef int  reflected_method(method2)(){return 3;}  
   typedef int  reflected_method(increment)(int i){return i+1;}
@@ -29,8 +34,25 @@ struct TestType{
   }
 }a;
 
+TEST(ComplexMethod,Call){
+  
+
+  PythonScriptMachine machine;
+  TestType b(3232);
+  machine.setVariable("b",b);
+  machine.registerType(typeof(TestType));
+  machine.loadString(
+    "import ds;\n"
+    "a = ds.TestType(2323)\n"
+    "c=a.AddInitialValues(b)\n"
+    );
+  auto result = (int)machine.getVariable("c");
+  CHECK_EQUAL(5555,result);  
+    
+}
+
 UNITTEST(CallCLambda3){
-  // does the same as CallCLambda2 with auto conversion
+  // does the same as CallCLambda2 with auto conversion  
   PythonScriptMachine machine;
   machine.setFunctor("herroWolrd",[](std::string s)->std::string{return "herror";} );
   machine.loadString("a = herroWolrd('nihau')");
@@ -163,22 +185,6 @@ TEST(BinaryMethodAdapter,Call){
     );
   auto result = (int)machine.getVariable("a");
   CHECK_EQUAL(105,result);
-}
-TEST(ComplexMethod,Call){
-  FAIL("Not implemented");
-  return;
-  PythonScriptMachine machine;
-  TestType b(3232);
-  machine.setVariable("b",b);
-  machine.registerType(typeof(TestType));
-  machine.loadString(
-    "import ds;\n"
-    "a = ds.TestType(2323)\n"
-    "c=a.add(3,3)\n"
-    );
-  auto result = (int)machine.getVariable("c");
-  CHECK_EQUAL(5555,result);  
-    
 }
 TEST(2,SetVariable){
   // test if data pointer stays the same

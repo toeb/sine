@@ -9,6 +9,6 @@ namespace nspace{
     virtual bool storeValue(Argument value)=0;
     virtual void valueChanging(Argument newValue, bool & cancel){}
   public:
-
+    bool set(Argument argument);
   };
 }
