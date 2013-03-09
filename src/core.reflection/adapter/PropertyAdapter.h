@@ -6,12 +6,11 @@
 
 namespace nspace{
   class PropertyAdapter:
-    public virtual IModifiableValue,
-    public virtual ISerializeable,
-    public virtual MemberAdapter,
-    public virtual ObjectObserver
+    public IModifiableValue,
+    public MemberAdapter
   {
     reflect_type(PropertyAdapter);
+
     typedef const PropertyInfo * extensible_property(PropertyInfo);
     auto before_set(PropertyInfo){
       onBeforePropertyInfoChanged();

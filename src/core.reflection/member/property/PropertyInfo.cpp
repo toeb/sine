@@ -1,58 +1,74 @@
 #include "PropertyInfo.h"
 
-#include <core/PropertyChangingObject.h>
 using namespace std;
 using namespace nspace;
-/*
-class ObserverAdapter : public virtual PropertyChangedListener, public virtual Observable{
-  SIMPLE_PROPERTY(const PropertyInfo * , PropertyInfo){}
-public:
-  ObserverAdapter(const PropertyInfo * info):_PropertyInfo(0){
-    setPropertyInfo(info);
+
+PropertyInfo::PropertyInfo(const std::string & name, const MethodInfo * getter, const MethodInfo * setter):MemberInfo(name),_SetMethod(setter),_GetMethod(getter),_PropertyType(0){
+  const Type *  propertyType=0;
+  // get the getters return type set propertyType to it
+  if(getter){
+    if(getter->getArgumentTypes().size()!=0){
+      std::cerr << "getter is not a parameterless method. ignoring"<<std::endl;
+      _GetMethod=0;
+    }else{
+      auto type = getter->getReturnType()->removeConst()->removeReference();
+      propertyType = type->removeConst()->removeReference();
+    }
   }
-protected:
+  
+  // get the setter's first argument and get the common root of it and the getters returntype.  
+  if(setter){
+    if(setter->getArgumentTypes().size()!=1){
+      std::cerr<<"setter method is not a single parameter method"<<std::endl;          
+    }else{
+      auto type = setter->getArgumentTypes().at(0)->removeReference()->removeConst();
+      if(propertyType){
+        if(propertyType!=type){
+          std::cerr<<"getter and setter raw types do not match"<<std::endl;
 
-  virtual void onPropertyChanged(Object * sender, const std::string & propertyName){
-    if(!getPropertyInfo())return ;
-    if(propertyName!=getPropertyInfo()->getName())return;
-    raiseObjectChanged();
+        }else{
+          // find closest relation 
+
+        }
+      }else{
+        propertyType = type;
+      }
+
+    }
   }
-};
-
-bool PropertyInfo::addObserver(Object * object,ObjectObserver* observer)const{
-  auto propertyChangingObject = dynamic_cast<PropertyChangingObject*>(object);
-  if(!propertyChangingObject)return false;
-
-  ObserverAdapter* adapter= dynamic_cast<ObserverAdapter*>(propertyChangingObject->listeners().first([this](PropertyChangedListener * listener){
-    return dynamic_cast<ObserverAdapter*>(listener)!=0&&dynamic_cast<ObserverAdapter*>(listener)->getPropertyInfo()==this;
-  }));
-
-  if(!adapter){
-    adapter = new ObserverAdapter(this);
-    propertyChangingObject->listeners()|=adapter;
+  if(propertyType==0){
+    //throw exception?  better not because this is a constructor
+    std::cerr << "could not determine property type from getter and setter methods"<<std::endl;    
   }
+  setPropertyType(propertyType);
+}
 
-  adapter->addObjectObserver(observer);
 
-  return true;
-};
-bool PropertyInfo::removeObserver(Object * object,ObjectObserver* observer)const{
-  auto propertyChangingObject = dynamic_cast<PropertyChangingObject*>(object);
-  if(!propertyChangingObject)return false;
-  //slow
+bool  PropertyInfo::isGettable()const{return getGetMethod()!=0;}
+bool  PropertyInfo::isSettable()const{return getSetMethod()!=0;}
 
-  ObserverAdapter* adapter= dynamic_cast<ObserverAdapter*>(propertyChangingObject->listeners().first([this](PropertyChangedListener * listener){
-    return dynamic_cast<ObserverAdapter*>(listener)!=0&&dynamic_cast<ObserverAdapter*>(listener)->getPropertyInfo()==this;
-  }));
+Argument  PropertyInfo::get(const void * ptr)const{
+  if(!isGettable())return Argument();
+  auto getter = getGetMethod();
+  return getter->call(ptr);
+}
+Argument  PropertyInfo::get(void * ptr)const{
+  if(!isGettable())return Argument();
+  auto getter = getGetMethod();
+  return getter->call(ptr);
+}
+void  PropertyInfo::set(void * ptr, Argument argument)const{
+  if(!isSettable())return;
+  auto setter = getSetMethod();
+  Argument args[1]={argument};
+  setter->call(ptr,args);
 
-  if(!adapter)return false;
+}
+void  PropertyInfo::set(const void * ptr , Argument argument)const{ 
+  if(!isSettable())return;
+  auto setter = getSetMethod();
+  Argument args[1]={argument};
+  setter->call(ptr,args);
+}
 
-  adapter->removeObjectObserver(observer);
 
-  if(!adapter->hasObservers()){
-    propertyChangingObject->listeners()/= adapter;
-    delete adapter;
-    adapter =0;
-  }
-  return true;
-};*/

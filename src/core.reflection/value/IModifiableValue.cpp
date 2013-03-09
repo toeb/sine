@@ -12,6 +12,9 @@ bool IModifiableValue::changeValue(Argument value){
 
 
 
+IModifiableValue::IModifiableValue(){}
+IModifiableValue::IModifiableValue(const Type * valueType):IReadableValue(valueType){}
+
 bool IModifiableValue::set(Argument argument){
   return changeValue(argument);
 }

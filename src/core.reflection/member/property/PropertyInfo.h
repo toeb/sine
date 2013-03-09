@@ -26,64 +26,15 @@ namespace nspace {
     typedef const MethodInfo * basic_property(SetMethod);
     typedef const Type * basic_property(PropertyType);
   protected:
-    PropertyInfo(const std::string & name, const MethodInfo * getter, const MethodInfo * setter):MemberInfo(name),_SetMethod(setter),_GetMethod(getter){
-      const Type *  propertyType=0;
-      if(getter){
-        if(getter->getArgumentTypes().size()!=0){
-          std::cerr << "getter is not a parameterless method. ignoring"<<std::endl;
-          _GetMethod=0;
-        }else{
-          auto type = getter->getReturnType()->removeConst()->removeReference();
-          propertyType = type->removeConst()->removeReference();
-        }
-      }
-      if(setter){
-        if(setter->getArgumentTypes().size()!=1){
-          std::cerr<<"setter method is not a single parameter method"<<std::endl;          
-        }else{
-          auto type = setter->getArgumentTypes().at(0)->removeReference()->removeConst();
-          if(propertyType){
-            if(propertyType!=type){
-              std::cerr<<"getter and setter raw types do not match"<<std::endl;
-
-            }else{
-              // find closest relation 
-              
-            }
-          }else{
-            propertyType = type;
-          }
-          
-        }
-      }
-    }
+    PropertyInfo(const std::string & name, const MethodInfo * getter, const MethodInfo * setter);
   public:
     
-    bool isGettable()const{return getGetMethod()!=0;}
-    bool isSettable()const{return getSetMethod()!=0;}
+    bool isGettable()const;
+    bool isSettable()const;
 
-    Argument get(const void * ptr)const{
-      if(!isGettable())return Argument();
-      auto getter = getGetMethod();
-      return getter->call(ptr);
-    }
-    Argument get(void * ptr)const{
-      if(!isGettable())return Argument();
-      auto getter = getGetMethod();
-      return getter->call(ptr);
-    }
-    void set(void * ptr, Argument argument)const{
-      if(!isSettable())return;
-      auto setter = getSetMethod();
-      Argument args[1]={argument};
-      setter->call(ptr,args);
-
-    }
-    void set(const void * ptr , Argument argument)const{ 
-      if(!isSettable())return;
-      auto setter = getSetMethod();
-      Argument args[1]={argument};
-      setter->call(ptr,args);
-    }
+    Argument get(const void * ptr)const;
+    Argument get(void * ptr)const;
+    void set(void * ptr, Argument argument)const;
+    void set(const void * ptr , Argument argument)const;
   };
 }

@@ -14,11 +14,11 @@ std::shared_ptr<MemberAdapter> PythonObject::getMember(PyObject * pname){
   std::shared_ptr<MemberAdapter> member;
   if(it==members.end()){    
     // try to create member
-    auto methodInfo= this->object.type->getMethod(name);
+    auto methodInfo= object.type->getMethod(name);
     if(methodInfo){
       member= std::shared_ptr<MethodAdapter>(new MethodAdapter(object,methodInfo));
     }
-    auto propertyInfo=this->object.type->getProperty(name);
+    auto propertyInfo=object.type->getProperty(name);
     if(propertyInfo){
       member = std::shared_ptr<PropertyAdapter>(new PropertyAdapter(object,propertyInfo));
     }
@@ -43,7 +43,7 @@ int PythonObject::setAttribute(PyObject * pname, PyObject *value){
   // if member is a property set the property
   auto property = std::dynamic_pointer_cast<PropertyAdapter>(member);
   if((bool)property){
-    auto argument = pythonObjectToArgument(value,member->getType());
+    auto argument = pythonObjectToArgument(value,property->getValueType());
     property->set(argument);
     return 0;
   }

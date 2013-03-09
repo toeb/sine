@@ -21,6 +21,9 @@ struct TestType{
   
   };
 
+  typedef int reflect_property(IntProperty);
+  typedef std::string reflect_property(StringProperty);
+  typedef std::shared_ptr<TestType> reflect_property(TestTypeProperty);
 
   typedef void reflected_method(method1)(){}
   typedef int  reflected_method(method2)(){return 3;}  
@@ -33,6 +36,57 @@ struct TestType{
     return initialValue+t.initialValue;
   }
 }a;
+
+UNITTEST(SimplePropertyGetAccess2){
+  PythonScriptMachine machine;
+  std::shared_ptr<TestType> a(new TestType());
+  a->setTestTypeProperty(a);
+  machine.setVariable("theAVar",a);
+  machine.loadString(
+    "hi=theAVar.TestTypeProperty\n"
+    );
+  auto ptr= machine.getVariable("hi");//.cast<TestType>();
+  //CHECK_EQUAL(a.get(),ptr.get());
+
+}
+
+UNITTEST(SimplePropertyGetAccess1){
+  PythonScriptMachine machine;
+  TestType a;
+  a.setIntProperty(44);
+  machine.setVariable("theAVar",a);
+  machine.loadString(
+    "hi=theAVar.IntProperty\n"
+    );
+  int i= machine.getVariable("hi");
+  CHECK_EQUAL(44,i);
+
+}
+
+UNITTEST(SimplePropertySetAccess1){
+  PythonScriptMachine machine;
+  auto a = std::shared_ptr<TestType>(new TestType());
+  a->setIntProperty(0);
+  machine.setVariable("theAVar",a);
+  machine.loadString(
+    "theAVar.IntProperty=32141\n"
+    );
+  CHECK_EQUAL(32141,a->getIntProperty());
+
+}
+
+UNITTEST(PropertySetAccess2){
+  // this test sets a custom type variable calle theAVar. then it sets its TestTypeProperty to itself in python.  
+  PythonScriptMachine machine;
+  auto a = std::shared_ptr<TestType>(new TestType());
+  machine.setVariable("theAVar",a);
+  machine.loadString(
+    "theAVar.TestTypeProperty=theAVar\n"
+    );
+
+  CHECK_EQUAL(a.get(),a->getTestTypeProperty().get());
+
+}
 
 TEST(ComplexMethod,Call){
   

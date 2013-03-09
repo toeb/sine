@@ -80,7 +80,26 @@ TEST(GetSmartPointer,PropertyInfo){
   CHECK(141,*val);
 }
 
+TEST(GetOwningType,PropertyInfo){
+  A a;
+  auto prop = typeof(A)->getProperty("TestProperty");
+  auto owningType=prop->getOwningType();
+  CHECK_EQUAL(typeof(A),owningType);
+}
 
+TEST(GetPropertyType1,PropertyInfo){
+  A a;
+  auto prop = typeof(A)->getProperty("TestProperty");
+  auto propType = prop->getPropertyType();
+  CHECK_EQUAL(typeof(int),propType);
+}
+
+TEST(GetPropertyType2,PropertyInfo){
+  A a;
+  auto prop = typeof(A)->getProperty("TestPropertyThree");
+  auto propType = prop->getPropertyType();
+  CHECK_EQUAL(typeof(std::shared_ptr<double>),propType);
+}
 
 }
 

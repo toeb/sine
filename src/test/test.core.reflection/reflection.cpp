@@ -8,6 +8,7 @@ using namespace nspace;
 using namespace std;
 
 
+
 TEST(3,CallableFunctor){
   auto it =make_callable([](string s)->int{return strtol(s.c_str(),0,10);});  
   auto res =  (int)it(string("32"));

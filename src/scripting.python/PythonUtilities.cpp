@@ -77,15 +77,13 @@ PyObject * nspace::pythonObjectFromArgument(Argument arg){
 
 
 
-  auto module = PyImport_ImportModule(name.c_str());
+  auto module = PyImport_ImportModule(ns.c_str());
   if(!module)return 0;
   auto dict = PyModule_GetDict(module);
   if(!dict)return 0;  
   auto val = PyDict_GetItemString(dict,name.c_str());
-  if(!val)return 0;
-
-
-
-
-  return 0;
+  if(!val)return 0;  
+  auto pobject = PyObject_New(PythonObject,(PythonType*)val);
+  new (pobject) PythonObject(arg);
+  return pobject;
 }

@@ -32,73 +32,8 @@
 #include <core/PropertyChangingObject.h>
 #include <core/patterns/Singleton.h>
 */
-/**
- * \brief to use reflection REFLECTABLE(<CLASSNAME>) needs to be stated once in the class. it
- *        creates multiple things:
- *        - properties() : a static set of const Propert * which contains all reflectable
- *        properties of a class
- *        - getProperty(string) : a static method for accessing a property
- *        - T getPropertyValue(string name) : a class member which returns the value of the
- *        specified property
- *        - setPropertyValue(string name) : a class member for setting the value of a specific
- *        property
- *        - (a private set of const properties called propertiesSet())
- *        WARNING:  Since Class Hierarchy is not yet supported it is not possible to reflect upon
- *        properties of supertypes
- *
- *        after REFLECTABLE(<CLASSNAME>) was called you may add reflectable properties by adding :
- *        - REFLECTABLE_CUSTOM_PROPERTY
- *        - REFLECTABLE_PROPERTY
- *        - REFLECTABLE_NOTIFYING_PROPERTY.
- *
- * \param TYPENAME  The typename.
- */
-#define REFLECTABLE(TYPENAME)                                                                              \
-public:                                                                                                    \
-  template<typename T>  T getPropertyValue(const std::string & propertyname) const {                       \
-    T val;                                                                                                 \
-    getPropertyValue(propertyname,val);                                                                    \
-    return val;                                                                                            \
-  }                                                                                                        \
-  template<typename T> void getPropertyValue(const std::string & propertyname,T & value) const {           \
-    auto prop = getProperty(propertyname);                                                                 \
-    if(!prop) return;                                                                                      \
-    prop->get(value,*this);                                                                                \
-  }                                                                                                        \
-  template<typename T> void setPropertyValue(const std::string & propertyname,const T &value){             \
-    auto prop = getProperty(propertyname);                                                                 \
-    if(!prop) return;                                                                                      \
-    prop->set(value,*this);                                                                                \
-  }                                                                                                        \
-  static const nspace::Set<const nspace::PropertyInfo*> & properties(){                                    \
-    static nspace::Set<const nspace::PropertyInfo*> _properties = typeof(TYPENAME)->Properties();          \
-    return _properties;                                                                                    \
-  }                                                                                                        \
-  static const nspace::PropertyInfo * getProperty(const std::string & propertyname){                       \
-    auto p = typeof(TYPENAME)->getProperty(propertyname);                                                  \
-    return p;                                                                                              \
-  }                                                                                                        \
-  nspace::PropertyAdapter getPropertyAdapter(const std::string & name){                                    \
-    return nspace::PropertyAdapter(dynamic_cast<nspace::Object*>(this),name);                              \
-  }                                                                                                        \
-  nspace::MethodAdapter getMethodAdapter(const std::string & name){                                        \
-    return nspace::MethodAdapter(dynamic_cast<nspace::Object*>(this),name);                                \
-  }                                                                                                        \
-  static const nspace::MethodInfo * getMethodInfo(const std::string & methodName){                         \
-    return typeof(TYPENAME)->getMethod(methodName);                                                    \
-  }                                                                                                        \
-private:
 
 
-
-/**
- * \brief shorthand for a typed object which is also reflectable TYPED_OBJECT enables that metadata
- *        about the class can be generated (getType method for instances of TYPE)
- *        Reflectable creates access methods to the objects members.
- *
- * \param TYPE  The type.
- */
-#define REFLECTABLE_OBJECT(TYPE) TYPED_OBJECT(TYPE); REFLECTABLE(TYPE);
 
 /**
  * \brief A macro that defines memberclassname.
