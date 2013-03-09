@@ -8,7 +8,7 @@
 #include <core.reflection/type/Argument.h>
 
 namespace nspace{
-  class IReadableValue : public Object, public Observable{
+  class IReadableValue : public Observable{
     reflect_type(IReadableValue);    
    typedef const Type * basic_property(ValueType);
   protected:
@@ -18,6 +18,4 @@ namespace nspace{
     IReadableValue(const Type * valueType);
     Argument get()const;
   };
-
-
 }

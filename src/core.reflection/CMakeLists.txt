@@ -123,4 +123,4 @@ set(source ${source} ${adapterSource})
 
 
 add_library(core.reflection ${source})
-target_link_libraries(core.reflection core core.property core.serialization)
+target_link_libraries(core.reflection core.property)
