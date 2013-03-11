@@ -6,8 +6,8 @@
 namespace nspace{
 
   struct PythonCallable : public PyObject{
-    ScriptFunction  callable;
-    PythonCallable(ScriptFunction callable):callable(callable){
+    DynamicCallable callable;
+    PythonCallable(DynamicCallable callable):callable(callable){
     }
 
   };

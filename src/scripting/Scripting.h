@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core.logging.h>
-#include <scripting/ScriptFunction.h>
+#include <core.reflection/dynamic/DynamicCallable.h>
 namespace nspace{
 
   class VirtualScriptMachine : public Log{
@@ -15,8 +15,8 @@ namespace nspace{
     virtual Argument getVariable(const std::string & name,const Type* type=0);
     template<typename T> bool getVariable(T & val, const std::string & name);
     template <typename T> T getVariable(const std::string & name);
-    virtual ScriptFunction getFunction(const std::string & name);
-    virtual bool setFunction(const std::string & name, ScriptFunction func );
+    virtual DynamicCallable getFunction(const std::string & name);
+    virtual bool setFunction(const std::string & name, DynamicCallable func );
     template <typename TFunctor>bool setFunctor(const std::string & name, TFunctor func);
 
 

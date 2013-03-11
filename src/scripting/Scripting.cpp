@@ -31,10 +31,10 @@ bool VirtualScriptMachine::setVariable(const std::string & name, Argument argume
 Argument VirtualScriptMachine::getVariable(const std::string & name,const Type* type){return Argument();}
 
 
-ScriptFunction VirtualScriptMachine::getFunction(const std::string & name){
-  return getVariable<ScriptFunction>(name);
+DynamicCallable VirtualScriptMachine::getFunction(const std::string & name){
+  return getVariable<DynamicCallable>(name);
 }
-bool VirtualScriptMachine::setFunction(const std::string & name, ScriptFunction func ){
+bool VirtualScriptMachine::setFunction(const std::string & name, DynamicCallable func ){
   return  setVariable(name,func);
 }
 

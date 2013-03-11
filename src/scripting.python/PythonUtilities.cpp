@@ -6,8 +6,8 @@
 #include <scripting.python/PythonVariable.h>
 #include <scripting.python/PythonFunction.h>
 #include <scripting.python/PythonMethodAdapter.h>
+#include <scripting.python/PythonDynamicObjectImplementation.h>
 using namespace nspace;
-
 
 
 
@@ -27,24 +27,39 @@ Argument nspace::pythonObjectToArgument(PyObject * object, const Type * type){
     return s2;
   }
 
-  if(type==typeof(ScriptFunction)){
-    ScriptFunction s(std::static_pointer_cast<Callable>(std::shared_ptr<PythonFunction>(new PythonFunction(object))));
+  if(type==typeof(DynamicCallable)){
+    DynamicCallable s(std::static_pointer_cast<Callable>(std::shared_ptr<PythonFunction>(new PythonFunction(object))));
+    return s;
+  }  
+  
+  if(object->ob_type->tp_name==std::string("method")){
+    DynamicCallable s(std::static_pointer_cast<Callable>(std::shared_ptr<PythonFunction>(new PythonFunction(object))));
     return s;
   }
 
+  auto pythonType = reinterpret_cast<PyTypeObject*>(PyObject_Type(object));
+
+  // illegal type
+  if(!pythonType)return Argument();
+  
 
   
-  auto t = reinterpret_cast<PyTypeObject*>(PyObject_Type(object));
-  if(!t)return Argument();
-  auto t2 =static_cast<PythonType*>(t);
-  if(!t2)return Argument();
-  if(!t2->type){
-    return Argument();    
+  // all wrapper types share tp_free function (a kind of hack for getting correct type
+  // so if tp_free is not equal to PythonTypes destruct function i can assume its a python built in type (or at least a type not managed by my code)
+  if(&PythonType::destruct!=pythonType->tp_free){
+    // for non wrapped types:
+    auto pythonDynamicObject = std::shared_ptr<PythonDynamicObject>(new PythonDynamicObject(object));
+    return DynamicObject(pythonDynamicObject);
   }
-  auto o = static_cast<PythonObject*>(object);
-  if(!o)return Argument();
-  auto arg = o->object;
-  return arg;
+  
+  // else it's a type wrapper and I can just return the internal stored object
+  auto wrappedType =static_cast<PythonType*>(pythonType);
+  if(!wrappedType)return Argument();
+  if(!wrappedType->type)return Argument();
+
+  auto pythonObject = static_cast<PythonObject*>(object);
+  if(!pythonObject)return Argument();
+  return pythonObject->object;
 
 }
 
@@ -63,12 +78,12 @@ PyObject * nspace::pythonObjectFromArgument(Argument arg){
   if(arg.type==typeof(std::string)){
     return PyUnicode_FromString(arg.cast<std::string>()->c_str());
   }
-  if(arg.type==typeof(ScriptFunction)){
+  if(arg.type==typeof(DynamicCallable)){
     auto module = PyImport_ImportModule("ds.statictypes");
     auto dict = PyModule_GetDict(module);
     auto methodType= (PythonCallableType*) PyDict_GetItemString(dict,"MethodWrapper");
     auto pcallable = PyObject_New(PythonCallable,methodType);
-    new (pcallable) PythonCallable((ScriptFunction)arg);
+    new (pcallable) PythonCallable((DynamicCallable)arg);
     return pcallable;
   }
 

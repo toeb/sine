@@ -5,6 +5,8 @@
 #include <core.reflection/callable/DelegateAction.h>
 
 #include <core.utility/StringTools.h>
+#include <core.reflection/dynamic/DynamicObject.h>
+#include <core.reflection/dynamic/DynamicCallable.h>
 using namespace std;
 using namespace nspace;
 
@@ -36,6 +38,33 @@ struct TestType{
     return initialValue+t.initialValue;
   }
 }a;
+
+
+UNITTEST(GetPythonTypeMembers){
+  PythonScriptMachine machine;
+
+  machine.loadString(
+    "class MyClass:\n"    
+    "\ti = 12345\n"
+    "\tdef f(self):\n"
+    "\t\tself.i = self.i+1\n"
+    "\t\treturn 'hello world'\n"
+    "a = MyClass()\n"    
+    );
+
+  DynamicObject a = machine.getVariable("a",typeof(DynamicObject));
+  int iMember =  a.getProperty("i");
+  CHECK_EQUAL(12345,iMember);
+
+  std::string result = a.getMethod("f")();
+  CHECK_EQUAL("hello world",result);
+  iMember = a.getProperty("i");
+  CHECK_EQUAL(12346,iMember);
+}
+
+UNITTEST(GetPythonObject1){
+  PythonScriptMachine machine;
+}
 
 UNITTEST(SimplePropertyGetAccess2){
   PythonScriptMachine machine;
@@ -188,14 +217,14 @@ TEST(Lambda1,Call){
   machine.loadString(
     "fuu = lambda :  'herro'\n"
     );
-  auto func = machine.getVariable<ScriptFunction>("fuu");
+  auto func = machine.getVariable<DynamicCallable>("fuu");
   auto result = func();
   CHECK_EQUAL("herro", (std::string)result);
 }
 TEST(Function1,Call){
   PythonScriptMachine machine;
   machine.loadString("def fuu2():return 'herro'\n");
-  auto func = machine.getVariable<ScriptFunction>("fuu2");
+  auto func = machine.getVariable<DynamicCallable>("fuu2");
   auto result = func();
   auto r = (std::string)result;
   CHECK(result.isValid());
@@ -205,7 +234,7 @@ TEST(Function2,Call){
   PythonScriptMachine machine;
   auto res =  machine.loadString("def fuu3(intval): print(\"meh\"+str(intval)); return 'meh'+str(intval)\nfuu3(32)\n");
 
-  auto func = machine.getVariable<ScriptFunction>("fuu3");
+  auto func = machine.getVariable<DynamicCallable>("fuu3");
   auto result = func(42);
   CHECK(result.isValid());
   CHECK_EQUAL("meh42",(std::string)result);

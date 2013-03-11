@@ -105,9 +105,7 @@ namespace nspace
     // construction
     std::shared_ptr<void>   createInstance() const;
     template<typename T> std::shared_ptr<T> createTypedInstance()const;
-
     
-
     // type fields
     typedef TypeId                                                        basic_property(Id);
     typedef std::string                                                   basic_property(Name);    

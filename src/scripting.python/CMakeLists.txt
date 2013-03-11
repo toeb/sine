@@ -12,6 +12,8 @@ set(source
  PythonVariable.cpp
  PythonFunction.h
  PythonFunction.cpp
+ PythonDynamicObjectImplementation.h
+ PythonDynamicObjectImplementation.cpp
  PythonMethodAdapter.cpp
  ../include/scripting.python.h
 

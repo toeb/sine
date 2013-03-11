@@ -5,7 +5,7 @@
 
 namespace nspace{
 
-struct PythonFunction : public ScriptFunctionImplementation{
+struct PythonFunction : public DynamicCallableImplementation{
   PyObject * func;
   PythonFunction(PyObject * func);  
   ~PythonFunction() override final;

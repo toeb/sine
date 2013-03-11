@@ -74,7 +74,7 @@ PyObject* PythonObject::getAttribute(PyObject * pname){
   // which is callable
   auto method = std::dynamic_pointer_cast<MethodAdapter>(member);
   if((bool)method){
-    return pythonObjectFromArgument(ScriptFunction(method));
+    return pythonObjectFromArgument(DynamicCallable(method));
   }
 
   // if member is a property return the properties value

@@ -55,7 +55,6 @@ PythonType::PythonType(const Type* type):type(type){
   auto ns = type->getNamespace();
   string namespaceString= stringtools::replace(ns->getFullyQualifiedName(),"::",".")+"."+type->getName();
   string docString = "wrapper for "+namespaceString;
-
   //initialize head
   PyTypeObject tmp={PyObject_HEAD_INIT(NULL)};
   ((PyTypeObject&)*this)=tmp;

@@ -108,6 +108,21 @@ set(bindingSource
 source_group("binding" FILES ${bindingSource})
 set(source ${source} ${bindingSource})
 
+set(dynamicSource
+ ./dynamic/DynamicObject.h
+ ./dynamic/DynamicObject.cpp
+ ./dynamic/DynamicCallable.h
+ ./dynamic/DynamicCallable.cpp
+ ./dynamic/DynamicCallableImplementation.h
+ ./dynamic/DynamicCallableImplementation.cpp
+ ./dynamic/DynamicObjectImplementation.h
+ ./dynamic/DynamicObjectImplementation.cpp
+ ./dynamic/DynamicReflectedObjectImplementation.h
+ ./dynamic/DynamicReflectedObjectImplementation.cpp
+
+)
+source_group("dynamics" FILES ${dynamicSource})
+set(source ${source} ${dynamicSource})
 
 
 set(adapterSource
