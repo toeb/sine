@@ -40,6 +40,7 @@ struct TestType{
 }a;
 
 
+
 UNITTEST(GetPythonTypeMembers){
   PythonScriptMachine machine;
 
