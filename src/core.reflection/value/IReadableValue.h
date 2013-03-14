@@ -17,5 +17,6 @@ namespace nspace{
     IReadableValue();
     IReadableValue(const Type * valueType);
     Argument get()const;
+
   };
 }

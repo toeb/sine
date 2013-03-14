@@ -66,7 +66,6 @@ UNITTEST(ExternalReflection1){
 
 
 
-
 TEST(4, smartPointerArgument){
   static std::shared_ptr<double> ptr;
   struct A{

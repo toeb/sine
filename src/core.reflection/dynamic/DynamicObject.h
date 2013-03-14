@@ -6,7 +6,7 @@
 
 
 namespace nspace{
-
+  // Todo - allow setting of arbitrary values
   struct DynamicObjectImplementation;
   class DynamicObject{
     reflect_type(DynamicObject);
