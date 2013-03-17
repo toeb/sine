@@ -56,7 +56,7 @@ int PythonObject::setAttribute(PyObject * pname, PyObject *value){
     return -1;
   }
 
-
+  return 0;
 }
 
 PyObject* PythonObject::getAttribute(PyObject * pname){

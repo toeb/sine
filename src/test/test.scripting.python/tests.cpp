@@ -39,6 +39,19 @@ struct TestType{
   }
 }a;
 
+UNITTEST(RunComplexFile){
+  std::string pathToFile = "scripts/python/animate_decay.py";
+  PythonScriptMachine machine;
+  auto p = Py_GetPath();
+  std::cout << p;
+  std::wstring w(p);
+  for(int i=0; i < w.size();i++){
+    std::cout << w.at(i);
+  }
+  Py_SetPath(L"C:\\Python33");
+  auto result = machine.loadFile(pathToFile);
+  CHECK(result);
+}
 
 
 UNITTEST(GetPythonTypeMembers){
