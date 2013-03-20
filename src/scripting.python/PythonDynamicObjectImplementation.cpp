@@ -21,7 +21,7 @@ Argument PythonDynamicObject::getMember(const std::string & name){
   return pythonObjectToArgument(attr,0);
 }
 PythonDynamicObject::MemberList PythonDynamicObject::getMemberNames() {
-  MemberList result;
+  std::vector<std::string> result;
   auto dictPtr = _PyObject_GetDictPtr(object);
   if(dictPtr==0)return result;
   if(*dictPtr==0)return result;
@@ -31,6 +31,8 @@ PythonDynamicObject::MemberList PythonDynamicObject::getMemberNames() {
   for(Py_ssize_t i=0; i < n; i++){
     auto key = PyList_GetItem(keyList,i);
     std::string name = PyUnicode_AsUTF8(key);
-
+    result.push_back(name);
   }
+  return result;
+
 }

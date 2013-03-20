@@ -1,7 +1,5 @@
 set(source 
 	./CMakeLists.txt
-	./DefaultTypes.h
-	./DefaultTypes.cpp
 	../include/core.reflection.h
 )
 source_group("" FILES ${source})
@@ -15,8 +13,6 @@ set(typeSource
 	type/TypeInfo.cpp
 	type/Argument.h
 	type/Argument.cpp
-	type/TypeRepository.h
-	type/TypeRepository.cpp
 )
 source_group("type" FILES ${typeSource})
 set(source ${source} ${typeSource})
@@ -69,7 +65,7 @@ set(source ${source} ${memberSource})
 
 set(preprocessorSource
 preprocessor/properties.h
-
+preprocessor/type.h
 )
 source_group("preprocessor" FILES ${preprocessorSource})
 set(source ${source} ${preprocessorSource})
@@ -136,6 +132,26 @@ set(adapterSource
 source_group("adapter" FILES ${adapterSource})
 set(source ${source} ${adapterSource})
 
+
+
+set(typeSpecializationSource
+ type/specialization/qualifierTypes.h
+ type/specialization/fundementalTypes.h
+ type/specialization/fundementalTypes.cpp
+ type/specialization/stdTypes.h
+ type/specialization/stdTypes.cpp
+
+
+)
+source_group("type\\specialization" FILES ${typeSpecializationSource})
+set(source ${source} ${typeSpecializationSource})
+
+set(namespaceSource
+ namespace/Namespace.h
+ namespace/Namespace.cpp
+)
+source_group("namespace")
+set(source ${source} ${namespaceSource})
 
 add_library(core.reflection ${source})
 target_link_libraries(core.reflection core.property)

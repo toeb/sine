@@ -2,6 +2,7 @@
 
 #include <scripting.h>
 #include <map>
+#include <set>
 
 namespace nspace{
 
@@ -9,6 +10,8 @@ namespace nspace{
   struct PythonType;
 
   class PythonScriptMachine : public VirtualScriptMachine{
+    reflect_type(PythonScriptMachine)
+
     static size_t instances;
     std::map<std::string ,std::shared_ptr<Module>> modules;
     std::vector<PythonType*> types;
@@ -27,6 +30,9 @@ namespace nspace{
     bool setVariable(const std::string & name, Argument argument)override;
     Argument getVariable(const std::string & name,const Type* type=0) override;
     
+
+    typedef std::set<std::string> reflect_property(Paths);
+    property_reference(Paths);
 
 
   };

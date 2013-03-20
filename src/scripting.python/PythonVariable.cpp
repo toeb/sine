@@ -14,7 +14,7 @@ PythonVariable::PythonVariable(const std::string  &name){
   // get namespace / module string
   if(nameParts.size()>1){
     stringstream ss;
-    for(int i=0; i < nameParts.size()-1;i++){
+    for(size_t i=0; i < nameParts.size()-1;i++){
       ss << nameParts[i];
       ss << ".";
     }

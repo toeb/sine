@@ -2,7 +2,8 @@
 #include <core.reflection/member/property/PropertyInfo.h>
 #include <core.reflection/member/method/MethodInfo.h>
 #include <core.reflection/member/constructor/ConstructorInfo.h>
-#include <core.reflection/type/TypeRepository.h>
+
+#include <core.reflection/namespace/Namespace.h>
 #include <sstream>
 using namespace nspace;
 struct DefaultNS : public Namespace{
@@ -57,7 +58,7 @@ Type::Type():
   _Namespace( DefaultNS::instance().get())
 {
   DefaultNS::instance()->setTypes(DefaultNS::instance()->getTypes() | this);
-  TypeRepository::registerType(this);
+
 }
 namespace nspace{
   bool operator!=(const Type & a, const Type & b) {

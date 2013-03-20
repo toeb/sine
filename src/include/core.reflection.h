@@ -1,9 +1,10 @@
 #pragma once
 
+#include <core.reflection/namespace/Namespace.h>
 
 #include <core.reflection/type/Type.h>
 #include <core.reflection/type/TypeInfo.h>
-#include <core.reflection/DefaultTypes.h>
+
 
 
 #include <core.reflection/member/MemberInfo.h>

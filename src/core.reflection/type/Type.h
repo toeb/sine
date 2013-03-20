@@ -31,37 +31,11 @@ namespace nspace
   class MethodInfo;
   class PropertyInfo;
   struct ConstructorInfo;
+  struct Namespace;
   class Type;
   
  typedef const Type * ConstTypePtr;
 
- struct Namespace{
- private:
-   Namespace(int i):_Name(""),_FullyQualifiedName(""),_ParentNamespace(0){}
- public:
-   static const Namespace* Global(){
-     static Namespace globalNamepsace(0);
-     return &globalNamepsace;
-   }
-
-   
-   typedef std::string        basic_property(Name);
-   typedef std::string        basic_property(FullyQualifiedName);
-   typedef const Namespace *  basic_property(ParentNamespace);
-   typedef Set<const Namespace*> basic_property(Namespaces);  
-   typedef Set<const Type *>  basic_property(Types);
-
- protected:
-   Namespace(const std::string & name, const Namespace * parent=Global()){
-     setParentNamespace(parent);
-     const_cast<Namespace*>(parent)->_Namespaces|=this;
-     setName(name);
-     if(parent==Global())setFullyQualifiedName(name);
-     else setFullyQualifiedName(DS_INLINE_STRING(parent->getFullyQualifiedName()<<"::"<<getName()));
-   }
-
-
- };
 
   /**
   * \brief Type.

@@ -41,6 +41,15 @@ PythonScriptMachine::PythonScriptMachine(){
     Py_Initialize();
     initStaticTypes();
   }
+  auto path = stringtools::wstringToString(Py_GetPath());
+  auto paths = stringtools::split(path,';');
+  Paths().insert(paths.begin(),paths.end());
+
+
+
+
+  
+  // extract installation folder
 
 }
 PythonScriptMachine::~PythonScriptMachine() {

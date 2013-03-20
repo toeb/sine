@@ -9,6 +9,22 @@
 using namespace std;
 using namespace nspace::stringtools;
 
+
+    std::string nspace::stringtools::wstringToString(const wstring & lstring){
+      std::stringstream stream;
+      for(int i=0; i < lstring.size();i++){
+        stream<< (char)lstring.at(i);
+      }
+      return stream.str();
+    }
+    std::wstring nspace::stringtools::stringToWstring(const string & str){
+      std::wstringstream stream;
+      for(int i=0; i < str.size(); i++){
+        stream << (wchar_t)str.at(i);
+      }
+      return stream.str();
+    }
+
 char * nspace::stringtools::c_str(const std::string  & original){
   char *cDocString = new char[original.size()+1]; // +1 to account for \0 byte
   std::strncpy(cDocString, original.c_str(), original.size());

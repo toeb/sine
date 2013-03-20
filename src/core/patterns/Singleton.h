@@ -6,7 +6,7 @@
 namespace nspace{
 
 
-#define DS_SINGLETON_TYPE(CLASSNAME,TEMPLATEARGUMENTS) typedef CLASSNAME TEMPLATEARGUMENTS SingletonType;
+#define DS_SINGLETON_TYPE(CLASSNAME,...) typedef CLASSNAME __VA_ARGS__ SingletonType;
   // todo remove if !_instance 
 #define DS_SINGLETON_IMPL(CLASSNAME)                                              \
   static std::shared_ptr<SingletonType> instance(){                               \
@@ -17,14 +17,20 @@ namespace nspace{
   private:                                                                        \
   CLASSNAME()
 
-#define DS_SINGLETON_TEMPLATED(CLASSNAME,TEMPLATEARGUMENTS)\
+#define DS_SINGLETON_TEMPLATED(CLASSNAME,...)\
   public:\
-  DS_SINGLETON_TYPE(CLASSNAME,TEMPLATEARGUMENTS);\
+  DS_SINGLETON_TYPE(CLASSNAME,<__VA_ARGS__>);\
   DS_SINGLETON_IMPL(CLASSNAME)
 
-#define DS_SINGLETON(CLASSNAME) DS_SINGLETON_TEMPLATED(CLASSNAME,)
+#define DS_SINGLETON(CLASSNAME)\
+  public:\
+  DS_SINGLETON_TYPE(CLASSNAME,);\
+  DS_SINGLETON_IMPL(CLASSNAME)
 
-#define TEMPLATEDSINGLETON(CLASSNAME,TEMPLATEARGUMENTS) DS_SINGLETON_TEMPLATED(CLASSNAME,TEMPLATEARGUMENTS)
+
+
+// obsolete use DS_SINGLETON_TEMPLATED and DS_SINGLETON instead
+#define TEMPLATEDSINGLETON(CLASSNAME,...) DS_SINGLETON_TEMPLATED(CLASSNAME,__VA_ARGS__)
 
 //defines a the class as a singleton (private constructor and public static instance() method returning a shared ptr
 #define SINGLETON(CLASSNAME) DS_SINGLETON(CLASSNAME)
