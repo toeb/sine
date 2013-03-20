@@ -29,7 +29,7 @@ namespace nspace{
     ObserverList * _observers;
   public:
     Observable();
-    ~Observable();
+    virtual ~Observable();
     bool hasObservers()const;
   protected:
     ObserverList & observers();

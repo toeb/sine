@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core.reflection/namespace/Namespace.h>
+#include <core.reflection/namespace/NamespaceInfo.h>
 
 #include <core.reflection/type/Type.h>
 #include <core.reflection/type/TypeInfo.h>

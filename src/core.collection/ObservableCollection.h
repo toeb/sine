@@ -6,7 +6,7 @@ namespace nspace{
   /**
   * \brief A collection that will notify its observers if elements were added or removed
   */
-  template<typename T> class ObservableCollection: public virtual Observable{
+  template<typename T> class ObservableCollection: public Observable{
   public:
     /**
     * \brief Observer class.

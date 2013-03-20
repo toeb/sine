@@ -3,16 +3,37 @@
 #include <core.reflection/member/method/MethodInfo.h>
 #include <core.reflection/member/constructor/ConstructorInfo.h>
 
-#include <core.reflection/namespace/Namespace.h>
+#include <core.reflection/namespace/NamespaceInfo.h>
 #include <sstream>
 using namespace nspace;
-struct DefaultNS : public Namespace{
-  DS_SINGLETON(DefaultNS):Namespace(DS_STRINGIFY(nspace)){};
-};
 
+    const Type * Type::removeConst()const{
+      if(!getIsConst()){
+        return this;
+      }
+      return getUnderlyingType();
+    }
+    const Type * Type::removeReference()const{
+      if(!getIsReference()){
+        return this;
+      }
+      return getUnderlyingType();
+    }
+    const Type * Type::removePointer()const{
+      if(!getIsPointer()){
+        return this;
+      }
+      return getUnderlyingType();
+    }
 
 std::string Type::getFullyQualifiedName()const{
   return DS_INLINE_STRING(getNamespace()->getFullyQualifiedName()<<"::"<<getName());
+}
+
+
+Type::~Type(){
+
+//  const_cast<NamespaceInfo*>(getNamespace())->Types() /= this;
 }
 
 Type::Type(const std::string & name ,const Type * underlyingType):
@@ -22,44 +43,35 @@ Type::Type(const std::string & name ,const Type * underlyingType):
   _IsVolatile(false),
   _IsConst(false),
   _UnderlyingType(0),
-  _RawType(0),
-  _Namespace( DefaultNS::instance().get())
+  _UnqualifiedType(0),
+  _Namespace(NamespaceInfo::Default())
 {
-  DefaultNS::instance()->setTypes(DefaultNS::instance()->getTypes() | this);
+  const_cast<NamespaceInfo*>(getNamespace())->Types() |= this;
+  
   if(underlyingType==this || underlyingType==0){
     setUnderlyingType(0);
-    setRawType(this);
+    setUnqualifiedType(this);
     setName(name);
   }else{
     setUnderlyingType(underlyingType);
-    setRawType(underlyingType->getRawType());
+    setUnqualifiedType(underlyingType->getUnqualifiedType());
     setName(DS_INLINE_STRING(underlyingType->getName()<<" "<<name));    
   }
 }
 
 
 
-bool Type::isConstructible()const{return  (bool)getCreateInstanceFunction();}
+bool Type::isDefaultConstructible()const{
+  return getConstructor(std::vector<const Type*>())!=0;  
+}
 
 
 
-bool Type::isRawType()const{return getRawType()==this;}
+bool Type::isUnqualifiedType()const{return getUnqualifiedType()==this;}
 
 
 Type::TypeId Type::_typeCounter=0;
-Type::Type():
-  _Id(_typeCounter++),
-  _IsPointer(false),
-  _IsReference(false),
-  _IsVolatile(false),
-  _IsConst(false),
-  _UnderlyingType(0),
-  _RawType(0),
-  _Namespace( DefaultNS::instance().get())
-{
-  DefaultNS::instance()->setTypes(DefaultNS::instance()->getTypes() | this);
 
-}
 namespace nspace{
   bool operator!=(const Type & a, const Type & b) {
     return !(a==b);
@@ -77,9 +89,7 @@ namespace nspace{
   }
 }
 
-std::shared_ptr<void> Type::createInstance()const{
-  return getCreateInstanceFunction()();
-}
+
 
 const MemberInfo * Type::getMember(const std::string & name)const{
   auto member = Members().first([&name](const MemberInfo * member){return member->getName()==name;});

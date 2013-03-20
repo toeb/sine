@@ -17,8 +17,8 @@
 #define META(TYPE)                                                     \
   template<>                                                           \
   class TypeInfo<TYPE>: public TraitType<TYPE> {        \
-  TEMPLATEDSINGLETON(TypeInfo, TYPE){                              \
-  setName(# TYPE);                                                 \
+  TEMPLATEDSINGLETON(TypeInfo, TYPE):TraitType(#TYPE){                              \
+                                                   \
   }                                                                  \
   };
 
@@ -27,14 +27,7 @@
   *
   * \param TYPE  The type.
   */
-#define META_DEFAULTCONSTRUCTOR(TYPE) \
-  template<> \
-  class TypeInfo<TYPE>: public TraitType<TYPE> { \
-  TEMPLATEDSINGLETON(TypeInfo, TYPE){ \
-  setCreateInstanceFunction([] (){return std::shared_ptr<void>(new TYPE); }); \
-  setName(# TYPE); \
-  } \
-  };
+#define META_DEFAULTCONSTRUCTOR(TYPE) META(TYPE)
 
 
 

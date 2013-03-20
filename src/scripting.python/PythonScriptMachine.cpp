@@ -43,11 +43,8 @@ PythonScriptMachine::PythonScriptMachine(){
   }
   auto path = stringtools::wstringToString(Py_GetPath());
   auto paths = stringtools::split(path,';');
+  auto first = *Paths().begin();
   Paths().insert(paths.begin(),paths.end());
-
-
-
-
   
   // extract installation folder
 

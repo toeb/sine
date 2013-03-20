@@ -147,10 +147,10 @@ source_group("type\\specialization" FILES ${typeSpecializationSource})
 set(source ${source} ${typeSpecializationSource})
 
 set(namespaceSource
- namespace/Namespace.h
- namespace/Namespace.cpp
+ namespace/NamespaceInfo.h
+ namespace/NamespaceInfo.cpp
 )
-source_group("namespace")
+source_group("namespace" FILES ${namespaceSource})
 set(source ${source} ${namespaceSource})
 
 add_library(core.reflection ${source})

@@ -31,7 +31,7 @@ namespace nspace
   class MethodInfo;
   class PropertyInfo;
   struct ConstructorInfo;
-  struct Namespace;
+  struct NamespaceInfo;
   class Type;
   
  typedef const Type * ConstTypePtr;
@@ -53,19 +53,11 @@ namespace nspace
   private:
     static TypeId _typeCounter;
   protected:
-    Type();
     Type(const std::string & name, const Type * underlyingType);
   public:
+    virtual ~Type();
     // type traits
-    typedef const Namespace * basic_property(Namespace);
-    typedef const Type *  basic_property(UnderlyingType);
-    typedef const Type *  basic_property(RawType);
-    typedef bool          basic_property(IsPointer);
-    typedef bool          basic_property(IsReference);
-    typedef bool          basic_property(IsVolatile);
-    typedef bool          basic_property(IsConst);
-    bool isConstructible()const;
-    bool isRawType()const;
+    typedef const NamespaceInfo * basic_property(Namespace);
 
 
     // comparison
@@ -75,15 +67,11 @@ namespace nspace
     // to string
     friend std::ostream & operator <<(std::ostream & out, const Type & type);
     friend std::ostream & operator <<(std::ostream & out, const Type * type);
-    
-    // construction
-    std::shared_ptr<void>   createInstance() const;
-    template<typename T> std::shared_ptr<T> createTypedInstance()const;
-    
+        
     // type fields
-    typedef TypeId                                                        basic_property(Id);
-    typedef std::string                                                   basic_property(Name);    
-    typedef std::function<std::shared_ptr<void>()>                        basic_property(CreateInstanceFunction);
+    typedef TypeId             basic_property(Id);
+    typedef std::string        basic_property(Name);    
+    std::string getFullyQualifiedName()const;
 
     // member access
     PROPERTYSET(const MemberInfo *, Members,,);
@@ -92,41 +80,32 @@ namespace nspace
     Set<const MethodInfo*>            Methods()const;
     Set<const ConstructorInfo*>       Constructors()const;
 
-    std::string getFullyQualifiedName()const;
 
     const MemberInfo *        getMember(const std::string & name) const;
     const MethodInfo *        getMethod(const std::string & name) const;
     const PropertyInfo *      getProperty(const std::string & name) const;
-    const ConstructorInfo *   getConstructor(const std::vector<const Type*>& types)const;
-    
+    bool isDefaultConstructible()const;
+    const ConstructorInfo *   getConstructor(const std::vector<const Type*>& types)const;    
     template<typename Container> const ConstructorInfo * getConstructor(const Container & container)const;
-
-
+    
     //type hierarchy
     bool isSuperClassOf(const Type * other) const;
     bool isSubClassOf(const Type * other)const;
     typedef Set<const Type*> basic_property(SuperClasses);
     typedef Set<const Type*> basic_property(RootClasses);
 
-    // 
-    const Type * removeConst()const{
-      if(!getIsConst()){
-        return this;
-      }
-      return getUnderlyingType();
-    }
-    const Type * removeReference()const{
-      if(!getIsReference()){
-        return this;
-      }
-      return getUnderlyingType();
-    }
-    const Type * removePointer()const{
-      if(!getIsPointer()){
-        return this;
-      }
-      return getUnderlyingType();
-    }
+    // modifiers
+    
+    typedef const Type *  basic_property(UnderlyingType);
+    typedef const Type *  basic_property(UnqualifiedType);
+    typedef bool          basic_property(IsPointer);
+    typedef bool          basic_property(IsReference);
+    typedef bool          basic_property(IsVolatile);
+    typedef bool          basic_property(IsConst);
+    bool isUnqualifiedType()const;
+    const Type * removeConst()const;
+    const Type * removeReference()const;
+    const Type * removePointer()const;
 
   protected:
     void onSuccessorAdded(Type * type);

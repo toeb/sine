@@ -7,23 +7,24 @@
 namespace nspace{
   template<typename T>
   class TraitType : public Type{
+    typedef T type;
   protected:
-    TraitType(const std::string & fullyQualifiedName, const Type * underlyingType):Type(fullyQualifiedName,underlyingType){}
-    TraitType(){
+    TraitType(const std::string & fullyQualifiedName, const Type * underlyingType=0):Type(fullyQualifiedName,underlyingType){init();}
+  private:
+    void init(){
+      //if(std::is_default_constructible<type>::value){}
     }
   };
 
   /**
   * \brief Information about the type.
+  *        assumes T has method getTypeName which returns the fully qualified type name
   */
   template<typename T>
   class TypeInfo : public TraitType<T>
   {
-    DS_SINGLETON_TEMPLATED(TypeInfo, T) {
-      typedef typename std::remove_pointer<T>::type pureType;
-      setName(pureType::getTypeName());      
-      setRawType(this);
-      setUnderlyingType(0);
+    typedef typename std::remove_pointer<T>::type pureType;
+    DS_SINGLETON_TEMPLATED(TypeInfo, T) :TraitType(pureType::getTypeName(),this){     
     }
   };
 
@@ -78,8 +79,7 @@ namespace nspace{
 template<typename T>
 class TypeInfo<Set<T> >: public TraitType<Set<T> >
 {
-  TEMPLATEDSINGLETON(TypeInfo, Set<T>) {
-    setName(DS_INLINE_STRING("Set<"<< typeof(T)<<">"));
+  TEMPLATEDSINGLETON(TypeInfo, Set<T>):TraitType(DS_INLINE_STRING("Set<"<< typeof(T)<<">"),0) {
   }
 };
 }

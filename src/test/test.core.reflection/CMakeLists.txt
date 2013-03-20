@@ -7,7 +7,14 @@ set(source
 	 methodinfo.cpp
 	 constructorinfo.cpp
 	 propertyinfo.cpp
+	 namespaceinfo.cpp
 	 propertyadapter.cpp
+	 uninvasive.cpp
+	 callable.cpp
+	 attribute.cpp
+	 methodadapter.cpp
+	 memberadapter.cpp
+	 dynamicobject.cpp
  )
  source_group("" FILES ${source})
  add_executable(test.core.reflection ${source} CMakeLists.txt)

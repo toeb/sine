@@ -761,7 +761,7 @@ public:
   Set<T>::Set(){}
   template<typename T>
   Set<T>::~Set(){
-    //clear();
+
   }
 
   //union
