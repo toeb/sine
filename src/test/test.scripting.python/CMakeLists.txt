@@ -1,3 +1,4 @@
+if(TARGET scripting.python)
 
 set(source
 	 main.cpp 
@@ -16,3 +17,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
  project_folder("test" test.scripting.python )
  
  add_test(NAME test.scripting.python COMMAND test.scripting.python)
+ 
+ else(TARGET scripting.python)
+  message("    will not add test.scripting.python because scripting.python is not being built")
+ endif(TARGET scripting.python)

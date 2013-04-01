@@ -3,7 +3,7 @@ set(source
 	main.cpp 
 )
 
-find_package(zlib)
+#find_package(zlib)
 
 include_directories(${ZLIB_INCLUDE_DIRS})
  source_group("" FILES ${source})
