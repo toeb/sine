@@ -12,14 +12,14 @@ using namespace nspace::stringtools;
 
     std::string nspace::stringtools::wstringToString(const wstring & lstring){
       std::stringstream stream;
-      for(int i=0; i < lstring.size();i++){
+      for(size_t i=0; i < lstring.size();i++){
         stream<< (char)lstring.at(i);
       }
       return stream.str();
     }
     std::wstring nspace::stringtools::stringToWstring(const string & str){
       std::wstringstream stream;
-      for(int i=0; i < str.size(); i++){
+      for(size_t i=0; i < str.size(); i++){
         stream << (wchar_t)str.at(i);
       }
       return stream.str();
@@ -85,6 +85,21 @@ std::vector<std::string> nspace::stringtools::split(istringstream & stream){
     back_inserter<vector<string> >(tokens));
   return tokens;
 }
+
+std::vector<std::string> nspace::stringtools::split(const std::string & str, const std::string & separator){
+  std::vector<std::string> parts;
+  size_t start = 0;
+  size_t end =0;
+  do{
+    end  = str.find(separator);
+    std::string current = str.substr(start,end);
+    end = end + separator.size() -1;
+    parts.push_back(current);
+  }while( end > str.size()-1U );
+  return parts;
+}
+
+
 std::vector<std::string> nspace::stringtools::split(const std::string & str){
   istringstream stream(str);
   return split(stream);
@@ -159,6 +174,17 @@ bool nspace::stringtools::startsWith(const std::string & subject,const std::stri
   };
   return true;
 }
+
+
+bool nspace::stringtools::endsWithIgnoreCase(const std::string &subject, const std::string & what){
+  return endsWith(toLowerCase(subject),toLowerCase(what));
+}
+bool nspace::stringtools::endsWith(const std::string & subject, const std::string & what){
+  auto str = subject;
+  std::reverse(begin(str),end(str));
+  return startsWith(str,what);
+}
+
 bool nspace::stringtools::startWithIgnoreCase(const std::string &subject, const std::string & what){
   auto s =toLowerCase(subject);
   auto w = toLowerCase(what);
@@ -211,7 +237,7 @@ std::string nspace::stringtools::repeat(const std::string &str, unsigned int n){
 
 std::string nspace::stringtools::replace(std::string  original, const std::string & search, const std::string & replacement){
   if( original.find(search) > original.size())return original;
-  return  original.replace(original.find(search), replacement.size()-1, replacement);
+  return  replace(original.replace(original.find(search), search.size(), replacement),search,replacement);
 }
 
 std::string nspace::stringtools::spaces(unsigned int n){

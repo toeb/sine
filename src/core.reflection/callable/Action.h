@@ -19,6 +19,7 @@
 #pragma once
 
 #include <core.reflection/callable/Callable.h>
+#include <core.reflection/type/TypeInfo.h>
 
 namespace nspace {
   class Action : public Callable{

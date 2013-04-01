@@ -7,14 +7,16 @@
 
 namespace nspace{
 
-  struct ConstructorInfo : public MemberInfo, public Callable{
+  class ConstructorInfo : public MemberInfo, public Callable{
+  public:
     typedef std::vector<const Type*> basic_property(ArgumentTypes);
     bool isValid()const override final{return true;}
 
   };
 
   template<typename ClassType>
-  struct TypedConstructorInfo : public ConstructorInfo{
+  class TypedConstructorInfo : public ConstructorInfo{
+  public:
     typedef std::shared_ptr<ClassType> InstanceType;
     typedef ClassType ConstructorClassType;
     TypedConstructorInfo(){
@@ -72,16 +74,11 @@ namespace nspace{
   }
 
 #define DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)                                                                     \
-  typedef CurrentClassType DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME);                                              \
-  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<DS_CONSTRUCTOR_OWNING_CLASS_NAME(NAME)>{ \
-  DS_CLASS(DS_CONSTRUCTOR_NAME(NAME));                                                                          \
-  InstanceType construct()const{return InstanceType(new ConstructorClassType());}                               \
+  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<CurrentClassType>{ \
   protected:                                                                                                    \
   nspace::Argument callImplementation(const  Arguments &  args)const override final{                            \
-  auto method = typeof(CurrentClassType)->getMethod("construct");                                               \
-  return method->call(this,args);                                                                               \
+    return InstanceType(new ConstructorClassType());                                          \
   }                                                                                                             \
-  reflect_method(construct);                                                                                    \
   SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){ }                                                                       \
   };                                                                                                            \
   DS_ONCE{                                                                                                      \

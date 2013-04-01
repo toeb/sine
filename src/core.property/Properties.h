@@ -168,12 +168,12 @@ private:                                                          \
 #define DS_PROPERTY_EXTENSION_AFTER_SET_NAME onAfterPropertySet
 #define DS_PROPERTY_EXTENSION_BEFORE_GET_NAME onBeforePropertyGet
 
-#define DS_PROPERTY_EXTENSION_BEFORE_SET  DS_INLINE bool DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const void * marker, const void * value){return false; }
+#define DS_PROPERTY_EXTENSION_BEFORE_SET  DS_INLINE BeforeSetAction DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const void * marker, const void * value){return BeforeSetAction::Accept; }
 #define DS_PROPERTY_EXTENSION_AFTER_SET   DS_INLINE void DS_PROPERTY_EXTENSION_AFTER_SET_NAME(const void * marker){}
 #define DS_PROPERTY_EXTENSION_BEFORE_GET  DS_INLINE void DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(const void * marker) const {}
 
 
-#define DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME)  DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const DS_PROPERTY_MARKER(NAME)*,  const DS_PROPERTY_TYPE_NAME(NAME) * newvalue)->bool
+#define DS_PROPERTY_EXTENSION_BEFORE_SET_IMPLEMENTATION(NAME)  DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(const DS_PROPERTY_MARKER(NAME)*,  const DS_PROPERTY_TYPE_NAME(NAME) * newvalue)->BeforeSetAction
 #define DS_PROPERTY_EXTENSION_AFTER_SET_IMPLEMENTATION(NAME)   DS_PROPERTY_EXTENSION_AFTER_SET_NAME(const DS_PROPERTY_MARKER(NAME)*)->void
 #define DS_PROPERTY_EXTENSION_BEFORE_GET_IMPLEMENTATION(NAME)  DS_PROPERTY_EXTENSION_BEFORE_GET_NAME(const DS_PROPERTY_MARKER(NAME)*) const->void
 
@@ -200,7 +200,7 @@ private:                                                          \
 #define DS_PROPERTY_SETTER_EXTENDED(NAME)                                                         \
   DS_PROPERTY_SETTER(NAME){                                                                       \
     DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(DS_PROPERTY_MARKER(NAME)::name(), &value);              \
-    if(DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME), &value)){         \
+    if(DS_PROPERTY_EXTENSION_BEFORE_SET_NAME(DS_PROPERTY_MARKER_INSTANCE(NAME), &value)==BeforeSetAction::Cancel){         \
       return;                                                                                     \
     }                                                                                             \
     DS_PROPERTY_STORAGE(NAME) = value;                                                            \
@@ -229,6 +229,12 @@ public: DS_PROPERTY_SETTER_EXTENDED(NAME)
 
 #define extensible_property_class DS_PROPERTY_EXTENSION_METHODS
 #define extensible_property(NAME) DS_PROPERTY_EXTENDED(NAME)
+
+
+enum class BeforeSetAction{
+  Accept = 0,
+  Cancel=1
+};
 
 #define continue_set() return false
 #define cancel_set() return true

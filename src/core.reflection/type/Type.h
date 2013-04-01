@@ -24,41 +24,42 @@
 
 #include <memory>
 #include <sstream>
+
+#include <core.reflection/ReflectedElement.h>
+#include <core.reflection/callable/Callable.h>
 namespace nspace
 {
   // forward declarations
   class MemberInfo;
   class MethodInfo;
   class PropertyInfo;
-  struct ConstructorInfo;
-  struct NamespaceInfo;
+  class ConstructorInfo;
   class Type;
-  
- typedef const Type * ConstTypePtr;
-
+  class NamespaceInfo;
 
   /**
   * \brief Type.
-  *        this class represents a Type. it Inherits from Node<Type> so that a the typehierarcy may be accessed.
-  *        Alot of Macros are defined to help specify types / members for classes
-  *        This class contains methods for reflecting over Objects
   */
-  class Type : public Node<Type>
+  class Type : public ScopeInfo, public Node<Type>, public Callable
   {
   public: 
     /**
     * \brief Defines an alias representing identifier for a type.
     */
-  typedef uint TypeId;
+    typedef uint TypeId;
+
   private:
     static TypeId _typeCounter;
   protected:
-    Type(const std::string & name, const Type * underlyingType);
+    Type(const std::string & name, const Type * type);
   public:
-    virtual ~Type();
-    // type traits
-    typedef const NamespaceInfo * basic_property(Namespace);
+    const NamespaceInfo * getNamespace()const;
+    bool isInnerType()const{
+      return dynamic_cast<const Type *>(getScope())!=0;
+    }
 
+
+    virtual ~Type();
 
     // comparison
     friend bool operator==(const Type & a, const Type & b);
@@ -67,11 +68,12 @@ namespace nspace
     // to string
     friend std::ostream & operator <<(std::ostream & out, const Type & type);
     friend std::ostream & operator <<(std::ostream & out, const Type * type);
-        
+
+
     // type fields
     typedef TypeId             basic_property(Id);
-    typedef std::string        basic_property(Name);    
-    std::string getFullyQualifiedName()const;
+    //typedef std::string        basic_property(Name);    
+    //std::string getFullyQualifiedName()const;
 
     // member access
     PROPERTYSET(const MemberInfo *, Members,,);
@@ -79,39 +81,42 @@ namespace nspace
     Set<const PropertyInfo*>          Properties() const;
     Set<const MethodInfo*>            Methods()const;
     Set<const ConstructorInfo*>       Constructors()const;
+    
+
 
 
     const MemberInfo *        getMember(const std::string & name) const;
     const MethodInfo *        getMethod(const std::string & name) const;
     const PropertyInfo *      getProperty(const std::string & name) const;
     bool isDefaultConstructible()const;
-    const ConstructorInfo *   getConstructor(const std::vector<const Type*>& types)const;    
+    const ConstructorInfo *   getConstructor(const std::vector<const Type *>& types)const;    
     template<typename Container> const ConstructorInfo * getConstructor(const Container & container)const;
-    
+    bool isValid() const override final;
+    Argument callImplementation(const Arguments & args)const override final;
     //type hierarchy
     bool isSuperClassOf(const Type * other) const;
     bool isSubClassOf(const Type * other)const;
-    typedef Set<const Type*> basic_property(SuperClasses);
-    typedef Set<const Type*> basic_property(RootClasses);
+    typedef Set<const Type *> basic_property(SuperClasses);
+    typedef Set<const Type *> basic_property(RootClasses);
 
     // modifiers
-    
-    typedef const Type *  basic_property(UnderlyingType);
-    typedef const Type *  basic_property(UnqualifiedType);
+
+    typedef const Type * basic_property(UnderlyingType);
+    typedef const Type * basic_property(UnqualifiedType);
     typedef bool          basic_property(IsPointer);
     typedef bool          basic_property(IsReference);
     typedef bool          basic_property(IsVolatile);
     typedef bool          basic_property(IsConst);
     bool isUnqualifiedType()const;
-    const Type * removeConst()const;
-    const Type * removeReference()const;
+    const  Type * removeConst()const;
+     const Type * removeReference()const;
     const Type * removePointer()const;
 
   protected:
-    void onSuccessorAdded(Type * type);
-    void onSuccessorRemoved(Type* type);
+    void onSuccessorAdded(Type * type)override;
+    void onSuccessorRemoved(Type * type)override;
 
-    void onPredecessorAdded(Type* type);
-    void onPredecessorRemoved(Type* type);
+    void onPredecessorAdded( Type * type)override;
+    void onPredecessorRemoved( Type * type)override;
   };
 }

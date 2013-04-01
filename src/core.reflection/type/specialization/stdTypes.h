@@ -2,9 +2,10 @@
 
 
 #include <core.reflection/type/TypeInfo.h>
-
+#include <core.reflection/type/TypeInfo.implementation.template.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 namespace nspace{
 

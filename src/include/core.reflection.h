@@ -12,6 +12,22 @@
 #include <core.reflection/member/method/MethodInfo.h>
 #include <core.reflection/member/method/TypedMethodInfo.h>
 
+// implementations depending on Member classes
+
+#include <core.reflection/type/TypeInfo.implementation.template.h>
+
+
+// specializations
+
+#include <core.reflection/type/specialization/fundementalTypes.h>
+#include <core.reflection/type/specialization/qualifierTypes.h>
+#include <core.reflection/type/specialization/stdTypes.h>
+
+
+// implementations depending on TypeInfo
+#include <core.reflection/type/Argument.implementation.template.h>
+
+
 
 #include <core.reflection/member/property/TypedPropertyInfo.h>
 #include <core.reflection/member/property/PropertySetInfo.h>
@@ -19,6 +35,7 @@
 
 #include <core.reflection/member/constructor/ConstructorInfo.h>
 #include <core.reflection/member/constructor/TypedConstructorInfo.h>
+
 
 #include <core.reflection/attribute/Attribute.h>
 
@@ -42,6 +59,5 @@
 #include <core.serialization/Serialization.h>
 
 #include <core.reflection/preprocessor/properties.h>
-
 
 

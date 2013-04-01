@@ -10,11 +10,11 @@ UNITTEST(Construction1){
     Derived():Type("____testtype",0){}
   }uut;
   
-  CHECK_EQUAL("____testtype",uut.getFullyQualifiedName());
+  CHECK_EQUAL("::default::____testtype::",uut.getFullyQualifiedName());
   CHECK_EQUAL("____testtype",uut.getName());
-  CHECK_EQUAL(&uut,uut.getUnderlyingType());
+  CHECK_EQUAL(0,uut.getUnderlyingType());
   CHECK_EQUAL(&uut,uut.getUnqualifiedType());
-  CHECK_EQUAL(NamespaceInfo::Global(),uut.getNamespace());
+  CHECK_EQUAL(dynamic_cast<const ScopeInfo*>(NamespaceInfo::Default()),dynamic_cast<const ScopeInfo*>(uut.getNamespace()));
 
 }
 
@@ -145,7 +145,40 @@ UNITTEST(type_ofInstance){
 
 }
 
+TEST(1,ConstructionViaType){
+  static bool defaultCalled=false;
+  static int intCalled=0;
+  static int instanceCount=0;
+  struct A{
+    reflect_type(A);
+    reflected_default_constructor(public: A){
+      defaultCalled=true;
+      instanceCount++;
+    }
+    reflected_constructor(public: A,int i){
+      intCalled = i;
+      instanceCount++;
+    }
+  }a;
+  auto & t = *type_of(a);
 
+  auto c =t();
+  CHECK(defaultCalled)
+  auto b = t(5);
+  CHECK_EQUAL(5,intCalled);
+  CHECK_EQUAL(3,instanceCount);
+}
+TEST(2, ConstructViaAutoDefaultConstructor){
+  static int  called = 0;
+  struct A{
+    A(){called++;}
+    reflect_type(A);
+  };
+  auto &t = *typeof(A);
+  auto result = t();
+  CHECK(result.isValid());
+  CHECK_EQUAL(1,called);
+};
 
 TEST(1, defaultConstructor1){
   FAIL("not implemented");

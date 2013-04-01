@@ -9,11 +9,11 @@ namespace nspace{
 
     typedef bool reflect_property(IsRunning);
     auto before_set(IsRunning){
-      return false;
+      return BeforeSetAction::Cancel;
     }
 
     typedef uint reflect_property(NumberOfRunningTasks)
-    auto before_set(NumberOfRunningTasks){return false;}
+    auto before_set(NumberOfRunningTasks){return BeforeSetAction::Cancel;}
 
     typedef bool reflect_property(IsHalting);
     auto after_set(IsHalting){

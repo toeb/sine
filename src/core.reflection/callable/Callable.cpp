@@ -1,8 +1,9 @@
 #include "Callable.h"
-
+#include <core.reflection/type/TypeInfo.h>
 
 using namespace nspace;
 
+DS_CLASS_DEFINITION(Callable);
 
 Argument Callable::operator()(){
   return callImplementation(std::vector<Argument>());

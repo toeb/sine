@@ -32,7 +32,10 @@ namespace nspace{
     std::string trimFront(const std::string & str);
     std::string trimBack(const std::string & str);
     bool startsWith(const std::string & subject,const std::string & what);
+    bool endsWith(const std::string & subject, const std::string & what);
     bool startWithIgnoreCase(const std::string &subject, const std::string & what);
+    bool endsWithIgnoreCase(const std::string &subject, const std::string & what);
+    std::vector<std::string> split(const std::string & str, const std::string & separator);
     std::vector<std::string> split(const std::string & str, const char separator);
     std::vector<std::string> split(const std::string & str);
     std::vector<std::string> split(std::istringstream & stream);

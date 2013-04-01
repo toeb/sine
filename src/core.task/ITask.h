@@ -8,7 +8,6 @@ namespace nspace{
   * represents a task.  The Run Method needs to be implemented
   */
   class ITaskRunner;
-  META(ITaskRunner);
 
   class ITask: public virtual NamedObject, public virtual PropertyChangingObject{
     reflect_type(ITask);

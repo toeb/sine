@@ -1,7 +1,9 @@
 #pragma once
 
 #include <core.reflection/type/Argument.h>
-
+#include <core.reflection/preprocessor/type.h>
+#include <core.preprocessor.h>
+#include <vector>
 // preprocessor implementation
 #define DS_CALLABLE_TEMPLATE_CALL_NAME operator()
 #define DS_CALLABLE_TEMPLATE_CALL_TYPE_NAME_I(X) DS_CONCAT(T,X)
@@ -30,7 +32,7 @@
 
 namespace nspace{
   struct Callable{    
-    reflect_type(Callable);
+    DS_CLASS_DECLARATION(Callable);
     // typedef std::vector<const Type*> basic_property(ArgumentTypes);
   public:
     typedef std::vector<Argument> Arguments;

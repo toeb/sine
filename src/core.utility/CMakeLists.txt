@@ -18,7 +18,8 @@ Timer.cpp
 ToString.h
 ToString.cpp
 
-
+CollectionTools.h
+CollectionTools.cpp
 )
 
 source_group("" FILES ${utilitySource})

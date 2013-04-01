@@ -8,7 +8,7 @@ MemberAdapter::MemberAdapter(Argument owner):_Owner(owner){
 
 
 auto MemberAdapter::before_set(Owner){
-  return true;
+  return BeforeSetAction::Accept;
 }
 auto MemberAdapter::after_set(Owner){
 

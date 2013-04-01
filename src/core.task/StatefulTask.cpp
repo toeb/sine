@@ -17,7 +17,7 @@ std::string StatefulTask::stateToString(const State & state){
 auto StatefulTask::before_set(State){
   setLoggingLevel(3);
   logMessage("StatefulTask state Changed from: "<<stateToString(getState()) <<" to " << stateToString(*newvalue),5);
-  return true;
+  return BeforeSetAction::Accept;
 }
 void StatefulTask::Reset(){
   logMessage("resetting task",5);

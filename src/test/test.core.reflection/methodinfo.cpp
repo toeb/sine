@@ -158,7 +158,8 @@ TEST(1, CallInheritedMember){
     int method2(){return c;}
     reflect_method(method2);
   }b;
-
+  auto ta = typeof(A);
+  auto tb = typeof(B);
   CHECK(b.method2()==29);
   CHECK(b.method()==23);
 

@@ -33,71 +33,40 @@
 
   /**
   * \brief Macro for making an object a typed object. defines a static meta information structure
-  *        (TypeData) and virtual access methods 
-  *
+  *        (TypeData) and virtual access methods
   * \param TYPE  The type.
   */
 #define DS_CLASS(TYPE)                                                                                                \
 private:                                                                                                              \
   typedef TYPE CurrentClassType;                                                                                      \
 public:                                                                                                               \
-  static std::string getTypeName(){return std::string(# TYPE); }                                                      \
-  virtual inline nspace::ConstTypePtr getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); } \
-  virtual inline bool isInstanceOf(nspace::ConstTypePtr type) const { return type->isSuperClassOf(this->getType()); }         \
+  static const std::string & getTypeName(){static std::string name(#TYPE); return name; }                                                      \
+  virtual inline const nspace::Type * getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); } \
+  virtual inline bool isInstanceOf(const nspace::Type * &  type) const { return type->isSuperClassOf(this->getType()); }         \
 private:
 
 #define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
 
 #ifndef reflect_type
-#define reflect_type(NAME) DS_CLASS(NAME) DS_PROPERTY_EXTENSION_METHODS
+#define reflect_type(NAME) DS_CLASS(NAME) DS_PROPERTY_EXTENSION_METHODS 
 #endif
 
 #define reflect_superclasses(...) DS_FOREACH(SUBCLASSOF,__VA_ARGS__);
-
-
-
 
 #define DS_CLASS_DECLARATION(TYPE)                                  \
 private:                                                            \
   typedef TYPE CurrentClassType;                                    \
 public:                                                             \
-  static std::string getTypeName();                                 \
-  virtual inline nspace::ConstTypePtr getType() const;              \
-  virtual inline bool isInstanceOf(nspace::ConstTypePtr type) const;\
+  static const std::string & getTypeName();                                 \
+  virtual const nspace::Type * getType() const;              \
+  virtual bool isInstanceOf(const Type * type) const;\
 private:
 
 #define DS_CLASS_DEFINITION(TYPE)                                                                                       \
-  std::string TYPE::getTypeName(){return std::string(# TYPE); }                                                         \
-  nspace::ConstTypePtr TYPE::getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); }            \
-  bool TYPE::isInstanceOf(nspace::ConstTypePtr type) const { return type->isSuperClassOf(this->getType()); }
+  const std::string & TYPE::getTypeName(){static std::string name(# TYPE);return name; }                                                         \
+  const nspace::Type * TYPE::getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); }            \
+  bool TYPE::isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); }
 
-  /**
-  * \brief A macro that defines conversion function from a void ptr to a Object* using dynamic cast
-  */
-#define DS_HIERARCHY_OBJECT                                                                            \
-  DS_ONCE{                                                                                               \
-  auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType)));  \
-  type->setSmartObjectPointerConverter(Type::smartToObjectCaster<CurrentClassType>());                 \
-  type->setRawObjectPointerConverter(Type::rawToObjectCaster<CurrentClassType>());                     \
-  type->setSmartDerivedPointerConverter(Type::smartToDerivedCaster<CurrentClassType>());               \
-  type->setRawDerivedPointerConverter(Type::rawToDerivedCaster<CurrentClassType>());                   \
-}                                                                                                                                       
-
-  /**
-  * \brief A marks a class as default constructible
-  */
-#define DS_DEFAULT_CONSTRUCTIBLE                                                                      \
-  DS_ONCE{                                                                                            \
-  auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType))); \
-  type->setCreateInstanceFunction([](){return std::shared_ptr<void>(new CurrentClassType());});       \
-}
-
-#define DS_TO_STRING                                                                                                                          \
-  DS_ONCE{                                                                                                                                    \
-  auto type = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(CurrentClassType)));                                       \
-  type->setObjectToStringFunction([](const void * object, std::ostream & stream){static_cast<const CurrentClassType*>(object)->toString(stream);});  \
-}                                                                                                                                           
-  //virtual void toString(std::stream & stream)const
 
 
   /**

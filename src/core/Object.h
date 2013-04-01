@@ -43,4 +43,4 @@ namespace nspace {
   };
 }
 // implement type now.
-#include <core.reflection/type/Type.implementation.h>
+#include <core.reflection/type/Type.implementation.template.h>

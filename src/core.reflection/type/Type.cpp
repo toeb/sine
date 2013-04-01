@@ -7,47 +7,60 @@
 #include <sstream>
 using namespace nspace;
 
-    const Type * Type::removeConst()const{
-      if(!getIsConst()){
-        return this;
-      }
-      return getUnderlyingType();
-    }
-    const Type * Type::removeReference()const{
-      if(!getIsReference()){
-        return this;
-      }
-      return getUnderlyingType();
-    }
-    const Type * Type::removePointer()const{
-      if(!getIsPointer()){
-        return this;
-      }
-      return getUnderlyingType();
-    }
-
-std::string Type::getFullyQualifiedName()const{
-  return DS_INLINE_STRING(getNamespace()->getFullyQualifiedName()<<"::"<<getName());
+auto Type::removeConst()const->const Type *{
+  if(!getIsConst()){
+    return this;
+  }
+  return getUnderlyingType();
 }
+auto Type::removeReference()const->const Type *{
+  if(!getIsReference()){
+    return this;
+  }
+  return getUnderlyingType();
+}
+auto Type::removePointer()const->const Type *{
+  if(!getIsPointer()){
+    return this;
+  }
+  return getUnderlyingType();
+}
+
+
 
 
 Type::~Type(){
 
-//  const_cast<NamespaceInfo*>(getNamespace())->Types() /= this;
+  //  const_cast<NamespaceInfo*>(getNamespace())->Types() /= this;
+}
+
+
+const NamespaceInfo * Type::getNamespace()const{
+  return dynamic_cast<const NamespaceInfo*>(getScope());
+}
+bool Type::isValid() const{
+  return Constructors().size()!=0;
+}
+Argument Type::callImplementation(const Callable::Arguments & args)const {
+  std::vector<const Type*> types;
+  for(auto arg : args){
+    types.push_back(arg.type);
+  }
+  auto constructor = getConstructor(types);
+  if(!constructor)return Argument();
+  return constructor->callImplementation(args);
 }
 
 Type::Type(const std::string & name ,const Type * underlyingType):
+  ScopeInfo(name,ScopeInfo::Default()),
   _Id(_typeCounter++),
   _IsPointer(false),
   _IsReference(false),
   _IsVolatile(false),
   _IsConst(false),
   _UnderlyingType(0),
-  _UnqualifiedType(0),
-  _Namespace(NamespaceInfo::Default())
-{
-  const_cast<NamespaceInfo*>(getNamespace())->Types() |= this;
-  
+  _UnqualifiedType(0)
+{ 
   if(underlyingType==this || underlyingType==0){
     setUnderlyingType(0);
     setUnqualifiedType(this);
@@ -155,21 +168,21 @@ void Type::itemAdded(const MemberInfo * , Members){
 void Type::itemRemoved(const MemberInfo * , Members){
 }
 
-void Type::onPredecessorAdded(Type* type){
+void Type::onPredecessorAdded( Type* type){
   Members()|=type->Members();  
   _SuperClasses |=type;
   _RootClasses |=type->getRootClasses();
 }
-void Type::onPredecessorRemoved(Type* type){
+void Type::onPredecessorRemoved( Type* type){
   Members()/=type->Members();
 
   _SuperClasses /=type;
   _RootClasses /=type->getRootClasses();
 }
 
-void Type::onSuccessorAdded(Type * type){
+void Type::onSuccessorAdded( Type * type){
 
 }
-void Type::onSuccessorRemoved(Type* type){
+void Type::onSuccessorRemoved( Type* type){
 
 }

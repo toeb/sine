@@ -1,20 +1,29 @@
 #pragma once
 
-#include <core.reflection/type/Type.h>
 #include <core/patterns/Singleton.h>
-#include <sstream>
 #include <core.reflection/preprocessor/type.h>
+#include <sstream>
+#include <core.reflection/type/Type.h>
 namespace nspace{
+
+  template<typename T, bool hasDefaultConstructor = std::is_default_constructible<T>::value && !std::is_abstract<T>::value>
+  struct add_default_constructor{
+    static void add(void * type){}
+  };
+
   template<typename T>
   class TraitType : public Type{
     typedef T type;
   protected:
     TraitType(const std::string & fullyQualifiedName, const Type * underlyingType=0):Type(fullyQualifiedName,underlyingType){init();}
   private:
+    // friend class add_default_constructor<T>;
     void init(){
-      //if(std::is_default_constructible<type>::value){}
+      add_default_constructor<T>::add(this);
     }
   };
+
+
 
   /**
   * \brief Information about the type.
@@ -41,7 +50,7 @@ namespace nspace{
 // template implemetation
 
 namespace nspace{
-  
+
   template<typename T> const Type * type_of(){
     return nspace::TypeInfo<T>::instance().get();
   }
@@ -71,22 +80,15 @@ namespace nspace{
 // specialization for nspace::Set
 #include <core.collection/containers/Set.h>
 namespace nspace{
-/**
-* \brief Information about the type. Set<T>  /specialization
-*
-* \tparam  T Generic type parameter.
-*/
-template<typename T>
-class TypeInfo<Set<T> >: public TraitType<Set<T> >
-{
-  TEMPLATEDSINGLETON(TypeInfo, Set<T>):TraitType(DS_INLINE_STRING("Set<"<< typeof(T)<<">"),0) {
-  }
-};
+  /**
+  * \brief Information about the type. Set<T>  /specialization
+  *
+  * \tparam  T Generic type parameter.
+  */
+  template<typename T>
+  class TypeInfo<Set<T> >: public TraitType<Set<T> >
+  {
+    TEMPLATEDSINGLETON(TypeInfo, Set<T>):TraitType(DS_INLINE_STRING("Set<"<< typeof(T)<<">"),0) {
+    }
+  };
 }
-
-// specializations
-
-#include <core.reflection/type/specialization/fundementalTypes.h>
-#include <core.reflection/type/specialization/qualifierTypes.h>
-#include <core.reflection/type/specialization/stdTypes.h>
-

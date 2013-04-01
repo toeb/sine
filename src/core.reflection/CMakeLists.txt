@@ -1,4 +1,6 @@
 set(source 
+  ./ReflectedElement.h
+  ./ReflectedElement.cpp
 	./CMakeLists.txt
 	../include/core.reflection.h
 )
@@ -8,11 +10,13 @@ source_group("" FILES ${source})
 set(typeSource
 	type/Type.h
 	type/Type.cpp
-	type/Type.implementation.h
+	type/Type.implementation.template.h
 	type/TypeInfo.h
 	type/TypeInfo.cpp
+	type/TypeInfo.implementation.template.h
 	type/Argument.h
 	type/Argument.cpp
+	type/Argument.implementation.template.h
 )
 source_group("type" FILES ${typeSource})
 set(source ${source} ${typeSource})
@@ -41,6 +45,8 @@ set(source ${source} ${valueSource})
 set(memberSource
 	member/MemberInfo.h
 	member/MemberInfo.cpp
+	member/field/FieldInfo.h
+	member/field/FieldInfo.cpp
 	member/property/PropertyInfo.h
 	member/property/PropertyInfo.cpp
 	member/property/PropertySetInfo.h
@@ -154,4 +160,4 @@ source_group("namespace" FILES ${namespaceSource})
 set(source ${source} ${namespaceSource})
 
 add_library(core.reflection ${source})
-target_link_libraries(core.reflection core.property)
+target_link_libraries(core.reflection core.property core.utility)

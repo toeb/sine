@@ -14,7 +14,7 @@ namespace nspace{
     typedef const PropertyInfo * extensible_property(PropertyInfo);
     auto before_set(PropertyInfo){
       onBeforePropertyInfoChanged();
-      return true;
+      return BeforeSetAction::Accept;
     }
     auto after_set(PropertyInfo){
       onPropertyInfoChanged();

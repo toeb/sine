@@ -2,6 +2,7 @@
 
 #include <core.reflection/callable/Callable.h>
 #include <core.reflection/callable/CallableFunctor.h>
+#include <core.reflection/type/TypeInfo.h>
 namespace nspace{
   struct DynamicCallableImplementation;
 

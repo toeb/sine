@@ -61,7 +61,7 @@ namespace testNamespace{
     A a;
     auto prop = (const PropertyInfo*)typeof(A)->getMember("TestProperty");
     prop->set(&a,88);
-    CHECK(88, a.getTestProperty());
+    CHECK_EQUAL(88, a.getTestProperty());
   }
 
 
@@ -79,7 +79,7 @@ namespace testNamespace{
 
     auto prop = (const PropertyInfo*)typeof(A)->getMember("TestPropertyThree");  
     auto val = (std::shared_ptr<double>) prop->get(&a);
-    CHECK(141,*val);
+    CHECK_EQUAL(141,*val);
   }
 
   TEST(GetOwningType,PropertyInfo){
