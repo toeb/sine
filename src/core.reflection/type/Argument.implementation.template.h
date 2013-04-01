@@ -11,9 +11,11 @@ namespace nspace{
 
   }
   template<typename T> Argument::operator const T & ()const{
+    if(!(bool)data)std::cerr<<"dereferencing null ptr"<<std::endl;
     return *cast<T>(); 
   }
   template<typename T> Argument::operator T & (){
+    if(!(bool)data)std::cerr<<"dereferencing null ptr"<<std::endl;
     return *cast<T>(); 
   }
 

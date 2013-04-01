@@ -16,13 +16,15 @@ set(source
  PythonDynamicObjectImplementation.cpp
  PythonMethodAdapter.cpp
  ../include/scripting.python.h
-
+PythonModule.h
+PythonModule.cpp
 )
 
 find_package(PythonLibs 3)
 find_package(PythonInterp 3)
 
 if(PYTHONLIBS_FOUND)
+source_group("" FILES ${source})
 include_directories(${PYTHON_INCLUDE_DIRS})
 add_library(scripting.python ${source} CMakeLists.txt)
 target_link_libraries(scripting.python scripting ${PYTHON_LIBRARIES} )

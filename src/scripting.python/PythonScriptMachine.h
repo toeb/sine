@@ -9,6 +9,8 @@ namespace nspace{
   struct Module;
   struct PythonType;
 
+
+
   class PythonScriptMachine : public VirtualScriptMachine{
     reflect_type(PythonScriptMachine)
 

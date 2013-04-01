@@ -35,16 +35,8 @@ bool PythonVariable::assign(Argument argument){
 
   auto pyObject= pythonObjectFromArgument(argument);
   if(!pyObject){
-    auto ns = argument.type->getNamespace()->getFullyQualifiedName();
-    ns = stringtools::replace(ns,"::",".");
-    auto tname=argument.type->getName();
-
-    auto mod = PyImport_ImportModule(ns.c_str());
-    if(!mod)return false;
-
-    auto dict = PyModule_GetDict(mod);
-    auto ptype=(PythonType*)PyDict_GetItemString(dict,tname.c_str());
-
+    auto ptype = getPythonType(argument.type);
+    if(!ptype)return false;
 
     auto pobj = PyObject_New(PythonObject,ptype);
 

@@ -13,8 +13,12 @@
 #include <core.reflection.h>
 
 namespace nspace{
-  
-
-Argument pythonObjectToArgument(PyObject * object, const Type * type);
-PyObject * pythonObjectFromArgument(Argument arg);
+  struct PythonType;
+  struct PythonModule;
+  std::string formatModuleName(const ScopeInfo * ns);
+  std::string formatModuleName(const Type * type);
+  Argument pythonObjectToArgument(PyObject * object, const Type * type);
+  PyObject * pythonObjectFromArgument(Argument arg);
+  PythonType * getPythonType(const Type * type);
+  PyObject * requireModule(const std::string & name);
 }

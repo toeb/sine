@@ -30,7 +30,7 @@ add_definitions(-DFREEGLUT_STATIC=1)
 
 set(CMAKE_PREFIX_PATH  
 ${CMAKE_PREFIX_PATH} 
-#"C:/Python33" "C:/Python33/include" "C:/Python33/libs"
+"C:/Python33" "C:/Python33/include" "C:/Python33/libs"
 #"E:/projects/python/Python-3.3.0/PCbuild" "E:/projects/python/Python-3.3.0" "E:/projects/python/Python-3.3.0/Include" 
 "E:/projects/zlib-1.2.7"
 )

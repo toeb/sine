@@ -23,13 +23,13 @@ namespace nspace{
 
 
     const ScopeInfo * findChild(const std::string & name)const;
-
+    std::string formatName(const std::string & separator = "::", const std::string & prefix = "", const std::string & postfix="")const;
+    std::string formatScopeName(const std::string & separator = "::", const std::string & prefix = "", const std::string & postfix="")const;
     const std::set<const ScopeInfo*> & ChildScopes()const;
     // needs to be initialized before name
     std::string getFullyQualifiedName()const;
     typedef std::string basic_property(Name);
     typedef const ScopeInfo* extensible_property(Scope);
-
 
     bool addChildScope(const ScopeInfo*  node);
     bool removeChildScope(const ScopeInfo* node);

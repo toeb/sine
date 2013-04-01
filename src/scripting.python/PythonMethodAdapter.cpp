@@ -7,7 +7,7 @@ using namespace nspace;
 struct PythonMethodAdapter:PyObject,MethodAdapter{
 };
 
-bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> * argumentTypes){  
+bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<const Type * > * argumentTypes){  
   PyTuple_Check(args);
   auto n=PyTuple_GET_SIZE(args);
   if(!argumentTypes){

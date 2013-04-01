@@ -9,7 +9,7 @@ PyObject * constructCallback(PyTypeObject* subtype, PyObject*args, PyObject * kw
   return pythonType->construct(args,kwds);  
 }
 
-bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<ConstTypePtr> * argumentTypes);
+bool parseArguments(PyObject * args,  std::vector<Argument> & arguments, std::vector<const Type*> * argumentTypes);
 
 PyObject * PythonType::construct( PyObject *args, PyObject *kwds){
   const ConstructorInfo * constructor = 0;
@@ -53,12 +53,12 @@ PyObject * stringRepresentationCallback(PyObject * object){
 }
 PythonType::PythonType(const Type* type):type(type){
   auto ns = type->getNamespace();
-  string namespaceString= stringtools::replace(ns->getFullyQualifiedName(),"::",".")+"."+type->getName();
+  string namespaceString= type->formatName(".");//stringtools::replace(ns->getFullyQualifiedName(),"::",".")+"."+type->getName();
   string docString = "wrapper for "+namespaceString;
   //initialize head
   PyTypeObject tmp={PyObject_HEAD_INIT(NULL)};
   ((PyTypeObject&)*this)=tmp;
-  tp_name = stringtools::c_str(namespaceString);
+  tp_name = stringtools::c_str(namespaceString); 
   tp_basicsize = sizeof(PythonObject);
   tp_repr = &stringRepresentationCallback;
   tp_getattro=&getAttribute;

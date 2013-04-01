@@ -39,6 +39,36 @@ struct TestType{
   }
 }a;
 
+namespace ns1{
+  namespace ns2{
+    namespace ns3{
+      struct TypeType{
+        reflect_type(::ns1::ns2::ns3::TypeType);
+      public:
+        TypeType():_IntProperty(32){}
+
+        typedef int reflect_property(IntProperty);
+      }a;
+    }
+  }
+}
+
+
+
+UNITTEST(BoxedNamespace1){
+  PythonScriptMachine machine;
+  machine.registerType(typeof(ns1::ns2::ns3::TypeType));
+  PyImport_AddModule("ns1_ns2_ns3");
+  auto result = machine.loadString(
+    "import ns1_ns2_ns3;"
+    "print(dir(ns1_ns2_ns3));"
+    //"hi = TypeType().IntProperty\n"
+    );
+  CHECK(result);
+  auto val = machine.getVariable("hi").cast<int>();
+  CHECK((bool)val);
+  CHECK_EQUAL(32,*val);
+}
 UNITTEST(RunComplexFile){
   std::string pathToFile = "scripts/python/animate_decay.py";
   PythonScriptMachine machine;
@@ -78,11 +108,13 @@ UNITTEST(SimplePropertyGetAccess2){
   std::shared_ptr<TestType> a(new TestType());
   a->setTestTypeProperty(a);
   machine.setVariable("theAVar",a);
-  machine.loadString(
+  auto result =machine.loadString(
     "hi=theAVar.TestTypeProperty\n"
     );
-  auto ptr= machine.getVariable("hi");//.cast<TestType>();
-  //CHECK_EQUAL(a.get(),ptr.get());
+  CHECK(result);
+  auto ptr= machine.getVariable("hi").cast<TestType>();
+  CHECK((bool)ptr);
+  CHECK_EQUAL(a.get(),ptr.get());
 
 }
 
@@ -130,10 +162,9 @@ TEST(ComplexMethod,Call){
   PythonScriptMachine machine;
   TestType b(3232);
   machine.setVariable("b",b);
-  machine.registerType(typeof(TestType));
+//  machine.registerType(typeof(TestType));
   machine.loadString(
-    "import ds;\n"
-    "a = ds.TestType(2323)\n"
+    "a = TestType(2323)\n"
     "c=a.AddInitialValues(b)\n"
     );
   auto result = (int)machine.getVariable("c");
@@ -314,8 +345,7 @@ TEST(CheckExists, RegisterType){
   PythonScriptMachine machine;
   CHECK(machine.registerType(typeof(TestType)));
   auto result = PyRun_SimpleString(
-    "import ds\n"
-    "print (ds.TestType)\n"
+    "print (TestType)\n"
     );
   CHECK(result==0);
 }
@@ -323,8 +353,7 @@ TEST(StringRepresentation,RegisterType){
   PythonScriptMachine machine;
   machine.registerType(typeof(TestType));
   auto success = machine.loadString(
-    "import ds\n"
-    "print(ds.TestType())"// somehow get text output to compare
+    "print(TestType())"// somehow get text output to compare
 
     );
 
@@ -335,8 +364,8 @@ TEST(Instanciate2, RegisterType){
   PythonScriptMachine machine;
   machine.registerType(typeof(TestType));
   auto success = machine.loadString(
-    "import ds\n"
-    "ds.TestType(3)"
+    
+    "TestType(3)"
     );
   CHECK(success);
 }
@@ -345,8 +374,8 @@ TEST(Instanciate1,RegisterType){
   PythonScriptMachine machine;
   machine.registerType(typeof(TestType));
   auto success = machine.loadString(
-    "import ds\n"
-    "ds.TestType()"
+    
+    "TestType()"
     );
   CHECK(success);
 }
@@ -354,7 +383,7 @@ TEST(Instanciate1,RegisterType){
 TEST(4,PythonInitialization){
   PythonScriptMachine machine;
   PyRun_SimpleString(
-    "import ds.statictypes\n"
+    "import cppinterop\n"
     "print(MethodWrapper)\n"
     );
 }

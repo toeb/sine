@@ -63,16 +63,16 @@ namespace nspace{
 namespace nspace{
   template<typename TKey,typename TValue>
   class TypeInfo<std::map<TKey,TValue>> : public TraitType<std::map<TKey,TValue>>{
-    TEMPLATEDSINGLETON(TypeInfo,std::map<TKey,TValue>):TraitType(DS_INLINE_STRING("std::map<"<<typeof(TKey)->getFullyQualifiedName()<<", "<<typeof(TValue)->getFullyQualifiedName()<<">"),0){}
+    TEMPLATEDSINGLETON(TypeInfo,std::map<TKey,TValue>):TraitType(DS_INLINE_STRING("::std::std::map<"<<typeof(TKey)->getFullyQualifiedName()<<", "<<typeof(TValue)->getFullyQualifiedName()<<">"),0){}
   };
   template<typename T>
   class TypeInfo<std::set<T>> :public TraitType<std::set<T>>{
-    TEMPLATEDSINGLETON(TypeInfo,std::set<T> ):TraitType(DS_INLINE_STRING("set<"<<typeof(T)->getFullyQualifiedName()<<">"),0){
+    TEMPLATEDSINGLETON(TypeInfo,std::set<T> ):TraitType(DS_INLINE_STRING("::std::set<"<<typeof(T)->getFullyQualifiedName()<<">")){
     }
   };
   template<typename T>
   class TypeInfo<std::vector<T>> :public TraitType<std::vector<T>>{
-    TEMPLATEDSINGLETON(TypeInfo,std::vector<T>):TraitType(DS_INLINE_STRING("vector<"<<typeof(T)->getFullyQualifiedName()<<">"),0){
+    TEMPLATEDSINGLETON(TypeInfo,std::vector<T>):TraitType(DS_INLINE_STRING("::std::vector<"<<typeof(T)->getFullyQualifiedName()<<">")){
       
     }
   };

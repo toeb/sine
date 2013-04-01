@@ -6,10 +6,49 @@
 #include <scripting.python/PythonVariable.h>
 #include <scripting.python/PythonFunction.h>
 #include <scripting.python/PythonMethodAdapter.h>
+
 #include <scripting.python/PythonDynamicObjectImplementation.h>
+#include <scripting.python/PythonModule.h>
 using namespace nspace;
 
 
+using namespace std;
+PyObject * nspace::requireModule(const std::string & name){
+  using namespace stringtools;
+  auto parts = split(name,'.');
+
+  if(parts.size()==1 && parts[0]=="")return PyImport_AddModule("__main__");
+
+  stringstream stream;
+  auto part = begin(parts);
+  PyObject * result = 0;
+  while(true){
+    if(part==end(parts))break;
+    stream << *part;
+    auto current = stream.str();
+    result =PyImport_AddModule(current.c_str());
+    stream<<".";
+    part++;
+  }
+  return result;
+}
+
+
+
+
+
+std::string nspace::formatModuleName(const ScopeInfo * scope){
+  if(!scope)return "__main__";
+  auto result = scope->formatName("_");
+  if(stringtools::startsWith(result,"_"))result = result.substr(1);
+  if(result=="")return "__main__";
+  return result;
+}
+
+std::string nspace::formatModuleName(const Type * type){
+  if(!type)return "__main__";
+  return formatModuleName(type->getNamespace());
+}
 
 Argument nspace::pythonObjectToArgument(PyObject * object, const Type * type){
   
@@ -79,7 +118,11 @@ PyObject * nspace::pythonObjectFromArgument(Argument arg){
     return PyUnicode_FromString(arg.cast<std::string>()->c_str());
   }
   if(arg.type==typeof(DynamicCallable)){
-    auto module = PyImport_ImportModule("ds.statictypes");
+    auto module = PyImport_ImportModule("cppinterop");
+    if(!module){
+      std::cerr<<"could not find module cppinterop"<<std::endl;
+      return 0;
+    }
     auto dict = PyModule_GetDict(module);
     auto methodType= (PythonCallableType*) PyDict_GetItemString(dict,"MethodWrapper");
     auto pcallable = PyObject_New(PythonCallable,methodType);
@@ -87,18 +130,21 @@ PyObject * nspace::pythonObjectFromArgument(Argument arg){
     return pcallable;
   }
 
-  auto ns = stringtools::replace(arg.type->getNamespace()->getFullyQualifiedName(),"::",".");
-  auto name = arg.type->getName();
 
-
-
+  auto ptype = getPythonType(arg.type);
+  auto pobject = PyObject_New(PythonObject,ptype);
+  new (pobject) PythonObject(arg);
+  return pobject;
+}
+PythonType * nspace::getPythonType(const Type * type){
+  // alternatively this code look in python script machines types vector
+  auto ns = formatModuleName(type);
+  auto name = type->getName();
   auto module = PyImport_ImportModule(ns.c_str());
   if(!module)return 0;
   auto dict = PyModule_GetDict(module);
   if(!dict)return 0;  
   auto val = PyDict_GetItemString(dict,name.c_str());
   if(!val)return 0;  
-  auto pobject = PyObject_New(PythonObject,(PythonType*)val);
-  new (pobject) PythonObject(arg);
-  return pobject;
-}
+  return (PythonType*)val;
+};

@@ -152,7 +152,7 @@ const ScopeInfo* ScopeInfo::findScope(const std::string & n){
     name = name.substr(2);
   }
   auto parts = split(name,"::");
-  int i=0;
+  size_t i=0;
   while(ns && i < parts.size()){
     ns = ns->findChild(parts[i]);
     i++;
@@ -164,7 +164,7 @@ void ScopeInfo::init(){
 
 }
 
-ScopeInfo::ScopeInfo():_Name("::"),_Scope(0){
+ScopeInfo::ScopeInfo():_Name(""),_Scope(0){
   init();
 }
 auto ScopeInfo::before_set(Scope){
@@ -175,6 +175,20 @@ auto ScopeInfo::before_set(Scope){
   return BeforeSetAction::Accept;
 }
 
+std::string ScopeInfo::formatName(const std::string & separator, const std::string & prefix, const std::string & postfix)const{
+  auto scope = getScope();
+  std::stringstream stream;
+  if(scope==0)stream<<prefix;
+  else stream<< scope->formatName(separator,prefix,"")<<separator;
+  stream<<getName()<<postfix;
+  return stream.str();
+}
+
+std::string ScopeInfo::formatScopeName(const std::string & separator, const std::string & prefix, const std::string & postfix)const{
+  auto scope = getScope();
+  if(!scope)return "";
+  return scope->formatName(separator,prefix,postfix);
+}
 std::string ScopeInfo::getFullyQualifiedName()const{
   if(this==Global())return "";
   if(!getScope())return getName();
