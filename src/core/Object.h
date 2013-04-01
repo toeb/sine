@@ -22,7 +22,7 @@
 #include <ostream>
 #include <string>
 
-#include <core.reflection/type/TypeInfo.h>
+#include <core.reflection.h>
 
 
 namespace nspace {
@@ -43,4 +43,4 @@ namespace nspace {
   };
 }
 // implement type now.
-#include <core.reflection/type/Type.implementation.template.h>
+

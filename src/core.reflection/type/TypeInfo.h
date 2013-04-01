@@ -6,21 +6,15 @@
 #include <core.reflection/type/Type.h>
 namespace nspace{
 
-  template<typename T, bool hasDefaultConstructor = std::is_default_constructible<T>::value && !std::is_abstract<T>::value>
-  struct add_default_constructor{
-    static void add(void * type){}
-  };
+
 
   template<typename T>
   class TraitType : public Type{
     typedef T type;
   protected:
-    TraitType(const std::string & fullyQualifiedName, const Type * underlyingType=0):Type(fullyQualifiedName,underlyingType){init();}
+    TraitType(const std::string & name);
   private:
-    // friend class add_default_constructor<T>;
-    void init(){
-      add_default_constructor<T>::add(this);
-    }
+    void init();
   };
 
 
@@ -32,8 +26,8 @@ namespace nspace{
   template<typename T>
   class TypeInfo : public TraitType<T>
   {
-    typedef typename std::remove_pointer<T>::type pureType;
-    DS_SINGLETON_TEMPLATED(TypeInfo, T) :TraitType(pureType::getTypeName(),this){     
+    //typedef typename std::remove_pointer<T>::type pureType;
+    DS_SINGLETON_TEMPLATED(TypeInfo, T) :TraitType(T::getTypeName()){     
     }
   };
 

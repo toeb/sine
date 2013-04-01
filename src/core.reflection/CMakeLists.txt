@@ -1,6 +1,6 @@
 set(source 
-  ./ReflectedElement.h
-  ./ReflectedElement.cpp
+  ./ScopeInfo.h
+  ./ScopeInfo.cpp
 	./CMakeLists.txt
 	../include/core.reflection.h
 )

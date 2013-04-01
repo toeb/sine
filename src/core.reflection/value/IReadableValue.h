@@ -1,11 +1,11 @@
 #pragma once
 
-#include <core/Object.h>
+
 #include <core/Observable.h>
 #include <core.property.h>
 #include <core.reflection/type/TypeInfo.h>
-
 #include <core.reflection/type/Argument.h>
+#include <core.reflection/type/TypeInfo.implementation.template.h>
 
 namespace nspace{
   class IReadableValue : public Observable{

@@ -88,14 +88,12 @@ std::vector<std::string> nspace::stringtools::split(istringstream & stream){
 
 std::vector<std::string> nspace::stringtools::split(const std::string & str, const std::string & separator){
   std::vector<std::string> parts;
-  size_t start = 0;
-  size_t end =0;
-  do{
-    end  = str.find(separator);
-    std::string current = str.substr(start,end);
-    end = end + separator.size() -1;
-    parts.push_back(current);
-  }while( end > str.size()-1U );
+  size_t start = 0, end =0;
+  while((end=str.find(separator,start))!= str.npos){
+    parts.push_back(str.substr(start,end-start));
+    start = end+separator.size();
+  }
+  parts.push_back(str.substr(start));
   return parts;
 }
 

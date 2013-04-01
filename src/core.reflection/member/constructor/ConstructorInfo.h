@@ -11,7 +11,11 @@ namespace nspace{
   public:
     typedef std::vector<const Type*> basic_property(ArgumentTypes);
     bool isValid()const override final{return true;}
-
+    ConstructorInfo(Type* owningType){
+      owningType->Members()|=this;
+      setOwningType(owningType);
+      setName("constructor");
+    }
   };
 
   template<typename ClassType>
@@ -19,11 +23,7 @@ namespace nspace{
   public:
     typedef std::shared_ptr<ClassType> InstanceType;
     typedef ClassType ConstructorClassType;
-    TypedConstructorInfo(){
-      auto type = const_cast<Type*>(typeof(ClassType));
-      type->Members()|=this;
-      setOwningType(type);
-      setName("constructor");
+    TypedConstructorInfo():ConstructorInfo(const_cast<Type*>(typeof(ClassType))){
 
     }
   };

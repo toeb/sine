@@ -1,6 +1,6 @@
 #pragma once
 #include <core.reflection/member/property/PropertyInfo.h>
-#include <core.serialization/Serialization.h>
+
 namespace nspace{
   template<typename ClassType>
   struct TypedPropertyInfo:public PropertyInfo{

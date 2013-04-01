@@ -5,10 +5,10 @@
 
 #include <memory>
 #include <sstream>
-#include <core.reflection/ReflectedElement.h>
+#include <core.reflection/ScopeInfo.h>
 namespace nspace
 {
-  
+
   // forward declaration for type
   class Type;
   class NamespaceInfo : public ScopeInfo{
@@ -17,13 +17,13 @@ namespace nspace
     virtual ~NamespaceInfo();
     // returns the global (::) namespace
     static const NamespaceInfo * Global();
-    static const NamespaceInfo * Default();
     std::set<const NamespaceInfo *> Namespaces()const;
     std::set<const Type *> Types()const;
     const NamespaceInfo * getNamespace(const std::string & name)const;
     const NamespaceInfo * getParentNamespace()const;
   protected:
-    NamespaceInfo(const std::string & name, const NamespaceInfo * parent=Default());
+    friend class ScopeInfo;
+    NamespaceInfo(const std::string & name);
   private:
     // constructor for global namespace
     NamespaceInfo();

@@ -38,6 +38,7 @@ namespace testNamespace{
 
   public:
     A():_TestProperty(3),_TestPropertyTwo(new int(3232)){}
+    ~A(){delete _TestPropertyTwo;}
   };
 
   TEST(Gettable,PropertyInfo){

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core.utility/CollectionTools.h>
 #include <core.utility/Helpers.h>
 #include <core.utility/SourceInfo.h>
 #include <core.utility/StringTools.h>

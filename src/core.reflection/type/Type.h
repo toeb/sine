@@ -25,7 +25,7 @@
 #include <memory>
 #include <sstream>
 
-#include <core.reflection/ReflectedElement.h>
+#include <core.reflection/ScopeInfo.h>
 #include <core.reflection/callable/Callable.h>
 namespace nspace
 {
@@ -51,7 +51,7 @@ namespace nspace
   private:
     static TypeId _typeCounter;
   protected:
-    Type(const std::string & name, const Type * type);
+    Type(const std::string & name);
   public:
     const NamespaceInfo * getNamespace()const;
     bool isInnerType()const{

@@ -12,13 +12,13 @@ namespace nspace{
 
   // meta information for std::types
 
-  META_DEFAULTCONSTRUCTOR(std::string);
+  META(::std::string);
 
-  META(std::ostream);
-  META(std::istream);
-  META(std::iostream);
-  META(std::ifstream);
-  META(std::ofstream);
+  META(::std::ostream);
+  META(::std::istream);
+  META(::std::iostream);
+  META(::std::ifstream);
+  META(::std::ofstream);
 }
 
 #include <functional>
@@ -40,7 +40,7 @@ namespace nspace{
   template<typename T> 
   class TypeInfo<std::shared_ptr<T>>: public TraitType< std::shared_ptr<T>>{ 
     TEMPLATEDSINGLETON(TypeInfo, std::shared_ptr<T>):
-      TraitType(DS_INLINE_STRING("std::shared_ptr<" << typeof(T)->getFullyQualifiedName()<<">"),0){ 
+      TraitType(DS_INLINE_STRING("std::shared_ptr<" << typeof(T)->getFullyQualifiedName()<<">")){ 
     } 
   };
 

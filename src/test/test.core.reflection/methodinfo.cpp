@@ -3,64 +3,6 @@
 using namespace nspace;
 using namespace std;
 
-// ////////           --------------------------------------------------------------  external reflect
-namespace TestNameSpace{
-
-struct TestType2{
-  static int instanceCount;
-  bool method1Called;
-  TestType2():method1Called(false){instanceCount++;}  
-  ~TestType2(){instanceCount--;}  
-  int method1(int i){method1Called=true; return i+1;}
-  typedef std::string basic_property(Prop1);
-};
-int TestType2::instanceCount = 0;
-}
-
-#define reflect_begin(TYPE)     \
-namespace nspace{               \
-  META(TYPE);                   \
-}                               \
-namespace{                      \
-  struct ReflectInstance{       \
-  typedef TYPE CurrentClassType;\
-
-
-#define reflect_end   }instance; }
-#define _method(NAME) typedef decltype(CurrentClassType::NAME) NAME; reflect_method(NAME);
-#define _property(NAME,GETTER,SETTER)                 \
-typedef decltype(CurrentClassType::GETTER) GETTER;    \
-typedef decltype(CurrentClassType::SETTER) SETTER;    \
-reflect_property(NAME,GETTER,SETTER)                  
-
-#define _default_constructor(NAME) DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)
-#define _constructor(NAME,...)  DS_CONSTRUCTOR_STRUCT(NAME,__VA_ARGS__)
-
-reflect_begin(TestNameSpace::TestType2)
-  _method(method1)
-  _property(Prop1,getProp1,setProp1)
-  _default_constructor(TestType)
-reflect_end
-
-UNITTEST(ExternalReflection1){
-  
-  CHECK_EQUAL(0,TestNameSpace::TestType2::instanceCount);
-  auto t = typeof(TestNameSpace::TestType2);
-  auto & constructor = *t->Constructors().first();
-  auto instance = constructor();
-  auto typedInstace = instance.cast<TestNameSpace::TestType2>();
-  MethodAdapter mAdapter(instance,"method1");
-  int result = mAdapter(3);
-  CHECK_EQUAL(4,result);
-  PropertyAdapter prop(instance,"Prop1");
-  prop.set(std::string("meh"));
-  std::string val = prop.get();
-  CHECK_EQUAL("meh",val);
-}
-
-// ////////           --------------------------------------------------------------  end external reflect
-
-
 
 
 
@@ -342,7 +284,7 @@ UNITTEST(methodReflectionReturnType){
   auto method = type->getMethod("test");
   auto returntype = method->getReturnType();
   CHECK(returntype!=0);
-  CHECK_EQUAL("std::string",returntype->getName());
+  CHECK_EQUAL("string",returntype->getName());
 }
 UNITTEST(methodReflectionARgumentList){
   struct A{

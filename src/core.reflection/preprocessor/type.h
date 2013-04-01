@@ -1,43 +1,37 @@
 #pragma once
 
 
-  /**
-  * \brief this macro returns the Type * instance for TYPENAME.
-  *
-  * \param TYPENAME  The typename.
-  */
+/**
+* \brief this macro returns the Type * instance for TYPENAME.
+*
+* \param TYPENAME  The typename.
+*/
 #define typeof(TYPENAME) nspace::type_of<TYPENAME>()
 
 
-  /**
-  * \brief macro allows typeinfo to be declared for primitve types. or external types
-  *
-  * \param TYPE  The type.
-  */
+/**
+* \brief macro allows typeinfo to be declared for primitve types. or external types
+*
+* \param TYPE  The type.
+*/
 #define META(TYPE)                                                     \
   template<>                                                           \
-  class TypeInfo<TYPE>: public TraitType<TYPE> {        \
+class TypeInfo<TYPE>: public TraitType<TYPE> {        \
   TEMPLATEDSINGLETON(TypeInfo, TYPE):TraitType(#TYPE){                              \
-                                                   \
+  \
   }                                                                  \
-  };
-
-  /**
-  * \brief META which set allows instancecreation of type by default constructor
-  *
-  * \param TYPE  The type.
-  */
-#define META_DEFAULTCONSTRUCTOR(TYPE) META(TYPE)
+};
 
 
 
-  /**
-  * \brief Macro for making an object a typed object. defines a static meta information structure
-  *        (TypeData) and virtual access methods
-  * \param TYPE  The type.
-  */
-#define DS_CLASS(TYPE)                                                                                                \
-private:                                                                                                              \
+
+/**
+* \brief Macro for making an object a typed object. defines a static meta information structure
+*        (TypeData) and virtual access methods
+* \param TYPE  The type.
+*/
+#define DS_CLASS(TYPE)                                                                                            \
+private:                                                                                                            \
   typedef TYPE CurrentClassType;                                                                                      \
 public:                                                                                                               \
   static const std::string & getTypeName(){static std::string name(#TYPE); return name; }                                                      \
@@ -69,12 +63,12 @@ private:
 
 
 
-  /**
-  * \brief sets up inheritance hierarchy.
-  *        Subclass specify SUBCLASSOF in the class declaration so that the hierarchy can be generated
-  *
-  * \param TYPE  The parent type.
-  */
+/**
+* \brief sets up inheritance hierarchy.
+*        Subclass specify SUBCLASSOF in the class declaration so that the hierarchy can be generated
+*
+* \param TYPE  The parent type.
+*/
 #define SUBCLASSOF(TYPE)                                                                                                \
 private:                                                                                                                \
   STATIC_INITIALIZER(TYPE ## Subclass,{                                                                                 \
@@ -82,3 +76,37 @@ private:                                                                        
   auto unconstSuperType = const_cast<nspace::Type*>(dynamic_cast<const nspace::Type*>(typeof(TYPE)));                 \
   unconstSuperType->successors()|=unconstCurrentType;                                                                 \
 })
+
+
+
+//////////////////////////////external refelction
+
+
+#define reflect_begin(TYPE)     \
+  namespace nspace{               \
+  META(TYPE);                   \
+}                               \
+  namespace{                      \
+struct ReflectInstance{       \
+  typedef TYPE CurrentClassType;\
+
+
+#define reflect_end   }instance; }
+#define _method(NAME) typedef decltype(CurrentClassType::NAME) NAME; reflect_method(NAME);
+#define _property(NAME,GETTER,SETTER)                 \
+  typedef decltype(CurrentClassType::GETTER) GETTER;    \
+  typedef decltype(CurrentClassType::SETTER) SETTER;    \
+  reflect_property(NAME,GETTER,SETTER)                  
+
+#define _default_constructor(NAME) DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)
+#define _constructor(NAME,...)  DS_CONSTRUCTOR_STRUCT(NAME,__VA_ARGS__)
+
+
+
+/**
+* \brief META which set allows instancecreation of type by default constructor
+*
+* \param TYPE  The type.
+*/
+#define META_DEFAULTCONSTRUCTOR(TYPE) META(TYPE)
+

@@ -7,8 +7,8 @@ using namespace std;
 std::string StatefulTask::stateToString(const State & state){
   switch(state){
   case Unknown: return "Unknown";
-  case Running:return "Running";
-  case Succeeded: return "Suceeded";
+  case Running: return "Running";
+  case Succeeded: return "Succeeded";
   case Failed: return "Failed";
   default: return "";
   }
@@ -53,7 +53,5 @@ bool StatefulTask::runStatefulTask(){
   run();
   return getState()==Succeeded;
 }
-StatefulTask::StatefulTask(){
-  setState(Unknown);
-  setName("StatefulTask");
+StatefulTask::StatefulTask():NamedObject("StatefulTask"),_State(Unknown){
 }

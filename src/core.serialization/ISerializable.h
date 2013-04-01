@@ -1,9 +1,8 @@
 #pragma once
-
-#include <core/Object.h>
+#include <core.reflection.h>
 
 namespace nspace{
-  class ISerializeable:public virtual Object{
+  class ISerializeable{
     DS_CLASS(ISerializeable);
   public:
     typedef uint Format;

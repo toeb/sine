@@ -51,25 +51,18 @@ Argument Type::callImplementation(const Callable::Arguments & args)const {
   return constructor->callImplementation(args);
 }
 
-Type::Type(const std::string & name ,const Type * underlyingType):
-  ScopeInfo(name,ScopeInfo::Default()),
+Type::Type(const std::string & name):
+  ScopeInfo(name),
   _Id(_typeCounter++),
   _IsPointer(false),
   _IsReference(false),
   _IsVolatile(false),
   _IsConst(false),
   _UnderlyingType(0),
-  _UnqualifiedType(0)
+  _UnqualifiedType(this)
 { 
-  if(underlyingType==this || underlyingType==0){
-    setUnderlyingType(0);
-    setUnqualifiedType(this);
-    setName(name);
-  }else{
-    setUnderlyingType(underlyingType);
-    setUnqualifiedType(underlyingType->getUnqualifiedType());
-    setName(DS_INLINE_STRING(underlyingType->getName()<<" "<<name));    
-  }
+
+
 }
 
 

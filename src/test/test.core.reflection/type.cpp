@@ -3,18 +3,27 @@
 using namespace std;
 using namespace nspace;
 
-
-
-UNITTEST(Construction1){
+UNITTEST(AutoNamespaceTypeConstruction1){
   struct Derived:public Type{
-    Derived():Type("____testtype",0){}
+    Derived():Type("::std1::Derived"){}
+  }a;
+  CHECK_EQUAL(&a,ScopeInfo::findScope("::std1::Derived"));
+  CHECK(contains(ScopeInfo::Global()->ChildScopes(), a.getScope()));
+}
+
+
+
+UNITTEST(TypeConstruction1){
+  struct Derived:public Type{
+    Derived():Type("____testtype"){setScope(Global());}
   }uut;
   
-  CHECK_EQUAL("::default::____testtype::",uut.getFullyQualifiedName());
+  CHECK_EQUAL("::____testtype",uut.getFullyQualifiedName());
   CHECK_EQUAL("____testtype",uut.getName());
   CHECK_EQUAL(0,uut.getUnderlyingType());
   CHECK_EQUAL(&uut,uut.getUnqualifiedType());
-  CHECK_EQUAL(dynamic_cast<const ScopeInfo*>(NamespaceInfo::Default()),dynamic_cast<const ScopeInfo*>(uut.getNamespace()));
+  auto ns = uut.getNamespace();
+  CHECK_EQUAL(NamespaceInfo::Global(),uut.getNamespace());
 
 }
 
@@ -169,32 +178,22 @@ TEST(1,ConstructionViaType){
   CHECK_EQUAL(3,instanceCount);
 }
 TEST(2, ConstructViaAutoDefaultConstructor){
-  static int  called = 0;
-  struct A{
-    A(){called++;}
-    reflect_type(A);
-  };
-  auto &t = *typeof(A);
+  
+  auto &t = *typeof(int);
   auto result = t();
   CHECK(result.isValid());
-  CHECK_EQUAL(1,called);
+
+
+};
+TEST(3,ConstructViaDefautConstructor){
+  auto & t = *typeof(std::string);
+  auto result = t();
+  CHECK(result.isValid());
+  std::shared_ptr<std::string> str=result;
+  CHECK((bool)str);
+  CHECK_EQUAL(0,str->size());
 };
 
-TEST(1, defaultConstructor1){
-  FAIL("not implemented");
-}
-
-TEST(2, defualtConstructor2){
-  
-  FAIL("not implemented");
-
-}
-
-
-TEST(3, defualtConstructor3){
-  
-  FAIL("not implemented");
-}
 
 
 

@@ -22,13 +22,19 @@ void Log::itemRemoved(LogEntry*,LogEntries){
 
 }
 
-    Log::Log():_LogInfoStream(0),_LogWarningStream(0),_LogErrorStream(0){
-      setLogInfoStream(&std::cout);
-      setLogErrorStream(&std::cerr);
-      setLogWarningStream(&std::cout);
-    }
-  LogEntry::LogEntry():_LogLevel(100),_Owner(0){
-    setSystemTimeStamp(systemTime());
+Log::Log():
+  _LogInfoStream(0),
+  _LogWarningStream(0),
+  _LogErrorStream(0),
+  _LoggingEnabled(true),
+  _LoggingLevel(3)
+{
+  setLogInfoStream(&std::cout);
+  setLogErrorStream(&std::cerr);
+  setLogWarningStream(&std::cout);
+}
+LogEntry::LogEntry():_LogLevel(100),_Owner(0){
+  setSystemTimeStamp(systemTime());
 }
 void LogEntry::toString(std::ostream & out)const{
   switch(getLogLevel()){
@@ -56,60 +62,60 @@ Log & nspace::getLog(){
 
 
 
- void Log::log(
-      int level,
-      const std::string & message,
-      const std::string & functionsignature,
-      const std::string & sourcefile,
-      int sourcelinenumber){
-        auto entry = new LogEntry();
-        entry->setLogLevel(level);
-        entry->setMessage(message);
-        entry->setFunctionSignature(functionsignature);
-        entry->setSourceFileName(sourcefile);
-        entry->setSourceLineNumber(sourcelinenumber);
-        addEntry(entry);
-    }
-    void Log::info(
-      const std::string & message,
-      const std::string & functionsignature,
-      const std::string & sourcefile ,
-      int sourcelinenumber){
-        log(3,message,functionsignature,sourcefile,sourcelinenumber);
-    }
+void Log::log(
+  int level,
+  const std::string & message,
+  const std::string & functionsignature,
+  const std::string & sourcefile,
+  int sourcelinenumber){
+    auto entry = new LogEntry();
+    entry->setLogLevel(level);
+    entry->setMessage(message);
+    entry->setFunctionSignature(functionsignature);
+    entry->setSourceFileName(sourcefile);
+    entry->setSourceLineNumber(sourcelinenumber);
+    addEntry(entry);
+}
+void Log::info(
+  const std::string & message,
+  const std::string & functionsignature,
+  const std::string & sourcefile ,
+  int sourcelinenumber){
+    log(3,message,functionsignature,sourcefile,sourcelinenumber);
+}
 
-    void Log::warn(
-      const std::string & message,
-      const std::string & functionsignature,
-      const std::string & sourcefile ,
-      int sourcelinenumber){
-        log(2,message,functionsignature,sourcefile,sourcelinenumber);
-    }
+void Log::warn(
+  const std::string & message,
+  const std::string & functionsignature,
+  const std::string & sourcefile ,
+  int sourcelinenumber){
+    log(2,message,functionsignature,sourcefile,sourcelinenumber);
+}
 
-    void Log::error(
-      const std::string & message,
-      const std::string & functionsignature,
-      const std::string & sourcefile,
-      int sourcelinenumber){
-        log(1,message,functionsignature,sourcefile,sourcelinenumber);
-    }
+void Log::error(
+  const std::string & message,
+  const std::string & functionsignature,
+  const std::string & sourcefile,
+  int sourcelinenumber){
+    log(1,message,functionsignature,sourcefile,sourcelinenumber);
+}
 
-    void Log::addEntry(LogEntry * entry){
-      if(!getLoggingEnabled()){
-        delete entry;
-        entry = 0;
-        return;
-      }
+void Log::addEntry(LogEntry * entry){
+  if(!getLoggingEnabled()){
+    delete entry;
+    entry = 0;
+    return;
+  }
 
-      if(getLoggingLevel()<entry->getLogLevel()){
-        delete entry;
-        entry = 0;
-        return;
-      }
-      entry->setOwner(this);
-      /*const Type& td = getType();*/
-      if(entry->getClassName()=="")entry->setClassName(getType()->getName());
-      if(entry->getObjectName()=="")entry->setObjectName(name(this));
+  if(getLoggingLevel()<entry->getLogLevel()){
+    delete entry;
+    entry = 0;
+    return;
+  }
+  entry->setOwner(this);
+  /*const Type& td = getType();*/
+  if(entry->getClassName()=="")entry->setClassName(getType()->getName());
+  if(entry->getObjectName()=="")entry->setObjectName(name(this));
 
-      LogEntries()|=entry;
-    }
+  LogEntries()|=entry;
+}

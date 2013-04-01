@@ -17,7 +17,7 @@
  *
  */
 #pragma once
-#include <core.serialization/Serialization.h>
+
 #include <core.reflection/member/MemberInfo.h>
 #include <core.reflection/member/method/MethodInfo.h>
 namespace nspace {
