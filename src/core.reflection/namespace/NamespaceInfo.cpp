@@ -70,10 +70,10 @@ const NamespaceInfo * NamespaceInfo::getNamespace(const std::string & nameOrFull
 
 
 NamespaceInfo::~NamespaceInfo(){
-  auto parent = const_cast<NamespaceInfo*>(getParentNamespace());
+/*  auto parent = const_cast<NamespaceInfo*>(getParentNamespace());
   if(!parent){
     parent->Namespaces().remove(this);
-  }
+  }*/
 }
 const NamespaceInfo* NamespaceInfo::getParentNamespace()const{
   return dynamic_cast<const NamespaceInfo*>(getScope()); 
