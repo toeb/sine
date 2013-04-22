@@ -1,18 +1,21 @@
 #include <QSlider>
 
 #include <core.reflection.h>
-#include <core.reflection/value/ITypedModifiableValue.h>
+
 #include <core/PropertyChangingObject.h>
 
 namespace nspace{
-  class DoubleSliderWidget : public QSlider, public virtual ITypedModifiableValue<double>, public virtual PropertyChangingObject{
+  class DoubleSliderWidget : public QSlider, public virtual IModifiableValue, public virtual PropertyChangingObject{
     Q_OBJECT;
-    TYPED_OBJECT(DoubleSliderWidget);
-    PROPERTY(double, MinValue){}
-    PROPERTY(double, MaxValue){}
-    PROPERTY(int, Steps){
-      setRange(0,newvalue);
+    reflect_type(DoubleSliderWidget);
+    typedef double reflect_property(MinValue);
+    typedef double reflect_property(MaxValue);
+    typedef int reflect_property(Steps);
+
+    auto after_set(Steps){
+      setRange(0,getSteps());    
     }
+
 
   public:
     DoubleSliderWidget();
@@ -20,7 +23,7 @@ namespace nspace{
       void valueChanged(int i);
   protected:
 
-    bool storeTypedValue(const double  & value);
-    bool retrieveTypeValue(double & value)const;
+    bool storeValue(Argument argument) override ;
+    Argument retrieveValue()const override ;
   };
 }

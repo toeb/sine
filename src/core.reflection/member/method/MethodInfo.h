@@ -5,15 +5,15 @@ namespace nspace{
 
 
   class MethodInfo : public MemberInfo{
-    DS_CLASS(MemberInfo)
+    DS_CLASS(MethodInfo)
   public:
     template<typename Container> Argument call(void * object, Container & container=std::vector<Argument>())const;
     template<typename Container> Argument call(const void * object, Container & container=std::vector<Argument>())const;
     Argument call(void * object)const;
     Argument call(const void * object)const;
-    typedef std::vector<const Type*> basic_property(ArgumentTypes);
-    typedef const Type * basic_property(ReturnType);
-    typedef bool basic_property(IsConst);
+    propdef std::vector<const Type*> basic_property(ArgumentTypes);
+    propdef const Type * basic_property(ReturnType);
+    propdef bool basic_property(IsConst);
     //typedef bool basic_property(IsOverride);
     
     virtual Argument call(void * object, std::vector<Argument> arguments)const{return call((const void*)object,arguments);};

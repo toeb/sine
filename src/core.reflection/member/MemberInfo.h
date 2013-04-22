@@ -17,6 +17,7 @@
  *
  */
 #pragma once
+#include <core.reflection/type/TypeInfo.h>
 #include <core.reflection/attribute/Attribute.h>
 
 namespace nspace {
@@ -25,32 +26,13 @@ namespace nspace {
    * \brief Information about a member.
    *        @TODO remove attributes like description/displayname etc.
    */
-  class MemberInfo : public virtual AttributeTarget {
-    SIMPLE_PROPERTY(std::string, Name);    
-    REFERENCE_PROPERTY(std::string, Name);
+  class MemberInfo : public AttributeTarget {
+    propdef std::string basic_property(Name);    
+    property_reference(Name);
 
-    typedef bool basic_property(IsVisible);
-    typedef const Type * basic_property( OwningType );
+    propdef bool basic_property(IsVisible);
+    propdef const Type * basic_property( OwningType );
 
-    //enum Accessibility{private,public,protected}
-    //typedef Accessibility basic_property(Accessibility);
-
-    /**
-     * \brief Description of the member.
-     *
-     */
-    typedef std::string basic_property(Description);
-
-    /**
-     * \brief Display name of the member
-     */
-    typedef std::string basic_property( DisplayName);
-
-    /**
-     * \brief Group name of the member
-     *
-     */
-    typedef std::string basic_property( GroupName);
 public:
   protected:
     /**

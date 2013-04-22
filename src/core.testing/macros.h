@@ -39,6 +39,18 @@
   if (fabs((expectedTemp)-(actualTemp)) > (threshold)) \
   { DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING("|"<<#actual<<"("<<(actualTemp)<<")-"<<#expected<<"("<<(expectedTemp)<<")| >"<<#threshold<<"("<< double(threshold)<<")")); }}
 
+
+// checks precision for any numeric type ( also matrices, uses matrix library)
+#define DS_UNIT_TEST_CHECK_PRECISION(expected,actual,precision)                                                    \
+{                                                                                                         \
+  auto error = nspace::length(nspace::subtract((actual),(expected)));                                     \
+  if(error > (precision)){                                                                                \
+  DS_UNIT_TEST_FAIL("error is greater than needed precision e="<<error<<" tolerance="<<(precision) );  \
+  }                                                                                                       \
+}
+
+
+
 #define DS_UNIT_TEST_FAIL(MESSAGE)\
   {DS_UNIT_TEST_REPORT_FAILURE(DS_INLINE_STRING(MESSAGE));}
 
@@ -158,4 +170,9 @@ public:inline void test();\
 
 #ifndef TEST_DESCRIPTION
 #define TEST_DESCRIPTION(X) DS_TEST_DESCRIPTION(X)
+#endif
+
+
+#ifndef CHECK_PRECISION
+#define CHECK_PRECISION(expected, actual, precision) DS_UNIT_TEST_CHECK_PRECISION(expected,actual,precision)
 #endif

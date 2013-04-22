@@ -13,7 +13,7 @@ namespace nspace{
   private:
     std::vector<Collision*> _collisions;
     ISimulationObject & _collisionObject;
-    const TypeId _collisionType;
+    const Type::TypeId _collisionType;
 
   public:
 
@@ -21,7 +21,7 @@ namespace nspace{
     * \brief Gets the type of the collision object.
     * \return The type.
     */
-    const TypeId getCollisionType()const;
+    const Type::TypeId getCollisionType()const;
 
     /**
     * \brief Constructor with no associated rigid body specified.

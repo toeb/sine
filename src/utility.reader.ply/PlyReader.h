@@ -24,8 +24,8 @@ namespace nspace {
    * \brief Ply reader. ready mesh files of .ply format
    */
   class PlyReader : public MeshReader {
-    REFLECTABLE_OBJECT(PlyReader);
-    SUBCLASSOF(MeshReader);
+    reflect_type(PlyReader);
+    reflect_superclasses(MeshReader);
 protected:
     bool readMesh(IMeshBuilder & builder);
   };

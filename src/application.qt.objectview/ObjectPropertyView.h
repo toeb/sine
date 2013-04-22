@@ -11,13 +11,18 @@ namespace nspace{
     public virtual Log
   {
     Q_OBJECT;
-    REFLECTABLE_OBJECT(ObjectPropertyView);
+    reflect_type(ObjectPropertyView);
     Ui_ObjectPropertyView * _ui;
     ObjectPropertyViewModel * _model;
   public:
     ObjectPropertyView(QWidget*parent=0);
 
-    PROPERTY(Object*, CurrentObject);
+
+    typedef Object * reflect_property(CurrentObject);
+    auto before_set(CurrentObject);
+    auto after_set(CurrentObject);
+
+
     PROPERTYSET(QWidget* , Widgets,,);
 
     public slots:

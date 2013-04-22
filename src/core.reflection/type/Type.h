@@ -27,6 +27,8 @@
 
 #include <core.reflection/ScopeInfo.h>
 #include <core.reflection/callable/Callable.h>
+
+#include <core.reflection/attribute/Attribute.h>
 namespace nspace
 {
   // forward declarations
@@ -40,7 +42,7 @@ namespace nspace
   /**
   * \brief Type.
   */
-  class Type : public ScopeInfo, public Node<Type>, public Callable
+  class Type : public ScopeInfo, public Node<Type>, public Callable, public AttributeTarget
   {
   public: 
     /**

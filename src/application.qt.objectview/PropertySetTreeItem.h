@@ -2,15 +2,16 @@
 
 #include <application.qt.objectview/TreeItem.h>
 #include <core.logging/Log.h>
-
+#include <core.reflection/member/property/PropertySetInfo.h>
 namespace nspace{
+  /*
   // TODO: make set item inherit from treeitem
   class PropertySetTreeItem : public TreeItem, public virtual Log, public virtual ObjectObserver{
-    REFLECTABLE_OBJECT(PropertySetTreeItem);
+    reflect_type(PropertySetTreeItem);
     // the propertyset info object
-    SIMPLE_PROPERTY(const PropertySetInfo*, PropertySetInfo);
+    propdef const PropertySetInfo* basic_property(PropertySetInfo);
     // the object to which the propertyset belongs
-    PROPERTY(Object *, PropertyObject){}
+    propdef Object * reflect_property(PropertyObject);
   public:
     std::string getDisplayName();
     std::string getDisplayValue();
@@ -23,5 +24,5 @@ namespace nspace{
     void refresh();
     void resetList();
     void doExpand();
-  };
+  };*/
 }

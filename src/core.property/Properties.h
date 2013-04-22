@@ -215,10 +215,10 @@ private:                                                          \
   }
 
 #define DS_PROPERTY_REFERENCE_MUTABLE(NAME) DS_PROPERTY_TYPE_NAME(NAME) & NAME(){return DS_PROPERTY_STORAGE_NAME(NAME);}
-#define DS_PROPERTY_REFERENCE_CONST(NAME) const DS_PROPERTY_TYPE_NAME(NAME) NAME()const{return DS_PROPERTY_STORAGE_FIELD(NAME);}
+#define DS_PROPERTY_REFERENCE_CONST(NAME) const DS_PROPERTY_TYPE_NAME(NAME) & NAME()const{return DS_PROPERTY_STORAGE_NAME(NAME);}
 #define DS_PROPERTY_REFERENCE(NAME) DS_PROPERTY_REFERENCE_MUTABLE(NAME) DS_PROPERTY_REFERENCE_CONST(NAME)
 
-#define property_reference(NAME) DS_PROPERTY_REFERENCE_MUTABLE(NAME)
+#define property_reference(NAME) DS_PROPERTY_REFERENCE(NAME)
 
 #define DS_PROPERTY_EXTENDED(NAME)            \
   DS_PROPERTY_DEFINITION(NAME)                \
@@ -231,13 +231,15 @@ public: DS_PROPERTY_SETTER_EXTENDED(NAME)
 #define extensible_property(NAME) DS_PROPERTY_EXTENDED(NAME)
 
 
-enum class BeforeSetAction{
+enum BeforeSetAction{
   Accept = 0,
   Cancel=1
 };
 
-#define continue_set() return false
-#define cancel_set() return true
+
+#define continue_set() return Accept
+#define cancel_set() return Cancel
+
 #define before_set(NAME) DS_PROPERTY_BEFORE_SET(NAME)
 #define after_set(NAME) DS_PROPERTY_AFTER_SET(NAME)
 #define before_get(NAME) DS_PROPERTY_BEFORE_GET(NAME)
@@ -252,6 +254,7 @@ public:                           \
   DS_PROPERTY_AUTO_GETTER(NAME);  \
   DS_PROPERTY_AUTO_SETTER(NAME)
 
+#define propdef typedef
 
 #define basic_property(NAME)  DS_PROPERTY_BASIC(NAME)
 #define basic_references(NAME) DS_PROPERTY_REFERENCE(NAME)

@@ -212,7 +212,7 @@ UNITTEST(ExtensiblePropertyDefintion){
 
     auto before_set(RedChannel){
       beforeSetCallCount++;
-      return cancelSetResult;
+      return Accept;
     }
 
     auto after_set(RedChannel){

@@ -1,11 +1,10 @@
 #pragma once
 #include <QLineEdit>
-#include <core.reflection/value/ITypedModifiableValue.h>
-#include <core.reflection/DefaultTypes.h>
+#include <core.reflection/value/IModifiableValue.h>
 namespace nspace{
-  class StringWidget : public QLineEdit, public virtual ITypedModifiableValue<std::string>{
+  class StringWidget : public QLineEdit, public virtual IModifiableValue{
     Q_OBJECT;
-    TYPED_OBJECT(StringWidget);
+    reflect_type(StringWidget);
   public:
     StringWidget(){
       connect(this,SIGNAL(textChanged(const QString &)),this,SLOT(raiseTextChanged(const QString &)));
@@ -16,13 +15,17 @@ namespace nspace{
         raiseObjectChanged();
       }
   protected:
-    bool storeTypedValue(const std::string  & value){
+    
+    bool storeValue(Argument argument)override{
+      std::string value =  argument;
       setText(tr(value.c_str()));
       return true;
+      
     }
-    bool retrieveTypeValue(std::string & value)const{
-      value = text().toUtf8().constData();
-      return true;
+    
+    Argument retrieveValue()const override{
+      std::string value = text().toUtf8().constData();
+      return value;
     }
   };
 }

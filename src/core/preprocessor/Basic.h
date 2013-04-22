@@ -23,6 +23,9 @@
  * \brief Declares the basic macros which are reused many times in the projects.
  */
 #pragma once
+
+#define DS_PREPROCESSOR_ARG_COUNT 20
+
 /**
  * \brief A macro that defines inline .
  *        Subprojects of DS should use this macro to show define a method as inline so the inline directive can be altered more easily
@@ -37,6 +40,8 @@
  * \param X The void to process.
  */
 #define DS_EXPAND(X) X
+
+
 
 /**
  * \brief A macro that stringifies a macro token.
@@ -77,3 +82,10 @@
  */
 #define DS_NOOP(X) DS_EXPAND(X)
 
+
+/**
+ * \brief A macro that defines a template arguments name.
+ *
+ * \param N number.
+ */
+#define DS_ARG_NAME(N) DS_CONCAT(A,N)

@@ -39,7 +39,7 @@ void serializeRad2Deg(std::ostream & out, Real val){
   val = radToDeg(val);
   out << val;
 }
-bool FpsViewportController::deserializeProperty(Real,Roll){
+/*bool FpsViewportController::deserializeProperty(Real,Roll){
   deserializeDeg2Rad(*value,stream);
   return true;
 }
@@ -64,7 +64,7 @@ bool FpsViewportController::serializeProperty(Real,Pitch){
   serializeRad2Deg(stream,*value);
   return true;
 }
-
+*/
 FpsViewportController::FpsViewportController():_Roll(0),_Pitch(0),_Yaw(0){
   setName("FpsViewportController");
   setIsOneTimeTask(false);
@@ -150,15 +150,15 @@ void FpsViewportController::onMouseMove(InputHandler * inputhandler, int x , int
   }
   if(inputhandler->isKeyDown(KEY_R)){
     _Roll += dx*speed*0.1;
-    notifyRollChanged();
+    notify_after_set(Roll);
   }
 
   if(inputhandler->isMouseButtonDown(BUTTON_LEFT) || inputhandler->isKeyDown(KEY_Q)){
     debugMessage("left mouse button down --> rotating view (yaw: "<<(int)(getYaw()/scalar::pi<Real>()*360)<<", roll: "<<(int)(getRoll()/scalar::pi<Real>()*360)<<")",9);
     _Yaw += -dx*speed*0.1;
-    notifyYawChanged();
+    notify_after_set(Yaw);
     _Pitch += -dy*speed*0.1;
-    notifyPitchChanged();
+    notify_after_set(Pitch);
     calculateRotation();
   }
 }

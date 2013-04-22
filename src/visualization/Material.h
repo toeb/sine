@@ -23,8 +23,8 @@
 
 namespace nspace {
 
-  
-    // illumination model as defined in http://web.archive.org/web/20080813073052/http://local.wasp.uwa.edu.au/~pbourke/dataformats/mtl/
+
+  // illumination model as defined in http://web.archive.org/web/20080813073052/http://local.wasp.uwa.edu.au/~pbourke/dataformats/mtl/
   enum IlluminationModel{
     ColorOnly=0	,//	Color on and Ambient off
     ColorAmbient = 1	,//	Color on and Ambient on
@@ -47,43 +47,44 @@ namespace nspace {
   * \brief Material.  Represents a visual material containing Properties the typical (OpenGL Material)
   */
   class Material : public virtual PropertyChangingObject {
-    REFLECTABLE_OBJECT(Material);
+    reflect_type(Material);
   public:
-  
+
     /**
     * \brief Ambient Color property.
     */
-    PROPERTY(Color,Ambient){}
-    REFERENCES(public, Color, Ambient);
+    typedef Color reflect_property(Ambient);
+    property_reference(Ambient);
 
-    PROPERTY(IlluminationModel, Model){}
-    REFERENCES(public,IlluminationModel,Model);
+    typedef IlluminationModel reflect_property(Model);
+    property_reference(Model);
 
     /**
     * \brief Diffuse Color property.
     */
-    PROPERTY(Color,Diffuse){}
-    REFERENCES(public, Color, Diffuse);
+    typedef Color reflect_property(Diffuse);
+    property_reference(Diffuse);
+    
     /**
     * \brief Specular Color property.
     */
-    PROPERTY(Color,Specular){}
-    REFERENCES(public, Color, Specular);
+    typedef Color reflect_property(Specular);
+    property_reference(Specular);
     /**
     * \brief Emission Color property.
     */
-    PROPERTY(Color,Emission){}
-    REFERENCES(public, Color, Emission);
+    typedef Color reflect_property(Emission);
+    property_reference(Emission);
 
 
     /**
     * \brief Shininess property.
     */
-    PROPERTY(Real,Shininess){}
-    REFERENCES(public, Real, Shininess);
+    typedef Real reflect_property(Shininess);
+    property_reference(Shininess);
 
-    PROPERTY(std::string, MaterialName){}
-    REFERENCES(public, std::string, MaterialName);
+    typedef std::string reflect_property(MaterialName);
+    property_reference(MaterialName);
   private:
 
     /**
@@ -105,10 +106,10 @@ namespace nspace {
     static const Material& unknown;
 
     /**
-     * \brief Sets the transparency for this material.
-     *
-     * \param value The value.
-     */
+    * \brief Sets the transparency for this material.
+    *
+    * \param value The value.
+    */
     void setTransparency(Real value){
       //@TODO check if this is the correct way to set transparency
       Diffuse().a()=value;
@@ -116,7 +117,7 @@ namespace nspace {
       Ambient().a()=value;
     }
 
-      
+
 
     /**
     * \brief Loads the materials from a file and stores them in the palette.

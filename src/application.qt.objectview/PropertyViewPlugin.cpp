@@ -5,19 +5,19 @@ using namespace nspace;
 PropertyViewPlugin::PropertyViewPlugin():_Object(0),_StartVisible(false),_ObjectPropertyView(0){
   setLoggingLevel(1);
 }
-void PropertyViewPlugin::propertyChanging(ObjectPropertyView*, ObjectPropertyView){
-  if(oldvalue){
-    oldvalue->setCurrentObject(0);
-  }
-  if(newvalue){
-    newvalue->setCurrentObject(getObject());
-  }
+
+auto PropertyViewPlugin::before_set(ObjectPropertyView){
+  if(_ObjectPropertyView)_ObjectPropertyView->setCurrentObject(0);
 }
-void PropertyViewPlugin::propertyChanging(Object*, Object){
-  if(nspace::hasObjectName(newvalue)){
+auto PropertyViewPlugin::after_set(ObjectPropertyView){
+  if(_ObjectPropertyView)_ObjectPropertyView->setCurrentObject(getObject());
+}
+auto PropertyViewPlugin::before_set(Object){
+  
+  if(nspace::hasObjectName(*newvalue)){
     std::stringstream ss;
     ss << "Properties of ";
-    ss << nspace::name(newvalue);
+    ss << nspace::name(*newvalue);
     setName(ss.str());
   }else{
     setName("Property View");

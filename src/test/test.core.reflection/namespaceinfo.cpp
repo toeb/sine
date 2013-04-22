@@ -11,7 +11,8 @@ UNITTEST(NamespaceConstruction1){
   CHECK_EQUAL("testnamespace",uut.getName());
   CHECK_EQUAL("::testnamespace::",uut.getFullyQualifiedName());
   CHECK_EQUAL(NamespaceInfo::Global(),uut.getParentNamespace());
-  CHECK(NamespaceInfo::Global()->getNamespaces().contains(&uut));
+  
+  CHECK(contains(NamespaceInfo::Global()->Namespaces(),&uut));
 }
 
 UNITTEST(NamespaceConstruction2){  
@@ -19,14 +20,14 @@ UNITTEST(NamespaceConstruction2){
 
 
   struct Derived1 : public NamespaceInfo{
-    Derived1():NamespaceInfo("test1",Global()){
+    Derived1():NamespaceInfo("::test1"){
 
     }
     
   };
   Derived1 uut1;
   struct Derived2 : public NamespaceInfo{
-    Derived2(const NamespaceInfo * parent):NamespaceInfo("test2",parent){
+    Derived2(const NamespaceInfo * parent):NamespaceInfo("::test1::test2"){
 
     }
   }
@@ -34,8 +35,8 @@ UNITTEST(NamespaceConstruction2){
   CHECK_EQUAL("test2",uut2.getName());
   CHECK_EQUAL("::test1::test2::",uut2.getFullyQualifiedName());
   CHECK_EQUAL(&uut1,uut2.getParentNamespace());
-  CHECK(uut1.getNamespaces().contains(&uut2));
-  CHECK(!NamespaceInfo::Global()->getNamespaces().contains(&uut2));
+  CHECK(contains(uut1.Namespaces(),&uut2));
+  CHECK(!contains(NamespaceInfo::Global()->Namespaces(),&uut2));
 
 
 }

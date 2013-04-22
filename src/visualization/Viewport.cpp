@@ -9,11 +9,11 @@ Viewport::Viewport():_ViewportRenderer(0),_Width(1),_Height(1){
   setName("Viewport");
 }
 
-void Viewport::propertyChanging(int,Width){
+auto Viewport::after_set(Width){
   doResize(getWidth(),getHeight());
 }
-void Viewport::propertyChanging(int,Height){
-  if(newvalue<1)newvalue=1;
+auto Viewport::after_set(Height){  
+  if(_Height<1)_Height=1;
   doResize(getWidth(),getHeight());
 }
 void Viewport::doResize(int width, int height){

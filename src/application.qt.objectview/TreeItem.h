@@ -9,15 +9,15 @@ namespace nspace{
     public Node<TreeItem>,
     public virtual PropertyChangingObject
   {
-    REFLECTABLE_OBJECT(TreeItem);
+    reflect_type(TreeItem);
     // the object which this tree item wraps
-    PROPERTY(Object*, Object){}
+    typedef Object * reflect_property(Object);
     // tracks if this item is expanded or not
-    PROPERTY(bool, IsExpanded){}
+    typedef bool reflect_property(IsExpanded);
     // pointer to the viewmodel
-    PROPERTY(ObjectPropertyViewModel*, Model){}
+    typedef ObjectPropertyViewModel* reflect_property(Model);
     // index model index of this item
-    SIMPLE_PROPERTY(QModelIndex, ModelIndex){}
+    typedef QModelIndex basic_property(ModelIndex);
   public:
     // expands the this item. this method must be called before accessing children
     void expand();

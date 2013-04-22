@@ -9,11 +9,10 @@ namespace nspace{
     public virtual Log,
     public virtual ObjectObserver
   {
-    REFLECTABLE_OBJECT(PropertyTreeItem);
-    // the propertyinfo object
-    SIMPLE_PROPERTY(const PropertyInfo*, PropertyInfo){}
+    reflect_type(PropertyTreeItem);    // the propertyinfo object
+    propdef const PropertyInfo* basic_property(PropertyInfo);
     // the ownign object of the property
-    PROPERTY(Object *, PropertyOwner){}
+    propdef Object * reflect_property(PropertyOwner);
   public:
     PropertyTreeItem();
 

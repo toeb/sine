@@ -84,6 +84,7 @@ const ScopeInfo * ScopeInfo::findChild(const std::string & name)const{
   for(auto it : ChildScopes()){
     if(it->getName()==name)return it;
   }
+  return 0;
 }
 
 std::vector<std::shared_ptr<ScopeInfo>> createdScopes;

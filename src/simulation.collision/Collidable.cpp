@@ -9,7 +9,7 @@ Collidable::Collidable(ISimulationObject & collisionObject):
 {
 }
 
-const TypeId Collidable::getCollisionType()const{
+const Type::TypeId Collidable::getCollisionType()const{
   return _collisionType ;
 }
 

@@ -1,10 +1,9 @@
 #pragma once
 #include <QCheckBox>
-#include <core.reflection/DefaultTypes.h>
-
+#include <core.reflection.h>
 #include <core.reflection/value/ITypedModifiableValue.h>
 namespace nspace{
-  class BoolWidget : public QCheckBox, public virtual ITypedModifiableValue<bool>{
+  class BoolWidget : public QCheckBox, public virtual IModifiableValue{
     Q_OBJECT;
     TYPED_OBJECT(BoolWidget);
   public:
@@ -15,13 +14,12 @@ namespace nspace{
       void checkBoxToggled(int value){
         raiseObjectChanged();
       }
-      bool storeTypedValue(const bool  & value){
+      bool storeValue(Argument value)override{
         setChecked(value);
         return true;
       }
-      bool retrieveTypeValue(bool & value)const{
-        value = isChecked();
-        return true;
+      Argument retrieveValue()const override{
+        return isChecked();
       }
   };
 }

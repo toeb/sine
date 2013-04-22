@@ -22,7 +22,9 @@ namespace nspace{
 
 
   class LuaVirtualMachine : public VirtualScriptMachine{
-    REFLECTABLE_OBJECT(LuaVirtualMachine);
+    reflect_type(LuaVirtualMachine);
+    
+    
     PROPERTYSET(luaL_Reg*,Libraries,{loadLibrary(*item);},{});
     
   private:

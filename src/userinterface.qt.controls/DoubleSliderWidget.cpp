@@ -12,14 +12,13 @@ DoubleSliderWidget::DoubleSliderWidget(){
 void DoubleSliderWidget::valueChanged(int i){
   raiseObjectChanged();
 }
-bool DoubleSliderWidget::retrieveTypeValue(double & value)const{
+Argument DoubleSliderWidget::retrieveValue()const{
   double factor = ((double)sliderPosition())/((double)getSteps());
   double newvalue = getMinValue()+(getMaxValue()-getMinValue())*factor;
-  value = newvalue;
-  return true;
+  return newvalue;
 }
-bool DoubleSliderWidget::storeTypedValue(const double  & value){
-  double newvalue = value;
+bool DoubleSliderWidget::storeValue(Argument argument){
+  double newvalue = argument;
   if(newvalue > getMaxValue())return false;
   if(newvalue < getMinValue())return false;
   newvalue -= getMinValue();

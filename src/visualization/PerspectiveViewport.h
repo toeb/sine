@@ -4,19 +4,23 @@
 
 namespace nspace{
   class PerspectiveViewport : public virtual Viewport{
-    REFLECTABLE_OBJECT(PerspectiveViewport);
+    reflect_type(PerspectiveViewport);
+    reflect_superclasses(Viewport);
   private:
+    typedef CoordinateSystem reflect_property(Coordinates);
+  public: property_reference(Coordinates);
 
-    PROPERTY(CoordinateSystem,Coordinates){}
-    REFERENCE(public,CoordinateSystem, Coordinates);
-    PROPERTY(Real, FieldOfViewAngle){}
-    REFERENCE(public,Real, FieldOfViewAngle);
-    PROPERTY(Real, NearCutOffPlane){}
-    REFERENCE(public,Real, NearCutOffPlane);
-    PROPERTY(Real, FarCutOffPlane){}
-    REFERENCE(public,Real, FarCutOffPlane);
-    PROPERTY(Real, ZoomFactor){}
-    REFERENCE(public,Real, ZoomFactor);
+    typedef Real reflect_property(FieldOfViewAngle);
+  public:property_reference(FieldOfViewAngle);
+
+    typedef Real reflect_property(NearCutOffPlane);
+  public:property_reference(NearCutOffPlane);
+
+    typedef Real reflect_property(FarCutOffPlane);
+  public:property_reference(FarCutOffPlane);
+
+    typedef Real reflect_property(ZoomFactor);
+  public:property_reference(ZoomFactor);
 
   public:
     PerspectiveViewport();

@@ -1,6 +1,7 @@
 #include <core.testing.h>
 #include <map>
 #include <string>
+#include <core.preprocessor.h>
 
 #include <core/patterns/StaticInitializer.h>
 

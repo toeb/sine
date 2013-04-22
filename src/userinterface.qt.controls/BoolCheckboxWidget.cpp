@@ -21,8 +21,7 @@ void BoolCheckboxWidget::checkboxStateChanged(int state){
   updateValueHolder();
 }
 void BoolCheckboxWidget::updateWidgetValue(){
-  bool value;
-  getValueHolder()->get(value);
+  bool value = getValueHolder()->get();
   _checkbox->setCheckState(value?Qt::Checked:Qt::Unchecked);
 }
 void BoolCheckboxWidget::updateValueHolder(){

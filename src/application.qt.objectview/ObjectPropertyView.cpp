@@ -20,17 +20,21 @@ ObjectPropertyView::ObjectPropertyView(QWidget*parent):QWidget(parent),_CurrentO
   _ui->treeView->setItemDelegateForColumn(1,new CustomItemDelegate(_ui->treeView));
 }
 
-void ObjectPropertyView::propertyChanging(Object*, CurrentObject){
-  _model->setCurrentObject(newvalue);
+auto ObjectPropertyView::before_set(CurrentObject){
+  _model->setCurrentObject(*newvalue);
   Widgets().clear();
 
-  auto properties = newvalue->getType()->Properties();
+  auto properties = (*newvalue)->getType()->Properties();
 
   properties.foreachElement([this](const PropertyInfo * prop){
     auto label = new QLabel();
     label->setText(tr(prop->getDisplayName().c_str()));
     Widgets()|= label;
   });
+  return Accept;
+}
+auto ObjectPropertyView::after_set(CurrentObject){
+  
 }
 void ObjectPropertyView::autoresize(){
   _ui->treeView->resizeColumnToContents(0);

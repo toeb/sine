@@ -40,7 +40,7 @@ namespace nspace {
    *        contains a map of all collors : a color palette.
    */
   class Color : public virtual PropertyChangingObject {
-    REFLECTABLE_OBJECT(Color);
+    reflect_type(Color);
 private:
 
     /**

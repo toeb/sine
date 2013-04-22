@@ -11,10 +11,12 @@ class Ui_ObjectView;
 namespace nspace{
   class ObjectViewPlugin : public Plugin, public virtual PropertyChangingObject, public virtual TypedModuleBase<Object>,public virtual Log {
     Q_OBJECT;
-    REFLECTABLE_OBJECT(ObjectViewPlugin);
-    SUBCLASSOF(Log)
-      PROPERTY(std::string,SearchString){
-        debugMessage("SearchString changing to"<<newvalue,6);
+    reflect_type(ObjectViewPlugin);
+    reflect_superclasses(Log);
+
+    typedef std::string reflect_property(SearchString);
+    auto after_set(SearchString){      
+      debugMessage("SearchString changed to"<<getSearchString(),6);
     }
     PROPERTYSET(Object *, Objects,,)
   private:

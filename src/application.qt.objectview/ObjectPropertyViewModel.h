@@ -6,6 +6,7 @@
 #include <sstream>
 namespace nspace{
   class TreeItem;
+
   class ObjectPropertyViewModel :
     public QAbstractItemModel,
     public virtual PropertyChangingObject,
@@ -14,16 +15,16 @@ namespace nspace{
     public virtual ObjectObserver
   {
     Q_OBJECT;
-    REFLECTABLE_OBJECT(ObjectPropertyViewModel);
-    SUBCLASSOF(Log);
+    reflect_type(ObjectPropertyViewModel);
+    reflect_superclasses(Log);
   private:
 
     TreeItem* getItem(const QModelIndex& index )const;
   public:
     void onChange(Observable * observer);
     TreeItem * createItem(Object * object);
-    PROPERTY(Object *, CurrentObject);
-    SIMPLE_PROPERTY(TreeItem*, RootItem);
+    typedef Object * reflect_property(CurrentObject);
+    typedef TreeItem* basic_property(RootItem);
   protected:
     void onPropertyChanged(Object * sender, const std::string & name);
   public:

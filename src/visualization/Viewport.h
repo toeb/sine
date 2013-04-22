@@ -4,13 +4,15 @@
 #include <simulation.kinematics/CoordinateSystem.h>
 namespace nspace{
   class Viewport : virtual public NamedObject, public virtual PropertyChangingObject{
-    REFLECTABLE_OBJECT(Viewport);
+    reflect_type(Viewport);
   public:
-    PROPERTY(Renderer *, ViewportRenderer){}
-    PROPERTY(int,Width);
+    typedef Renderer * reflect_property(ViewportRenderer);
+    typedef int reflect_property(Width);
     REFERENCE(public, int, Width);
-    PROPERTY(int, Height);
+    typedef int reflect_property(Height);    
     REFERENCE(public, int, Height);
+    auto after_set(Height);
+    auto after_set(Width);
   public:
 
     Real aspectRatio()const;

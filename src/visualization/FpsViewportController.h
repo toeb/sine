@@ -41,28 +41,27 @@ namespace nspace{
     public virtual IInputListener,
     public virtual Log
   {
-    REFLECTABLE_OBJECT(FpsViewportController);
-    SUBCLASSOF(Log);
-    SUBCLASSOF(ScheduledTask);
-    SUBCLASSOF(ViewportController);
+    notify_property_changed
+    reflect_type(FpsViewportController);
+    reflect_superclasses(Log ,ScheduledTask,ViewportController);
 
-    PROPERTY(Real, Roll){}
-    CUSTOMSERIALIZER(Real,Roll,);
-    CUSTOMDESERIALIZER(Real,Roll,);
+    typedef Real reflect_property(Roll);
+    //CUSTOMSERIALIZER(Real,Roll,);
+    //CUSTOMDESERIALIZER(Real,Roll,);
 
-    PROPERTY(Real, Pitch){}
-    CUSTOMSERIALIZER(Real,Pitch,);
-    CUSTOMDESERIALIZER(Real,Pitch,);
+    typedef Real reflect_property(Pitch);
+    //CUSTOMSERIALIZER(Real,Pitch,);
+    //CUSTOMDESERIALIZER(Real,Pitch,);
 
-    PROPERTY(Real, Yaw){}
-    CUSTOMSERIALIZER(Real,Yaw,);
-    CUSTOMDESERIALIZER(Real,Yaw,);
+    typedef Real reflect_property(Yaw);
+    //CUSTOMSERIALIZER(Real,Yaw,);
+    //CUSTOMDESERIALIZER(Real,Yaw,);
 
-    DESCRIPTION(MovementSpeed,"The speed at which to translate when pressing keys");
-    PROPERTY(Real,MovementSpeed){}
+    //DESCRIPTION(MovementSpeed,"The speed at which to translate when pressing keys");
+    typedef Real reflect_property(MovementSpeed);
 
-    DESCRIPTION(RotationSpeed,"The speed at which to rotate");
-    PROPERTY(Real,RotationSpeed){}
+    //DESCRIPTION(RotationSpeed,"The speed at which to rotate");
+    typedef Real reflect_property(RotationSpeed);
 
   public:
     FpsViewportController();

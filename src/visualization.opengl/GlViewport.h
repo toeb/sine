@@ -32,8 +32,8 @@ namespace nspace{
   class GlViewport:
     public virtual PerspectiveViewport,
     public virtual Initializable{
-      REFLECTABLE_OBJECT(GlViewport);
-      PROPERTY(Color,ClearColor){};
+      reflect_type(GlViewport);
+      typedef Color reflect_property(ClearColor);
   public:
     GlViewport();
     void viewportTransform();

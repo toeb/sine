@@ -2,6 +2,7 @@
 
 #include <config.h>
 #include <core.reflection/value/IReadableValue.h>
+#include <core/Object.h>
 namespace nspace{
   /**
   * \brief Defines an alias representing identifier for the version of a value.

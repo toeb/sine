@@ -1,5 +1,5 @@
 #include "Lua.h"
-
+/*
 using namespace nspace;
 using namespace std;
 
@@ -45,7 +45,7 @@ int luaObjectToString(lua_State*L){
 
   auto object = luaUserDataField<ScriptObject>(L,1,"cscriptobject");
   if(object){
-    string s = object->getObjectType()->objectToString(object->getObjectPointer().get());
+    string s = "";// object->getObjectType()->objectToString(object->getObjectPointer().get());
     lua_pushstring(L,s);
   }else{
     lua_pushstring(L,"<no to string method>");
@@ -240,7 +240,7 @@ int luaMemberMethod(lua_State*L){
     auto propertyType = prop->getPropertyType();
 
     if(n==2){
-      if(!propertyType->isConstructible()){
+      if(!propertyType->isDefaultConstructible()){
         //error
         return 0;
       }      
@@ -249,11 +249,11 @@ int luaMemberMethod(lua_State*L){
       // lua supports only double
       bool isNumber=false;
       double number =0.0;
-
-      auto valuePointer=  propertyType->createInstance();
+      
+      auto valuePointer=  propertyType->getConstructor();
       prop->unsafeGetValue(object->getObjectPointer().get(),valuePointer.get());
       luaPushValue(L,propertyType,valuePointer.get());
-
+      
       return 1;
 
 
@@ -332,8 +332,7 @@ int luaConstructor(lua_State*L){
     // set object's member object pointer
     lua_pushlightuserdata(L,const_cast<MemberInfo*>(member));      
     lua_setfield(L,-2,"cmemberinfo");
-    /*lua_pushlightuserdata(L,object);
-    lua_setfield(L,-2,"cscriptobject");*/
+
     // new metatable 
     lua_newtable(L);
     lua_pushcfunction(L,luaMemberMethod);
@@ -564,12 +563,7 @@ LuaVirtualMachine::LuaVirtualMachine(){
 
   luaSetVM(_state,this);
 
-  /*
-  createTypeMetaTable(_state);
-  createMemberMetaTable(_state);
-  createMethodMetaTable(_state);
-  createPropertyMetaTable(_state);
-  */
+
   // add default libraries
   luaL_Reg base = {"base",luaopen_base};
   luaL_Reg io = {"io",luaopen_io};
@@ -621,3 +615,4 @@ void createMember(lua_State*L,const MemberInfo * member){
     createMethod(L,dynamic_cast<const MethodInfo*>(member));
   }
 }
+*/

@@ -26,7 +26,7 @@ DoubleSpinBoxWidget::DoubleSpinBoxWidget(QWidget * parent):ValueWidget(parent){
 void DoubleSpinBoxWidget::updateWidgetValue(){
   double value;
   if(!getValueHolder())return;
-  getValueHolder()->get(value);
+ value=  getValueHolder()->get();
   _spinbox->setValue(value);
 }
 void DoubleSpinBoxWidget::updateValueHolder(){

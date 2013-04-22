@@ -21,7 +21,7 @@ namespace nspace{
     public virtual Log
   {
     Q_OBJECT;
-    REFLECTABLE_OBJECT(LineEditDataBinding);
+    reflect_type(LineEditDataBinding);
   public:
 
     SIMPLE_PROPERTY(QLineEdit * , Target){
@@ -29,13 +29,18 @@ namespace nspace{
       if(newvalue)connect(newvalue,SIGNAL(editingFinished()),this,SLOT(targetChanged()));
       if(newvalue)connect(newvalue,SIGNAL(textEdited(const QString& )),this,SLOT(targetChanged()));
     }
-    PROPERTY(std::string, PropertyName){}
-    PROPERTY(PropertyChangingObject*, Source){
-      if(oldvalue)oldvalue->listeners()/=this;
-      if(newvalue)newvalue->listeners()|= this;
+    typedef std::string reflect_property(PropertyName);
+    typedef PropertyChangingObject* reflect_property(Source);
+    auto before_set(Source){      
+      if(getSource())getSource()->listeners()/=this;
     }
-    PROPERTY(BindingType, BindingType){}
-    SIMPLE_PROPERTY(const PropertyInfo*, Property){}
+    auto after_set(Source){
+      if(getSource())getSource()->listeners()|=this;
+    }
+
+    typedef BindingType reflect_property(BindingType);
+
+    typedef const PropertyInfo * reflect_property(Property);
 
     bool _propertyChanging;//don't know if i realy need this
   public:
@@ -53,7 +58,7 @@ namespace nspace{
       auto prop= source->getType()->getProperty(propertyName);
       if(!prop)return;
       std::stringstream ss;
-      prop->serialize(sender,ss);
+      //prop->serialize(sender,ss);
       auto target = getTarget();
       if(!target)return;
       _propertyChanging = true;
@@ -73,7 +78,7 @@ namespace nspace{
         if(!prop)return ;
         std::string text = target->text().toUtf8().data();
         std::stringstream ss(text);
-        prop->deserialize(source,ss);
+        //prop->deserialize(source,ss);
       }
   };
 }

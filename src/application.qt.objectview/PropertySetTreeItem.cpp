@@ -1,4 +1,4 @@
-#include "PropertySetTreeItem.h"
+/*#include "PropertySetTreeItem.h"
 #include <application.qt.objectview/PropertySetElementTreeItem.h>
 using namespace nspace;
 
@@ -76,4 +76,4 @@ void PropertySetTreeItem::doExpand(){
 
   debugInfo("Expanding PropertySetTreeItem adding "<<numberOfElements <<" elements" );
   resetList();
-}
+}*/

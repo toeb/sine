@@ -66,10 +66,10 @@
 
 #define DS_REFLECT_PROPERTY(NAME, GETTER, SETTER)\
   DS_INITIALIZER_STATIC(NAME##Property){\
-  auto type = const_cast<Type*>(typeof(CurrentClassType));\
+  auto type = const_cast<nspace::Type*>(typeof(CurrentClassType));\
   auto getter = type->getMethod(#GETTER);\
   auto setter = type->getMethod(#SETTER);\
-  auto info = new TypedPropertyInfo<CurrentClassType>(#NAME,getter,setter);\
+  auto info = new nspace::TypedPropertyInfo<CurrentClassType>(#NAME,getter,setter);\
   type->Members()|=info;\
   }
   

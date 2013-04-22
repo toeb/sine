@@ -25,11 +25,15 @@ namespace nspace{
 
   //TODO Implement cubic reader
   class TrajectoryReader : public virtual PropertyChangingObject, public virtual Log{
-    REFLECTABLE_OBJECT(TrajectoryReader);
-    SUBCLASSOF(Log);
+    reflect_type(TrajectoryReader);
+    reflect_superclasses(Log);
 
     PROPERTYSET( PiecewiseFunction<VectorND>*, Trajectories,{},{});
-    SIMPLE_PROPERTY( PiecewiseFunction<VectorND>*, LastTrajectory){Trajectories().add(newvalue);};
+    typedef  PiecewiseFunction<VectorND>* reflect_property(LastTrajectory);
+    auto after_set(LastTrajectory){
+      Trajectories().add(getLastTrajectory());
+    };
+
   public:
     // reads a trajectory.  the format of the stream must be as used in DirCol
     bool read(std::istream & stream, PiecewiseFunction<VectorND>** trajectory=0);

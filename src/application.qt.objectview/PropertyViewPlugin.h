@@ -11,11 +11,15 @@ namespace nspace{
     public virtual PropertyChangingObject,
     public virtual Log {
       Q_OBJECT;
-      REFLECTABLE_OBJECT(PropertyViewPlugin)
-        SUBCLASSOF(Log);
-      PROPERTY(Object*, Object);
-      PROPERTY(bool, StartVisible){}
-      SIMPLE_PROPERTY(ObjectPropertyView*, ObjectPropertyView);
+      reflect_type(PropertyViewPlugin);
+      reflect_superclasses(Log);
+      typedef Object* reflect_property(Object);
+      auto before_set(Object);
+      auto after_set(Object);
+      typedef bool reflect_property(StartVisible);
+      typedef ObjectPropertyView* extensible_property(ObjectPropertyView);
+      auto before_set(ObjectPropertyView);
+      auto after_set(ObjectPropertyView);
   public:
     PropertyViewPlugin();
     virtual void install(PluginContainer & container);

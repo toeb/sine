@@ -7,11 +7,11 @@ namespace nspace{
   class MethodTreeItem :
     public TreeItem,
     public virtual Log{
-      REFLECTABLE_OBJECT(MethodTreeItem);
+      reflect_type(MethodTreeItem);
       // the method info object
-      SIMPLE_PROPERTY(const MethodInfo*, MethodInfo){}
+      typedef const MethodInfo * basic_property(MethodInfo);
       // the ownign object of the property
-      PROPERTY(Object *, PropertyOwner){}
+      typedef Object * reflect_property(PropertyOwner);
   public:
     MethodTreeItem();
 
