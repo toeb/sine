@@ -101,12 +101,12 @@ namespace nspace{
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(true);                                                                                                                          \
   }                                                                                                                                          \
-  Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                                   \
+  Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                             \
   DS_FOREACH(DS_TYPED_METHOD_INFO_CHECK_ARG, DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                            \
-  return Argument(DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__));  \
+  return Argument(DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__));                                                                            \
   }                                                                                                                                          \
-  Argument call(const void * object, std::vector<Argument> args )const{                                                                            \
-  return typedCall(static_cast<const ClassType*>(object),args);                                                                                    \
+  Argument call(const void * object, std::vector<Argument> args )const{                                                                      \
+  return typedCall(static_cast<const ClassType*>(object),args);                                                                              \
   }                                                                                                                                          \
   };                                                                                                                                         \
   /* Specialization for non-const method with non void return type and arbirtray arguments*/                                                 \
@@ -124,7 +124,7 @@ namespace nspace{
   }                                                                                                                                          \
   Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                   \
   DS_FOREACH(DS_TYPED_METHOD_INFO_CHECK_ARG, DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                            \
-  return Argument(DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__)); \
+  return Argument(DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__));                                                                            \
   }                                                                                                                                          \
   Argument call(void * object, std::vector<Argument> args )const{                                                                            \
   return typedCall(static_cast<ClassType*>(object),args);                                                                                    \
@@ -143,13 +143,13 @@ namespace nspace{
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
   setIsConst(true);                                                                                                                          \
   }                                                                                                                                          \
-  Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                                   \
+  Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                             \
   DS_FOREACH(DS_TYPED_METHOD_INFO_CHECK_ARG, DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                            \
-  DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__);                \
+  DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__);                                                                                             \
   return Argument::VoidArgument();                                                                                                           \
   }                                                                                                                                          \
-  Argument call(const void * object, std::vector<Argument> args )const{                                                                            \
-  return typedCall(static_cast<const ClassType*>(object),args);                                                                                    \
+  Argument call(const void * object, std::vector<Argument> args )const{                                                                      \
+  return typedCall(static_cast<const ClassType*>(object),args);                                                                              \
   }                                                                                                                                          \
   };                                                                                                                                         \
   /* Specialization for non-const method with void return type and arbirtray arguments*/                                                     \
@@ -167,7 +167,7 @@ namespace nspace{
   }                                                                                                                                          \
   Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                   \
   DS_FOREACH(DS_TYPED_METHOD_INFO_CHECK_ARG, DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                            \
-  DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__);                   \
+  DS_TYPED_METHOD_INFO_CALL_METHOD(__VA_ARGS__);                                                                                             \
   return Argument::VoidArgument();                                                                                                           \
   }                                                                                                                                          \
   Argument call(void * object, std::vector<Argument> args )const{                                                                            \

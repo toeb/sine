@@ -224,12 +224,54 @@ TEST(2,ImplicitEuler){
 }
 
 
+TEST(1,RungeKutta2){
+  auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
+  RungeKutta2<decltype(f)> uut(f);
+  uut.h()=0.001;
+  uut.stepUntil(1.0);
+
+  logInfo("error: "<<abs(uut.x()-0.5));
+  DOUBLES_EQUAL(0.5,uut.x(),0.001);
+}
 
 
 
 
+TEST(2,RungeKutta2){
+  auto f=[](Real x, Real h, Real t, int i)->Real{return nspace::scalar::sine(t);};
+  RungeKutta2<decltype(f)> uut(f);
+  uut.h()=0.001;
+  uut.stepUntil(nspace::scalar::pi<Real>());
+
+  auto analyticalResult = 2.0; // integral from t=0 to Pi over sin(t) = -cos(Pi)+cos(0) = 1+1=2
+
+  logInfo("error: "<< abs(uut.x()-analyticalResult));
+  DOUBLES_EQUAL(analyticalResult,uut.x(), 0.001);
+}
+
+TEST(1,RungeKutta4){
+  auto f=[](Real x, Real h, Real t, int i)->Real{return t;};
+  RungeKutta4<decltype(f)> uut(f);
+  uut.h()=0.001;
+  uut.stepUntil(1.0);
+
+  logInfo("error: "<<abs(uut.x()-0.5));
+  DOUBLES_EQUAL(0.5,uut.x(),0.001);
+}
 
 
+
+TEST(2,RungeKutta4){
+  auto f=[](Real x, Real h, Real t, int i)->Real{return nspace::scalar::sine(t);};
+  RungeKutta4<decltype(f)> uut(f);
+  uut.h()=0.001;
+  uut.stepUntil(nspace::scalar::pi<Real>());
+
+  auto analyticalResult = 2.0; // integral from t=0 to Pi over sin(t) = -cos(Pi)+cos(0) = 1+1=2
+
+  logInfo("error: "<< abs(uut.x()-analyticalResult));
+  DOUBLES_EQUAL(analyticalResult,uut.x(), 0.001);
+}
 
 
 

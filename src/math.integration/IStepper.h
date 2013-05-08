@@ -4,7 +4,6 @@
 namespace nspace{
   namespace math{
     namespace integration{
-
       struct IStepper{
         typedef size_t StepCount;
         StepCount _i;
@@ -14,8 +13,7 @@ namespace nspace{
           nSteps(n);
         }
 
-
-        virtual void step(){    
+        virtual void step(){
           doStep();
           _i++;
         }
@@ -23,7 +21,7 @@ namespace nspace{
           for(StepCount i =0; i < n; i++){
             step();
           }
-        }  
+        }
 
         IStepper():_i(0){}
         virtual ~IStepper(){}

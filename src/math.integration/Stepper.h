@@ -2,11 +2,9 @@
 #include <math.integration/IStepper.h>
 #include <math.matrix/operations/MatrixSetConstant.h>
 
-
 namespace nspace{
   namespace math{
     namespace integration{
-
       //typename nspace::function_traits<F>::arg<0>::type
       template<typename F, typename X=typename  state_type<F>::type, typename H =typename step_size_type<F>::type,typename T = typename  time_type<F>::type>
       struct Stepper : public IStepper{
@@ -17,8 +15,6 @@ namespace nspace{
         typedef T TimeType;
         typedef typename nspace::coefficientTypeOfType(X) CoefficientType;
 
-
-
         const TimeType & t()const;
         const TimeType & t0()const;
         const StateType & x()const ;
@@ -28,7 +24,7 @@ namespace nspace{
         TimeStepType & h();
         const TimeStepType & h0()const;
 
-        Stepper(FunctionType function, 
+        Stepper(FunctionType function,
           StateType x0=constant<StateType>(0),
           TimeType t0=constant<TimeType>(0),
           TimeStepType h0=constant<TimeStepType>(0.02)
@@ -49,6 +45,5 @@ namespace nspace{
     }
   }
 }
-
 
 #include "Stepper.implementation.template.h"

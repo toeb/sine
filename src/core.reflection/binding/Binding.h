@@ -4,7 +4,9 @@
 
 namespace nspace{
   class Binding : public virtual PropertyChangingObject, public virtual Log, public virtual ObjectObserver{
-    REFLECTABLE_OBJECT(Binding);
+    reflect_type(Binding);
+    /*   
+
     OBJECTPOINTERPROPERTY(IModifiableValue,Source){
       if(oldvalue){
         oldvalue->removeObjectObserver(this);
@@ -91,7 +93,7 @@ namespace nspace{
     //HACK: private default constructor causes errors for typed objects
     Binding():_Source(0),_Sink(0),_BindingType(0),_IsUpdating(false){
     }
-  private:
+  private:*/
     
   };
 }
