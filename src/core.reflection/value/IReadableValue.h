@@ -16,6 +16,9 @@ namespace nspace{
   public:
     IReadableValue();
     IReadableValue(const Type * valueType);
+    template<typename T>
+    operator T()const{return get();};
+    operator Argument()const{return get();}
     Argument get()const;
 
   };

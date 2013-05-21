@@ -13,6 +13,8 @@ namespace nspace{
   // meta information for std::types
 
   META(::std::string);
+  //DS_DEFAULT_CONSTRUCTOR_ENABLE(std::string);
+  
 
   META(::std::ostream);
   META(::std::istream);

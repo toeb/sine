@@ -113,6 +113,8 @@ set(source ${source} ${bindingSource})
 set(dynamicSource
  ./dynamic/DynamicObject.h
  ./dynamic/DynamicObject.cpp
+ ./dynamic/DynamicMappedObject.h
+ ./dynamic/DynamicMappedObject.cpp
  ./dynamic/DynamicCallable.h
  ./dynamic/DynamicCallable.cpp
  ./dynamic/DynamicCallableImplementation.h

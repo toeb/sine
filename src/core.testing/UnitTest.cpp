@@ -56,9 +56,17 @@ void UnitTest::toString(std::ostream & out)const{
 
 }
 
-void UnitTest::runTest(){      
+void UnitTest::runTest(){     
   tick();
-  test();
+  try{
+    test();
+  }catch(const std::exception & ex){
+
+  }catch(const std::string & ex){
+
+  }catch(...){
+
+  }
   tock();
 }
 

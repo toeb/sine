@@ -29,6 +29,7 @@ namespace nspace{
   META(::std::nullptr_t)
 
 
-
+  // argument can now be meta'd  
+  META(Argument);
 
 }

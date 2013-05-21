@@ -8,6 +8,38 @@ using namespace nspace;
 using namespace std;
 
 
+UNITTEST(ModifiableValueSetTypeConversion){
+  // tries to set a modifiable value by auto type conversion
+
+}
+UNITTEST(ModifiableValueSetargumentConversion){
+  // tries to set a modifiable value by auto Argument conversion
+
+  int val=0;
+  DelegateModifiableValue value([&](){return val;}, [&](Argument arg){val = arg;});
+  value=535;
+  CHECK_EQUAL(535,val);
+}
+
+UNITTEST(ReadableValueAutoTypeConversion){
+  DelegateModifiableValue value([](){return 3;});
+
+  int result = value;
+
+  CHECK_EQUAL(3,result);
+
+}
+UNITTEST(ReadableValueAutoArgumentConversion){
+  DelegateModifiableValue value([](){
+    return 3;
+  });
+
+  Argument result = value.get();
+  CHECK(result.isValid());
+
+  CHECK_EQUAL(3,(int)result);
+
+}
 
 TEST(3,CallableFunctor){
   auto it =make_callable([](string s)->int{return strtol(s.c_str(),0,10);});  

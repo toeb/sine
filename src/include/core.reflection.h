@@ -48,15 +48,17 @@
 
 //#include <core/reflection/Action.h>
 //#include <core/reflection/DelegateAction.h>
-//#include <core/reflection/DelegateValue.h>
-//#include <core/reflection/IModifiableValue.h>
-//#include <core/reflection/IReadableValue.h>
+#include <core.reflection/value/DelegateValue.h>
+#include <core.reflection/value/IModifiableValue.h>
+#include <core.reflection/value/IReadableValue.h>
+#include <core.reflection/value/DelegateValue.h>
+
 //#include <core/reflection/ITypedModifiableValue.h>
 //#include <core/reflection/ITypedReadableValue.h>
 //#include <core/reflection/ReferenceValue.h>
 //#include <core/reflection/ITypedSerializableValue.h>
 
-#include <core.serialization/Serialization.h>
+//#include <core.serialization/Serialization.h>
 
 #include <core.reflection/preprocessor/properties.h>
 

@@ -4,6 +4,10 @@ set(source
  Serialization.h
  ISerializable.h
  ISerializable.cpp
+Serializer.h
+Deserializer.h
+Serializer.cpp
+Deserializer.cpp
 
 
 )

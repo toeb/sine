@@ -35,7 +35,6 @@ namespace nspace{
 #define DS_DEFAULT_CONSTRUCTOR_DISABLE(TYPE) DS_DEFAULT_CONSTRUCTOR_SPECIALIZE(TYPE,false)
 
 
-  DS_DEFAULT_CONSTRUCTOR_ENABLE(std::string);
   
 
   template<typename T>

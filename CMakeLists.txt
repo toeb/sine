@@ -96,7 +96,7 @@ include_directories(${externalsDirectory}/soil/src)
 include_directories(${externalsDirectory}/lodepng)
 include_directories(${externalsDirectory}/eigen3)
 include_directories(${externalsDirectory}/cppunitlite)
-
+include_directories(${externalsDirectory}/lib_json/include)
 
 include_directories(${externalsDirectory}/v8/include)
 

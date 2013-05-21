@@ -12,5 +12,13 @@ namespace nspace{
     IModifiableValue();
     IModifiableValue(const Type * valueType);
     bool set(Argument argument);
+
+    template<typename T>
+    void operator =(T  value){
+      set(value);
+    }
+
+
+
   };
 }

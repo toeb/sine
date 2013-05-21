@@ -1,6 +1,6 @@
 # specifiy needed external here
 set(useExternals
-lodepng tinyxml2 rply freeglut cppunitlite lua
+lodepng tinyxml2 rply freeglut cppunitlite lua lib_json
 )
 # iterate through all external, add them and put them in externals project folder
 foreach(item ${useExternals})

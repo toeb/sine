@@ -1,0 +1,2 @@
+just copied files and removed superfluous files and folders
+(I call it quick and dirty cmake version)
