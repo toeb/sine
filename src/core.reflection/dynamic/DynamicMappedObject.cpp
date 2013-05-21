@@ -2,10 +2,13 @@
 #include <core.reflection.h>
 using namespace nspace;
 
-reflect_begin(DynamicMappedObjectImplementation)
-  _method(__get_property)
-  _method(__set_property)
-reflect_end
+std::vector<std::string> DynamicMappedObjectImplementation::__list_property_names()const{
+  std::vector<std::string> result;
+  for(auto it = _map.begin(); it!=_map.end();it++){    
+    result.push_back(it->first);
+  }
+  return result;
+}
 
 DynamicMappedObjectImplementation::DynamicMappedObjectImplementation():DynamicReflectedObjectImplementation(std::shared_ptr<DynamicMappedObjectImplementation>(this,[](DynamicMappedObjectImplementation* ){})){
 
@@ -21,3 +24,10 @@ bool DynamicMappedObjectImplementation::__set_property(const std::string & name,
   _map[name] = argument;
   return true;
 }
+
+reflect_begin(DynamicMappedObjectImplementation);
+_method(__get_property);
+_method(__set_property);
+_method(__list_property_names);
+reflect_end;
+

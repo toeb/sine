@@ -11,15 +11,21 @@ namespace nspace{
     std::shared_ptr<DynamicObjectImplementation> _implementation;
   public:
     Argument operator*();
-    typedef const std::vector<std::string> MemberList;  
+    typedef std::vector<std::string> MemberList;  
     DynamicObject(std::shared_ptr<DynamicObjectImplementation> impl);
     // returns a reference to an modifiable value. this reference exists as long as this object exists
     // and will cause errors if accessed beyond the lifespan.  use getProperty / getMethod for a persistent reference
     // this operator will throw an exception if modifiable value can not be obtained.  use getProperty / getMethod for silent failures
     IModifiableValue & operator[](const std::string & name);
     std::shared_ptr<IModifiableValue> getProperty(const std::string & name);
+    std::shared_ptr<const IModifiableValue> getProperty(const std::string & name)const;
     DynamicCallable getMethod(const std::string & name);
-    MemberList getMemberNames();
+    MemberList getMemberNames()const;
+    MemberList getPropertyNames()const;
+    MemberList getMethodNames()const;
+    bool hasMember(const std::string & name)const;
+    bool hasProperty(const std::string & name)const;
+    bool hasMethod(const std::string & name)const;
   };
 
 

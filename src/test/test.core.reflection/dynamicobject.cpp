@@ -11,14 +11,17 @@ using namespace nspace;
 namespace test{
 
 
-
+  // class used for testing purposes
   class TestClass{
     reflect_type(TestClass);
 
-    typedef std::string reflect_property(LastName);
+    typedef std::string reflect_property(LastName);    
+    typedef int reflect_property(Age);
 
     reflect_method(increment);
     int increment(int i){return i+1;}
+
+
 
     reflect_method(__get_property);
     Argument __get_property(const std::string & name){
@@ -32,7 +35,76 @@ namespace test{
       return false;
     }
 
+    reflect_method(__list_property_names);
+    std::vector<std::string> __list_property_names()const{
+      std::vector<std::string> result;
+      result.push_back("DynamicProperty");
+      return result;
+    }
+
   };
+  
+  bool copy(DynamicObject & destination, const DynamicObject & source){
+    auto names = concat(source.getPropertyNames(),destination.getPropertyNames());
+    std::sort(std::begin(names),std::end(names));
+    names.erase(std::unique(std::begin(names),std::end(names)),std::end(names));
+
+    
+    for(auto it = std::begin(names); it != std::end(names); it++){
+      auto d = destination.getProperty(*it);
+      auto s = source.getProperty(*it);
+      auto value = s->get();
+      if(!value.isValid())continue;
+      d->set(value);
+    }
+
+    return true;
+  }
+
+  UNITTEST(CopyReflectedObjectToMappedObject){
+    auto subject1 = std::make_shared<TestClass>();
+    subject1->setAge(23);
+    subject1->setLastName("Becker");
+    
+    auto uut1 = make_dynamic(subject1);      
+    auto uut2 = make_dynamic_mapped();
+
+    // act
+    auto success = copy(uut2,uut1);
+
+    // validate
+    CHECK(success);
+    CHECK(uut2.hasProperty("LastName"));
+    CHECK_EQUAL(std::string("Becker"), (std::string)uut2["LastName"].get());
+    CHECK_EQUAL(5,(int)uut2["DynamicProperty"]);
+    CHECK_EQUAL(23,(int)uut2["Age"]);
+
+
+
+
+
+  }
+
+  UNITTEST(CopyDynamicObjectToSameUnderylingType1){
+    // this test only checks reflected properties - no dynamic properties
+    auto subject1 = std::make_shared<TestClass>();
+    subject1->setAge(24);
+    subject1->setLastName("Becker");
+    auto subject2 = std::make_shared<TestClass>();
+
+    auto uut1 = make_dynamic(subject1);
+    auto uut2 = make_dynamic(subject2);
+
+    // copy uut1 to uut2 propertywise
+    auto result = copy(uut2,uut1);
+    
+    CHECK(result)
+
+    CHECK_EQUAL(24,subject2->getAge());
+    CHECK_EQUAL("Becker",subject2->getLastName());
+
+
+  }
   UNITTEST(DynamicObjectArgumentConvertion){
     // create a object (as shared pointer)
     auto subject = std::make_shared<TestClass>();

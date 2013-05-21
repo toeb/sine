@@ -1,3 +1,4 @@
+#pragma once
 #include <core.reflection/type/Argument.h>
 
 // template implementation

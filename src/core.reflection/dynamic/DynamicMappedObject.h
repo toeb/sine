@@ -8,7 +8,7 @@ namespace nspace{
     std::map<std::string,Argument> _map;
   public:  
     DynamicMappedObjectImplementation();
-
+    std::vector<std::string> __list_property_names()const;
     Argument __get_property(const std::string & name);
     bool __set_property(const std::string & name, Argument argument);
   };
