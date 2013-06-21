@@ -8,6 +8,33 @@ using namespace nspace;
 using namespace std;
 
 
+
+UNITTEST(TestVectorType){
+  // setup
+  std::vector<int> value;
+  value.push_back(1);
+  value.push_back(3);
+  value.push_back(2);
+  value.push_back(4);
+
+  // act
+  auto type=  typeof(std::vector<int>);  
+  Argument assigned = value;
+
+  auto constructed = type->call();
+  constructed = assigned;
+
+  auto result = (std::vector<int>)constructed;
+  // validate
+
+  CHECK(assigned.isValid());
+  CHECK(constructed.isValid());
+  CHECK_EQUAL(4,result.size());
+  CHECK_EQUAL(3,result[1]);
+  
+}
+
+
 UNITTEST(ModifiableValueSetTypeConversion){
   // tries to set a modifiable value by auto type conversion
 

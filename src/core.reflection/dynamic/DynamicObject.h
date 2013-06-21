@@ -29,7 +29,8 @@ namespace nspace{
   };
 
 
-
+  
+  bool copy(DynamicObject & destination, const DynamicObject & source);
 
   DynamicObject make_dynamic(Argument argument);
   DynamicObject make_dynamic_mapped(Argument arg = Argument());

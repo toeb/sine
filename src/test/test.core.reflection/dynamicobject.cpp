@@ -34,6 +34,7 @@ namespace test{
     bool __set_property(const std::string & name, Argument argument){
       return false;
     }
+    
 
     reflect_method(__list_property_names);
     std::vector<std::string> __list_property_names()const{
@@ -44,24 +45,9 @@ namespace test{
 
   };
   
-  bool copy(DynamicObject & destination, const DynamicObject & source){
-    auto names = concat(source.getPropertyNames(),destination.getPropertyNames());
-    std::sort(std::begin(names),std::end(names));
-    names.erase(std::unique(std::begin(names),std::end(names)),std::end(names));
-
-    
-    for(auto it = std::begin(names); it != std::end(names); it++){
-      auto d = destination.getProperty(*it);
-      auto s = source.getProperty(*it);
-      auto value = s->get();
-      if(!value.isValid())continue;
-      d->set(value);
-    }
-
-    return true;
-  }
 
   UNITTEST(CopyReflectedObjectToMappedObject){
+    // setup
     auto subject1 = std::make_shared<TestClass>();
     subject1->setAge(23);
     subject1->setLastName("Becker");
@@ -78,11 +64,6 @@ namespace test{
     CHECK_EQUAL(std::string("Becker"), (std::string)uut2["LastName"].get());
     CHECK_EQUAL(5,(int)uut2["DynamicProperty"]);
     CHECK_EQUAL(23,(int)uut2["Age"]);
-
-
-
-
-
   }
 
   UNITTEST(CopyDynamicObjectToSameUnderylingType1){

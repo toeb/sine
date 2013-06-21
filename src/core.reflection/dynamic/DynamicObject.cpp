@@ -62,5 +62,22 @@ namespace nspace{
     DynamicObject result(std::make_shared<DynamicReflectedObjectImplementation>(argument));
     return result;
   }
+  
+  
+  bool copy(DynamicObject & destination, const DynamicObject & source){
+    auto names = concat(source.getPropertyNames(),destination.getPropertyNames());
+    std::sort(std::begin(names),std::end(names));
+    names.erase(std::unique(std::begin(names),std::end(names)),std::end(names));
 
+    
+    for(auto it = std::begin(names); it != std::end(names); it++){
+      auto d = destination.getProperty(*it);
+      auto s = source.getProperty(*it);
+      auto value = s->get();
+      if(!value.isValid())continue;
+      d->set(value);
+    }
+
+    return true;
+  }
 }

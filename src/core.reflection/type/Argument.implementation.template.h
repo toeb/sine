@@ -19,13 +19,13 @@ namespace nspace{
     if(!(bool)data)std::cerr<<"dereferencing null ptr"<<std::endl;
     return *cast<T>(); 
   }
-  
 
-    template<typename T> Argument::operator  std::shared_ptr<const T> ()const{
-      return cast<const T>();    }
-    
 
-    template<typename T> Argument::operator  std::shared_ptr<T>  (){return cast<T>();}
+  template<typename T> Argument::operator  std::shared_ptr<const T> ()const{
+    return cast<const T>();    }
+
+
+  template<typename T> Argument::operator  std::shared_ptr<T>  (){return cast<T>();}
 
   template<typename T>  std::shared_ptr<T>  Argument::cast(){return std::static_pointer_cast<T>(data);}
   template<typename T>  std::shared_ptr< const T>   Argument::cast()const{return std::static_pointer_cast<T>(data);}
