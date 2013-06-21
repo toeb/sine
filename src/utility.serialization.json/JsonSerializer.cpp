@@ -21,6 +21,7 @@ public:
 class SerializationContext{
   int idCounter;
   std::map<void*, int> pointerIds;
+public:
   SerializationContext():idCounter(1){
   }
   int getId(void* ptr){
@@ -32,42 +33,14 @@ class SerializationContext{
     return pointerIds[ptr];
   }
   int getId(std::shared_ptr<void> ptr){
-    return getId(ptr);
+    return getId(ptr.get());
   }
   int getId(Argument & argument){
-  auto type = argument.type;
-    type->getIsPointer()
+    auto type = argument.type;    
+    return 0;
   }
 };
 
-
-class CustomSerializer{
-public:
-  virtual bool canSerialize(const Type * type)=0;
-  virtual bool serialize(std::ostream & stream,  Argument argument)=0;
-};
-
-template<typename T>
-class TypedCustomSerializer : public CustomSerializer{
-  virtual bool canSerialize(const Type* type)override{
-    return type_of<T>()==type;
-  }
-
-  virtual bool serialize(std::ostream & stream,  Argument argument){
-    typedSerializer(stream,argument);
-  }
-
-  bool typedSerializer(std::ostream & stream,  const T & argument){
-    return false;
-  }
-};
-
-// simplify creating serilaizer
-#define DS_CUSTOM_TYPED_SERIALIZER_FOR(TYPE) template<> bool TypedCustomSerializer<TYPE>::typedSerializer(std::ostream & stream,  const TYPE & value)
-
-DS_CUSTOM_TYPED_SERIALIZER_FOR(int){
-
-}
 
 struct JsonValueConverter;
 std::vector<const JsonValueConverter*> converters;
@@ -80,12 +53,12 @@ struct JsonValueConverter{
     converters.push_back(this);
   }
   virtual bool canConvert(const Argument & argument)const=0;
-  virtual Json::Value convert(const Argument & argument)const=0;
+  virtual Json::Value convert(const Argument & argument,SerializationContext & context)const=0;
 };
 template<typename T>
 struct TypedJsonValueConverter : public JsonValueConverter{
   virtual bool canConvert(const Argument & argument)const override {return type_of<T>()==argument.type;}
-  virtual Json::Value convert(const Argument & value)const override {
+  virtual Json::Value convert(const Argument & value, SerializationContext & context)const override {
     Json::Value result;
     typedConvert(result,value);
     return result;
@@ -121,121 +94,6 @@ JVC(unsigned int){
 }
 JVCI(unsigned int);
 
-
-template<typename TContainer>
-struct SizeType{
-  typedef void type;
-};
-
-template<typename TElement>
-struct SizeType<std::vector<TElement>>{
-  typedef typename std::vector<TElement>::size_type type;
-};
-
-template<typename TContainer>
-struct ElementType{
-  typedef void* type;
-};
-template<typename TElement>
-struct ElementType<std::vector<TElement>>{
-  typedef TElement type;
-};
-
-// for references
-template<typename TContainer>
-struct ElementType<TContainer&>{
-  typedef typename ElementType<typename TContainer>::type type;
-};
-//for pointers
-template<typename TContainer>
-struct ElementType<TContainer*>{
-  typedef typename ElementType<typename TContainer>::type type;
-};
-
-template<typename TContainer>
-struct ElementType<const TContainer>{
-  typedef typename ElementType<typename TContainer>::type type;
-};
-
-template<typename TContainer>
-struct ElementCount{
-  static inline auto count(const TContainer & container)->size_t{
-    throw new exception("count is not implemented for type");
-  }
-};
-
-template<typename TElement>
-struct ElementCount<std::vector<TElement>>{
-  static inline auto count(const std::vector<TElement> & container)->size_t{
-    return container.size();
-    
-  }
-};
-
-
-template<typename TContainer>
-size_t count(const TContainer & container){
-  ElementCount<TContainer>::count(container);
-}
-
-template<typename TContainer>
-struct ElementAt{
-  typedef typename ElementType<TContainer>::type TElement;
-public:
-  static inline TElement & elementAt(TContainer & container, size_t i){
-    throw new exception("elementAt is not implement for type");
-  }
-};
-
-template<typename TContainer>
-struct ElementAtConst{
-  typedef typename ElementType<TContainer>::type TElement;
-public:
-  static inline const TElement & elementAt(const TContainer & container, size_t i){
-    throw new exception("elementAt (const) is not implement for type");
-  }
-};
-
-template<typename TElement>
-struct ElementAt<std::vector<TElement>>{
-public:
-  static inline TElement & elementAt(std::vector<TElement> & container, size_t i){
-    return container.at(i);
-  }
-};
-
-template<typename TContainer>
-struct Predicate{
-  typedef typename std::function<bool (typename const ElementType<TContainer>::type & )> type;
-};
-
-
-
-template<typename TContainer>
-struct OperationFirstOrDefault{
-  static inline auto firstOrDefault(TContainer & container, typename Predicate<TContainer>::type predicate)->typename ElementType<TContainer>::type{
-    throw new exception("firstOrDefault not implemented for type");
-  }
-};
-
-
-
-template<typename TElement>
-struct OperationFirstOrDefault<std::vector<TElement>>{
-  static inline auto firstOrDefault(std::vector<TElement> & container,typename Predicate<std::vector<TElement>>::type predicate)->typename TElement &{
-     for(int i=0; i < container.size(); i++){
-       if(predicate(container[i]))return container[i];
-     }
-     return 0;
-  }
-};
-
-
-template<typename TContainer>
-auto firstOrDefault(TContainer & container, typename Predicate<TContainer>::type predicate)->typename ElementType<TContainer>::type{
-  return OperationFirstOrDefault<TContainer>::firstOrDefault(container,predicate);
-}
-
 const JsonValueConverter *  getConverter(const Argument & value){
   const JsonValueConverter * converter = 0;
   for(auto it : JsonValueConverter::Converters()){
@@ -247,45 +105,41 @@ const JsonValueConverter *  getConverter(const Argument & value){
   return converter;
 }
 
+struct JsonObjectConverter : JsonValueConverter{
+  bool canConvert(const Argument & value)const override{
+    return true;
+  } 
+  virtual Json::Value convert(const Argument & argument,SerializationContext & context)const{
+    Value result;
+    auto type = argument.type;
+    auto typeName = type->getFullyQualifiedName();
+
+    auto id = context.getId(argument.data);
+
+
+    result["$_t"] = typeName;
+    result["$_id"] =  id;
+
+
+    argument.type->Properties().foreachElement([&](const PropertyInfo * info ){
+      auto name = info->getName();
+      auto arg = info->get(argument.data.get());
+      if(arg.type!=info->getPropertyType())return;
+      auto converter = getConverter(info->get(argument.data.get()));
+      if(!converter)return;
+      result[info->getName()] = converter->convert(arg,context);
+    });
+    return result;
+  }
+}__instance;
+
 std::string JsonSerializer::serialize(Argument value){
-  //auto t = ElementType<decltype(JsonValueConverter::Converters())>::type();
-  /*auto converter = firstOrDefault(JsonValueConverter::Converters(), [&value](const JsonValueConverter * converter){
-    return converter->canConvert(value.type);
-  });*/
+
   const JsonValueConverter * converter = getConverter(value);
   Value root;
-  if(converter){
-    root = converter->convert(value);    
-  }else{    
-    int objectId=1;
-    map<std::shared_ptr<void>,int> ids;
-
-    auto ptr = value.cast<void>();
-    int id;
-    if(ids.find(ptr)==std::end(ids)){
-      id = objectId++;
-      ids[ptr]=id;
-    }else{
-      id= ids[ptr];
-    }
-
-    string typeName = value.type->getFullyQualifiedName();
-    root["$_t"] = typeName;
-    root["$_id"] =  id;
-
-
-    value.type->Properties().foreachElement([&](const PropertyInfo * info ){
-      auto name = info->getName();
-      auto arg = info->get(value.data.get());
-      if(arg.type!=info->getPropertyType())return;
-      auto converter = getConverter(info->get(value.data.get()));
-      if(!converter)return;
-      root[info->getName()] = converter->convert(arg);
-    });
-
-
-  }
-
+  if(!converter)return "";
+  SerializationContext context;
+  root = converter->convert(value,context);
 
   stringstream stream;
   stream << root;
