@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core.reflection.h>
-#include <utility.serialization.json/SerializationContext.h>
+#include <core.serialization/SerializationContext.h>
 #include <json/json.h>
 namespace nspace{
   namespace core{

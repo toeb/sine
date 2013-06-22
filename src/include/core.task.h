@@ -18,3 +18,4 @@
 
 #include <core.task/ExtendedTask.h>
 #include <core.task/StatefulTask.h>
+#include <core.task/ProgressReporter.h>

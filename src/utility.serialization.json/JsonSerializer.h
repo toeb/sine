@@ -8,11 +8,11 @@ namespace nspace{
       // serializes and argument to a value
       class JsonSerializer:public Serializer{
         reflect_type(JsonSerializer);
-        reflect_superclasses(Serializer);
-      public:
-        JsonSerializer();
+        reflect_superclasses(Serializer);    
+      public:        
+        reflected_default_constructor(public: JsonSerializer);      
       protected:
-        virtual bool doSerialization(std::ostream & stream, const Argument & value);
+        virtual bool doSerialization(std::ostream & stream, const Argument & value, SerializationContext & context)const;
       };
     }
   }

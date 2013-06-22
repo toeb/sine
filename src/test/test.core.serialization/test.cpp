@@ -6,6 +6,25 @@
 #include <core.reflection.h>
 using namespace nspace;
 using namespace nspace::core::serialization;
+JsonDeserializer a;
+JsonSerializer b;
+UNITTEST(GetSerializer1){
+  auto serializer = serializerFor("json");
+  CHECK((bool)serializer);
+}
+UNITTEST(GetSerializer2){
+  auto serializer = serializerFor("unknown happy format");
+  CHECK(!(bool)serializer);
+}
+
+UNITTEST(GetDeserializer1){
+  auto deserializer = deserializerFor("json");
+  CHECK((bool)deserializer);
+}
+UNITTEST(GetDeserializer2){
+  auto deserializer = deserializerFor("unknown happy format");
+  CHECK(!(bool)deserializer);
+}
 
 
 
@@ -124,12 +143,45 @@ class TestClass{
   typedef std::vector<std::shared_ptr<TestClass>> reflect_property(TestClassVectorProperty);
 public: property_reference(TestClassVectorProperty);
 };
-UNITTEST(SerializeEmptyObject){
+
+
+UNITTEST(DeserializeEmptyObjectTypeImplied){
+  //setup 
+  auto json = "{\"$_id\":1, \"$_t\":\"TestClass\"}";
+  JsonDeserializer deser;
   
+  //act
+  auto result = deser.deserialize(json);
+
+  //check
+  CHECK(result.isValid());
+  CHECK_EQUAL(type_of<TestClass>(), result.type);
+}
+
+
+
+UNITTEST(DeserializeObjectTypeStated){
+  //setup 
+  auto json = "{}";
+  JsonDeserializer deser;
+  auto type = typeof(TestClass);
+  //act
+  auto result = deser.deserialize(json);
+
+  //check
+  CHECK(result.isValid());
+  CHECK_EQUAL(type_of<TestClass>(), result.type);
+}
+
+UNITTEST(SerializeEmptyObject){
+  // setup
   auto sut = std::make_shared<TestClass>();
   JsonSerializer ser;
+  //act
   auto json = ser.serialize(sut);
-
+  //check
+  CHECK(""!=json);
+  
 }
 UNITTEST(CompleteSerializationExample){
   //setup

@@ -1,24 +1,25 @@
 #pragma once
 
 #include <core.reflection.h>
-#include <utility.reader/Reader.h>
+#include <core.serialization/Serialization.h>
 #include <istream>
+#include <core.serialization/DeserializationContext.h>
 namespace nspace{
   namespace core{
     namespace serialization{
-      class Deserializer : public Reader{
+      class Deserializer{
         reflect_type(Deserializer);
-        reflect_superclasses(Reader);
-
-        typedef Argument reflect_property(DeserializationResult);
-
+        typedef SerializationFormat reflect_property(Format);
       protected:
-        virtual Argument doDeserialization(std::istream & stream)=0;
-        bool doRead()override;
+        Deserializer(const SerializationFormat & format);
+        virtual Argument doDeserialization(std::istream & stream, const Type * type, DeserializationContext & context)const=0;        
       public:
-        Argument deserialize(const std::string & str);
-        Argument deserialize(std::istream & stream);
-        Argument deserializeFile(const std::string & filename);
+        Argument deserialize(const std::string & str)const;
+        Argument deserialize(const std::string & str, const Type* type)const;
+        Argument deserialize(std::istream & stream)const;
+        Argument deserialize(std::istream & stream,const Type* type)const;
+        Argument deserializeFile(const std::string & filename)const;
+        Argument deserializeFile(const std::string & filename, const Type* type)const;
       };
     }
   }

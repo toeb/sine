@@ -22,3 +22,10 @@ int SerializationContext::requireId(void* ptr){
 int SerializationContext::requireId(std::shared_ptr<void> ptr){
   return requireId(ptr.get());
 }
+
+void SerializationContext::incrementProgress(int count){
+  std::cerr<<"SerializationContext::incrementProgress not implemented trivial function"<<std::endl;
+}
+void SerializationContext::incrementTotalProgress(int count){
+  std::cerr<<"SerializationContext::incrementTotalProgress not implemented trivial function"<<std::endl;
+}

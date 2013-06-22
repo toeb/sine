@@ -28,18 +28,15 @@ ObjectJsonValueConverter objectConverter;
 
 
 
-
-bool JsonSerializer::doSerialization(std::ostream & stream, const Argument & value){
+bool JsonSerializer::doSerialization(std::ostream & stream, const Argument & value, SerializationContext & context)const{
   // get a converter for value
   const JsonValueConverter * converter = JsonValueConverter::Get(value);  
   if(!converter)return false;
-  // instanciate a context 
-  SerializationContext context;
   // actually convert the value and then return the string
   Value root = converter->convert(value,context);
   stream << root;
 }
 
-JsonSerializer::JsonSerializer(){
+JsonSerializer::JsonSerializer():Serializer("json"){
 
 }

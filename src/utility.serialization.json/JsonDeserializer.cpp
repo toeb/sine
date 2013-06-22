@@ -1,6 +1,6 @@
 #include "JsonDeserializer.h"
 #include <json/json.h>
-
+#include <core.logging.h>
 using namespace nspace;
 using namespace nspace::core;
 using namespace nspace::core::serialization;
@@ -8,6 +8,9 @@ using namespace nspace::core::serialization;
 using namespace std;
 using namespace Json;
 
+JsonDeserializer::JsonDeserializer():Deserializer("json"){
+
+}
 
 const Type * mapTypeFromJson(ValueType jtype){
   string typeName;
@@ -37,7 +40,7 @@ const Type * mapTypeFromJson(ValueType jtype){
     break;
   }
   if(typeName=="")return 0;
-  
+
   auto result = NamespaceInfo::Global()->findChild(typeName);
   auto type = dynamic_cast<const Type*>(result);
   return type;
@@ -51,7 +54,7 @@ Argument mapValue(T value){
 
 Argument mapValueFromJson(Json::Value value){  
   switch(value.type()){
-    case ValueType::arrayValue:
+  case ValueType::arrayValue:
     break;
   case ValueType::booleanValue:
     return value.asBool();
@@ -84,7 +87,7 @@ ValueType mapTypeToJson(const Type* type){
   return ValueType::nullValue;
 }
 
-Argument JsonDeserializer::doDeserialization(std::istream & stream){
+Argument JsonDeserializer::doDeserialization(std::istream & stream,const Type* type, DeserializationContext & context)const{
 
   Value root;
   Json::Reader reader;

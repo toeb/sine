@@ -25,6 +25,8 @@ set(source
  ./TaskRunnerBase.cpp
  ./StatefulTask.h
  ./StatefulTask.cpp
+ ./ProgressReporter.h
+ ./ProgressReporter.cpp
  ../include/core.task.h
 )
 

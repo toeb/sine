@@ -7,8 +7,6 @@ set(source
  JsonValueConverter.cpp
  PrimitiveJsonValueConverter.h
  PrimitiveJsonValueConverter.cpp
- SerializationContext.h
- SerializationContext.cpp
  VectorJsonValueConverter.h
  VectorJsonValueConverter.cpp
  JsonDeserializer.h
