@@ -116,18 +116,53 @@ class TestClass{
   typedef int  reflect_property(IntProperty);
   typedef double reflect_property(DoubleProperty);
   typedef std::shared_ptr<int> reflect_property(IntPtrProperty);
+  typedef std::shared_ptr<int> reflect_property(IntPtrProperty2);
+  typedef int * reflect_property(UnsafeIntPtr);
   typedef std::shared_ptr<TestClass> reflect_property(TestClassProperty);
+  typedef std::vector<int> reflect_property(IntVectorProperty);
+  typedef std::vector<std::string> reflect_property(StringVectorProperty);
+  typedef std::vector<std::shared_ptr<TestClass>> reflect_property(TestClassVectorProperty);
+public: property_reference(TestClassVectorProperty);
 };
+UNITTEST(SerializeEmptyObject){
+  
+  auto sut = std::make_shared<TestClass>();
+  JsonSerializer ser;
+  auto json = ser.serialize(sut);
 
-UNITTEST(SampleClass){
+}
+UNITTEST(CompleteSerializationExample){
   //setup
   auto sut = std::make_shared<TestClass>();
+  auto sut2 = std::make_shared<TestClass>();
   sut->setTestClassProperty(sut);
   sut->setDoubleProperty(424.3);
   sut->setIntProperty(1123);
   sut->setStringProperty("hello from string property");
   auto intptr = std::make_shared<int>(2323);
+  sut->setUnsafeIntPtr(intptr.get());
   sut->setIntPtrProperty(intptr);
+  sut->setIntPtrProperty2(intptr);
+  std::vector<int> listofint;
+  listofint.push_back(3);
+  listofint.push_back(4);
+  listofint.push_back(2);
+  listofint.push_back(1);
+  sut->setIntVectorProperty(listofint);
+  std::vector<std::string> listofstring;
+  listofstring.push_back("asdasd");
+  listofstring.push_back("asd3asd");
+  listofstring.push_back("a4sdasd");
+  listofstring.push_back("as2dasd");
+  listofstring.push_back("asd1asd");
+  sut->setStringVectorProperty(listofstring);
+  sut->TestClassVectorProperty().push_back(sut);
+  sut->TestClassVectorProperty().push_back(sut);
+  sut->TestClassVectorProperty().push_back(sut);
+  sut->TestClassVectorProperty().push_back(sut);
+  sut->TestClassVectorProperty().push_back(sut);
+  sut->TestClassVectorProperty().push_back(sut2);
+  
   JsonSerializer ser;
   //act
   auto json = ser.serialize(sut);

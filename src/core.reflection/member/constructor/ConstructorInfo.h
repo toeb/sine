@@ -73,16 +73,16 @@ namespace nspace{
   static std::shared_ptr<DS_CONSTRUCTOR_NAME(NAME)>  c = DS_CONSTRUCTOR_NAME(NAME)::instance();                     \
   }
 
-#define DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)                                                                     \
-  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<CurrentClassType>{ \
-  protected:                                                                                                    \
-  nspace::Argument callImplementation(const  Arguments &  args)const override final{                            \
-    return InstanceType(new ConstructorClassType());                                          \
-  }                                                                                                             \
-  SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){ }                                                                       \
-  };                                                                                                            \
-  DS_ONCE{                                                                                                      \
-  static std::shared_ptr<DS_CONSTRUCTOR_NAME(NAME)>  c = DS_CONSTRUCTOR_NAME(NAME)::instance();                 \
+#define DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)                                                                         \
+  struct DS_CONSTRUCTOR_NAME(NAME):public nspace::TypedConstructorInfo<CurrentClassType>{                           \
+  protected:                                                                                                        \
+  nspace::Argument callImplementation(const  Arguments &  args)const override final{                                \
+    return InstanceType(new ConstructorClassType());                                                                \
+  }                                                                                                                 \
+  SINGLETON(DS_CONSTRUCTOR_NAME(NAME)){ }                                                                           \
+  };                                                                                                                \
+  DS_ONCE{                                                                                                          \
+  static std::shared_ptr<DS_CONSTRUCTOR_NAME(NAME)>  c = DS_CONSTRUCTOR_NAME(NAME)::instance();                     \
   }
 
 

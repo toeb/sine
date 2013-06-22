@@ -37,16 +37,10 @@ namespace nspace{
   public:
     typedef std::vector<Argument> Arguments;
 
-
-
     virtual ~Callable(){}
     Argument operator()();    
     Argument operator()()const;    
     DS_FOREACH(DS_CALLABLE_TEMPLATE_CALL_N, 1,2,3,4,5,6,7,8,9,10);
-
-
-
-
 
     Argument call();    
     Argument call()const;    

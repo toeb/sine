@@ -109,11 +109,21 @@ namespace nspace
     typedef bool          basic_property(IsReference);
     typedef bool          basic_property(IsVolatile);
     typedef bool          basic_property(IsConst);
+
+    typedef bool basic_property(IsTemplated);
+    typedef std::vector<const Type*> basic_property(TemplateArguments);
+    typedef std::string basic_property(FullyQualifiedTemplateName);
+    typedef std::string basic_property(TemplateName);
+    property_reference(TemplateArguments);
+
     bool isUnqualifiedType()const;
     const  Type * removeConst()const;
      const Type * removeReference()const;
     const Type * removePointer()const;
 
+
+    Argument dereference(Argument & argument)const;
+    
   protected:
     void onSuccessorAdded(Type * type)override;
     void onSuccessorRemoved(Type * type)override;

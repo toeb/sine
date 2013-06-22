@@ -11,3 +11,5 @@ const Argument & Argument::VoidArgument(){
 }
   Argument::Argument(std::shared_ptr<void> data, const Type * type):data(data),type(type){}
   Argument::Argument():type(0){}
+  Argument::~Argument(){
+  }

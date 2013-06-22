@@ -3,6 +3,48 @@
 using namespace std;
 using namespace nspace;
 
+
+UNITTEST(DereferencePointer){
+  //setup
+  int * value = new int(3);
+  auto type = type_of<decltype(value)>();
+  Argument arg = value;
+  //act
+
+  Argument dereferenced = type->dereference(arg);
+  int result = dereferenced;
+  //check
+
+  CHECK(dereferenced.isValid());
+  CHECK_EQUAL(type->removePointer(), dereferenced.type);
+  CHECK_EQUAL(3,result);
+  //cleanup
+  delete value;
+}
+
+
+UNITTEST(DereferencePointerPointer){
+  //setup
+  int * value = new int(3);
+  int ** value2 = & value;
+  auto type2 = type_of<decltype(value2)>();
+  auto type = type_of<decltype(value)>();
+  Argument arg2 = value2;
+  Argument arg = value;
+  //act
+
+  Argument dereferenced2 = type2->dereference(arg2);
+  Argument dereferenced = type->dereference(dereferenced2);
+  int result = dereferenced;
+  //check
+
+  CHECK(dereferenced.isValid());
+  CHECK_EQUAL(type->removePointer(), dereferenced.type);
+  CHECK_EQUAL(3,result);
+  //cleanup
+  delete value;
+}
+
 UNITTEST(AutoNamespaceTypeConstruction1){
   struct Derived:public Type{
     Derived():Type("::std1::Derived"){}

@@ -13,4 +13,4 @@ Deserializer.cpp
 )
 source_group("" FILES ${source})
 add_library(core.serialization ${source})
-target_link_libraries(core.serialization core utility.reader)
+target_link_libraries(core.serialization core core.reflection utility.reader)

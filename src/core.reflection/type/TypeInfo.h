@@ -7,7 +7,6 @@
 namespace nspace{
 
 
-
   template<typename T>
   class TraitType : public Type{
     typedef T type;
@@ -15,6 +14,36 @@ namespace nspace{
     TraitType(const std::string & name);
   private:
     void init();
+  };
+  template<typename T1=std::_Nil,typename T2=std::_Nil,typename T3=std::_Nil,typename T4=std::_Nil,typename T5=std::_Nil,typename T6=std::_Nil>
+  struct TypeTemplateArguments{
+    TypeTemplateArguments(Type * type){
+      type->setIsTemplated(false);
+    }
+  };
+  template<typename T1>
+  struct TypeTemplateArguments<T1,std::_Nil,std::_Nil,std::_Nil,std::_Nil,std::_Nil>{
+    TypeTemplateArguments(Type * type){
+      type->setIsTemplated(true);
+      type->TemplateArguments().push_back(type_of<T1>());
+    }
+  };
+  template<typename T1,typename T2>
+  struct TypeTemplateArguments<T1,T2,std::_Nil,std::_Nil,std::_Nil,std::_Nil>{
+    TypeTemplateArguments(Type * type){
+      type->setIsTemplated(true);
+      type->TemplateArguments().push_back(type_of<T1>());
+      type->TemplateArguments().push_back(type_of<T2>());
+    }
+  };
+  template<typename T1,typename T2,typename T3>
+  struct TypeTemplateArguments<T1,T2,T3,std::_Nil,std::_Nil,std::_Nil>{
+    TypeTemplateArguments(Type * type){
+      type->setIsTemplated(true);
+      type->TemplateArguments().push_back(type_of<T1>());
+      type->TemplateArguments().push_back(type_of<T2>());
+      type->TemplateArguments().push_back(type_of<T3>());
+    }
   };
 
 

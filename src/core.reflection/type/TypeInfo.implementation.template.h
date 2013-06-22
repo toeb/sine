@@ -39,7 +39,6 @@ namespace nspace{
 
   template<typename T>
   TraitType<T>::TraitType(const std::string & name):Type(name){
-    
     init();
   }
 

@@ -3,10 +3,10 @@
 
 
 using namespace nspace;
-
+/*
 // ////////           --------------------------------------------------------------  external reflect
 namespace TestNameSpace{
-
+  
   struct TestType2{
     static int instanceCount;
     bool method1Called;
@@ -43,3 +43,4 @@ reflect_begin(TestNameSpace::TestType2)
 
 // ////////           --------------------------------------------------------------  end external reflect
 
+*/

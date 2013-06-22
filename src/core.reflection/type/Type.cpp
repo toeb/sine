@@ -50,7 +50,9 @@ Argument Type::callImplementation(const Callable::Arguments & args)const {
   if(!constructor)return Argument();
   return constructor->callImplementation(args);
 }
-
+Argument Type::dereference(Argument & argument)const{
+  throw new std::exception("not implemented yet");
+}
 Type::Type(const std::string & name):
   ScopeInfo(name),
   _Id(_typeCounter++),
@@ -59,8 +61,15 @@ Type::Type(const std::string & name):
   _IsVolatile(false),
   _IsConst(false),
   _UnderlyingType(0),
-  _UnqualifiedType(this)
+  _UnqualifiedType(this),
+  _IsTemplated(false)  
 { 
+  auto n = getName().find_first_of('<');
+  auto tName = getName().substr(0,n);
+  setTemplateName(tName);
+  n=getFullyQualifiedName().find_first_of('<');
+  tName = getFullyQualifiedName().substr(0,n);
+  setFullyQualifiedTemplateName(tName);
 
 
 }

@@ -1,43 +1,19 @@
 #pragma once
 
-#include <core.serialization.h>
+#include <core.serialization/Serializer.h>
 
 namespace nspace{
-namespace core{
-namespace serialization{
-
-  class Writer : public virtual StatefulTask, public virtual ProgressReporter{
-    reflect_type(Writer);
-    reflect_superclasses(StatefulTask);
-
-    typedef bool reflect_property(Abort);
-    REFERENCE(protected,bool,Abort);
-
-  protected:
-    virtual bool doWrite()=0;
-    std::ostream & stream(){return std::cout;};
-    virtual void clearResult(){}
-
-  public:
-    Writer();
-    bool write(Argument value);
-
-  private:
-    bool runTaskReturnSuccess();
-    std::ostream * _stream;
-
-
-  };
-  class Serializer :Writer{
-
-  };
-  class JsonSerializer{
-  public:
-    JsonSerializer();
-
-    std::string serialize(Argument value);
-
-  };
-}
-}
+  namespace core{
+    namespace serialization{
+      // serializes and argument to a value
+      class JsonSerializer:public Serializer{
+        reflect_type(JsonSerializer);
+        reflect_superclasses(Serializer);
+      public:
+        JsonSerializer();
+      protected:
+        virtual bool doSerialization(std::ostream & stream, const Argument & value);
+      };
+    }
+  }
 }

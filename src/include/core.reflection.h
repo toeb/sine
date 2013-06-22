@@ -18,7 +18,6 @@
 
 
 // specializations
-
 #include <core.reflection/type/specialization/fundementalTypes.h>
 #include <core.reflection/type/specialization/qualifierTypes.h>
 #include <core.reflection/type/specialization/stdTypes.h>

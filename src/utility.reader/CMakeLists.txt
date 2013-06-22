@@ -1,6 +1,8 @@
 set(source
  ./Reader.h
  ./Reader.cpp
+ ./Writer.h
+ ./Writer.cpp
  ../include/utility.reader.h
 )
 
