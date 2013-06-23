@@ -5,7 +5,6 @@
 namespace nspace{
   namespace core{
     namespace serialization{
-
       class JsonDeserializer : public Deserializer{
         reflect_type(JsonDeserializer);
         reflect_superclasses(Deserializer);
