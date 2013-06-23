@@ -29,7 +29,7 @@ namespace nspace{
   template<typename TResult>
   class TypeInfo<std::function<TResult(void)>> : public TraitType<std::function<TResult(void)>> {
     TEMPLATEDSINGLETON(TypeInfo, std::function<TResult(void)>):      
-      TraitType(DS_INLINE_STRING("std::function<" << typeof(TResult)->getFullyQualifiedName()<<"(void)>"),0){     
+      TraitType(DS_INLINE_STRING("::std::function<" << typeof(TResult)->getFullyQualifiedName()<<"(void)>"),0){     
     }
   };
 }
@@ -45,15 +45,16 @@ namespace nspace{
   template<typename T> 
   class TypeInfo<std::shared_ptr<T>>: public TraitType< std::shared_ptr<T>>{ 
     TEMPLATEDSINGLETON(TypeInfo, std::shared_ptr<T>):      
-      TraitType(DS_INLINE_STRING("std::shared_ptr<" << typeof(T)->getFullyQualifiedName()<<">")){ 
+      TraitType(DS_INLINE_STRING("::std::shared_ptr<" << typeof(T)->getFullyQualifiedName()<<">")){ 
         TypeTemplateArguments<T> templateArgs(this);
+
     } 
   };
 
   template<typename T>
   class TypeInfo<std::unique_ptr<T>>: public TraitType< std::unique_ptr<T>>{ 
     TEMPLATEDSINGLETON(TypeInfo, std::unique_ptr<T>):
-      TraitType(DS_INLINE_STRING("std::unique_ptr<" << typeof(T)->getFullyQualifiedName()<<">")){ 
+      TraitType(DS_INLINE_STRING("::std::unique_ptr<" << typeof(T)->getFullyQualifiedName()<<">")){ 
         TypeTemplateArguments<T> templateArgs(this);
     } 
   };

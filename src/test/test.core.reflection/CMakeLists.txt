@@ -1,6 +1,6 @@
 
 set(source
-	
+	templatedtype.cpp
 	 reflection.cpp
 	 type.cpp
 	 argument.cpp
