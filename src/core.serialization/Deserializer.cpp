@@ -14,7 +14,7 @@ Argument Deserializer::deserialize(const std::string & str)const{
 }
 Argument Deserializer::deserialize(const std::string & str, const Type* type)const{
   stringstream stream(str);
-  return deserialize(stream);
+  return deserialize(stream,type);
 }
 
 Argument Deserializer::deserialize(std::istream & stream)const{

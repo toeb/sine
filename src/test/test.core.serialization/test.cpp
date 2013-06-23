@@ -52,19 +52,6 @@ UNITTEST(DeserializeInt){
   CHECK_EQUAL(-321, (int)result);
 }
 
-UNITTEST(DeserializeUint){
-  //setup
-  std::string json = "u123123";
-  JsonDeserializer deser;
-
-  //act
-  auto result = deser.deserialize(json);
-
-  //validate  
-  CHECK(result.isValid());
-  CHECK(result.type == typeof(unsigned int));
-  CHECK_EQUAL(123123, (unsigned int)result);
-}
 
 UNITTEST(DeserializeStdString){
   //setup
@@ -112,22 +99,7 @@ UNITTEST(SerializeStdString){
   CHECK_EQUAL(typeof(std::string),result.type);
   CHECK_EQUAL(value, (std::string)result);
 }
-UNITTEST(SerializeUint){
-  //setup
-  unsigned int value = 333;
-  JsonSerializer ser;
-  JsonDeserializer deser;
-  
-  //act
-  auto json = ser.serialize(value);
-  auto result = deser. deserialize(json);
-  
-  //validate
-  CHECK(result.isValid());
-  CHECK_EQUAL(typeof( unsigned int),result.type);
-  CHECK_EQUAL(value, ( unsigned int)result);
 
-}
 class TestClass{
   reflect_type(::TestClass);
   reflected_default_constructor(public:TestClass){}
@@ -174,6 +146,39 @@ UNITTEST(DeserializeObjectTypeStated){
   //check
   CHECK(result.isValid());
   CHECK_EQUAL(type_of<TestClass>(), result.type);
+}
+
+
+UNITTEST(DeserializeObjectWithPrimitveProperties){
+  //setup
+  auto json = "{ \"$_t\":\"::TestClass\", \"IntProperty\":323, \"StringProperty\":\"hello from json\"}";
+  JsonDeserializer deser;
+
+  // act
+  auto result = deser.deserialize(json);
+  auto data=result.cast<TestClass>();
+  auto intValue = data->getIntProperty();
+  auto stringValue =data->getStringProperty();
+  //check
+  CHECK_EQUAL(323,intValue);
+  CHECK_EQUAL("hello from json",stringValue);
+}
+
+
+
+UNITTEST(DeserializeObjectWithValuePointer){
+  //setup
+  auto json = "{ \"$_t\":\"::TestClass\", \"IntPtrProperty\":{\"$_id\":1,\"$_value\":323} ,\"IntPtrProperty\":{\"$_id\":1} }";
+  JsonDeserializer deser;
+
+  // act
+  auto result = deser.deserialize(json);
+  auto data=result.cast<TestClass>();
+  auto intValue = data->getIntProperty();
+  auto stringValue =data->getStringProperty();
+  //check
+  CHECK_EQUAL(323,intValue);
+  CHECK_EQUAL("hello from json",stringValue);
 }
 
 UNITTEST(SerializeEmptyObject){
