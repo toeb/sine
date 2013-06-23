@@ -129,8 +129,8 @@ UNITTEST(SerializeUint){
 
 }
 class TestClass{
-  reflect_type(TestClass);
-  
+  reflect_type(::TestClass);
+  reflected_default_constructor(public:TestClass){}
   typedef std::string reflect_property(StringProperty);
   typedef int  reflect_property(IntProperty);
   typedef double reflect_property(DoubleProperty);
@@ -144,10 +144,13 @@ class TestClass{
 public: property_reference(TestClassVectorProperty);
 };
 
+//instanciate testclass
+auto t = type_of<TestClass>();
+TestClass t2;
 
 UNITTEST(DeserializeEmptyObjectTypeImplied){
   //setup 
-  auto json = "{\"$_id\":1, \"$_t\":\"TestClass\"}";
+  auto json = "{\"$_id\":1, \"$_t\":\"::TestClass\"}";
   JsonDeserializer deser;
   
   //act
@@ -166,7 +169,7 @@ UNITTEST(DeserializeObjectTypeStated){
   JsonDeserializer deser;
   auto type = typeof(TestClass);
   //act
-  auto result = deser.deserialize(json);
+  auto result = deser.deserialize(json,type);
 
   //check
   CHECK(result.isValid());

@@ -102,6 +102,13 @@ const ScopeInfo* ScopeInfo::requireScope(const std::string & n){
     ns = NamespaceInfo::Global();
     name = name.substr(2);
   }
+  
+  if(name==""||name=="::"){
+    //global else default
+    ns = NamespaceInfo::Global();
+    return ns;
+  }
+
 
   auto parts = split(name,"::");
   size_t i= 0;

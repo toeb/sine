@@ -2,6 +2,25 @@
 
 #include <core.reflection/namespace/NamespaceInfo.h>
 using namespace ds;
+
+class MyTestClass{
+  reflect_type(::MyTestClass);
+};
+
+
+UNITTEST(GlobalNamespaceRegistration){
+  auto resultType = type_of<MyTestClass>();
+  auto result = Type::Global()->findChild("MyTestClass");
+  CHECK(result);
+  CHECK_EQUAL(resultType, result );
+}
+
+UNITTEST(findMyTestClass1){
+  auto resultType = type_of<MyTestClass>();
+  auto result = Type::Global()->findChild("::MyTestClass");
+  CHECK(result);
+  CHECK_EQUAL(resultType,result);
+}
 UNITTEST(NamespaceConstruction1){
   struct Derived : public NamespaceInfo {
     Derived():NamespaceInfo("testnamespace"){

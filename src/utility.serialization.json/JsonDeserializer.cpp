@@ -98,6 +98,16 @@ Argument JsonDeserializer::doDeserialization(std::istream & stream,const Type* t
   }
 
   auto result = mapValueFromJson(root);  
+  if(result.isValid())return result;
+
+  auto typeName = root["$_t"].asString();
+  auto id = root["$_id"].asInt();
+  
+  // cannot continue because reflection scopes do not work correctly ( 
+  auto impliedType = static_cast<const Type*>(Type::Global()->findScope(typeName));
+  if(!type)type = impliedType;
+  
+  result = type->call();
 
   return result;
 };
