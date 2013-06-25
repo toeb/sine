@@ -9,7 +9,7 @@
 
 namespace nspace{
 
-
+  /*
   // meta information for std::types
 
   META(::std::string);
@@ -95,5 +95,5 @@ namespace nspace{
       
     } 
   };
-
+  */
 }

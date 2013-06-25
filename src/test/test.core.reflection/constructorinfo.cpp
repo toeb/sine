@@ -15,6 +15,11 @@ public:
 
 
 
+UNITTEST(UnivasiveConstrucotrReflection){
+
+}
+
+
 UNITTEST(CallDefaultConstructor1){
  struct B{
    reflect_type(B);

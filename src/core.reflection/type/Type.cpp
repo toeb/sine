@@ -53,8 +53,8 @@ Argument Type::callImplementation(const Callable::Arguments & args)const {
 Argument Type::dereference(Argument & argument)const{
   throw new std::exception("not implemented yet");
 }
-Type::Type(const std::string & name):
-  ScopeInfo(name),
+Type::Type():
+  ScopeInfo(),
   _Id(_typeCounter++),
   _IsPointer(false),
   _IsReference(false),
@@ -64,12 +64,12 @@ Type::Type(const std::string & name):
   _UnqualifiedType(this),
   _IsTemplated(false)  
 { 
-  auto n = getName().find_first_of('<');
+ /* auto n = getName().find_first_of('<');
   auto tName = getName().substr(0,n);
   setTemplateName(tName);
   n=getFullyQualifiedName().find_first_of('<');
   tName = getFullyQualifiedName().substr(0,n);
-  setFullyQualifiedTemplateName(tName);
+  setFullyQualifiedTemplateName(tName);*/
 
 
 }

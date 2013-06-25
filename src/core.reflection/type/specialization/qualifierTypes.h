@@ -5,7 +5,7 @@
 
 
 namespace nspace{
-
+  /*
   // specializations for qualifiers  
   template<typename T>
   struct  TypeInfo<T&>:public  TraitType<T&> {
@@ -42,5 +42,5 @@ namespace nspace{
       setIsVolatile(true);
       setIsConst(true);
     }
-  };
+  };*/
 }

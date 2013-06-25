@@ -5,7 +5,7 @@
 #include <sstream>
 #include <core.reflection/type/Type.h>
 namespace nspace{
-
+  /*
 
   template<typename T>
   class TraitType : public Type{
@@ -46,18 +46,20 @@ namespace nspace{
     }
   };
 
-
+  */
 
   /**
   * \brief Information about the type.
   *        assumes T has method getTypeName which returns the fully qualified type name
   */
   template<typename T>
-  class TypeInfo : public TraitType<T>
+  class TypeInfo
   {
-    //typedef typename std::remove_pointer<T>::type pureType;
-    DS_SINGLETON_TEMPLATED(TypeInfo, T) :TraitType(T::getTypeName()){     
-    }
+  public:
+    static std::shared_ptr<Type> instance(){
+      static std::shared_ptr<Type> _instance = std::make_shared<Type>();
+      return _instance;
+    };
   };
 
   template<typename T> const Type * type_of();
@@ -99,15 +101,10 @@ namespace nspace{
 
 }
 
-
+/*
 // specialization for nspace::Set
 #include <core.collection/containers/Set.h>
 namespace nspace{
-  /**
-  * \brief Information about the type. Set<T>  /specialization
-  *
-  * \tparam  T Generic type parameter.
-  */
   template<typename T>
   class TypeInfo<Set<T> >: public TraitType<Set<T> >
   {
@@ -115,3 +112,4 @@ namespace nspace{
     }
   };
 }
+*/

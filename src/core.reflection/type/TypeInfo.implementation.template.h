@@ -5,7 +5,7 @@
 #include <core.reflection/member/constructor/ConstructorInfo.h>
 namespace nspace{
  
-
+  /*
 
   template<typename T, bool hasDefaultConstructor = 
     !std::is_const<T>::value&& (std::is_fundamental<T>::value || 
@@ -46,5 +46,5 @@ namespace nspace{
   void TraitType<T>::init(){
     add_default_constructor<T>::add(this);
   }
-
+  */
 }

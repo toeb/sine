@@ -21,12 +21,10 @@ namespace nspace
     std::set<const Type *> Types()const;
     const NamespaceInfo * getNamespace(const std::string & name)const;
     const NamespaceInfo * getParentNamespace()const;
+    NamespaceInfo();
   protected:
     friend class ScopeInfo;
-    NamespaceInfo(const std::string & name);
   private:
-    // constructor for global namespace
-    NamespaceInfo();
     void namespaceAdded(const NamespaceInfo * ns);
     void namespaceRemoved(const NamespaceInfo * ns);
 

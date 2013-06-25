@@ -26,10 +26,11 @@ bool ScopeInfo::removeChildScope( const ScopeInfo* node){
   onChildScopeRemoved(node);
   return true;
 }
+/*
 const ScopeInfo* ScopeInfo::Global(){
   return NamespaceInfo::Global();
 }
-
+*/
 
 
 
@@ -52,17 +53,6 @@ std::string ScopeInfo::normalizeFullyQualifiedName(const std::string & nameOrFul
   return name;
 }
 
-ScopeInfo::ScopeInfo(const std::string & name):
-  _Scope(0),
-  _Name(ScopeInfo::normalizeName(name))
-{
-  using namespace stringtools;
-  if(startsWith(name,"::")){
-    auto parentNamespace = parentScopeName(name);
-    auto ns = requireScope(parentNamespace);
-    setScope(ns);
-  }
-}
 ScopeInfo::~ScopeInfo(){
   setScope(0);
   // create a copy of child scopes (because setScope (0) causes the scope to be removed which destroys the iterators being used)
@@ -88,7 +78,7 @@ const ScopeInfo * ScopeInfo::findChild(const std::string & name)const{
 }
 
 std::vector<std::shared_ptr<ScopeInfo>> createdScopes;
-
+/*
 const ScopeInfo* ScopeInfo::requireScope(const std::string & n){
   // searches for scope.  if found it is returned else scopes are created as namespaces
   std::string name = n;
@@ -135,7 +125,7 @@ const ScopeInfo* ScopeInfo::requireScope(const std::string & n){
 
   }
   return ns;
-}
+}*/
 
 
 std::string ScopeInfo::parentScopeName(const std::string & fullyQualifiedName){
@@ -144,6 +134,7 @@ std::string ScopeInfo::parentScopeName(const std::string & fullyQualifiedName){
   std::string n = fullyQualifiedName.substr(0,last-1);
   return n;
 }
+/*
 const ScopeInfo* ScopeInfo::findParentScope(const std::string & name){
   auto last = name.find_last_of("::");
   if(last==name.size())return 0;
@@ -167,13 +158,9 @@ const ScopeInfo* ScopeInfo::findScope(const std::string & n){
   }
   return ns;
 }
-
-void ScopeInfo::init(){
-
-}
+*/
 
 ScopeInfo::ScopeInfo():_Name(""),_Scope(0){
-  init();
 }
 auto ScopeInfo::before_set(Scope){
   auto newScope = const_cast<ScopeInfo*>(*newvalue);
@@ -197,11 +184,14 @@ std::string ScopeInfo::formatScopeName(const std::string & separator, const std:
   if(!scope)return "";
   return scope->formatName(separator,prefix,postfix);
 }
-std::string ScopeInfo::getFullyQualifiedName()const{
-  if(this==Global())return "";
-  if(!getScope())return getName();
-  return DS_INLINE_STRING(getScope()->getFullyQualifiedName()<<"::"<<getName());
+
+auto ScopeInfo::after_set(Name){
+
 }
+auto ScopeInfo::after_set(FullyQualifiedName){
+
+}
+
 auto ScopeInfo::after_set(Scope){
   auto scope =const_cast<ScopeInfo*>(getScope());
   if(!scope){

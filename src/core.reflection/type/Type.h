@@ -52,8 +52,8 @@ namespace nspace
 
   private:
     static TypeId _typeCounter;
-  protected:
-    Type(const std::string & name);
+  public:
+    Type();
   public:
     const NamespaceInfo * getNamespace()const;
     bool isInnerType()const{
@@ -105,10 +105,10 @@ namespace nspace
 
     typedef const Type * basic_property(UnderlyingType);
     typedef const Type * basic_property(UnqualifiedType);
-    typedef bool          basic_property(IsPointer);
-    typedef bool          basic_property(IsReference);
-    typedef bool          basic_property(IsVolatile);
-    typedef bool          basic_property(IsConst);
+    typedef bool basic_property(IsPointer);
+    typedef bool basic_property(IsReference);
+    typedef bool basic_property(IsVolatile);
+    typedef bool basic_property(IsConst);
 
     typedef bool basic_property(IsTemplated);
     typedef std::vector<const Type*> basic_property(TemplateArguments);

@@ -9,20 +9,6 @@
 #define typeof(TYPENAME) nspace::type_of<TYPENAME>()
 
 
-/**
-* \brief macro allows typeinfo to be declared for primitve types. or external types
-*
-* \param TYPE  The type.
-*/
-#define META(TYPE)                                                     \
-  template<>                                                           \
-class TypeInfo<TYPE>: public TraitType<TYPE> {        \
-  TEMPLATEDSINGLETON(TypeInfo, TYPE):TraitType(#TYPE){                              \
-  \
-  }                                                                  \
-};
-
-
 
 
 /**
@@ -108,5 +94,5 @@ struct ReflectInstance{       \
 *
 * \param TYPE  The type.
 */
-#define META_DEFAULTCONSTRUCTOR(TYPE) META(TYPE)
+//#define META_DEFAULTCONSTRUCTOR(TYPE) META(TYPE)
 

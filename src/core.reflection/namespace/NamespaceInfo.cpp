@@ -79,9 +79,5 @@ const NamespaceInfo* NamespaceInfo::getParentNamespace()const{
   return dynamic_cast<const NamespaceInfo*>(getScope()); 
 }
 
-NamespaceInfo::NamespaceInfo(const std::string & name):
-  ScopeInfo(name)
-{
-}
 
 

@@ -11,10 +11,10 @@ namespace nspace{
   public:
     extensible_property_class;
     virtual ~ScopeInfo();
-    static const ScopeInfo* Global();
-    static const ScopeInfo* requireScope(const std::string & name);
-    static const ScopeInfo* findScope(const std::string & name);
-    static const ScopeInfo* findParentScope(const std::string & name);
+    //static const ScopeInfo* Global();
+    //static const ScopeInfo* requireScope(const std::string & name);
+    //static const ScopeInfo* findScope(const std::string & name);
+    //static const ScopeInfo* findParentScope(const std::string & name);
 
 
     static std::string parentScopeName(const std::string & fullyQualifiedName);
@@ -26,17 +26,22 @@ namespace nspace{
     std::string formatName(const std::string & separator = "::", const std::string & prefix = "", const std::string & postfix="")const;
     std::string formatScopeName(const std::string & separator = "::", const std::string & prefix = "", const std::string & postfix="")const;
     const std::set<const ScopeInfo*> & ChildScopes()const;
-    // needs to be initialized before name
-    std::string getFullyQualifiedName()const;
-    typedef std::string basic_property(Name);
+
+    typedef std::string extensible_property(FullyQualifiedName);
+    auto after_set(FullyQualifiedName);
+    typedef std::string extensible_property(Name);
+    auto after_set(Name);
+    
     typedef const ScopeInfo* extensible_property(Scope);
 
     bool addChildScope(const ScopeInfo*  node);
     bool removeChildScope(const ScopeInfo* node);
+
     auto before_set(Scope);
     auto after_set(Scope);
   protected:
-    ScopeInfo(const std::string & nameOrFullyQualifiedName);
+    ScopeInfo();
+    //ScopeInfo(const std::string & nameOrFullyQualifiedName);
     virtual void onScopeSet(const ScopeInfo*  parent);
     virtual void onChildScopeAdded(const ScopeInfo*  child);
     virtual void onChildScopeRemoved(const ScopeInfo*  child);
@@ -44,7 +49,5 @@ namespace nspace{
     std::set<const ScopeInfo*> _ChildScopes;
     
     friend class NamespaceInfo;
-    ScopeInfo();
-    void init();
   };
 }
