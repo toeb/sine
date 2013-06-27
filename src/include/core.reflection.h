@@ -61,4 +61,4 @@
 
 #include <core.reflection/preprocessor/properties.h>
 
-
+#include <core.reflection/Reflection.h>

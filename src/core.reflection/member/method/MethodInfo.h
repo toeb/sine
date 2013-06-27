@@ -1,16 +1,25 @@
 #pragma once
 #include <core.reflection/member/MemberInfo.h>
 #include <core.reflection/type/Argument.h>
+#include <core.reflection/function/ArgumentInfo.h>
 namespace nspace{
 
 
   class MethodInfo : public MemberInfo{
     DS_CLASS(MethodInfo)
   public:
+    typedef std::shared_ptr<ArgumentInfo> argument_ptr;
+    typedef std::shared_ptr<const ArgumentInfo> const_argument_ptr;
     template<typename Container> Argument call(void * object, Container & container=std::vector<Argument>())const;
     template<typename Container> Argument call(const void * object, Container & container=std::vector<Argument>())const;
     Argument call(void * object)const;
     Argument call(const void * object)const;
+
+    propdef std::vector<argument_ptr> basic_property(Arguments);
+    basic_references(Arguments);
+    argument_ptr argument(unsigned int index);
+    const_argument_ptr argument(unsigned int index)const;
+
     propdef std::vector<const Type*> basic_property(ArgumentTypes);
     propdef const Type * basic_property(ReturnType);
     propdef bool basic_property(IsConst);

@@ -24,10 +24,11 @@ bool DynamicMappedObjectImplementation::__set_property(const std::string & name,
   _map[name] = argument;
   return true;
 }
-
+/*
 reflect_begin(DynamicMappedObjectImplementation);
 _method(__get_property);
 _method(__set_property);
 _method(__list_property_names);
 reflect_end;
 
+*/

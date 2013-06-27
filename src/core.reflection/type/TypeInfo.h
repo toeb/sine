@@ -47,7 +47,10 @@ namespace nspace{
   };
 
   */
-
+  template<typename T>
+  struct TypeInitializer{
+    static void initialize(){}
+  };
   /**
   * \brief Information about the type.
   *        assumes T has method getTypeName which returns the fully qualified type name
@@ -58,6 +61,12 @@ namespace nspace{
   public:
     static std::shared_ptr<Type> instance(){
       static std::shared_ptr<Type> _instance = std::make_shared<Type>();
+      // initializer will only be executed once;
+      static bool initialized = [](){
+        TypeInitializer<T>::initialize(); 
+        return true;
+      }();
+      
       return _instance;
     };
   };

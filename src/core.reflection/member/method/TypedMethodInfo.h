@@ -79,7 +79,7 @@ namespace nspace{
   };
   
   
-
+#define DS_TYPED_METHOD_INFO_ADD_ARGUMENT_INFO(X) Arguments().push_back(std::make_shared<TypedArgumentInfo<typename DS_CONCAT(ArgumentType_,X),X>>());
 #define DS_TYPED_METHOD_INFO_ARGUMENT_TYPEDEF(X) typedef typename std::decay<typename traits::nested_template arg<X>::type>::type DS_CONCAT(ArgumentType_,X);
   // the following code creates specializations for methods with up to 9 arguments
 #define DS_TYPED_METHOD_INFO_ADD_ARGUMENT(X) argumentTypes().push_back(type_of<X>());
@@ -99,6 +99,7 @@ namespace nspace{
   setOwningType(type_of<ClassType>());                                                                                                       \
   setReturnType(type_of<ReturnType>());                                                                                                      \
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
+  DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT_INFO,DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                      \
   setIsConst(true);                                                                                                                          \
   }                                                                                                                                          \
   Argument typedCall(const ClassType * object, std::vector<Argument> args)const{                                                             \
@@ -109,7 +110,7 @@ namespace nspace{
   return typedCall(static_cast<const ClassType*>(object),args);                                                                              \
   }                                                                                                                                          \
   };                                                                                                                                         \
-  /* Specialization for non-const method with non void return type and arbirtray arguments*/                                                 \
+  /* Specialization for non-const method with non void return type and arbitrary arguments*/                                                 \
   template<typename ClassType, typename ReturnType,DS_REDUCE_COMMA(DS_ADD_TYPENAME,__VA_ARGS__)>                                             \
   struct TypedMethodInfo<ReturnType(ClassType::*)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARGS__))>:public MethodInfo{                                  \
   typedef ReturnType(ClassType::*MethodType)(DS_REDUCE_COMMA(DS_NOOP,__VA_ARGS__));                                                          \
@@ -120,6 +121,7 @@ namespace nspace{
   setOwningType(type_of<ClassType>());                                                                                                       \
   setReturnType(type_of<ReturnType>());                                                                                                      \
   DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT,__VA_ARGS__)                                                                                  \
+  DS_FOREACH(DS_TYPED_METHOD_INFO_ADD_ARGUMENT_INFO,DS_SEQUENCE(DS_MINUS_ONE(DS_NUM_ARGS(__VA_ARGS__))))                                      \
   setIsConst(false);                                                                                                                         \
   }                                                                                                                                          \
   Argument typedCall(ClassType * object, std::vector<Argument> args)const{                                                                   \

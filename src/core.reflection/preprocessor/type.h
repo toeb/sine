@@ -66,7 +66,7 @@ private:                                                                        
 
 
 //////////////////////////////external refelction
-
+/*
 
 #define reflect_begin(TYPE)     \
   namespace nspace{               \
@@ -86,7 +86,7 @@ struct ReflectInstance{       \
 
 #define _default_constructor(NAME) DS_CONSTRUCTOR_STRUCT_DEFAULT(NAME)
 #define _constructor(NAME,...)  DS_CONSTRUCTOR_STRUCT(NAME,__VA_ARGS__)
-
+  */
 
 
 /**

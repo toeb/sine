@@ -1,10 +1,36 @@
 set(source 
   ./ScopeInfo.h
   ./ScopeInfo.cpp
+  Reflection.h
+  Reflection.cpp
 	./CMakeLists.txt
 	../include/core.reflection.h
 )
 source_group("" FILES ${source})
+
+set(builderSource
+ builder/ArgumentBuilder.h
+ builder/ArgumentBuilder.cpp
+ builder/AttributeBuilder.h
+ builder/AttributeBuilder.cpp
+ builder/AttributeTargetBuilder.h
+ builder/AttributeTargetBuilder.cpp
+ builder/FieldBuilder.h
+ builder/FieldBuilder.cpp
+ builder/FunctionBuilder.h
+ builder/FunctionBuilder.cpp
+ builder/MethodBuilder.h
+ builder/MethodBuilder.cpp
+ builder/NamespaceBuilder.h
+ builder/NamespaceBuilder.cpp
+ builder/ScopeBuilder.h
+ builder/ScopeBuilder.cpp
+ builder/TypeBuilder.h
+ builder/TypeBuilder.cpp
+ ../include/core.reflection.builder.h
+)
+source_group("builder" FILES ${builderSource})
+set(source ${source} ${builderSource})
 
 
 set(typeSource
@@ -162,4 +188,4 @@ source_group("namespace" FILES ${namespaceSource})
 set(source ${source} ${namespaceSource})
 
 add_library(core.reflection ${source})
-target_link_libraries(core.reflection core.property core.utility)
+target_link_libraries(core.reflection core.property core.utility core.builder)

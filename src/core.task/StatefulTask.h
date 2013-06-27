@@ -58,5 +58,5 @@ namespace nspace {
     // overridden from extended task
     void runTask();
   };
-  META(StatefulTask::State);
+ // META(StatefulTask::State);
 }
