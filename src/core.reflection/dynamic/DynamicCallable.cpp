@@ -1,7 +1,10 @@
 #include "DynamicCallable.h"
 #include <core.reflection/dynamic/DynamicCallableImplementation.h>
+#include <core.reflection.builder.h>
 using namespace nspace;
 
+
+reflect_type_default_definition(nspace::DynamicCallable);
 
 
 struct DynamicCallableSmartPointer:public DynamicCallableImplementation{

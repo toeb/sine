@@ -32,7 +32,7 @@ namespace nspace {
    *
    */
   class UnitTest : public virtual StatefulTask, public virtual Log, public virtual Timer {
-    reflect_type(UnitTest);
+    reflect_type(nspace::UnitTest);
 
     reflect_method(RunTest);
     void RunTest();

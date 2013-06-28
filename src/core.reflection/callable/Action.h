@@ -23,7 +23,7 @@
 
 namespace nspace {
   class Action : public Callable{
-    reflect_type(Action);
+    reflect_type_declaration(nspace::Action);
   public:
     Argument callImplementation(const Arguments & args)override final;
     virtual bool isValid()const override{return true;}

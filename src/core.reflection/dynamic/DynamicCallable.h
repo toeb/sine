@@ -7,7 +7,7 @@ namespace nspace{
   struct DynamicCallableImplementation;
 
   struct DynamicCallable : public Callable{
-    reflect_type(DynamicCallable);
+    reflect_type_declaration(nspace::DynamicCallable);
     std::shared_ptr<DynamicCallableImplementation> implementation;
   public:
     DynamicCallable(Callable * callable);

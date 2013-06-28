@@ -4,8 +4,7 @@
 #include <core.reflection/type/Argument.h>
 namespace nspace{
   class MemberAdapter{
-    reflect_type(MemberAdapter);    
-
+    reflect_type_declaration(nspace::MemberAdapter);    
     typedef Argument extensible_property(Owner);
   protected:
     MemberAdapter();

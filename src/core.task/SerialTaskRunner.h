@@ -4,7 +4,7 @@
 #include <queue>
 namespace nspace{
   class SerialTaskRunner : public virtual TaskRunnerBase{
-    reflect_type(SerialTaskRunner);
+    reflect_type(nspace::SerialTaskRunner);
     reflect_superclasses(TaskRunnerBase)
   private:
     std::queue<ITask *> _taskqueue;

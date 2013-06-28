@@ -7,10 +7,52 @@
 using namespace nspace;
 using namespace nspace::core::reflection::builder;
 
+
+
+
+
+
+UNITTEST(constrcutor1){
+  using namespace core::reflection;
+  using namespace uninvasiveReflection;  
+  
+
+
+  auto type = reflect<SomeTestClass>()
+    ->constructor<int,int>()
+    ->end()
+    ->publish()
+    ->end();
+
+  
+  
+
+
+  //TypedConstructorInfo<uninvasiveReflection::SomeTestClass>();
+  
+}
+
+UNITTEST(vectorAccess){
+  auto type = type_of<std::vector<int>>();
+  std::vector<int> vecA;
+  vecA.push_back(3);
+  vecA.push_back(4);
+  vecA.push_back(2);
+
+  CHECK(type);
+  CHECK(type->getMethod("size"));
+
+  Argument a = vecA;
+  MethodAdapter ma(a,"size");
+
+}
+
 UNITTEST(vectorType){
   auto type = type_of<std::vector<int>>();
   CHECK(type);
   CHECK(type->getMethod("size"));
+  CHECK(type->getMethod("at"));
+
 }
 
 
@@ -79,7 +121,7 @@ UNITTEST(AddUniqueMethod){
   auto type = type_of<SomeTestClass>();
   auto method = type->getMethod("method2");
   CHECK(method);
-  CHECK_EQUAL("method2", method->getName());
+  CHECK_EQUAL("method2(int,double)", method->getName());
   CHECK_EQUAL(2,method->Arguments().size());
   CHECK_EQUAL("ka", method->argument(0)->getName());
   CHECK_EQUAL("d", method->argument(1)->getName());

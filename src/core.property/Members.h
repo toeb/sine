@@ -353,9 +353,6 @@ public: \
  * \param NAME                The name.
  * \param INITIALIZATIONCODE  The initializationcode.
  */
-/*OLD IMPL: #define STATIC_INITIALIZER(NAME,INITIALIZATIONCODE) \
-  INITIALIZER(NAME ## Static, static bool __isInitialized=false; if(__isInitialized) return; __isInitialized=true; INITIALIZATIONCODE)
-  */
 #define STATIC_INITIALIZER(NAME,INITIALIZATIONCODE) DS_EXECUTE_ONCE(NAME){INITIALIZATIONCODE;}
 
 

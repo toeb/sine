@@ -15,6 +15,13 @@ namespace uninvasiveReflection{
 
   class SomeTestClass{
   public:
+
+    SomeTestClass(){}
+    SomeTestClass(std::string name){}
+    SomeTestClass(int i, int k){}
+
+    
+
     int i;
     int j;
     std::string str;

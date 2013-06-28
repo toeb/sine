@@ -7,7 +7,7 @@
 
 namespace nspace{
   class MethodAdapter : public Callable, public MemberAdapter{
-    reflect_type(MethodAdapter);
+    reflect_type(nspace::MethodAdapter);
     reflect_superclasses(Callable,MemberAdapter);
 
     typedef const MethodInfo * basic_property(MethodInfo);

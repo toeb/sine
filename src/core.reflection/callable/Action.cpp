@@ -1,6 +1,7 @@
 #include "Action.h"
 
-
+#include <core.reflection.builder.h>
+    reflect_type_default_definition(nspace::Action);
 
 nspace::Argument nspace::Action::callImplementation(const Arguments & args){
   if(args.size()>0)return Argument();

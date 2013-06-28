@@ -5,7 +5,7 @@
 #include <functional>
 namespace nspace{
   class ExtendedTask :public virtual Task, public virtual PropertyChangingObject{
-    reflect_type(ExtendedTask);
+    reflect_type(nspace::ExtendedTask);
     typedef long reflect_property(RunCount);
     typedef Time reflect_property(RunTime);
     typedef Time reflect_property(LastStartTime);

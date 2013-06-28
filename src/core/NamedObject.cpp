@@ -3,7 +3,7 @@
 using namespace nspace;
 using namespace std;
 
-DS_CLASS_DEFINITION(NamedObject);
+reflect_type_default_definition(nspace::NamedObject);
 
 NamedObject::~NamedObject(){
   if(_name)delete _name;

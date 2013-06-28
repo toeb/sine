@@ -7,7 +7,7 @@
 namespace nspace{
   struct DynamicObjectImplementation;
   class DynamicObject{
-    reflect_type(DynamicObject)
+    reflect_type_declaration(nspace::DynamicObject)
     std::shared_ptr<DynamicObjectImplementation> _implementation;
   public:
     Argument operator*();

@@ -8,6 +8,8 @@ set(source
 )
 source_group("" FILES ${source})
 
+
+
 set(builderSource
  builder/ArgumentBuilder.h
  builder/ArgumentBuilder.cpp
@@ -19,14 +21,22 @@ set(builderSource
  builder/FieldBuilder.cpp
  builder/FunctionBuilder.h
  builder/FunctionBuilder.cpp
+ builder/MemberBuilder.h
+ builder/MemberBuilder.cpp
  builder/MethodBuilder.h
  builder/MethodBuilder.cpp
  builder/NamespaceBuilder.h
  builder/NamespaceBuilder.cpp
+ builder/ConstructorBuilder.h
+ builder/ConstructorBuilder.cpp
+ builder/StaticMethodBuilder.h
+ builder/StaticMethodBuilder.cpp
  builder/ScopeBuilder.h
  builder/ScopeBuilder.cpp
  builder/TypeBuilder.h
  builder/TypeBuilder.cpp
+ builder/StaticFieldBuilder.h
+ builder/StaticFieldBuilder.cpp
  ../include/core.reflection.builder.h
 )
 source_group("builder" FILES ${builderSource})
@@ -73,6 +83,8 @@ set(memberSource
 	member/MemberInfo.cpp
 	member/field/FieldInfo.h
 	member/field/FieldInfo.cpp
+	member/field/StaticFieldInfo.h
+	member/field/StaticFieldInfo.cpp
 	member/property/PropertyInfo.h
 	member/property/PropertyInfo.cpp
 	member/property/PropertySetInfo.h
@@ -83,6 +95,8 @@ set(memberSource
 	member/property/TypedPropertySetInfo.cpp
 	member/method/MethodInfo.h
 	member/method/MethodInfo.cpp
+	member/method/StaticMethodInfo.h
+	member/method/StaticMethodInfo.cpp
 	member/method/TypedMethodInfo.h
 	member/method/TypedMethodInfo.cpp
 	member/constructor/ConstructorInfo.h
@@ -114,6 +128,12 @@ set(source ${source} ${attributeSource})
 
 
 set(callableSource
+callable/ArgumentInfo.h
+callable/ArgumentInfo.cpp
+callable/TypedArgumentInfo.h
+callable/TypedArgumentInfo.cpp
+callable/CallableInfo.h
+callable/CallableInfo.cpp
 	callable/Action.h
 	callable/Action.cpp
 	callable/DelegateAction.h

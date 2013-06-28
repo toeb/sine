@@ -23,7 +23,7 @@
 namespace nspace {
 
   class PerformanceTest : public UnitTest {
-    reflect_type(PerformanceTest);
+    reflect_type(nspace::PerformanceTest);
     typedef size_t reflect_property(PlannedRepititions);
     typedef size_t reflect_property(ExecutedRepititions);
     typedef size_t reflect_property(PrimerCount);    

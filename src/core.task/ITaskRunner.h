@@ -8,7 +8,7 @@ namespace nspace{
   * ITaskRunner is the base class for task runners.  It allows tasks to be added and removed
   */
   class ITaskRunner : public virtual ITask, public virtual Log{
-    reflect_type(ITaskRunner);
+    reflect_type(nspace::ITaskRunner);
     typedef uint reflect_property(NumberOfTasks);
   public:
     ITaskRunner();

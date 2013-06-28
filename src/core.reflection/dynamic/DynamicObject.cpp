@@ -4,8 +4,11 @@
 #include "DynamicMappedObject.h"
 #include <core.utility.h>
 #include <core.reflection/type/Argument.implementation.template.h>
+#include <core.reflection.builder.h>
 using namespace nspace;
 
+
+reflect_type_default_definition(nspace::DynamicObject)
 
 
 DynamicObject::DynamicObject(std::shared_ptr<DynamicObjectImplementation> impl):_implementation(impl){}

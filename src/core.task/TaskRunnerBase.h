@@ -4,7 +4,7 @@
 
 namespace nspace{
   class TaskRunnerBase : public virtual ITaskRunner,public virtual Log, public virtual NamedObject{
-    reflect_type(TaskRunnerBase);
+    reflect_type(nspace::TaskRunnerBase);
     reflect_superclasses(ITaskRunner,Log);
 
     typedef bool reflect_property(IsRunning);

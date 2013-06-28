@@ -2,7 +2,7 @@
 #include <core.reflection/value/IReadableValue.h>
 namespace nspace{
   class IModifiableValue : public IReadableValue{
-    TYPED_OBJECT(IModifiableValue);
+    reflect_type_declaration(nspace::IModifiableValue);
   private:
     bool changeValue(Argument argument);
   protected:

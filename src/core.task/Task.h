@@ -5,7 +5,7 @@
 #include <core/NamedObject.h>
 namespace nspace{
   class Task : public virtual ITask{
-    TYPED_OBJECT(Task);
+    reflect_type(nspace::Task);
   protected:
     virtual void onBeforeRun();
     virtual void onAfterRun();

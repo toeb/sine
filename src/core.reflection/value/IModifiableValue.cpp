@@ -1,6 +1,9 @@
 #include "IModifiableValue.h"
 using namespace nspace;
 
+#include <core.reflection.builder.h>
+reflect_type_default_definition(nspace::IModifiableValue);
+
 bool IModifiableValue::changeValue(Argument value){
   bool cancel = false;
   valueChanging(value,cancel);

@@ -24,11 +24,8 @@
 #include <core.task/ExtendedTask.h>
 
 namespace nspace {
-
-
-
   class StatefulTask : public virtual ExtendedTask,public virtual Log, public virtual NamedObject {
-    reflect_type(StatefulTask);
+    reflect_type(nspace::StatefulTask);
     reflect_superclasses(ExtendedTask,Log);
 
   protected:
@@ -58,5 +55,5 @@ namespace nspace {
     // overridden from extended task
     void runTask();
   };
- // META(StatefulTask::State);
+  // META(StatefulTask::State);
 }

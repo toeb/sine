@@ -21,10 +21,19 @@
 #include <string>
 #include <core.reflection/type/TypeInfo.h>
 #include <core/NamedObject.h>
+#include <core.reflection.builder.h>
 using namespace nspace;
 using namespace std;
 
-DS_CLASS_DEFINITION(Object);
+DS_CLASS_DEFINITION(Object){
+  core::reflection::builder::reflect<Object>()
+    ->fullyQualifiedName(DS_STRINGIFY(::nspace::Object))
+    ->publishHierarchy()
+    ->end();
+}
+
+
+
 
 
 namespace nspace{

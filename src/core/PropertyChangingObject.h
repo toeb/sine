@@ -21,7 +21,7 @@ namespace nspace{
 
   // A PropertyChangedListener can be added to a PropertyChangingObject and is notified via onPropertyChanged when a property of the Object has Changed
   class PropertyChangedListener : public virtual Object{
-    DS_CLASS(PropertyChangedListener);
+    reflect_type(nspace::PropertyChangedListener)
   protected:
     virtual void onPropertyChanged(Object * sender, const std::string & propertyName)=0;
     friend class PropertyChangingObject;
@@ -29,7 +29,7 @@ namespace nspace{
 
   // an implementation of PropertyChangedListener which will delegate it
   class DelegatePropertyChangedListener : public virtual PropertyChangedListener{
-    DS_CLASS(DelegatePropertyChangedListener);
+    reflect_type(nspace::DelegatePropertyChangedListener);
   private:
     std::function<void (Object * , const std::string & ) > _callback;
   public:
@@ -42,7 +42,7 @@ namespace nspace{
   
   // an object which allows listeners to listen for property change events
   class PropertyChangingObject : public virtual Object{
-    DS_CLASS(PropertyChangingObject);
+    reflect_type(nspace::PropertyChangingObject);
   private:
     Set<PropertyChangedListener*> _listeners;
   public:

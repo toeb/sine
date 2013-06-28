@@ -10,7 +10,7 @@ namespace nspace{
   class ITaskRunner;
 
   class ITask: public virtual NamedObject, public virtual PropertyChangingObject{
-    reflect_type(ITask);
+    reflect_type(nspace::ITask);
     typedef ITaskRunner* extensible_property(TaskRunner);
     typedef uint reflect_property(NumberOfTimes);
   public:

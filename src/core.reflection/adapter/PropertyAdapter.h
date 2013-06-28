@@ -9,7 +9,7 @@ namespace nspace{
     public IModifiableValue,
     public MemberAdapter
   {
-    reflect_type(PropertyAdapter);
+    reflect_type(nspace::PropertyAdapter);
 
     typedef const PropertyInfo * extensible_property(PropertyInfo);
     auto before_set(PropertyInfo){

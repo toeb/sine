@@ -1,8 +1,9 @@
 #include "IReadableValue.h"
 #include <core.reflection/type/TypeInfo.h>
+#include <core.reflection.builder.h>
 using namespace nspace;
 
-
+reflect_type_default_definition(nspace::IReadableValue);
 
 
 

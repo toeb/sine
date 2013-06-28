@@ -9,43 +9,54 @@
 #define typeof(TYPENAME) nspace::type_of<TYPENAME>()
 
 
+#define DS_GET_TYPE public: virtual inline const nspace::Type * getType() const{return nspace::type_of<CurrentClassType>(); } 
+#define DS_GET_TYPE_DECLARATION public: virtual inline const nspace::Type * getType() const;
+#define DS_GET_TYPE_DEFINITION(TYPE) const nspace::Type * TYPE::getType() const {return nspace::type_of<CurrentClassType>(); } 
+
+#define DS_TYPE_INITIALIZER public: static bool initializeType(){_reflectType(); return true;}private: static void _reflectType()
+#define DS_TYPE_INITIALIZER_DECLARATION DS_TYPE_INITIALIZER
+#define DS_TYPE_INITIALIZER_DEFINITION(TYPE) void TYPE::_reflectType()
+
+// expects type to be fully qualified 
+// \param TYPE  The fully qualified type without leading "::". not specifying the fully qualfied type leads to compiler errors
+#define DS_TYPE_HEADER(TYPE) private: typedef ::TYPE CurrentClassType;
 
 
 /**
 * \brief Macro for making an object a typed object. defines a static meta information structure
 *        (TypeData) and virtual access methods
-* \param TYPE  The type.
 */
-#define DS_CLASS(TYPE)                                                                                            \
-private:                                                                                                            \
-  typedef TYPE CurrentClassType;                                                                                      \
-public:                                                                                                               \
-  static const std::string & getTypeName(){static std::string name(#TYPE); return name; }                                                      \
-  virtual inline const nspace::Type * getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); } \
-  virtual inline bool isInstanceOf(const nspace::Type * &  type) const { return type->isSuperClassOf(this->getType()); }         \
-private:
+#define DS_CLASS(TYPE)                                              \
+  DS_TYPE_HEADER(TYPE)                                              \
+  DS_GET_TYPE                                                       \
+  DS_TYPE_INITIALIZER{                                              \
+    nspace::core::reflection::builder::reflect<CurrentClassType>()  \
+      ->fullyQualifiedName(DS_INLINE_STRING("::"<<#TYPE))           \
+      ->publishHierarchy()                                          \
+      ->end();                                                      \
+  }                                                                 \
+  private:
 
-#define TYPED_OBJECT(TYPE) DS_CLASS(TYPE)
+
+#define DS_CLASS_DECLARATION(TYPE) DS_TYPE_HEADER(TYPE); DS_GET_TYPE_DECLARATION; DS_TYPE_INITIALIZER_DECLARATION;
+#define DS_CLASS_DEFINITION(TYPE) DS_GET_TYPE_DEFINITION(TYPE); DS_TYPE_INITIALIZER_DEFINITION(TYPE)
+
 
 #ifndef reflect_type
 #define reflect_type(NAME) DS_CLASS(NAME) DS_PROPERTY_EXTENSION_METHODS 
+#define reflect_type_declaration(NAME) DS_CLASS_DECLARATION(NAME); DS_PROPERTY_EXTENSION_METHODS
+#define reflect_type_definition(NAME) DS_CLASS_DEFINITION(NAME)
+#define reflect_type_default_definition(NAME) DS_CLASS_DEFINITION(NAME){\
+    nspace::core::reflection::builder::reflect<CurrentClassType>()  \
+      ->fullyQualifiedName(DS_INLINE_STRING("::"<<#NAME))           \
+      ->publishHierarchy()                                          \
+      ->end();                                                      \
+      }
+
 #endif
 
+
 #define reflect_superclasses(...) DS_FOREACH(SUBCLASSOF,__VA_ARGS__);
-
-#define DS_CLASS_DECLARATION(TYPE)                                  \
-private:                                                            \
-  typedef TYPE CurrentClassType;                                    \
-public:                                                             \
-  static const std::string & getTypeName();                                 \
-  virtual const nspace::Type * getType() const;              \
-  virtual bool isInstanceOf(const Type * type) const;\
-private:
-
-#define DS_CLASS_DEFINITION(TYPE)                                                                                       \
-  const std::string & TYPE::getTypeName(){static std::string name(# TYPE);return name; }                                                         \
-  const nspace::Type * TYPE::getType() const {return nspace::TypeInfo<CurrentClassType>::instance().get(); }            \
-  bool TYPE::isInstanceOf(const nspace::Type * type) const { return type->isSuperClassOf(this->getType()); }
 
 
 

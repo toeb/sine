@@ -3,7 +3,7 @@
 #include <core/PropertyChangingObject.h>
 namespace nspace{
   class CompilerInfo: public PropertyChangingObject{
-    reflect_type(CompilerInfo);
+    reflect_type(nspace::CompilerInfo);
 
     typedef std::string reflect_property(CompilationDate);
     typedef std::string reflect_property(CompilationTime);
@@ -20,7 +20,7 @@ namespace nspace{
 #endif
 
   class SourceInfo : public PropertyChangingObject{
-    reflect_type(SourceInfo);
+    reflect_type(nspace::SourceInfo);
   public:
     SourceInfo(const std::string & file, int line, const std::string & func):_File(file),_Line(line),_Function(func){}
     void toString(std::ostream & out)const{

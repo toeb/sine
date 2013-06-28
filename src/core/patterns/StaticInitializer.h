@@ -17,17 +17,11 @@
 #define DS_INITIALIZER_STATIC(NAME)                                                                                                               \
  struct DS_INITIALIZER_STATIC_CLASSNAME(NAME){                                                                                                    \
   DS_INITIALIZER_STATIC_CLASSNAME(NAME)(){                                                                                                        \
-    static bool initialized = DS_INITIALIZER_STATIC_METHOD_WRAPPER_NAME(NAME)();      /*This is called exactly once*/                             \
+  static bool initialized = []()->bool{DS_INITIALIZER_STATIC_METHOD_NAME(NAME)(); return true;}();   /*This is called exactly once*/              \
   }                                                                                                                                               \
  }DS_INITIALIZER_STATIC_INSTANCE_NAME(NAME);                                                                                                      \
  private:                                                                                                                                         \
-   static DS_INLINE bool DS_INITIALIZER_STATIC_METHOD_WRAPPER_NAME(NAME)(){                                                                       \
-    DS_INITIALIZER_STATIC_METHOD_NAME(NAME)();                                                                                                    \
-    return true;                                                                                                                                  \
-   }                                                                                                                                              \
- private:                                                                                                                                         \
    static DS_INLINE void DS_INITIALIZER_STATIC_METHOD_NAME(NAME)()                                                                                                      
-
 
 
 

@@ -83,7 +83,8 @@ namespace nspace{
             return result;
           }
           derived_ptr check(){
-            if(!isValid())throw new std::exception("no instance set");         
+            if(!isValid())throw new std::exception("no instance set");  
+            return derived();
           }
           derived_ptr setParentScope(const std::string & name){
             check();

@@ -3,7 +3,7 @@
 
 namespace nspace{
   class ISerializeable{
-    DS_CLASS(ISerializeable);
+    DS_CLASS(nspace::ISerializeable);
   public:
     typedef uint Format;
   protected:

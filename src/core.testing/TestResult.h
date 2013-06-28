@@ -26,7 +26,9 @@ namespace nspace {
    *        @todo add inconclusive state
    */
   class UnitTestResult : public Object{
-    reflect_type(UnitTestResult)
+    reflect_type(nspace::UnitTestResult);
+    reflect_superclasses(Object);
+
     typedef std::string basic_property(Message);
     typedef bool basic_property(Failed)
     typedef SourceInfo * basic_property(SourceInfo);

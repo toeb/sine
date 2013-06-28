@@ -46,28 +46,21 @@ UNITTEST(DereferencePointerPointer){
 }
 
 UNITTEST(AutoNamespaceTypeConstruction1){
-  struct Derived:public Type{
-    Derived():Type("::std1::Derived"){}
-  }a;
-  CHECK_EQUAL(&a,ScopeInfo::findScope("::std1::Derived"));
-  CHECK(contains(ScopeInfo::Global()->ChildScopes(), a.getScope()));
-}
+  class Derived{
 
-
-
-UNITTEST(TypeConstruction1){
-  struct Derived:public Type{
-    Derived():Type("____testtype"){setScope(Global());}
-  }uut;
+  };
+  auto a = nspace::core::reflection::builder::reflect<Derived>()
+    ->fullyQualifiedName("::std1::Derived")
+    ->publish()
+    ->end();
   
-  CHECK_EQUAL("::____testtype",uut.getFullyQualifiedName());
-  CHECK_EQUAL("____testtype",uut.getName());
-  CHECK_EQUAL(0,uut.getUnderlyingType());
-  CHECK_EQUAL(&uut,uut.getUnqualifiedType());
-  auto ns = uut.getNamespace();
-  CHECK_EQUAL(NamespaceInfo::Global(),uut.getNamespace());
 
+
+  CHECK_EQUAL(a,nspace::core::reflection::findScope("::std1::Derived"));
+  CHECK(contains(nspace::core::reflection::Global()->ChildScopes(), a->getScope()));
 }
+
+
 
 
 
@@ -88,11 +81,11 @@ UNITTEST(RemoveReference){
   CHECK_EQUAL(typeof(int), noReference);
 }
 
+struct A{
+  reflect_type(A);
+};
 
 UNITTEST(MultiModifierTypeName){
-  struct A{
-    reflect_type(A);
-  };
 
   auto uut = typeof(A const  * const * const&  );
   auto name = uut->getName();
@@ -100,9 +93,6 @@ UNITTEST(MultiModifierTypeName){
 }
 
 UNITTEST(ConstVolatileType){
- struct A{
-   reflect_type(A);
- };
  
  auto t = typeof(const volatile A); 
  auto t2 = t->getUnderlyingType();
@@ -114,10 +104,6 @@ UNITTEST(ConstVolatileType){
  CHECK(t->getIsVolatile());
 }
 UNITTEST(volatileType){
- struct A{
-   reflect_type(A);
- };
- 
  auto t = typeof(volatile A); 
  auto t2 = t->getUnderlyingType();
 
@@ -128,9 +114,6 @@ UNITTEST(volatileType){
  CHECK(t->getIsVolatile());
 }
 UNITTEST(referenceType){
- struct A{
-   reflect_type(A);
- };
  
  auto t = typeof(A&); 
  auto t2 = t->getUnderlyingType();
@@ -142,10 +125,6 @@ UNITTEST(referenceType){
  CHECK(!t->getIsVolatile());
 }
 UNITTEST(pointerType){
- struct A{
-   reflect_type(A);
- };
- 
  auto t = typeof(A*); 
  auto t2 = t->getUnderlyingType();
 
@@ -157,10 +136,6 @@ UNITTEST(pointerType){
 
 }
 UNITTEST(constType){
- struct A{
-   reflect_type(A);
- };
- 
  auto t = typeof(const A); 
  auto t2 = t->getUnderlyingType();
 
@@ -174,10 +149,6 @@ UNITTEST(constType){
 
 
 UNITTEST(type_of1){
-  struct A{
-    reflect_type(A);
-  };
-
   auto type  = type_of<A>();
   CHECK(type);
   CHECK_EQUAL("A", type->getName());
@@ -185,10 +156,7 @@ UNITTEST(type_of1){
 
 
 UNITTEST(type_ofInstance){
-  struct A{
-    reflect_type(A);  
-  }a;
-
+  A a;
   auto type = type_of(a);
   CHECK(type);
   CHECK_EQUAL("A", type->getName());

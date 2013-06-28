@@ -105,7 +105,7 @@ TEST(1,CallableFunctor){
   CHECK(10==result);
 }
 
-
+/*
 TEST(1,DS_CLASS){
   // tests weather typeof(A) correctly returns a type
   struct A{
@@ -155,3 +155,4 @@ TEST(4,DS_CLASS){
 
 
 
+*/

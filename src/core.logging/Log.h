@@ -41,7 +41,7 @@ namespace nspace{
   Log & getLog();
 
   class LogEntry : public  PropertyChangingObject{
-    reflect_type(LogEntry);    
+    reflect_type(nspace::LogEntry);    
     typedef std::string reflect_property(Message);
 
 
@@ -60,7 +60,7 @@ namespace nspace{
     void toString(std::ostream & out)const;
   };
   class Log : public virtual PropertyChangingObject{
-    reflect_type(Log);
+    reflect_type(nspace::Log);
     typedef int LogLevel;
   public:
     typedef bool reflect_property(LoggingEnabled);

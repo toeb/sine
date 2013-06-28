@@ -86,9 +86,8 @@ namespace nspace
     
 
 
-
     const MemberInfo *        getMember(const std::string & name) const;
-    const MethodInfo *        getMethod(const std::string & name) const;
+    const MethodInfo *        getMethod(const std::string & name) const;    
     const PropertyInfo *      getProperty(const std::string & name) const;
     bool isDefaultConstructible()const;
     const ConstructorInfo *   getConstructor(const std::vector<const Type *>& types)const;    

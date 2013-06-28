@@ -6,7 +6,7 @@
 namespace nspace{
 
 class DynamicReflectedObjectImplementation : public DynamicObjectImplementation{
-    reflect_type(DynamicObject);
+  reflect_type_declaration(nspace::DynamicReflectedObjectImplementation);
     // stores wrapped object
     Argument data;
     // stores all created member values

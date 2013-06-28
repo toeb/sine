@@ -112,18 +112,17 @@ const MemberInfo * Type::getMember(const std::string & name)const{
 }
 
 
-
 const MethodInfo * Type::getMethod(const std::string & name)const{
-  auto method = dynamic_cast<const MethodInfo*>(getMember(name));
-  return method;
+  return Members()
+    .subset<const MethodInfo*>()
+    .first([&name](const MethodInfo* method){return method->getPureName()==name||method->getName()==name||method->getFullName()==name;});
 }
-
 
 const ConstructorInfo * Type::getConstructor(const std::vector<const Type*> & types)const{
   return Constructors().first([&types](const ConstructorInfo * info)->bool{
-    if(types.size()!=info->getArgumentTypes().size())return false;
+    if(types.size()!=info->Arguments().size())return false;
     for(size_t i=0; i < types.size(); i++){
-      if(types[i]!=info->getArgumentTypes()[i])return false;
+      if(types[i]!=info->Arguments()[i]->getArgumentType().get())return false;
     }
     return true;
   });

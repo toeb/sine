@@ -5,7 +5,7 @@
 namespace nspace{
   
 class ProgressReporter : public virtual PropertyChangingObject, public virtual Log{
-  reflect_type(ProgressReporter);
+  reflect_type(nspace::ProgressReporter);
   typedef double reflect_property(NumberOfNotifications);
   auto after_set(NumberOfNotifications);
   typedef double reflect_property(TotalProgress);

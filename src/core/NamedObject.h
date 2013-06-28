@@ -6,7 +6,7 @@
 namespace nspace{
   // a base class for objects that need to be named
   class NamedObject  : public virtual Object{
-    DS_CLASS_DECLARATION(NamedObject);
+    reflect_type_declaration(nspace::NamedObject);
   private:
     // the name field
     std::string * _name;

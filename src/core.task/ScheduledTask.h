@@ -12,7 +12,7 @@ namespace nspace{
     public virtual Log,
     public virtual NamedObject
   {
-    reflect_type(ScheduledTask);
+    reflect_type(nspace::ScheduledTask);
     reflect_superclasses(Log);
   private:
     //DESCRIPTION(Interval,"The timeout Interval in seconds");

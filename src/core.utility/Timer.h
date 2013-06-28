@@ -3,7 +3,7 @@
 #include <core/Time.h>
 namespace nspace{  
   class Timer:public virtual PropertyChangingObject{
-    reflect_type(Timer);
+    reflect_type(nspace::Timer);
 
     typedef Time reflect_property(AccumulatedTime);
     typedef bool reflect_property(IsRunning);

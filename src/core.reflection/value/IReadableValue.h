@@ -9,7 +9,7 @@
 
 namespace nspace{
   class IReadableValue : public Observable{
-    reflect_type(IReadableValue);    
+    reflect_type_declaration(nspace::IReadableValue);    
    typedef const Type * basic_property(ValueType);
   protected:
     virtual Argument retrieveValue()const=0;

@@ -3,10 +3,89 @@
 #include <core.reflection/member/MemberInfo.h>
 #include <core.reflection/type/Argument.h>
 #include <core/template/function_traits.h>
+#include <core.reflection/function/ArgumentInfo.h>
 #include <core.reflection/callable/Callable.h>
 
 namespace nspace{
 
+  class ConstructorInfo : public MemberInfo, public Callable{
+  protected:
+    // redefined because of proeprty Arguments
+    typedef Callable::Arguments Args;
+  public:
+    typedef std::shared_ptr<const ArgumentInfo> argument_ptr;
+    propdef std::vector<argument_ptr> basic_property(Arguments);
+    property_reference(Arguments);
+    argument_ptr argument(size_t i){
+      if(Arguments().size()<=i)return argument_ptr();
+      return Arguments()[i];
+    }
+    bool isValid()const override final{return true;}    
+  };
+
+  template<typename ClassType,typename Args>
+  class TypedConstructorInfo {
+    TypedConstructorInfo(){
+      throw new std::exception("wrong usage for typed constructor info")
+    }
+  };
+  template<typename ClassType>
+  class TypedConstructorInfo<ClassType,void> : public ConstructorInfo{    
+  public:
+    Argument callImplementation(const std::vector<Argument> & args)const{
+      if(args.size()!=0)throw std::exception("incorrect argument count while constructing type");
+      return std::make_shared<ClassType>();
+    }
+  };
+  template<typename ClassType,typename T1>
+  class TypedConstructorInfo<ClassType, std::tuple<T1>> : public ConstructorInfo{
+  public:
+    
+    TypedConstructorInfo(){
+      static auto a0 = std::make_shared<TypedArgumentInfo<T1,0>>(); Arguments().push_back(a0);
+    }
+    Argument callImplementation(const std::vector<Argument> & args)const{
+      if(args.size()!=1)throw std::exception("incorrect argument count while constructing type");
+      return std::make_shared<ClassType>(
+        (typename std::decay<T1>::type)args[0]
+      );
+    }
+  };
+  
+  template<typename ClassType,typename T1,typename T2>
+  class TypedConstructorInfo<ClassType, std::tuple<T1,T2>> : public ConstructorInfo{
+  public:
+    
+    TypedConstructorInfo(){
+      static auto a0 = std::make_shared<TypedArgumentInfo<T1,0>>(); Arguments().push_back(a0);
+      static auto a1 = std::make_shared<TypedArgumentInfo<T2,1>>(); Arguments().push_back(a1);  
+    }
+    Argument callImplementation(const std::vector<Argument> & args)const{
+      if(args.size()!=2)throw std::exception("incorrect argument count while constructing type");
+      return std::make_shared<ClassType>(
+        (typename std::decay<T1>::type)args[0],
+        (typename std::decay<T2>::type)args[1]
+      );
+    }
+  };
+  template<typename ClassType,typename T1,typename T2,typename T3>
+  class TypedConstructorInfo<ClassType,std::tuple<T1,T2,T3>> : public ConstructorInfo{
+  public:
+    TypedConstructorInfo(){
+      static auto a0 = std::make_shared<TypedArgumentInfo<T1,0>>(); Arguments().push_back(a0);
+      static auto a1 = std::make_shared<TypedArgumentInfo<T2,1>>(); Arguments().push_back(a1);
+      static auto a2 = std::make_shared<TypedArgumentInfo<T3,2>>(); Arguments().push_back(a2);      
+    }
+    Argument callImplementation(const std::vector<Argument> & args)const{
+      if(args.size()!=3)throw std::exception("incorrect argument count while constructing type");
+      return std::make_shared<ClassType>(
+        (typename std::decay<T1>::type)args[0],
+        (typename std::decay<T2>::type)args[1],
+        (typename std::decay<T3>::type)args[2]
+      );
+    }
+  };
+  /*
   class ConstructorInfo : public MemberInfo, public Callable{
   public:
     typedef std::vector<const Type*> basic_property(ArgumentTypes);
@@ -89,4 +168,5 @@ namespace nspace{
 
 #define reflected_constructor(...) DS_CONSTRUCTOR_STRUCT(__LINE__, DS_REST(__VA_ARGS__))  DS_EXPAND(DS_FIRST(__VA_ARGS__)) ( DS_EXPAND(DS_REST( __VA_ARGS__) ))
 #define reflected_default_constructor(TYPE) DS_CONSTRUCTOR_STRUCT_DEFAULT(Default) TYPE()
+  */
 }

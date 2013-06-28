@@ -31,8 +31,11 @@
 
 
 namespace nspace{
-  struct Callable{    
-    DS_CLASS_DECLARATION(Callable);
+  struct Callable{  
+    //DS_CLASS_DECLARATION(nspace::Callable);
+  public:
+    virtual const Type* getType()const;
+    static bool initializeType();
     // typedef std::vector<const Type*> basic_property(ArgumentTypes);
   public:
     typedef std::vector<Argument> Arguments;
@@ -40,17 +43,13 @@ namespace nspace{
     virtual ~Callable(){}
     Argument operator()();    
     Argument operator()()const;    
+
     DS_FOREACH(DS_CALLABLE_TEMPLATE_CALL_N, 1,2,3,4,5,6,7,8,9,10);
 
     Argument call();    
     Argument call()const;    
     template<typename TContainer> Argument call(TContainer & container);
     template<typename TContainer> Argument call(TContainer & container)const;
-
-
-
-
-
 
     virtual bool isValid()const=0;
     virtual Argument callImplementation(const Arguments & args);

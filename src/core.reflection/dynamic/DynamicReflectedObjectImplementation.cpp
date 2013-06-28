@@ -4,6 +4,7 @@
 #include <hash_set>
 
 #include <core.utility.h>
+#include <core.reflection.builder.h>
 using namespace nspace;
 
 #define DS_OVERRIDE_PROPERTY_GET_METHOD_NAME __override_get_property
@@ -13,6 +14,7 @@ using namespace nspace;
 #define DS_PROPERTY_LIST_NAME __list_property_names
 
 
+  reflect_type_default_definition(nspace::DynamicReflectedObjectImplementation);
 
   DynamicReflectedObjectImplementation::DynamicReflectedObjectImplementation(Argument argument):data(argument){
 

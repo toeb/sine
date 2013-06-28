@@ -23,6 +23,7 @@
 #include <string>
 
 #include <core.reflection.h>
+#include <core.reflection.builder.h>
 
 
 namespace nspace {
@@ -31,7 +32,7 @@ namespace nspace {
   *
   */
   class Object {
-    DS_CLASS_DECLARATION(Object)
+    DS_CLASS_DECLARATION(nspace::Object);
   public:
     Object();
     virtual ~Object();
