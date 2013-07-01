@@ -1,6 +1,8 @@
 #pragma once
 
 #include <core.reflection/member/method/MethodInfo.h>
+#include <core/template/function_traits.h>
+#include <vector>
 
 namespace nspace{
 
@@ -189,7 +191,8 @@ namespace nspace{
 DS_FOR_N_TEMPLATE_ARGS(DS_TYPED_METHOD_INFO)
 */
 
-  DS_TYPED_METHOD_INFO(A1)
+ /* 
+ DS_TYPED_METHOD_INFO(A1)
   DS_TYPED_METHOD_INFO(A1,A2)
   DS_TYPED_METHOD_INFO(A1,A2,A3)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4)
@@ -198,6 +201,7 @@ DS_FOR_N_TEMPLATE_ARGS(DS_TYPED_METHOD_INFO)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8,A9)
+  */
 
 
 /*

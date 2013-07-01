@@ -3,6 +3,8 @@
 #include <core.builder/NestedBuilder.h>
 #include <core.reflection/member/method/TypedMethodInfo.h>
 #include <core.reflection/builder/MemberBuilder.h>
+#include <core.reflection/builder/ArgumentBuilder.h>
+
 namespace nspace{
   namespace core{
     namespace reflection{

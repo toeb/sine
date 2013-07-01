@@ -7,7 +7,7 @@
 using namespace nspace;
 using namespace nspace::core::reflection::builder;
 
-
+/*
 
 
 
@@ -20,6 +20,12 @@ UNITTEST(constrcutor1){
 
   auto type = reflect<SomeTestClass>()
     ->constructor<int,int>()
+    ->argument<0>()
+    ->name("i")
+    ->end()
+    ->argument<1>()
+    ->name("j")
+    ->end()
     ->end()
     ->publish()
     ->end();
@@ -245,4 +251,4 @@ UNITTEST(RegisterScope){
   //check
   auto result = findScope("::someTestNameSpace::");
   CHECK((bool)result);
-}
+}*/

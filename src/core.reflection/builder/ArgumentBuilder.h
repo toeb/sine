@@ -1,22 +1,25 @@
 #pragma once
 #include <core.builder/NestedBuilder.h>
-#include <core.reflection/function/ArgumentInfo.h>
+#include <core.reflection/callable/ArgumentInfo.h>
+#include <core/template/function_traits.h>
+//#include <core.reflection/builder/CallableBuilder.h>
+#include <memory>
 namespace nspace{
   namespace core{
     namespace reflection{
       namespace builder{
-        template<typename T>
-        class TypeBuilder;
+        template<typename T> class TypeBuilder;
+        template<typename T, typename Method> class MethodBuilder;
 
-        template<typename T, typename Method>
-        class MethodBuilder;
+
+        
 
         template<typename T, typename Method, unsigned int ArgIndex>
         class ArgumentBuilder : 
           public core::builder::NestedBuilder<ArgumentBuilder<T,Method,ArgIndex>,MethodBuilder<T,Method>,ArgumentInfo>{
-
         public:
           typedef typename function_traits<Method>::nested_template arg<ArgIndex>::type argument_type;
+         
           result_ptr createInstance()override{
             return parent()->result()->argument(ArgIndex);
           }

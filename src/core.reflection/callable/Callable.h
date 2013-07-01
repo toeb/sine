@@ -22,17 +22,16 @@
     }
 
 
-#define DS_CALLABLE_TEMPLATE_CALL_N(N)                         \
-  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)const              \
-  DS_CALLABLE_TEMPLATE_CALL_IMP_N(N)                         \
-  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)                   \
+#define DS_CALLABLE_TEMPLATE_CALL_N(N)           \
+  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)const  \
+  DS_CALLABLE_TEMPLATE_CALL_IMP_N(N)             \
+  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)       \
   DS_CALLABLE_TEMPLATE_CALL_IMP_N(N)
 
 
 
 namespace nspace{
   struct Callable{  
-    //DS_CLASS_DECLARATION(nspace::Callable);
   public:
     virtual const Type* getType()const;
     static bool initializeType();

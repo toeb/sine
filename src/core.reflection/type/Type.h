@@ -27,8 +27,7 @@
 
 #include <core.reflection/ScopeInfo.h>
 #include <core.reflection/callable/Callable.h>
-
-#include <core.reflection/attribute/Attribute.h>
+#include <core.reflection/attribute/AttributeTarget.h>
 namespace nspace
 {
   // forward declarations

@@ -1,7 +1,7 @@
 #pragma once
 #include <core.reflection/member/MemberInfo.h>
 #include <core.reflection/type/Argument.h>
-#include <core.reflection/function/ArgumentInfo.h>
+#include <core.reflection/callable/ArgumentInfo.h>
 namespace nspace{
 
 

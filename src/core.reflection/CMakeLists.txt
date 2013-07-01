@@ -81,10 +81,17 @@ set(source ${source} ${valueSource})
 set(memberSource
 	member/MemberInfo.h
 	member/MemberInfo.cpp
+	member/TypedMemberInfo.h
+	member/TypedMemberInfo.implementation.template.h
+	member/TypedMemberInfo.cpp
 	member/field/FieldInfo.h
 	member/field/FieldInfo.cpp
+	member/field/TypedFieldInfo.h
+	member/field/TypedFieldInfo.cpp
 	member/field/StaticFieldInfo.h
 	member/field/StaticFieldInfo.cpp
+	member/field/TypedStaticFieldInfo.h
+	member/field/TypedStaticFieldInfo.cpp
 	member/property/PropertyInfo.h
 	member/property/PropertyInfo.cpp
 	member/property/PropertySetInfo.h
@@ -122,6 +129,8 @@ set(source ${source} ${preprocessorSource})
 set(attributeSource
 	attribute/Attribute.h
 	attribute/Attribute.cpp
+	attribute/AttributeTarget.h
+	attribute/AttributeTarget.cpp
 )
 source_group("attribute" FILES ${attributeSource})
 set(source ${source} ${attributeSource})

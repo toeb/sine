@@ -13,6 +13,7 @@ namespace nspace{
           builder->begin();
           return builder;
         }
+
         template<typename T>
         class TypeBuilder :public ScopeBuilder<TypeBuilder<T>, Type> {
         protected:
