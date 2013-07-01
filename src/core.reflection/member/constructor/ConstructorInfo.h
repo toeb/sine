@@ -3,7 +3,7 @@
 #include <core.reflection/member/MemberInfo.h>
 #include <core.reflection/type/Argument.h>
 #include <core/template/function_traits.h>
-#include <core.reflection/function/ArgumentInfo.h>
+#include <core.reflection/callable/ArgumentInfo.h>
 #include <core.reflection/callable/Callable.h>
 
 namespace nspace{
