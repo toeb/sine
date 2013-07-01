@@ -46,6 +46,26 @@ namespace nspace{
     return var;
   }
 
+   template<typename R>
+  auto static_signature(R(*val)())-> R(*)() {
+    return val;
+  }
+
+  template<typename T1,typename R>
+  auto static_signature(R(*val)(T1))->R(*)(T1){
+    return val;
+  }
+  template<typename T1,typename T2, typename R>
+  auto static_signature(R(*val)(T1,T2))->R(*)(T1,T2){
+  return val;
+  }
+
+  template<typename T1,typename T2,typename T3, typename R>
+  auto static_signature(R(*val)(T1,T2,T3))->R(*)(T1,T2,T3){
+  return val;
+  }
+
+
   // ifdef msvc10 -> no template
 #define nested_template template
 
@@ -112,11 +132,12 @@ namespace nspace{
       typedef void type;      
     };                                                                                                             
   };
+
   DS_FUNCTIONTRAITS(A1)
-    DS_FUNCTIONTRAITS(A1,A2)
-    DS_FUNCTIONTRAITS(A1,A2,A3)
-    DS_FUNCTIONTRAITS(A1,A2,A3,A4)
-    DS_FUNCTIONTRAITS(A1,A2,A3,A4,A5)
+  DS_FUNCTIONTRAITS(A1,A2)
+  DS_FUNCTIONTRAITS(A1,A2,A3)
+  DS_FUNCTIONTRAITS(A1,A2,A3,A4)
+  DS_FUNCTIONTRAITS(A1,A2,A3,A4,A5)
 
 
 }

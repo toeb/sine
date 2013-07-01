@@ -35,7 +35,6 @@ namespace nspace{
   public:
     virtual const Type* getType()const;
     static bool initializeType();
-    // typedef std::vector<const Type*> basic_property(ArgumentTypes);
   public:
     typedef std::vector<Argument> Arguments;
 
@@ -53,10 +52,7 @@ namespace nspace{
     virtual bool isValid()const=0;
     virtual Argument callImplementation(const Arguments & args);
     virtual Argument callImplementation(const Arguments & args)const;
-
-
   };
-
 }
 
 

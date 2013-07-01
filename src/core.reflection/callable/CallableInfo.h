@@ -13,6 +13,8 @@ namespace nspace{
   public:
     static bool initializeType();
 
+    bool isValid()const;
+
     typedef std::shared_ptr<ArgumentInfo> argument_ptr;
     typedef std::shared_ptr<const ArgumentInfo> const_argument_ptr;
     

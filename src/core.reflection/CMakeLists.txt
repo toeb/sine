@@ -12,30 +12,43 @@ source_group("" FILES ${source})
 
 set(builderSource
  builder/ArgumentBuilder.h
+ builder/ArgumentBuilder.implementation.template.h
  builder/ArgumentBuilder.cpp
  builder/AttributeBuilder.h
+ builder/AttributeBuilder.implementation.template.h
  builder/AttributeBuilder.cpp
  builder/AttributeTargetBuilder.h
+ builder/AttributeTargetBuilder.implementation.template.h
  builder/AttributeTargetBuilder.cpp
  builder/FieldBuilder.h
+ builder/FieldBuilder.implementation.template.h
  builder/FieldBuilder.cpp
  builder/FunctionBuilder.h
+ builder/FunctionBuilder.implementation.template.h
  builder/FunctionBuilder.cpp
  builder/MemberBuilder.h
+ builder/MemberBuilder.implementation.template.h
  builder/MemberBuilder.cpp
  builder/MethodBuilder.h
+ builder/MethodBuilder.implementation.template.h
  builder/MethodBuilder.cpp
  builder/NamespaceBuilder.h
+ builder/NamespaceBuilder.implementation.template.h
  builder/NamespaceBuilder.cpp
  builder/ConstructorBuilder.h
+ builder/ConstructorBuilder.implementation.template.h
  builder/ConstructorBuilder.cpp
  builder/StaticMethodBuilder.h
+ builder/StaticMethodBuilder.implementation.template.h
  builder/StaticMethodBuilder.cpp
  builder/ScopeBuilder.h
+ builder/ScopeBuilder.implementation.template.h
  builder/ScopeBuilder.cpp
  builder/TypeBuilder.h
+ builder/TypeBuilder.implementation.template.h
  builder/TypeBuilder.cpp
  builder/StaticFieldBuilder.h
+ builder/StaticFieldBuilder.implementation.template.h
  builder/StaticFieldBuilder.cpp
  ../include/core.reflection.builder.h
 )
@@ -143,6 +156,8 @@ callable/TypedArgumentInfo.h
 callable/TypedArgumentInfo.cpp
 callable/CallableInfo.h
 callable/CallableInfo.cpp
+callable/TypedCallableInfo.h
+callable/TypedCallableInfo.cpp
 	callable/Action.h
 	callable/Action.cpp
 	callable/DelegateAction.h

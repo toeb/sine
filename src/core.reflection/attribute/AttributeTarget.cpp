@@ -1,6 +1,7 @@
 #include "AttributeTarget.h"
 
-#include <core.reflection/builder/TypeBuilder.h>
+#include <core.reflection/type/TypeInfo.h>
+#include <core.reflection.builder.h>
 using namespace nspace;
 
 const Type* AttributeTarget::getType()const{
@@ -11,6 +12,7 @@ bool AttributeTarget::initializeType(){
     ->fullyQualifiedName(DS_INLINE_STRING("::"<<DS_STRINGIFY(nspace)<<"AttributeTarget"))
     ->publishHierarchy()
     ->end();
+  return true;
 }
 
 

@@ -11,17 +11,6 @@ namespace nspace{
 
 
 
-  template<> struct TypeInitializer<::std::string>{
-    static void initialize(){
-      core::reflection::builder::reflect<std::string>()
-        ->fullyQualifiedName("::std::string")
-        ->method(&std::string::size)
-          ->name("size")
-          ->end()
-        ->publish()
-        ->end();
-    }
-  };
   /* template<> struct TypeInitializer<::std::ostream>{static void initialize();};
   template<> struct TypeInitializer<::std::istream>{static void initialize();};
   template<> struct TypeInitializer<::std::iostream>{static void initialize();};
@@ -29,6 +18,19 @@ namespace nspace{
   template<> struct TypeInitializer<::std::ofstream>{static void initialize();};
   */
   template<> struct TypeInitializer<::std::stringstream>{static void initialize();};
+
+  template<> struct TypeInitializer<::std::string>{
+    static void initialize(){
+      core::reflection::builder::reflect<std::string>()
+        ->fullyQualifiedName("::std::string")
+        ->method(&std::string::size)
+        ->name("size")
+        ->end()        
+        ->publish()
+        ->end();
+
+    }
+  };
   template<typename T> struct TypeInitializer<::std::vector<T>>{
     static void initialize(){
       core::reflection::builder::reflect<std::vector<T>>()

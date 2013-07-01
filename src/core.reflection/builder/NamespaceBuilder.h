@@ -7,12 +7,8 @@ namespace nspace{
       namespace builder{
         class NamespaceBuilder : public ScopeBuilder<NamespaceBuilder, NamespaceInfo>{
         public:
-          NamespaceBuilder(result_ptr ns =result_ptr()  ):ScopeBuilder(this, ns){
-
-          }
-          derived_ptr registerNamespace(const std::string & name){
-            return derived();
-          }
+          NamespaceBuilder(result_ptr ns =result_ptr()  );
+          derived_ptr registerNamespace(const std::string & name);
         };
       }
     }

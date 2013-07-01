@@ -3,7 +3,9 @@
 
 using namespace nspace;
 
-
+bool CallableInfo::isValid()const{
+  return true;
+}
 
 auto CallableInfo::argument(unsigned int index)->argument_ptr {
   if(Arguments().size()<=index)return argument_ptr();

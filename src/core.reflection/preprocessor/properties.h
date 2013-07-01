@@ -64,14 +64,14 @@
 #define PROPERTYCLASSINSTANCE(NAME) MEMBERCLASSINSTANCE(NAME) //( (PROPERTYCLASS(NAME) * ) PROPERTYCLASS(NAME)::instance())
  
 
-#define DS_REFLECT_PROPERTY(NAME, GETTER, SETTER)\
+#define DS_REFLECT_PROPERTY(NAME, GETTER, SETTER)/*\
   DS_INITIALIZER_STATIC(NAME##Property){\
   auto type = const_cast<nspace::Type*>(typeof(CurrentClassType));\
   auto getter = type->getMethod(#GETTER);\
   auto setter = type->getMethod(#SETTER);\
   auto info = new nspace::TypedPropertyInfo<CurrentClassType>(#NAME,getter,setter);\
   type->Members()|=info;\
-  }
+  }*/
   
 #define DS_REFLECT_PROPERTY_DEFINITION(...) DS_EXPAND(DS_CONCAT(DS_REFLECT_PROPERTY_DEFINITION_,DS_NUM_ARGS(__VA_ARGS__))(__VA_ARGS__))
   
@@ -162,13 +162,13 @@ private: \
 
 
 
-#define DS_REFLECTION_METHOD(NAME)                                                                          \
+#define DS_REFLECTION_METHOD(NAME)       /*                                                                   \
   DS_INITIALIZER_STATIC(NAME##Method){                                                                                                  \
   static nspace::TypedMethodInfo<decltype(&CurrentClassType::NAME)> info(&CurrentClassType::NAME);                                              \
   info.setName(#NAME);                                                                                      \
   auto type = const_cast<nspace::Type*>(static_cast<const nspace::Type*>(typeof(CurrentClassType)));        \
   type->Members()|=&info;                                                                                   \
-  }
+  }*/
 
 #ifndef reflect_method
 #define reflect_method(NAME) DS_REFLECTION_METHOD(NAME)

@@ -7,7 +7,7 @@ namespace reflection{
 namespace builder{
   
 
-
+  /*
 
 template<typename T,typename ConstructorInfoType>
 class ConstructorBuilder : public MemberBuilder<ConstructorBuilder<T,ConstructorInfoType>,T,ConstructorInfoType>{
@@ -21,7 +21,7 @@ public:
   void onBeforeEnd()override{
     parent()->result()->Members()|=result().get();
   }
-};
+};*/
 }
 }
 }

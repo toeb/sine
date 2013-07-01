@@ -117,7 +117,7 @@ using namespace nspace;
     //2) check if a __list_property_names exists and append those names
     auto listMethod = data.type->getMethod(DS_STRINGIFY(DS_PROPERTY_LIST_NAME));
     if(listMethod){
-      std::vector<std::string> dynamicNames = listMethod->call(data.data.get());
+      std::vector<std::string> dynamicNames = (*listMethod)(data.data.get());
       names = concat(names,dynamicNames);
     }
     

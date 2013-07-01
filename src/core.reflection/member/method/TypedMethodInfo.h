@@ -7,8 +7,14 @@
 namespace nspace{
 
   template<typename Method>
-  struct TypedMethodInfo;
+  struct TypedMethodInfo : public MethodInfo{ };
 
+
+
+  
+
+
+  /*
   template<typename ClassType, typename ReturnType>
   struct TypedMethodInfo<ReturnType(ClassType::*)()const>:public MethodInfo{
     typedef ReturnType(ClassType::*MethodType)()const ;                                                   
@@ -79,7 +85,7 @@ namespace nspace{
       return typedCall(static_cast<ClassType*>(object),args);                                                                                   
     }                                                                
   };
-  
+  */
   
 #define DS_TYPED_METHOD_INFO_ADD_ARGUMENT_INFO(X) Arguments().push_back(std::make_shared<TypedArgumentInfo<typename DS_CONCAT(ArgumentType_,X),X>>());
 #define DS_TYPED_METHOD_INFO_ARGUMENT_TYPEDEF(X) typedef typename std::decay<typename traits::nested_template arg<X>::type>::type DS_CONCAT(ArgumentType_,X);
@@ -191,7 +197,7 @@ namespace nspace{
 DS_FOR_N_TEMPLATE_ARGS(DS_TYPED_METHOD_INFO)
 */
 
- /* 
+ /*
  DS_TYPED_METHOD_INFO(A1)
   DS_TYPED_METHOD_INFO(A1,A2)
   DS_TYPED_METHOD_INFO(A1,A2,A3)

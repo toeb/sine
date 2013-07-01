@@ -14,14 +14,5 @@ namespace nspace{
     propdef Argument basic_property(DefaultValue);
   };
  
-  template<typename ArgumentType, unsigned int ArgumentIndex>
-  class TypedArgumentInfo : public ArgumentInfo{
-  public:
-    TypedArgumentInfo(){
-      setIndex(ArgumentIndex);
-      setArgumentType(TypeInfo<ArgumentType>::instance());
-      setName(DS_INLINE_STRING("a"<<ArgumentIndex));
-    }
-  };
 
 }
