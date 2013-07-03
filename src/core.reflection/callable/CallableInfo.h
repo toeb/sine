@@ -20,7 +20,7 @@ namespace nspace{
     
     // contains the Argument info for all arguments
     propdef std::vector<argument_ptr> basic_property(Arguments);
-    basic_references(Arguments);
+    property_reference(Arguments);
 
     // returns a pointer to the argument at index i
     argument_ptr argument(unsigned int i);
@@ -30,8 +30,11 @@ namespace nspace{
     // returns the returntype of the call
     propdef const Type * basic_property(ReturnType);
 
-    // returns true if call is a const call
+    // returns true if call is a const call (can only be true for class method)
     propdef bool basic_property(IsConst);
+
+    // returns true if callable is static (free methods and static class members)
+    propdef bool basic_property(IsStatic);
 
     // if callable is a function call to 3 ints the argument signature will be
     // (int,int,int)

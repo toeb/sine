@@ -5,6 +5,12 @@
 #include <core.reflection/type/TypeInfo.h>
 
 namespace nspace{
+
+  template<typename T> 
+  Argument::operator T && ()const{    
+    T result = *cast<T>();
+    return std::move<result>();
+  }
   template<typename T> 
   Argument::Argument(const T & data):
     data(std::static_pointer_cast<void>(std::shared_ptr<T>(new T(data)))),
@@ -19,18 +25,18 @@ namespace nspace{
   template<typename T> 
   Argument::operator const T & ()const{
     if(!(bool)data){
-     throw new std::exception("dereferencing null pointer in Argument");
+      throw new std::exception("dereferencing null pointer in Argument");
     }
     return *cast<T>(); 
   }
   template<typename T> 
   Argument::operator T & (){    
     if(!(bool)data){
-     throw new std::exception("dereferencing null pointer in Argument");
+      throw new std::exception("dereferencing null pointer in Argument");
     }
     return *cast<T>(); 
   }
-  
+
   template<typename T> 
   Argument::operator std::shared_ptr<const T>()const{
     return cast<const T>();    

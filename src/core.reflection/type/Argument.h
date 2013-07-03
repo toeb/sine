@@ -16,6 +16,10 @@ namespace nspace{
     bool isValid()const;
     template<typename T> operator const T & ()const;
     template<typename T> operator T & ();
+    
+    template<typename T> operator T &&()const;
+
+
 
     template<typename T> operator std::shared_ptr<const T>()const;
     template<typename T> operator std::shared_ptr<T>();

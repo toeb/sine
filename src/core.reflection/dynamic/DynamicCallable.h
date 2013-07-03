@@ -20,7 +20,7 @@ namespace nspace{
 
 
     bool isValid()const override final;
-    Argument callImplementation(const Arguments &args)override final;
+    Argument callImplementation(const ArgumentList &args)override final;
   };
 
 }

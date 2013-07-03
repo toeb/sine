@@ -6,64 +6,6 @@
 #include <cstdlib>
 namespace nspace{
 
-  // methods for identifiying address of overloaded functions
-  template<typename T,typename R>
-  auto signature(R ( T::*var)())->R (T::*)(){
-    return var;
-  }
-
-  template<typename T1, typename T,typename R>
-  auto signature (R ( T::*var)(T1))->R (T::*)(T1){
-    return var;
-  }
-
-  template<typename T1, typename T2, typename T,typename R>
-  auto signature (R ( T::*var)(T1,T2))->R (T::*)(T1,T2){
-    return var;
-  }
-
-  template<typename T1, typename T2,typename T3, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1,T2,T3))->R (T::*)(T1,T2,T3){
-    return var;
-  }
-  template<typename T,typename R>
-  auto const_signature(R ( T::*var)()const)->R (T::*)()const{
-    return var;
-  }
-
-  template<typename T1, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1)const)->R (T::*)(T1)const{
-    return var;
-  }
-
-  template<typename T1, typename T2, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1,T2)const)->R (T::*)(T1,T2)const{
-    return var;
-  }
-
-  template<typename T1, typename T2,typename T3, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1,T2,T3)const)->R (T::*)(T1,T2,T3)const{
-    return var;
-  }
-
-   template<typename R>
-  auto static_signature(R(*val)())-> R(*)() {
-    return val;
-  }
-
-  template<typename T1,typename R>
-  auto static_signature(R(*val)(T1))->R(*)(T1){
-    return val;
-  }
-  template<typename T1,typename T2, typename R>
-  auto static_signature(R(*val)(T1,T2))->R(*)(T1,T2){
-  return val;
-  }
-
-  template<typename T1,typename T2,typename T3, typename R>
-  auto static_signature(R(*val)(T1,T2,T3))->R(*)(T1,T2,T3){
-  return val;
-  }
 
 
   // ifdef msvc10 -> no template

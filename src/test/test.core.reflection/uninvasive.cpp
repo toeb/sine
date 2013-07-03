@@ -7,7 +7,6 @@
 using namespace nspace;
 using namespace nspace::core::reflection::builder;
 
-/*
 
 
 
@@ -15,28 +14,21 @@ using namespace nspace::core::reflection::builder;
 UNITTEST(constrcutor1){
   using namespace core::reflection;
   using namespace uninvasiveReflection;  
-  
 
 
-  auto type = reflect<SomeTestClass>()
+  auto & type = * reflect<SomeTestClass>()
     ->constructor<int,int>()
-    ->argument<0>()
-    ->name("i")
     ->end()
-    ->argument<1>()
-    ->name("j")
-    ->end()
-    ->end()
-    ->publish()
     ->end();
+  std::vector<const Type*> types ;
+  types.push_back(type_of<int>());
+  types.push_back(type_of<int>());
+  auto constructor = type.getConstructor(types);
 
-  
-  
-
-
-  //TypedConstructorInfo<uninvasiveReflection::SomeTestClass>();
-  
+  CHECK(constructor);
+  CHECK_EQUAL(2,constructor->Arguments().size());  
 }
+/*
 
 UNITTEST(vectorAccess){
   auto type = type_of<std::vector<int>>();
@@ -251,4 +243,6 @@ UNITTEST(RegisterScope){
   //check
   auto result = findScope("::someTestNameSpace::");
   CHECK((bool)result);
-}*/
+}
+
+/**/

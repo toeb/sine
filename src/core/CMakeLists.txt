@@ -27,7 +27,8 @@ set(templateSource
 ./template/to_string.h
 ./template/function_traits.h
 ./template/Comparator.h
-
+./template/signature_discriminator.h
+./template/make_types.h
 )
 
 set(source ${source} ${templateSource})

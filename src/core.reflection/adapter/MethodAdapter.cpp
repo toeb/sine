@@ -22,7 +22,7 @@ MethodAdapter::MethodAdapter(Argument object, const MethodInfo * methodInfo):
 }
 
 
-Argument MethodAdapter::callImplementation(const Arguments & args){
+Argument MethodAdapter::callImplementation(const ArgumentList & args){
   if(!isValid())return Argument();
   return getMethodInfo()->call(getOwner().data.get(),args);
 }

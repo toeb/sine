@@ -36,38 +36,6 @@ namespace nspace{
           throw new std::exception("not implemented");
           return derived();
         }
-        /*
-        template<typename T>
-        template<typename ConstructorArgTuple>
-        auto  TypeBuilder<T>::constructorBuilder()
-        ->std::shared_ptr<ConstructorBuilder<T,TypedConstructorInfo<T,ConstructorArgTuple>>>
-        {
-        static auto constructorInfo  = std::make_shared<TypedConstructorInfo<T,ConstructorArgTuple>>();
-        auto builder = std::make_shared<ConstructorBuilder<T,TypedConstructorInfo<T,ConstructorArgTuple>>>(this, constructorInfo);            
-        builder->name("ctor");
-        return builder;
-        }
-
-
-
-        auto  TypeBuilder<T>::constructor()->decltype(constructorBuilder<void>()){            
-        return constructorBuilder<void>();
-        }
-        template<typename T0>
-        auto  TypeBuilder<T>::constructor()->decltype(constructorBuilder<std::tuple<T0>>()){
-        return constructorBuilder<std::tuple<T0>>();
-        }
-
-        template<typename T0,typename T1>
-        auto  TypeBuilder<T>::constructor()->decltype(constructorBuilder<std::tuple<T0,T1>>()){
-        return constructorBuilder<std::tuple<T0,T1>>();
-        }
-
-        template<typename T0,typename T1,typename T2>
-        auto  TypeBuilder<T>::constructor()->decltype(constructorBuilder<std::tuple<T0,T1,T2>>()){
-        return constructorBuilder<std::tuple<T0,T1,T2>>();
-        }
-        */
 
 
         template<typename T>
@@ -77,6 +45,85 @@ namespace nspace{
           builder->begin();
           return builder;
         }
+
+        template<typename Class>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1>>>(this);          
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1, typename T2>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1, typename T2, typename T3>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1, typename T2, typename T3, typename T4>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7>>>(this);
+          instance->begin();
+          return instance;
+        }; 
+
+        template<typename Class>
+        template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+        auto TypeBuilder<Class>::constructor()->std::shared_ptr<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7, T8>>>{
+          auto instance = std::make_shared<ConstructorBuilder<Class,TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7, T8>>>(this);
+          instance->begin();
+          return instance;
+        }; 
 
 
       }

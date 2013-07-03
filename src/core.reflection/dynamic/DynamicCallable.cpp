@@ -13,10 +13,10 @@ struct DynamicCallableSmartPointer:public DynamicCallableImplementation{
   bool isValid() const override final{
     return callable->isValid();
   }
-  Argument callImplementation(const Arguments & args) override final{
+  Argument callImplementation(const ArgumentList & args) override final{
     return callable->callImplementation(args);
   }
-  Argument callImplementation(const Arguments & args) const override final{
+  Argument callImplementation(const ArgumentList & args) const override final{
     return callable->callImplementation(args);
   }
 };
@@ -27,10 +27,10 @@ struct DynamicCallableRawPointer:public DynamicCallableImplementation{
   bool isValid() const override final{
     return callable->isValid();
   }
-  Argument callImplementation(const Arguments & args) override final{
+  Argument callImplementation(const ArgumentList & args) override final{
     return callable->callImplementation(args);
   }
-  Argument callImplementation(const Arguments & args) const override final{
+  Argument callImplementation(const ArgumentList & args) const override final{
     return callable->callImplementation(args);
   }
 };
@@ -46,4 +46,4 @@ DynamicCallable::DynamicCallable(){}
 
 
 bool DynamicCallable::isValid()const {return (bool)implementation&&implementation->isValid();}
-Argument DynamicCallable::callImplementation(const Arguments &args){return implementation->callImplementation(args);}
+Argument DynamicCallable::callImplementation(const ArgumentList &args){return implementation->callImplementation(args);}

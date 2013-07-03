@@ -5,7 +5,10 @@ using namespace std;
 using namespace nspace::core::reflection::builder;
 
 
-#define IMPL(X) void nspace::TypeInitializer<X>::initialize(){ reflect<X>()->fullyQualifiedName(DS_STRINGIFY(::X))->publish()->end(); };
+#define IMPL(X) void nspace::TypeInitializer<X>::initialize(){ \
+  static auto type = reflect<X>()->fullyQualifiedName(DS_STRINGIFY(::X))->publishHierarchy()->end(); \
+};
+
 DS_FOREACH(IMPL,DS_FUNDEMENTAL_TYPES);
 
 /*#define DS_ADD_GLOBAL_QUALIFIER(X) ::X

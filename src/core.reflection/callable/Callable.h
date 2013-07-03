@@ -36,7 +36,7 @@ namespace nspace{
     virtual const Type* getType()const;
     static bool initializeType();
   public:
-    typedef std::vector<Argument> Arguments;
+    typedef std::vector<Argument> ArgumentList;
 
     virtual ~Callable(){}
     Argument operator()();    
@@ -50,8 +50,8 @@ namespace nspace{
     template<typename TContainer> Argument call(TContainer & container)const;
 
     virtual bool isValid()const=0;
-    virtual Argument callImplementation(const Arguments & args);
-    virtual Argument callImplementation(const Arguments & args)const;
+    virtual Argument callImplementation(const ArgumentList & args);
+    virtual Argument callImplementation(const ArgumentList & args)const;
   };
 }
 
@@ -61,14 +61,14 @@ namespace nspace{
 namespace nspace{
 
   template<typename TContainer> Argument Callable::call(TContainer & container){
-    Arguments vec;
+    ArgumentList vec;
     for(auto it = std::begin(container); it!=std::end(container); it++){
       vec.push_back(*it);
     }
     return callImplementation(vec);
   }
   template<typename TContainer> Argument Callable::call(TContainer & container)const{
-    Arguments vec;
+    ArgumentList vec;
     for(auto it = std::begin(container); it!=std::end(container); it++){
       vec.push_back(*it);
     }

@@ -17,7 +17,7 @@ namespace nspace{
     MethodAdapter(Argument object, const std::string & name);
     MethodAdapter(Argument object, const MethodInfo * method);    
   public:
-    Argument callImplementation(const Arguments & args)override;
+    Argument callImplementation(const ArgumentList & args)override;
     bool isValid()const override;
   };
 }

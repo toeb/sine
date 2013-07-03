@@ -41,7 +41,7 @@ const NamespaceInfo * Type::getNamespace()const{
 bool Type::isValid() const{
   return Constructors().size()!=0;
 }
-Argument Type::callImplementation(const Callable::Arguments & args)const {
+Argument Type::callImplementation(const Callable::ArgumentList & args)const {
   std::vector<const Type*> types;
   for(auto arg : args){
     types.push_back(arg.type);

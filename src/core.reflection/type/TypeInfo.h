@@ -90,10 +90,11 @@ namespace nspace{
   {
   public:
     static std::shared_ptr<Type> instance(){
-      static std::shared_ptr<Type> _instance = std::make_shared<Type>();
+      static std::shared_ptr<Type> _instance = std::make_shared<Type>();      
       // initializer will only be executed once;
       static bool initialized = [](){
         TypeInitializer<T>::initialize(); 
+        //std::cout << typeid(T).name()<<" "<<_instance->getName()<<" "<<_instance->getId()<<""<<std::endl;
         return true;
       }();
 
