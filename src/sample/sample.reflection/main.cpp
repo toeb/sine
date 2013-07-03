@@ -47,15 +47,23 @@ auto fuu = [](double d){return d+1;};
 
 int lol(){return 3;}
 
-
-
+void fuu2(){
+}
+template <typename T>
+ArgumentFor(std::function<T()> f){
+  f();
+  return nspace::Argument();
+}
 int main(){
   using namespace nspace;
-  
+  ArgumentFor([](){return fuu2();});
+  auto a  =typed_method_info(const_signature<int,double>(&TestClass::add));
+  std::cout << std::endl;
+  /*
    auto asdasd = type_of<int>();
   // std::shared_ptr<TestClass> (*b)(int&&,int&&) = &make<TestClass>::shared<int,int>;
-  //auto a = &make<TestClass>::shared_2<int,int>;
-  auto & type = *nspace::core::reflection::builder::reflect<TestClass>()
+  //auto a = &make<TestClass>::shared_2<int,int>;*/
+/*  auto & type = *nspace::core::reflection::builder::reflect<TestClass>()
     ->constructor<int,int>()
     ->end()
     ->constructor<int,double>()
@@ -66,9 +74,13 @@ int main(){
     ->end()
     ->constructor()
     ->end()
+    ->method(const_signature<int,double>(&TestClass::add))
+    ->end()
+    ->method(signature<int,int>(&TestClass::add))
+    ->end()
     ->end();
 
-
+  /*
   auto & aaaa = core::reflection::registry();
   auto it =(std::shared_ptr<TestClass>)type(3,2.2);
 

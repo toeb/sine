@@ -10,7 +10,9 @@ Argument ConstructorInfo::callImplementation(const ArgumentList & args)const {
   return MakeShared()->callImplementation(args);
 }
 
-
+ConstructorInfo::ConstructorInfo(){
+  setName("ctor");  
+}
 
 bool ConstructorInfo::isValid()const{return true;}
 

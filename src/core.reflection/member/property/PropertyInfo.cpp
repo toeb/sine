@@ -50,14 +50,14 @@ bool  PropertyInfo::isSettable()const{return getSetMethod()!=0;}
 Argument  PropertyInfo::get(const void * ptr)const{
   if(!isGettable())return Argument();
   auto getter = getGetMethod();
+  
   return (*getter)(ptr);
   //return getter->call(ptr);
 }
 Argument  PropertyInfo::get(void * ptr)const{
   if(!isGettable())return Argument();
-  auto getter = getGetMethod();
+  auto getter = getGetMethod();  
   return (*getter)(ptr);
-  //return getter->call(ptr);
 }
 void  PropertyInfo::set(void * ptr, Argument argument)const{
   if(!isSettable())return;

@@ -33,7 +33,7 @@ using namespace nspace;
       getterFunction = [objectHandleCopy,getter,name](){
         std::vector<Argument> args;
         args.push_back(name);          
-        return getter->call(objectHandleCopy.data.get(),args);
+        return (*getter)(objectHandleCopy.data.get(),args);
       };
     }
     if(setter){
@@ -41,7 +41,7 @@ using namespace nspace;
         std::vector<Argument> args;
         args.push_back(name);
         args.push_back(arg);
-        setter->call(objectHandleCopy.data.get(),args);
+        (*setter)(objectHandleCopy.data.get(),args);
       };
     }
 

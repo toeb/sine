@@ -4,7 +4,7 @@
 namespace nspace{
 
   template<typename TCallable,typename TReturnType>
-  struct TypedCallableInfoBase : public nspace::CallableInfo{
+  struct TypedCallableInfoBase : public virtual nspace::CallableInfo{
     typedef TCallable callable_type;
     typedef TReturnType return_type;
     propdef callable_type basic_property(Callable);

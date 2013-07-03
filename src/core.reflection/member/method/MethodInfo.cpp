@@ -33,9 +33,4 @@ bool MethodInfo::initializeType(){
 const Type * MethodInfo::getType()const{
   return type_of<MethodInfo>();
 }
-Argument MethodInfo::call(void * object, std::vector<Argument> arguments)const{
-  throw new std::exception("call is not implemented for member info");
-}
-Argument MethodInfo::call(const void * object, std::vector<Argument> arguments)const{
-  throw new std::exception("const call is not implemented for member info");
-}
+

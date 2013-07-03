@@ -10,7 +10,7 @@ const Type* Callable::getType()const{
 }
 bool Callable::initializeType(){
   core::reflection::builder::reflect<Callable>()
-    ->fullyQualifiedName(DS_STRINGIFY(nspace::Callable))
+    ->fullyQualifiedName(DS_STRINGIFY(::nspace::Callable))
     ->publishHierarchy()
     ->end();
   return true;

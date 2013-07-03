@@ -1,18 +1,21 @@
 #pragma once
 
 #include <core.reflection/member/method/MethodInfo.h>
-#include <core/template/function_traits.h>
-#include <vector>
+#include <core.reflection/callable/TypedCallableInfo.h>
 
 namespace nspace{
 
+
   template<typename Method>
-  struct TypedMethodInfo : public MethodInfo{ };
-
-
+  struct TypedMethodInfo : public MethodInfo , public TypedCallableInfo<Method>{
+    TypedMethodInfo(Method method):TypedCallableInfo<Method>(method){}
+  };
 
   
-
+  template<typename Method>
+  auto typed_method_info(Method method)->std::shared_ptr<nspace::TypedMethodInfo<Method>>{
+    return std::make_shared<nspace::TypedMethodInfo<Method>>(method);
+  }
 
   /*
   template<typename ClassType, typename ReturnType>

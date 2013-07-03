@@ -6,6 +6,7 @@ namespace nspace{
 
   class ConstructorInfo : public MemberInfo, public Callable{
   public:
+    ConstructorInfo();
     bool isValid()const;
     typedef std::shared_ptr<const CallableInfo> callable_ptr;
     Argument callImplementation(const ArgumentList & args)override;

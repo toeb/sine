@@ -9,7 +9,7 @@ namespace nspace{
   // specializations for 0 args
   // specialization for void valued const member method with 0 arguments
   template<typename Class>
-  struct TypedCallableInfo<void(Class::*)()const> : TypedCallableInfoBase<void(Class::*)()const, void>{
+  struct TypedCallableInfo<void(Class::*)()const> : public TypedCallableInfoBase<void(Class::*)()const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -28,7 +28,7 @@ namespace nspace{
 
   // specialization for const member method with 0 arguments
   template<typename ReturnType, typename Class>
-  struct TypedCallableInfo<ReturnType(Class::*)()const> : TypedCallableInfoBase<ReturnType(Class::*)()const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)()const> : public TypedCallableInfoBase<ReturnType(Class::*)()const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -46,7 +46,7 @@ namespace nspace{
 
   // specialization for void valued member method with 0 arguments
   template<typename Class>
-  struct TypedCallableInfo<void(Class::*)()> : TypedCallableInfoBase<void(Class::*)(), void>{
+  struct TypedCallableInfo<void(Class::*)()> : public TypedCallableInfoBase<void(Class::*)(), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -65,7 +65,7 @@ namespace nspace{
 
   // specialization for member method with 0 arguments
   template<typename ReturnType, typename Class>
-  struct TypedCallableInfo<ReturnType(Class::*)()> : TypedCallableInfoBase<ReturnType(Class::*)(), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)()> : public TypedCallableInfoBase<ReturnType(Class::*)(), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -83,7 +83,7 @@ namespace nspace{
 
   // specialization for void valued static method with 0 arguments
   template<>
-  struct TypedCallableInfo<void(*)()> : TypedCallableInfoBase<void(*)(), void>{
+  struct TypedCallableInfo<void(*)()> : public TypedCallableInfoBase<void(*)(), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -101,7 +101,7 @@ namespace nspace{
 
   // specialization for static method with 0 arguments
   template<typename ReturnType>
-  struct TypedCallableInfo<ReturnType(*)()> : TypedCallableInfoBase<ReturnType(*)(), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)()> : public TypedCallableInfoBase<ReturnType(*)(), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -119,7 +119,7 @@ namespace nspace{
   // specializations for 1 args
   // specialization for void valued const member method with 1 arguments
   template<typename Class, typename T0>
-  struct TypedCallableInfo<void(Class::*)(T0)const> : TypedCallableInfoBase<void(Class::*)(T0)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0)const> : public TypedCallableInfoBase<void(Class::*)(T0)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -139,7 +139,7 @@ namespace nspace{
 
   // specialization for const member method with 1 arguments
   template<typename ReturnType, typename Class, typename T0>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -158,7 +158,7 @@ namespace nspace{
 
   // specialization for void valued member method with 1 arguments
   template<typename Class, typename T0>
-  struct TypedCallableInfo<void(Class::*)(T0)> : TypedCallableInfoBase<void(Class::*)(T0), void>{
+  struct TypedCallableInfo<void(Class::*)(T0)> : public TypedCallableInfoBase<void(Class::*)(T0), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -178,7 +178,7 @@ namespace nspace{
 
   // specialization for member method with 1 arguments
   template<typename ReturnType, typename Class, typename T0>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0)> : TypedCallableInfoBase<ReturnType(Class::*)(T0), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -197,7 +197,7 @@ namespace nspace{
 
   // specialization for void valued static method with 1 arguments
   template<typename T0>
-  struct TypedCallableInfo<void(*)(T0)> : TypedCallableInfoBase<void(*)(T0), void>{
+  struct TypedCallableInfo<void(*)(T0)> : public TypedCallableInfoBase<void(*)(T0), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -216,7 +216,7 @@ namespace nspace{
 
   // specialization for static method with 1 arguments
   template<typename ReturnType, typename T0>
-  struct TypedCallableInfo<ReturnType(*)(T0)> : TypedCallableInfoBase<ReturnType(*)(T0), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0)> : public TypedCallableInfoBase<ReturnType(*)(T0), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -235,7 +235,7 @@ namespace nspace{
   // specializations for 2 args
   // specialization for void valued const member method with 2 arguments
   template<typename Class, typename T0, typename T1>
-  struct TypedCallableInfo<void(Class::*)(T0, T1)const> : TypedCallableInfoBase<void(Class::*)(T0, T1)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -256,7 +256,7 @@ namespace nspace{
 
   // specialization for const member method with 2 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -276,7 +276,7 @@ namespace nspace{
 
   // specialization for void valued member method with 2 arguments
   template<typename Class, typename T0, typename T1>
-  struct TypedCallableInfo<void(Class::*)(T0, T1)> : TypedCallableInfoBase<void(Class::*)(T0, T1), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1)> : public TypedCallableInfoBase<void(Class::*)(T0, T1), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -297,7 +297,7 @@ namespace nspace{
 
   // specialization for member method with 2 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -317,7 +317,7 @@ namespace nspace{
 
   // specialization for void valued static method with 2 arguments
   template<typename T0, typename T1>
-  struct TypedCallableInfo<void(*)(T0, T1)> : TypedCallableInfoBase<void(*)(T0, T1), void>{
+  struct TypedCallableInfo<void(*)(T0, T1)> : public TypedCallableInfoBase<void(*)(T0, T1), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -337,7 +337,7 @@ namespace nspace{
 
   // specialization for static method with 2 arguments
   template<typename ReturnType, typename T0, typename T1>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1)> : TypedCallableInfoBase<ReturnType(*)(T0, T1), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -357,7 +357,7 @@ namespace nspace{
   // specializations for 3 args
   // specialization for void valued const member method with 3 arguments
   template<typename Class, typename T0, typename T1, typename T2>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2)const> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -379,7 +379,7 @@ namespace nspace{
 
   // specialization for const member method with 3 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -400,7 +400,7 @@ namespace nspace{
 
   // specialization for void valued member method with 3 arguments
   template<typename Class, typename T0, typename T1, typename T2>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2)> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2)> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -422,7 +422,7 @@ namespace nspace{
 
   // specialization for member method with 3 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -443,7 +443,7 @@ namespace nspace{
 
   // specialization for void valued static method with 3 arguments
   template<typename T0, typename T1, typename T2>
-  struct TypedCallableInfo<void(*)(T0, T1, T2)> : TypedCallableInfoBase<void(*)(T0, T1, T2), void>{
+  struct TypedCallableInfo<void(*)(T0, T1, T2)> : public TypedCallableInfoBase<void(*)(T0, T1, T2), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -464,7 +464,7 @@ namespace nspace{
 
   // specialization for static method with 3 arguments
   template<typename ReturnType, typename T0, typename T1, typename T2>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2)> : TypedCallableInfoBase<ReturnType(*)(T0, T1, T2), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1, T2), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -485,7 +485,7 @@ namespace nspace{
   // specializations for 4 args
   // specialization for void valued const member method with 4 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3)const> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -508,7 +508,7 @@ namespace nspace{
 
   // specialization for const member method with 4 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -530,7 +530,7 @@ namespace nspace{
 
   // specialization for void valued member method with 4 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3)> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3)> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -553,7 +553,7 @@ namespace nspace{
 
   // specialization for member method with 4 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -575,7 +575,7 @@ namespace nspace{
 
   // specialization for void valued static method with 4 arguments
   template<typename T0, typename T1, typename T2, typename T3>
-  struct TypedCallableInfo<void(*)(T0, T1, T2, T3)> : TypedCallableInfoBase<void(*)(T0, T1, T2, T3), void>{
+  struct TypedCallableInfo<void(*)(T0, T1, T2, T3)> : public TypedCallableInfoBase<void(*)(T0, T1, T2, T3), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -597,7 +597,7 @@ namespace nspace{
 
   // specialization for static method with 4 arguments
   template<typename ReturnType, typename T0, typename T1, typename T2, typename T3>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3)> : TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -619,7 +619,7 @@ namespace nspace{
   // specializations for 5 args
   // specialization for void valued const member method with 5 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4)const> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -643,7 +643,7 @@ namespace nspace{
 
   // specialization for const member method with 5 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -666,7 +666,7 @@ namespace nspace{
 
   // specialization for void valued member method with 5 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4)> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4)> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -690,7 +690,7 @@ namespace nspace{
 
   // specialization for member method with 5 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -713,7 +713,7 @@ namespace nspace{
 
   // specialization for void valued static method with 5 arguments
   template<typename T0, typename T1, typename T2, typename T3, typename T4>
-  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4)> : TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4), void>{
+  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4)> : public TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -736,7 +736,7 @@ namespace nspace{
 
   // specialization for static method with 5 arguments
   template<typename ReturnType, typename T0, typename T1, typename T2, typename T3, typename T4>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4)> : TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -759,7 +759,7 @@ namespace nspace{
   // specializations for 6 args
   // specialization for void valued const member method with 6 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5)const> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -784,7 +784,7 @@ namespace nspace{
 
   // specialization for const member method with 6 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -808,7 +808,7 @@ namespace nspace{
 
   // specialization for void valued member method with 6 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5)> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5)> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -833,7 +833,7 @@ namespace nspace{
 
   // specialization for member method with 6 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -857,7 +857,7 @@ namespace nspace{
 
   // specialization for void valued static method with 6 arguments
   template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5)> : TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5), void>{
+  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5)> : public TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -881,7 +881,7 @@ namespace nspace{
 
   // specialization for static method with 6 arguments
   template<typename ReturnType, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5)> : TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -905,7 +905,7 @@ namespace nspace{
   // specializations for 7 args
   // specialization for void valued const member method with 7 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6)const> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -931,7 +931,7 @@ namespace nspace{
 
   // specialization for const member method with 7 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -956,7 +956,7 @@ namespace nspace{
 
   // specialization for void valued member method with 7 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6)> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6)> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -982,7 +982,7 @@ namespace nspace{
 
   // specialization for member method with 7 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -1007,7 +1007,7 @@ namespace nspace{
 
   // specialization for void valued static method with 7 arguments
   template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5, T6)> : TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5, T6), void>{
+  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5, T6)> : public TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5, T6), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -1032,7 +1032,7 @@ namespace nspace{
 
   // specialization for static method with 7 arguments
   template<typename ReturnType, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6)> : TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -1057,7 +1057,7 @@ namespace nspace{
   // specializations for 8 args
   // specialization for void valued const member method with 8 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -1084,7 +1084,7 @@ namespace nspace{
 
   // specialization for const member method with 8 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -1110,7 +1110,7 @@ namespace nspace{
 
   // specialization for void valued member method with 8 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -1137,7 +1137,7 @@ namespace nspace{
 
   // specialization for member method with 8 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -1163,7 +1163,7 @@ namespace nspace{
 
   // specialization for void valued static method with 8 arguments
   template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5, T6, T7)> : TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5, T6, T7), void>{
+  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5, T6, T7)> : public TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5, T6, T7), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -1189,7 +1189,7 @@ namespace nspace{
 
   // specialization for static method with 8 arguments
   template<typename ReturnType, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7)> : TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -1215,7 +1215,7 @@ namespace nspace{
   // specializations for 9 args
   // specialization for void valued const member method with 9 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const, void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const, void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -1243,7 +1243,7 @@ namespace nspace{
 
   // specialization for const member method with 9 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const, ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)const, ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(true);
       setIsStatic(false);
@@ -1270,7 +1270,7 @@ namespace nspace{
 
   // specialization for void valued member method with 9 arguments
   template<typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), void>{
+  struct TypedCallableInfo<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : public TypedCallableInfoBase<void(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -1298,7 +1298,7 @@ namespace nspace{
 
   // specialization for member method with 9 arguments
   template<typename ReturnType, typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), ReturnType>{
+  struct TypedCallableInfo<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : public TypedCallableInfoBase<ReturnType(Class::*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(false);
@@ -1325,7 +1325,7 @@ namespace nspace{
 
   // specialization for void valued static method with 9 arguments
   template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), void>{
+  struct TypedCallableInfo<void(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : public TypedCallableInfoBase<void(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), void>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);
@@ -1352,7 +1352,7 @@ namespace nspace{
 
   // specialization for static method with 9 arguments
   template<typename ReturnType, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), ReturnType>{
+  struct TypedCallableInfo<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8)> : public TypedCallableInfoBase<ReturnType(*)(T0, T1, T2, T3, T4, T5, T6, T7, T8), ReturnType>{
     TypedCallableInfo(callable_type callable):TypedCallableInfoBase(callable){
       setIsConst(false);
       setIsStatic(true);

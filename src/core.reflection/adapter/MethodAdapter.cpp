@@ -24,5 +24,9 @@ MethodAdapter::MethodAdapter(Argument object, const MethodInfo * methodInfo):
 
 Argument MethodAdapter::callImplementation(const ArgumentList & args){
   if(!isValid())return Argument();
-  return getMethodInfo()->call(getOwner().data.get(),args);
+  ArgumentList list;
+  list.push_back(getOwner().data.get());
+  list.insert(list.end(),args.begin(),args.end());
+  
+  return getMethodInfo()->call(list);
 }

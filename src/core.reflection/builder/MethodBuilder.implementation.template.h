@@ -58,8 +58,8 @@ namespace nspace{
             
             template<typename T, typename Method>
             auto MethodBuilder<T,Method>::createInstance()->result_ptr{
-              static auto _instance = std::make_shared<TypedMethodInfo<Method>>(/*_method*/);
-              return _instance;
+              //static auto info = typed_method_info(_method);
+              return result_ptr();// info;
             }
             
             template<typename T, typename Method>

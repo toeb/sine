@@ -33,19 +33,17 @@ namespace nspace{
   };
   template<typename T> struct TypeInitializer<::std::vector<T>>{
     static void initialize(){
-      core::reflection::builder::reflect<std::vector<T>>()
-        ->fullyQualifiedName(DS_INLINE_STRING("::std::vector<"<< type_of<T>()->getFullyQualifiedName() <<">"))
-        ->method(&std::vector<T>::size)
-        ->name("size")
-        ->end()
-        ->method(signature(&std::vector<T>::at))
-        ->name("at")
-        ->argument<0>()
-        ->name("pos")
-        ->end()
-        ->end()
-        ->publish()
-        ->end();
+      
+      auto builder = core::reflection::builder::reflect<std::vector<T>>();
+
+       builder->fullyQualifiedName(DS_INLINE_STRING("::std::vector<"<< type_of<T>()->getFullyQualifiedName() <<">")) ;
+       builder->constructor()->end();       
+       builder->method(signature<const typename std::vector<T>::value_type&>(&std::vector<T>::push_back))->name("push_back")->end();       
+       //builder->method(signature<std::vector<T>::value_type&&>(&std::vector<T>::push_back())->name("push_back")->end();
+       builder->method(&std::vector<T>::size)->name("size")->end();
+       builder->method(signature(&std::vector<T>::at))->name("at")->end();
+       builder->publishHierarchy();
+       builder->end();                                                                                               ;
 
     }
   };
