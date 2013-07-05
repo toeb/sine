@@ -14,13 +14,16 @@ struct TestClass{
   int _i;
   int _j;
   TestClass(int i, double j):_i(i){
-
+    
+    _i=i;
+    _j = j;
   };
+  ~TestClass(){}
   TestClass(int i, int j):_i(i),_j(j){
 
   };
   TestClass(int i){
-
+    _i=_j=i;
   };
   TestClass(double j){
 
@@ -30,6 +33,7 @@ struct TestClass{
     _i=22222;
     _j = 333;
   };
+  int geti()const {return _i;}
   int addddd(double d){return 0;}
   double operator()(double i, double j){return i*j*i;}
   double mul2 (double a, double b){return a*b;}
@@ -69,7 +73,20 @@ struct myFu{
 int main(){
 
   using namespace nspace;
+
+  Argument arg1 =2;
+  Argument arg2 =3.2;
+  Argument a1 = arg1;
+  Argument a2 = arg2;
+
   
+  const std::array<Argument,2> aaa={2,3.2};
+
+ // double && a32 =aaa[1];// (Argument)aaa[1];
+/*  auto me = &make<TestClass>::shared_2<int,double>;
+  auto b = call_callable(me,aaa);
+ auto shared  =nspace::make<TestClass>::shared_2((int&&)a1,(double&&)a2);*/
+  /*
   auto bb= shared_callable_info(static_signature<int,int>(&mul));
   int rrr = (*bb)(3,4);
   auto cc = shared_callable_info((&TestClass::mul2));
@@ -87,27 +104,33 @@ int main(){
   auto result2 = call_callable(fuu,arr);
   double r2=result2;
   double r=result;
-  //callable_traits<decltype(&fuu2)>::
+  //callable_traits<decltype(&fuu2)>::*/
   /*
   auto asdasd = type_of<int>();
   // std::shared_ptr<TestClass> (*b)(int&&,int&&) = &make<TestClass>::shared<int,int>;
   //auto a = &make<TestClass>::shared_2<int,int>;*/
-  /*  auto & type = *nspace::core::reflection::builder::reflect<TestaClass>()
+  auto & type = *nspace::core::reflection::builder::reflect<TestClass>()
   ->constructor<int,int>()
-  ->end()
+    ->end()
   ->constructor<int,double>()
-  ->end()
+    ->end()
   ->constructor<int>()
-  ->end()
+    ->end()
   ->constructor<double>()
-  ->end()
+    ->end()
   ->constructor()
-  ->end()
+    ->end()
   ->method(const_signature<int,double>(&TestClass::add))
-  ->end()
+    ->end()
   ->method(signature<int,int>(&TestClass::add))
-  ->end()
+    ->end()
+    ->method(&TestClass::geti)
+    ->name("geti")
+    ->end()
   ->end();
+
+  auto arg = type(2);
+  int asd = (*arg.type->getMethod("geti"))(arg.data.get());
 
   /*
   auto & aaaa = core::reflection::registry();

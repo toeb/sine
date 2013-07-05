@@ -4,7 +4,7 @@
 #include <core/template/make_types.h>
 namespace nspace{
   // contains typed constructor info for constructors with up to 10 arguments
-  template<typename Class, typename T0 = std::_Nil, typename T1 = std::_Nil, typename T2 = std::_Nil, typename T3 = std::_Nil, typename T4 = std::_Nil, typename T5 = std::_Nil, typename T6 = std::_Nil, typename T7 = std::_Nil, typename T8 = std::_Nil, typename T9 = std::_Nil>
+  template<typename Class, typename T0 = nspace::Nil, typename T1 = nspace::Nil, typename T2 = nspace::Nil, typename T3 = nspace::Nil, typename T4 = nspace::Nil, typename T5 = nspace::Nil, typename T6 = nspace::Nil, typename T7 = nspace::Nil, typename T8 = nspace::Nil, typename T9 = nspace::Nil>
   struct TypedConstructorInfo
     :public ConstructorInfo{
       TypedConstructorInfo(){
@@ -14,90 +14,83 @@ namespace nspace{
       }
   };
   template <typename Class>
-  struct TypedConstructorInfo<Class, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      auto aa = static_signature(&make<Class>::shared_0);
-      auto bb  =static_signature(&make<Class>::raw_0);
-      auto cc = static_signature<void*>(&make<Class>::placement_0);
-      //auto a = shared_callable_info();
-      //auto b = shared_callable_info();
-      //auto c = shared_callable_info();
-
-      //setMakeShared(a);
-      //setMakeRaw(b);
-      //setMakePlacement(c);
+      setMakeShared(callable_info_shared(static_signature(&make<Class>::shared_0)));
+      setMakeRaw(callable_info_shared(static_signature(&make<Class>::raw_0)));
+      setMakePlacement(callable_info_shared(static_signature<void*>(&make<Class>::placement_0)));
     }
   };
   template <typename Class, typename T0>
-  struct TypedConstructorInfo<Class, T0, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& >(&make<Class>::shared_1<T0>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& >(&make<Class>::raw_1<T0>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& >(&make<Class>::placement_1<T0>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& >(&make<Class>::shared_1<T0>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& >(&make<Class>::raw_1<T0>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& >(&make<Class>::placement_1<T0>)));
     }
   };
   template <typename Class, typename T0, typename T1>
-  struct TypedConstructorInfo<Class, T0, T1, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& >(&make<Class>::shared_2<T0, T1>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& >(&make<Class>::raw_2<T0, T1>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& >(&make<Class>::placement_2<T0, T1>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& >(&make<Class>::shared_2<T0, T1>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& >(&make<Class>::raw_2<T0, T1>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& >(&make<Class>::placement_2<T0, T1>)));
     }
   };
   template <typename Class, typename T0, typename T1, typename T2>
-  struct TypedConstructorInfo<Class, T0, T1, T2, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, T2, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& , T2&& >(&make<Class>::shared_3<T0, T1, T2>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& , T2&& >(&make<Class>::raw_3<T0, T1, T2>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& , T2&& >(&make<Class>::placement_3<T0, T1, T2>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& , T2&& >(&make<Class>::shared_3<T0, T1, T2>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& , T2&& >(&make<Class>::raw_3<T0, T1, T2>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& , T2&& >(&make<Class>::placement_3<T0, T1, T2>)));
     }
   };
   template <typename Class, typename T0, typename T1, typename T2, typename T3>
-  struct TypedConstructorInfo<Class, T0, T1, T2, T3, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, T2, T3, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& >(&make<Class>::shared_4<T0, T1, T2, T3>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& >(&make<Class>::raw_4<T0, T1, T2, T3>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& , T2&& , T3&& >(&make<Class>::placement_4<T0, T1, T2, T3>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& >(&make<Class>::shared_4<T0, T1, T2, T3>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& >(&make<Class>::raw_4<T0, T1, T2, T3>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& , T2&& , T3&& >(&make<Class>::placement_4<T0, T1, T2, T3>)));
     }
   };
   template <typename Class, typename T0, typename T1, typename T2, typename T3, typename T4>
-  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& >(&make<Class>::shared_5<T0, T1, T2, T3, T4>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& >(&make<Class>::raw_5<T0, T1, T2, T3, T4>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& >(&make<Class>::placement_5<T0, T1, T2, T3, T4>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& >(&make<Class>::shared_5<T0, T1, T2, T3, T4>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& >(&make<Class>::raw_5<T0, T1, T2, T3, T4>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& >(&make<Class>::placement_5<T0, T1, T2, T3, T4>)));
     }
   };
   template <typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, nspace::Nil, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& >(&make<Class>::shared_6<T0, T1, T2, T3, T4, T5>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& >(&make<Class>::raw_6<T0, T1, T2, T3, T4, T5>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& >(&make<Class>::placement_6<T0, T1, T2, T3, T4, T5>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& >(&make<Class>::shared_6<T0, T1, T2, T3, T4, T5>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& >(&make<Class>::raw_6<T0, T1, T2, T3, T4, T5>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& >(&make<Class>::placement_6<T0, T1, T2, T3, T4, T5>)));
     }
   };
   template <typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, nspace::Nil, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& >(&make<Class>::shared_7<T0, T1, T2, T3, T4, T5, T6>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& >(&make<Class>::raw_7<T0, T1, T2, T3, T4, T5, T6>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& >(&make<Class>::placement_7<T0, T1, T2, T3, T4, T5, T6>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& >(&make<Class>::shared_7<T0, T1, T2, T3, T4, T5, T6>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& >(&make<Class>::raw_7<T0, T1, T2, T3, T4, T5, T6>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& >(&make<Class>::placement_7<T0, T1, T2, T3, T4, T5, T6>)));
     }
   };
   template <typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7, std::_Nil, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7, nspace::Nil, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& >(&make<Class>::shared_8<T0, T1, T2, T3, T4, T5, T6, T7>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& >(&make<Class>::raw_8<T0, T1, T2, T3, T4, T5, T6, T7>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& >(&make<Class>::placement_8<T0, T1, T2, T3, T4, T5, T6, T7>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& >(&make<Class>::shared_8<T0, T1, T2, T3, T4, T5, T6, T7>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& >(&make<Class>::raw_8<T0, T1, T2, T3, T4, T5, T6, T7>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& >(&make<Class>::placement_8<T0, T1, T2, T3, T4, T5, T6, T7>)));
     }
   };
   template <typename Class, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7, T8, std::_Nil>:public ConstructorInfo{
+  struct TypedConstructorInfo<Class, T0, T1, T2, T3, T4, T5, T6, T7, T8, nspace::Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& , T8&& >(&make<Class>::shared_9<T0, T1, T2, T3, T4, T5, T6, T7, T8>)));
-      setMakeRaw(shared_callable_info(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& , T8&& >(&make<Class>::raw_9<T0, T1, T2, T3, T4, T5, T6, T7, T8>)));
-      setMakePlacement(shared_callable_info(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& , T8&& >(&make<Class>::placement_9<T0, T1, T2, T3, T4, T5, T6, T7, T8>)));
+      setMakeShared(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& , T8&& >(&make<Class>::shared_9<T0, T1, T2, T3, T4, T5, T6, T7, T8>)));
+      setMakeRaw(callable_info_shared(static_signature<T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& , T8&& >(&make<Class>::raw_9<T0, T1, T2, T3, T4, T5, T6, T7, T8>)));
+      setMakePlacement(callable_info_shared(static_signature<void*, T0&& , T1&& , T2&& , T3&& , T4&& , T5&& , T6&& , T7&& , T8&& >(&make<Class>::placement_9<T0, T1, T2, T3, T4, T5, T6, T7, T8>)));
     }
   };
 }

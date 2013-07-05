@@ -56,7 +56,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
@@ -88,7 +88,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
@@ -121,7 +121,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
@@ -153,7 +153,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
@@ -242,11 +242,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++);
+      return (object->*callable)((it+1)->convert<T0>());
     }
 
   };
@@ -274,11 +274,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++);
+      (object->*callable)((it+1)->convert<T0>());
       return nspace::Void();
     }
 
@@ -307,11 +307,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++);
+      return (object->*callable)((it+1)->convert<T0>());
     }
 
   };
@@ -339,11 +339,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++);
+      (object->*callable)((it+1)->convert<T0>());
       return nspace::Void();
     }
 
@@ -371,7 +371,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++);
+      return (*callable)((it+0)->convert<T0>());
     }
 
   };
@@ -398,7 +398,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++);
+      (*callable)((it+0)->convert<T0>());
       return nspace::Void();
     }
 
@@ -428,11 +428,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>());
     }
 
   };
@@ -460,11 +460,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>());
       return nspace::Void();
     }
 
@@ -493,11 +493,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>());
     }
 
   };
@@ -525,11 +525,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>());
       return nspace::Void();
     }
 
@@ -557,7 +557,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>());
     }
 
   };
@@ -584,7 +584,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>());
       return nspace::Void();
     }
 
@@ -614,11 +614,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>());
     }
 
   };
@@ -646,11 +646,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>());
       return nspace::Void();
     }
 
@@ -679,11 +679,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>());
     }
 
   };
@@ -711,11 +711,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>());
       return nspace::Void();
     }
 
@@ -743,7 +743,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>());
     }
 
   };
@@ -770,7 +770,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>());
       return nspace::Void();
     }
 
@@ -800,11 +800,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>());
     }
 
   };
@@ -832,11 +832,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>());
       return nspace::Void();
     }
 
@@ -865,11 +865,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>());
     }
 
   };
@@ -897,11 +897,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>());
       return nspace::Void();
     }
 
@@ -929,7 +929,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++, *it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>());
     }
 
   };
@@ -956,7 +956,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++, *it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>());
       return nspace::Void();
     }
 
@@ -986,11 +986,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>());
     }
 
   };
@@ -1018,11 +1018,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>());
       return nspace::Void();
     }
 
@@ -1051,11 +1051,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>());
     }
 
   };
@@ -1083,11 +1083,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>());
       return nspace::Void();
     }
 
@@ -1115,7 +1115,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++, *it++, *it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>());
     }
 
   };
@@ -1142,7 +1142,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++, *it++, *it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>());
       return nspace::Void();
     }
 
@@ -1172,11 +1172,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>());
     }
 
   };
@@ -1204,11 +1204,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>());
       return nspace::Void();
     }
 
@@ -1237,11 +1237,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>());
     }
 
   };
@@ -1269,11 +1269,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>());
       return nspace::Void();
     }
 
@@ -1301,7 +1301,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++, *it++, *it++, *it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>());
     }
 
   };
@@ -1328,7 +1328,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++, *it++, *it++, *it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>());
       return nspace::Void();
     }
 
@@ -1358,11 +1358,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>());
     }
 
   };
@@ -1390,11 +1390,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>());
       return nspace::Void();
     }
 
@@ -1423,11 +1423,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>());
     }
 
   };
@@ -1455,11 +1455,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>());
       return nspace::Void();
     }
 
@@ -1487,7 +1487,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>(), (it+6)->convert<T6>());
     }
 
   };
@@ -1514,7 +1514,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>(), (it+6)->convert<T6>());
       return nspace::Void();
     }
 
@@ -1544,11 +1544,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>());
     }
 
   };
@@ -1576,11 +1576,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>());
       return nspace::Void();
     }
 
@@ -1609,11 +1609,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>());
     }
 
   };
@@ -1641,11 +1641,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>());
       return nspace::Void();
     }
 
@@ -1673,7 +1673,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>(), (it+6)->convert<T6>(), (it+7)->convert<T7>());
     }
 
   };
@@ -1700,7 +1700,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>(), (it+6)->convert<T6>(), (it+7)->convert<T7>());
       return nspace::Void();
     }
 
@@ -1730,11 +1730,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>(), (it+9)->convert<T8>());
     }
 
   };
@@ -1762,11 +1762,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      const Class * object = (Class*)(void*)*it++;
+      const Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>(), (it+9)->convert<T8>());
       return nspace::Void();
     }
 
@@ -1795,11 +1795,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      return (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>(), (it+9)->convert<T8>());
     }
 
   };
@@ -1827,11 +1827,11 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      Class * object = (Class*)(void*)*it++;
+      Class * object = (Class*)(void*)*it;
       if(!object){
         throw new std::exception("invalid call: first argument may not be null");
       }
-      (object->*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (object->*callable)((it+1)->convert<T0>(), (it+2)->convert<T1>(), (it+3)->convert<T2>(), (it+4)->convert<T3>(), (it+5)->convert<T4>(), (it+6)->convert<T5>(), (it+7)->convert<T6>(), (it+8)->convert<T7>(), (it+9)->convert<T8>());
       return nspace::Void();
     }
 
@@ -1859,7 +1859,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      return (*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      return (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>(), (it+6)->convert<T6>(), (it+7)->convert<T7>(), (it+8)->convert<T8>());
     }
 
   };
@@ -1886,7 +1886,7 @@ namespace nspace{
         throw new std::exception("invalid call: expected argument count differs from actual argument count");
       }
       auto it = start;
-      (*callable)(*it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++, *it++);
+      (*callable)((it+0)->convert<T0>(), (it+1)->convert<T1>(), (it+2)->convert<T2>(), (it+3)->convert<T3>(), (it+4)->convert<T4>(), (it+5)->convert<T5>(), (it+6)->convert<T6>(), (it+7)->convert<T7>(), (it+8)->convert<T8>());
       return nspace::Void();
     }
 

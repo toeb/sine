@@ -3,14 +3,29 @@
 
 // template implementation
 #include <core.reflection/type/TypeInfo.h>
-
+#include <utility>
 namespace nspace{
 
+  
+
+  template<typename T> const T& Argument::ref()const{return *cast<T>();}
+  template<typename T> T& Argument::ref(){return *cast<T>();}
+  template<typename T> T Argument::rvalue()const{
+    T v = ref<T>();
+    return v;
+    //return std::move<T>(v);
+  }
+
+  template<typename T> auto Argument::convert ()const->decltype(choose_reference<T>::choose<const Argument>(Argument())){
+    return choose_reference<T>::choose<const Argument>(*this);
+  }
+  /*
   template<typename T> 
   Argument::operator T && ()const{    
     T result = *cast<T>();
-    return std::move<result>();
-  }
+    //return std::move<T>(result);
+    return result;
+  }*/
   template<typename T> 
   Argument::Argument(const T & data):
     data(std::static_pointer_cast<void>(std::shared_ptr<T>(new T(data)))),

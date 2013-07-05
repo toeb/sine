@@ -32,16 +32,18 @@ using namespace nspace;
     if(getter){
       getterFunction = [objectHandleCopy,getter,name](){
         std::vector<Argument> args;
+        args.push_back(objectHandleCopy.data.get());
         args.push_back(name);          
-        return (*getter)(objectHandleCopy.data.get(),args);
+        return getter->callImplementation(args);
       };
     }
     if(setter){
       setterFunction = [objectHandleCopy,setter,name](Argument arg){
         std::vector<Argument> args;
+        args.push_back(objectHandleCopy.data.get());
         args.push_back(name);
         args.push_back(arg);
-        (*setter)(objectHandleCopy.data.get(),args);
+        setter->callImplementation(args);
       };
     }
 

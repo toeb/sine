@@ -50,7 +50,6 @@ Argument Callable::call()const{
 Argument Callable::callImplementation(const ArgumentList & args){
   return ((const Callable*)this)->callImplementation(args);
 };
-Argument Callable::callImplementation(const ArgumentList & args)const{  
-
+Argument Callable::callImplementation(const ArgumentList & args)const{    
   return Argument();
 }

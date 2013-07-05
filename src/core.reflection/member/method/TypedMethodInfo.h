@@ -9,11 +9,14 @@ namespace nspace{
   template<typename Method>
   struct TypedMethodInfo : public MethodInfo , public TypedCallableInfo<Method>{
     TypedMethodInfo(Method method):TypedCallableInfo<Method>(method){}
+    Argument callImplementation(const ArgumentList & args)const{
+      return TypedCallableInfo<Method>::callImplementation(args);
+    }
   };
 
   
   template<typename Method>
-  auto typed_method_info(Method method)->std::shared_ptr<nspace::TypedMethodInfo<Method>>{
+  auto method_info_shared(Method method)->std::shared_ptr<nspace::TypedMethodInfo<Method>>{
     return std::make_shared<nspace::TypedMethodInfo<Method>>(method);
   }
 
