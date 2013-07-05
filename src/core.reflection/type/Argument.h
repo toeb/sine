@@ -6,20 +6,21 @@ namespace nspace{
   class Type;
   //todo rename to ObjectHandle
   struct Argument{
+    Argument(const nspace::Void & v);
     template<typename T> Argument(const T & data);
     template<typename T> Argument(std::shared_ptr<T> data);
     Argument(std::shared_ptr<void> data, const Type * type);
     Argument();
     ~Argument();
-
+    
+    // obsolete use Void() instead
     static const Argument & VoidArgument();    
+    static const Argument & Void();    
+
     bool isValid()const;
     template<typename T> operator const T & ()const;
-    template<typename T> operator T & ();
-    
+    template<typename T> operator T & ();    
     template<typename T> operator T &&()const;
-
-
 
     template<typename T> operator std::shared_ptr<const T>()const;
     template<typename T> operator std::shared_ptr<T>();

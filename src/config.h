@@ -49,7 +49,12 @@ typedef float Real;
   // ifdef msvc10 -> no template
 #define nested_template template
 
-
+namespace nspace{
+  // a empty type representing void when arguments are need to be returned
+  struct Void{};
+  // the nil typ indicates that a template arg is unused (for variadic templates in VS)
+  struct Nil{};
+}
 
 // for visual studio i'll disalbe warning about inheritance via dominance  4250 is inheritance via dominance warning, 4822 is for locally declared methods without body
 #pragma warning( disable : 4250 4822 )

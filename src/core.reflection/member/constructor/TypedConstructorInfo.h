@@ -16,9 +16,16 @@ namespace nspace{
   template <typename Class>
   struct TypedConstructorInfo<Class, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil, std::_Nil>:public ConstructorInfo{
     TypedConstructorInfo(){
-      setMakeShared(shared_callable_info(static_signature(&make<Class>::shared_0)));
-      setMakeRaw(shared_callable_info(static_signature(&make<Class>::raw_0)));
-      setMakePlacement(shared_callable_info(static_signature<void*>(&make<Class>::placement_0)));
+      auto aa = static_signature(&make<Class>::shared_0);
+      auto bb  =static_signature(&make<Class>::raw_0);
+      auto cc = static_signature<void*>(&make<Class>::placement_0);
+      //auto a = shared_callable_info();
+      //auto b = shared_callable_info();
+      //auto c = shared_callable_info();
+
+      //setMakeShared(a);
+      //setMakeRaw(b);
+      //setMakePlacement(c);
     }
   };
   template <typename Class, typename T0>

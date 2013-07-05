@@ -61,17 +61,11 @@ namespace nspace{
 namespace nspace{
 
   template<typename TContainer> Argument Callable::call(TContainer & container){
-    ArgumentList vec;
-    for(auto it = std::begin(container); it!=std::end(container); it++){
-      vec.push_back(*it);
-    }
+    ArgumentList vec(std::begin(container),std::end(container));
     return callImplementation(vec);
   }
   template<typename TContainer> Argument Callable::call(TContainer & container)const{
-    ArgumentList vec;
-    for(auto it = std::begin(container); it!=std::end(container); it++){
-      vec.push_back(*it);
-    }
+    ArgumentList vec(std::begin(container),std::end(container));
     return callImplementation(vec);
   } 
 
