@@ -53,6 +53,27 @@ Argument mapValue(T value){
   Argument result = value;
 }
 
+namespace nspace{
+class ValueConverter{
+  reflect_type(::nspace::ValueConverter);
+  virtual bool canConvert(const Type * from, const Type * to)=0;
+  virtual Argument convert(const Argument & source);
+};
+
+META(::Json::Value);
+
+template<typename TSource, typename TTarget>
+class TypedConverter{
+  //reflect_template_type(::nspace::TypedConverter, TSource, TTarget);
+
+};
+
+
+
+
+}
+
+
 Argument mapValueFromJson(Json::Value value){  
   switch(value.type()){
   case ValueType::arrayValue:
