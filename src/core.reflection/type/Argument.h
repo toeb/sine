@@ -24,8 +24,9 @@ namespace nspace{
   template<typename T>
   struct choose_reference<T,false,true>{
     template<typename Arg>
-    static T choose(Arg& arg){
-      return arg.ref<T>();
+    static typename std::remove_reference<T>::type choose(Arg& arg){
+      typename std::remove_reference<T>::type val = arg;
+      return val;
     }
   };
   //todo rename to ObjectHandle

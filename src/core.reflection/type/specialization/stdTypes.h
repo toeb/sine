@@ -42,6 +42,7 @@ namespace nspace{
        //builder->method(signature<std::vector<T>::value_type&&>(&std::vector<T>::push_back())->name("push_back")->end();
        builder->method(&std::vector<T>::size)->name("size")->end();
        builder->method(signature(&std::vector<T>::at))->name("at")->end();
+       builder->method(const_signature(&std::vector<T>::at))->name("at")->end();
        builder->publishHierarchy();
        builder->end();                                                                                               ;
 

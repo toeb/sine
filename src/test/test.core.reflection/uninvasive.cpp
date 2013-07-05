@@ -40,14 +40,16 @@ UNITTEST(vectorAccess){
   push_back(2);
   
   MethodAdapter size(instance,"size");
-  //MethodAdapter at(instance,"at");
+  MethodAdapter at(instance,"at(...)const");
 
+  int result = at(1);
+  CHECK_EQUAL(4,result);
   CHECK_EQUAL(3,(int)size());
   
 
 }
 
-/*
+
 
 UNITTEST(vectorType){
   auto type = type_of<std::vector<int>>();
@@ -70,7 +72,7 @@ UNITTEST(primitiveTypes){
   CHECK((bool)core::reflection::findType("void"));
 }
 
-
+/*
 UNITTEST(AddOverloadedMethod){
   
   using namespace core::reflection;
