@@ -5,6 +5,6 @@ namespace nspace{
   //
   struct DynamicCallableImplementation : public Callable{
     virtual bool isValid()const=0;
-    virtual Argument callImplementation(const Arguments &args)=0;
+    virtual Argument callImplementation(const ArgumentList &args)=0;
   };
 }

@@ -11,17 +11,6 @@ namespace nspace{
 
 
 
-  template<> struct TypeInitializer<::std::string>{
-    static void initialize(){
-      core::reflection::builder::reflect<std::string>()
-        ->fullyQualifiedName("::std::string")
-        ->method(&std::string::size)
-          ->name("size")
-          ->end()
-        ->publish()
-        ->end();
-    }
-  };
   /* template<> struct TypeInitializer<::std::ostream>{static void initialize();};
   template<> struct TypeInitializer<::std::istream>{static void initialize();};
   template<> struct TypeInitializer<::std::iostream>{static void initialize();};
@@ -29,21 +18,33 @@ namespace nspace{
   template<> struct TypeInitializer<::std::ofstream>{static void initialize();};
   */
   template<> struct TypeInitializer<::std::stringstream>{static void initialize();};
-  template<typename T> struct TypeInitializer<::std::vector<T>>{
+
+  template<> struct TypeInitializer<::std::string>{
     static void initialize(){
-      core::reflection::builder::reflect<std::vector<T>>()
-        ->fullyQualifiedName(DS_INLINE_STRING("::std::vector<"<< type_of<T>()->getFullyQualifiedName() <<">"))
-        ->method(&std::vector<T>::size)
+      core::reflection::builder::reflect<std::string>()
+        ->fullyQualifiedName("::std::string")
+        ->method(&std::string::size)
         ->name("size")
-        ->end()
-        ->method(signature(&std::vector<T>::at))
-        ->name("at")
-        ->argument<0>()
-        ->name("pos")
-        ->end()
-        ->end()
+        ->end()        
         ->publish()
         ->end();
+
+    }
+  };
+  template<typename T> struct TypeInitializer<::std::vector<T>>{
+    static void initialize(){
+      
+      auto builder = core::reflection::builder::reflect<std::vector<T>>();
+
+       builder->fullyQualifiedName(DS_INLINE_STRING("::std::vector<"<< type_of<T>()->getFullyQualifiedName() <<">")) ;
+       builder->constructor()->end();       
+       builder->method(signature<const typename std::vector<T>::value_type&>(&std::vector<T>::push_back))->name("push_back")->end();       
+       //builder->method(signature<std::vector<T>::value_type&&>(&std::vector<T>::push_back())->name("push_back")->end();
+       builder->method(&std::vector<T>::size)->name("size")->end();
+       builder->method(signature(&std::vector<T>::at))->name("at")->end();
+       builder->method(const_signature(&std::vector<T>::at))->name("at")->end();
+       builder->publishHierarchy();
+       builder->end();                                                                                               ;
 
     }
   };

@@ -32,16 +32,18 @@ using namespace nspace;
     if(getter){
       getterFunction = [objectHandleCopy,getter,name](){
         std::vector<Argument> args;
+        args.push_back(objectHandleCopy.data.get());
         args.push_back(name);          
-        return getter->call(objectHandleCopy.data.get(),args);
+        return getter->callImplementation(args);
       };
     }
     if(setter){
       setterFunction = [objectHandleCopy,setter,name](Argument arg){
         std::vector<Argument> args;
+        args.push_back(objectHandleCopy.data.get());
         args.push_back(name);
         args.push_back(arg);
-        setter->call(objectHandleCopy.data.get(),args);
+        setter->callImplementation(args);
       };
     }
 
@@ -117,7 +119,7 @@ using namespace nspace;
     //2) check if a __list_property_names exists and append those names
     auto listMethod = data.type->getMethod(DS_STRINGIFY(DS_PROPERTY_LIST_NAME));
     if(listMethod){
-      std::vector<std::string> dynamicNames = listMethod->call(data.data.get());
+      std::vector<std::string> dynamicNames = (*listMethod)(data.data.get());
       names = concat(names,dynamicNames);
     }
     

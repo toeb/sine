@@ -25,11 +25,11 @@ namespace nspace{
   bool isValid() const override final{                                                                                                  \
   return true ;                                                                                                                                 \
   }                                                                                                                                     \
-  Argument callImplementation(const Arguments & args)override final{                                                                    \
+  Argument callImplementation(const ArgumentList & args)override final{                                                                    \
   if(args.size() !=N)return Argument();                                                                                                 \
   return DS_CALLABLE_FUNCTION_INVOKE_N(N);                                                                                                  \
   }                                                                                                                                     \
-  Argument callImplementation(const Arguments & args)const override final{                                                              \
+  Argument callImplementation(const ArgumentList & args)const override final{                                                              \
   if(args.size() !=N)return Argument();                                                                                                 \
   return DS_CALLABLE_FUNCTION_INVOKE_N(N);                                                                                                   \
   }                                                                                                                                     \
@@ -42,7 +42,7 @@ namespace nspace{
   bool isValid() const override final{                                                                                                  \
   return true ;                                                                                                                                 \
   }                                                                                                                                     \
-  Argument callImplementation(const Arguments & args)override final{                                                                    \
+  Argument callImplementation(const ArgumentList & args)override final{                                                                    \
   if(args.size() !=N)return Argument();                                                                                                 \
   return DS_CALLABLE_FUNCTION_INVOKE_N(N);                                                                                                  \
   }                 \

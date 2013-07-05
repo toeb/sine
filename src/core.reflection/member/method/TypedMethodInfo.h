@@ -1,12 +1,26 @@
 #pragma once
 
 #include <core.reflection/member/method/MethodInfo.h>
+#include <core.reflection/callable/TypedCallableInfo.h>
 
 namespace nspace{
 
-  template<typename Method>
-  struct TypedMethodInfo;
 
+  template<typename Method>
+  struct TypedMethodInfo : public MethodInfo , public TypedCallableInfo<Method>{
+    TypedMethodInfo(Method method):TypedCallableInfo<Method>(method){}
+    Argument callImplementation(const ArgumentList & args)const{
+      return TypedCallableInfo<Method>::callImplementation(args);
+    }
+  };
+
+  
+  template<typename Method>
+  auto method_info_shared(Method method)->std::shared_ptr<nspace::TypedMethodInfo<Method>>{
+    return std::make_shared<nspace::TypedMethodInfo<Method>>(method);
+  }
+
+  /*
   template<typename ClassType, typename ReturnType>
   struct TypedMethodInfo<ReturnType(ClassType::*)()const>:public MethodInfo{
     typedef ReturnType(ClassType::*MethodType)()const ;                                                   
@@ -77,7 +91,7 @@ namespace nspace{
       return typedCall(static_cast<ClassType*>(object),args);                                                                                   
     }                                                                
   };
-  
+  */
   
 #define DS_TYPED_METHOD_INFO_ADD_ARGUMENT_INFO(X) Arguments().push_back(std::make_shared<TypedArgumentInfo<typename DS_CONCAT(ArgumentType_,X),X>>());
 #define DS_TYPED_METHOD_INFO_ARGUMENT_TYPEDEF(X) typedef typename std::decay<typename traits::nested_template arg<X>::type>::type DS_CONCAT(ArgumentType_,X);
@@ -189,7 +203,8 @@ namespace nspace{
 DS_FOR_N_TEMPLATE_ARGS(DS_TYPED_METHOD_INFO)
 */
 
-  DS_TYPED_METHOD_INFO(A1)
+ /*
+ DS_TYPED_METHOD_INFO(A1)
   DS_TYPED_METHOD_INFO(A1,A2)
   DS_TYPED_METHOD_INFO(A1,A2,A3)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4)
@@ -198,6 +213,7 @@ DS_FOR_N_TEMPLATE_ARGS(DS_TYPED_METHOD_INFO)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8)
   DS_TYPED_METHOD_INFO(A1,A2,A3,A4,A5,A6,A7,A8,A9)
+  */
 
 
 /*

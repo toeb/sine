@@ -1,5 +1,6 @@
 #pragma once
 #include <core.builder/FluentFunctionChainer.h>
+#include <memory>
 namespace nspace{
 namespace core{
 namespace builder{

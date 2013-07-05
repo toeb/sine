@@ -6,45 +6,7 @@
 #include <cstdlib>
 namespace nspace{
 
-  // methods for identifiying address of overloaded functions
-  template<typename T,typename R>
-  auto signature(R ( T::*var)())->R (T::*)(){
-    return var;
-  }
 
-  template<typename T1, typename T,typename R>
-  auto signature (R ( T::*var)(T1))->R (T::*)(T1){
-    return var;
-  }
-
-  template<typename T1, typename T2, typename T,typename R>
-  auto signature (R ( T::*var)(T1,T2))->R (T::*)(T1,T2){
-    return var;
-  }
-
-  template<typename T1, typename T2,typename T3, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1,T2,T3))->R (T::*)(T1,T2,T3){
-    return var;
-  }
-  template<typename T,typename R>
-  auto const_signature(R ( T::*var)()const)->R (T::*)()const{
-    return var;
-  }
-
-  template<typename T1, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1)const)->R (T::*)(T1)const{
-    return var;
-  }
-
-  template<typename T1, typename T2, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1,T2)const)->R (T::*)(T1,T2)const{
-    return var;
-  }
-
-  template<typename T1, typename T2,typename T3, typename T,typename R>
-  auto const_signature (R ( T::*var)(T1,T2,T3)const)->R (T::*)(T1,T2,T3)const{
-    return var;
-  }
 
   // ifdef msvc10 -> no template
 #define nested_template template
@@ -112,11 +74,12 @@ namespace nspace{
       typedef void type;      
     };                                                                                                             
   };
+
   DS_FUNCTIONTRAITS(A1)
-    DS_FUNCTIONTRAITS(A1,A2)
-    DS_FUNCTIONTRAITS(A1,A2,A3)
-    DS_FUNCTIONTRAITS(A1,A2,A3,A4)
-    DS_FUNCTIONTRAITS(A1,A2,A3,A4,A5)
+  DS_FUNCTIONTRAITS(A1,A2)
+  DS_FUNCTIONTRAITS(A1,A2,A3)
+  DS_FUNCTIONTRAITS(A1,A2,A3,A4)
+  DS_FUNCTIONTRAITS(A1,A2,A3,A4,A5)
 
 
 }

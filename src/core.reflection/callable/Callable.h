@@ -22,23 +22,21 @@
     }
 
 
-#define DS_CALLABLE_TEMPLATE_CALL_N(N)                         \
-  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)const              \
-  DS_CALLABLE_TEMPLATE_CALL_IMP_N(N)                         \
-  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)                   \
+#define DS_CALLABLE_TEMPLATE_CALL_N(N)           \
+  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)const  \
+  DS_CALLABLE_TEMPLATE_CALL_IMP_N(N)             \
+  DS_CALLABLE_TEMPLATE_CALL_SIGNATURE_N(N)       \
   DS_CALLABLE_TEMPLATE_CALL_IMP_N(N)
 
 
 
 namespace nspace{
   struct Callable{  
-    //DS_CLASS_DECLARATION(nspace::Callable);
   public:
     virtual const Type* getType()const;
     static bool initializeType();
-    // typedef std::vector<const Type*> basic_property(ArgumentTypes);
   public:
-    typedef std::vector<Argument> Arguments;
+    typedef std::vector<Argument> ArgumentList;
 
     virtual ~Callable(){}
     Argument operator()();    
@@ -52,12 +50,9 @@ namespace nspace{
     template<typename TContainer> Argument call(TContainer & container)const;
 
     virtual bool isValid()const=0;
-    virtual Argument callImplementation(const Arguments & args);
-    virtual Argument callImplementation(const Arguments & args)const;
-
-
+    virtual Argument callImplementation(const ArgumentList & args);
+    virtual Argument callImplementation(const ArgumentList & args)const;
   };
-
 }
 
 
@@ -66,17 +61,11 @@ namespace nspace{
 namespace nspace{
 
   template<typename TContainer> Argument Callable::call(TContainer & container){
-    Arguments vec;
-    for(auto it = std::begin(container); it!=std::end(container); it++){
-      vec.push_back(*it);
-    }
+    ArgumentList vec(std::begin(container),std::end(container));
     return callImplementation(vec);
   }
   template<typename TContainer> Argument Callable::call(TContainer & container)const{
-    Arguments vec;
-    for(auto it = std::begin(container); it!=std::end(container); it++){
-      vec.push_back(*it);
-    }
+    ArgumentList vec(std::begin(container),std::end(container));
     return callImplementation(vec);
   } 
 

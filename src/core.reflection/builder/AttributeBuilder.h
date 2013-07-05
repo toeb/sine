@@ -9,15 +9,8 @@ namespace nspace{
         class AttributeBuilder : public core::builder::NestedBuilder<AttributeBuilder<AttributeType,ParentBuilder>,ParentBuilder,AttributeType>{
           typedef typename AttributeType attribute_type;
         public:
-
-          derived_ptr & name(const std::string & n){
-            result()->setAttributeName(n);
-          }
-          derived_ptr & operator()(std::function<void(attribute_type &)> func){
-            if(!(bool)result())throw new std::exception("cannot call function because result() is not set");
-            func(*result());
-            return *this;
-          }
+          derived_ptr name(const std::string & n);
+          derived_ptr operator()(std::function<void(attribute_type &)> func);
         };
       }
     }

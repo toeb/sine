@@ -11,41 +11,45 @@ using namespace nspace::core::reflection::builder;
 
 
 
-
 UNITTEST(constrcutor1){
   using namespace core::reflection;
   using namespace uninvasiveReflection;  
-  
 
 
-  auto type = reflect<SomeTestClass>()
+  auto & type = * reflect<SomeTestClass>()
     ->constructor<int,int>()
     ->end()
-    ->publish()
     ->end();
+  std::vector<const Type*> types ;
+  types.push_back(type_of<int>());
+  types.push_back(type_of<int>());
+  auto constructor = type.getConstructor(types);
 
-  
-  
-
-
-  //TypedConstructorInfo<uninvasiveReflection::SomeTestClass>();
-  
+  CHECK(constructor);
+  CHECK_EQUAL(2,constructor->Arguments().size());  
 }
-
 UNITTEST(vectorAccess){
-  auto type = type_of<std::vector<int>>();
-  std::vector<int> vecA;
-  vecA.push_back(3);
-  vecA.push_back(4);
-  vecA.push_back(2);
+  auto &type = *type_of<std::vector<int>>();
 
-  CHECK(type);
-  CHECK(type->getMethod("size"));
+  auto instance = type();
 
-  Argument a = vecA;
-  MethodAdapter ma(a,"size");
+  MethodAdapter push_back(instance,"push_back");
+  
+  push_back(3);
+  push_back(4);
+  push_back(2);
+  
+  MethodAdapter size(instance,"size");
+  MethodAdapter at(instance,"at(...)const");
+
+  int result = at(1);
+  CHECK_EQUAL(4,result);
+  CHECK_EQUAL(3,(int)size());
+  
 
 }
+
+
 
 UNITTEST(vectorType){
   auto type = type_of<std::vector<int>>();
@@ -68,7 +72,7 @@ UNITTEST(primitiveTypes){
   CHECK((bool)core::reflection::findType("void"));
 }
 
-
+/*
 UNITTEST(AddOverloadedMethod){
   
   using namespace core::reflection;
@@ -246,3 +250,5 @@ UNITTEST(RegisterScope){
   auto result = findScope("::someTestNameSpace::");
   CHECK((bool)result);
 }
+
+/**/

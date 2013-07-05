@@ -2,7 +2,7 @@
 #include <core.reflection/member/property/PropertyInfo.h>
 #include <core.reflection/member/method/MethodInfo.h>
 #include <core.reflection/member/constructor/ConstructorInfo.h>
-
+#include <core.utility.h>
 #include <core.reflection/namespace/NamespaceInfo.h>
 #include <sstream>
 using namespace nspace;
@@ -41,7 +41,7 @@ const NamespaceInfo * Type::getNamespace()const{
 bool Type::isValid() const{
   return Constructors().size()!=0;
 }
-Argument Type::callImplementation(const Callable::Arguments & args)const {
+Argument Type::callImplementation(const Callable::ArgumentList & args)const {
   std::vector<const Type*> types;
   for(auto arg : args){
     types.push_back(arg.type);
@@ -64,7 +64,7 @@ Type::Type():
   _UnqualifiedType(this),
   _IsTemplated(false)  
 { 
- /* auto n = getName().find_first_of('<');
+  /* auto n = getName().find_first_of('<');
   auto tName = getName().substr(0,n);
   setTemplateName(tName);
   n=getFullyQualifiedName().find_first_of('<');
@@ -115,7 +115,17 @@ const MemberInfo * Type::getMember(const std::string & name)const{
 const MethodInfo * Type::getMethod(const std::string & name)const{
   return Members()
     .subset<const MethodInfo*>()
-    .first([&name](const MethodInfo* method){return method->getPureName()==name||method->getName()==name||method->getFullName()==name;});
+    .first([&name](const MethodInfo* method)->bool{
+      if(method->getPureName()==name||method->getName()==name||method->getFullName()==name)return true;
+      // implicit arguments allows identification without arguments e.g. at(...)const, at(...) would identify the const method version
+      auto parts = stringtools::split(name,"...");
+      if(parts.size()==2){
+        if(stringtools::startsWith(method->getName(),parts[0])&&stringtools::endsWith(method->getName(),parts[1])){
+          return true;
+        }
+      };
+      return false;
+  });
 }
 
 const ConstructorInfo * Type::getConstructor(const std::vector<const Type*> & types)const{

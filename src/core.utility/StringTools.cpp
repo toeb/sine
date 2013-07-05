@@ -179,8 +179,10 @@ bool nspace::stringtools::endsWithIgnoreCase(const std::string &subject, const s
 }
 bool nspace::stringtools::endsWith(const std::string & subject, const std::string & what){
   auto str = subject;
+  auto obj = what;
   std::reverse(begin(str),end(str));
-  return startsWith(str,what);
+  std::reverse(begin(obj),end(obj));
+  return startsWith(str,obj);
 }
 
 bool nspace::stringtools::startWithIgnoreCase(const std::string &subject, const std::string & what){

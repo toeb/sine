@@ -26,8 +26,12 @@ set(templateSource
 ./template/result_of_static_function.h
 ./template/to_string.h
 ./template/function_traits.h
+./template/callable_traits.h
 ./template/Comparator.h
-
+./template/signature_discriminator.h
+./template/make_types.h
+./template/template_argument.h
+./template/type_tuple.h
 )
 
 set(source ${source} ${templateSource})

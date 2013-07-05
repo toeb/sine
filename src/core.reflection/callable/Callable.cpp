@@ -10,7 +10,7 @@ const Type* Callable::getType()const{
 }
 bool Callable::initializeType(){
   core::reflection::builder::reflect<Callable>()
-    ->fullyQualifiedName(DS_STRINGIFY(nspace::Callable))
+    ->fullyQualifiedName(DS_STRINGIFY(::nspace::Callable))
     ->publishHierarchy()
     ->end();
   return true;
@@ -47,5 +47,9 @@ Argument Callable::call()const{
 }
 
 
-Argument Callable::callImplementation(const Arguments & args){return ((const Callable*)this)->callImplementation(args);};
-Argument Callable::callImplementation(const Arguments & args)const{return Argument();}
+Argument Callable::callImplementation(const ArgumentList & args){
+  return ((const Callable*)this)->callImplementation(args);
+};
+Argument Callable::callImplementation(const ArgumentList & args)const{    
+  return Argument();
+}
