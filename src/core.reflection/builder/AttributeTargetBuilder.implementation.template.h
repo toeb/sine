@@ -7,7 +7,7 @@ namespace nspace{
       namespace builder{
         template<typename Derived, typename ResultType>
         AttributeTargetBuilder<Derived,ResultType>::AttributeTargetBuilder(derived_ptr derived):
-          nspace::core::builder::Builder(derived){
+          nspace::core::builder::Builder<Derived,ResultType>(derived){
 
         }
         template<typename Derived, typename ResultType>

@@ -17,6 +17,6 @@ namespace nspace{
 
 DS_FOREACH(DS_REFLECT_FUNDEMENTAL_TYPE,DS_FUNDEMENTAL_TYPES);
   
-
+template<> struct TypeInitializer<void>{static void initialize();};
   
 }

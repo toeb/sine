@@ -61,7 +61,8 @@ UNITTEST(vectorType){
 
 
 UNITTEST(primitiveTypes){
-  
+
+
   CHECK(type_of<int>()->getName()=="int");
   CHECK(type_of<double>()->getName()=="double");
   CHECK(type_of<std::string>()->getName()=="string");
@@ -72,7 +73,7 @@ UNITTEST(primitiveTypes){
   CHECK((bool)core::reflection::findType("void"));
 }
 
-/*
+
 UNITTEST(AddOverloadedMethod){
   
   using namespace core::reflection;
@@ -100,7 +101,7 @@ UNITTEST(AddOverloadedMethod){
   CHECK_EQUAL("d",method->argument(1)->getName());
 }
 
-
+/*
 UNITTEST(AddUniqueMethod){
   
   using namespace core::reflection;

@@ -17,7 +17,8 @@ namespace nspace{
           // sets the name part of the signature / causes fullname and pure name as well as name to be set
           derived_ptr name(const std::string &purename) override;
 
-            /*  template<unsigned int ArgumentIndex> std::shared_ptr<ArgumentBuilder<T,Method,ArgumentIndex>> argument(); */
+          template<size_t ArgumentIndex>
+          std::shared_ptr<ArgumentBuilder<Method,MethodBuilder<T,Method>, ArgumentIndex>> argument(); 
         protected:
           result_ptr createInstance()override;
           void onBeforeEnd()override;

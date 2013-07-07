@@ -1,30 +1,29 @@
 #pragma once
 #include <core.builder/NestedBuilder.h>
-#include <core/template/function_traits.h>
+#include <core/template/callable_traits.h>
 #include <memory>
+#include <core.reflection/builder/AttributeTargetBuilder.h>
 namespace nspace{
+        class ArgumentInfo;
   namespace core{
     namespace reflection{
       namespace builder{
         // forward declaration
-        template<typename T> class TypeBuilder;
-        template<typename T, typename Method> class MethodBuilder;        
-        class ArgumentInfo;
+        
         
 
         // 
-        template<typename T, typename Method, unsigned int ArgIndex>
+        template<typename Callable, typename ParentBuilder, size_t ArgIndex>
         class ArgumentBuilder : 
-          public core::builder::NestedBuilder<ArgumentBuilder<T,Method,ArgIndex>,MethodBuilder<T,Method>,ArgumentInfo>{
+          public AttributeTargetBuilder<ArgumentBuilder<Callable,ParentBuilder,ArgIndex>,ArgumentInfo>,
+          public core::builder::NestedBuilder<ArgumentBuilder<Callable,ParentBuilder,ArgIndex>,ParentBuilder,ArgumentInfo>{
         public:
-//          typedef typename function_traits<Method>::nested_template arg<ArgIndex>::type argument_type;
-         
+          using NestedBuilder::end;
+          using AttributeTargetBuilder::result;
+          using AttributeTargetBuilder::begin;
+          using NestedBuilder::derived;
           result_ptr createInstance()override;
 
-          // sets the default value for the specified argument
-    //      derived_ptr defaultValue(const argument_type & value);
-          // sets the default value for the specified argument
-  //        derived_ptr defaultValue(std::shared_ptr<argument_type> value);
           // sets the default value for the specified argument
           derived_ptr defaultValue(Argument argument);
 

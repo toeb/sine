@@ -11,6 +11,14 @@ using namespace nspace::core::reflection::builder;
 
 DS_FOREACH(IMPL,DS_FUNDEMENTAL_TYPES);
 
+void nspace::TypeInitializer<void>::initialize(){
+  auto builder = reflect<void>();
+  builder->fullyQualifiedName("::void");
+  builder->publishHierarchy();
+  builder->end();
+
+}
+
 /*#define DS_ADD_GLOBAL_QUALIFIER(X) ::X
 // std::is_integral -> true (signed char==char==char_16, wcahr_t = char32_t 
 #define DS_INTEGRAL_TYPES_QUALIFIED DS_REDUCE_COMMA(DS_ADD_GLOBAL_QUALIFIER,DS_INTEGRAL_TYPES)
