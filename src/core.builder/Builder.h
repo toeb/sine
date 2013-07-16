@@ -1,20 +1,32 @@
 #pragma once
 #include <core.builder/FluentFunctionChainer.h>
 #include <memory>
+#include <core/patterns/Derivable.h>
 namespace nspace{
-namespace core{
-namespace builder{
+  namespace core{
+    namespace builder{
+
+      // expects Derived::subject() to exist and habe a return type which is castable to Subject
+      template<typename Derived,typename Subject>
+      class MixIn : public Derivable<Derived>{
+      public:
+        typedef Subject subject_type;
+        typedef std::shared_ptr<Subject> subject_ptr;
+      protected:
+        subject_ptr subject(){
+          return std::dynamic_pointer_cast<subject_type>()->subject();
+        }
+
+      };
+
 
       template<typename Derived, typename ResultType>
-      class Builder : public FluentFunctionChainer<Derived>{        
+      class Builder : public Derivable<Derived>{        
       public:
         typedef std::shared_ptr<typename ResultType> result_ptr;
         typedef typename ResultType result_type;
-      private:
-        result_ptr _result;
-
       protected:
-        Builder(derived_ptr derived):FluentFunctionChainer(derived),_result(result_ptr()){}
+        Builder(derived_ptr derived),_result(result_ptr()){}
         Builder(derived_ptr derived, result_ptr result):FluentFunctionChainer(derived),_result(result){}
         virtual void onBeforeEnd(){}
         virtual bool validate(){return true;}
@@ -22,7 +34,7 @@ namespace builder{
           return std::make_shared<ResultType>();
         }
       public:
-        result_ptr & result(){
+        virtual result_ptr & result(){
           return _result;
         }
         bool isValid(){
@@ -43,6 +55,6 @@ namespace builder{
         }
 
       };
-}
-}
+    }
+  }
 }

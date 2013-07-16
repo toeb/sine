@@ -362,11 +362,11 @@ public:
   void Node<Derived>::elementAdded(ObservableCollection<Derived*> * sender, Derived * node){
     if(sender==&_predecessors) {
       onPredecessorAdded(node);
-      node->successors() |= &this->derived();
+      node->successors() |= this->derived();
     }
     if(sender==&_successors) {
       onSuccessorAdded(node);
-      node->predecessors()|=&this->derived();
+      node->predecessors()|=this->derived();
     }
   }
   // callback when an element is removed from the node. makes sure the nodes are removed
@@ -374,11 +374,11 @@ public:
   void Node<Derived>::elementRemoved(ObservableCollection<Derived*> * sender, Derived * node){
     if(sender==&_predecessors) {
       onPredecessorRemoved(node);
-      node->successors() /=&this->derived();
+      node->successors() /=this->derived();
     }
     if(sender==&_successors) {
       onSuccessorRemoved(node);
-      node->predecessors()/=&this->derived();
+      node->predecessors()/=this->derived();
     }
   }
   // all connected nodes (union of predecessors and successors)

@@ -71,23 +71,11 @@ struct myFu{
   }
 };
 
-template<typename Derived, typename Subject>
-class MixIn{
-public:
-  typedef Derived derived_type;
-  typedef Derived * derived_ptr;
-  typedef Subject subject_type;
-  typedef std::shared_ptr<Subject> subject_ptr;
-  derived_ptr de_derived;
-  MixIn(derived_ptr derived):_derived(derived){}
-  std::shared_ptr<Subject> result(){
-    return std::static_pointer_cast<Subject>(derived->result())
-  }
-};
 
 template<typename Derived>
 class AttributeTargetMixIn{
 
+  
 };
 
 

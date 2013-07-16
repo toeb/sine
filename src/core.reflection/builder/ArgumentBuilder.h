@@ -15,8 +15,8 @@ namespace nspace{
         // 
         template<typename Callable, typename ParentBuilder, size_t ArgIndex>
         class ArgumentBuilder : 
-          public AttributeTargetBuilder<ArgumentBuilder<Callable,ParentBuilder,ArgIndex>,ArgumentInfo>,
-          public core::builder::NestedBuilder<ArgumentBuilder<Callable,ParentBuilder,ArgIndex>,ParentBuilder,ArgumentInfo>{
+          public virtual AttributeTargetBuilder<ArgumentBuilder<Callable,ParentBuilder,ArgIndex>,ArgumentInfo>,
+          public virtual core::builder::NestedBuilder<ArgumentBuilder<Callable,ParentBuilder,ArgIndex>,ParentBuilder,ArgumentInfo>{
         public:
           using NestedBuilder::end;
           using AttributeTargetBuilder::result;

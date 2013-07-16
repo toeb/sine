@@ -4,7 +4,7 @@ namespace nspace{
 namespace core{
 namespace builder{
    template<typename Derived, typename ParentBuilder, typename ResultType>
-      class NestedBuilder : public Builder<Derived,ResultType>{
+      class NestedBuilder : public virtual Builder<Derived,ResultType>{
       public:
         typedef typename ParentBuilder * parent_ptr;
         typedef typename ParentBuilder parent_type;
