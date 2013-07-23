@@ -348,7 +348,9 @@ public:
   }
 
   template<typename Derived>
-  Node<Derived>::Node(){
+  Node<Derived>::Node():
+    Derivable<Derived>(static_cast<Derived>(this))    
+  {
     _predecessors.addObserver(this);
     _successors.addObserver(this);
   }

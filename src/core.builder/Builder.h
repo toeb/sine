@@ -25,9 +25,11 @@ namespace nspace{
       public:
         typedef std::shared_ptr<typename ResultType> result_ptr;
         typedef typename ResultType result_type;
+      private:
+        result_ptr _result;
       protected:
-        Builder(derived_ptr derived),_result(result_ptr()){}
-        Builder(derived_ptr derived, result_ptr result):FluentFunctionChainer(derived),_result(result){}
+        Builder(derived_ptr derived):Derivable<Derived>(derived),(result_ptr()){}
+        Builder(derived_ptr derived, result_ptr result):Derivable<Derived>(derived),_result(result){}
         virtual void onBeforeEnd(){}
         virtual bool validate(){return true;}
         virtual result_ptr createInstance(){

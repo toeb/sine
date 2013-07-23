@@ -1,4 +1,5 @@
 #include "PropertyInfo.h"
+#include <iostream>
 
 using namespace std;
 using namespace nspace;

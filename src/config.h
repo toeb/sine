@@ -4,8 +4,6 @@
 #define nspace ds
 #endif
 
-#include <float.h>//for DBL_MAX
-#include <iostream>
 
 typedef unsigned int uint;
 typedef unsigned char byte;
@@ -20,7 +18,6 @@ typedef double Real;
 #define REAL_MIN DBL_MIN
 #else
 typedef float Real;
-
 #define REAL_MAX FLT_MAX
 #define REAL_MIN FLT_MIN
 #endif

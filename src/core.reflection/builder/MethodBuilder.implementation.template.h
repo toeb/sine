@@ -14,7 +14,7 @@ namespace nspace{
 
         template<typename T, typename Method>
         MethodBuilder<T,Method>::MethodBuilder(parent_ptr parentBuilder, Method method):
-          MemberBuilder(this,parentBuilder),
+          MemberBuilder<MethodBuilder<T,Method>,T,MethodInfo>(this,parentBuilder),
           _method(method)
         {
 

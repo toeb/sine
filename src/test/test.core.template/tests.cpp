@@ -15,6 +15,32 @@ using namespace nspace;
 using namespace std;
 
 
+namespace nspace{
+  //! [derivable_pattern_definition]
+  /**
+  * sample class using derivable template helper
+  */
+  struct DerivableSampleClass : public Derivable<DerivableSampleClass> {
+    DerivableSampleClass():Derivable(this){}
+  };
+  //! [derivable_pattern_definition]
+}
+
+UNITTEST(derivable_pattern){
+  //! [derivable_pattern_usage]
+  // non const access
+  DerivableSampleClass sample;
+  auto result = sample.derived();
+  CHECK_TYPES(decltype(result), DerivableSampleClass*);
+  CHECK_EQUAL(&sample,result);
+  // const access
+  const DerivableSampleClass const_sample;
+  auto const_result = const_sample.derived();
+  CHECK_TYPES(decltype(const_result), const DerivableSampleClass*);
+  CHECK_EQUAL(&const_sample,result);
+  //! [derivable_pattern_usage]
+}
+
 
 TEST(0,function_traits){ 
   TEST_DESCRIPTION(tests traits for a simple void function)
