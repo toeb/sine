@@ -15,11 +15,13 @@ UNITTEST(constrcutor1){
   using namespace core::reflection;
   using namespace uninvasiveReflection;  
 
-
-  auto & type = * reflect<SomeTestClass>()
+    auto & type = *
+    //! [Reflecting a specific Constructor]
+      reflect<SomeTestClass>()
     ->constructor<int,int>()
     ->end()
     ->end();
+    //! [Reflecting a specific Constructor]
   std::vector<const Type*> types ;
   types.push_back(type_of<int>());
   types.push_back(type_of<int>());
@@ -79,18 +81,21 @@ UNITTEST(AddOverloadedMethod){
   using namespace core::reflection;
   using namespace uninvasiveReflection;  
 
-  auto type = reflect<SomeTestClass>()
+  auto type = 
+    //! [reflect overloaded method]
+    reflect<SomeTestClass>()
+    // start reflecting int, double overload of method1 
     ->method(signature<int,double>(&SomeTestClass::method1))
-    ->name("method1")
-    ->argument<0>()
-    ->name("ka")
-    ->end()
-    ->argument<1>()
-    ->name("d")
-    ->end()
-    ->end()
-    ->end();
-
+     ->name("method1") // sets name method1
+     ->argument<0>() // begins reflection of first argument
+      ->name("ka") // sets name of first argument
+      ->end() // ends reflection of first argument
+     ->argument<1>() //  begins reflection of second argument of method1
+      ->name("d") // set name of second argument
+      ->end() // ends reflection of second argument of method1
+     ->end()  // ends method1 reflection
+    ->end();  // ends class reflection
+    //! [reflect overloaded method]
   
   auto method = type->getMethod("method1");
   CHECK(method);

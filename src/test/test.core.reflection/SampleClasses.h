@@ -15,13 +15,11 @@ namespace uninvasiveReflection{
 
   class SomeTestClass{
   public:
-
+    //! [SomeTestClass constructors]
     SomeTestClass(){}
     SomeTestClass(std::string name){}
     SomeTestClass(int i, int k){}
-
-    
-
+    //! [SomeTestClass constructors]
     int i;
     int j;
     std::string str;
@@ -34,13 +32,11 @@ namespace uninvasiveReflection{
     void setI(const int & i){this->i = i;}
 
     int methodA0(){}
-    int methodA0()const{}
-    
+    int methodA0()const{}    
     int methodA0(int a1){}
     int methodA0(int a1)const{}
     int methodA0(double a1){}
     int methodA0(double a1)const{}
-
 
 
 

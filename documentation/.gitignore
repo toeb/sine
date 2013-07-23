@@ -2,4 +2,4 @@
 !.gitignore
 !Doxyfile
 !generate.cmd
-
+!/documentation/images/
