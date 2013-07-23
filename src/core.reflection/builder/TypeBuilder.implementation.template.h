@@ -7,16 +7,13 @@ namespace nspace{
   namespace core{
     namespace reflection{
       namespace builder{
-
-        
         template<typename T>
         std::shared_ptr<TypeBuilder<T>> reflect(){
           auto builder =std::make_shared<TypeBuilder<T>>();
           builder->begin();
           return builder;
         }
-
-
+        
 
         template<typename T>
         auto TypeBuilder<T>::createInstance()->result_ptr{

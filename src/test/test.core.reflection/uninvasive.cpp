@@ -11,17 +11,17 @@ using namespace nspace::core::reflection::builder;
 
 
 
-UNITTEST(constrcutor1){
+UNITTEST(reflect_overloaded_constructor){
   using namespace core::reflection;
   using namespace uninvasiveReflection;  
 
     auto & type = *
-    //! [Reflecting a specific Constructor]
+    //! [reflect overloaded constructor]
       reflect<SomeTestClass>()
     ->constructor<int,int>()
     ->end()
     ->end();
-    //! [Reflecting a specific Constructor]
+    //! [reflect overloaded constructor]
   std::vector<const Type*> types ;
   types.push_back(type_of<int>());
   types.push_back(type_of<int>());
@@ -29,6 +29,75 @@ UNITTEST(constrcutor1){
 
   CHECK(constructor);
   CHECK_EQUAL(2,constructor->Arguments().size());  
+}
+UNITTEST(reflect_default_constructor){
+  using namespace core::reflection;
+  using namespace uninvasiveReflection;  
+  
+  std::vector<const Type*> types;
+  // check that default constructor was not yet reflected
+  auto constructor_info = type_of<SomeTestClass>()->getConstructor(types);
+  CHECK(!constructor_info)
+
+  //! [reflect default constructor]
+  reflect<SomeTestClass>()
+    ->constructor()  // begins reflection of 0-Argument constructor
+    ->end()          // ends reflection of 0-Argument constructor
+  ->end();
+  //! [reflect default constructor]
+
+  // check that constructor exists
+  constructor_info = type_of<SomeTestClass>()->getConstructor(types);
+  CHECK(constructor_info)
+}
+UNITTEST(reflect_complete_class){  
+  using namespace core::reflection;
+  using namespace uninvasiveReflection;  
+  //! [reflect complete class]
+  // the following code reflects the class BasicMath completely  
+  reflect<BasicMath>()  
+    // set fully qualified name of classs
+    ->name("::uninvasiveReflection::BasicMath")
+    // reflect defualt constructor
+      ->constructor()
+      ->end()
+    // reflect single string parameter constructor
+    ->constructor<std::string>()
+      ->argument<0>()
+      // set name of parameter 0
+        ->name("name")
+        ->end()
+      ->end()
+      // reflect constructor accepting a const char *  and set its name
+    ->constructor<const char*>()
+      ->argument<0>
+        ->name("name")
+        ->end()
+      ->end()
+      // reflects the method zero (since method is not overloaded)
+      // the address of the method suffices
+    ->method(&BasicMath::zero)
+      ->name("zero")
+      ->end()
+    ->method(&BasicMath::one)
+      ->name("one")
+      ->end()
+      // reflects the add method and sets its argument.
+      // since add has two overloads -one for adding 2 and another for adding 3
+      // numbers the correct signature needs to be chosen via the 
+      // signature discriminator method "signature<...>"
+    ->method(signature<double,double>(&BasicMath::add)
+      ->name("add")
+      ->argument<0>
+        ->name("a")
+        ->end()
+      ->argument<1>
+        ->name("b")
+        ->end()
+      ->end()
+    ->end()
+  //! [reflect complete class]
+  CHECK(false)
 }
 UNITTEST(vectorAccess){
   auto &type = *type_of<std::vector<int>>();
@@ -76,7 +145,7 @@ UNITTEST(primitiveTypes){
 }
 
 
-UNITTEST(AddOverloadedMethod){
+UNITTEST(reflect_overloaded_method){
   
   using namespace core::reflection;
   using namespace uninvasiveReflection;  
@@ -104,6 +173,17 @@ UNITTEST(AddOverloadedMethod){
   CHECK_EQUAL(type_of<double>(),method->argument(1)->getArgumentType().get());
   CHECK_EQUAL("ka",method->argument(0)->getName());
   CHECK_EQUAL("d",method->argument(1)->getName());
+}
+
+UNITTEST(SimpleTypeReflection){
+  using namespace core::reflection;
+  using namespace uninvasiveReflection;   
+  //! [simple reflection]
+  reflect<SomeTestClass>()
+    ->name("::uninvasiveReflection::SomeTestClass")
+    ->end();
+  //! [simple reflection]
+
 }
 
 /*
