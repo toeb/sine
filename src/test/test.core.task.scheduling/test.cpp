@@ -31,8 +31,15 @@ namespace nspace{
           }
 
         };
-        class RateMonotonicScheduler{
 
+        struct RateMonotonicTask{
+          void step();
+          int priority()const;
+        };
+        class RateMonotonicScheduler{
+          std::priority_queue<RateMonotonicTask> tasks;
+          RateMonotonicScheduler():tasks(std::less([](const RateMonotonicTask & a , const RateMonotonicTask & b){return a.priority() < b.priority();})){
+          }
         };
         class EarliestDeadlineFirstScheduler{
 
@@ -40,6 +47,7 @@ namespace nspace{
         class LeastLaxityFirstScheduler{
 
         };
+        
       }
     }
   }
